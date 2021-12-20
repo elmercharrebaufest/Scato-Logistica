@@ -1,0 +1,79 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.ReimpresionDeDocumentosDto
+@{
+    ViewBag.Title = Textos.ReimpresionDeDocumentos_Titulo;
+    var impresoras = (IEnumerable<SelectListItem>)ViewBag.Impresoras;
+    var cantCopias = (IEnumerable<SelectListItem>)ViewBag.CantCopias;
+}
+<style>
+    .field-validation-error
+    {
+        color: #ff0000;
+    }
+</style>
+
+@Html.Hidden("PermisoImprimir", PermisosHelper.Is(PermisosScato.ReimpresionDocumentosImprimirDocumento))
+@Html.Hidden("PermisoBorrar", PermisosHelper.Is(PermisosScato.ReimpresionDocumentosBorrarDocumento))
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Script("~/Scripts/reimpresionDeDocumentos.index.js")" type="text/javascript"></script>
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.ReimpresionDeDocumentos_Titulo</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row-fluid">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search causaBlock", data_mensaje_espera = Textos.Buscando}))
+            {
+                <div class="" id="editContainer">
+                    <div class="" style="margin-bottom: 10px; margin-top: 10px">
+                        @Html.EnumDropDownListFor(model => model.TipoDocumentoIngreso, "(todos)", new { id = "documentos", style = "display: inline-block; margin-right:20px" }, false)
+                        @Html.Label(Textos.NumeroDocumentoIngreso + ":", new { style = "display: inline-block; margin-right:10px" })
+                        @Html.TextBoxFor(model => model.NumeroDocumentoIngreso, new { id = "numDocumento", style = "display: inline-block; margin-right:20px" })
+                        @Html.Label(Textos.Patente + ":", new { style = "display: inline-block; margin-right:10px" })
+                        @Html.TextBoxFor(model => model.Patente, new { id = "patente", @class = "uppercase input-small", style = "display: inline-block" })
+                        @Html.Label(Textos.Tipo + ":", new { style = "display: inline-block; margin-right:10px" })
+
+                        @Html.EnumDropDownListFor(model => model.Tipo, "(todos)", new { id = "tipos", style = "display: inline-block; margin-right:20px" }, false)
+
+                        <div class="controls-small">
+                            @Html.ValidationMessageFor(model => model.NumeroDocumentoIngreso)
+                            @Html.ValidationMessageFor(model => model.Patente)
+                        </div>
+                        <button id="btnBuscar" type="submit" class="btn btn-primary" style="display: inline-block; float: right; margin-top: -30px;">@Textos.Buscar</button>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div id="gridContainer" data-mensaje-espera="@Textos.Reimpresion_MensajeDeEspera">
+        @Html.Partial("Listar")
+    </div>
+</div>
+
+<div id="diag-imprimir" data-imprimir-url ="@Url.Action("Imprimir", "ReimpresionDeDocumentos")">
+    <div class="modal fade hide" id="dialogo-imprimir">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h5>@Textos.SeleccionarImpresora_Titulo</h5>
+        </div>
+        <div class="modal-body" id="dialogo-imprimir-body">
+            @Textos.Impresora:
+            <h5>@Html.DropDownList("ImpresoraDropDown", impresoras)</h5>
+            @Textos.CantidadDeCopias:
+            <h5>@Html.DropDownList("CantCopiasDropdown", cantCopias)</h5>
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-imprimir-imprimir" class="btn">@Textos.Imprimir</button>
+            <button id="dialogo-imprimir-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+<iframe id="my_iframe" style="display:none;"></iframe>

@@ -1,0 +1,115 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.AltaCTGDto
+@{
+    ViewBag.Title = Textos.AltaCTG_Titulo;
+    var reintentar = (bool)ViewBag.VerReintentar;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bajaCTG.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#CodigoCTG").focus();
+    });
+</script>
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+        font-size: 12px;
+    }
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.AltaCTG</div>
+</div>
+
+@* ReSharper disable Mvc.ActionNotResolved *@
+@using (Html.BeginForm("Action", "AltaCTG", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActAltaCTG }))
+{
+@* ReSharper restore Mvc.ActionNotResolved *@
+    <div id="Automatica" >
+        <div>
+            <h4>@Textos.AltaCTG_AltaAutomaticaError</h4>
+            @Html.ValidationMessageFor(model => model.Errores)
+        </div>
+        <div class="control-group"></div>
+        <div class="modal-footer">
+            <button id="dialogo-reintentar" class="confirmar-boton btn " data-accion="ReintentarCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Reintentar, Textos.CTG)">@Textos.Reintentar</button>
+            <button id="boton-manual" class="btn ">@Textos.AltaCTG_Manual</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+        </div>
+    </div> 
+    
+    <div id="Manual" >
+        <div>
+            <h4>@Textos.AltaCTG_Titulo</h4>
+        </div>
+        <div class="modal-body">
+            @Html.HiddenFor(model => model.WorkflowCodigo)
+            @Html.HiddenFor(model => model.WorkflowId)
+            @Html.HiddenFor(model => model.Cpe)
+            @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+            @Html.Hidden("verReintentar", reintentar)
+            @Html.Hidden("postDeManual", (bool)ViewBag.PostDeManual)
+            <div class="control-group">
+                @Html.Label(Textos.AltaCTG_Codigo)
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CodigoCTG, new { @class = "input-large", maxlength = Model.Cpe ? 12 : 8 })
+                    @Html.ValidationMessageFor(model => model.CodigoCTG)
+                </div>
+            </div>
+
+            @if (Model.Cpe)
+            {
+                <div style="display: inline-flex;">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Sucursal)
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Sucursal, new { @class = "input-large", maxlength = 5 })
+                            @Html.ValidationMessageFor(model => model.Sucursal)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls" style="padding-top: 30px;"><a id="guion-concatenacion">&nbsp;-&nbsp;</a></div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.NroOrden)
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.NroOrden, new { @class = "input-large", maxlength = 8 })
+                            @Html.ValidationMessageFor(model => model.NroOrden)
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="control-group">
+                @Html.Label(Textos.CartaPorte_TarifaReferencia)
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.TarifaReferencia, new { @class = "input-large", maxlength = 8 })
+                    @Html.ValidationMessageFor(model => model.TarifaReferencia)
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-dardealta" class="confirmar-boton btn " data-accion="CargarAltaCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.DarDeAlta, Textos.CTG)">@Textos.Aceptar</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+            <button id="boton-volver" class="btn pull-left">@Textos.Volver</button>
+        </div>
+    </div>
+  
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

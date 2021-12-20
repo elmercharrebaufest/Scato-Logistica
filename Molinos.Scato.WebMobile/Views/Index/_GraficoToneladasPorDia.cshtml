@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoEficienciaHidraulicasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+<script type="text/javascript">
+    var urlGenerarToneladasPorDias = '@Url.Action("GenerarGraficoEficienciaHidraulicas")'
+</script>
+
+<div class="col-12 borde-grafico">
+    <canvas id="myChartToneladasPorDia"></canvas>
+</div>

@@ -1,0 +1,414 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CentroDto
+
+@{
+    Layout = null;
+
+}
+
+@Html.ValidationSummary(true)
+
+<style>
+
+    .span6 {
+        /* border: solid 1px #c3c3c3;*/
+    }
+
+    .span3 {
+        width: 170px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .form-horizontal .control-label {
+        width: 200px;
+        font-size: 12px;
+    }
+
+    .form-horizontal .control-group {
+        margin-bottom: 1px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    .check .control-label {
+        padding: 0 0 3px 0;
+        margin: 0;
+        width: 240px;
+    }
+
+    .span3 .control-label {
+        width: 40px;
+        font-size: 12px;
+    }
+
+    .span3 .controls {
+        margin-left: 45px;
+    }
+
+    .labelEmail {
+        width: 235px !important;
+    }
+
+        .labelEmail div.controls {
+            margin-left: 255px !important;
+        }
+
+    .dosRenglones {
+        padding-top: 0 !important;
+        line-height: 14px;
+    }
+</style>
+@Html.HiddenFor(model => model.Id)
+<div class="row">
+
+    <div class="span6">
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.Descripcion)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoSAP, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoSAP, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.CodigoSAP)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoSAPEspecial, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoSAPEspecial, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.CodigoSAPEspecial)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.MailBarreras, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MailBarreras, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.MailBarreras)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoDeChamico, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoDeChamico, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CodigoDeChamico)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoDeTenorAzucarino, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoDeTenorAzucarino, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CodigoDeTenorAzucarino)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Sociedad, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Sociedad, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.Sociedad)
+            </div>
+        </div>
+        <div class="control-group check">
+            @Html.LabelFor(model => model.CasillerosPorHumedad, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.CasillerosPorHumedad, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.CasillerosPorHumedad)
+
+            @Html.LabelFor(model => model.UsaConfirmacionDescarga, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.UsaConfirmacionDescarga, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.UsaConfirmacionDescarga)
+
+            @Html.LabelFor(model => model.ReingresaPatenteAlPesar, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ReingresaPatenteAlPesar, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ReingresaPatenteAlPesar)
+
+            @Html.LabelFor(model => model.ReingresaPatenteEnCalado, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ReingresaPatenteEnCalado, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ReingresaPatenteEnCalado)
+
+            @Html.LabelFor(model => model.AsignaBalanzaEnComando, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.AsignaBalanzaEnComando, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.AsignaBalanzaEnComando)
+
+            @Html.LabelFor(model => model.RequiereCupo, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.RequiereCupo, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.RequiereCupo)
+
+            @Html.LabelFor(model => model.ContingenciaAfipCpe, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ContingenciaAfipCpe, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ContingenciaAfipCpe)
+
+            @Html.LabelFor(model => model.ValidarCupo, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ValidarCupo, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ValidarCupo)
+
+            @Html.LabelFor(model => model.LibroOnccaPorDescripcionCorta, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.LibroOnccaPorDescripcionCorta, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.LibroOnccaPorDescripcionCorta)
+
+            @Html.LabelFor(model => model.ValidarLimiteDeCreditoVentaEnSAP, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ValidarLimiteDeCreditoVentaEnSAP, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ValidarLimiteDeCreditoVentaEnSAP)
+
+            @Html.LabelFor(model => model.ValidarLimiteMinimoDePeso, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ValidarLimiteMinimoDePeso, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ValidarLimiteMinimoDePeso)
+
+            @Html.LabelFor(model => model.TomarFotoEnMesa, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.TomarFotoEnMesa, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.TomarFotoEnMesa)
+
+            @Html.LabelFor(model => model.LeerCPDeFoto, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.LeerCPDeFoto, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.LeerCPDeFoto)
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.NumeroLoteInicial, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroLoteInicial, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.NumeroLoteInicial)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Cuit, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Cuit, new { @class = "control input-large cuitValido", data_error_cuit_invalido = string.Format(Textos.CuitInvalido) })
+                @Html.ValidationMessageFor(model => model.Cuit)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CamaraId, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.CamaraId, (IEnumerable<SelectListItem>)ViewBag.Camaras, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CamaraId)
+            </div>
+        </div>
+    </div>
+
+    <div class="span6">
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.CantEtiquetasMicromuestras, new { @class = "control-label dosRenglones" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CantEtiquetasMicromuestras, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CantEtiquetasMicromuestras)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoDeInsectos, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoDeInsectos, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CodigoDeInsectos)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.TiempoMaxEntreActividades, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.TiempoMaxEntreActividades, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.TiempoMaxEntreActividades)
+            </div>
+        </div>
+
+        <div class="control-group check">
+            @Html.LabelFor(model => model.UsaBinPallet, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.UsaBinPallet, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.UsaBinPallet)
+
+            @Html.LabelFor(model => model.UsaNumeroMuestraTerceros, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.UsaNumeroMuestraTerceros, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.UsaNumeroMuestraTerceros)
+
+            @Html.LabelFor(model => model.ImprimeReciboMunicipal, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ImprimeReciboMunicipal, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ImprimeReciboMunicipal)
+
+            @Html.LabelFor(model => model.EncolaBajaCtgAutomatico, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.EncolaBajaCtgAutomatico, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.EncolaBajaCtgAutomatico)
+
+            @Html.LabelFor(model => model.SolicitaConfirmarCTG, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.SolicitaConfirmarCTG, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.SolicitaConfirmarCTG)
+
+            @Html.LabelFor(model => model.DescargaCartaPortePorCtg, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.DescargaCartaPortePorCtg, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.DescargaCartaPortePorCtg)
+
+            @Html.LabelFor(model => model.EsVirtual, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.EsVirtual, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.EsVirtual)
+
+            @Html.LabelFor(model => model.ModificaAlmacenEnPesada, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ModificaAlmacenEnPesada, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ModificaAlmacenEnPesada)
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.ProvinciaId, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.ProvinciaId, (IEnumerable<SelectListItem>)ViewBag.Provincias, Textos.Default_Provincia, new { id = "provinciasDropDown", @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.ProvinciaId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.LocalidadId, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.LocalidadId, (IEnumerable<SelectListItem>)ViewBag.Localidades, Textos.Default_Localidad, new { id = "localidadesDropDown", @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.LocalidadId)
+                @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
+                @Html.Hidden("ValorDefault", Textos.Default_Localidad)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoPostal, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoPostal, new { @class = "control input-small uppercase", maxlength = 8 })
+                @Html.ValidationMessageFor(model => model.CodigoPostal)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Direccion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Direccion, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.Direccion)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoEstablecimiento, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoEstablecimiento, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.CodigoEstablecimiento)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.LimiteMinimoDePeso, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.LimiteMinimoDePeso, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.LimiteMinimoDePeso)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.HorarioDesde, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.HorarioDesde, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.HorarioDesde)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.HorarioHasta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.HorarioHasta, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.HorarioHasta)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.ToleranciaPatenteLeida, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.ToleranciaPatenteLeida, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.ToleranciaPatenteLeida)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="span3">
+        <div class="control-group">
+            @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.RazonSocial)
+            </div>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="control-group">
+            @Html.LabelFor(model => model.NumeroINV, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroINV, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.NumeroINV)
+            </div>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="control-group">
+            @Html.LabelFor(model => model.IngresosBrutos, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.IngresosBrutos, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.IngresosBrutos)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="span3">
+        <div class="control-group">
+            @Html.LabelFor(model => model.NumeroCAI, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroCAI, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.NumeroCAI)
+            </div>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="control-group FechaDesde">
+            @Html.LabelFor(model => model.VigenciaDesde, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.VigenciaDesde)
+                @Html.ValidationMessageFor(model => model.VigenciaDesde)
+            </div>
+        </div>
+    </div>
+    <div class="span3">
+        <div class="control-group FechaHasta">
+            @Html.LabelFor(model => model.VigenciaHasta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.VigenciaHasta)
+                @Html.ValidationMessageFor(model => model.VigenciaHasta)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.MailVencimientoCAI, new { @class = "control-label labelEmail" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MailVencimientoCAI, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.MailVencimientoCAI)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.NumeroOrigenCamaraBsAs, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroOrigenCamaraBsAs, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.NumeroOrigenCamaraBsAs)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoEstacionMeteorologica, new { @class = "control-label labelEmail" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CodigoEstacionMeteorologica, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.CodigoEstacionMeteorologica)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row right">
+    <button type="submit" id="aceptar" class="btn btn-primary">@Textos.Aceptar</button>
+    <button type="button" id="cancelar" class="btn">@Textos.Cancelar</button>
+</div>

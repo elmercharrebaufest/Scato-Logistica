@@ -1,0 +1,266 @@
+<div class="col shadow text-black embarquecomp">
+  <div class="row text-center fnt-white text-r" [ngClass]="colorDelMuelle()">
+    <div class="col-md-2 my-auto d-none d-md-block">
+      <img class="ship" src="assets/ship.svg">
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Ubicación del Barco</label><label class="text-header d-block d-sm-none">Ubicación</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="">       <label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Carta de subida enviada</label><label class="text-header d-block d-sm-none">Enviada</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="">       <label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Cartas de subida aprobadas</label><label class="text-header d-block d-sm-none">Aprob.</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Carga en SAP</label><label class="text-header d-block d-sm-none">SAP</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Nominación de practico de rio</label><label class="text-header d-block d-sm-none">Práctico</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="">       <label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Seguridad portuaria y sanidad</label><label class="text-header d-block d-sm-none">Seg.</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Inspeccion Senasa</label><label class="text-header d-block d-sm-none">Senasa</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Control Senasa</label><label class="text-header d-block d-sm-none">Ctrl Senasa</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Control privado</label><label class="text-header d-block d-sm-none">Ctrl privado</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Práctico para el amarre</label><label class="text-header d-block d-sm-none">Amarrador</label></div></div>
+        <div class="col-xs-15 border-left border-white"><div class="my-auto"><label class="text-header d-none d-sm-block" [ngClass]="colorDelMuelle()">Agencia contactada</label><label class="text-header d-block d-sm-none">Agencia</label></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center bg-white mh-95 text-r">
+    <div class="col-md-2 d-none d-md-block text-left ">
+      <div class="row lh-22 mt-3 pl-3">
+        <div class="col block pl-0 pr-0">
+          <p class="inline s28 font-weight-bold">
+            #{{index + 1}}&nbsp;<span class="inline s21 font-weight-bold">{{instanciaWorkflow.embarque.nombreBuque}}</span>
+            <app-toggle-menu-orden>
+              <div class="list-group">
+                <a href="javascript:;" class="list-group-item list-group-item-action" style="width:50px;"
+                   *ngFor="let orden of posicionesDeLineUps"
+                   [class.active]="orden === index + 1"
+                   (click)="actualizarOrden(orden)">{{orden}}</a>
+              </div>
+            </app-toggle-menu-orden>
+          </p>
+          <!--<p class="inline s21 font-weight-bold">{{instanciaWorkflow.embarque.nombreBuque}}</p>-->
+        </div>
+      </div>
+      <div class="row block text-gris text-08">
+        <div class="col block pl-0 pr-0"><label>Actualizado: {{instanciaWorkflow.fechaUltimaModificacion | date : 'dd-MM H:mm'}}hs</label></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="row h-70">
+        <div class="col-xs-15 border-left border-gris"><div class="my-auto"><label class="" for="ubicacionDeBuque">
+        {{nombreUbicacionDeBuquePuerto(instanciaWorkflow.embarque.ubicacion)}}</label></div></div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.cartaDeSubidaEnviada ?
+              'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('CartaDeSubidaEnviada')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris"><div class="my-auto"><label>{{(instanciaWorkflow.lineUp.cartaDeSubidaAprobada | date : 'dd MMM H:mm') || "Seleccionar GFH"}}</label></div></div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.cargaEnSap ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('CargaEnSap')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.nominacionDePractico ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('NominacionDePractico')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.seguridadPortuaria ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('SeguridadPortuaria')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.inspeccionSenasa ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('InspeccionSenasa')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.controlSenasa ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('ControlSenasa')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.controlPrivado ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('ControlPrivado')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris">
+          <div class="my-auto">
+            <img class="circle" [src]="instanciaWorkflow.lineUp.amarrador ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('Amarrador')">
+          </div>
+        </div>
+        <div class="col-xs-15 border-left border-gris bg-gris">
+          <div class="my-auto">
+            <img class="circle bg-svg-gris" [src]="instanciaWorkflow.lineUp.agenciaContactada ?
+            'assets/radioButtonGreen.svg' : 'assets/radioButtonGrey.svg'"
+                 (click)="modificarLineUp('AgenciaContactada')">
+          </div>
+        </div>
+      </div>
+    <div class="row h-30">
+      <div class="col border-left border-top border-gris">
+        <app-toggle-menu-acciones>
+          <div class="list-group" style="width: max-content; margin:center">
+            <a href="javascript:;" class="list-group-item list-group-item-action"
+              *ngFor="let accion of listadoUbicacionDeBuquePuerto"
+              [class.active]="accion === nombreUbicacionDeBuquePuerto(instanciaWorkflow.embarque.ubicacion)"
+              (click)="onSelectAction(accion)"
+               >{{accion}}</a>
+          </div>
+        </app-toggle-menu-acciones>
+      </div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris">
+        <ng-container *ngIf="hasPermisoRadios()">
+          <app-toggle-menu-acciones>
+            <div class="list-group" style="width: min-content; margin-left:-50%">
+              <div class="list-group-item">
+                <label>Fecha</label>
+                <div class="input_img">
+                  <input type="date" max="3000-12-31" min="1000-01-01" class="form-control" [(ngModel)]="fechaCarta">
+                  <!-- <img src="assets/calendarInput.svg" class="imgCalendarInput">-->
+                </div>
+                <label style="padding-top:5px;">Hora</label>
+                <div class="ngx-timepicker-field-example">
+                  <ngx-timepicker-field [format]="24" [controlOnly]="true" [(ngModel)]="horaCarta"></ngx-timepicker-field>
+                </div>
+              </div>
+              <div class="list-group-item">
+                <button type="button" class="btn btn-primary btn-sm ml-n2" (click)="guardarFechaCarta()">Guardar</button>
+
+              </div>
+            </div>
+          </app-toggle-menu-acciones>
+        </ng-container>
+      </div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+      <div class="col border-left border-top border-gris bg-gris"><div class="my-auto d-none"><i class="fa fa-sort-down"></i></div></div>
+    </div>
+  </div>
+</div>
+<div class="row text-center bg-white d-block d-md-none" style="border-top:1px solid #ccc">
+  <div class="col-md-2">
+    <div class="row lh-22">
+      <div class="col block pl-0 pr-0">
+        <p class="inline s28 font-weight-bold">#{{index + 1}}&nbsp;</p>
+        <p class="inline s21 font-weight-bold">{{instanciaWorkflow.embarque.nombreBuque}}</p>
+      </div>
+    </div>
+    <div class="row block text-gris text-08">
+      <div class="col"><label>Actualizado: {{instanciaWorkflow.fechaUltimaModificacion | date : 'dd-MM H:mm'}}hs</label></div>
+    </div>
+  </div>
+</div>
+<div class="row text-center bg-white" style="border-top:1px solid #ccc">
+  <div class="col-md-2 mt-2">
+    <div class="form-group" style="text-align: left;">
+    <label class="font-weight-bold">{{instanciaWorkflow.embarque.ubicacion > 0 ? "Recalada" : "ETA recalada"}}</label>
+    <div class="row border rounded ml-1 mr-1" [ngClass]="'border-'+ fechaRecaladaCorrecta()">
+      <div class="col-1"><img src="assets/reloj.svg" class="icon clock" [ngClass]="'clock-'+ fechaRecaladaCorrecta()"></div>
+      <div class="col-9">
+        <div class="row">
+          <div class="col-12 font-weight-bold" [ngClass]="'text-'+ fechaRecaladaCorrecta()" style="font-size: 16px;">
+            {{instanciaWorkflow.embarque.fechaRecalada | date}}&zwnj;
+          </div>
+          <small class="col-12 mb-1" [ngClass]="'text-'+ fechaRecaladaCorrecta()">
+            {{instanciaWorkflow.embarque.horaRecalada != null ? instanciaWorkflow.embarque.horaRecalada : ''}} 
+            {{instanciaWorkflow.embarque.horaRecalada != null && instanciaWorkflow.embarque.horaRecalada.length > 3 ? 'Hrs' : ''}}&zwnj;
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="col-md-3 col-xs-12 my-auto text-left">
+    <div *ngFor="let material of filteredMaterialList">
+      <div class="materiales">
+        {{material.cantidad | number}} {{material.descripcionCorta}}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-xs-12 mt-2">
+    <p class="text-left mb-0 overflow-auto"><strong>Observaciones: </strong>{{instanciaWorkflow.embarque.observaciones}}</p>
+  </div>
+  <div class="col-md-3 col-xs-6 mt-4">
+    <div *ngIf="instanciaWorkflow.lineUp.planoDeCarga.cargado == false && instanciaWorkflow.embarque.sanBenito">
+      <button type="button" class="btn btn-success btn-md float-right"
+              (click)="armarPlanoCarga()">ARMAR PLANO DE CARGA</button>
+    </div>
+    <div *ngIf="instanciaWorkflow.lineUp.planoDeCarga.cargado && instanciaWorkflow.lineUp.planoDeCarga.enviado == false && instanciaWorkflow.embarque.sanBenito">
+      <button type="button" class="btn btn-outline-success btn-md float-right"
+              (click)="armarPlanoCarga()">EDITAR PLANO DE CARGA</button>
+    </div>
+    <div *ngIf="instanciaWorkflow.lineUp.planoDeCarga.enviado && instanciaWorkflow.lineUp.planoDeCarga.cargado && instanciaWorkflow.embarque.sanBenito">
+      <img float-right src="assets/planoDeCargaEnviadoButton.svg" onmouseover="this.src='assets/planoDeCargaEnviadoButtonInvertido.svg';" 
+        onmouseout="this.src='assets/planoDeCargaEnviadoButton.svg';" class="cursorPointer float-right" (click)="armarPlanoCarga()">
+    </div>
+  </div>
+</div>
+
+<div class="row text-center bg-white pb-3">
+  <div class="col-md-2 col-xs-6 " style="text-align: left;">
+    <img class="d-none" src="assets/information.svg">
+    <label class="text-muted d-none">Ver mas/menos info</label>
+  </div>
+
+  <div class="col-md-2 col-xs-12" style="text-align: left;">
+    <p class="text-left  mb-0">
+      <strong>Oblig. de carga: </strong>
+      {{instanciaWorkflow.embarque.obligacionCarga  | date}}
+    </p>
+  </div>
+
+  <div class="col col-xs-6" style="text-align: left;">
+    <p class="text-left mb-0">
+      <strong>Agencia: </strong>
+      {{extraeNombre(instanciaWorkflow.embarque.agencias)}}
+    </p>
+  </div>
+
+  <div class="col col-xs-6" style="text-align: left;">
+    <p class="text-left mb-0">
+      <strong>A.T.A.: </strong>
+      {{extraeNombre(instanciaWorkflow.embarque.ata)}}
+    </p>
+  </div>
+
+  <div class="col col-xs-6" style="text-align: left;">
+    <p class="text-left mb-0">
+      <strong>Coordinador: </strong>
+      {{extraeNombre(instanciaWorkflow.embarque.coordinadores)}}
+    </p>
+  </div>
+
+  <div class="col-md-3 col-xs-6">
+    <div class="form-row justify-content-end">
+      <div class="col-12 align-items-center">
+        <ng-container *ngIf="hasPermisoDeleteEmbarque()">
+          <img src="assets/trashIcon.svg" class="cursorPointer float-right" (click)="eliminarEmbarque()">
+        </ng-container>
+
+        <ng-container *ngIf="hasPermisoEditEmbarque()">
+          <button type="button" class="btn btn-primary btn-md float-right mr-2 mt-2" (click)="editarEmbarque()">EDITAR BUQUE</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

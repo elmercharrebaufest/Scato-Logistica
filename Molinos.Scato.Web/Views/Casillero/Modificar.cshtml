@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.CasilleroModel
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Casillero_Modificar;
+    string masivo = ViewBag.Masivo;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/casilleroModificar.js")"></script>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Casillero_Modificar }))
+{
+    @Html.Hidden("masivo", masivo, new {id = "Masivo"})
+    @Html.HiddenFor(model => model.Casillero.Id)
+    @Html.Partial("_CrearModificarEliminar", Model)
+}

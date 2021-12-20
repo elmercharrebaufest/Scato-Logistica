@@ -1,0 +1,27 @@
+<ship-spinner [message]="'Cargando Planos de Carga. Por favor, espere...'" *ngIf='mostrarSpinner'></ship-spinner>
+<div class="container-fluid fondo">
+    <!-- <div class="pt-2">
+        <button class="btn btn-light btn-sm" [routerLink]="['/lineup']"> < Volver </button>
+    </div> -->
+
+    <div class="col pl-0 pr-1">
+        <div class="row">
+            <div class="col pl-3 pt-4">
+                <h1>Módulo de Carga</h1>
+            </div>
+            <div class="col-5 mr-2 pr-2">
+                <app-estados-puerto-content></app-estados-puerto-content>
+            </div>
+        </div>
+    </div>  
+
+    <div class="mt-4">
+        <app-navtabs (showPlano)='showPlano($event)' *ngIf='mostrarNavtabs'></app-navtabs>
+    </div>
+    <app-plano-content *ngIf='mostrarPlano' [estadoAlturaValor]="estadoAlturaValor" (showCargas)='hideSpinner($event)' (hideSpinner)='hideSpinnerAux($event)' ></app-plano-content>
+    <div class="d-flex justify-content-center my-5"  *ngIf='mostrarPlano'>
+        <button type="button" class="btn btn-danger" [routerLink]="['/lineup']">CANCELAR</button>
+        <button type="button" class="btn btn-primary mx-5" (click)="guardarPlanoDeCarga(false)">GUARDAR</button>
+        <button type="button" class="btn btn-success" (click)="guardarPlanoDeCarga(true)">FINALIZAR</button>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<StockDeEstablecimientoDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "StockDeEstablecimiento"),
+        grilla.Columna("CodigoEstablecimiento", Textos.Establecimiento_Codigo),
+        grilla.Columna("Cosecha",Textos.Campaña),
+        grilla.Columna("FechaDesde", Textos.FechaDesde, x => FormattingHtmlHelper.Formatted(x.FechaDesde)),
+        grilla.Columna("FechaHasta", Textos.FechaHasta, x => FormattingHtmlHelper.Formatted(x.FechaHasta)),
+        grilla.Columna("StockDeclarado", Textos.StockDeclarado),
+        grilla.Columna("StockUtilizado", Textos.StockUtilizado),
+        grilla.Columna("StockDisponible", Textos.StockDisponible),
+        grilla.Columna("StockReservado", Textos.StockReservado)
+        ))
+</div>

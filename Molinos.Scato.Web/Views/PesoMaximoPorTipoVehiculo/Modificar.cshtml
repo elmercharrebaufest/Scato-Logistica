@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.PesoMaximoPorTipoVehiculoDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.PesoMaximoPorTipoVehiculo_Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.PesoMaximoPorTipoVehiculo_Modificar }))
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CrearModificar", Model)
+}

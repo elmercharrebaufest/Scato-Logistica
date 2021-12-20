@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoCamionesDiaDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+}
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")">
+</div>
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoCamionesDia.js")"></script>
+<script type="text/javascript">
+    var camionesDia = "@Textos.CamionesDiaJavascript"
+</script>
+
+<br />
+<div id="graficocamionesdia" class="col border rounded panel-padding">
+    <form id="formDia">
+        <div class="form-row">
+            <div class="col-12 col-sm h5 mt-auto  text-center">
+                @Textos.CamionesDia
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "form-control", @id = "materialDescripcionDia" })
+                @Html.ValidationMessageFor(model => model.MaterialDescripcion)
+                @Html.HiddenFor(model => model.MaterialId, new { @id = "materialIdDia" })
+            </div>
+            <div class="col-12 col-sm m-auto">
+                <button class="btn btn-outline-success w-100" data-bind="click: generarGrafico">@Textos.Generar</button>
+            </div>
+        </div>
+    </form>
+    <div class="row" id="partialContainerDia">
+        @Html.Partial("_GraficoCamionesPorDia", Model)
+    </div>
+</div>

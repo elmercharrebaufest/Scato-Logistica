@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Textos.Motivo_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_Motivos</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" }))
+            {
+            
+            }
+            @Html.ActionLink(@Textos.Motivo_Nuevo, "Crear", "Motivo", null, new {@class = "btn btn-primary ajax-editar-link pull-right"})
+        
+    </div>
+    
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>

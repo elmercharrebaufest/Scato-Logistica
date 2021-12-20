@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.VinedoTercerosDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.VinedoTerceros_Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bocaDestino.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/vinedoTerceros_validarCuit.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/mostrarSubZonas.js")"></script>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.VinedoTerceros_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

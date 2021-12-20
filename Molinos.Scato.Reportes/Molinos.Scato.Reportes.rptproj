@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <FullPath>Debug</FullPath>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2016</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>Molinos.Scato.Reportes</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>http://gvicrptsrvqa01.molinosagro.ad/Reportserver</TargetServerURL>
+    <StartItem>Listado de Arribos a Planta.rdl</StartItem>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugLocal' ">
+    <FullPath>DebugLocal</FullPath>
+    <OutputPath>bin\DebugLocal</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>Molinos.Scato.Reportes</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <FullPath>Release</FullPath>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorLevel>2</ErrorLevel>
+    <OverwriteDatasets>False</OverwriteDatasets>
+    <OverwriteDataSources>False</OverwriteDataSources>
+    <TargetServerVersion>SSRS2008R2</TargetServerVersion>
+    <Platform>Win32</Platform>
+    <TargetReportFolder>Molinos.Scato.Reportes</TargetReportFolder>
+    <TargetDatasetFolder>Datasets</TargetDatasetFolder>
+    <TargetDatasourceFolder>Data Sources</TargetDatasourceFolder>
+    <TargetReportPartFolder>Report Parts</TargetReportPartFolder>
+    <TargetServerURL>http://vicreportsvr00/ReportServerScato</TargetServerURL>
+  </PropertyGroup>
+  <PropertyGroup>
+    <State>$base64$PFNvdXJjZUNvbnRyb2xJbmZvIHhtbG5zOnhzZD0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiIHhtbG5zOmRkbDI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yIiB4bWxuczpkZGwyXzI9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDAzL2VuZ2luZS8yLzIiIHhtbG5zOmRkbDEwMF8xMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDA4L2VuZ2luZS8xMDAvMTAwIiB4bWxuczpkZGwyMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAiIHhtbG5zOmRkbDIwMF8yMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEwL2VuZ2luZS8yMDAvMjAwIiB4bWxuczpkZGwzMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAiIHhtbG5zOmRkbDMwMF8zMDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDExL2VuZ2luZS8zMDAvMzAwIiB4bWxuczpkZGw0MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAiIHhtbG5zOmRkbDQwMF80MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEyL2VuZ2luZS80MDAvNDAwIiB4bWxuczpkZGw1MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAiIHhtbG5zOmRkbDUwMF81MDA9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vYW5hbHlzaXNzZXJ2aWNlcy8yMDEzL2VuZ2luZS81MDAvNTAwIiB4bWxuczpkd2Q9Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vRGF0YVdhcmVob3VzZS9EZXNpZ25lci8xLjAiPg0KICA8RW5hYmxlZD50cnVlPC9FbmFibGVkPg0KICA8UHJvamVjdE5hbWU+U0FLPC9Qcm9qZWN0TmFtZT4NCiAgPEF1eFBhdGg+U0FLPC9BdXhQYXRoPg0KICA8TG9jYWxQYXRoPlNBSzwvTG9jYWxQYXRoPg0KICA8UHJvdmlkZXI+U0FLPC9Qcm92aWRlcj4NCjwvU291cmNlQ29udHJvbEluZm8+</State>
+    <DataSources>@(DataSource)</DataSources>
+    <DataSets>@(DataSet)</DataSets>
+    <Reports>@(Report)</Reports>
+  </PropertyGroup>
+  <ItemGroup>
+    <DataSet Include="Centros.rsd" />
+    <DataSet Include="DataSetRomaneo.rsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DataSource Include="Scato_Reportes_Datasource.rds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Report Include="Autorizaciones por Exceso de Tiempo.rdl" />
+    <Report Include="Comparacion Calidades.rdl" />
+    <Report Include="Consulta Datos de Vehiculos.rdl" />
+    <Report Include="Detalle Muestra Auditoria.rdl" />
+    <Report Include="DetalleDeMovimientoIngreso.rdl" />
+    <Report Include="DetalleDeMovimientoIngreso2.rdl" />
+    <Report Include="Emision de Detalle de Lote.rdl" />
+    <Report Include="Excepciones al Pago del Ticket Municipal.rdl" />
+    <Report Include="Informe de Descarga.rdl" />
+    <Report Include="Informe de Eficiencia de Hidraulicas diario.rdl" />
+    <Report Include="Informe de Eficiencia de Hidraulicas.rdl" />
+    <Report Include="Informe de Gestion Actual.rdl" />
+    <Report Include="Informe de Gestion Historico.rdl" />
+    <Report Include="Informe Tiempos de Pesada.rdl" />
+    <Report Include="Ingreso de Uvas - Por Tipo de Operacion y Variedad.rdl" />
+    <Report Include="Ingreso de Uvas - Por Variedad.rdl" />
+    <Report Include="Ingreso de Uvas - Por Vinatero y Variedad.rdl" />
+    <Report Include="Ingreso de Uvas - Por Vinatero.rdl" />
+    <Report Include="Libro de Movimientos y existencia de granos.rdl" />
+    <Report Include="Listado Carta de Porte Fason.rdl" />
+    <Report Include="Listado Cuenta Corriente Bins.rdl" />
+    <Report Include="Listado de Arribos a Planta.rdl" />
+    <Report Include="Listado de Bajas de CTG Manual.rdl" />
+    <Report Include="Listado de Cambio de Modalidad de Puesto de Trabajo.rdl" />
+    <Report Include="Listado de Cambios Modalidad Balanza.rdl" />
+    <Report Include="Listado de Camiones Inhabilitados.rdl" />
+    <Report Include="Listado de Camiones Rechazados.rdl" />
+    <Report Include="Listado de CCPP por Procedencia.rdl" />
+    <Report Include="Listado de Choferes Inhabilitados.rdl" />
+    <Report Include="Listado de Cius - Por Variedad.rdl" />
+    <Report Include="Listado de Cius - Por Vinatero.rdl" />
+    <Report Include="Listado de Cius - Por Vinedo y Variedad.rdl" />
+    <Report Include="Listado de Diferencia de Peso.rdl" />
+    <Report Include="LIstado de Diferencias de Peso en Redespacho.rdl" />
+    <Report Include="Listado de Documentos Anulados.rdl" />
+    <Report Include="Listado de Excepciones de Control.rdl" />
+    <Report Include="Listado de Inconsistencias.rdl" />
+    <Report Include="Listado De Ingreso De Granos.rdl" />
+    <Report Include="Listado de Pendientes de Armado de Lote.rdl" />
+    <Report Include="Listado de Quiebre de Barreras.rdl" />
+    <Report Include="Listado de Reasignacion de Tarjeta.rdl" />
+    <Report Include="Listado de Recepciones de Bodegas.rdl" />
+    <Report Include="Listado de Rechazos.rdl" />
+    <Report Include="Listado de Recibos Municipales Importados.rdl" />
+    <Report Include="Listado de Recibos Municipales.rdl" />
+    <Report Include="Listado de Resumen.rdl" />
+    <Report Include="Listado de Romaneo.rdl" />
+    <Report Include="Listado Login Usuarios.rdl" />
+    <Report Include="Listado Ponderado por Caracteristica.rdl" />
+    <Report Include="Log de Ajustes Oncca.rdl" />
+    <Report Include="Log de Impresiones.rdl" />
+    <Report Include="Planilla F-515.rdl" />
+    <Report Include="Reconocimiento de Patentes.rdl" />
+    <Report Include="Registro de Uso de Tarjeta del Supervisor.rdl" />
+    <Report Include="Reporte Contingencia.rdl" />
+    <Report Include="Reporte de Anexo INASE.rdl" />
+    <Report Include="Reporte de Calidad y Mermas.rdl" />
+    <Report Include="Reporte de Informacion Monsanto.rdl" />
+    <Report Include="Reporte de Muestras Monsanto.rdl" />
+    <Report Include="Reporte de Paso por Cero.rdl" />
+    <Report Include="Reporte de Seguimiento y Control.rdl" />
+    <Report Include="Reporte de Stock EPA.rdl" />
+    <Report Include="Reporte Modalidad Calador.rdl" />
+    <Report Include="Reporte Muestras Auditoria.rdl" />
+    <Report Include="ReporteCpOtrosPuertos.rdl" />
+    <Report Include="ReporteCpOtrosPuertosSap.rdl" />
+    <Report Include="ReporteCupo.rdl" />
+    <Report Include="Resumen General por Bodega.rdl" />
+    <Report Include="Stock Detallado de Bines.rdl" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
+</Project>

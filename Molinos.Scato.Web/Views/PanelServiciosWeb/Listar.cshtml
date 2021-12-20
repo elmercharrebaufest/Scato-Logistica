@@ -1,0 +1,71 @@
+﻿@using System.Globalization
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model PanelServiciosWebDto
+@{
+    Layout = null;
+}
+
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+
+        $(".refrescar").click(function() {
+            var nodo = $(this);
+            var href = nodo.attr('href');
+            var estado = nodo.parent().parent().find(".estadoTd");
+            consultarEstado(href, estado);
+            return false;
+        });
+
+        $(".estadoTd").each(function(data) {
+            var href = $(this).data().url;
+            $(this).html("<span class=\"label\">@Textos.ConsultandoEstado</span>");
+            consultarEstado(href, $(this));
+        });
+        
+        function consultarEstado(href, estado) {
+            $.get(href, function (data) {
+                if (data == "True") {
+                    estado.html("<span class=\"label label-success\">@Textos.Conectado</span>");
+                } else {
+                    estado.html("<span class=\"label label-important\">@Textos.Desconectado</span>");
+                }
+            });
+        }
+    });
+</script>
+@if (!String.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-error">
+        @Html.Label(Model.Error)
+    </div>
+}
+
+@if (Model.Servicios != null)
+{
+    <div class="titSecciones" style="padding-bottom: 15px;">@Textos.ServiciosWeb</div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 70px"></th>
+                <th>Nombre</th>
+                <th>Url</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        @foreach (var appPool in Model.Servicios)
+        {
+            <tbody>
+                <tr>
+                    <td><a class="refrescar" title="Iniciar AppPool" href="@Url.Action("Ping", new { url = appPool.Url })"><i class="icon-refresh" ></i></a></td>
+                    <td>@appPool.Nombre</td>
+                    <td>@appPool.Url</td>
+                    <td class="estadoTd" data-url="@Url.Action("Ping", new { url = appPool.Url })"><span class="label">@Textos.ConsultandoEstado</span>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+}
+

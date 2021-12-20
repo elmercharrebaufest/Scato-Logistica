@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+@*<script src="~/Scripts/jquery.colorPicker.js" type="text/javascript"></script>*@
+
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoCamionesPorSector.js")"></script>
+<script type="text/javascript">
+    var urlGenerarCamionesPorSector = "@Url.Action("GenerarGraficoCamionesPorSector")"
+</script>
+
+<div class="col-12 borde-grafico" style="height:30vh;">
+    <canvas id="myChartCamionesPorSector"></canvas>
+</div>

@@ -1,0 +1,60 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<CargaDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaModificarCargaInicioFin(Html, "Modificar", "OperacionesPuerto", "ajax-editar-link-carga"),
+    grilla.Columna("Id", Textos.Inicio),
+    grilla.Columna("IdFin", Textos.Fin),
+    grilla.Columna("NumeroBalanza", Textos.OperacionesPuerto_NumeroBalanza),
+    grilla.Columna("Vapor.Nombre", Textos.OperacionesPuerto_Buque, m => m.Vapor),
+    grilla.Columna("Material.Descripcion", Textos.OperacionesPuerto_Commodity, m => m.Material),
+    grilla.Columna("Bodega.Nombre", Textos.OperacionesPuerto_Bodega, m => m.Bodega),
+    grilla.Columna("Exportador.Nombre", Textos.OperacionesPuerto_Exportador, m => m.Exportador),
+    grilla.Columna("Destino.Nombre", Textos.OperacionesPuerto_Destino, m => m.Destino),
+    grilla.Columna("PesoProgramado", Textos.OperacionesPuerto_PesoProgramado),
+    grilla.Columna("ToneladasAW", Textos.OperacionesPuerto_ToneladasAW),
+    grilla.Columna("FechaInicio", Textos.OperacionesPuerto_Fecha, m => (m.FechaInicio)),
+    grilla.Columna("EnviadoASap", Textos.OperacionesPuerto_EnviadoASap, x => x.EnviadoASap == true ? "Si" : "No"),
+    grilla.Columna("PorcentajeDeCarga", Textos.OperacionesPuerto_PorcentajeDeCarga),
+    grilla.Columna("Estado", Textos.Estado, x => Html.Raw( x.Value.Error == null ?
+                        "<span class='label label-info' style='background-color:green'> OK </span>" :
+                        x.Value.Error == 1 ?
+                            "<span class='label label-info' style='background-color:orange'>En Progreso</span>" :
+                            x.Value.Error == 2 ?
+                            "<span class='label label-info' style='background-color:red'>Falta Inicio</span>" :
+                                x.Value.Error == 3 ?
+                            "<span class='label label-info' style='background-color:ligthblue'>Falta Peso</span>":
+                                    x.Value.Error == 4 ?
+                                "<span class='label label-info' style='background-color:red'>Diferencia de peso AW</span>":
+                                    "<span class='label label-info' style='background-color:red'>Faltan Balanzadas</span>"))
+        ))
+
+<script>
+    $(document).ready(
+        function () {
+            $('#grid thead tr th:nth-child(14) a').remove();
+            $('#grid thead tr th:nth-child(14)').text("% Cargado ▲▼");
+            $('#grid thead tr th:nth-child(14)').css("color", "#0055a5");
+            $('#grid thead tr th').css("vertical-align", "middle");
+            
+            $('#grid tbody tr td span').each(function (index) {
+                if ($(this)[0].innerText == "Falta Inicio") {
+                    $('#grid tbody tr:eq(' + index + ') td.editar-borrar-columna a').remove();
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 2 + ')').text('N/A');
+                };
+                if ($(this)[0].innerText != "En Progreso") {
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text('N/A');
+                } else {
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text($('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text() + "%");
+                };
+            });
+        });
+</script>

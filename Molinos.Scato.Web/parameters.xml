@@ -1,0 +1,225 @@
+﻿<parameters>
+  <parameter name="ServicioRepositorio Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioRepositorio']
+                           /@address" />
+  </parameter>
+  <parameter name="FirmaProvider Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='FirmaProvider']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioComandos Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioComandos']
+                           /@address" />
+  </parameter>
+  <parameter name="ListaDeWorkflows Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ListaDeWorkflows']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioNotificarUsuario Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioNotificarUsuario']
+                           /@address" />
+  </parameter>
+  <parameter name="Orquestador Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='Orquestador']
+                           /@address" />
+  </parameter>
+  <parameter name="ZSDWS_SCATO Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ZSDWS_SCATO']
+                           /@address" />
+  </parameter>
+  <parameter name="UrlBaseWorkflow Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlBaseWorkflow']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServiceDomain Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceDomain']
+                           /@value" />
+  </parameter>
+  <parameter name="UrlServicioNotificaciones Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlServicioNotificaciones']
+                           /@value" />
+  </parameter>
+  <parameter name="ServicioNotificarUsuario Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ServicioNotificarUsuario']
+                           /@value" />
+  </parameter>
+  <parameter name="FederationMetadataLocation Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ida:FederationMetadataLocation']
+                           /@value" />
+  </parameter>
+  <parameter name="Issuer Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ida:Issuer']
+                           /@value" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@issuer" />
+  </parameter>
+  <parameter name="IssuerTrust Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/@name" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/validIssuers/add/@name" />
+  </parameter>
+  <parameter name="RealmUrl Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@realm" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@reply" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/audienceUris/add/@value" />
+  </parameter>
+  <parameter name="Thumbprint Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/keys/add/@thumbprint" />
+  </parameter>
+  <parameter name="CertificateValidation Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/certificateValidation/@certificateValidationMode" />
+  </parameter>
+  <parameter name="MailSettings Smtp From">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /@from" />
+  </parameter>
+  <parameter name="MailSettings Smtp Host">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@host" />
+  </parameter>
+  <parameter name="MailSettings Smtp Port">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@port" />
+  </parameter>
+  <parameter name="MailSettings Smtp EnableSsl">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@enableSsl" />
+    <parameterValidation kind="AllowBlank" />
+  </parameter>
+  <parameter name="ReportingServices Url">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MvcReportViewer.ReportServerUrl']
+                           /@value" />
+  </parameter>
+  <parameter name="ReportingServices Viewer">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MvcReportViewer.AspxViewer']
+                           /@value" />
+  </parameter>
+  <parameter name="ReportingServices Username">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='Reportes.Username']
+                           /@value" />
+  </parameter>
+  <parameter name="ReportingServices Password">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='Reportes.Password']
+                           /@value" />
+  </parameter>
+  <parameter name="ReportingServices Domain">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='Reportes.Domain']
+                           /@value" />
+  </parameter>
+  <parameter name="HostsServiciosWeb Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='HostsServiciosWeb']
+                           /@value" />
+  </parameter>
+  <parameter name="FondoAmbiente Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='FondoAmbiente']
+                           /@value" />
+  </parameter>
+  <parameter name="WaybillManagementPODImplPort Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='WaybillManagementPODImplPort']
+                           /@address" />
+  </parameter>
+  <parameter name="MonsantoServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="MonsantoServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="AppPools Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='AppPools']
+                           /@value" />
+  </parameter>
+  <parameter name="ArchivoDeMovimientosIngresosPath Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ArchivoDeMovimientosIngresosPath']
+                           /@value" />
+  </parameter>
+  <parameter name="ArchivoDeMovimientosEgresosPath Config">
+  <parameterEntry kind="XmlFile" scope="Web.config"
+                  match="/configuration/appSettings/add[@key='ArchivoDeMovimientosEgresosPath']
+                           /@value" />
+  </parameter>
+
+  <parameter name="Ambiente Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='Ambiente']
+                           /@value" />
+  </parameter>
+
+
+  <parameter name="UrlExternaOperacionesPuerto Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlExternaOperacionesPuerto']
+                           /@value" />
+  </parameter>
+
+  <parameter name="WorkflowIngresoPorCompra Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='WorkflowIngresoPorCompra']
+                           /@value" />
+  </parameter>
+  <parameter name="workflowRedespacho Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='workflowRedespacho']
+                           /@value" />
+  </parameter>
+
+    <parameter name="ArchivosPath Config">
+	    <parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='ArchivosPath']
+                            /@value" />
+    </parameter>	
+</parameters>

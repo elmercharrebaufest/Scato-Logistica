@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.StockDeEstablecimientoDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.StockDeEstablecimiento_Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/stockDeEstablecimiento.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.StockDeEstablecimiento_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}
+
+<script>
+    $(document).ready(function () {
+        $('#CodigoEstablecimiento').attr("readonly", "readonly");
+        $('#CodigoEstablecimiento').attr("disabled", "disabled");
+        $('#Cosecha').attr("readonly", "readonly");
+        $('#Cosecha').attr("disabled", "disabled");
+        $('#FechaDesde').attr("readonly", "readonly");
+        $('#FechaDesde').attr("disabled", "disabled");
+    });
+</script>

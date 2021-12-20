@@ -1,0 +1,41 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ChoferDto
+@{
+    var tiposDocumentoIdentidad = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentoIdentidad;
+}
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.Apellido, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Apellido, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Apellido)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Nombre, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Nombre, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Cuil, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Cuil, new {@class = "input-xlarge cuilValido", data_error_cuil_invalido = string.Format(Textos.Chofer_CuilInvalido)})
+        @Html.ValidationMessageFor(model => model.Cuil)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.TipoDocumentoIdentidadId, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.TipoDocumentoIdentidadId, tiposDocumentoIdentidad)
+        @Html.ValidationMessageFor(model => model.TipoDocumentoIdentidadId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.NumeroDeDocumento, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NumeroDeDocumento, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.NumeroDeDocumento)
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model FiltroPanelDeTransaccionesSapDto
+@{
+    Layout = null;
+    var items = (ListaPaginada<TransmisionASapDto>)ViewBag.Items;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/panelDeTransaccionesSap.listar.js")"></script>
+@Html.Hidden("errorText", EstadoTransmisionASap.Error.DisplayEnum())
+@Html.Hidden("ids",Model.ToJson())
+@Html.Grilla(items,
+             grilla => grilla.Columns(
+                 grilla.Columna("Modificar",string.Empty, f => Html.Raw(ExtensionesHtml.BotonLinkDesactivable(Html,string.Empty,"Modificar","PanelDeControlTransaccionesSap",new { f.id },"ajax-editar-link","icon-edit",false,f.Estado != EstadoTransmisionASap.Error).ToHtmlString())),
+                 grilla.Columna("seleccionCol", string.Empty, f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox " + (f.Estado == EstadoTransmisionASap.Error ? "" : "hide") })),
+                 grilla.Columna("Estado", Textos.PanelDeControlTransSAP_Transmision),
+                 grilla.Columna("TipoDocumentoIngreso", Textos.PanelDeControlTransSAP_TipoDoc, t => ((TipoDocumentoIngreso)t.TipoDocumentoIngreso).DisplayEnum()),
+                 grilla.Columna("NumeroDocumento", Textos.TransmisionASap_NumeroDocumento),
+                 grilla.Columna("Patente", Textos.TransmisionASap_Patente),
+                 grilla.Columna("Fecha", Textos.TransmisionASap_Fecha),
+                 grilla.Columna("Id", Textos.PanelDeControlTransSAP_CodTrans),
+                 grilla.Columna("FuncionSap", Textos.TransmisionASap_FuncionSap, t => ((FuncionSAP)t.FuncionSap).DisplayEnum()),
+                 grilla.Columna("MensajeError", Textos.TransmisionASap_Error)))
+
+@if (!PermisosHelper.Is(PermisosScato.AbmTransmisionASap))
+{
+    <script type="text/javascript">
+        $(function() {
+            $(".ajax-editar-link").hide();
+        })
+    </script>
+}

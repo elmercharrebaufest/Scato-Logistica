@@ -1,0 +1,140 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+@{
+    ViewBag.Title = Textos.AutorizarRecepcionUvas_Titulo;
+
+    decimal pesoARecibir = ViewBag.KgARecibir ?? 0;
+    int pesoNetoObtenido = ViewBag.PesoNetoObtenido ?? 0;
+    decimal diferencia = pesoNetoObtenido - pesoARecibir;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarRecepcionUvas.js")"></script>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.AutorizarRecepcionUvas_Titulo</div>
+</div>
+
+@using (Html.BeginForm("Index", "AutorizarRecepcionUvas", FormMethod.Post, new { @class = "causaBlock form-horizontal", data_mensaje_espera = Textos.ActAutorizarRecepcionUvas }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.ActividadXaml)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.HiddenFor(model => model.Decision, new {@class = "valorDecision"})
+    @Html.HiddenFor(model => model.Mensaje)
+    @Html.HiddenFor(model => model.Comentario)
+    @Html.Hidden("reintentar", false)
+    @Html.Hidden("workflow", (string)ViewBag.Workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    if (!String.IsNullOrEmpty(ViewBag.KgARecibirError))
+    {
+        <div class="row-fluid row-fluid-ie7">
+             <div class="span12">
+                 <div class="alert alert-error" id="validation-patente-alert">
+                     <div id="validation-patente">
+                         @ViewBag.KgARecibirError              
+                     </div>
+                 </div>
+             </div>
+        </div>
+    }
+    <div class="row-fluid row-fluid-ie7">
+        
+        <div class="span6">    
+            <div class="control-group">
+                <div class="control-label"> @(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum()):</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.NumeroDocumentoIngreso</b></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"> @Textos.Camion_Patente:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.Patente</b></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"> @Textos.Proveedor:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.Proveedor</b></div>
+                </div>
+            </div>
+        </div>
+        <div class="span6">    
+            <div class="control-group">
+                <div class="control-label">@Textos.TipoComercial:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.TipoComercial</b></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">@Textos.Material:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.Material</b></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">@Textos.Vinedo:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.Vinedo</b></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br/>
+    if (String.IsNullOrEmpty(ViewBag.KgARecibirError))
+    {
+        
+        <div class="row table-bordered centered">
+            <div class="span4">
+        </div>
+        <div class="span4">
+            <div class="control-group">
+                <div class="control-label"> @Textos.PesoNeto:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.PesoNetoObtenido</b></div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"> @Textos.PesoARecibir:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@ViewBag.KgARecibir</b></div>
+                </div>
+            </div>
+            <br/>
+            <div class="control-group">
+                <div class="control-label">@Textos.DiferenciaDePeso_Diferencia:</div>
+                <div class="controls">
+                    <div class="control margin"><b>@diferencia</b></div>
+                </div>
+            </div>
+        </div>
+            </div>
+    }
+    <br/>
+    <br/>
+ 
+        <div class="centered">
+            <button type="submit" class="btn btn-primary reintentar confirmar-boton" data-accion="Index" data-mensaje="@string.Format(Textos.ConfirmacionGenerica2, Textos.Reintentar, Textos.RecepcionUvas)">@Textos.Reintentar</button>    
+            <button type="submit" class="btn btn-primary rechazar confirmar-boton" data-accion="Index" data-mensaje="@string.Format(Textos.ConfirmacionGenerica2, Textos.Rechazar, Textos.RecepcionUvas)">@Textos.Rechazar</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class = "btn btn-primary"})
+        </div>
+
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

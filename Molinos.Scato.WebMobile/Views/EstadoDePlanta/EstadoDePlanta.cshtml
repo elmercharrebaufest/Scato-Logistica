@@ -1,0 +1,123 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoEstadoCuposDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+    var datosPuerto = (List<ReportePesadaDto>)ViewBag.Datos;
+    var vapor = datosPuerto.Any(x => !string.IsNullOrEmpty(x.Vapor)) ? datosPuerto.First(x => !string.IsNullOrEmpty(x.Vapor)).Vapor : "";
+    var vaporMaterial = datosPuerto.Any(x => !string.IsNullOrEmpty(x.Commodity)) ? datosPuerto.First(x => !string.IsNullOrEmpty(x.Commodity)).Commodity : "";
+}
+<style>
+    
+</style>
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoEstadoCupos.js")"></script>
+<script type="text/javascript">
+    var urlGenerarEstadoCupos = "@Url.Action("GenerarGraficoEstadoCupos")"
+    $(document).ready(function () {
+                cargarBarCode(@Model.PorcentajeDescargados, 'bar');
+                cargarBarCode(@Model.PorcentajeDescargados + @Model.PorcentajeEnPlanta, 'bar2');
+
+    });
+</script>
+
+<div class="row row-card-no-pd" style="">
+    <div class="col-md-2" style=" padding-left: 9px; ">
+        <div class="card">
+            <div class="card-body text-center">
+                <p class="fw-bold mt-1 cart-title">Estado de cupos</p>
+                <div id="task-complete" class="chart-circle mb-3 borde-grafico" style="padding-top: 20px;">
+                    <div class="circles-wrp" style="position: relative; display: inline-block;">
+                        <svg width="200" height="200" id="svg">
+                            <circle r="90" cx="100" cy="100" stroke="#eee" stroke-width="16" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0" class="circles-maxValueStroke"></circle>
+                            <circle id="bar2" r="90" cx="100" cy="100" stroke="#6c757d" stroke-width="16" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0" class="circles-valueStroke2"></circle>
+                            <circle id="bar" r="90" cx="100" cy="100" stroke="#28a745" stroke-width="16" fill="transparent" stroke-dasharray="565.48" stroke-dashoffset="0" class="circles-valueStroke"></circle>
+
+                        </svg>
+                        <div class="circles-text" id="cont" style="position: absolute; top: 0px; left: 0px; text-align: center; width: 100%; font-size: 52.5px; height: 200px; line-height: 200px;">@(Model.PorcentajeDescargados + Model.PorcentajeEnPlanta)%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                @foreach (var material in Model.Materiales)
+                {
+                    <div class="progress-card">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">@material.Material</span>
+                            <span class="text-muted fw-bold"> @material.TotalIngresosEnElDia Camiones - @(material.Peso / 1000)tn</span>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @material.PorcentajeEnElDia%" aria-valuenow="@material.PorcentajeEnElDia" aria-valuemin="0" aria-valuemax="@material.TotalIngresosEnElDia" data-toggle="tooltip" data-placement="top" title="" data-original-title="@material.PorcentajeEnElDia%"> @material.CamionesEnElDia Descargados</div>
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: @(100- material.PorcentajeEnElDia)%" aria-valuenow="@material.PorcentajeEnPlanta" aria-valuemin="0" aria-valuemax="@material.TotalIngresosEnElDia" data-toggle="tooltip" data-placement="top" title="" data-original-title="@material.PorcentajeEnPlanta%"> @material.CamionesEnPlanta en Planta </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-stats">
+            <div class="card-body">
+                <p class="fw-bold mt-1 cart-title">Estado de planta por sector</p>
+                <div class="row">
+                    @Html.Partial("_GraficoCamionesPorSector")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-card-no-pd" style=" ">
+    <div class="col-md-2">
+        <div class="card card-stats">
+            <div class="card-body">
+                <p class="fw-bold mt-1 cart-title">Estado de Puerto</p>
+                <div class="row borde-grafico">
+                    <div class="col-sm-12 mb-2">
+                        <small>Vapor</small> <strong> @vapor</strong> 
+                    </div>
+                    <div class="col-sm-12 mb-2">
+                        <small>Material</small> <strong> @vaporMaterial</strong> 
+                    </div>
+                    @foreach (var dato in datosPuerto)
+                    {
+                    <div class="col-sm-12 mb-2">
+                        @{
+                            var porcentajeCarga = dato.PesoProgramado > 0 ? Math.Round((decimal)dato.TotalEmbarcado * 100 / dato.PesoProgramado) : 0;
+                            //porcentajeCarga = 30;
+                            //dato.PesoProgramado = 5000000;
+                            var embarcando = dato.PesoProgramado > 0 ? "Embarcando " + dato.PesoProgramado / 1000 + "tn" : "";
+                        }
+                        <span class="texto-tabla"><strong>@Textos.OperacionesPuerto_NumeroBalanza @dato.NumeroBalanza</strong><small>&nbsp;&nbsp;@embarcando</small> </span> 
+                        <div class="progress">
+                            <div class="progress-bar bg-success progress-bar-animated" role="progressbar" style="width: @porcentajeCarga%" aria-valuenow="@porcentajeCarga" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="" data-original-title="@porcentajeCarga%"> @porcentajeCarga%</div>
+                        </div>
+
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="col-md-4">
+        <div class="card card-stats">
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-stats">
+            <div class="card-body">
+                <p class="fw-bold mt-1 cart-title">Camiones descargados por hora</p>
+                <div class="row">
+                    @Html.Partial("_CamionesPorHora")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

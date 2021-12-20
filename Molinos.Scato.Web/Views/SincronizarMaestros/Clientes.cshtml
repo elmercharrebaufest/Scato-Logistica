@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Comandos.ResultadoSincronizarClientes
+
+@{
+    ViewBag.Title = Textos.SincronizacionClientes_Titulo;
+}
+
+<div class ="container">
+    <div class="titSecciones">@Textos.SincronizacionClientes_Titulo</div>
+</div>
+
+@if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary(true)
+    </div>
+}
+
+<div class="container content grillaPad">
+    <div id="gridContainer">
+
+@Html.Grilla(new ListaPaginada<ClienteDto>(Model.Items, 1, 1000, Model.Items.Count),
+             grid => grid.Columns(
+                grid.Columna("CodigoSap", Textos.Almacen_CodigoSAP),
+                grid.Columna("Descripcion", Textos.Descripcion),
+                grid.Columna("Cuit", Textos.Centro_Cuit),
+                grid.Columna("Activo", Textos.Activo, m => ((bool)m.Activo).Formatted())
+                ))
+
+    </div>
+</div>

@@ -1,0 +1,152 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.RecorridoDto
+
+@{
+    string balanzaBruto = ViewBag.BalanzaBruto;
+    string balanzaTara = ViewBag.BalanzaTara;
+    int recorridoId = ViewBag.RecorridoId;
+    bool esRechazado = ViewBag.Rechazado;
+    string tipoDocumento = ViewBag.TipoDocumentoString;
+    string patente = ViewBag.Patente;
+    string numeroDoc = ViewBag.NumeroDocumento;
+    bool tieneDatosExportacion = ViewBag.TieneDatosExportacion;
+}
+    <div class="container-fluid">
+        @{
+            <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
+            <br />
+            <div class="row">
+                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+                <div class="span2 negrita" style="">@Textos.Patente</div>
+                <label class="span2" style="margin-left:-43px">@patente</label>
+                <div class="right">
+                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+
+                </div>
+            </div>
+
+        }
+    </div>
+
+    <div id="pesada">
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+                <li>
+                    @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                <li>
+                    @Html.ActionLink(Textos.Pesada, "Pesada", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                <li>
+                    @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AnalisisDeCalidad, "AnalisisDeCalidad", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                <li class="active">
+                    @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AsignacionDeRuta, "AsignacionDeRuta", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                <li>
+                    @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_Fotos, "Fotos", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                <li>
+                    @Html.ActionLink(Textos.Recorrido, "Recorrido", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+                @if (tieneDatosExportacion)
+                {
+                    <li>
+                        @Html.ActionLink(Textos.DatosExportacion, "DatosExportacion", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                    </li>
+                }
+                @if (esRechazado)
+                {
+                    <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+                }
+            </ul>
+        </div>
+
+        @using (Html.BeginForm("AsignacionDeRuta", "ModificarDocumentoDeIngreso", null, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form" }))
+        {
+            if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+            {
+                <div class="alert alert-error">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+
+            <div class="row-fluid row-fluid-ie7">
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.BalanzaBrutoId, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => balanzaBruto, new { @class = "control input-large" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.BalanzaTaraId, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => balanzaTara, new { @class = "control input-large" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Almacen, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Almacen.Descripcion, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.CalleDesc, new { @class = "control-label" })
+                            <div class="controls-small">
+                                @Html.DisplayFor(model => model.CalleDesc, new { @class = "date control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Calado.CalidadMaterialId, new { @class = "control-label" })
+                            <div class="controls-small">
+                                @Html.DisplayFor(model => model.Calado.CalidadMaterialDescripcion, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.HidraulicasDesc, new { @class = "control-label" })
+                            <div class="controls-small">
+                                @Html.DisplayFor(model => model.HidraulicasDesc, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row-fluid row-fluid-ie7">
+                <div class="span4">
+                    <div class="row row-carta-porte">
+                    </div>
+                </div>
+                <div class="span4">
+                    <div class="row row-carta-porte">
+                    </div>
+                </div>
+            </div>
+        }
+    </div>

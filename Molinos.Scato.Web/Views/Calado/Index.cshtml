@@ -1,0 +1,357 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model CaladoPantallaDto
+@{
+    ViewBag.Title = Textos.Calado_Titulo;
+    var patenteOriginal = (string)ViewBag.PatenteOriginal;
+    var esEgreso = (bool)ViewBag.EsEgreso;
+    var humedimetro = (HumedimetroDto)ViewBag.Humedimetro;
+    var rangosDelMaterialHtml = (string)ViewBag.RangosDeRedondeo;
+    var nirs = (NirsDto)ViewBag.Nirs;
+    var material = ViewBag.Material;
+    var materialId = ViewBag.MaterialId;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/mousetrap.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/mousetrap-pause.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/calado2.js")" type="text/javascript"></script>
+    <script src="~/scripts/jquery.maskedinput.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.get("@Url.Action("DocumentoOrigen","ModificarDocumentoDeIngreso")", { recorridoId: "@ViewBag.RecorridoId", tipoDoc: "@ViewBag.TipoDocumentoIngreso", soloLectura: "true", esDocumentoDeOrigen: "true" }, function (data) {
+                var html = $('<div>' + data + '</div>');
+                html.find('script[src$="/scatocommon.validate.js"]').remove();
+                var dataSinJs = html.html();
+                $("#documento").html(dataSinJs);
+
+                $('#documento').find('*').attr('disabled', true);
+                $('#agregarVagon').attr("style", "visibility: hidden");
+            });
+        });
+        aceptaFormulario = false;
+        window.onbeforeunload = function (e) {
+            if (!aceptaFormulario) {
+                $.get("@Url.Action("CancelarAnalisisObligatorio", "Calado")", { puestoDeTrabajoId: @Model.PuestoDeTrabajoId, materialId: @Model.MaterialId, recorridoId: @Model.RecorridoId, camionSeleccionadoAnalisisIntervalo: '@Model.CamionSeleccionadoAnalisisIntervalo' });
+            }
+        }
+    </script>
+}
+
+<style>
+    .tablaDatos {
+        width: 960px;
+    }
+
+    .form-horizontal .control-group {
+        margin-bottom: 1px;
+        /*padding-left: 10px;*/
+    }
+
+    .table th, .table td {
+        padding-left: 1px;
+        padding-right: 1px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+
+    td .input-small {
+        margin-bottom: 0;
+        height: 14px;
+        line-height: 14px;
+        width: 70px;
+    }
+
+    .caladoObligatorio {
+        font-weight: bolder;
+    }
+
+    #calado {
+        font-size: 12px;
+    }
+
+    #MuestraConjunto {
+        width: 100px;
+    }
+
+    .label-naranja {
+        background-color: orange;
+        color: black;
+    }
+
+    .label-ancho-full {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+</style>
+
+@Html.Hidden("patenteOriginal", patenteOriginal, new { @class = "patenteOriginal" })
+@Html.Hidden("tipoVehiculo", (int)ViewBag.TipoVehiculo)
+@Html.Hidden("mensajeRangoValido", Textos.AnalisisDeCalidad_FueraDeRango)
+@Html.Hidden("campoRequerido", String.Format(Textos.Error_CaracteristicaRequerida))
+@Html.Hidden("caracteristicaNoNuleable", String.Format(Textos.Error_CaracteristicaNoNuleable))
+@Html.Hidden("humedimetroNoResponde", String.Format(Textos.Error_HumedimetroNoResponde))
+@Html.Hidden("nirsNoResponde", String.Format(Textos.Error_NirsNoResponde))
+@Html.Hidden("rangosDeRedondeoJson", rangosDelMaterialHtml)
+@if (humedimetro != null)
+{
+    @Html.Hidden("HumedimetroId", humedimetro.Id, new { data_url = @Url.Action("TomarHumedad", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
+}
+@if (nirs != null)
+{
+    @Html.Hidden("NirsId", nirs.Id, new { data_url = @Url.Action("TomarAnalisis", new { nirs = nirs.Codigo, material = Model.NirsCodigoProducto }), data_automatico = nirs.Modalidad == Modalidad.Automática })
+}
+<div class="container-fluid text-center">
+    <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Calado_Titulo</div>
+    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
+        <h4 style="margin-top: 0; margin-bottom: 0" id= Material data-materialId=@ViewBag.MaterialId >@ViewBag.Material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+    </span>
+    @if ((bool)ViewBag.Rechazado)
+    {
+        <span class="label label-important pull-right">
+            <h4 style="margin-top: 0; margin-bottom: 0">@Textos.RechazadoMayus</h4>
+        </span>
+    }
+    @if ((bool)ViewBag.CupoEsFabrica)
+    {
+        <span class="label label-yellow text-center label-ancho-full">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.CupoFabrica)</h4>
+        </span>
+    }
+    @if (Model.CamionSeleccionadoAnalisisIntervalo)
+    {
+        <span class="label label-naranja text-center label-ancho-full">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.CamionSeleccionadoAnalisisIntervalo)</h4>
+        </span>
+    }
+
+    @if ((bool)ViewBag.AnalisisGirasolOleico)
+    {
+        <span class="label label-yellow text-center label-ancho-full">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.AnalisisGirasolOleico)</h4>
+        </span>
+    }
+
+</div>
+
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active">
+        <a href="#home" aria-controls="home" role="tab" data-toggle="tab">@Textos.Calado_Titulo</a>
+    </li>
+    <li role="presentation">
+        <a href="#documento" aria-controls="documento" role="tab" data-toggle="tab">@Textos.DocumentoDeOrigen_Titulo</a>
+    </li>
+</ul>
+
+@if (ViewBag.EnvioDirectoACamara != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        @Html.ViewBag.EnvioDirectoACamara
+    </div>
+}
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div id="calado">
+            <div class="row-fluid">
+                <table class="tablaDatos" style="width:100%;">
+                    <tr>
+                        <th>@Html.Label(Textos.Patente + ":")</th>
+                        <th>@Html.Label(Textos.PatenteAcoplado + ":")</th>
+                        @if (!string.IsNullOrEmpty((string)ViewBag.TarjetaDeAcceso))
+                        {
+                            <th>@Html.Label(Textos.Tarjeta + ":")</th>
+                        }
+                        <th>@Html.Label(Textos.FechaIngreso + ":")</th>
+                        <th>@Html.Label(Textos.TipoComercial + ":")</th>
+                        <th>@Html.Label(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum() + ":")</th>
+                        <th>@Html.Label(Textos.CTG + ":")</th>
+                        <th>@Html.Label(Textos.TitularCP + ":")</th>
+                        <th>@Html.Label(Textos.CartaPorte_RtteComercial + ":")</th>
+                        <th>@Html.Label(Textos.CartaPorte_AgenteCompras + ":")</th>
+                        <th>@Html.Label(Textos.Entregador + ":")</th>
+                        <th>@Html.Label(Textos.Calado_Ciclo + ":")</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (ViewBag.Patente != null)
+                            {
+                                @Html.TextBox("patente", (string)ViewBag.Patente, new { @class = "control input-small uppercase patente", disabled = "disabled", autocomplete = "off", data_invalida = Textos.Pesada_PatenteInvalida })
+                            }
+                            else
+                            {
+                                @Html.TextBox("patente", string.Empty, new { @class = "control input-small patente-internacional uppercase patente", autocomplete = "off", data_invalida = Textos.Pesada_PatenteInvalida })
+                            }
+                        </td>
+                        <td>@ViewBag.PatenteAcoplado</td>
+                        @if (!string.IsNullOrEmpty((string)ViewBag.TarjetaDeAcceso))
+                        {
+                            <td>@ViewBag.TarjetaDeAcceso</td>
+                        }
+                        <td>@ViewBag.FechaIngreso</td>
+                        <td>@ViewBag.TipoComercial</td>
+                        <td>@ViewBag.NumeroDocumentoIngreso</td>
+                        <td>@ViewBag.CTG</td>
+                        <td>@ViewBag.TitularCP</td>
+                        <td>@ViewBag.RtteComercial</td>
+                        <td>@ViewBag.AgenteCompras</td>
+                        <td>@ViewBag.TieneEntregador</td>
+                        <td>@Model.CicloDeCalado</td>
+                    </tr>
+                </table>
+            </div>
+            @using (Html.BeginForm("Calado", "Calado", FormMethod.Post, new { Id = "form", @class = "causaBlock", data_mensaje_espera = Textos.ActCalado, autocomplete = "off" }))
+            {
+                @Html.HiddenFor(model => model.CamionSeleccionadoAnalisisIntervalo)
+                @Html.HiddenFor(model => model.MaterialId)
+                @Html.HiddenFor(model => model.WorkflowInstanceId)
+                @Html.HiddenFor(model => model.WorkflowInstanceId)
+                @Html.HiddenFor(model => model.NumeroOrden)
+                @Html.HiddenFor(model => model.WorkflowDefinicionId)
+                @Html.HiddenFor(model => model.CicloDeCalado)
+                @Html.HiddenFor(model => model.CentroId)
+                @Html.HiddenFor(model => model.NumeroDocumentoIngreso)
+                if (humedimetro != null)
+                {
+                    @Html.Hidden("HumedimetroId", humedimetro.Id)
+                    @Html.Hidden("HumedimetroModalidad", humedimetro.Modalidad)
+                }
+                if (nirs != null)
+                {
+                    @Html.Hidden("NirsId", nirs.Id)
+                }
+                <div class="row row-bloqueable"style="margin-left:130px;">
+                    <div class="span9">
+                        <table class="table table-striped" id="rubros">
+                            <thead>
+                                <tr>
+                                    <th style="width: 230px;">@Textos.Rubro</th>
+                                    <th style="width: 160px;">@Textos.Calado_Valor</th>
+                                    <th style="width: 70px;">@Textos.Calado_Rango</th>
+                                    <th style="width: 40px;">@Textos.Analisis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.CaladosPorCaracteristica.Count; i++)
+                                {
+                                    var t = Model.CaladosPorCaracteristica[i];
+                                    
+                                    bool esGradoAutomatico = t.Caracteristica.ToLower() == "grado" && (materialId == 386 || materialId == 13) ;
+                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].CaracteristicaId)
+                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].AnalisisAutomatico)
+                                    <tr @(t.CaladoObligatorio ? "class=caladoObligatorio" : "")>
+                                        <td >@Html.DisplayFor(model => t.Caracteristica)</td>
+                                        @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ToleranciaSinAnalisis)
+                                        @if (t.Dispositivo == TipoDispositivo.Humedimetro && t.EsHumedad && humedimetro != null && humedimetro.Modalidad == Modalidad.Automática)
+                                        {
+                                            <td>
+                                                <div>
+                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxHumedad" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ","") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere})
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ValorAutomatico, new { @class = "textboxHumedad" })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].NroDeToma, new { @class = "nroDeToma" })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].Dispositivo)
+
+                                                    <button type="button" class="btn btn-mini right boton-humedad play" style="margin-left: 2px;"><i class="icon-play"></i></button>
+                                                    <button title="Toma Manual" type="button" class="btn btn-mini right boton-manual nohabilitar" disabled style="margin-left: 2px;"><i class="icon-edit"></i></button>
+                                                    @Html.DropDownListFor(model => model.MotivoHumedadManualId, (IEnumerable<SelectListItem>)ViewBag.MotivoManual, new { @class = "input-large humedimetro-manual hidden", style = "margin: 1px 0px; width: 100%;" })
+                                                </div>
+                                            </td>
+                                        }
+                                        else if ((t.Dispositivo == TipoDispositivo.NIRS) && nirs != null && nirs.Modalidad == Modalidad.Automática)
+                                        {
+                                            <td>
+                                                <div>
+                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxnirs textboxnirs" + t.CaracteristicaNombreNirs + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, Data_EsHumedad = t.EsHumedad,  placeholder = Textos.Pesada_Espere })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ValorAutomatico, new { @class = "textboxnirs" + t.CaracteristicaNombreNirs })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].NroDeToma, new { @class = "nroDeTomaNirs" })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].Modalidad, new { @class = "modalidad" + t.CaracteristicaNombreNirs })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].Dispositivo)
+                                                    <button type="button" class="btn btn-mini right boton-nirs play" style="margin-left: 2px;"><i class="icon-play"></i></button>
+                                                    <button title="Toma Manual" type="button" class="btn btn-mini right boton-manual-nirs nohabilitar" data-textbox="@t.CaracteristicaNombreNirs" disabled style="margin-left: 2px;"><i class="icon-edit"></i></button>
+                                                    @if (t.EsHumedad)
+                                                    {
+                                                        @Html.DropDownListFor(model => model.MotivoHumedadManualId, (IEnumerable<SelectListItem>)ViewBag.MotivoManual, new { @class = "input-large humedimetro-manual-nirs hidden", style = "margin: 1px 0px; width: 100%;" })
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+
+                                            <td>
+                                                <div class="form-horizontal">
+                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") +" " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax,  Data_min = t.RangoMin })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
+                                                </div>
+                                            </td>
+
+                                        }
+                                        <td>@Html.DisplayFor(model => t.Rango)</td>
+                                        <td style="text-align: center">
+                                            @if (!t.EsHumedad && (esEgreso || t.EnviaAnalisisObligatorio))
+                                            {
+                                                @Html.CheckBoxFor(model => Model.CaladosPorCaracteristica[i].AnalisisPreliminar, new { @class = "checkBoxCaracteristica nohabilitar", disabled = "disabled" })
+                                            }
+                                            else if (!t.EsHumedad)
+                                            {
+                                                @Html.CheckBoxFor(model => Model.CaladosPorCaracteristica[i].AnalisisPreliminar, new { @class = "checkBoxCaracteristica" })
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.ValidationMessageFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, null, new { @class = "help-inline", style = "margin-top:0;margin-bottom:0" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="span3">
+                        @Html.TextAreaFor(model => model.Comentario, new { rows = "5", cols = "100", maxlength = "100", placeholder = "Comentarios...", @style="margin-top:20px;" })
+                    </div>
+                </div>
+                <div class="row row-bloqueable container" style="margin-left:130px;">
+                    <div class="span6 form-horizontal">
+                        <div class="control-group">
+                            @Html.Label(Textos.Calado_MuestraConjunto, new { @class = "control-label", style = "font-size: 12px;" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.MuestraConjunto, new { @class = "input-small campoNumericoCalado", tabindex = 0 })
+                                @Html.ValidationMessageFor(model => model.MuestraConjunto)
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right row-bloqueable">
+                        <a href="#" id="aceptar" class="btn btn-primary aceptar">@Textos.Aceptar</a>
+                        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn", id = "botonCancelar" })
+                        @if (!ViewBag.NoRechazaEnCalado)
+                        {
+                            @Html.ActionLink(Textos.ExcesoDePeso_Rechazar, "Rechazar", "Calado", new { workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.WorkflowInstanceId }, new { @class = "rechazar rechazar-boton btn btn-primary pull-right", @style = "margin-left: 4px;" })
+                        }
+
+                    </div>
+                </div>
+            }
+            <br />
+            @if (ViewBag.Estado != null)
+            {
+                <script type="text/javascript">$(document).ready(function () { MostrarAlertaAdvertencia('@ViewBag.Estado') });</script>
+            }
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="documento">
+        <div class="blockUI blockMsg blockPage" style="padding: 10px 20px; border: 1px solid rgb(185, 74, 65); left: 574.5px; top: 207.66px; color: rgb(0, 85, 165); position: fixed; z-index: 2012; background-color: rgb(255, 255, 255);">Procesando , por favor espere ...</div>
+    </div>
+</div>
+
+
+
+<div id="mensajeRechazar">
+</div>
+

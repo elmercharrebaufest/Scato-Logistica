@@ -1,0 +1,10 @@
+﻿namespace Molinos.Scato.Dominio.Dto
+{
+    public sealed class ProveedorInfoDto
+    {
+        public int Id { get; set; }
+        public string Descripcion { get; set; }
+        public string Cuil { get; set; }
+    }
+}
+ 

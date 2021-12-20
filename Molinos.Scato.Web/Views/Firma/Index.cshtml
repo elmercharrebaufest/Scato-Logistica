@@ -1,0 +1,198 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FirmaDto
+
+@{
+                /**/
+
+                ViewBag.Title = Textos.Firma_Titulo;
+                string resultadoOperacion = ViewBag.ResultadoOperacion;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/scripts/validarCuit.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/scripts/firma.Modificar.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/scripts/bootstrap-filestyle.min.js")" type="text/javascript"></script>
+
+<div class="container">
+    <div class="titSecciones">@Textos.Firma_Titulo</div>
+</div>
+
+<div class="container content grillaPad">
+    <div class="row">
+
+        @using (Html.BeginForm("Index", "Firma", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "datos-form", @class = "form-horizontal" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.Hidden("resultadoExitosa", resultadoOperacion, new { @class = "resultadoExitosa" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Logo)
+            @Html.HiddenFor(model => model.Favicon)
+
+            <style>
+                .span6 {
+                    /* border: solid 1px #c3c3c3;*/
+                }
+
+                .span3 {
+                    width: 170px;
+                    /*border: solid 1px #c3c3c3;*/
+                }
+
+                .form-horizontal .control-label {
+                    width: 200px;
+                    font-size: 12px;
+                }
+
+                .form-horizontal .control-group {
+                    margin-bottom: 1px;
+                    padding-left: 10px;
+                    font-size: 12px;
+                }
+
+                .check .control-label {
+                    padding: 0 0 3px 0;
+                    margin: 0;
+                    width: 240px;
+                }
+
+                .span3 .control-label {
+                    width: 40px;
+                    font-size: 12px;
+                }
+
+                .span3 .controls {
+                    margin-left: 45px;
+                }
+
+                .labelEmail {
+                    width: 235px !important;
+                }
+
+                    .labelEmail div.controls {
+                        margin-left: 255px !important;
+                    }
+
+                .dosRenglones {
+                    padding-top: 0 !important;
+                    line-height: 14px;
+                }
+            </style>
+
+            <div class="row">
+
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Descripcion, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.Descripcion)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.DescripcionCorta, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.DescripcionCorta, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.DescripcionCorta)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Ciudad, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Ciudad, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.Ciudad)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Direccion, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Direccion, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.Direccion)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.FechaDeInicio, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.FechaDeInicio, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.FechaDeInicio)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.IngBrutosConvMultilateral, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.IngBrutosConvMultilateral, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.IngBrutosConvMultilateral)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.CodigoSAP, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.CodigoSAP, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.CodigoSAP)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Cuit, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Cuit, new { @class = "control input-large cuitValido", data_error_cuit_invalido = string.Format(Textos.CuitInvalido) })
+                            @Html.ValidationMessageFor(model => model.Cuit)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.RazonSocial, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.RazonSocial)
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Logo, new { @class = "control-label" })
+                        @{
+                            if (Model.Logo != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Logo);
+                                var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+                                <img alt="Cargar Imagen" src="@imgSrc" />
+                            }
+                        }
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row left">
+                @Html.TextBoxFor(m => m.LogoFile, new { type = "file", name = "LogoFile", id = "logoBoton", @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.LogoFile)
+            </div>
+            <div class="row">
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Favicon, new { @class = "control-label" })
+                        @{
+                            if (Model.Favicon != null)
+                            {
+                                var base64 = Convert.ToBase64String(Model.Favicon);
+                                var imgSrc = String.Format("data:image/x-icon;base64,{0}", base64);
+                                <img alt="Cargar Imagen" src="@imgSrc" />
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row left">
+                @Html.TextBoxFor(m => m.FaviconFile, new { type = "file", name = "FaviconFile", id = "faviconBoton", @class = "control input-large" })
+                @Html.ValidationMessageFor(model => model.FaviconFile)
+            </div>
+
+            <div class="row right">
+                <button type="button" id="aceptar" class="btn btn-primary">@Textos.Aceptar</button>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+            </div>
+        }
+    </div>
+
+</div>

@@ -1,0 +1,58 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ClienteDto
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Cuit, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Cuit, new { @class = "input-xlarge cuilValido", data_error_cuil_invalido = string.Format(Textos.Cliente_Cuit_Invalido) })
+        @Html.ValidationMessageFor(model => model.Cuit)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoSap, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoSap, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.CodigoSap)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Activo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Activo)
+     </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Direccion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Direccion, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Direccion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Localidad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Localidad, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Localidad)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Provincia, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Provincia, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Provincia)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Bloqueado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Bloqueado)
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.StockDeEstablecimientoDto
+@{
+
+}
+@Html.ValidationSummary(true)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoEstablecimiento, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoEstablecimiento, new { @class = "input-small" })
+        @Html.ValidationMessageFor(model => model.CodigoEstablecimiento)
+        @Html.HiddenFor(model => model.CodigoEstablecimiento)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Cosecha, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Cosecha, new {@class = "input-small cosechaValidacion cosechaValidacionDiferencia", autocomplete = "off", data_error = string.Format(Textos.Atencion_CosechaInvalida), data_errordiferencia = string.Format(Textos.Atencion_CosechaInvalidaDiferencia)})
+        @Html.ValidationMessageFor(model => model.Cosecha)
+        @Html.HiddenFor(model => model.Cosecha)
+    </div>
+</div>
+<div class="control-group FechaDesde">
+    @Html.LabelFor(model => model.FechaDesde, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.FechaDesde, Model != null ? Model.FechaDesde.FormattedFixed() : string.Empty, new {@class = "input-small"})
+        @Html.ValidationMessageFor(model => model.FechaDesde)
+        @Html.HiddenFor(model => model.FechaDesde)
+    </div>
+</div>
+<div class="control-group FechaHasta">
+    @Html.LabelFor(model => model.FechaHasta, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.FechaHasta, Model != null ? Model.FechaHasta.FormattedFixed() : string.Empty, new {@class = "input-small"})
+        @Html.ValidationMessageFor(model => model.FechaHasta)       
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.StockDeclarado, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.StockDeclarado, new {@class = "input-medium campoNumerico", data_bind = "value: stockDeclarado"})
+        @Html.ValidationMessageFor(model => model.StockDeclarado)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.StockDisponible, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.StockDisponible, new {@class = "input-medium campoNumerico" , @readonly="readonly" , data_bind = "value: stockDisponible"})
+        @Html.ValidationMessageFor(model => model.StockDisponible)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.StockUtilizado, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBox("StockUtilizado", Model != null ? (object) Model.StockUtilizado : 0m, new {@class = "input-medium campoNumerico" , @readonly="readonly", data_bind = "value: stockUtilizado"})
+        @Html.ValidationMessageFor(model => model.StockUtilizado)
+    </div>
+</div>

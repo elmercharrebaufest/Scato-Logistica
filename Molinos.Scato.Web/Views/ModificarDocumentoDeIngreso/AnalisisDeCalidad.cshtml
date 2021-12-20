@@ -1,0 +1,99 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    var items = (ListaPaginada<CalidadCaracteristicaDto>)ViewBag.Items;
+    int recorridoId = ViewBag.RecorridoId;
+    bool esRechazado = ViewBag.Rechazado;
+    string usuario = ViewBag.Usuario;
+    string tipoDocumento = ViewBag.TipoDocumentoString;
+    string patente = ViewBag.Patente;
+    string numeroDoc = ViewBag.NumeroDocumento;
+    bool tieneDatosExportacion = ViewBag.TieneDatosExportacion;
+}
+
+    <div class="container-fluid">
+        @{
+            <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
+            <br />
+            <div class="row">
+                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+                <div class="span2 negrita" style="">@Textos.Patente</div>
+                <label class="span2" style="margin-left:-43px">@patente</label>
+                <div class="right">
+                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+
+                </div>
+            </div>
+
+        }
+
+    </div>
+<div id="analisis">
+    <div class="container-fluid">
+        <ul class="nav nav-tabs">
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Pesada, "Pesada", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li class="active">
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AnalisisDeCalidad, "AnalisisDeCalidad", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AsignacionDeRuta, "AsignacionDeRuta", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_Fotos, "Fotos", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Recorrido, "Recorrido", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            @if (tieneDatosExportacion)
+            {
+                <li>
+                    @Html.ActionLink(Textos.DatosExportacion, "DatosExportacion", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+            }
+            @if (esRechazado)
+            {
+                <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+            }
+        </ul>
+    </div>
+
+    <div class="centered">
+        <div class="row row-carta-porte">
+            @Html.Label(Textos.Perito + ":", new { style = "display: inline-block; font-size: 13pt; font-weight:bold;" })
+            @Html.Label("Usuario", (string)ViewBag.Nombre + " " + (string)ViewBag.Apellido, new { id = "usuario", style = "display: inline-block; font-size: 12pt" })
+        </div>
+    </div>
+
+    @Html.Grilla(items,
+                     grilla => grilla.Columns(
+                         grilla.Columna("Caracteristica", Textos.Calado_Caracteristica),
+                         grilla.Columna("Unidad", Textos.Calado_Unidad),
+                         grilla.Columna("ValorCalado", Textos.CargaDeAnalisisDeCalidad_ValorCalidad, m => m.ValorAnalisis ?? m.ValorCalado),
+                         grilla.Columna("DescuentoEnPorcentaje", Textos.Calidad_DescuentoPorcentaje),
+                         grilla.Columna("DescuentoEnKg", Textos.Calidad_DescuentoKg),
+                         grilla.Columna("SeEnvioACamara", Textos.Calidad_SeEnvioACamara, m => ((bool)m.SeEnvioACamara).Formatted())
+                                   ))
+
+    <div class="row-fluid row-fluid-ie7">
+        <div class="span8">
+            <div class="row row-carta-porte">
+                @if (ViewBag.Comentario != null)
+                {
+                    @Html.TextArea("Comentario", (string)ViewBag.Comentario, new { rows = "5", cols = "70", maxlength = "100", disabled = true, style = "width: 414px; height: 73px;" });
+                }
+            </div>
+        </div>
+    </div>
+</div>

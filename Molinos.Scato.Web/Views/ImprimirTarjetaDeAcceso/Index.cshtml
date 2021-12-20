@@ -1,0 +1,50 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.ImpresionTarjetaDeAccesoModel
+@{
+    ViewBag.Title = Textos.ImpresionTarjetaDeAcceso_Titulo;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function() {
+        $("#Numero").focus();
+    });
+</script>
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+<div class ="container">
+    <div class="titSecciones">@Textos.ImpresionTarjetaDeAcceso_Titulo</div>
+    <br/>
+</div>
+@Html.ValidationSummary(true)
+<div class="container content grillaPad">
+    @using (Html.BeginForm("Index", "ImprimirTarjetaDeAcceso", FormMethod.Post, new { @class = "causaBlock", id = "orden-form", data_mensaje_espera = Textos.Impresion }))
+    {
+        
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="control-group">
+                    @Html.LabelFor(m => m.Numero, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Numero, new { @class = "control input-large", maxlength = "10" })
+                        @Html.ValidationMessageFor(m => m.Numero)
+                    </div>
+                </div>
+            </div>
+            <div class="span2">
+                <div class="control-group">
+                    <div class="controls cajaButtons">
+                        <button type="submit" class="btn">@Textos.Imprimir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="control-group">
+                    &nbsp;
+                </div>
+            </div>
+      </div>
+    }
+</div>

@@ -1,0 +1,82 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroArchivoDeMovimientosDto
+
+@{  
+    ViewBag.Title = Textos.GenerarArchivoDeMovimientos_Titulo;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/loteBiotecnologia.js")"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $('#TipoDeWorkflow option:first-child').attr("selected", "selected");
+        });
+    </script>
+}
+<div id ="links" 
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+></div>
+
+
+
+<div class ="container">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            @Html.ActionLink(Textos.Lote_GenerarArchivo, "Index", "GenerarArchivoDeMovimientos")
+        </li>
+        <li>
+            @Html.ActionLink(Textos.GenerarArchivoDeMovimientos_BuscarArchivo, "BuscarArchivo", "GenerarArchivoDeMovimientos")
+        </li>
+    </ul>
+   
+</div>
+
+<div class ="container">
+    <div class="titSecciones">@Textos.GenerarArchivoDeMovimientos_Titulo</div>
+</div>
+
+<div class="container content grillaPad"> 
+@* ReSharper disable Mvc.ActionNotResolved *@
+        @using (Html.BeginForm("Action", "GenerarArchivoDeMovimientos", FormMethod.Post, new { @class = "form-horizontal form-search causaBlock" }))
+        {
+            
+           @Html.Hidden("soloImprimir")
+            @Html.Hidden("soloDescargar")
+            <div class="row">
+@* ReSharper restore Mvc.ActionNotResolved *@
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.MaterialId, new { @class = "control-label"})
+                        <div class="controls">
+                            @Html.TextBoxFor(model => model.Material, new { @class = "control"})
+                            @Html.ValidationMessageFor(model => model.Material)
+                            @Html.HiddenFor(model => model.MaterialId)
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.TipoDeWorkflow, new {@class = "control-label"})
+                        <div class="controls">
+                            @Html.EnumDropDownListFor(model => model.TipoDeWorkflow,Textos.Default_Movimientos)
+                            @Html.ValidationMessageFor(model => model.TipoDeWorkflow)
+                        </div>
+                    </div>
+                </div>
+            </div>      
+            <br/>
+            <br/>
+            <br/>
+            <div class="row right">
+                <button class="btn btn-primary" type="submit" name="submitAction" value="Descargar">@Textos.Lote_DescargarArchivo</button>
+                <button class="btn btn-primary" type="submit" name="submitAction" value="ListadoDetalle">@Textos.ArchivoDeMovimientos_ListadoPendiente</button>
+            </div>
+        }
+    </div>
+ 

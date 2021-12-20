@@ -1,0 +1,11 @@
+Estimados,<br/>
+En la fecha {6} se reasignó la tarjeta al vehículo:<br/>
+{0}: {1}<br/> - Patente: {2}<br/>
+<br/>
+Motivo: {3}<br/>
+Numero de tarjeta anterior: {5}<br/>
+Numero de tarjeta nueva: {4}<br/>
+Etapa: {7}<br/>
+Usuario: {8}<br/><br/>
+Saludos cordiales,<br/>
+

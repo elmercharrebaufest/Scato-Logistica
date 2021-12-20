@@ -1,0 +1,114 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MovimientoDeBinesDto
+
+@{
+    ViewBag.Title = Textos.CrearAjusteStockBines;
+    var tiposBinesPallet = (IEnumerable<SelectListItem>)ViewBag.TiposBinPallet;
+}
+
+<div id ="links" 
+     data-url-buscar-vinedo-tercero-proveedor ="@Url.Action("BuscarProveedorVinedoTercero", "Consultas")"
+     data-url-buscar-vinedos-terceros-proveedores = "@Url.Action("BuscarProveedoresVinedosTerceros", "Consultas")"
+     data-url-buscar-vinedos-propios = "@Url.Action("BuscarVinedosPropios", "Consultas")"
+     data-url-buscar-vinedo-propio = "@Url.Action("BuscarVinedoPropio", "Consultas")"
+     data-url-buscar-centro-bodega ="@Url.Action("BuscarCentroBodega", "Consultas")"
+     data-url-buscar-centros-bodega ="@Url.Action("BuscarCentrosBodega", "Consultas")"
+>
+</div>
+
+@using (Html.BeginForm("Index", "MovimientoDeBines", FormMethod.Post, new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.CrearAjusteStockBines }))
+{
+    @Html.ValidationSummary(true)
+
+    <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido"/>
+    <div class="control-group-no-bottom">
+        <div class="row-fluid" >
+
+            <div class="span1">
+                @Html.LabelFor(m => m.TipoAjuste, new { @class = "control-label" })
+            </div>
+            <div class="span3 sinBorde">
+                @Html.EnumDropDownListFor(model => model.TipoAjuste, Textos.Default_TipoAjuste, new { @class = "", Id = "dropdownTipos" })
+                @Html.ValidationMessageFor(model => model.TipoAjuste)
+            </div>
+
+            <div class="span1">
+                @Html.LabelFor(m => m.Movimiento, new { @class = "control-label" })
+            </div>
+            <div class="span3 sinBorde">
+                @Html.EnumDropDownListFor(model => model.Movimiento, Textos.Default_Movimiento, new { @class = "", Id = "dropdownMovimiento" })
+                @Html.ValidationMessageFor(model => model.Movimiento)
+            </div>
+            <div class="span2">
+                @Html.LabelFor(model => model.Fecha, new { @class = "control-label" })
+            </div>
+            <div class="span2">
+                @Html.TextBox("Fecha", Model.Fecha.Formatted(), new { @class = "control input-small date", data_date_format = Html.ClientDateFormat() })
+                @Html.ValidationMessageFor(model => model.Fecha)
+            </div>
+        </div>
+        <br />
+        <div class="row-fluid" >
+            <div id="Centro">
+                <div class="span1">
+                    @Html.LabelFor(model => model.CentroDescripcion, new { @class = "control-label" })
+                </div>
+                <div class="span3">
+                    @Html.TextBoxFor(model => model.CentroDescripcion, new { @class = "control input-large", Id = "CentroDescripcion", @readonly = "readonly", data_error_requerido = string.Format(Textos.Error_Requerido, new object[] { Textos.Chofer_Nombre }) })
+                    @Html.ValidationMessageFor(model => model.CentroDescripcion)
+                    @Html.HiddenFor(model => model.CentroId)
+                </div>
+            </div>
+
+            <div id="Proveedor">
+                <div class="span1">
+                    @Html.LabelFor(model => model.ProveedorDescripcion, new { @class = "control-label" })
+                </div>
+                <div class="span3 sinBorde">
+                    @Html.TextBoxFor(model => model.ProveedorDescripcion, new { @class = "control input-large", id = "ProveedorDescripcion", data_error_requerido = string.Format(Textos.Error_Requerido, new object[] { Textos.Chofer_Nombre }) })
+                    @Html.ValidationMessageFor(model => model.ProveedorDescripcion)
+                    @Html.HiddenFor(model => model.ProveedorId)
+                </div>
+            </div>
+            <div id="VinedoPropio">
+                <div class="span1">
+                    @Html.LabelFor(model => model.VinedoPropioDescripcion, new { @class = "control-label" })
+                </div>
+                <div class="span3 sinBorde">
+                    @Html.TextBoxFor(model => model.VinedoPropioDescripcion, new { @class = "control input-large", id = "VinedoPropioDescripcion", data_error_requerido = string.Format(Textos.Error_Requerido, new object[] { Textos.Chofer_Nombre }) })
+                    @Html.ValidationMessageFor(model => model.VinedoPropioDescripcion)
+                    @Html.HiddenFor(model => model.VinedoPropioId)
+                </div>
+            </div>
+            <div class="span1">
+                @Html.LabelFor(model => model.MaterialId, new { @class = "control-label" })
+            </div>
+
+            <div class="span3 sinBorde">
+                @Html.DropDownListFor(model => model.MaterialId, tiposBinesPallet, Textos.Default_Bines, new { @class = "", id = "Material" })
+                @Html.ValidationMessageFor(model => model.MaterialId)
+            </div>
+            <div class="span2">
+                @Html.LabelFor(model => model.Cantidad, new { @class = "control-label" })
+            </div>
+
+            <div class="span1">
+                @Html.TextBoxFor(model => model.Cantidad, new { @class = "control input-small", id = "Stock" })
+                @Html.ValidationMessageFor(model => model.Cantidad)
+            </div>
+        </div>  
+        <br />
+        <div class="row-fluid" style="min-width: 950px;">
+            <div class="span1">
+                @Html.LabelFor(model => model.Observaciones, new { @class = "control-label" })
+            </div>
+                <div class="span10">
+                    @Html.TextAreaFor(model => model.Observaciones, new { @class = "control margin", style="min-width:795.68px;" })
+                    @Html.ValidationMessageFor(model => model.Observaciones)
+                </div>
+            
+        </div>
+        <br />
+    </div>
+}

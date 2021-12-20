@@ -1,0 +1,145 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.LiberacionDeCasillerosDto
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/liberacionDeCasilleros.index.js")"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Menu_Administracion - @Textos.LiberacionDeCasilleros</div>
+</div>
+<div id ="links" 
+     data-url-buscar-centros = "@Url.Action("BuscarCentros", "Consultas")"
+     data-url-buscar-centro-unico = "@Url.Action("BuscarCentroUnico", "Consultas")">
+</div>
+
+<div class="container-fluid content grillaPad">
+    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "liberacionDeCasilleros-form", @class = "form-search form-horizontal", data_mensaje_espera = Textos.LiberacionDeCasilleros }))
+    {
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Busqueda
+                    </a>
+
+                </div>
+                <div id="collapseOne" class="accordion-body in collapse">
+                    <div class="accordion-inner">
+                        @Html.ValidationSummary(true)
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="span2 ">
+                                    @Html.LabelFor(model => model.DiasDeAntiguedad, new { @class = "control-label" })
+                                </div>
+                                 <div class="span1 ">
+                                  @Html.TextBoxFor(model => model.DiasDeAntiguedad, new { @class = "input-small margin-left-40" })
+                                  @Html.ValidationMessageFor(model => model.DiasDeAntiguedad)
+                                  </div>
+                                
+                                <div class="span3 sinBorde ">
+                                    @Html.Label(Textos.LiberacionDeCasilleros_NDeCasillero, new { @class = "control-label" })
+                                </div>
+
+                                <div class="span1 ">
+                                    @Html.LabelFor(model => model.Desde, new { @class = "control-label" })
+                                </div>
+                                <div class="span2">
+                                    @Html.TextBoxFor(model => model.Desde, new { style = "width:100%;" })
+                                    @Html.ValidationMessageFor(model => model.Desde)
+                                </div>
+                                <div class="span1 ">
+                                    @Html.LabelFor(model => model.Hasta, new { @class = "control-label" })
+                                </div>
+                                <div class="span2 sinBorde">
+                                    @Html.TextBoxFor(model => model.Hasta, new { @class = "input-medium" })
+                                    @Html.ValidationMessageFor(model => model.Hasta)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-fluid">
+                            <div class="span12">
+
+                                <div class="span2 ">
+                                    @Html.LabelFor(model => model.Centro, new { @class = "control-label" })
+                                </div>
+                                <div class="span1 ">
+                                    @Html.TextBoxFor(model => model.Centro, new { @class = "control input-small margin-left-40" })
+                                    @Html.ValidationMessageFor(model => model.Centro)
+                                    @Html.HiddenFor(model => model.CentroId)
+                                    @Html.HiddenFor(model => model.Centro)
+                                </div>
+                                <div class="span3 sinBorde ">
+                                    @Html.EnumDropDownListFor(model => model.TipoDocumento, "Tipo De Documento", new { id = "documentos", style = "display: inline-block;width:100%;" })
+                                </div>
+                                <div class="span1  ">
+                                    @Html.LabelFor(model => model.NumeroDocumento, new { @class = "control-label" })
+                                </div>
+                                <div class="span2 sinBorde ">
+                                    @Html.TextBoxFor(model => model.NumeroDocumento, new { style = "width:100%;" })
+                                    @Html.ValidationMessageFor(model => model.NumeroDocumento)
+                                </div>
+                                   <div class="span1 ">
+                                    @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                                </div>
+                                 <div class="span2 sinBorde ">
+                                   @Html.TextBoxFor(model => model.Patente, new { @class = "control input-medium patente-internacional uppercase" })
+                                 @Html.ValidationMessageFor(model => model.Hasta)
+                               </div>
+                              
+                              </div>
+                        </div>
+                            <div class="row">
+                                <div class="">
+                                    <div class="controls cajaButtons" style="padding-top:0px !important">
+                                        <button id="btnBuscar" type="submit" class="btn btn-primary">@Textos.Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        @Html.Hidden("muestras")
+    }
+
+    <div id="gridContainer" style="clear:both;" data-grid-url="@Url.Action("Index", "LiberacionDeCasilleros")">
+        @Html.Partial("Listar")
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6 acciones">
+            <div class="" id="ImprimirMuestrasAEliminarDiv">
+                @Html.CheckBoxFor(model => model.ImprimirMuestraAEliminar, new { @class = "checkbox inline", style = "padding-left: 0px" })
+                @Html.LabelFor(model => model.ImprimirMuestraAEliminar, new { @class = "checkbox inline", style = "padding-left: 0px" })
+                @Html.ValidationMessageFor(model => model.ImprimirMuestraAEliminar)
+            </div>
+        </div>
+        <div class="span2">
+            <input id="btnLiberarCasilleros" type="button" value="@Textos.LiberacionDeCasilleros_LiberarCasilleros" class="btn acciones" data-mensaje="@Textos.LiberacionDeCasilleros_LiberacionConfirmacion"/>
+        </div>
+        <div class="span2">
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn pull-right acciones" })
+        </div>
+    </div>
+</div>
+
+<div class="modal hide fade" id="dialogo-confirmar">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>@Textos.Confirmacion</h4>
+    </div>
+    <div class="modal-body" id="dialogo-confirmar-body">
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-confirmar-confirmar" class="btn confirmar" data-url="@Url.Action("LiberarCasilleros")" name="submitAction" value="">@Textos.Aceptar</button>
+        <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+    </div>
+</div>

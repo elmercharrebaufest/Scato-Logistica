@@ -1,0 +1,50 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.IngresosPorCompraDeGranosTransmisionASapDto
+@{
+    ViewBag.Title = Textos.IngresosPorCompraDeGranos;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.IngresosPorCompraDeGranos_Titulo</div>
+</div>
+@Html.ValidationMessageFor(model => model.InstanciaWorkflow)
+@* ReSharper disable Mvc.ActionNotResolved *@
+@using (Html.BeginForm("Action", "ServicioSapFill_Z1000", FormMethod.Post, new { @class = "causaBlock container-fluid", data_mensaje_espera = Textos.ActIngresosPorCompraDeGranos }))
+{
+@* ReSharper restore Mvc.ActionNotResolved *@
+    <div class="modal-body">
+        @Html.HiddenFor(model => model.WorkflowCodigo)
+        @Html.HiddenFor(model => model.InstanciaWorkflow)
+        @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+        <div class="control-group">
+            @Textos.SalidaDeOrigenEnRedespacho_Pregunta
+        </div>
+    </div>
+        <div class="modal-footer">
+            <button id="dialogo-encolar" class="confirmar-boton btn " data-accion="encolar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Encolar,Textos.IngresosPorCompraDeGranos)">@Textos.Encolar</button>
+            <button id="dialogo-eliminar" class="confirmar-boton btn " data-accion="reintentar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Reintentar,Textos.IngresosPorCompraDeGranos)">@Textos.Reintentar</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+        </div>
+        
+
+
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

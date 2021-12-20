@@ -1,0 +1,17 @@
+﻿CREATE TABLE [dbo].[AjusteStockBines] (
+    [Id]                     INT              IDENTITY (1, 1) NOT NULL,
+    [Fecha]	         DATETIME NOT NULL,
+	[Material_Id] INT NOT NULL,
+	[Centro_Id]                  INT             NULL,
+		[Movimiento]   INT			 NOT NULL default 0,
+	[Observaciones] NVARCHAR (100) NOT NULL,
+	[Proveedor_Id] INT NULL,
+	[Stock] INT NOT NULL,
+	[TipoAjuste] INT NOT NULL,
+    [VinedoPropio_Id] INT NULL, 
+    CONSTRAINT [PK_dbo.AjusteStockBines] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_dbo.AjusteStockBines_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
+	CONSTRAINT [FK_dbo.AjusteStockBines_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
+	CONSTRAINT [FK_dbo.AjusteStockBines_dbo.Proveedor_Proveedor_Id] FOREIGN KEY ([Proveedor_Id]) REFERENCES [dbo].[Proveedor] ([Id]),
+	CONSTRAINT [FK_dbo.AjusteStockBines_dbo.Vinedo_VinedoPropio_Id] FOREIGN KEY ([VinedoPropio_Id]) REFERENCES [dbo].[Vinedo] ([Id]),
+);

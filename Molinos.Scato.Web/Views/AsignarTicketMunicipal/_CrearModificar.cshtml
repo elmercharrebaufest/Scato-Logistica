@@ -1,0 +1,32 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.LogExceptuadosTicketMunicipalDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.MotivoDeExcepcion;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/Scripts/jquery.validate.unobtrusive.js")
+
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+@using (Ajax.BeginForm("Modificar", "AsignarTicketMunicipal", new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, }, new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Model.PagaTicketMunicipal ? Textos.DeseaImprimirTicketMunicipal : Textos.MotivoDeExcepcion }))
+{
+    @Html.ValidationSummary(true)
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(s => s.Motivo)
+            <div class="">
+                @Html.TextAreaFor(s => s.Motivo, new { @class = "control textarea-large" })
+                @Html.ValidationMessageFor(s => s.Motivo)
+                @Html.HiddenFor(s => s.InstanceId)
+                @Html.HiddenFor(s => s.PagaTicketMunicipal)
+            </div>
+        </div>
+    </div>
+}

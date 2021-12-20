@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TipoComercialPorWfDto>)ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.Column("Eliminar", "", f => Html.BotonLink(Textos.Eliminar, "Eliminar", "TipoComercialPorWf", new { workflowId = f.WorkflowId, tipoComercialId = f.TipoComercialId }, "ajax-borrar-link", "icon-trash", true),"editar-borrar-columna", false),
+        grilla.Columna("WorkflowDescripcion", Textos.Workflow_Nombre),
+        grilla.Columna("TipoComercialDescripcion", Textos.TipoComercial)))

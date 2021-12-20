@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<EstablecimientoDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "Establecimiento"),
+        grilla.Columna("Proveedor.Descripcion", Textos.Proveedor, c => c.Proveedor),
+        grilla.Columna("NombreDeEstablecimiento", Textos.Establecimiento_Nombre),
+        grilla.Columna("CodigoDeEstablecimiento", Textos.Establecimiento_Codigo),
+        grilla.Columna("Domicilio", Textos.Transportista_Domicilio),
+        grilla.Columna("CodigoPostal", Textos.BocaDestino_CodigoPostal),
+        grilla.Columna("Localidad.Descripcion", Textos.Transportista_Localidad, c => c.Localidad + "(" + c.LocalidadCodigoAfip + ")"),
+        grilla.Columna("Provincia.Descripcion", Textos.Transportista_Provincia, c => c.Provincia)
+        ))
+</div>

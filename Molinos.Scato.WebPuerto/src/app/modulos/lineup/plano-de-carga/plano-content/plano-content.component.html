@@ -1,0 +1,375 @@
+<div class="mt-4 shadow" style="background-color: white; min-height: 5rem;" *ngIf='mostrarContent'>
+  <app-collapse-button collapseSelectorId="collapsePlano"></app-collapse-button>
+  <h4 class="colorTitle px-4 pt-4">Plano de Carga</h4>
+  <form id="collapsePlano" class="collapse show" [formGroup]="planoDeCargaForm">
+    <div class="mx-4 row">
+      <div class="col-8">
+
+        <h4 class="mt-2">{{this.embarque ? this.embarque.nombreBuque : '' }} : Plano de carga</h4>
+        <h6 *ngIf="esLiquido">Líquido</h6>
+        <h6 *ngIf="!esLiquido">Sólido</h6>
+
+        <table class="table table-bordered" *ngIf="!esLiquido">
+          <thead>
+            <tr class="table-active">
+              <th scope="col" style="width: 10%;">Bodega</th>
+              <th scope="col">Cantidad(Tn)</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Condición</th>
+              <th scope="col">SF/ % FULL</th>
+              <th scope="col">Destino</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="planoDeCargaBodegas">
+            <tr *ngFor="let bodega of planoDeCargaForm.get('planoDeCargaBodegas').value; let i = index; trackBy:trackByFn">
+              <ng-container [formGroupName]="i">
+                <td>{{bodega.bodegaParcel}}</td>
+                <td>
+                  <input type="text" formControlName="cantidad" (keypress)="numberOnly($event)">
+                </td>
+                <td>
+                  <select class="custom-select" formControlName="materialPuerto">
+                    <option value="" selected></option>
+                    <option *ngFor="let p of materialesPuerto" [ngValue]="p">{{ p.descripcionCorta }}</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="custom-select" formControlName="condicion"
+                          (change)="onChangeCondicion($event.target.value, i)">
+                    <option value="" selected></option>
+                    <option >Full</option>
+                    <option>Slack</option>
+                  </select>
+                </td>
+                <td><input type="text" formControlName="sfFull" (keypress)="numberOnly($event)"
+                         maxlength="2"></td>
+                <td>
+                  <select class="custom-select" formControlName="destino">
+                    <option value="" selected></option>
+                    <option *ngFor="let d of destinos" [ngValue]="d">{{ d.nombre }}</option>
+                  </select>
+                </td>
+              </ng-container>
+            </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <td>Total:</td>
+                        <td>{{calcularTotal()}}</td>
+                    </tfoot>
+                </table>
+
+
+        <table class="table table-bordered" *ngIf="esLiquido">
+          <thead>
+            <tr class="table-active">
+              <th scope="col" style="width: 10%;">Parcel</th>
+              <th scope="col">Cantidad(Tn)</th>
+              <th scope="col">Tanque de abordo</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Condición</th>
+              <th scope="col">Destino</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="planoDeCargaBodegas">
+            <tr *ngFor="let bodega of planoDeCargaForm.get('planoDeCargaBodegas').value; let i = index; trackBy:trackByFn">
+              <ng-container [formGroupName]="i">
+                <td>{{bodega.bodegaParcel}}</td>
+                <td>
+                  <input type="text" formControlName="cantidad" (keypress)="numberOnly($event)" (focusout)='sendDataParcel(planoDeCargaForm.get("planoDeCargaBodegas").value)'>
+                </td>
+                <td><input type="text" formControlName="tanqueDeAbordo" (focusout)='sendDataParcel(planoDeCargaForm.get("planoDeCargaBodegas").value)'></td>
+                <td>
+                  <select class="custom-select" formControlName="materialPuerto" (focusout)='sendDataParcel(planoDeCargaForm.get("planoDeCargaBodegas").value)'>
+                    <option value="" selected></option>
+                    <option *ngFor="let p of materialesPuerto" [ngValue]="p">{{ p.descripcionCorta }}</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="custom-select" formControlName="condicion"
+                          (change)="onChangeCondicion($event.target.value, i)" (focusout)='sendDataParcel(planoDeCargaForm.get("planoDeCargaBodegas").value)'>
+                    <option value="" selected ></option>
+                    <option >Full</option>
+                    <option>Slack</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="custom-select" formControlName="destino" (focusout)='sendDataParcel(planoDeCargaForm.get("planoDeCargaBodegas").value)'>
+                    <option value="" selected></option>
+                    <option *ngFor="let d of destinos" [ngValue]="d">{{ d.nombre }}</option>
+                  </select>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+          <tfoot>
+          <td>Total:</td>
+          <td>{{calcularTotal()}}</td>
+          </tfoot>
+        </table>
+
+        <div class="row mb-2">
+          <div class="col-4">
+            <label for="observaciones" class="font-weight-bold">Observaciones</label>
+            <textarea class="form-control" formControlName="observaciones" rows="6"></textarea>
+          </div>
+          <div class="col-8">
+            <label class="mb-3 font-weight-bold">Máximo a cargar Comercial/Permisos</label>
+
+            <div *ngFor="let exp of planoDeCargaForm.get('cargasComerciales').value; let j = index; trackBy:trackByFn"
+                 class="row mt-n2" formArrayName="cargasComerciales">
+              <ng-container [formGroupName]="j">
+                <div class="form-group col-4">
+                  <input
+                         type="text"
+                         class="form-control"
+                         formControlName="exportador"
+                         maxlength="50"
+                         placeholder="Exportador"
+                         [ngbTypeahead]="searchExportador"
+                         [editable]='false'
+                         [inputFormatter]="formatterExportador"
+                         [resultFormatter]="formatterExportador"
+                         (blur)="onBlurExportador()"
+                         (change)='sendExportador($event.target.value)'
+                         />
+                </div>
+                <div class="form-group col-4">
+                  <select class="custom-select" formControlName="materialPuerto" (change)='sendExportador($event.target.value)'>
+                    <option value ="" selected></option>
+                    <option *ngFor="let p of materialesPuerto" [ngValue]="p">{{ p.descripcionCorta }}</option>
+                  </select>
+                </div>
+                <div class="form-group col-4">
+                  <div class="input-group" >
+                    <input type="text" class="form-control"
+                           formControlName="cantidad">
+                    <div class="input-group-append">
+                      <span class="input-group-text">Tn</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-2 mt-5">
+          <div class="form-group col-7">
+            <label class="btn btn-outline-dark btn-sm" *ngIf="filePlano == null">
+              <img src="assets/clip.svg">
+              Adjuntar plano de carga
+              <input type="file" class="form-control-file" (change)="onFileChangePlano($event)"
+                     formControlName="FilePathPlano" hidden>
+            </label>
+            <img src="assets/trashIcon.svg" *ngIf="filePlano != null" (click)="deleteArchivo('plano')">
+            <label class="btn btn-link" (click)="descargarArchivo('plano')">
+              {{fileNamePlano}}
+            </label>
+          </div>
+          <div class="form-group col">
+            <div class="row">
+              <label for="caladoSalida" class="d-flex justify-content-end font-weight-bold">Calado de salida</label>
+              <!-- <div class="col-sm-4">
+                <input type="text" class="form-control" formControlName="caladoSalida"
+                      (keypress)="decimalOnly($event)">
+              </div>
+              <label for="metros" class="d-flex justify-content-end font-weight-bold">metros</label> -->
+              <div class="form-group col">
+                <div class="input-group" >
+                  <input type="text" class="form-control" formControlName="caladoSalida"
+                      (keypress)="decimalOnly($event)">
+                  <div class="input-group-append">
+                    <span class="input-group-text">Metros</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="form-group col-7">
+
+            <label class="btn btn-outline-dark btn-sm" *ngIf="fileSecuencia == null">
+              <img src="assets/clip.svg">
+              Adjuntar secuencia de carga
+              <input type="file" class="form-control-file" (change)="onFileChangeSecuencia($event)"
+                     formControlName="FilePathSecuencia" hidden>
+            </label>
+            <img src="assets/trashIcon.svg" *ngIf="fileSecuencia != null" (click)="deleteArchivo('secuencia')">
+            <label class="btn btn-link" (click)="descargarArchivo('secuencia')">
+              {{fileNameSecuencia}}
+            </label>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-4 border-left">
+        <div class="form row ml-2 mt-5">
+          <label class="font-weight-bold">Altura del Río(S.L): &nbsp;</label>
+          <label> {{estadoAlturaValor | number: '1.2-2' || " "}} m</label>
+        </div>
+        <div class="row ml-2">
+          <label class="font-weight-bold">Freeboard: &nbsp;</label>
+          <label *ngIf="embarque"> {{embarque.freeboard | number: '1.2-2' || "0"}} m</label>
+        </div>
+
+        <div class="row ml-2">
+          <label class="font-weight-bold">Recomendación: &nbsp;</label>
+          <label *ngIf="recomendacionDefensas"> {{recomendacionDefensas || " "}}</label>
+        </div>
+
+        <div class="row ml-2">
+          <label class="font-weight-bold" for="defensasMoviles">Defensas móviles:</label>
+        </div>
+        <div class="row ml-2 mb-2">
+          <div class="form-check mr-2">
+            <input class="form-check-input" type="radio" name="defensasMoviles"
+                   id="Si" formControlName="defensasMoviles" value="Si">
+            <label class="form-check-label" for="Si">Si</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="defensasMoviles"
+                   id="No" formControlName="defensasMoviles" value="No">
+            <label class="form-check-label" for="No">No</label>
+          </div>
+        </div>
+
+        <div class="row ml-2">
+          <label class="font-weight-bold">Agencia: &nbsp;</label>
+          <label *ngIf="embarque"> {{embarque.agencias != null ? embarque.agencias.nombre : " " || " "}}</label>
+        </div>
+        <div class="row ml-2">
+          <label class="font-weight-bold">SENASA: &nbsp;</label>
+          <label *ngIf="embarque"> {{embarque.senasa ? "Si" : "No"}}</label>
+        </div>
+        <div class="row ml-2">
+          <label class="font-weight-bold" for="fumigacion">Fumigación:</label>
+        </div>
+        <div class="row ml-2 mb-2">
+          <div class="form-check mr-2">
+            <input class="form-check-input" type="radio" name="fumigacion"
+                   id="fumigacion1" formControlName="fumigacion" [value]="true"
+                   (change)="mostrarFumigadoraEvent($event,true)" >
+            <label class="form-check-label">
+              Si
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="fumigacion"
+                   id="fumigacion2" formControlName="fumigacion" [value]="false"
+                   (change)="mostrarFumigadoraEvent($event,false)">
+            <label class="form-check-label">
+              No
+            </label>
+          </div>
+          <div class="form-check">
+            <input type="text" class="form-control" formControlName="empresaFumigadora"
+                   placeholder="Nombre de empresa" [style.visibility]="mostrarFumigadora? 'visible': 'hidden'">
+          </div>
+        </div>
+
+        <div class="ml-2 my-4 border-bottom"></div>
+
+        <div class="form-group ml-2">
+          <label for="estibasList" class="font-weight-bold">Estiba</label>
+          <div class="input-group">
+            <tag-input formControlName="estibasList"
+                       [placeholder]="'Ingrese el Estiba'"
+                       [secondaryPlaceholder]="'Ingrese el Estiba'"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'"
+                       [maxItems]="1"
+                       (onSelect)="ABM('Estiba', 'Modificar-Eliminar')">
+              <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                  [autocompleteItems]="estibasList"
+                                  [identifyBy]="'id'"
+                                  [displayBy]="'name'">
+              </tag-input-dropdown>
+            </tag-input>
+            <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Estiba', 'Agregar')">
+          </div>
+        </div>
+
+        <div class="form-group ml-2">
+          <label for="agenciasControlPrivadoList" class="font-weight-bold">Agencia de control privado</label>
+          <div class="input-group">
+            <tag-input formControlName="agenciasControlPrivadoList"
+                       [placeholder]="'Ingrese la Agencia'"
+                       [secondaryPlaceholder]="'Ingrese la Agencia'"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'"
+                       [maxItems]="1"
+                       (onSelect)="ABM('Agencia', 'Modificar-Eliminar')">
+              <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                  [autocompleteItems]="agenciasControlPrivadoList"
+                                  [identifyBy]="'id'"
+                                  [displayBy]="'name'">
+              </tag-input-dropdown>
+            </tag-input>
+            <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Agencia', 'Agregar')">
+          </div>
+        </div>
+
+        <div class="form-group ml-2">
+          <label for="agentesControlPrivadoList" class="font-weight-bold">Encargado</label>
+          <div class="input-group">
+            <tag-input formControlName="agentesControlPrivadoSeleccionado"
+                       [placeholder]="'Ingrese el Encargado'"
+                       [secondaryPlaceholder]="'Ingrese el Encargado'"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'"
+                       (onSelect)="onSelectAgente($event)">
+              <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                  [autocompleteItems]="agentesControlPrivadoList"
+                                  [identifyBy]="'id'"
+                                  [displayBy]="'name'">
+              </tag-input-dropdown>
+            </tag-input>
+            <!--<img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="open(modalAgregarAgenteControlPrivado)">-->
+            <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Agente', 'Agregar')">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!----------------------------------------------->
+<!--PANTALLA ABM: AGREGAR, MOFIFICAR Y ELIMINAR-->
+<ng-template #modalABM let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{this.tituloABM}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" ngbAutofocus class="form-control" autocomplete="off"
+                 value="{{this.opcionABMSeleccionada == 'Agregar' ? '' : datosABMPuerto(1)}}">
+          
+          <div *ngIf="this.pantallaSeleccionada != 'Agencia'">
+            <label for="apellido">Apellido</label>
+            <input id="apellido" class="form-control" autocomplete="off"
+              value="{{this.opcionABMSeleccionada == 'Agregar' ? '' : datosABMPuerto(2)}}">
+          </div>   
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="this.opcionABMSeleccionada == 'Modificar-Eliminar'">
+      <button type="button" class="btn btn-danger" (click)="submitABM('Eliminar')">Eliminar {{this.pantallaSeleccionada}}</button>
+    </div>
+    <button type="button" class="btn btn-primary" (click)="submitABM('Guardar')">Guardar</button>
+  </div>
+</ng-template>
+<!--PANTALLA ABM: AGREGAR, MOFIFICAR Y ELIMINAR-->
+<!----------------------------------------------->

@@ -1,0 +1,21 @@
+Estimado [Proveedor],<br/>
+Se detectó una diferencia de peso de origen:<br/>
+<br/>
+Centro: [Centro]<br/>
+PESADA
+<br/>
+[Documento Legal] N°: [Número documento legal]<br/>
+Patente: [Patente]<br/>
+Procedencia: [Procedencia]<br/>
+Entregador: [Entregador]<br/>
+Corredor: [Corredor]<br/>
+Titular CP: [Titular CP]<br/>
+Intermediario: [Intermediario]<br/>
+Remitente Comercial: [Remitente Comercial]<br/><br/>
+Peso Bruto = [Peso Bruto]<br/>
+Diferencia = [Diferencia Peso origen]<br/><br/>
+Saludos cordiales,<br/>
+[Firma]
+
+
+

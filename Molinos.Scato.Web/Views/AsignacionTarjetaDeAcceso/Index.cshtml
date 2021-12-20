@@ -1,0 +1,108 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.AsignacionTarjetaDeAccessoModel
+@{
+    ViewBag.Title = Textos.ActAsignacionTarjetaDeAcceso;
+    var puestosDeTrabajo = (string)ViewBag.PuestosDeTrabajo;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        jQuery(document).ready(function ($) {
+            if ($("#foto1").length > 0) {
+                $('#fotoDiv').css('display', 'inline');
+                $('.ocultar').hide();
+            }
+        });
+
+        $(function () {
+            $("#Numero").focus();
+        });
+    </script>
+    <script src="~/Scripts/asignacionDeTarjeta.js"></script>
+}
+@Html.Hidden("puestosDeTrabajo", puestosDeTrabajo)
+@Html.Hidden("centroId", (int)ViewBag.CentroId)
+
+
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span6">
+
+
+
+
+
+            @using (Html.BeginForm("Index", "AsignacionTarjetaDeAcceso", FormMethod.Post, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.ActAsignacionTarjetaDeAcceso }))
+            {
+                @Html.HiddenFor(m => m.InstanceId)
+                @Html.HiddenFor(m => m.WorkflowDefinicionId)
+                @Html.HiddenFor(m => m.Workflow)
+                if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+                {
+                    <div class="alert alert-error">
+                        @Html.ValidationSummary(true)
+                    </div>
+                }
+                <div class="container-fluid">
+                    <div class="titSecciones">@Textos.AsignacionTarjetaDeAcceso_Titulo</div>
+                </div>
+                <br />
+
+                <div class="control-group">
+                    @Html.Label(Textos.AsignacionTarjetaDeAcceso_NTarj + ":", new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.Numero, new { @class = "control input-medium", maxlength = 10, @readonly = "readonly", placeholder = Textos.ListaDeTareasAutomatizada_EsperandoLectura })
+                        @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+                        <span class="label label-success hidden" id="labelConectado">@Textos.Conectado</span>
+                        <span class="label label-important hidden" id="labelDesconectado">@Textos.Desconectado</span>
+                        @Html.ValidationMessageFor(model => model.Numero)
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">@Textos.Aceptar</button>
+                <span>&nbsp;</span>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                <span>&nbsp;</span><span>&nbsp;</span>
+                <div class="row">
+                    <br />
+                    <div class="span12">
+                        <div class="alert alert-error hide" id="validation-patente-alert">
+                            <button type="button" class="close" id="validation-patente-close">×</button>
+                            <div id="validation-patente">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span12">
+                        <div class="alert alert-info hide" id="validation-patente-danger">
+                            <button type="button" class="close" id="validation-danger-close">×</button>
+                            <div id="validation-danger">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+
+
+
+        </div>
+        <div class="span6 control-group control-group-no-bottom borde ocultar fondo">
+            No se encontró la foto para la CCPP
+        </div>
+        <div class="span6 control-group control-group-no-bottom sinBorde" id="fotoDiv">
+            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
+
+            }
+            <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+        </div>
+    </div>
+</div>

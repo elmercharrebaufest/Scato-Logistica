@@ -1,0 +1,92 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+
+@{
+    Layout = null;
+    ViewBag.Title = "Listar";
+
+    var items = (ListaPaginada<InstanciaWorkflowDto>)ViewBag.Items;
+
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+
+    Model.Columnas = Model.Columnas.Count == 1 ? Model.Columnas.FirstOrDefault().Split('|', ',').ToList() : Model.Columnas;
+
+    columnas.Add(grid.ColumnaVerDocumentoOrigen(Html, " "));
+
+    if (Model.Columnas.Contains("Foto"))
+    {
+        columnas.Add(grid.ColumnaVerFotos(Html, " "));
+    }
+    if (Model.Columnas.Contains("Patente"))
+    {
+        columnas.Add(grid.Columna("Patente", Textos.Camion_Patente));
+    }
+    if (Model.Columnas.Contains("Material"))
+    {
+        columnas.Add(grid.Columna("Material", Textos.Material));
+    }
+    if (Model.Columnas.Contains("NumeroDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("NumeroDocumentoDeIngreso", Textos.NumeroDocumentoIngreso));
+    }
+    if (Model.Columnas.Contains("NumeroDeTarjeta"))
+    {
+        columnas.Add(grid.Columna("NumeroDeTarjeta", Textos.NumeroTarjeta));
+    }
+    if (Model.Columnas.Contains("ProximaEtapa"))
+    {
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)), null, false));
+    }
+    if (Model.Columnas.Contains("RechazoEtapa"))
+    {
+        columnas.Add(grid.Columna("RechazoAccion", Textos.Workflow_RechazoEtapa, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.RechazoAccion) ?? item.RechazoAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)), null, false));
+    }
+    if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    {
+        columnas.Add(grid.Columna("FechaCreacion", Textos.ListaDeCamiones_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacion)));
+    }
+    if (Model.Columnas.Contains("FechaCalado") || Model.Columnas[0].Contains("FechaCalado"))
+    {
+        columnas.Add(grid.Columna("FechaCalado", Textos.ListaDeCamiones_FechaCalado, x => FormattingHtmlHelper.FormattedTime(x.FechaCalado)));
+    }
+    if (Model.Columnas.Contains("Transportista"))
+    {
+        columnas.Add(grid.Columna("Transportista", Textos.Transportista));
+    }
+    if (Model.Columnas.Contains("TieneEntregador"))
+    {
+        columnas.Add(grid.Columna("TieneEntregador", Textos.Entregador));
+    }
+    if (Model.Columnas.Contains("MotivoDeRechazo"))
+    {
+        columnas.Add(grid.Columna("MotivoDeRechazo", Textos.Motivo, null, null, false));
+    }
+    if (Model.Columnas.Contains("Proveedor"))
+    {
+        columnas.Add(grid.Columna("Proveedor", Textos.Proveedor));
+    }
+    if (Model.Columnas.Contains("EnPlanta"))
+    {
+        columnas.Add(grid.Columna("EnPlanta", Textos.Rechazados_En_Planta, x => Html.Raw(!x.Terminado ? "<span class='label label-info'>" + "En Planta" + "</span>" : "")));
+    }
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<script>
+    $(document).ready(
+        function() {
+            $("tr td a.modificado").parent().parent().addClass("estado-asignado");
+        });
+</script>
+<div class="alert alert-info">
+    <strong>@Textos.CamionesRechazados : </strong> @ViewBag.CantidadCamiones
+</div>
+<div class="controls">
+    @Html.Grilla(items, columnasFunc)
+</div>

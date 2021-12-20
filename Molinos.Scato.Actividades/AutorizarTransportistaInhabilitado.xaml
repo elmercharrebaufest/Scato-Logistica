@@ -1,0 +1,360 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.AutorizarTransportistaInhabilitado"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:p1="http://scato.molinos.com/"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="patente" Type="InArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="choferId" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="centroId" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="hndInstance" Type="InArgument(p:CorrelationHandle)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="autorizado" Type="OutArgument(x:Boolean)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="nombreUsuario" Type="InOutArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="Observacion" Type="OutArgument(x:String)" />
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="puestoDeTrabajoId" Type="OutArgument(x:Int32)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.AutorizarTransportistaInhabilitado_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.ServiceModel.Activities</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="AutorizarTransportistaInhabilitado" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="terminaInhabilitacion" />
+      <Variable x:TypeArguments="msdd:ControlRecorridoDto" Name="controlRecorridoDto" />
+    </Sequence.Variables>
+    <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+      <local:LogActividad.LogActividadDto>
+        <InArgument x:TypeArguments="msdd:LogActividadDto">
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = "Autorizar Transportista Inhabilitado", WorkflowInstanceId = workflowId, ActividadXaml = "AutorizarTransportistaInhabilitado" }</mca:CSharpValue>
+        </InArgument>
+      </local:LogActividad.LogActividadDto>
+    </local:LogActividad>
+    <local:NotificarUsuario Grupo="administradores" sap2010:WorkflowViewState.IdRef="NotificarUsuario_5">
+      <local:NotificarUsuario.CentroId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+        </InArgument>
+      </local:NotificarUsuario.CentroId>
+      <local:NotificarUsuario.Mensaje>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">patente + Dominio.Recursos.Textos.Notificacion_AutorizacionPatente</mca:CSharpValue>
+        </InArgument>
+      </local:NotificarUsuario.Mensaje>
+      <local:NotificarUsuario.NombreUsuario>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">nombreUsuario</mca:CSharpValue>
+        </InArgument>
+      </local:NotificarUsuario.NombreUsuario>
+    </local:NotificarUsuario>
+    <p:Receive x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="AutorizarTransportistaInhabilitado" ServiceContractName="p1:IAutorizarTransportistaInhabilitadoService">
+      <p:Receive.CorrelatesOn>
+        <p:XPathMessageQuery x:Key="key1">
+          <p:XPathMessageQuery.Namespaces>
+            <ssx:XPathMessageContextMarkup>
+              <x:String x:Key="xgSc">http://scato.molinos.com/</x:String>
+            </ssx:XPathMessageContextMarkup>
+          </p:XPathMessageQuery.Namespaces>sm:body()/xgSc:AutorizarTransportistaInhabilitado/xgSc:instanceId</p:XPathMessageQuery>
+      </p:Receive.CorrelatesOn>
+      <p:Receive.CorrelatesWith>
+        <InArgument x:TypeArguments="p:CorrelationHandle">
+          <mca:CSharpValue x:TypeArguments="p:CorrelationHandle">hndInstance</mca:CSharpValue>
+        </InArgument>
+      </p:Receive.CorrelatesWith>
+      <p:ReceiveParametersContent>
+        <OutArgument x:TypeArguments="s:Guid" x:Key="instanceId" />
+        <OutArgument x:TypeArguments="x:Boolean" x:Key="autorizado">
+          <mca:CSharpReference x:TypeArguments="x:Boolean">autorizado</mca:CSharpReference>
+        </OutArgument>
+        <OutArgument x:TypeArguments="x:Boolean" x:Key="terminaInhabilitacion">
+          <mca:CSharpReference x:TypeArguments="x:Boolean">terminaInhabilitacion</mca:CSharpReference>
+        </OutArgument>
+        <OutArgument x:TypeArguments="msdd:ControlRecorridoDto" x:Key="controlRecorridoDto">
+          <mca:CSharpReference x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpReference>
+        </OutArgument>
+      </p:ReceiveParametersContent>
+    </p:Receive>
+    <If sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">autorizado</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <local:GuardarAutorizacion sap2010:WorkflowViewState.IdRef="GuardarAutorizacion_1">
+            <local:GuardarAutorizacion.CentroId>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+              </InArgument>
+            </local:GuardarAutorizacion.CentroId>
+            <local:GuardarAutorizacion.ChoferId>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">choferId</mca:CSharpValue>
+              </InArgument>
+            </local:GuardarAutorizacion.ChoferId>
+            <local:GuardarAutorizacion.ControlRecorrido>
+              <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+              </InArgument>
+            </local:GuardarAutorizacion.ControlRecorrido>
+            <local:GuardarAutorizacion.Patente>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">patente</mca:CSharpValue>
+              </InArgument>
+            </local:GuardarAutorizacion.Patente>
+          </local:GuardarAutorizacion>
+          <If sap2010:WorkflowViewState.IdRef="If_2">
+            <If.Condition>
+              <InArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpValue x:TypeArguments="x:Boolean">terminaInhabilitacion</mca:CSharpValue>
+              </InArgument>
+            </If.Condition>
+            <If.Then>
+              <local:TerminarInhabilitacion sap2010:WorkflowViewState.IdRef="TerminarInhabilitacion_3">
+                <local:TerminarInhabilitacion.CentroId>
+                  <InArgument x:TypeArguments="x:Int32">
+                    <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+                  </InArgument>
+                </local:TerminarInhabilitacion.CentroId>
+                <local:TerminarInhabilitacion.ChoferId>
+                  <InArgument x:TypeArguments="x:Int32">
+                    <mca:CSharpValue x:TypeArguments="x:Int32">choferId</mca:CSharpValue>
+                  </InArgument>
+                </local:TerminarInhabilitacion.ChoferId>
+                <local:TerminarInhabilitacion.ControlRecorrido>
+                  <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                    <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+                  </InArgument>
+                </local:TerminarInhabilitacion.ControlRecorrido>
+                <local:TerminarInhabilitacion.NombreUsuario>
+                  <InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">nombreUsuario</mca:CSharpValue>
+                  </InArgument>
+                </local:TerminarInhabilitacion.NombreUsuario>
+                <local:TerminarInhabilitacion.Patente>
+                  <InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">patente</mca:CSharpValue>
+                  </InArgument>
+                </local:TerminarInhabilitacion.Patente>
+              </local:TerminarInhabilitacion>
+            </If.Then>
+          </If>
+          <local:NotificarUsuario Grupo="balanceros" sap2010:WorkflowViewState.IdRef="NotificarUsuario_3">
+            <local:NotificarUsuario.CentroId>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.CentroId>
+            <local:NotificarUsuario.Mensaje>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">patente + Dominio.Recursos.Textos.Notificacion_Aceptado</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.Mensaje>
+            <local:NotificarUsuario.NombreUsuario>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">nombreUsuario</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.NombreUsuario>
+          </local:NotificarUsuario>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <local:TransportistaInhabilitado sap2010:WorkflowViewState.IdRef="TransportistaInhabilitado_1">
+            <local:TransportistaInhabilitado.ControlRecorrido>
+              <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+              </InArgument>
+            </local:TransportistaInhabilitado.ControlRecorrido>
+            <local:TransportistaInhabilitado.Observacion>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">Observacion</mca:CSharpReference>
+              </OutArgument>
+            </local:TransportistaInhabilitado.Observacion>
+          </local:TransportistaInhabilitado>
+          <local:RechazarCamion Rechazado="{x:Null}" sap2010:WorkflowViewState.IdRef="RechazarCamion_1">
+            <local:RechazarCamion.WorkflowInstanceId>
+              <InArgument x:TypeArguments="s:Guid">
+                <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+              </InArgument>
+            </local:RechazarCamion.WorkflowInstanceId>
+          </local:RechazarCamion>
+          <local:NotificarUsuario Grupo="balanceros" sap2010:WorkflowViewState.IdRef="NotificarUsuario_2">
+            <local:NotificarUsuario.CentroId>
+              <InArgument x:TypeArguments="x:Int32">
+                <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.CentroId>
+            <local:NotificarUsuario.Mensaje>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">patente + Dominio.Recursos.Textos.Notificacion_Rechazado</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.Mensaje>
+            <local:NotificarUsuario.NombreUsuario>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">nombreUsuario</mca:CSharpValue>
+              </InArgument>
+            </local:NotificarUsuario.NombreUsuario>
+          </local:NotificarUsuario>
+        </Sequence>
+      </If.Else>
+    </If>
+    <local:ControlRecorrido sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
+      <local:ControlRecorrido.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+        </InArgument>
+      </local:ControlRecorrido.ControlRecorridoDto>
+      <local:ControlRecorrido.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:ControlRecorrido.NombreUsuario>
+    </local:ControlRecorrido>
+    <p:SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+      <p:SendParametersContent>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="resultado">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">autorizado</mca:CSharpValue>
+        </InArgument>
+      </p:SendParametersContent>
+    </p:SendReply>
+    <local:FinDeActividad InstanceId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+      <local:FinDeActividad.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+        </InArgument>
+      </local:FinDeActividad.ControlRecorridoDto>
+      <local:FinDeActividad.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.NombreUsuario>
+      <local:FinDeActividad.PuestoDeTrabajoId>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.PuestoDeTrabajoId>
+    </local:FinDeActividad>
+    <sads:DebugSymbol.Symbol>d4oBQzpcVXNlcnNcYm1lbGdhcmVqb1xzb3VyY2VcV29ya3NwYWNlc1xNb2xpbm9zIC0gU0NUMjAwXE1vbGlub3MuU2NhdG8tREVWXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcQXV0b3JpemFyVHJhbnNwb3J0aXN0YUluaGFiaWxpdGFkby54YW1sNmQDvwIOAgEBaQVvGgMBoANwBYABHgMB+gKBAQWbAREDAckCnAEFmQIKAgFNmgIFpQIeAgE0pgIFrAITAgEnrQIFvQIcAgECbAts9gEDAaEDeAt4iwEDAZQDcwtzUAMBiANwI3A0AwGHA30LfVYDAfsCjAELjAFfAwHuApgBC5gBdAMB4gKSAQuSAVwDAdYClQELlQFnAwHKAp8BC58BVAIBTqMBCe8BFAMBpwHyAQmXAhQCAVqdAgudAmwCAUGiAguiAl4CATWpAgupAlQCASiwAguwAmwCARu1Agu1Al4CAQ+6Agu6AmECAQOkAQu5AScDAZgCugEL3QEQAwHOAd4BC+4BJAMBqAHzAQv+AS0DAY4B/wELhQIiAwGBAYYCC5YCJAIBW6cBEacBVgMBvQKsARGsAVYDAbECtgERtgFWAwGlArEBEbEBcgMBmQK9ARG9AWUDAc8BwQEP2wEuAwHbAeYBEeYBhgEDAcIB4QER4QFWAwG2Ad4BKd4BNQMBtQHrARHrAVwDAakB9gER9gFyAwGbAfsBEfsBYgMBjwGCAhGCAlcDAYIBjgIRjgKHAQIBdYkCEYkCVgIBaYYCKYYCNQIBaJMCEZMCXAIBXMQBFcQBWgMBjALJARXJAVoDAYAC2AEV2AFaAwH0AdMBFdMBYAMB6AHOARXOAXYDAdwB</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="733,22" />
+      <sap2010:ViewStateData Id="NotificarUsuario_5" sap:VirtualizedContainerService.HintSize="733,22" />
+      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="733,86" />
+      <sap2010:ViewStateData Id="GuardarAutorizacion_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="TerminarInhabilitacion_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,210" />
+      <sap2010:ViewStateData Id="NotificarUsuario_3" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="486,458">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TransportistaInhabilitado_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="RechazarCamion_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="NotificarUsuario_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="222,270">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="733,608" />
+      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="733,22" />
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="733,86" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="733,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="755,1232">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.AutorizarTransportistaInhabilitado_1" sap:VirtualizedContainerService.HintSize="795,1312" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

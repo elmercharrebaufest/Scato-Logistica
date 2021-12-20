@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.BocaDestinoDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.BocaDestino_Crear;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/mostrarProvinciasLocalidades.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bocaDestino.js")"></script>
+
+@using (Ajax.BeginForm(Textos.Crear, null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.BocaDestino_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

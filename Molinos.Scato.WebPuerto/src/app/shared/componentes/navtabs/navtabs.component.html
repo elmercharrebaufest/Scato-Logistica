@@ -1,0 +1,74 @@
+<div *ngIf="mostrarBoton" class='w-100 prl-10 m-0 pb-15'>
+    <div class='btn-add-container' id='addButton' (click)='openModalAddBuque(addBuque)' *ngIf='elementos.length > 0 || elementosSinPlano.length > 0'>
+        <button type='button' class='btn btn-primary bt-circle' style='margin-top: -5px;'>+</button>
+        <span class='txt-primary pl-10 mt-5 txt-action'>Agregar nuevo buque</span>
+    </div>
+    <div class='btn-add-container' id='addButton' (click)='openModalAddBuque(addBuqueAux)' *ngIf='elementos.length == 0 && elementosSinPlano.length == 0'>
+        <button type='button' class='btn btn-primary bt-circle' style='margin-top: -5px;'>+</button>
+        <span class='txt-primary pl-10 mt-5 txt-action'>Agregar nuevo buque</span>
+    </div>
+</div>
+<section class="flex-container">
+    <ng-container *ngFor="let elemento of elementos|slice:0:show let i = index; let last = last" >
+        <button #listadoBotones class="btn btn-sm mr-2 mt-2 boton-listado" type="button" id="{{elemento.id}}" [ngClass]="elemento.cargado ? 'btn-cargado' : 'btn-pendiente'" (click)="onClickHandlerClient(elemento)">
+            <div class="icono-noSeleccionado" [ngClass]="imgSolidoLiquido(elemento)" ></div>
+            #{{elemento.orden}} {{elemento.nombreBuque}} {{mostrarUbicacion ? (elemento.nombreUbicacion ? ': '+
+            elemento.nombreUbicacion
+            :':') : ''}}
+        </button>
+        <button *ngIf="this.elementos.length > 7 && i == 6 && desplegado == false" (click)="mostrarMas()" class="btn btn-sm mr-2 mt-2 btn-mas">Ver más</button>
+    </ng-container>
+    <button *ngIf="desplegado" (click)="mostrarMenos()" class="btn btn-sm mr-2 mt-2 btn-mas">Ver menos</button>
+</section>
+
+<!-- Modal de carga de buques sin plano de carga -->
+<ng-template #addBuque let-modal>
+    <div class='modal-header'>
+        <h6 class='modal-title txt-center' id='add-buque-title'><b>Agregar buque que no tiene plano de carga</b></h6>
+    </div>
+    <div class='modal-body'>
+        <form>
+            <div class='form-group col-10 w-70 p-0'>
+                <label for='buque-select'><b>Buque</b></label>
+                <select class='form-control' id='buque-select' #selectBuque>
+                    <option value='0' selected>Seleccione buque del line up</option>
+                    <option *ngFor='let element of elementosSinPlano; let i = index' [value]='element.id'>#{{element.orden}} {{element.nombreBuque}} {{mostrarUbicacion ? (element.nombreUbicacion ? ': ' + element.nombreUbicacion : ':') : ''}}
+                    </option>
+                </select>
+                <div *ngIf='errorMessage' class='txt-red mt-2'>El embarque es <strong>requerido</strong></div>
+            </div>
+        </form>
+        <div class='flex-between w-100 pt-10'>
+            <button type='button' class='btn btn-outline-danger' (click)="modal.dismiss('Cross click')" *ngIf='elementos.length > 0'>Cancelar</button>
+            <button type='button' class='btn btn-outline-danger' (click)="modal.dismiss('Cross click')" *ngIf='elementos.length == 0' [routerLink]="['/lineup']">Cancelar</button>
+            <button type='button' class='btn btn-primary' (click)='agregarEmbarque(selectBuque.value)'>Agregar</button>
+        </div>
+    </div>
+    <div class='modal-footer'>
+        <!-- Redireccionamos a Pre-Lineup con el /:state => modulo-carga para que cuando cargue un embarque lo redirija a modulo de carga -->
+        <p class='txt-new-buque'>Si desea agregar un buque que no se encuentra en line up haga <a [routerLink]="['/lineup/alta-embarque/0/modulo-carga']" (click)='modal.dismiss("Cross click")'>click aquí</a></p>
+    </div>
+</ng-template>
+<ng-template #addBuqueAux let-modal>
+    <div class='modal-header'>
+        <h6 class='modal-title txt-center' id='add-buque-title'><b>No se han encontrado buques</b></h6>
+    </div>
+    <div class='modal-body mt-2'>
+        <h6 class='ptb-15'>¿Desea agregar un nuevo buque?</h6>
+        <form *ngIf='elementosSinPlano.length > 0'>
+            <div class='form-group col-10 w-70 p-0'>
+                <label for='buque-select'><b>Buque</b></label>
+                <select class='form-control' id='buque-select' #selectBuque>
+                    <option value='0' selected>Seleccione buque del line up</option>
+                    <option *ngFor='let element of elementosSinPlano; let i = index' [value]='element.id'>#{{i+1+elementos.length}} {{element.nombreBuque}} {{mostrarUbicacion ? (element.nombreUbicacion ? ': ' + element.nombreUbicacion : ':') : ''}}
+                    </option>
+                </select>
+                <div *ngIf='errorMessage' class='txt-red mt-2'>El embarque es <strong>requerido</strong></div>
+            </div>
+        </form>
+        <div class='flex-between w-100 pt-10 mt-3'>
+            <button type='button' class='btn btn-outline-danger' [routerLink]="['/lineup']" (click)="modal.dismiss('Cross click')">Cancelar</button>
+            <button type='button' class='btn btn-primary' [routerLink]="['/lineup/alta-embarque/modulo-carga']" (click)="modal.dismiss('Cross click')">Agregar</button>
+        </div>
+    </div>
+</ng-template>

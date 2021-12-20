@@ -1,0 +1,149 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.RefrescarOrdenEntrePlantas"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:msde="clr-namespace:Molinos.Scato.Dominio.Enums;assembly=Molinos.Scato.Dominio"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="orden" Type="OutArgument(msdd:OrdenEntrePlantasDto)" />
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)" />
+    <x:Property Name="tipoDocumentoIngreso" Type="InArgument(msde:TipoDocumentoIngreso)" />
+    <x:Property Name="puestoDeTrabajoId" Type="InArgument(x:Int32)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.RefrescarOrdenEntrePlantas_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+      <x:String>Molinos.Scato.Dominio.Enums</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <local:RefrescarOrdenEntrePlantas sap2010:WorkflowViewState.IdRef="RefrescarOrdenEntrePlantas_1">
+      <local:RefrescarOrdenEntrePlantas.Orden>
+        <OutArgument x:TypeArguments="msdd:OrdenEntrePlantasDto">
+          <mca:CSharpReference x:TypeArguments="msdd:OrdenEntrePlantasDto">orden</mca:CSharpReference>
+        </OutArgument>
+      </local:RefrescarOrdenEntrePlantas.Orden>
+      <local:RefrescarOrdenEntrePlantas.WorkflowId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+        </InArgument>
+      </local:RefrescarOrdenEntrePlantas.WorkflowId>
+    </local:RefrescarOrdenEntrePlantas>
+    <local:PersistirPropiedadesCustom Calidad="{x:Null}" CentroId="{x:Null}" ChoferDNI="{x:Null}" ChoferNombre="{x:Null}" Procedencia="{x:Null}" Workflow="{x:Null}" sap2010:WorkflowViewState.IdRef="PersistirPropiedadesCustom_1">
+      <local:PersistirPropiedadesCustom.Cuit>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer.Cuil</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.Cuit>
+      <local:PersistirPropiedadesCustom.MaterialId>
+        <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.MaterialId</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.MaterialId>
+      <local:PersistirPropiedadesCustom.NumeroDocumentoDeIngreso>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">orden.Numero</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.NumeroDocumentoDeIngreso>
+      <local:PersistirPropiedadesCustom.Patente>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">orden.PatenteCamion</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.Patente>
+      <local:PersistirPropiedadesCustom.TipoComercial>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">orden.TipoComercial</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.TipoComercial>
+      <local:PersistirPropiedadesCustom.TipoComercialId>
+        <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.TipoComercialId</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.TipoComercialId>
+      <local:PersistirPropiedadesCustom.TipoDocumentoDeIngreso>
+        <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">(int?)tipoDocumentoIngreso</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.TipoDocumentoDeIngreso>
+      <local:PersistirPropiedadesCustom.TipoVehiculo>
+        <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">(int?)orden.TipoVehiculo</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.TipoVehiculo>
+      <local:PersistirPropiedadesCustom.TransportistaId>
+        <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.TransportistaId</mca:CSharpValue>
+        </InArgument>
+      </local:PersistirPropiedadesCustom.TransportistaId>
+    </local:PersistirPropiedadesCustom>
+    <local:FinDeActividad InstanceId="{x:Null}" NombreUsuario="{x:Null}" PuestoDeTrabajoId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+      <local:FinDeActividad.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new Molinos.Scato.Dominio.Dto.ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRefrescarOrdenEntrePlantas, ActividadXaml = "RefrescarOrdenEntrePlantas", WorkflowInstanceId = workflowId, PuestoDeTrabajoId = puestoDeTrabajoId }</mca:CSharpValue>
+        </InArgument>
+      </local:FinDeActividad.ControlRecorridoDto>
+    </local:FinDeActividad>
+    <sads:DebugSymbol.Symbol>d2FDOlxTY2F0b1xNb2xpbm9zIC0gU0NUMjAwXE1vbGlub3MuU2NhdG9cTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xSZWZyZXNjYXJPcmRlbkVudHJlUGxhbnRhcy54YW1sEEEDhQEOAgEBQgVNKAIBNk4FfCgCAQh9BYMBHAIBAkoLSlECATxFC0VnAgE3dAt0bAIBMWALYFwCASx5C3lpAgEnbwtvbgIBImULZVwCAR1qC2ppAgEYVgtWZAIBE1sLW1UCAQ5RC1FaAgEJgAELgAHUAgIBAw==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="RefrescarOrdenEntrePlantas_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="PersistirPropiedadesCustom_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,270">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.RefrescarOrdenEntrePlantas_1" sap:VirtualizedContainerService.HintSize="262,350" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

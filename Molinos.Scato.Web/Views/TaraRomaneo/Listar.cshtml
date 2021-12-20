@@ -1,0 +1,20 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TaraRomaneoDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "TaraRomaneo"),
+    grilla.Columna("Codigo", Textos.Tara_Codigo),
+    grilla.Columna("Descripcion", Textos.Tara_Descripcion),
+    grilla.Columna("Importacion", Textos.Tara_Importacion, m => ((bool)m.Importacion).Formatted()),
+    grilla.Columna("CargaPesoManual", Textos.Tara_CargaPesoManual, m => ((bool)m.CArgaPesoManual).Formatted()),
+    grilla.Columna("Peso", Textos.Tara_Peso)
+    ))

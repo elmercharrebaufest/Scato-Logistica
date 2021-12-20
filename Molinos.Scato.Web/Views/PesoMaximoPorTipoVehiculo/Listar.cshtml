@@ -1,0 +1,20 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<PesoMaximoPorTipoVehiculoDto>)ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "PesoMaximoPorTipoVehiculo"),
+        grilla.Columna("TipoVehiculo", Textos.Descripcion),
+        grilla.Columna("PesoMaxIngreso", Textos.PesoMaxIngreso),
+        grilla.Columna("PesoMaxEgreso", Textos.PesoMaxEgreso),
+        grilla.Columna("PesoNetoMaxPlanta", Textos.PesoNetoMaxPlanta),
+        grilla.Columna("PesoNetoMinimo", Textos.PesoNetoMinimo),
+        grilla.Columna("Activo", Textos.Activo,m => ((bool)m.Activo).Formatted())
+        ))

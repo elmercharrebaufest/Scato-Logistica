@@ -1,0 +1,27 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ConversionCentroDto
+@{
+    Layout = null;
+    var centros = (IEnumerable<SelectListItem>)ViewBag.Centros;
+}
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(m => m.CentroDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CentroId, centros, Textos.Default_Centro, new { id = "centrosDropDown" })
+        @Html.Hidden("ConsultarConversionPorCamara", Url.Action("Indexa"))
+        @Html.ValidationMessageFor(m => m.CentroId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoCamara, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoCamara, new {@class = "control input-large campoNumerico"})
+        @Html.ValidationMessageFor(m => m.CodigoCamara)
+    </div>
+</div>
+
+<div class="botones-carta-porte centered">
+    <button class="btn btn-primary" type="submit">@Textos.Agregar</button>
+</div>

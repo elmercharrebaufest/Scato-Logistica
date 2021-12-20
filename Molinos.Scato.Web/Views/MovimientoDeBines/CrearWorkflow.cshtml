@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MovimientoDeBinesDto
+@{
+    ViewBag.Title = Textos.MovimientoDeBines_Crear;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/workflowMovBines.index.js")"></script>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Workflow-@Textos.MovimientoDeBines_Titulo</div>
+</div>
+<br/>
+@using (Html.BeginForm("CrearWorkflow", null, null, FormMethod.Post, new { @class = "form-horizontal content causaBlock", id = "orden-form"}))
+{
+
+    @Html.Partial("_CrearModificar")
+    <div class="botones-carta-porte centered">
+            <button id="aceptar" class="btn btn-primary" type="submit">@Textos.Aceptar</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class="btn"})
+        </div>
+}

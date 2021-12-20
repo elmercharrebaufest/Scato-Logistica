@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.CasilleroModel
+
+@Html.ValidationSummary(true)
+
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Casillero.Numero, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Casillero.Numero, new {@class = "input-large numeroCasillero", data_texto_eliminar = Textos.Eliminar})
+        @Html.ValidationMessageFor(model => model.Casillero.Numero)
+    </div>
+</div>
+<div class="control-group hasta">
+    @Html.LabelFor(model => model.Hasta, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Hasta, new {@class = "input-large hastaVacio", data_error_vacio = Textos.Casillero_HastaVacio})
+        @*@Html.ValidationMessageFor(model => model.Hasta)*@
+        <div class="control-group">@Html.ValidationMessage("Hasta", new {@class = "validaHastaVacio help-block"})</div>
+    </div>
+</div>
+@if (ViewBag.Eliminar != "true")
+{
+    <div class="control-group">
+        @Html.LabelFor(model => model.Casillero.Capacidad, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(model => model.Casillero.Capacidad, new {@class = "input-large"})
+            @Html.ValidationMessageFor(model => model.Casillero.Capacidad)
+        </div>
+    </div>    
+}

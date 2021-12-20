@@ -1,0 +1,86 @@
+.colorTitle{ color: #4D60A8; }
+
+.inputLineasEmbarque{
+    /* width: 75px;
+    height: 38px; */
+    width: 100%;
+    height: 100%;
+}
+
+label{ font-weight: bold; }
+
+.max-5vh{
+    max-height: 400px;
+    height: 400px;
+    padding-bottom: 30px;
+    margin-top: -20px;
+}
+
+.float-down-arrow{
+    position: absolute;
+    right: 2.5rem;
+    bottom: 0;
+    font-size: 1.3rem;
+}
+
+.pt-btn-add{ padding-top: 7px; }
+
+.full-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.full-center i{
+    margin-top: 11px;
+    color: red !important;
+}
+.full-center i:hover{ cursor: pointer; }
+
+.btn-eliminar { 
+    place-self: flex-start; 
+    right: 0;
+    margin-right: 10px;
+}
+
+.tanqueSi{
+    color: green;
+    font-weight: bold;
+}
+.tanqueNo{
+    color: red;
+    font-weight: bold;
+}
+
+.distancia-filas{
+    /* margin-bottom: -9px; */
+    margin-bottom: -18px;
+}
+.lblCentrado{ text-align:center }
+
+.basurerito { 
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.claseTable, .claseThead, .claseTr, .claseTd{
+    width: 100%;
+}
+.claseTd{ border: 0; }
+.pl-2, .px-2 {
+    padding-left: 0rem !important;
+}
+.pr-2, .px-2 {
+    padding-right: 0rem !important;
+}
+.tituloCentrado{
+    text-align: center;
+}
+.div-active {
+    border: 1px solid #dee2e6da;
+    background-color: #DADADA;
+}
+.custom-select{
+    text-align: center;
+}

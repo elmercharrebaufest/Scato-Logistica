@@ -1,0 +1,18 @@
+Estimado [Proveedor],<br/>
+A continuación se muestran los valores de calidad obtenidos.<br/>
+<br/>
+Centro: [Centro]<br/>
+ANALISIS<br/>
+[Documento Legal] N°: [Número documento legal]<br/>
+Patente: [Patente]<br/>
+Material: [Material]<br/>
+Procedencia: [Procedencia]<br/>
+Entregador: [Entregador]<br/>
+Corredor: [Corredor]<br/>
+Titular CP: [Titular CP]<br/>
+Intermediario: [Intermediario]<br/>
+Remitente Comercial: [Remitente Comercial]<br/><br/>
+[Descuentos]<br/>
+Descuento TOTAL = [Descuento Total]<br/><br/>
+Saludos cordiales,<br/>
+[Firma]

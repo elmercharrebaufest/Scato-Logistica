@@ -1,0 +1,17 @@
+<app-grafico-carga id='graficoCargaCanva' class='bg-white'></app-grafico-carga>
+
+<app-manos [celdasManoDeEmbarque]="celdasManoDeEmbarque" [sentidosManoDeEmbarque]="sentidosManoDeEmbarque">
+</app-manos>
+
+<!-- <div class='bg-white px-4 min-h5 shadow mt-4'>
+    <app-planilla-turnos-solidos></app-planilla-turnos-solidos>
+</div> -->
+
+<div fxLayout='row wrap' class="mt-4 shadow" >
+    <div fxFlex='50'>
+        <app-graficos-ritmos [liquido]='embarqueSelected.esLiquido'></app-graficos-ritmos>
+    </div>
+    <div fxFlex='50' class='pb-3'>
+        <!-- <app-info-adicional></app-info-adicional> -->
+    </div>
+</div>

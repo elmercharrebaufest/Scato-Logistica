@@ -1,0 +1,46 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.MaterialPorWorkflowDto
+@{
+    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
+}
+
+@Html.HiddenFor(model => model.CentroId)
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"
+     data-url-obtener-clientes-sap ="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-clientes = "@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-cliente-unico ="@Url.Action("BuscarCliente", "Consultas")"
+     ></div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.MaterialDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.MaterialDesc)
+        @Html.HiddenFor(model => model.MaterialId)
+        @Html.ValidationMessageFor(m => m.MaterialId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.WorkflowDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.WorkflowId, workflows, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(m => m.WorkflowId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ClienteDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ClienteDesc, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(model => model.ClienteDesc)
+        @Html.HiddenFor(model => model.ClienteId)
+    </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.EnviaASapAlmacenPredeterminado) @Textos.MaterialPorWorkflow_EnviaASapAlmacenPredeterminado
+        </label>
+    </div>
+</div>

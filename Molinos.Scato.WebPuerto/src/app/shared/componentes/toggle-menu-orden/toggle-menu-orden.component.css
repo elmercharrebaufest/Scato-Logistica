@@ -1,0 +1,21 @@
+.listadoAcciones {
+  position: absolute;
+  background-color: #fff;
+  z-index: 5;
+}
+.cursorPointer {
+  cursor: pointer;
+}
+.lh-9 {
+  line-height: 9px !important;
+}
+.s16 {
+  font-size: 16px;
+}
+
+.ancho{
+    width:50px;
+}
+.border {
+  border: 1px solid #dee2e6 !important;
+}

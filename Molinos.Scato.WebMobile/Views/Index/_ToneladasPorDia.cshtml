@@ -1,0 +1,70 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoEficienciaHidraulicasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+    var materiales = (List<SelectListItem>)ViewBag.Materiales;
+    var hidraulicas = (MultiSelectList)ViewBag.Hidraulicas;
+}
+
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoToneladasPorDia.js")"></script>
+<script type="text/javascript">
+    var textoToneladasPorDia = "@Textos.ToneladasPorDia"
+</script>
+
+<style>
+    .checkboxesToneladas,
+    .checkboxesToneladas div {
+        display: inline-block;
+    }
+</style>
+
+<br />
+<div id="graficoToneladasPorDia" class="col border rounded panel-padding">
+    <form id="formToneladasPorDia">
+        <div class="form-row">
+            <div class="col-12 col-sm h5 mt-auto  text-center">
+                @Textos.ToneladasPorDia
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.DropDownList("MaterialId", materiales, "Todos", new { @id = "materialIdToneladasPorDia" })
+
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.LabelFor(model => model.FechaHoraDesde, new { @class = "sr-only" })
+                <div class="input-group date ancho-maximo">
+                    @Html.EditorFor(model => model.FechaHoraDesde, Model != null ? Model.FechaHoraDesde.FormattedFixed() : string.Empty, "FechaDesdeToneladas", new { @ShowTime = true })
+                </div>
+                @Html.ValidationMessageFor(model => model.FechaHoraDesde)
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.LabelFor(model => model.FechaHoraHasta, new { @class = "sr-only" })
+                <div class="input-group date ancho-maximo">
+                    @Html.EditorFor(model => model.FechaHoraHasta, Model != null ? Model.FechaHoraHasta.FormattedFixed() : string.Empty, "FechaHastaToneladas", new { @ShowTime = true })
+                </div>
+                @Html.ValidationMessageFor(model => model.FechaHoraHasta)
+            </div>
+            <div class="col-12 col-sm m-auto">
+                <button class="btn btn-outline-success w-100" data-bind="click: generarGraficoToneldasPorDia">@Textos.Generar</button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 col-sm m-2 text-center">
+                <div class="btn-group-toggle checkboxesToneladas" data-toggle="buttons">
+                    @foreach (var h in hidraulicas)
+                    {
+                        <label class="btn btn-outline-info active">
+                            <input type="checkbox" checked autocomplete="off" value="@h.Value"> @h.Text
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row" id="partialContainerToneladasPorDia">
+        @Html.Partial("_GraficoToneladasPorDia", Model)
+    </div>
+</div>
+
+<div id="autocompleteCorr"></div>

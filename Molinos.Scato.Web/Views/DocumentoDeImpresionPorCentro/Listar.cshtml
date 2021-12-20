@@ -1,0 +1,27 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@{
+    Layout = null;
+    var items = (ListaPaginada<DocumentoDeImpresionPorCentroDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminarModificar(this.Html, "DocumentoDeImpresionPorCentro"),
+            grid.Columna("DocumentoDeImpresion.Descripcion", Textos.DocumentoDeImpresion, c => c.DocumentoDeImpresionDescripcion),
+            grid.Columna("PuestoDeTrabajo.Descripcion", Textos.PuestoDeTrabajo, c => c.PuestoDeTrabajoDescripcion),
+            grid.Columna("FormatoDeImpresion.Descripcion", Textos.FormatoDeImpresion, c => c.FormatoDeImpresionDescripcion),
+            grid.Columna("Impresora.Descripcion",  Textos.Impresora, c => c.ImpresoraDescripcion)))
+
+@if (!PermisosHelper.Is(PermisosScato.BorrarImpresionPorCentro))
+{
+    <script type="text/javascript">
+        $(function() {
+            $(".ajax-borrar-link").hide();
+        })
+    </script>
+}

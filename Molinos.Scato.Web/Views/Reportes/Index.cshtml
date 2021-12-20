@@ -1,0 +1,13 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using MvcReportViewer
+@model dynamic
+
+@{
+    ViewBag.Title = Textos.Reportes_Titulo;
+    var builder = new UriBuilder(HttpContext.Current.Request.Url) { Path = VirtualPathUtility.ToAbsolute("~/"), Query = "" };
+    var location = builder.Uri.AbsoluteUri;
+}
+
+@Html.MvcReportViewerFluent(null).ReportPath("/Molinos.Scato.Reportes/" + ViewBag.NombreReporte
+    ).ReportParameters((IEnumerable<KeyValuePair<string, object>>)ViewBag.ReportParameterList
+    ).Attributes(new { Height = "560", Width = "100%", style = "border: none" }).Method(FormMethod.Post)

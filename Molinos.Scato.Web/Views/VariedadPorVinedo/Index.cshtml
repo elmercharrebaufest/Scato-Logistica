@@ -1,0 +1,37 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.VariedadPorVinedos_Titulo;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/variedadPorVinedo.js")"></script>
+<div id ="links"
+        data-url-buscar-vinedo ="@Url.Action("BuscarVinedo", "Consultas")"
+        data-url-buscar-vinedos = "@Url.Action("BuscarVinedos", "Consultas")" />
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_VariedadPorVinedos</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                        @Html.Label(Textos.Filtrar_Vinedos, new {@class = "control-label", @style = "float: left; margin-top: 5px;"})
+                        @Html.TextBox("vinedoFiltro", "", new {@class = "control input-large" ,data_buscando = ""})
+                        @Html.Hidden("vinedoIdFiltro")
+                        @Html.Hidden("ConsultarVinedo", Url.Action("Index"))
+                        @Html.Hidden("MensajeDeEspera", Textos.Buscando_Vinedos)                     
+            }            
+        </div>
+        @Html.ActionLink(Textos.VariedadPorVinedo_Nuevo, "Crear", "VariedadPorVinedo", null, new { id = "botonVariedadPorVinedoNuevo", @class = "ajax-editar-link btn btn-primary pull-right", disabled = "disabled"})
+    </div>
+
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+

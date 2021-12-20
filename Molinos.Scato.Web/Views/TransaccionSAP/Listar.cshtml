@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TransaccionSAPDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminar(Html, "TransaccionSAP"),
+    grilla.Columna("DescripcionCorta", Textos.DescripcionCorta),
+    grilla.Columna("Material.CodigoSAP", Textos.CodigoSAPMaterial, t => t.MaterialCodigoSAP),
+    grilla.Columna("Material.Descripcion", Textos.Material, t => t.MaterialDesc),
+    grilla.Columna("TipoComercial.Descripcion", Textos.TipoComercial, t => t.TipoComercialDesc),
+    grilla.Columna("CentroOrigen.Descripcion", Textos.TransaccionSAP_Centro, t => t.CentroOrigenDesc),
+    grilla.Columna("FuncionSAP", Textos.FuncionSAP, t => ((FuncionSAP)t.FuncionSAP).DisplayEnum())))

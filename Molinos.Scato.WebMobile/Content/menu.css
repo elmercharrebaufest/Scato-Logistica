@@ -1,0 +1,42 @@
+.toggle {
+    margin-top: 1% !important;
+}
+
+.btn-success {
+    background-color: #7bb799;
+}
+.toggle.btn-success {
+    width: 130px !important;
+    height: 40px;
+}
+
+@media only screen and (max-width: 650px) {
+    .navbar-menu {
+        display: block;       
+    }
+    .ingresoEgreso {
+        text-align: center;
+    }
+    .ingresoEgreso {
+        margin-top: 10px !important;
+    }
+    .toggle.btn-success {
+        width: 140px !important;
+        height: 40px;
+    }  
+
+}
+@media only screen and (max-width: 310px) {
+    
+    .toggle.btn-success {
+        width: 220px !important;
+        height: 40px;
+    }
+}
+@media only screen and (max-width: 240px) {
+
+    .toggle.btn-success {
+        width: 100px !important;
+        height: 40px;
+    }
+}

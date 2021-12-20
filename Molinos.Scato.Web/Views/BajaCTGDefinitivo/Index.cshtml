@@ -1,0 +1,67 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.BajaCTGDto
+@{
+    ViewBag.Title = Textos.BajaCTG_Titulo;
+    var reintentar = (bool)ViewBag.VerReintentar;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bajaCTG.js")"></script>
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.BajaCTGDefinitiva</div>
+</div>
+
+@* ReSharper disable Mvc.ActionNotResolved *@
+@using (Html.BeginForm("Action", "BajaCTGDefinitivo", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActBajaCTG }))
+{
+@* ReSharper restore Mvc.ActionNotResolved *@
+    <div id="Automatica" >
+        <div>
+            <h4>@Textos.BajaCTG_BajaAutomaticaError</h4>
+            @Html.ValidationMessageFor(model => model.Errores)
+        </div>
+        <div class="control-group"></div>
+        <div class="modal-footer">
+            <button id="dialogo-reintentar" class="confirmar-boton btn " data-accion="ReintentarCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Reintentar, Textos.CTG)">@Textos.Reintentar</button>
+            <button id="dialogo-dardebaja" class="confirmar-boton btn " data-accion="CargarBajaCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.DarDeBaja,Textos.CTG)">@Textos.BajaCTG_Manual</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+        </div>
+    </div>
+    
+    <div id="Manual" >
+        <div>
+            <h4>@Textos.BajaCTG_Titulo</h4>
+        </div>
+    
+        <div class="modal-body">
+            @Html.HiddenFor(model => model.WorkflowCodigo)
+            @Html.HiddenFor(model => model.WorkflowId)
+            @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+            @Html.Hidden("verReintentar", reintentar)
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-dardebaja" class="confirmar-boton btn " data-accion="CargarBajaCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.DarDeBaja,Textos.CTG)">@Textos.Aceptar</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+        </div>
+    </div>
+    
+    
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

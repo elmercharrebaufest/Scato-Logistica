@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ProveedorDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaModificar(Html, "Proveedor"),
+    grilla.Columna("CodigoSap", Textos.Codigo),
+    grilla.Columna("RazonSocial", Textos.Transportista_RazonSocial),
+    grilla.Columna("ToleranciaEnKg", Textos.Entregador_ToleranciaKg),
+    grilla.Columna("ToleranciaEnPorcentaje", Textos.Entregador_ToleranciaPorc),
+    grilla.Columna("EsTitularCP", Textos.Entregador_TitularCP, m => ((bool)m.EsTitularCP).Formatted()),
+    grilla.Columna("EsRemitenteComercial", Textos.Entregador_RC, m => ((bool)m.EsRemitenteComercial).Formatted()),
+    grilla.Columna("EsDestinatario", Textos.Entregador_DEST, m => ((bool)m.EsDestinatario).Formatted())
+    ))
+

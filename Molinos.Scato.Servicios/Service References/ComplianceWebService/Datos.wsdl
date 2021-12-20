@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns="http://www.webcompliance.com.ar/webservice/soap-graneles" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:tns="http://www.webcompliance.com.ar/webservice/soap-graneles" xmlns:s="http://www.w3.org/2001/XMLSchema" name="Datos" targetNamespace="http://www.webcompliance.com.ar/webservice/soap-graneles" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.webcompliance.com.ar/webservice/soap-graneles">
+      <s:element name="Datos">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="cuit" type="s:string" />
+            <s:element name="dni" type="s:string" />
+            <s:element name="patente1" type="s:string" />
+            <s:element name="patente2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element name="colorEmpresa" type="s:string" />
+            <s:element name="codigoError" type="s:string" />
+            <s:element name="nombreEmpresa" type="s:string" />
+            <s:element name="colorChofer" type="s:string" />
+            <s:element name="nombreChofer" type="s:string" />
+            <s:element name="colorVehiculo1" type="s:string" />
+            <s:element name="codigoVehiculo1" type="s:string" />
+            <s:element name="colorVehiculo2" type="s:string" />
+            <s:element name="codigoVehiculo2" type="s:string" />
+            <s:element name="codigoCombinacion" type="s:string" />
+            <s:element name="pallets" type="s:string" />
+            <s:element name="avlChofer" type="s:string" />
+            <s:element name="avlVehiculo1" type="s:string" />
+            <s:element name="avlVehiculo2" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="controlarDatosGranelesRequest">
+    <wsdl:part name="parameters" element="tns:Datos" />
+  </wsdl:message>
+  <wsdl:message name="controlarDatosGranelesResponse">
+    <wsdl:part name="return" element="tns:Response" />
+  </wsdl:message>
+  <wsdl:portType name="DatosPort">
+    <wsdl:operation name="controlarDatosGraneles">
+      <wsdl:input message="tns:controlarDatosGranelesRequest" />
+      <wsdl:output message="tns:controlarDatosGranelesResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DatosBinding" type="tns:DatosPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="controlarDatosGraneles">
+      <soap:operation soapAction="http://www.webcompliance.com.ar/webservice/soap-graneles#controlarDatosGraneles" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DatosService">
+    <wsdl:port name="DatosPort" binding="tns:DatosBinding">
+      <soap:address location="http://www.webcompliance.com.ar/webservice/soap-graneles" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

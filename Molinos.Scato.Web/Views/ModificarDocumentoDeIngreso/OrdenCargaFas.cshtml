@@ -1,0 +1,155 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.OrdenCargaFasDto
+@{
+    if (ViewBag.esDocumentoDeOrigen != null && ViewBag.esDocumentoDeOrigen)
+    {
+        Layout = null;
+    }
+    if (ViewBag.SoloLectura == null)
+    {
+        ViewBag.SoloLectura = false;
+    }
+    bool soloLectura = ViewBag.SoloLectura;
+    string workflow = ViewBag.Workflow;
+    int recorridoId = ViewBag.RecorridoId;
+    bool esRechazado = ViewBag.Rechazado;
+    string patente = ViewBag.Patente;
+    string tipoDocumento = ViewBag.TipoDocumentoString;
+    string numeroDoc = ViewBag.NumeroDocumento;
+    bool tieneDatosExportacion = ViewBag.TieneDatosExportacion;
+
+}
+
+@Scripts.Render("~/bundles/jqueryval")   
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script src="@Url.Script("~/Scripts/ordenCargaFas.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+
+<style>
+    .content { padding-top: 20px;}
+
+</style>
+
+<div class="container-fluid">
+    @{
+        if (soloLectura)
+        {
+            <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
+            <br />
+            <div class="row">
+                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+                <div class="span2 negrita" style="">@Textos.Patente</div>
+                <label class="span2" style="margin-left:-43px">@patente</label>
+                <div class="right">
+                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+                </div>
+            </div>
+
+
+        }
+        else
+        {
+            <div class="titSecciones">@Textos.ModificarDocumentoDeIngreso_Titulo</div>
+            <br />
+            <div class="row">
+                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+                <div class="span2 negrita" style="">@Textos.Patente</div>
+                <label class="span2" style="margin-left:-43px">@patente</label>
+                <div class="right">
+                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@if (soloLectura && (ViewBag.esDocumentoDeOrigen == null || !ViewBag.esDocumentoDeOrigen))
+{
+    <div class ="container-fluid">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Pesada, "Pesada", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AnalisisDeCalidad, "AnalisisDeCalidad", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AsignacionDeRuta, "AsignacionDeRuta", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_Fotos, "Fotos", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Recorrido, "Recorrido", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = Model.PatenteCamion, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            @if (tieneDatosExportacion)
+            {
+                <li>
+                    @Html.ActionLink(Textos.DatosExportacion, "DatosExportacion", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = TipoDocumentoIngreso.OrdenCargaFas, numeroDoc = Model.NumeroOrden, patente = patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+            }
+            @if (esRechazado)
+            {
+                <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+            }
+        </ul>
+    </div>    
+}
+
+
+
+
+<script>
+    $(document).ready(function () {
+        if ($('#soloLectura').val() == "True") {
+            $('input').attr("disabled", "disabled");
+            $('select').attr("disabled", "disabled");
+            $(".btn-primary").attr("style", "visibility: hidden");
+        }
+    });
+</script>
+
+@Html.Hidden("SoloLectura", (bool)ViewBag.SoloLectura, new {id = "soloLectura"})
+@using (Html.BeginForm("OrdenCargaFas", "ModificarDocumentoDeIngreso", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", onsubmit = "AceptarFormulario()", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaFas }))
+{
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+     {
+         <div class="alert alert-error">
+             @Html.ValidationSummary(true)
+         </div>
+     }
+    @Html.HiddenFor(o => o.Id)
+    @Html.HiddenFor(o => o.NumeroOrden)
+    @Html.HiddenFor(o => o.ClienteId)
+    @Html.HiddenFor(o => o.ClienteDesc)
+    @Html.HiddenFor(o => o.TransportistaDesc)
+    @Html.HiddenFor(o => o.TransportistaId)
+    @Html.HiddenFor(o => o.PatenteAcoplado)
+    @Html.HiddenFor(o => o.MaterialDesc)
+    @Html.HiddenFor(o => o.MaterialId)
+    @Html.HiddenFor(o => o.CuitTransporte)
+    @Html.HiddenFor(o => o.ValidaCompliance)
+    @Html.HiddenFor(o => o.PatenteCamion)   
+    @Html.Partial("~/Views/IngresarOrdenCargaFas/_OrdenModificar.cshtml",Model)
+
+    if (!soloLectura)
+    {
+        <div class="control-group paddingRight cajaButtons">
+            <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones",null, new {@class="btn"})
+        </div>        
+    }
+     
+}

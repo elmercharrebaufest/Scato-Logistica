@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConsultaCasilleroDto>)ViewBag.Items;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/consultaCasillero.Casillero.listar.js")"></script>
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("NDeCasillero", Textos.ConsultaCasillero_NDeCasillero),
+    grilla.Columna("CantMuestra", Textos.ConsultaCasillero_CantMuestra),
+    grilla.Columna("TipoDocumento", Textos.ConsultaCasillero_TipoDocumento),
+    grilla.Columna("NumeroDocumento", Textos.ConsultaCasillero_NumeroDocumento),
+    grilla.Columna("Patente", Textos.ConsultaCasillero_Patente)))

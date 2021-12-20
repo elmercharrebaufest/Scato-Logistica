@@ -1,0 +1,69 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.VariedadPorVinedoDto
+@{
+    var variedades = (IEnumerable<SelectListItem>)ViewBag.Variedades;
+}
+@Html.ValidationSummary(true)
+@Html.Hidden("VinedoId",(int)ViewBag.VinedoId)
+<div class="row-fluid">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.Cosecha, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-medium input-mini cosecha" })
+                @Html.ValidationMessageFor(model => model.Cosecha)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Variedad, new { id = "variedadDesc" ,@class = "control-label", data_obtener_recibidos = @Url.Action("ObtenerRecibidos","VariedadPorVinedo"), data_buscandorecibidos = Textos.VariedadPorVinedo_CalculandoRecibidos})
+            <div class="controls">
+                @Html.DropDownListFor(model => model.VariedadId, variedades, Textos.Default_Variedad, new {@class = "input-medium"})
+                @Html.ValidationMessageFor(model => model.VariedadId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Hectareas, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Hectareas, new { @class = "control input-medium input-mini", data_bind = "value: hectareas"})
+                @Html.ValidationMessageFor(model => model.Hectareas)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.AvisoCorte, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.AvisoCorte, new { @class = "control input-medium input-mini" })
+                @Html.ValidationMessageFor(model => model.AvisoCorte)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.TopeHectarea, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.TopeHectarea, new { @class = "control input-medium input-mini", data_bind = "value: topeHectarea" })
+                @Html.ValidationMessageFor(model => model.TopeHectarea)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.KgRecibidos, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBox("KgRecibidos", Model != null ? (object) Model.KgRecibidos : null, new { @class = "control input-medium input-mini", @readonly="readonly", data_bind = "value: recibidos" })
+                @Html.ValidationMessageFor(model => model.KgRecibidos)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.KgARecibir, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.KgARecibir, new { @class = "control input-medium input-mini", @readonly="readonly", data_bind="value: kgARecibir" })
+                @Html.ValidationMessageFor(model => model.KgARecibir)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.PorcRecibidos, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.PorcRecibidos, new { @class = "control input-medium input-mini", @readonly="readonly", data_bind="value: porcRecibidos" })
+                @Html.ValidationMessageFor(model => model.PorcRecibidos)
+            </div>
+        </div>
+    </div>
+</div>

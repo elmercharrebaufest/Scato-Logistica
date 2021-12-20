@@ -1,0 +1,38 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = Textos.ActVerificarImpresion + " CIU";
+    string workflow = ViewBag.Workflow;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/verificarImpresion.js")" type="text/javascript"></script>
+}
+
+<div class="titSecciones">@Textos.ImpresionCIU</div>
+@using (Html.BeginForm("Index", "VerificarImpresion", FormMethod.Post, new {@class = "form-horizontal causaBlock"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.ActividadXaml)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    @Html.HiddenFor(model => model.Decision, new {@class = "valorDecision"})
+    
+    <br/>
+    <br/>
+    <h5>@Textos.ConfirmacionImpresionCorrecta</h5>
+    <br/>
+    <br/>
+
+        <button type="submit" class="btn no-reimprimir">@Textos.Si</button>       
+        <button type="submit" class="btn btn-warning reimprimir">@Textos.Reimprimir</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-primary" })
+}

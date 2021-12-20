@@ -1,0 +1,25 @@
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbarStyle demo-header">
+  <a (click)="onClickHandler()" class="demo-header__toggle"></a>
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbarStyle">
+  <a href="#">
+    <i class="fa fa-bars fnt-white"></i>
+  </a> -->
+  <div class="col-lg-2 col-md-3">  <!--d-md-block">-->
+    <input class="form-control search d-none" type="search" placeholder="&#xF002; Buscar" aria-label="Search">
+  </div>
+  <div class="col align-self-center text-center">
+    <a routerLink="/">
+      <img src="assets/logo.svg" class="logo">
+    </a>
+  </div>
+  <div class="col-lg-2 col-md-3 col-sm-6 d-none d-md-block">
+    <label class="form-control mx-0">Usuario: {{session.getUser().username}}</label>
+  </div>
+  <div class='center-imgs'>
+    <button type="button" class="btn btn-light btn-sm bg-white rounded-img mr-2"><img class="mx-2" src="assets/notificationsBell.svg"></button>
+    <button type="button" class="btn btn-light btn-sm bg-white rounded-img"><img class="mx-2 img-user-rounded" src="assets/user.svg"></button>
+  </div>
+</nav>
+

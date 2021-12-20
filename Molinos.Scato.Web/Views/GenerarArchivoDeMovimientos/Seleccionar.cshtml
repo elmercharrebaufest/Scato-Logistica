@@ -1,0 +1,28 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ArchivoDeMovimientosDto
+@{
+    Layout = null;
+    var loteId = (int) ViewBag.LoteId;
+    var numeroLote = (string)ViewBag.NumeroDeLote;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/loteBiotecnologia.js")"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dialogo-editar-guardar").addClass("hide");
+        $("#dialogo-editar").css("width", '80%');
+        $(".causaBlock").click(function () {
+            BlockUI();
+        });
+    });
+</script>
+@using (Ajax.BeginForm("Seleccionar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", data_dialogo_titulo = Textos.Numero + ": " + numeroLote}))
+{
+    <div id="gridContainer">
+        @Html.Partial("ListarMuestas")
+        @Html.ActionLink(Textos.Lote_DescargarArchivo, "GenerarArchivos", "GenerarArchivoDeMovimientos", new  {loteId} , new {@class = "btn causaBlock", style="align:right"})
+        @*@Html.ActionLink(Textos.PublicarArchivo, "GenerarArchivos", "GenerarArchivoDeMovimientos", new  {loteId, publicar = true} , new {@class = "btn causaBlock", style="align:right"})*@
+
+    </div>
+}

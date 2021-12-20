@@ -1,0 +1,35 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.CalidadMaterial_Titulo;
+}
+@section scripts
+{
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script src="@Url.Script("~/Scripts/calidadMaterial.js")" type="text/javascript"></script>
+}
+<div id ="links"
+        data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+        data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")" />
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.CalidadMaterial_Titulo</div>
+</div>
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                        @Html.Label(Textos.Material, new {@class = "control-label", @style = "float: left; margin-top: 5px;"})
+                        @Html.TextBox("materialFiltro", "", new {@class = "control input-large", @style="margin-left:20px"})
+                        @Html.Hidden("materialIdFiltro")
+                        @Html.Hidden("ConsultarCalidadesMaterial", Url.Action("Index"))
+                        @Html.Hidden("MensajeDeEspera", "Buscando Calidades")                       
+            }
+            
+        </div>
+        @Html.ActionLink(Textos.CalidadMaterial_Nueva, "Crear", "CalidadMaterial", null, new { @class = "ajax-editar-custom-link btn btn-primary pull-right" })
+    </div>
+    <div id="gridContainer">
+        @Html.Partial("ListarCalidades")
+    </div>
+</div>

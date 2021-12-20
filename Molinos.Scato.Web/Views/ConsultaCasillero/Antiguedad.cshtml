@@ -1,0 +1,63 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ConsultaCasilleroAntiguedadDto
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/consultaCasillero.Antiguedad.index.js")"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.ConsultaCasillero</div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active">
+        @Html.ActionLink(Textos.ConsultaCasillero_Antiguedad, "Antiguedad", "ConsultaCasillero")
+    </li>
+    <li>
+        @Html.ActionLink(Textos.ConsultaCasillero_Casilleros, "Casillero", "ConsultaCasillero")
+    </li>
+    <li>
+        @Html.ActionLink(Textos.ConsultaCasillero_Muestras, "Muestra", "ConsultaCasillero")
+    </li>
+</ul>
+
+<div class="container-fluid content grillaPad">
+    @using (Ajax.BeginForm("ListarAntiguedad", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "consultaCasillerosAntiguedad-form", @class = "form-search", data_mensaje_espera = Textos.ConsultaCasilleroPorAntiguedad }))
+    {
+        @Html.ValidationSummary(true)
+                    <div class="span3">
+                        @Html.Label(Textos.ConsultaCasillero_PlazoControlAntiguedad + ":", new { @class = "control-label" })
+                    </div>
+                    <div class="span1" style="margin-top:-5px">
+                        <div class="control-group">
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.DiasDeAntiguedad, new { @class = "input-mini" })
+                                @Html.ValidationMessageFor(model => model.DiasDeAntiguedad)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span1" style="margin-left:15px">
+                        @Html.Label(Textos.ConsultaCasillero_Dias, new { @class = "control-label" })
+                    </div>
+                    <div class="span1" style="margin-top:-5px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <button id="btnBuscarAntiguedad" type="submit" class="btn btn-primary">@Textos.Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+    }
+
+    <div id="gridContainer" style="clear:both;" data-grid-url="@Url.Action("Antiguedad", "ConsultaCasillero")">
+        @Html.Partial("ListarAntiguedad")
+    </div>
+    
+        <div class="span12 centered">
+        <div class="control-group">
+            <div class="controls">
+                <button id="btnVerGraficoAntiguedad" type="submit" class="btn btn-primary">@Textos.ConsultaCasillero_VerGrafico</button>
+            </div>
+        </div>
+    </div>
+</div>

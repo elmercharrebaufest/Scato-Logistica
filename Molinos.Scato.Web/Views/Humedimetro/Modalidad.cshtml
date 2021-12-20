@@ -1,0 +1,38 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.HumedimetroModificacionModalidadDto
+@{
+    ViewBag.Title = Textos.Humedimetro_CambiarModalidad;
+    Layout = null;
+    var modalidad = Model.Modalidad;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/humedimetro.Modalidad.js")"></script>
+
+@using (Ajax.BeginForm("Modalidad", null, new AjaxOptions(), new { id = "formModalidad", @class = "form-horizontal", data_dialogo_titulo = Textos.Humedimetro_CambiarModalidad }))
+{
+    @Html.HiddenFor(model => model.HumedimetroId)
+    @Html.Hidden("modalidadInicial", modalidad, new {id = "modalidadInicial"})
+    @Html.ValidationSummary(true)
+    <div class="control-group">
+        @Html.LabelFor(m => m.HumedimetroDescripcion, new {@class = "control-label"})
+        <div class="controls">
+            @Html.DisplayFor(m => m.HumedimetroDescripcion, new {@class = "control-label"})
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.Modalidad, new {@class = "control-label"})
+        <div class="controls">
+            @Html.EnumDropDownListFor(model => model.Modalidad, new {id = "modalidad-editada"})
+            @Html.ValidationMessageFor(m => m.Modalidad)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(m => m.Motivo, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextAreaFor(m => m.Motivo, new {id ="motivo", disabled = "disabled"})
+            @Html.ValidationMessageFor(m => m.Motivo)
+        </div>
+    </div>
+    @*@Html.ActionLink(Textos.Humedimetro_Modificar, "Modificar", "Humedimetro", new {id = Model.HumedimetroId}, new { @class = "ajax-editar-link", id = "modificar", style = "visibility: hidden" })*@
+}

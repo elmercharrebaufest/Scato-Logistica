@@ -1,0 +1,91 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.VinedoPropioDto
+@{
+    var zonas = (IEnumerable<SelectListItem>)ViewBag.Zonas;
+    var subzonas = (IEnumerable<SelectListItem>)ViewBag.SubZonas;
+}
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.NumeroINV, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NumeroINV, new {@class = "input-large", maxlength = 8})
+        @Html.ValidationMessageFor(model => model.NumeroINV)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CentroOperativo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CentroOperativo, new {@class = "input-large", maxlength = 10})
+        @Html.ValidationMessageFor(model => model.CentroOperativo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-xlarge", maxlength = 30})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.IngresosBrutos, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.IngresosBrutos, new {@class = "input-large", maxlength = 10})
+        @Html.ValidationMessageFor(model => model.IngresosBrutos)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Calidad, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Calidad, new {@class = "input-large"})
+        @Html.ValidationMessageFor(model => model.Calidad)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Zona, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ZonaId, zonas,Textos.Default_Zona, new { id = "zonasDropDown" })
+        @Html.ValidationMessageFor(model => model.ZonaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.SubZona, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SubZonaId, subzonas,Textos.Default_SubZona, new { id = "subzonasDropDown" })
+        @Html.ValidationMessageFor(model => model.SubZonaId)
+        @Html.Hidden("CargarSubZonas", Url.Action("CargarSubZonas"))
+        @Html.Hidden("ValorDefault",Textos.Default_SubZona)
+    </div>
+</div>
+<div id="grilla">
+    <div class="span6">
+        <div class="row-fluid">
+            @Html.Hidden("cuartelesJsonPostBack", (string)ViewBag.CuartelesJsonPostBack)
+            @Html.HiddenFor(m=>m.CuartelesJson, new { id = "cuartelesJson", data_bind="value: ko.toJSON(cuarteles)"})
+
+            <div class="bordeGris">
+                @Textos.Cuartel : 
+                <input type="text" id="codigoCuartel" class="input-small" maxlength="10" data-error-vacio ="@string.Format(Textos.Error_Requerido, Textos.Cuartel)"/>
+                <button id="botonCrearCuartel" data-bind="click: botonCrearCuartel" class="btn">@Textos.Crear</button>
+                    <div id="validation-message">    
+                    @Html.ValidationMessageFor(model => model.Cuarteles)  
+                    </div>       
+                </div>
+        </div>
+        <table class="table table-striped table-bordered" >
+            <thead>
+                <tr>
+                    <th>Cuartel</th>
+                    <th>Activo</th>
+                    <th>@Textos.Eliminar</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: cuarteles">
+                <tr>
+                    <td data-bind="text: Codigo" />
+                    <td> <input type="checkbox" data-bind="checked: Activo, click: $root.setCheckbox" /> </td>
+                    <td><a href="#" data-bind="click: $root.removeCuartel"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

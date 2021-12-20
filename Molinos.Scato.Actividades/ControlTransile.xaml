@@ -1,0 +1,154 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.ControlTransile"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:msde="clr-namespace:Molinos.Scato.Dominio.Enums;assembly=Molinos.Scato.Dominio"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="pesoNeto" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="tipoDeWorkflow" Type="InArgument(msde:TipoDeWorkflow)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="puestoDeTrabajoId" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="finTransile" Type="OutArgument(x:Boolean)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.ControlTransile_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Enums</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="ControlTransile" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="tolerancia" />
+    </Sequence.Variables>
+    <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+      <local:LogActividad.LogActividadDto>
+        <InArgument x:TypeArguments="msdd:LogActividadDto">
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new Molinos.Scato.Dominio.Dto.LogActividadDto { Actividad = "Control Transile", WorkflowInstanceId = workflowId, ActividadXaml = "ControlTransile" }</mca:CSharpValue>
+        </InArgument>
+      </local:LogActividad.LogActividadDto>
+    </local:LogActividad>
+    <local:LeerToleranciaRechazo sap2010:WorkflowViewState.IdRef="LeerToleranciaRechazo_1">
+      <local:LeerToleranciaRechazo.InstanceId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+        </InArgument>
+      </local:LeerToleranciaRechazo.InstanceId>
+      <local:LeerToleranciaRechazo.ToleranciaRechazo>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">tolerancia</mca:CSharpReference>
+        </OutArgument>
+      </local:LeerToleranciaRechazo.ToleranciaRechazo>
+    </local:LeerToleranciaRechazo>
+    <local:GuardarPesoNetoTransile sap2010:WorkflowViewState.IdRef="GuardarPesoNetoTransile_1">
+      <local:GuardarPesoNetoTransile.FinTransile>
+        <OutArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpReference x:TypeArguments="x:Boolean">finTransile</mca:CSharpReference>
+        </OutArgument>
+      </local:GuardarPesoNetoTransile.FinTransile>
+      <local:GuardarPesoNetoTransile.InstanceId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+        </InArgument>
+      </local:GuardarPesoNetoTransile.InstanceId>
+      <local:GuardarPesoNetoTransile.Peso>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">pesoNeto</mca:CSharpValue>
+        </InArgument>
+      </local:GuardarPesoNetoTransile.Peso>
+      <local:GuardarPesoNetoTransile.Tolerancia>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">tolerancia</mca:CSharpValue>
+        </InArgument>
+      </local:GuardarPesoNetoTransile.Tolerancia>
+    </local:GuardarPesoNetoTransile>
+    <local:FinDeActividad InstanceId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+      <local:FinDeActividad.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new Molinos.Scato.Dominio.Dto.ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActControlTransile, ActividadXaml = "ControlTransile", WorkflowInstanceId = workflowId, PuestoDeTrabajoId = puestoDeTrabajoId }</mca:CSharpValue>
+        </InArgument>
+      </local:FinDeActividad.ControlRecorridoDto>
+      <local:FinDeActividad.PuestoDeTrabajoId>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.PuestoDeTrabajoId>
+    </local:FinDeActividad>
+    <sads:DebugSymbol.Symbol>d1hDOlxNb2xpbm9zXE1vbGlub3MgLSBTQ1QyMDBcTW9saW5vcy5TY2F0b1xNb2xpbm9zLlNjYXRvLkFjdGl2aWRhZGVzXENvbnRyb2xUcmFuc2lsZS54YW1sDk8DiQEOAgEBUwVZGgIBPVoFZSMCAS5mBXslAgERfAWHARwCAQJWC1bpAQIBPl0LXVECATZiC2JaAgEvaQtpXQIBJ3gLeFICASBzC3NQAgEZbgtuUQIBEn8Lf74CAgEKhAELhAFhAgED</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="LeerToleranciaRechazo_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="GuardarPesoNetoTransile_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,332">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.ControlTransile_1" sap:VirtualizedContainerService.HintSize="262,412" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

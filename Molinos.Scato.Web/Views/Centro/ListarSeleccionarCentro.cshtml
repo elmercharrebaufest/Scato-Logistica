@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Models
+@{
+    Layout = null;
+    var items = (ListaPaginada<SeleccionarCentroRespuesta>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.Column("", "", f => @Html.ActionLink(Textos.Seleccionar, "SeleccionarCentro", "Centro", new {centroId = f.CentroId}, new { @class = "nav nav-pills" })),
+            grid.Columna("CentroDescripcion", Textos.Descripcion),
+            grid.Columna("Localidad",  Textos.Centro_Localidad),
+            grid.Columna("Provincia",  Textos.Centro_Provincia)))

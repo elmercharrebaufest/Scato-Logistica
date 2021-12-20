@@ -1,0 +1,27 @@
+<div id="obsCalidad" class="mt-4 px-4 pb-4 shadow col-6" style="background-color: white;">
+    <h4 class="colorTitle pt-4">Agregar observaciones de calidad</h4>
+    <form [formGroup]="obsCalidadForm">
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label class="font-weight-bold">Fecha</label>
+                <input type="date" max="3000-12-31" min="1000-01-01" class="form-control" />
+                <div class="input_img mt-2 w-70">
+                    <input class="form-control" placeholder="00:00" [ngxTimepicker]="fullTimeAmarro"
+                        [format]="24" >
+                    <img src="assets/reloj.svg" class="imgClockInput1">
+                </div>
+                <ngx-material-timepicker #fullTimeAmarro>
+                </ngx-material-timepicker>
+            </div>
+            <div class="form-group col-8 d-flex flex-column">
+                <label class="font-weight-bold">Observaciones</label>
+                <textarea class="form-control flex-grow-1"></textarea>
+            </div>
+        </div>
+    </form>
+    <div class="text-right">
+        <button class="btn btn-outline-secondary mr-4">Cancelar</button>
+        <button class="btn btn-primary">Guardar</button>
+    </div>
+    
+</div>

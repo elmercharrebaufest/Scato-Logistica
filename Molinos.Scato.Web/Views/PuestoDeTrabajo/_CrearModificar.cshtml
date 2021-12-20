@@ -1,0 +1,285 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.PuestoDeTrabajoDto
+
+@{
+    var lectores = (IEnumerable<SelectListItem>)ViewBag.Lectores;
+    var barreras = (IEnumerable<SelectListItem>)ViewBag.Barreras;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
+    var sensores = (IEnumerable<SelectListItem>)ViewBag.Sensores;
+    var lectoresQr = (IEnumerable<SelectListItem>)ViewBag.lectoresQr;
+    var cartelesLed = (IEnumerable<SelectListItem>)ViewBag.CartelesLed;
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+    var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
+    var concentradores = (IEnumerable<SelectListItem>)ViewBag.Concentradores;
+}
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+
+@*Get*@
+@*@Html.Hidden("barrerasJson", (string)ViewBag.BarrerasJson, new {id = "BarrerasJson"})*@
+@Html.Hidden("BarrerasEntradaSupervisorGet", (string)ViewBag.EntradaSupervisor, new { id = "BarrerasEntradaSupervisorGet" })
+@Html.Hidden("BarrerasEntradaGet", (string)ViewBag.Entrada, new { id = "BarrerasEntradaGet" })
+@Html.Hidden("BarrerasSalidaGet", (string)ViewBag.Salida, new { id = "BarrerasSalidaGet" })
+@Html.Hidden("BarrerasCierreSupervisorGet", (string)ViewBag.CierreSupervisor, new { id = "BarrerasCierreSupervisorGet" })
+@Html.Hidden("videoCamarasJson", Model == null ? "[]" : Model.VideoCamarasJson, new { id = "videoCamarasFinales" })
+@*Post*@
+@Html.HiddenFor(model => Model.Id)
+
+@Html.HiddenFor(model => Model.SinAfip)
+@Html.HiddenFor(model => Model.SinCupo)
+@Html.HiddenFor(model => Model.SinFotoCartaPorte)
+@Html.HiddenFor(model => Model.ImprimeCartaPorte)
+
+<input type="hidden" name="barrerasEntradaSupervisor" id="barrerasEntradaSupervisor" data-bind="value: ko.toJSON(barreras)" />
+<input type="hidden" name="barrerasEntrada" id="barrerasEntrada" data-bind="value: ko.toJSON(barrerasEntrada)" />
+<input type="hidden" name="barrerasSalida" id="barrerasSalida" data-bind="value: ko.toJSON(barrerasSalida)" />
+<input type="hidden" name="barrerasCierreSupervisor" id="barrerasSalida" data-bind="value: ko.toJSON(barrerasCierreSupervisor)" />
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.NombrePuesto, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NombrePuesto, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.NombrePuesto)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Lector, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.Lector, lectores)
+        @Html.ValidationMessageFor(model => model.Lector)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Entrada, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("entradaDropDown", barreras, new { @class = "control ", id = "barreraEntrada" })
+        <button class="btn btn-primary" type="button" data-bind="click: addEntrada">@Textos.Agregar</button>
+        @Html.ValidationMessageFor(model => model.Entrada)
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th style="width: 30px"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: barrerasEntrada">
+                <tr>
+                    <td data-bind="text: Descripcion" />
+                    <td><a href="#" data-bind="click: $root.removeEntrada"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CierreEntrada, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("salidaDropDown", barreras, new { @class = "control ", id = "barreraSalida" })
+        <button class="btn btn-primary" type="button" data-bind="click: addSalida">@Textos.Agregar</button>
+        @Html.ValidationMessageFor(model => model.CierreEntrada)
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th style="width: 30px"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: barrerasSalida">
+                <tr>
+                    <td data-bind="text: Descripcion" />
+                    <td><a href="#" data-bind="click: $root.removeSalida"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="control-group" id="barreras">
+    @Html.LabelFor(model => model.EntradaSupervisor, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("supervsorDropDown", barreras, new { @class = "control ", id = "barrera" })
+        <button class="btn btn-primary agregar" type="button" data-bind="click: addEntradaSupervisor">@Textos.Agregar</button>
+        @Html.ValidationMessageFor(model => model.EntradaSupervisor)
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th style="width: 30px"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: barreras">
+                <tr>
+                    <td data-bind="text: Descripcion" />
+                    <td><a href="#" data-bind="click: $root.removeEntradaSupervisor"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CierreSupervisor, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("supervsorCierreDropDown", barreras, new { @class = "control ", id = "barreraCierreSup" })
+        <button class="btn btn-primary agregar" type="button" data-bind="click: addCierreSupervisor">@Textos.Agregar</button>
+        @Html.ValidationMessageFor(model => model.CierreSupervisor)
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th style="width: 30px"></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: barrerasCierreSupervisor">
+                <tr>
+                    <td data-bind="text: Descripcion" />
+                    <td><a href="#" data-bind="click: $root.removeCierreSupervisor"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.SensorQuiebre, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SensorQuiebre, sensores, "")
+        @Html.ValidationMessageFor(model => model.SensorQuiebre)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Concentrador, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.Concentrador, concentradores , "")
+        @Html.ValidationMessageFor(model => model.Concentrador)
+    </div>
+</div>
+
+
+
+<div class="control-group">
+    @Html.LabelFor(model => model.VideoCamara, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.VideoCamara, camaras, "")
+        @Html.ValidationMessageFor(model => model.VideoCamara)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.VideoCamaraDirectorio, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.VideoCamaraDirectorio, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.VideoCamaraDirectorio)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.LectorQr, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.LectorQr, lectoresQr, "")
+        @Html.ValidationMessageFor(model => model.LectorQr)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CartelLed, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CartelLed, cartelesLed, "")
+        @Html.ValidationMessageFor(model => model.CartelLed)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.BalanzaId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.BalanzaId, balanzas, "")
+        @Html.ValidationMessageFor(model => model.BalanzaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.VideoCamaras, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("VideoCamara", camaras, new { id = "videoCamara", @class = "control input-xlarge" })
+        @Html.TextBox("VideoCamaraDirectorio", null, new { id = "videoCamaraDirectorio", placeholder = Textos.ActividadPorDispositivo_Directorio, @class = "control input-xlarge", style = "width:256px" })
+        @Html.ValidationMessageFor(m => m.VideoCamaras)
+        <button class="btn btn-primary" type="button" data-bind="click: addVideoCamara">@Textos.Agregar</button>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th>@Textos.ActividadPorDispositivo_Directorio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: videoCamaras">
+                <tr>
+                    <td data-bind="text: Codigo" />
+                    <td data-bind="text: Directorio" />
+                    <td><a href="#" data-bind="click: $root.removeVideoCamara"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.NombrePc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NombrePc, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.NombrePc)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PidePatente, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.PidePatente, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.PidePatente)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Automatizado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Automatizado, new { @class = "input-large",data_toggle="tooltip",title="En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
+        @Html.ValidationMessageFor(model => model.Automatizado)
+    </div>
+    @Html.LabelFor(model => model.AutomatizadoFull, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.AutomatizadoFull, new { @class = "input-large", data_toggle = "tooltip", title = "En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
+        @Html.ValidationMessageFor(model => model.AutomatizadoFull)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ImprimeTarjetaDeAcceso, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.ImprimeTarjetaDeAcceso, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.ImprimeTarjetaDeAcceso)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.EncolaLecturas, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.EncolaLecturas, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.EncolaLecturas)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.FotoAlMarcarTarjeta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.FotoAlMarcarTarjeta, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.FotoAlMarcarTarjeta)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.InvisibleEnListaDeTareas, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.InvisibleEnListaDeTareas, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.InvisibleEnListaDeTareas)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(x => x.Firmware, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(x => x.Firmware, firmwares, "Seleccione un firmware")
+        @Html.ValidationMessageFor(model => model.Firmware)
+    </div>
+</div>

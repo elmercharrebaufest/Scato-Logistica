@@ -1,0 +1,51 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model List<EstadoMaterialDto>
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    var materialId = (int)ViewBag.MaterialId;
+    var materialDesc = ViewBag.MaterialDescripcion;
+}
+
+@section scripts {
+    <script type="text/javascript" src="@Url.Script("~/scripts/scatocommon.js")"></script>
+    <script src="~/Scripts/Chart.js" type="text/javascript"></script>
+    <script src="~/Scripts/Chart.bundle.js"></script>
+    <script src="~/Scripts/chartjs-plugin-annotation.min.js"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+}
+
+
+
+<div class="row">
+    <div class="col">
+        @Html.Partial("_CamionesPorHora", new GraficoCamionesHoraDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaVieja = DateTime.Today.AddYears(-1) })
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.Partial("_CamionesPorDia", new GraficoCamionesDiaDto { MaterialId = materialId, MaterialDescripcion = materialDesc })
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.Partial("_GraficoDePlanta")
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.Partial("_EficienciaHidraulicas", new GraficoEficienciaHidraulicasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaHoraDesde = DateTime.Today, FechaHoraHasta = DateTime.Now })
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @Html.Partial("_ToneladasPorDia", new GraficoEficienciaHidraulicasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaHoraDesde = DateTime.Today, FechaHoraHasta = DateTime.Now })
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        @Html.Partial("_ToneladasPorRangoDeDia", new GraficoToneladasRangoDeDiasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaDesde = DateTime.Today.AddDays(-1), FechaHasta = DateTime.Today })
+    </div>
+</div>

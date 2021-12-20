@@ -1,0 +1,250 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@model Molinos.Scato.Dominio.Dto.AsignacionDeEstablecimientoDto
+@{
+    ViewBag.Title = Textos.ActAsignacionDeEstablecimiento;
+    var hayErrores = (bool)ViewBag.HayErrores;
+    var establecimientos = (IEnumerable<SelectListItem>)ViewBag.Establecimientos;
+    var noMostrarBoton = (bool?)ViewBag.NoReemplazarCp ?? false;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<div id="links"
+     data-url-procedencia-es-igual-a-localidad="@Url.Action("ProcedenciaCartaPorteIgualALocalidadEstablecimiento", "AsignacionDeEstablecimiento")"
+     data-url-agregar-foto="@Url.Action("AgregarFotoARecorrido", "Foto")" 
+     data-url-obtener-foto-mesa="@Url.Action("TomarFotoMesaDigitalizacion", "CargarCartaPorte")">
+</div>
+    
+<script>
+    jQuery(document).ready(function ($) {
+        if ($("#foto1").length > 0) {
+            $('#fotoDiv').css('display', 'inline');
+            $('.ocultar').hide();
+        }
+    });
+
+    $(function () {
+        Test = {
+            UpdatePreview: function (obj) {
+                // if IE < 10 doesn't support FileReader
+                if (!window.FileReader) {
+                    // don't know how to proceed to assign src to image tag
+                } else {
+                    var reader = new FileReader();
+                    var target = null;
+
+                    reader.onload = function (e) {
+                        target = e.target || e.srcElement;
+                        $("#foto").prop("src", target.result);
+                        $('#FotoMesaDigitalizacion').val(target.result.split('base64,')[1]);
+                        $('#PuestoDeTrabajo').val("administracion");
+
+                    };
+                    reader.readAsDataURL(obj.files[0]);
+                }
+            }
+        };
+    });
+
+    $(document).ready(function () {
+        $(document).keydown(function (e) {
+            switch (e.which) {
+                case 37:
+                    $(".carousel-control-prev").click();
+                    break;
+
+                case 39:
+                    $(".carousel-control-next").click();
+                    break;
+                default: return;
+            }
+            e.preventDefault();
+        });
+
+        $('.tomarFoto').click(function () {
+            tomarFotoMesaDigitalizacion();
+        });
+
+        $('.guardarFoto').click(function () {
+            // var Foto = fotoSubida;
+            var FotoMesaDigitalizacion = $("#FotoMesaDigitalizacion").val();
+            var PuestoDeTrabajo = $("#PuestoDeTrabajo").val();
+            var FotoRecorridoId = $("#FotoRecorridoId").val();
+            var FotoPatente = $("#FotoPatente").val();
+            var FotoNumeroDocumentoIngreso = $("#FotoNumeroDocumentoIngreso").val();
+            if (FotoMesaDigitalizacion != "") {
+                $.post($("#links").data().urlAgregarFoto, {
+                    foto: FotoMesaDigitalizacion,
+                    RecorridoId: FotoRecorridoId,
+                    puestoDeTrabajo: PuestoDeTrabajo,
+                    numeroDocumentoIngreso: FotoNumeroDocumentoIngreso,
+                    Patente: FotoPatente
+                },
+                    function (data) {
+                        if (data.CodigoDeError == 0) {
+                            location.reload();
+                            //$('#modalFoto').modal('hide');
+                            //$('#article-photo-carousel ol').append($('<li class="" data-slide-to="1" data-target="#article-photo-carousel"><img alt="Cargar Imagen" src="data:image/jpeg;base64,' + FotoMesaDigitalizacion + '" /></li>'));
+                            //$('#article-photo-carousel').append($('<div class="carousel-item item"><img class="d-block img-fluid" src="data:image/jpeg;base64,' + FotoMesaDigitalizacion + '"/></div>'));
+
+                            //$('.carousel').carousel();
+                        } else {
+                            alert(data.Error);
+                        }
+                    }, "json");
+            }
+        });
+    });
+    function tomarFotoMesaDigitalizacion() {
+        $.getJSON($("#links").data().urlObtenerFotoMesa, null,
+            function (data) {
+                if (data.CodigoDeError == 0) {
+                    $('#foto').attr("src", 'data:image/jpeg;base64,' + data.Foto);
+                    $('#FotoMesaDigitalizacion').val(data.Foto);
+                    $('#PuestoDeTrabajo').val(data.PuestoDeTrabajo);
+                } else if (data.CodigoDeError == 1 || data.CodigoDeError == 2) {
+                    alert(data.Error.Descripcion);
+                }
+            });
+    }
+</script>
+<script type="text/javascript" src="@Url.Script("~/scripts/asignacionDeEstablecimiento.js")"></script>
+<style>
+    #errorProcedenciaLocalidad {
+        color: #ff0000;
+    }
+    
+    #modalFoto {
+        top: 30px;
+        left: 10%;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .btn-warning{
+        color:#fff!important;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span6">
+
+
+            @Html.Hidden("hayErrores", hayErrores)
+            @using (Html.BeginForm("Index", "AsignacionDeEstablecimiento", FormMethod.Post, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.ActAsignacionDeEstablecimiento }))
+            {
+                @Html.HiddenFor(m => m.InstanceId, new { @class = "", id = "InstanciaWorkflow" })
+                @Html.HiddenFor(m => m.WorkflowDefinicionId)
+                @Html.HiddenFor(m => m.Workflow)
+                @Html.HiddenFor(m => m.TipoVehiculo)
+                if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+                {
+                    <div class="alert alert-error">
+                        @Html.ValidationSummary(true)
+                    </div>
+                }
+                <div class="container-fluid">
+                    <div class="titSecciones">@Textos.AsignacionDeEstablecimiento_Titulo</div>
+                </div>
+                <br />@*
+
+            <div class="">
+                <p id="errorProcedenciaLocalidad">@Textos.ProcedenciaDistintaAEstablecimiento</p>
+            </div>*@
+                <div class="row-fluid">
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.Proveedor, new { @class = "control-label" })
+                        <div>
+                            @Html.DisplayFor(model => model.Proveedor, new { @class = "control" })
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        @Html.LabelFor(model => model.EstablecimientoId, new { @class = "control-label" })
+                        <div>
+                            @Html.DropDownListFor(model => model.EstablecimientoId, establecimientos, String.Empty, new { @class = "control input-xlarge", id = "dropdownEstablecimientos" })
+                            @Html.ValidationMessageFor(model => model.EstablecimientoId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="col-md-12" style="margin-top:15px">
+                        @Html.ActionLink(Textos.ModificarDocumento, "Seleccionar", "ModificarDocumentoDeIngreso", new { id = ViewBag.RecorridoId, soloLectura = false }, new { target = "_blank", @class = "btn" })
+                        <span>&nbsp;</span>
+                        <button type="submit" class="btn btn-primary" id="BotonAceptar">@Textos.Aceptar</button>
+                        @Html.ActionLink(Textos.Rechazar, "Rechazar", "AsignacionDeEstablecimiento", new { codigoWf = Model.Workflow, workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.InstanceId }, new { @class = "rechazar-boton btn btn-primary", id = "btnRechazar" })
+                        <span>&nbsp;</span>
+                        @Html.ActionLink(Textos.Demorar, "Demorar", "AsignacionDeEstablecimiento", new { workflowDefinicionId = Model.WorkflowDefinicionId, workflowInstanceId = Model.InstanceId }, new { @class = "demorar-boton btn btn-warning", id = "btnDemorar" })
+
+                        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                        @if (PermisosHelper.Is(PermisosScato.ActualizarFotoCartaPorte))
+                        {
+                            <a id="" href="#" class="btn" style="position: absolute;" data-toggle="modal" data-target="#modalFoto">
+                                @Textos.Foto_ReemplazarCartaPorte<i class="fa fa-camera"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+                <br />
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="alert alert-danger hide" id="errorProcedenciaLocalidad">
+                            <div id="validation-danger">
+                                @Textos.ProcedenciaDistintaAEstablecimiento
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        
+        </div>
+        <div class="span6 control-group control-group-no-bottom borde ocultar fondo">
+            No se encontró la foto para la CCPP
+        </div>
+        <div class="span6 control-group control-group-no-bottom sinBorde" id="fotoDiv">
+            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
+
+            }
+            <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+        </div>
+    </div>
+</div>
+
+<div id="mensajeRechazar"></div>
+
+
+
+<div class="modal fade" id="modalFoto" tabindex="-1" role="dialog" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Foto Carta de Porte</h5>
+            </div>
+            <div class="modal-body">
+                @Html.Hidden("FotoMesaDigitalizacion")
+                @Html.Hidden("PuestoDeTrabajo")
+                @Html.Hidden("FotoRecorridoId", Model.RecorridoId)
+                @Html.Hidden("FotoPatente", Model.Patente)
+                @Html.Hidden("FotoNumeroDocumentoIngreso", Model.NumeroDocumentoIngreso)
+                <img id="foto" src="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cerrar</button>
+                <button type="button" class="btn btn-warning tomarFoto">@Textos.Foto_TomarFoto</button>
+                <input name="browse" onchange="Test.UpdatePreview(this)" type="file" id="adjunto" accept="image/*" class="control input-large" />
+                <button type="button" class="btn btn-primary guardarFoto">@Textos.Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

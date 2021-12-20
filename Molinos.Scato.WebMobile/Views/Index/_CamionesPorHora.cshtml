@@ -1,0 +1,46 @@
+﻿@using System.Web.Mvc.Html
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoCamionesHoraDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+}
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")">
+</div>
+
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoCamionesHora.js")"></script>
+<script type="text/javascript">
+    var textoHistorico = "@Textos.CamionesFechaComparacion";
+    var textoActual = "@Textos.CamionesFechaActual";
+</script>
+
+<br />
+<div id="graficocamioneshora" class="col border rounded panel-padding">
+    <form id="formHora">
+        <div class="form-row">
+            <div class="col-12 col-sm h5 mt-auto  text-center">
+                @Textos.CamionesPorHora
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "form-control", @id = "materialDescripcionHora" })
+                @Html.ValidationMessageFor(model => model.MaterialDescripcion)
+                @Html.HiddenFor(model => model.MaterialId, new { @id = "materialIdHora" })
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.LabelFor(model => model.FechaVieja, new { @class = "sr-only" })
+                <div class="input-group date ancho-maximo">
+                    @Html.EditorFor(model => model.FechaVieja, Model != null ? Model.FechaVieja.FormattedFixed() : string.Empty)
+                </div>
+                @Html.ValidationMessageFor(model => model.FechaVieja)
+            </div>
+            <div class="col-12 col-sm m-auto">
+                <button class="btn btn-outline-success w-100" data-bind="click: generarGraficoHora">@Textos.Generar</button>
+            </div>
+        </div>
+    </form>
+    <div class="row" id="partialContainerHora">
+        @Html.Partial("_GraficoCamionesPorHora", Model)
+    </div>
+</div>

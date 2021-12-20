@@ -1,0 +1,155 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.EntregadorDto
+@{
+    var paises = (IEnumerable<SelectListItem>)ViewBag.Paises;
+    var provincias = (IEnumerable<SelectListItem>)ViewBag.Provincias;
+    var localidades = (IEnumerable<SelectListItem>)ViewBag.Localidades;
+}
+@Html.ValidationSummary(true)
+
+
+
+@Html.Hidden("CargarProvincias", Url.Action("CargarProvincias"))
+@Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
+
+@Html.HiddenFor(m => m.Activo)
+<div class="row-fluid row-fluid-ie7">
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.DescripcionCorta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.DescripcionCorta, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.DescripcionCorta)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Tratamiento, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Tratamiento, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.Tratamiento)
+            </div>
+        </div>   
+        <div class="control-group">
+            @Html.LabelFor(m => m.RazonSocial, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.RazonSocial, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.RazonSocial)
+            </div>
+        </div>   
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoSAPCondicionFiscal, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoSAPCondicionFiscal, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.CodigoSAPCondicionFiscal)
+            </div>
+        </div>     
+        <div class="control-group">
+            @Html.LabelFor(m => m.Cuil, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Cuil, new {@class = "control input-medium cuilValido", data_error_cuil_invalido = string.Format(Textos.Chofer_CuilInvalido) })
+                @Html.ValidationMessageFor(m => m.Cuil)
+            </div>
+        </div> 
+    </div>
+    <div class="span2"></div>
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.Pais, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(m => m.PaisId, paises, new {@class = "control input-medium" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Provincia, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(m => m.ProvinciaId, provincias, new {@class = "control input-medium" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Localidad, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(m => m.LocalidadId, localidades, new {@class = "control input-medium" })
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Domicilio, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Domicilio, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.Domicilio)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.TipoEntregador, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.TipoEntregador, new {@class = "control input-medium" })
+                @Html.ValidationMessageFor(m => m.TipoEntregador)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="control-group">
+        @Html.LabelFor(m => m.Mail, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Mail, new {@class = "control input-medium envioMail validarMail", data_mail_error = Textos.Entregador_MailObligatorio })
+        @Html.ValidationMessageFor(m => m.Mail)
+</div>
+
+<table>
+    <tr>
+        <td style="width: 55%">
+            <div class="row-fluid-boxed">
+                <div class="row-fluid row-fluid-ie7">
+                    <div class="span12">                   
+                        <label class="input-control checkbox">
+                            @Html.CheckBoxFor(m => m.EnvioAutomaticoMail)
+                            <span class="helper">@Textos.Entregador_EnvioAutomaticoMail</span>
+                        </label>
+                    </div>
+                </div>      
+                <div class="row-fluid row-fluid-ie7">
+                    <div class="span2">
+                    </div>
+                    <div class="span8  pull-right">                       
+                        <div class="control-group">
+                            <label class="input-control checkbox">
+                              @Html.CheckBoxFor(m => m.Analisis, new {@class = "envioMail validarOpcion", data_opcion_error = Textos.Entregador_Error_MailOpcion })
+                              <span class="helper">@Textos.Entrgador_Analisis</span>
+                           </label>
+                        </div>         
+                        <div class="control-group">
+                            <label class="input-control checkbox">
+                              @Html.CheckBoxFor(m => m.Pesada, new {@class = "envioMail validarOpcion"})
+                              <span class="helper">@Textos.Entregador_Pesada</span>
+                           </label>
+                            @Html.ValidationMessageFor(m => m.Pesada)   
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </td>
+        
+        <td>
+            <div class="row-fluid-boxed">
+                <div class="control-group">
+                    @Html.LabelFor(m => m.ToleranciaEnPorcentaje, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.ToleranciaEnPorcentaje, new {@class = "control input-small campoNumerico" })
+                        @Html.ValidationMessageFor(m => m.ToleranciaEnPorcentaje)
+                    </div>
+                </div>                    
+                <div class="control-group">
+                    @Html.LabelFor(m => m.ToleranciaEnKg, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.ToleranciaEnKg, new {@class = "control input-small campoNumerico" })
+                        @Html.ValidationMessageFor(m => m.ToleranciaEnKg)
+                    </div>
+                </div>                    
+            </div>
+            <br/>
+        </td>
+    </tr>
+</table>
+    
+    
+    
+    

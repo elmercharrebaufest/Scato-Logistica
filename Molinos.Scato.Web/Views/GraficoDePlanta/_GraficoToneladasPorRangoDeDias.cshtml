@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoToneladasRangoDeDiasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+<script type="text/javascript">
+    var urlGenerarToneladasPorRangoDeDia = '@Url.Action("GenerarGraficoToneladasPorRangoDeDia")'
+</script>
+<div class="col-lg-12 bordeGrisCompleto">
+    <canvas id="myChartToneladas"></canvas>
+    <div class="row" style="text-align: center; font-size: 12px; color: #666; font-family: Helvetica Neue, Helvetica, Arial, sans-serif">@Textos.ToneladasPorRangoDia</div>
+</div>

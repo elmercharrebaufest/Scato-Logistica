@@ -1,0 +1,41 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.IngresoCIUModel
+@{
+    ViewBag.Title = Textos.ActIngresoCIU;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $("#Numero").focus();
+        });
+    </script>
+}
+
+@using (Html.BeginForm("Index", "IngresoCIU", FormMethod.Post, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.ActIngresoCIU }))
+{
+    @Html.HiddenFor(m => m.InstanceId)
+    @Html.HiddenFor(m => m.WorkflowDefinicionId)
+    @Html.HiddenFor(m => m.Workflow)
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary(true)
+        </div>
+    }
+    <div class ="container">
+        <div class="titSecciones">@Textos.IngresoCIU_Titulo</div>
+    </div>
+    <br />
+    <div class="control-group">
+        @Html.Label(Textos.CiuAnulado_Numero + ":", new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.Numero, new { @class = "control input-medium", maxlength = 8 })
+            @Html.ValidationMessageFor(model => model.Numero)
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">@Textos.Aceptar</button>
+    <span>&nbsp;</span>
+    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })  
+}

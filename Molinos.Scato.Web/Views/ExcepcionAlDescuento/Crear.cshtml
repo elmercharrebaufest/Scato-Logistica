@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ExcepcionAlDescuentoDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.ExcepcionAlDescuento_Nuevo;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/excepcionAlDescuento.js")"></script>
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.ExcepcionAlDescuento_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

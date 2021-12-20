@@ -1,0 +1,120 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@model TipoCalle
+@{
+    Layout = null;
+    TipoCalle calle2 = Model;
+    TipoCalle calle3 = Model;
+
+    if (Model == TipoCalle.PreCalado)
+    {
+        calle2 = TipoCalle.ReCalado;
+        calle3 = TipoCalle.Circular;
+    }
+    if (Model == TipoCalle.PostCalado)
+    {
+        calle2 = TipoCalle.RechazadosDemorados;
+    }
+}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item ml-auto ">
+        <div class="input-sm">
+            <input data-bind="value: PatenteBuscada, valueUpdate: 'afterkeydown'" class="form-control" type="text" placeholder="Buscar Patente" aria-label="Buscar Patente" oninput="this.value = this.value.toUpperCase()">
+        </div>
+    </li>
+        @if(Model == TipoCalle.NoGranos)
+        {
+            <li class="nav-item">
+                <div class="nav-link nav-material bg-harina">Harina(<strong data-bind="text: CantidadHarina"></strong>)</div>
+            </li>
+            <li class="nav-item tagmaterial">
+                <div class="nav-link nav-material bg-pellet text-white">Pellet(<strong data-bind="text: CantidadPellet"></strong>)</div>
+            </li>
+        }
+        @if (Model != TipoCalle.NoGranos)
+        {
+            <li class="nav-item">
+                <div class="nav-link nav-material bg-soja">Soja(<strong data-bind="text: CantidadSoja"></strong>)</div>
+            </li>
+            <li class="nav-item tagmaterial">
+                <div class="nav-link nav-material bg-maiz text-white">Maiz(<strong data-bind="text: CantidadMaiz"></strong>)</div>
+            </li>
+            <li class="nav-item tagmaterial">
+                <div class="nav-link nav-material bg-naranja text-white">Trigo(<strong data-bind="text: CantidadTrigo"></strong>)</div>
+            </li>
+            <li class="nav-item tagmaterial">
+                <div class="nav-link nav-material bg-warning text-white">Girasol(<strong data-bind="text: CantidadGirasol"></strong>)</div>
+            </li>
+        }
+</ul>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row callesfiltradas" data-bind="foreach: CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)'),css: { 'centrarCalles': CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)').length <= 5 }">
+            <div class="col" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular), 'bg-primary': Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }" style="min-width:14ch!important; max-width:14ch!important">
+                <div class="sinbordetb row row-card-no-pd">
+                    <div class="col sinbordetb">
+                        <div class="card card-stats sinbordetb">
+                            <div class="card-body sinbordetb">
+                                <div class="row fw-bold mb-0 cart-title sinbordetb">
+                                    <div class="col">
+                                        @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleLlamar))
+                                        {
+                                            <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" data-bind="visible: !Bloqueada() && !Deshabilitada() && TipoCalle != 5 && TipoCalle != 6 && TipoCalle != 2,enable: !Bloqueada() && CamionesEnCalle() > 0, attr:{'data-target': '#m' + Id} " data-toggle="modal"><strong>LLamar</strong>(<strong data-bind="text: TiempoEnCola"></strong>)</button>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCancelar))
+                                        {
+                                            <button type="button" style="width: 100%" class="btn btn-danger btn-sm calle" data-bind="click: CancelarLLamado, visible: Bloqueada() && CamionesEnCalle() > 0 "><strong>Liberar</strong></button>
+                                        }
+                                        <button type="button" style="width: 100%" class="btn btn-success btn-sm calle" disabled data-bind="visible: !Deshabilitada() && (TipoCalle == 2 || TipoCalle == 5)"><strong data-bind="text: TiempoEnCola"></strong></button>
+                                        <button type="button" style="width: 100%" class="btn btn-warning btn-sm calle" data-bind="visible: Deshabilitada()" disabled><strong>Deshabilitada</strong></button>
+                                    </div>
+                                </div>
+                                <p class="fw-bold mb-0 cart-title sinbordetb" data-bind="class: Color">
+                                    @*<i data-bind="attr: {'class': Icon}"></i>*@
+                                    <strong data-bind="text: (TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Nombre"></strong>
+                                    <small style="float: right;position:absolute" data-bind="text: CamionesEnCalle()+'/'+CantidadDeCamiones">
+                                    </small>
+                                </p>
+                                <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular) , 'bg-primary':  Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }">
+                                    <div class="col" data-bind="foreach: Posiciones">
+                                        <div class="card text-white" style="max-width: 100%; padding-top:4px; padding-bottom:4px;" data-bind="class: Color, css: { 'parpadeo' : AsignadoEnPuestoComando}">
+                                            <div class="card-header text-center" style="padding: 0px 5px; height: 18px; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="display: flex; font-size: 0.7rem;">
+                                                    <i data-bind="attr: {'class': Escalable}" style="margin-right: 2px;"></i>
+                                                    <i data-bind="attr: {'class': Icon}" style="margin-right: 2px;"></i>
+                                                </div>
+                                                <strong data-bind="text: Patente, click: abrirModal" style="width: 100%;"></strong>
+                                            </div>
+                                        </div>
+                                        <div class="card bg-danger" style="max-width: 100%; padding-top:4px; padding-bottom:4px;" data-bind="visible: UltimoDeLaFila">
+                                            <div class="card-header text-center" style="padding: 0px; height: 18px;">
+                                                <i class="fas fa-traffic-light"></i><strong> STOP</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-bind="attr: { id: 'm'+Id}">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar llamado</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" data-bind="click: LLamar" data-dismiss="modal">LLamar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Dto" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Dto" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ControlRecorridoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Actividad" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Comentario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Decision" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Mensaje" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NombreUsuario" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkflowInstanceId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ControlRecorridoDto" nillable="true" type="tns:ControlRecorridoDto" />
+  <xs:complexType name="ArrayOfAnalisisPorCaracteristicaMaterialDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalisisPorCaracteristicaMaterialDto" nillable="true" type="tns:AnalisisPorCaracteristicaMaterialDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalisisPorCaracteristicaMaterialDto" nillable="true" type="tns:ArrayOfAnalisisPorCaracteristicaMaterialDto" />
+  <xs:complexType name="AnalisisPorCaracteristicaMaterialDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalisisDeCalidadId" type="xs:int" />
+      <xs:element minOccurs="0" name="CaracteristicaMaterial" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaracteristicaMaterialId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Rango" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Unidad" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ValorAnalisis" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ValorCalado" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnalisisPorCaracteristicaMaterialDto" nillable="true" type="tns:AnalisisPorCaracteristicaMaterialDto" />
+  <xs:complexType name="OrdenCargaInternaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Chofer" nillable="true" type="tns:ChoferDto" />
+      <xs:element minOccurs="0" name="Destino" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DestinoId" type="xs:int" />
+      <xs:element minOccurs="0" name="FechaEmision" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="InstanciaWorkflow" type="ser:guid" />
+      <xs:element minOccurs="0" name="MaterialDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaterialId" type="xs:int" />
+      <xs:element minOccurs="0" name="NumeroOrden" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PatenteAcoplado" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PatenteCamion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoComercialDesc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoComercialId" type="xs:int" />
+      <xs:element minOccurs="0" name="Transportista" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TransportistaId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrdenCargaInternaDto" nillable="true" type="tns:OrdenCargaInternaDto" />
+  <xs:complexType name="ChoferDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Apellido" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Cuil" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DescripcionCorta" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NumeroDeDocumento" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RazonSocial" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TipoDocumentoIdentidadId" type="xs:int" />
+      <xs:element minOccurs="0" name="TransportistaId" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChoferDto" nillable="true" type="tns:ChoferDto" />
+  <xs:complexType name="ArrayOfPrecintoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PrecintoDto" nillable="true" type="tns:PrecintoDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPrecintoDto" nillable="true" type="tns:ArrayOfPrecintoDto" />
+  <xs:complexType name="PrecintoDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Detalle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="NumeroPrecinto" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkflowInstanceId" type="ser:guid" />
+      <xs:element minOccurs="0" name="_destroy" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PrecintoDto" nillable="true" type="tns:PrecintoDto" />
+  <xs:complexType name="ObservacionDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Observaciones" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkflowInstanceId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ObservacionDto" nillable="true" type="tns:ObservacionDto" />
+</xs:schema>

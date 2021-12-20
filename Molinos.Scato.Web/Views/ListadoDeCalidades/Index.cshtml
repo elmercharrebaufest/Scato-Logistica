@@ -1,0 +1,100 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ExportacionDeArchivosDto
+@{
+    ViewBag.Title = Textos.ListadoDeCalidades;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<link href="~/Content/bootstrap-duallistbox.css" rel="stylesheet">
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.bootstrap-duallistbox.js")"></script>
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="~/scripts/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/exportacionDeArchivos.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.cookie.js")"></script>
+
+@Html.Hidden("CentrosJson", (string)ViewBag.Centros)
+@Html.Hidden("TiposComercialesJson", (string)ViewBag.TiposComerciales)
+@Html.Hidden("MaterialesJson", (string)ViewBag.Materiales)
+
+@Html.HiddenFor(x => x.Centros,new{ id = "CentrosSeleccionados"})
+@Html.HiddenFor(x => x.Materiales,new{ id = "MaterialesSeleccionados"})
+@Html.HiddenFor(x => x.TiposComerciales,new{ id = "TiposComercialesSeleccionados"})
+<style>
+    .control-group {
+    margin-bottom: 10px!important;
+    }
+</style>
+<div id ="links" 
+     data-url-obtener-centros ="@Url.Action("ObtenerCentros", "ListadoDeCalidades")"
+     data-url-obtener-tiposcomerciales ="@Url.Action("ObtenerTiposComerciales", "ListadoDeCalidades")"
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "ListadoDeCalidades")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "ListadoDeCalidades")"
+></div>
+
+<style>
+    .validation-summary-errors { color: #b94a48; font-size: 15px;}
+
+</style>
+
+<div class ="container">
+    <div class="titSecciones">@Textos.ListadoDeCalidades</div>
+</div>
+
+@using (Html.BeginForm("Index", null, FormMethod.Post, new {@class = "form-horizontal", id = "orden-form"}))
+{
+    <div class="container content grillaPad">
+        <div class="row">
+            <div class="span5 grupo-carta-porte">
+                <div></div>
+                @Html.ValidationSummary(true)
+                @Html.Hidden("PaginaCentros", 2)
+                <select multiple="multiple" size="7" name="duallistbox_centros" class="centros" data-bind="options: centros, optionsText: 'Descripcion', optionsValue: 'Id'"></select>
+            </div>
+            <div class="span5 grupo-carta-porte">
+                @Html.Hidden("PaginaMateriales", 2)
+                @Html.Label(Textos.Material, new {@class = "control-label small"})
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.Material, new {@class = "control input-large"})
+                    <div class="control-group">@Html.ValidationMessageFor(model => model.Material)</div>
+                    @Html.HiddenFor(model => model.MaterialId)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span5 grupo-carta-porte">
+                @Html.Hidden("PaginaTiposComerciales", 2)
+                <select multiple="multiple" size="7" name="duallistbox_tiposComerciales" class="tiposComerciales" data-bind="options: tiposComerciales, optionsText: 'Descripcion', optionsValue: 'Id'"></select>
+            </div>
+            <div class="span5 grupo-carta-porte">
+
+                <input type="hidden" name="Centros" id="Centros" data-bind="value: ko.toJSON(centrosSeleccionados)" />
+                <input type="hidden" name="Materiales" id="Materiales" data-bind="value: ko.toJSON(materialesExcluidos)" />
+                <input type="hidden" name="TiposComerciales" id="TiposComerciales" data-bind="value: ko.toJSON(tiposComercialesSeleccionados)" />
+
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.FechaDesde, new {@class = "control-label small"})
+                    <div class="FechaDesde">
+                        @Html.TextBoxFor(m => m.FechaDesde, new {@class = "control input-small "})
+                        @Html.ValidationMessageFor(model => model.FechaDesde)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.FechaHasta, new {@class = "control-label small"})
+                    <div class="FechaHasta">
+                        @Html.TextBoxFor(m => m.FechaHasta, new {@class = "control input-small"})
+                        @Html.ValidationMessageFor(model => model.FechaHasta)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    <div class="controls cajaButtons">
+                        <button type="submit" class="btn" id="botonaceptar">@Textos.Aceptar</button>
+                        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class = "btn"})
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,26 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.ProveedorExcluidoIntacta_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_ProveedorExcluidoIntacta</div>
+</div>
+<div class="container-fluid content grillaPad">
+    <div class="row-fluid">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" ,@class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar)
+                <input type="text" name="filtro" class="input-large"/>
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                @Html.ActionLink(Textos.ProveedorExcluidoIntacta_Nuevo, "Crear", "ProveedorExcluidoIntacta", null , new {@class = "ajax-editar-link btn btn-primary pull-right"})
+            }
+        </div>
+    </div>
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

@@ -1,0 +1,366 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CaracteristicaDeCalidadDto
+@{
+    var descuentos = (string)ViewBag.descuentos;
+}
+
+<style>
+
+    .span6 {
+        width: 430px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .form-horizontal .control-label {
+        width: 170px;
+        font-size: 12px;
+    }
+
+    #dialogo-editar-body {
+        padding-right: 0px !important;
+    }
+
+    #dialogo-editar .control-group {
+        margin-bottom: 5px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    label.checkbox {
+        font-size: 12px;
+    }
+
+    .tablaDatos label {
+        margin-bottom: 0;
+    }
+
+    .control-label2 {
+        width: auto;
+        display: inline;
+        font-size: 12px;
+    }
+
+    .help-inline {
+        padding-left: 0;
+    }
+
+    #dialogo-editar-body {
+        max-height: 440px !important;
+        width: 905px !important;
+    }
+
+    .span6 {
+        width: 400px;
+    }
+</style>
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"></div>
+
+@*@Html.HiddenFor(m => m.EsHumedad)*@
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.Hidden("CaracteristicaId", Model == null ? 0 : Model.Id)
+            @Html.LabelFor(m => m.MaterialId, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(m => m.MaterialDescripcion)
+                @Html.HiddenFor(model => model.MaterialId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.DescripcionCorta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.DescripcionCorta)
+                @Html.ValidationMessageFor(m => m.DescripcionCorta)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Descripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Descripcion)
+                @Html.ValidationMessageFor(m => m.Descripcion)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.UnidadDeMedida, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.UnidadDeMedida)
+                @Html.ValidationMessageFor(m => m.UnidadDeMedida)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.DescuentoEnPorcentaje, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.DescuentoEnPorcentaje)
+                @Html.ValidationMessageFor(m => m.DescuentoEnPorcentaje)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CaladoMinimo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CaladoMinimo, new { @class = "campoNumerico" })
+                @Html.ValidationMessageFor(m => m.CaladoMinimo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CaladoMaximo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CaladoMaximo, new { @class = "campoNumerico" })
+                @Html.ValidationMessageFor(m => m.CaladoMaximo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ValorEspecialMinimo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ValorEspecialMinimo, new { @class = "campoNumerico", id = "valorEspecialMin" })
+                @Html.ValidationMessageFor(m => m.ValorEspecialMinimo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ValorEspecialMaximo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ValorEspecialMaximo, new { @class = "campoNumerico", id = "valorEspecialMax" })
+                @Html.ValidationMessageFor(m => m.ValorEspecialMaximo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.TipoCaracteristica, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(m => m.TipoCaracteristica)
+                @Html.ValidationMessageFor(m => m.TipoCaracteristica)
+            </div>
+        </div>
+        @Html.ValidationMessage("SoloUno")
+
+        <div class="control-group">
+            @Html.LabelFor(m => m.Dispositivo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.Dispositivo)
+                @Html.ValidationMessageFor(m => m.Dispositivo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.NombreNirs, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NombreNirs, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.NombreNirs)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoSAP, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoSAP, new { maxlength = 8 })
+                @Html.ValidationMessageFor(m => m.CodigoSAP)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.SituacionEnvioACamara, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(m => m.SituacionEnvioACamara)
+                @Html.ValidationMessageFor(m => m.SituacionEnvioACamara)
+            </div>
+        </div>
+        <div class="control-group" id="valorCamara">
+            @Html.LabelFor(m => m.SiSuperaValorCamara, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.SiSuperaValorCamara, new { @class = "campoNumerico", data_toggle = "tooltip", data_html = "true", title = "Si supera este valor la característica se envía a cámara." })
+                @Html.ValidationMessageFor(m => m.SiSuperaValorCamara)
+                @Html.HiddenFor(m => m.SiSuperaValorCamara)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Analisis, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.Analisis)
+                @Html.ValidationMessageFor(m => m.Analisis)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Ensayo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Ensayo)
+                @Html.ValidationMessageFor(m => m.Ensayo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CargaEnCalado, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.CargaEnCalado, new { id = "cargaEnCalado" })
+                @Html.ValidationMessageFor(m => m.CargaEnCalado)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.EsModificable, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.EsModificable)
+                @Html.ValidationMessageFor(m => m.EsModificable)
+            </div>
+        </div>
+        @*<div class="control-group">
+            @Html.LabelFor(m => m.Obligatorio, new { @class = "control-label"})
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.Obligatorio, new {id = "obligatorio"} )
+                @Html.ValidationMessageFor(m => m.Obligatorio)
+            </div>
+        </div>*@
+        <div class="control-group">
+            @Html.LabelFor(m => m.NoObservableEnCalado, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.NoObservableEnCalado)
+                @Html.ValidationMessageFor(m => m.NoObservableEnCalado)
+            </div>
+        </div>
+        @*            <div class="control-group">
+            @Html.LabelFor(m => m.InternoPorObservados, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.InternoPorObservados)
+                @Html.ValidationMessageFor(m => m.InternoPorObservados)
+            </div>
+        </div>*@
+        @*<div class="control-group">
+            @Html.LabelFor(m => m.InspeccionDeCamionesVacios, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.InspeccionDeCamionesVacios)
+                @Html.ValidationMessageFor(m => m.InspeccionDeCamionesVacios)
+            </div>
+        </div>*@
+        <div class="control-group">
+            @Html.LabelFor(m => m.NoAceptarSiSeDefineUnValor, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.NoAceptarSiSeDefineUnValor, new { data_toggle = "tooltip", data_html = "true", title = "En Calado: si se ingresa un valor mayor a 0 se deshabilita y marca automaticamente el check de analizar" })
+                @Html.ValidationMessageFor(m => m.NoAceptarSiSeDefineUnValor)
+                @Html.HiddenFor(m => m.NoAceptarSiSeDefineUnValor)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.PrioridadEnCalado, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.PrioridadEnCalado, new { @class = "campoNumerico" })
+                @Html.ValidationMessageFor(m => m.PrioridadEnCalado)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaSinAnalisis, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaSinAnalisis, new { @class = "campoNumerico", data_toggle = "tooltip", data_html = "true", title = "En Coordinacion: Si el Valor Medido supera la tolerancia Maxima muestra un mensaje  y no se puede aceptar, solo rechazar y aceptar. En Analisis de calidad: si el valor es mayor al ingresado deshabilita y marca automaticamente el check de analizar" })
+                @Html.ValidationMessageFor(m => m.ToleranciaSinAnalisis)
+                @Html.HiddenFor(m => m.ToleranciaSinAnalisis)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaSinMensaje, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaSinMensaje, new { @class = "campoNumerico", title = "En Coordinacion y Calado: Si el Valor Medido supera la tolerancia ingresada muestra un mensaje de advertencia." })
+                @Html.ValidationMessageFor(m => m.ToleranciaSinMensaje)
+                @Html.HiddenFor(m => m.ToleranciaSinMensaje)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ValorProteina, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ValorProteina)
+                @Html.ValidationMessageFor(m => m.ValorProteina)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.IntervaloDeAnalisis, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.IntervaloDeAnalisis)
+                @Html.ValidationMessageFor(m => m.IntervaloDeAnalisis)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.EnviaASap, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.EnviaASap)
+                @Html.ValidationMessageFor(m => m.EnviaASap)
+            </div>
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
+<div id="grilla">
+    <div class="span10">
+        <div class="row-fluid">
+            @Html.Hidden("descuentosPostBack", descuentos)
+            <input type="hidden" name="descuentos" id="descuentos" data-bind="value: ko.toJSON(descuentos)" />
+            <div class="bordeGris">
+                @Textos.Descuento_ValorDesde :
+                <input type="text" data-bind="value: newValorDesde" id="valorDesde" class="input-mini campoDesdeVacio campoNumerico" disabled data-error-vacio="@string.Format(Textos.Error_Requerido, Textos.Descuento_ValorDesde)" />
+                @*@Html.ValidationMessage("valorDesde", new {@class = "validaDesde help-block"})*@
+                @Textos.Descuento_ValorHasta :
+                <input type="text" data-bind="value: newValorHasta, event: { keyup: $root.actualizarNewValorDesde }" id="valorHasta" class="input-mini campoHastaVacio campoNumerico" data-error-vacio="@string.Format(Textos.Error_Requerido, Textos.Descuento_ValorHasta)" />
+                @*@Html.ValidationMessage("valorHasta", new {@class = "validaHasta help-block"})*@
+                @Textos.Descuento_PorcentajeDescuento :
+                <input type="text" data-bind="value: $root.newPorcentajeDescuento" id="porcentajeDescuento" class="input-mini campoPorcentVacio campoNumerico" data-error-vacio="@string.Format(Textos.Error_Requerido, Textos.Descuento_PorcentajeDescuento)" />
+                @Textos.Descuento_PorcentajeAuditoriaCamara :
+                <input type="text" data-bind="value: $root.newPorcentajeEnvioCamaraAuditoria" id="porcentajeEnvioCamaraAuditoria" class="input-mini campoPorcentVacio campoNumerico" data-error-vacio="@string.Format(Textos.Error_Requerido, Textos.Descuento_PorcentajeAuditoriaCamara)" />
+                @Textos.Descuento_MercadoATermino :
+                <input type="checkbox" data-bind="checked: $root.newMercadoATermino" />
+                @*@Html.ValidationMessage("porcentajeDescuento", new {@class = "validaPorcentaje help-block"})*@
+                <button id="botonCrearDescuento" data-bind="click: botonCrearDescuento" class="btn" data-obtener-descuentos="@Url.Action("ObtenerDescuentos", "CaracteristicaDeCalidad")">@Textos.Crear</button>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>% Desc</th>
+                    <th>% Audit</th>
+                    <th>@Textos.Eliminar</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: descuentos">
+                <tr>
+                    <td data-bind="text: ValorDesde" />
+                    <td data-bind="text: ValorHasta" />
+                    <td data-bind="text: PorcentajeDescuento" />
+                    <td>
+                        <span data-bind="text: PorcentajeEnvioCamaraAuditoria"></span>
+                        <span data-bind="text: MercadoATermino"></span>
+                    </td>
+
+                    <td><a href="#" data-bind="click: $root.removeDescuento"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#ValorProteina").prop("disabled", true);
+        $("#TipoCaracteristica").change(function () {
+            if ($("#TipoCaracteristica").val() == "EsProteina") {
+                $("#ValorProteina").css({
+                    'background-color': '#fff'
+                });
+                $("#ValorProteina").prop("disabled", false);
+            } else {
+                $($($($('#ValorProteina').parent()).children()[1]).children()[0]).remove();
+                $("#ValorProteina").css({
+                    'width': '206px',
+                    'background-color': '#eee',
+                    'border': '1px solid #cccccc',
+                });
+                $("label[for=ValorProteina]").css({
+                    'color': '#333'
+                });
+                $("#ValorProteina").val("");
+                $("#ValorProteina").prop("disabled", true);
+            }
+        });
+    });
+</script>

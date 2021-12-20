@@ -1,0 +1,111 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = (bool)ViewBag.EsCarga ? Textos.ConfirmacionDeCarga : Textos.ConfirmacionDeDescarga;
+    string textoPeso = (bool)ViewBag.EsCarga ? Textos.PesoNetoACargar : Textos.CartaPorte_PesoNetoOrigen;
+    string workflow = ViewBag.Workflow;
+    int peso = ViewBag.Peso ?? 0;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+    <div class="container-fluid">
+        <div class="span4">
+            <div class="titSecciones">@ViewBag.Title</div>
+        </div>
+    </div>
+        @*@Html.Breadcrumb((string)ViewBag.Title)*@
+<div class="container-fluid">
+    @using (Html.BeginForm("Index", "ConfirmacionDeCargaDescarga", FormMethod.Post, new { @class = "form-horizontal causaBlock" }))
+    {
+        if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+        {
+            <div class="alert alert-error">
+                @Html.ValidationSummary(true)
+            </div>
+        }
+        @Html.HiddenFor(model => model.WorkflowInstanceId)
+        @Html.HiddenFor(model => model.NombreUsuario)
+        @Html.HiddenFor(model => model.Actividad)
+        @Html.HiddenFor(model => model.ActividadXaml)
+        @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+        @Html.Hidden("workflow", workflow)
+        @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+        <div class="row-fluid row-fluid-ie7">
+            <div style="padding-left: 190px; margin-top: 20px;">
+                <div class="span5">
+                    <div class="control-group">
+                        <div class="control-label"><strong>@(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum()):</strong> </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.NumeroDocumentoIngreso</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"> <strong> @Textos.TipoComercial:</strong>  </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.TipoComercial</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><strong> @Textos.Camion_Patente:</strong>  </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Patente</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><strong> @Textos.Calidad:</strong>  </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Calidad</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span5">
+                    <div class="control-group">
+                        <div class="control-label"><strong> @Textos.Material:</strong>  </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Material</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><strong> @Textos.Almacen:</strong> </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Almacen</div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><strong> @textoPeso:</strong>  </div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Peso</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <div class="centered">
+            <button type="submit" class="btn btn-primary aceptar confirmar-boton" data-accion="Index" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Aceptar,Textos.Transportista_min)">@Textos.Aceptar</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+        </div>
+
+        <div class="modal hide fade" id="dialogo-confirmar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>@Textos.Confirmacion</h4>
+            </div>
+            <div class="modal-body" id="dialogo-confirmar-body">
+            </div>
+            <div class="modal-footer">
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+                <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+            </div>
+        </div>
+    }</div>

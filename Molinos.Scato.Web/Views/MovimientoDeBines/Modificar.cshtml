@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MovimientoDeBinesDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.MovimientoDeBines_Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/movimientodebines.index.js")"></script>
+@Html.Hidden("modifica","1")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.MovimientoDeBines_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

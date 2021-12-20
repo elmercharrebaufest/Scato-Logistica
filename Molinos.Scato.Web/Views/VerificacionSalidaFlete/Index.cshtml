@@ -1,0 +1,51 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.VerificacionSalidaFlete_Titulo;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+
+<style>
+    .field-validation-error {
+        color: #ff0000;
+        font-size: 12px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.VerificacionSalidaFlete_Titulo</div>
+</div>
+
+
+@* ReSharper disable Mvc.ActionNotResolved *@
+@using (Html.BeginForm("Action", "VerificacionSalidaFlete", FormMethod.Post, new { @class = "causaBlock container-fluid", data_mensaje_espera = Textos.ActVerificacionSalidaFlete }))
+{
+    @* ReSharper restore Mvc.ActionNotResolved *@
+    <div>
+        @*            <h4>@Textos.BajaCTG_Titulo</h4>*@
+    </div>
+    @ViewBag.Mensaje
+
+    <div class="modal-body">
+        @Html.Hidden("workflowCodigo", (string)ViewBag.WorkflowCodigo)
+        @Html.Hidden("workflowId", (Guid)ViewBag.WorkflowId)
+        @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-dardebaja" class="confirmar-boton btn " data-accion="Reintentar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Reintentar, Textos.VerificacionSalidaFlete_Titulo)">@Textos.Reintentar</button>
+        <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+    </div>
+
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<LiberacionDeCasillerosDto>)ViewBag.Items;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/liberacionDeCasilleros.listar.js")"></script>
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("seleccionCol", string.Empty, f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox" })),
+    grilla.Columna("NDeCasillero", Textos.LiberacionDeCasilleros_NDeCasillero),
+    grilla.Columna("TipoDocumentoIngreso", Textos.LiberacionDeCasilleros_TipoDocumento),
+    grilla.Columna("NumeroDocumento", Textos.LiberacionDeCasilleros_NumeroDocumento),
+    grilla.Columna("Patente", Textos.LiberacionDeCasilleros_Patente)))

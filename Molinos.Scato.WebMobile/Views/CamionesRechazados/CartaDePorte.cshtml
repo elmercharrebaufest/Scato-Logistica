@@ -1,0 +1,197 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model CartaPorteDto
+
+@{
+    Layout = null;
+    ViewBag.Title = "CartaDePorte";
+}
+<style>
+    * {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    table, td, th {
+        border: 1px solid #595959;
+        border-collapse: collapse;
+    }
+
+    td, th {
+        padding: 3px;
+        width: 30px;
+        height: 25px;
+        text-align: center;
+    }
+
+    th {
+        background: #f9f9f9;
+        text-align: left;
+    }
+
+    .even {
+        background: #fbf8f0;
+    }
+
+    .odd {
+        background: #fefcf9;
+    }
+</style>
+<h2>Carta De Porte</h2>
+<table style="width:100%">
+    <tbody>
+        <tr>
+            <th>@Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.TipoVehiculo)</td>
+            <th>@Html.LabelFor(model => model.TipoComercial, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.TipoComercial)</td>
+            <th colspan="2">@Html.LabelFor(model => model.Material, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Material)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.NroCartaPorte, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.NroCartaPorte)</td>
+            <th>@Html.LabelFor(model => model.CEE, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.CEE)</td>
+            <th>@Html.LabelFor(model => model.Variedad, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Variedad)</td>
+            <th>@Html.LabelFor(model => model.Cosecha, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Cosecha)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.CTG, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.CTG)</td>
+            <th>@Html.LabelFor(model => model.FechaEmision, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.FechaEmision)</td>
+            <th colspan="2">@Html.LabelFor(model => model.Procedencia, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Procedencia)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.FechaCP, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.FechaCP)</td>
+            <th>@Html.LabelFor(model => model.FechaVto, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.FechaVto)</td>
+            <th colspan="2">@Html.LabelFor(model => model.CodEstab, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.CodEstab)</td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.TipoCategoria, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.TipoCategoria)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.TitularCartaPorte, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.TitularCartaPorte)</td>
+            @foreach (var peso in Model.Vehiculos)
+            {
+                <th>@Textos.CartaPorte_PesoTaraOrigen @Html.DisplayFor(x => peso.PesoTaraOrigen)</th>
+                <th colspan="2">@Textos.CartaPorte_PesoBrutoOrigen @Html.DisplayFor(x => peso.PesoBrutoOrigen)</th>
+                <th>@Textos.CartaPorte_PesoNetoOrigen @Html.DisplayFor(x => peso.PesoNetoOrigen)</th>
+            }
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Intermediario, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Intermediario)</td>
+            <th colspan="2">@Html.LabelFor(model => model.OrigenVehiculo, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.OrigenVehiculo)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.RtteComercial, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.RtteComercial)</td>
+            @foreach (var patente in Model.Vehiculos)
+            {
+                <th>@Textos.CartaPorte_PatenteCamion</th>
+                <td>@Html.DisplayFor(x => patente.Patente)</td>
+                <th>@Textos.CartaPorte_PatenteAcoplado</th>
+                <td>@Html.DisplayFor(x => patente.PatenteAcoplado)</td>
+            }
+
+
+
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Corredor, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Corredor)</td>
+            <th colspan="2">@Html.LabelFor(model => model.KmRecorrer, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.KmRecorrer)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.AgenteCompras, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.AgenteCompras)</td>
+            <th>@Html.LabelFor(model => model.TarifaReferencia, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.TarifaReferencia)</td>
+            <th>@Html.LabelFor(model => model.TarifaTonelada, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.TarifaTonelada)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.CorredorVendedor, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.CorredorVendedor)</td>
+            <th colspan="2">@Textos.CartaPorte_Cupo</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Cupo)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Entregador, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Entregador)</td>
+            <th>@Textos.CartaPorte_Flete</th>
+            <th colspan="2">
+                @Html.RadioButtonFor(model => model.FletePagado, true)
+                @Textos.CartaPorte_FletePagado
+            </th>
+            <th>
+                @Html.RadioButtonFor(model => model.FleteAPagar, false)
+                @Textos.CartaPorte_FleteAPagar
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Destinatario, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Destinatario)</td>
+            <th colspan="2">@Html.LabelFor(model => model.Desvio, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Desvio)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Destino, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Destino)</td>
+            <th>@Html.LabelFor(model => model.Prestador, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Prestador)</td>
+            <th>@Html.LabelFor(model => model.AcuerdoMarco, new { @class = "control-label small" })</th>
+            <td> @Html.DisplayFor(x => x.AcuerdoMarco)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.IntermediarioFlete)</td>
+            <th>@Html.LabelFor(model => model.BocaDestino, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.BocaDestino)</td>
+            <th>@Html.LabelFor(model => model.Caratula, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Caratula)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Transportista, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.Transportista)</td>
+            <th>@Html.LabelFor(model => model.CodigoAnexo, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.CodigoAnexo)</td>
+            <th>@Html.LabelFor(model => model.Tecnologia, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Tecnologia)</td>
+        </tr>
+        <tr>
+            <th colspan="2">@Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small" })</th>
+            <td colspan="2">@Html.DisplayFor(x => x.TitularCartaPorteCuil)</td>
+            <th colspan="2">@Textos.CartaPorte_NumeroAduana</th>
+            <td colspan="2">@Html.DisplayFor(x => x.NumeroAduana)</td>
+
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.Chofer.TipoDocumentoIdentidadId, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Chofer.TipoDocumentoIdentidadId)</td>
+            <th>@Html.LabelFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Chofer.NumeroDeDocumento)</td>
+            <td colspan="4" rowspan="6"></td>
+        </tr>
+        <tr>
+            <th>@Html.LabelFor(model => model.Chofer.Nombre, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Chofer.Nombre)</td>
+            <th>@Html.LabelFor(model => model.Chofer.Apellido, new { @class = "control-label small" })</th>
+            <td>@Html.DisplayFor(x => x.Chofer.Apellido)</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<h4>Este no es un documento legal</h4>
+

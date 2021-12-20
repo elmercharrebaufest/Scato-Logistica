@@ -1,0 +1,71 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CargaFiltroDto
+@{
+    ViewBag.Title = Textos.OperacionesPuerto_Titulo;
+    var valoresSap = new List<SelectListItem>();
+    valoresSap.Add(new SelectListItem() { Value = null, Text = "Todos", Selected = true });
+    valoresSap.Add(new SelectListItem() { Value = "True", Text = "Si", Selected = false });
+    valoresSap.Add(new SelectListItem() { Value = "False", Text = "No", Selected = false });
+    var modelo = Model;
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/accordion.icon.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/scripts/jquery.maskedinput.js"></script>
+    <script type="text/javascript" src="~/scripts/autocompletar.js"></script>
+    <script type="text/javascript" src="~/scripts/operacionesPuerto.modificar.js"></script>
+
+}
+
+
+<div class="container">
+    <div class="titSecciones">@Textos.Administracion_OperacionesPuerto</div>
+</div>
+
+
+<div class="container content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Modificar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.HiddenFor(model => model.IdFin, new { @class = "control input-mini", @readonly = "readonly", style = "margin:5px;" })
+                @Html.HiddenFor(model => model.NumeroBalanza, new { @class = "control input-mini", @readonly = "readonly", style = "margin:5px;" })
+            <div class="row-fluid">
+                @Html.LabelFor(model => model.Id, new { @class = "control-label" }) Inicial:
+                @Html.TextBoxFor(model => model.Id, new { @class = "control input-mini", @readonly = "readonly", style = "margin:5px;" })
+
+                @Html.LabelFor(model => model.NumeroBalanza, new { @class = "control-label" }):
+                @Html.TextBoxFor(model => model.NumeroBalanza, new { @class = "control input-mini", @disabled = "disabled", style = "margin:5px;" })
+
+                @if (ViewBag.PuedeCrearBalanzada)
+                {
+                    @Html.LabelFor(model => model.BalanzadaFaltante, new { @class = "control-label" })<span>:</span>;
+                    @Html.DropDownListFor(model => model.BalanzadaFaltante, (IEnumerable<SelectListItem>)ViewBag.BalanzadasFaltantes, string.Empty, new { @class = "control input-medium", style = "margin:5px;" });
+                    @Html.ActionLink(Textos.OperacionesPuerto_CrearBalanzada, "Crear", "Balanzada", new { CargaInicial_Id = Model.Id.Value, NumeroBalanza = Model.NumeroBalanza }, new { @class = "ajax-editar-link btn btn-primary" })
+                }
+                <button id="enviarASap" type="button"  class="btn btn-primary "> Enviar todo a SAP</button>
+                <img id="cargandoEnviandoASap" src="~/Content/images/loading.gif" style="display:none" />
+                <br />
+                @Html.LabelFor(m => m.EnviadoASap, new { @class = "control-label" }):
+                @Html.DropDownListFor(model => model.EnviadoASap, valoresSap)
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                <br />
+                @Html.Label("Fecha inicio:", new { @class = "control-label" })
+                <input type="text" class="control input-large" data-val="true" readonly style="margin:5px" value="@ViewBag.FechaInicio">
+                @Html.Label("Fecha fin:", new { @class = "control-label" })
+                <input type="text" class="control input-large" data-val="true" readonly style="margin:5px" value="@ViewBag.FechaFin">
+
+            </div>
+            }
+        </div>
+    </div>
+
+
+    <div id="gridContainer">
+        @Html.Partial("_Modificar", Model)
+    </div>
+    @Html.ValidationMessage("EnvioASAPFallido")
+
+</div>

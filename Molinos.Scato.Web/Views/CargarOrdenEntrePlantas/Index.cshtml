@@ -1,0 +1,33 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.OrdenEntrePlantasDto
+@{
+    ViewBag.Title = Textos.OrdenEntrePlantas_Titulo;
+    var workflow = (string) ViewBag.Workflow;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/Scripts/ordenEntrePlantas.index.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+}
+<style>
+ .content { padding-top: 20px;}
+
+</style>
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenEntrePlantas_Titulo</div>
+</div>
+
+@using (Html.BeginForm("Index", "CargarOrdenEntrePlantas", new { workflow, id = Model.Id }, FormMethod.Post, new { @class = "form-horizontal content causaBlock", id = "orden-form", data_mensaje_espera = Textos.OrdenEntrePlantas_MensajeDeEspera }))
+{
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+     {
+         <div class="alert alert-error">
+             @Html.ValidationSummary(true)
+         </div>
+     }
+    @Html.Partial("_Orden",Model)
+}

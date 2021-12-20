@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="34" viewBox="0 0 34 34">
+  <defs>
+    <clipPath id="clip-Radio_button_grey">
+      <rect width="34" height="34"/>
+    </clipPath>
+  </defs>
+  <g id="Radio_button_grey" data-name="Radio button_grey" clip-path="url(#clip-Radio_button_grey)">
+    <rect width="34" height="34" fill="#fff"/>
+    <g id="Line_up_Barco_checks" data-name="Line up_Barco + checks">
+      <g id="Elipse_10" data-name="Elipse 10" fill="#fff" stroke="#95989a" stroke-width="1">
+        <circle cx="17" cy="17" r="17" stroke="none"/>
+        <circle cx="17" cy="17" r="16.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

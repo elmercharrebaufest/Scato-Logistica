@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConversionCaracteristicaDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminar(Html, "ConversionCaracteristica"),
+            grid.Columna("MaterialDesc", Textos.Material),
+            grid.Columna("CaracteristicaDesc", Textos.Caracteristica),
+            grid.Columna("CodigoCamara",  Textos.TablaConversion_CodigoCamara)))

@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.AjusteStockBinesDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.CrearAjusteStockBines;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/ajusteStockBines.index.js")"></script>
+
+@using (Ajax.BeginForm(Textos.Crear, null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.CrearAjusteStockBines }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

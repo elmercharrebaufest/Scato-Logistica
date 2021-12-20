@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<PermisoDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "Permiso"),
+    grilla.Columna("Descripcion", Textos.Descripcion),
+    grilla.Columna("TipoPermiso", Textos.Permiso_TipoPermiso)
+    ))

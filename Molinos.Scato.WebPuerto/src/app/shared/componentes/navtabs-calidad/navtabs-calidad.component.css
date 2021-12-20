@@ -1,0 +1,79 @@
+.tituloMuelle{
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-16)/18px var(--unnamed-font-family-roboto);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--tipografia-secundaria-666666);
+    text-align: left;
+    font: normal normal bold 16px/18px Roboto;
+    letter-spacing: 0px;
+    color: #666666;
+    opacity: 1;
+}
+
+.btn-cargado {
+    /* height: 39px; */
+    background: var(--azul-moa) 0% 0% no-repeat padding-box;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    border-color: #007bff;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-ffffff);
+    text-align: left;
+    letter-spacing: 0px;
+    color: #007bff;
+    opacity: 1;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.btn-seleccionado {
+    /* height: 39px; */
+    background: var(--azul-moa) 0% 0% no-repeat padding-box !important;
+    background: #4D60A8 0% 0% no-repeat padding-box !important;
+    border-radius: 4px;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto) !important;
+    letter-spacing: var(--unnamed-character-spacing-0);
+    color: var(--unnamed-color-ffffff);
+    text-align: left;
+    font: normal normal bold 16px/24px Roboto;
+    letter-spacing: 0px;
+    color: #FFFFFF !important;
+    opacity: 1;
+
+}
+.icono-seleccionado {
+    background-color: white;
+}
+.icono-noSeleccionado{
+    background-color: #007bff;
+}
+.icono-solido{
+    -webkit-mask: url(assets/solido-jelly-beans.svg) no-repeat center;
+    mask-image: url(assets/solido-jelly-beans.svg) no-repeat center;
+    width: 23px;
+    height: 23px;
+    margin-right: 4px;
+}
+.icono-liquido{
+    -webkit-mask: url(assets/liquido-drop-of-liquid.svg) no-repeat center;
+    mask-image: url(assets/liquido-drop-of-liquid.svg) no-repeat center;
+    width: 14px;
+    height: 21px;
+    margin-right: 4px;
+}
+
+.btn-pendiente {
+    /* height: 39px; */
+    background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+    border: 1px solid var(--tipografia-secundaria);
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) var(--unnamed-font-size-16)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal normal 16px/24px Roboto;
+    letter-spacing: 0px;
+    color: #A9A9A9;
+    opacity: 1;
+}

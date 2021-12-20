@@ -1,0 +1,46 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@{
+    ViewBag.Title = Textos.InhabilitacionChofer_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_Inhabilitaciones</div>
+</div>
+
+<ul class="nav nav-tabs">
+    @if (PermisosHelper.Is(PermisosScato.AbmInhabilitacionChofer))
+    {
+        <li class="active">
+            @Html.ActionLink(Textos.InhabilitacionChofer_Titulo, "Index", "InhabilitacionChofer")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.AbmInhabilitacionCamion))
+    {
+        <li>
+            @Html.ActionLink(Textos.InhabilitacionCamion_Titulo, "Index", "InhabilitacionCamion")
+        </li>
+    }
+</ul>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_Inhabilitaciones)
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                
+            }
+            </div>
+            @Html.ActionLink(Textos.InhabilitacionCamion_Nuevo, "Crear", "InhabilitacionChofer", null , new { @class = "ajax-editar-link btn btn-primary pull-right"})
+        
+    </div>
+
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

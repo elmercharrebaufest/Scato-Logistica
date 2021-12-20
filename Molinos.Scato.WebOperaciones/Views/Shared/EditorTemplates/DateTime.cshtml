@@ -1,0 +1,16 @@
+﻿@using System.Globalization
+@using Molinos.Scato.WebOperaciones.Helpers
+@model DateTime?
+@Html.TextBox(String.Empty, Model.Formatted(), new {@class = "form-control", data_date_format = "DD/MM/YYYY", @readonly="readonly", style="background-color: white" })
+
+<script type="text/javascript">
+    $(function() {
+        // target only the input in this editor template
+        $('#@Html.IdForModel()').datetimepicker({
+            locale: "@CultureInfo.CurrentCulture.Name",
+            ignoreReadonly: true,
+            maxDate: 'now',
+        });
+        $('#@Html.IdForModel()').removeAttr("data-val-date");
+    });
+</script>

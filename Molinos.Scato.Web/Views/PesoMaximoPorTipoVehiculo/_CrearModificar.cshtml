@@ -1,0 +1,44 @@
+﻿@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.PesoMaximoPorTipoVehiculoDto
+
+@Html.ValidationMessage("")
+<div class="control-group">
+    @Html.LabelFor(model => model.TipoVehiculo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.EnumDropDownListFor(model => model.TipoVehiculo, new {@class = "input-medium"})
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoMaxIngreso, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoMaxIngreso, new {@class = "input-small"})
+        @Html.ValidationMessageFor(model => model.PesoMaxIngreso)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoMaxEgreso, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoMaxEgreso, new {@class = "input-small"})
+        @Html.ValidationMessageFor(model => model.PesoMaxEgreso)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoNetoMaxPlanta, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoNetoMaxPlanta, new {@class = "input-small"})
+        @Html.ValidationMessageFor(model => model.PesoNetoMaxPlanta)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoNetoMinimo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoNetoMinimo, new { @class = "input-small" })
+        @Html.ValidationMessageFor(model => model.PesoNetoMinimo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Activo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Activo)
+    </div>
+</div>

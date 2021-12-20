@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.MotivoDto
+
+@{
+    ViewBag.Title = Textos.Motivo_Crear;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Motivo_Crear }))
+{
+    @Html.ValidationSummary(true)
+    @Html.Partial("_CrearModificar", Model)           
+}

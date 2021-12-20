@@ -1,0 +1,161 @@
+.tabla-embebida{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.center-bt{
+    margin: auto !important;
+}
+
+.column-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+label{
+    font-weight: bold;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    padding: 0px;
+    margin: 0px;
+}
+
+.input_img {  position:relative;}
+.input_img input { margin:0;}
+select { margin: 0; height: 30px;}
+
+.imgClockInput1 { 
+    display:block; 
+    position:absolute; 
+    top:0.3rem; 
+    right: 0.3rem; 
+}
+
+.label-float label{
+    width: 100%;
+}
+
+.label-float textarea{
+    width: 100%;
+}
+
+.right-buttons-turnos{
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.right-buttons-turnos button:first-child{
+    margin-right: 10px;
+}
+
+table {
+    table-layout:fixed;
+}
+table td {
+    position: relative;
+    height: 40px !important;
+}
+
+table td input {
+    position: absolute;
+    display: block;
+    top:0;
+    left:0;
+    margin: 0;
+    height: 38px;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+table td select {
+    position: absolute;
+    display: block;
+    top:0;
+    left:0;
+    margin: 0;
+    height: 38px;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+table.turnos th:nth-child(1) {
+    width: 120px;
+}
+table.turnos th:nth-child(2) {
+    width: 150px;
+}
+
+table.turnos table.tabla-embebida th{
+    width: auto;
+}
+
+.btn-add-cell{
+    height: fit-content !important;
+    min-height: 52px !important;
+    vertical-align: middle !important;
+}
+
+.bt-cerrar-turno{
+    position: absolute;
+    bottom: 7px;
+    width: 75%;
+    margin-left: 5%;
+    font-size: 12px;
+}
+
+.toneladas{
+    color: #2486AC;
+    font-size: 24px;
+}
+
+.turno{
+    color: #2486AC;
+    font-size: 14px;
+}
+
+.txt-blue{
+    color: #2486AC;
+}
+
+.right-side{
+    display: flex;
+    justify-content: flex-end;
+    height: 35px;
+}
+
+.bt-total{
+    background-color: #3376A1;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    height: 40px;
+    border-radius: 2px;
+}
+
+.img-tn{
+    background-color: white;
+    -webkit-mask: url('assets/carga/Icono_Toneladas.svg') no-repeat center;
+    mask-image: url('assets/carga/Icono_Toneladas.svg') no-repeat center;
+    width: 74px;
+    height: 74px;
+    transform: scale(0.4);
+    margin-left: -20px;
+    margin-top: -28px;
+    margin-right: -20px;
+}
+
+.parcel-cantidad{
+    font-size: 11px;
+    color: grey;
+}

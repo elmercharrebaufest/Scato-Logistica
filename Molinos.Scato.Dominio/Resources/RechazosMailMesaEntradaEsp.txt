@@ -1,0 +1,78 @@
+<h4>
+  Estimado,<br/>
+  A continuación se detallan los datos del camión rechazado.<br/>
+</h4>
+
+<table style="width:100%" class="Table">
+<h3 style="text-align: center; background-color: #607D8B; margin-bottom: 0px"> DATOS DEL VEHICULO</h3>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Patente</td>
+    <td style="background-color: #8BBDDC;">{0}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Tipo Comercial</td>
+    <td style="background-color: #8BBDDC;">{1}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Patente <br/>Acoplado</td>
+    <td style="background-color: #8BBDDC;">{2}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Carta de Porte</td>
+    <td style="background-color: #8BBDDC;">{3}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Tarjeta RFD</td>
+    <td style="background-color: #8BBDDC;">{4}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">CTG</td>
+    <td style="background-color: #8BBDDC;">{5}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Fecha Ingreso</td>
+    <td style="background-color: #8BBDDC;">{6}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Titular CP</td>
+    <td style="background-color: #8BBDDC;">{7}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Transportista</td>
+    <td style="background-color: #8BBDDC;">{8}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Comercial</td>
+    <td style="background-color: #8BBDDC;">{9}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Neto Origen</td>
+    <td style="background-color: #8BBDDC;">{10}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Mercado a  <br/>Término</td>
+    <td style="background-color: #8BBDDC;">{11}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Neto Centro</td>
+    <td style="background-color: #8BBDDC;">{12}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Entregador</td>
+    <td style="background-color: #8BBDDC;">{13}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Diferencia</td>
+    <td style="background-color: #8BBDDC;">{14}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Ciclo de Calado</td>
+    <td style="background-color: #8BBDDC;">{15}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Cupo</td>
+    <td style="background-color: #8BBDDC;">{16}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Comentarios</td>
+    <td style="background-color: #8BBDDC;">{17}</td>
+  </tr>
+  <tr>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Procedencia</td>
+    <td style="background-color: #8BBDDC;">{18}</td>
+    <td style="background-color: #607D8B; text-align: center; font-weight: bold;">Material</td>
+    <td style="background-color: #8BBDDC;">{19}</td>
+  </tr>
+</table>
+<br/>
+Motivo de rechazo: {22}
+<br/>
+Observaciones: {23}
+<br/>
+{20}
+<br/>
+{21}
+<br/>
+Saludos cordiales

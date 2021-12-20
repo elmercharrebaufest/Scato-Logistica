@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Textos.SeleccionarCentro_Titulo;
+    Layout = null;
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dialogo-editar-guardar").addClass("hide");
+    });
+</script>
+
+    @using (Ajax.BeginForm("SeleccionarCentro", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", data_dialogo_titulo = Textos.SeleccionarCentro_Titulo }))
+    { 
+    }
+
+<div id="gridContainer">
+    @Html.Partial("ListarSeleccionarCentro")
+</div>

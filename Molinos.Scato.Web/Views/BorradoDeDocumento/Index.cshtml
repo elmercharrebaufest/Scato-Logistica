@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.FiltroRecorridoModel
+@{
+    ViewBag.Title = Textos.BorradoDeDocumento_Titulo;
+}
+
+<script type="text/javascript" src="@Url.Script("~/scripts/borradoDeDocumento.js")"></script>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.BorradoDeDocumento_Titulo</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row-fluid">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form-borrado", @class = "form-search causaBlock", data_mensaje_espera = Textos.Borrando }))
+            {
+                @Html.Hidden("message", Textos.Borrando, new{id = "message"})
+                @Html.LabelFor(model => model.TipoDocumentoIngreso, new {@class = "margin",@style="margin-right:10px;"}) @Html.EnumDropDownListFor(model => model.TipoDocumentoIngreso, new {id = "documentos",@style="margin-right:20px;"})
+                @Html.LabelFor(model => model.NumeroDocumentoIngreso,new { @style="margin-right:10px;"}) @Html.TextBoxFor(model => model.NumeroDocumentoIngreso,new { @style="margin-right:20px;"})
+                @Html.LabelFor(model => model.Patente,new {@style="margin-right:10px;" }) @Html.TextBoxFor(model => model.Patente, new {@class = "input-small",@style="margin-right:20px;"})
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+            }
+        </div>
+    </div>
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

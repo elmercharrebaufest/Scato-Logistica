@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ReciboMunicipalDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "ReciboMunicipal"),
+    grilla.Columna("Monto", Textos.ReciboMunicipal_Monto),
+    grilla.Columna("Ordenanza", Textos.ReciboMunicipal_Ordenanza),
+    grilla.Columna("FechaActivacion", Textos.ReciboMunicipal_FechaActivacion, x => FormattingHtmlHelper.Formatted(x.FechaActivacion)),
+    grilla.Columna("TipoVehiculo", Textos.ReciboMunicipal_TipoVehiculo)
+    ))

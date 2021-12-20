@@ -1,0 +1,25 @@
+﻿using AutoMapper;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
+
+namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
+{
+    public class EstablecimientoMappingProfile : Profile
+    {
+        public override string ProfileName
+        {
+            get { return "EstablecimientoMappingProfile"; }
+        }
+        protected override void Configure()
+        {
+            Mapper.CreateMap<Establecimiento, EstablecimientoDto>()
+                  .ForMember(t => t.Localidad, f => f.MapFrom(r => r.Localidad.Descripcion))
+                  .ForMember(t => t.LocalidadCodigoAfip, f => f.MapFrom(r => r.Localidad.CodigoAfip))
+                  .ForMember(t => t.LocalidadId, f => f.MapFrom(r => r.Localidad.Id))
+                  .ForMember(t => t.Provincia, f => f.MapFrom(r => r.Provincia.Descripcion))
+                  .ForMember(t => t.Proveedor, f => f.MapFrom(r => r.Proveedor.Descripcion))
+                  .ForMember(t => t.ProvinciaId, f => f.MapFrom(r => r.Provincia.Id));
+            Mapper.CreateMap<EstablecimientoDto, Establecimiento>();
+        }
+    }
+}

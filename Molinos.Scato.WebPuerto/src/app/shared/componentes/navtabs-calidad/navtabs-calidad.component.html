@@ -1,0 +1,49 @@
+<div class="row" *ngIf="!muellesOperativos()">
+    <div class="alert alert-warning" role="alert">
+        No hay barcos en estado operativo en este momento.
+    </div>
+</div>
+
+<div class="row ml-1" *ngIf="muellesOperativos()">
+    <div class="col">
+        <div class="row tituloMuelle mb-2">Muelle San Benito</div>
+        <div class="row">
+            <button #listadoBotones class="btn btn-sm boton-listado btn-cargado" type="button"
+                id="{{buqueSanBenito2.id}}" (click)="onClickHandlerClient(buqueSanBenito2)">
+                <!-- <img [src]="imgSolidoLiquido(buqueSanBenito)"> -->
+                <div class="icono-seleccionado" [ngClass]="imgSolidoLiquido(buqueSanBenito)" ></div>
+                {{estadoSanBenito()}}
+            </button>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row tituloMuelle mb-2">Muelle Vicentin </div>
+        <div class="row">
+            <button #listadoBotones class="btn btn-sm boton-listado btn-cargado" type="button">
+                <!-- <img [src]="imgSolidoLiquido(buqueVicentin)"> -->
+                <div class="icono-noSeleccionado" [ngClass]="imgSolidoLiquido(buqueVicentin)" ></div>
+                {{estadoVicentin()}}
+            </button>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row tituloMuelle mb-2">Muelle Nouryon </div>
+        <div class="row">
+            <button #listadoBotones class="btn btn-sm boton-listado btn-cargado" type="button">
+                <!-- <img [src]="imgSolidoLiquido(buqueNoryon)"> -->
+                <div class="icono-noSeleccionado" [ngClass]="imgSolidoLiquido(buqueNoryon)" ></div>
+                {{estadoNoryon()}}
+            </button>
+        </div>
+    </div>
+    <div class="col mr-1">
+        <div class="row tituloMuelle mb-2">Otro muelle </div>
+        <div class="row">
+            <button #listadoBotones class="btn btn-sm boton-listado btn-cargado" type="button">
+                <!-- <img [src]="imgSolidoLiquido(buqueOtrosMuelles)"> -->
+                <div class="icono-noSeleccionado" [ngClass]="imgSolidoLiquido(buqueOtrosMuelles)" ></div>
+                {{estadoOtros()}}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FormatoDeImpresionDto
+@{
+    var formatosDePapel = (IEnumerable<SelectListItem>)ViewBag.FormatosDePapel;
+    var formatosDeCampos = (string)ViewBag.FormatosDeCampos;
+    var campos = (IEnumerable<SelectListItem>)ViewBag.Campos;
+    var formatosletras = (IEnumerable<SelectListItem>)ViewBag.FormatosLetras;
+    var alineaciones = (IEnumerable<SelectListItem>)ViewBag.Alineaciones;
+    var tiposDeCampo = (IEnumerable<SelectListItem>)ViewBag.TiposDeCampo;
+}
+
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+    .span6 {
+        width: 430px;
+          
+        /*border: solid 1px #c3c3c3;*/
+    }
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+    .form-horizontal .control-label { width: 170px; font-size: 12px; }
+    #dialogo-editar-body { padding-right: 0px !important;}
+    #dialogo-editar .control-group {margin-bottom: 5px; padding-left: 10px; font-size: 12px; }
+    #dialogo-editar {top: 35% !important;}
+    label.checkbox {font-size: 12px; }
+    .tablaDatos label { margin-bottom: 0; }
+    .control-label2 { width: auto; display: inline; font-size: 12px; }
+    .help-inline { padding-left: 0;}
+    #dialogo-editar-body { max-height: 440px !important;width: 905px !important;}
+    .span6{ width: 400px;}
+
+</style>
+
+@Html.Hidden("formatoDeImpresionId", Model.Id)
+<div class="control-group">
+    @Html.LabelFor(m => m.Descripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new { @class = "input-medium" })
+        @Html.ValidationMessageFor(m => m.Descripcion)
+    </div>
+</div>
+<div class="row" style="height: auto;">
+    <div class="span6"> 
+        <div class="control-group">
+            @Html.LabelFor(m => m.FormatoDePapelId, new {@class = "control-label"})
+            <div class="controls">
+                @Html.DropDownListFor(model => model.FormatoDePapelId, formatosDePapel, new {@class = "control input-medium"})
+                @Html.ValidationMessageFor(m => m.FormatoDePapelId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Filas, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Filas, new { @class = "input-medium" })
+                @Html.ValidationMessageFor(m => m.Filas)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Columnas, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Columnas, new { @class = "input-medium" })
+                @Html.ValidationMessageFor(m => m.Columnas)
+            </div>
+        </div>
+    </div>
+    <div class="span6"> 
+        <div class="control-group">
+            @Html.LabelFor(m => m.Posicion, new {@class = "control-label"})
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.Posicion, new {@class = "control input-medium"})
+                @Html.ValidationMessageFor(m => m.Posicion)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.MargenIzquierdo, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MargenIzquierdo, new {@class = "control input-medium"})
+                @Html.ValidationMessageFor(m => m.MargenIzquierdo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.MargenSuperior, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MargenSuperior, new {@class = "control input-medium"})
+                @Html.ValidationMessageFor(m => m.MargenSuperior)
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mensajes" data-error-fila="@String.Format(Textos.Error_Menor + Textos.FormatoDeImpresion_Filas,Textos.FormatoDeCampo_Fila)" 
+     data-error-columna="@String.Format(Textos.Error_Menor + Textos.FormatoDeImpresion_Columnas,Textos.FormatoDeCampo_Columna)"
+    data-cero="@Textos.Error_MayorQueCero">
+</div>
+<div id="grilla">
+    <div class="span10">
+        <div class="row-fluid">
+            @Html.Hidden("camposPostBack", formatosDeCampos)
+            <input type="hidden" name="formatosDeCampos" id ="formatosDeCampos" data-bind="value: ko.toJSON(formatosDeCampos)" />
+            <div class="bordeGris">
+                @Html.DropDownList("campo",campos, new {@class = "control input-medium"})
+                <button id="botonAgregarCampo" data-bind="click: botonAgregarCampo" class="btn" data-obtener-campos="@Url.Action("ObtenerFormatosDeCampo", "FormatoDeImpresion")">@Textos.Agregar</button>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered" >
+            <thead>
+                <tr>
+                    <th>@Textos.Campo</th>
+                    <th>@Textos.FormatoDeCampo_Letra</th>
+                    <th>@Textos.FormatoDeCampo_Alineacion</th>
+                    <th>@Textos.FormatoDeCampo_Fila</th>
+                    <th>@Textos.FormatoDeCampo_Columna</th>
+                    <th>@Textos.FormatoDeCampo_Tamaño</th>
+                    <th><i class="icon-bold"></i></th>
+                    <th><i class="icon-italic"></i></th>
+                    <th><i class="icon-text-width"></i></th>
+                    <th>@Textos.FormatoDeCampo_EsColumna</th>
+                    <th>@Textos.FormatoDeCampo_TipoDeCampo</th>
+                    <th>@Textos.Eliminar</th>
+                    <th>@Textos.FormatoDeCampo_Texto</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: formatosDeCampos">
+                <tr>
+                    <td data-bind="text: CampoDescripcion" class ="control input-mini"/>
+                    <td>@Html.DropDownList("formatosLetras", formatosletras, new {@class = "control input-small", data_bind="value: LetraId"})</td>
+                    <td>@Html.DropDownList("alineaciones", alineaciones, new {@class = "control input-small", data_bind="value: Alineacion"})</td>
+                    <td>@Html.TextBox("fila","0", new {@class = "control input-mini filaValida mayorQueCero", data_bind="value: Fila, attr: { 'id': Indice1, 'name': Indice1 }"})
+                        @Html.ValidationMessage("fila",new {data_bind="attr: { 'data-valmsg-for': Indice1 }"})
+                    </td>
+                    <td>@Html.TextBox("columna","0", new {@class = "control input-mini columnaValida mayorQueCero", data_bind="value: Columna, attr: { 'id': Indice2, 'name': Indice2 }"})
+                        @Html.ValidationMessage("columna",new {data_bind="attr: { 'data-valmsg-for': Indice2 }"})
+                    </td>
+                    <td>@Html.TextBox("tamaño","10", new {@class = "control input-mini", data_bind="value: Tamaño"})</td>
+                    <td>@Html.CheckBox("negrita", new {@class = "control input-mini", data_bind="checked: Negrita"})</td>
+                    <td>@Html.CheckBox("cursiva", new {@class = "control input-mini", data_bind="checked: Cursiva"})</td>
+                    <td>@Html.CheckBox("subrayado", new {@class = "control input-mini", data_bind="checked: Subrayado"})</td>
+                    <td>@Html.CheckBox("esColumna", new {@class = "control input-mini", data_bind="checked: EsColumna"})</td>
+                    <td>@Html.DropDownList("tipoDeCampo", tiposDeCampo, new {@class = "control input-small", data_bind="value: TipoDeCampo"})</td>
+                    <td><a href="#" data-bind="click: $root.removeCampo"><i class="icon-trash"></i></a></td>
+                    <td>@Html.TextBox("texto","", new {@class = "control input-mini", data_bind="value: Texto, visible: CampoDescripcion == 'Texto Libre'"})</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

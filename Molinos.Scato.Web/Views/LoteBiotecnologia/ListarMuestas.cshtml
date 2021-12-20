@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<MuestraEnvioACamaraBiotecnoligiaDto>)ViewBag.Items;
+}
+<div style="font-size: 11px">
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.Columna("Material", Textos.Material),
+            grid.Columna("Vendedor",  Textos.Lote_Vendedor),
+            grid.Columna("Corredor", Textos.Lote_Corredor),
+            grid.Columna("FechaDescarga",  Textos.Lote_FechaDescarga),
+            grid.Columna("PesoNeto",  Textos.PesoNeto),
+            grid.Columna("Localidad",  Textos.Lote_Localidad),
+            grid.Columna("Patente",  Textos.Lote_Patente),
+            grid.Columna("NroMuestra",  Textos.Lote_NumeroMuestra),
+            grid.Columna("NroMuestraTerceros",  Textos.Lote_NroMuestraTerceros),
+            grid.Columna("CamaraDesc",  Textos.Camara)))
+    </div>

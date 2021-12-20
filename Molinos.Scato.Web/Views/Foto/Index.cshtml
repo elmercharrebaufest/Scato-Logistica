@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@model FotosDto
+
+@{
+    Layout = null;
+}
+@if (ViewBag.ConJs == null || ViewBag.ConJs)
+{
+    @Styles.Render("~/Content/bootstrap")
+    @Scripts.Render("~/bundles/jquery-common")
+    @Scripts.Render("~/bundles/bootstrap")
+}
+
+@Html.Partial("Fotos", Model)

@@ -1,0 +1,19 @@
+﻿@model Molinos.Scato.Dominio.Dto.ExportadorDto
+<div id="links"
+     data-url-buscar-almacenes="@Url.Action("BuscarAlmacenes", "Consultas")"
+     data-url-buscar-almacen="@Url.Action("BuscarAlmacen", "Consultas")"></div>
+
+<script type="text/javascript" src="~/scripts/exportador.crear.js"></script>
+<div class="control-group">
+    @Html.LabelFor(model => model.Nombre, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+    @Html.LabelFor(model => model.AlmacenDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.AlmacenDesc, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.AlmacenDesc)
+        @Html.HiddenFor(model => model.Almacen_Id)
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CaracteristicaDeCalidadDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.CaracteristicaDeCalidad_Crear;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script src="@Url.Script("~/scripts/caracteristicaDeCalidad.js")"  type="text/javascript"></script>
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.CaracteristicaDeCalidad_Crear, id = "orden-form", data_dialogo_extraclass = "dialog-grande" }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

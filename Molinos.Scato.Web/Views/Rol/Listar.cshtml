@@ -1,0 +1,35 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<RolDto>)ViewBag.Items;
+}
+
+<script src="@Url.Script("~/Scripts/material.listarMateriales.js")" type="text/javascript"></script>
+<style>
+    .tip {
+        max-width: 500px;
+        white-space: normal;
+    }
+</style>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "Rol"),
+                grid.Columna("Descripcion", Textos.Rol_NombreRol),
+                grid.Column(header: Textos.Permisos_Titulo, format: ((item) =>
+                    {
+                        IEnumerable<PermisoDto> permisosDto = (IList<PermisoDto>)item.PermisosAsociados;
+                        return Html.Raw("<div class = 'ellipsis-overflow mostrar-lista'>" + Html.DisplayFor(m => permisosDto).ToHtmlString()
+                                        + "<span class = 'tip'>" + Html.DisplayFor(m => permisosDto).ToHtmlString() + "</span>" + "</div>");
+                    })),
+                grid.Column(header: Textos.Permiso_Usuarios, format: ((item) =>
+                    {
+                        IEnumerable<UsuarioDto> usuariosDto = ((IList<UsuarioDto>)ViewBag.Usuarios).Where(u => u.RolesAsociados.Any(r => r.Id == item.Id));
+                        return Html.Raw("<div class = 'ellipsis-overflow mostrar-lista'>" + Html.DisplayFor(m => usuariosDto).ToHtmlString()
+                                        + "<span class = 'tip'>" + Html.DisplayFor(m => usuariosDto).ToHtmlString() + "</span>" + "</div>");
+                    }))
+                ))

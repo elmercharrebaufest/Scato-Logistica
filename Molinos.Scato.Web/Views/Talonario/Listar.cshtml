@@ -1,0 +1,20 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TalonarioDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "Talonario"),
+    grilla.Columna("Descripcion", Textos.Talonario_Descripcion),
+    grilla.Columna("Sucursal", Textos.Talonario_Sucursal),
+    grilla.Columna("PrimerNumero", Textos.Talonario_PrimerNumero),
+    grilla.Columna("UltimoNumero", Textos.Talonario_UltimoNumero),
+    grilla.Columna("ProximoNumero", Textos.Talonario_ProximoNumero)
+    ))

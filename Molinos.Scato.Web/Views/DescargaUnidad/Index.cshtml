@@ -1,0 +1,61 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.DescargaUnidadDto
+@{
+    ViewBag.Title = Textos.DescargaUnidades_Titulo;
+    var descargas = (IEnumerable<SelectListItem>)ViewBag.Descargas;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="@Url.Script("~/Scripts/descargaUnidad.index.js")" type="text/javascript"></script>
+}
+<div class="container-fluid content grillaPad">
+    <div class="titSecciones">@Textos.DescargaUnidades_Titulo</div>
+    <div class="row-fluid">
+        <div class="span12search bordeGris" style="border-bottom-style: solid; margin-bottom: 15px;">
+            @using (Ajax.BeginForm("CargarDescargaUnidad", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { @class = "form-horizontal form-search", data_mensaje_espera = Textos.ActDescargaPorUnidad }))
+            {
+                <label class="control-label">@Textos.DescargaUnidades_NroDescarga:</label>
+                @Html.Hidden("workflowInstanceId", Model.WorkflowInstanceId)
+                @Html.DropDownListFor(model => model.NroDescarga, descargas, new { id = "dropDownNumerosDescarga", @class = "control input" })
+                <button type="submit" class="btn btn-primary" id="cargarDescarga">@Textos.DescargaUnidades_Abrir</button>
+                <button type="submit" class="btn btn-primary" id="nuevaDescarga">@Textos.DescargaUnidades_Nueva</button>
+            }
+        </div>
+    </div>
+    @Html.Hidden("NumeroPedidoSapInvalido", Textos.NumeroPedidoSapInvalido)
+    @Html.Hidden("EstadoFinalizado", EstadoRomaneo.Finalizado)
+    <div id="gridContainer">
+        @Html.Partial("DescargaUnidad", Model)
+    </div>
+
+    @* ReSharper disable Mvc.ActionNotResolved *@
+    @using (Html.BeginForm("Action", "DescargaUnidad", FormMethod.Post, new { @class = "causaBlock form-horizontal form-search", data_mensaje_espera = Textos.ActDescargaPorUnidad }))
+    {
+    @* ReSharper restore Mvc.ActionNotResolved *@
+        @Html.HiddenFor(model => model.WorkflowInstanceId)
+        @Html.HiddenFor(model => model.NroDescarga, new { id = "NumeroIndex"})
+        <div class="modal hide fade" id="dialogo-confirmar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>@Textos.Confirmacion</h4>
+            </div>
+            <div class="modal-body" id="dialogo-confirmar-body">
+            </div>
+            <div class="modal-body">
+                @Html.CheckBoxFor(model => model.Imprimir)
+                @Html.LabelFor(model => model.Imprimir)
+            </div>
+            <div class="modal-footer">
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+                <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+

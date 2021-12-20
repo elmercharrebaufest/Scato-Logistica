@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition">
+  <DataSet Name="">
+    <Query>
+      <DataSourceReference>Scato_Reportes_Datasource</DataSourceReference>
+      <CommandText>SELECT RE.fechainicio                         AS FechaIngreso, 
+       RO.id                                  AS RomaneoNro, 
+       RO.nropedido                           AS PedidoNro, 
+       RE.id                                  AS IngresoNro, 
+       RE.patente                             AS Patente, 
+       PRO.descripcion                        AS Proveedor, 
+       Getdate()                              AS FechaInicio, 
+       Getdate()                              AS FechaCierre, 
+       ESTROM.descripcion                     AS Estado, 
+       RE.numerodocumentoingreso              AS RemitoNro, 
+       RE.pesobrutoorigen - RE.pesotaraorigen AS KgDeclarados, 
+       REM.fechamovimiento                    AS FechaRemito, 
+       Sum(RITEM.pesobruto)                   AS PesoBruto,
+       Sum(RITEM.pesotara)                    AS PesoTara,
+       Sum(RITEM.pesobruto - RITEM.pesotara)  AS PesoNeto
+FROM   romaneo RO 
+       LEFT JOIN recorrido RE 
+               ON RO.workflowinstanceid = RE.instanciaworkflow 
+       LEFT JOIN remito REM 
+               ON REM.ordendedescarga = RE.numerodocumentoingreso 
+       LEFT JOIN proveedor PRO 
+               ON REM.proveedor_id = PRO.id 
+       LEFT JOIN estadoromaneo ESTROM 
+               ON ESTROM.id = RO.estado 
+       LEFT JOIN romaneoitem RITEM 
+               ON RO.id = RITEM.romaneo_id 
+GROUP  BY RE.fechainicio, 
+          RO.id, 
+          RO.nropedido, 
+          RE.id, 
+          RE.patente, 
+          PRO.descripcion, 
+          ESTROM.descripcion, 
+          RE.numerodocumentoingreso, 
+          RE.pesobrutoorigen - RE.pesotaraorigen, 
+          REM.fechamovimiento </CommandText>
+    </Query>
+    <Fields>
+      <Field Name="FechaIngreso">
+        <DataField>FechaIngreso</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="RomaneoNro">
+        <DataField>RomaneoNro</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="PedidoNro">
+        <DataField>PedidoNro</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="IngresoNro">
+        <DataField>IngresoNro</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="Patente">
+        <DataField>Patente</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Proveedor">
+        <DataField>Proveedor</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="FechaInicio">
+        <DataField>FechaInicio</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="FechaCierre">
+        <DataField>FechaCierre</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Estado">
+        <DataField>Estado</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="RemitoNro">
+        <DataField>RemitoNro</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="KgDeclarados">
+        <DataField>KgDeclarados</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="FechaRemito">
+        <DataField>FechaRemito</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="PesoBruto">
+        <DataField>PesoBruto</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="PesoTara">
+        <DataField>PesoTara</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+      <Field Name="PesoNeto">
+        <DataField>PesoNeto</DataField>
+        <rd:TypeName>System.Int32</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>

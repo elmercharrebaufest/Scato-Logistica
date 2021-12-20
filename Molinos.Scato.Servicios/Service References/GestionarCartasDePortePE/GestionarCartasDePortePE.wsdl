@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:tns="http://pod.waybillmanagement.ws.industrysystem.com.ar/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" name="GestionarCartasDePortePE" targetNamespace="http://pod.waybillmanagement.ws.industrysystem.com.ar/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://pod.waybillmanagement.ws.industrysystem.com.ar/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="MuestreoPesajeTransporteAutomotor" type="tns:MuestreoPesajeTransporteAutomotor" />
+      <xs:element name="MuestreoPesajeVagonFerroviario" type="tns:MuestreoPesajeVagonFerroviario" />
+      <xs:element name="consultarCartasDePorte" type="tns:consultarCartasDePorte" />
+      <xs:element name="consultarCartasDePorteResponse" type="tns:consultarCartasDePorteResponse" />
+      <xs:element name="desvioCartasDePorte" type="tns:desvioCartasDePorte" />
+      <xs:element name="desvioCartasDePorteResponse" type="tns:desvioCartasDePorteResponse" />
+      <xs:element name="editarCartasDePorte" type="tns:editarCartasDePorte" />
+      <xs:element name="editarCartasDePorteResponse" type="tns:editarCartasDePorteResponse" />
+      <xs:element name="rechazoCartasDePorte" type="tns:rechazoCartasDePorte" />
+      <xs:element name="rechazoCartasDePorteResponse" type="tns:rechazoCartasDePorteResponse" />
+      <xs:element name="registrarCartaDePorte" type="tns:registrarCartaDePorte" />
+      <xs:element name="registrarCartaDePorteResponse" type="tns:registrarCartaDePorteResponse" />
+      <xs:element name="registrarMuestreoYPesaje" type="tns:registrarMuestreoYPesaje" />
+      <xs:element name="registrarMuestreoYPesajeResponse" type="tns:registrarMuestreoYPesajeResponse" />
+      <xs:element name="vagon" type="tns:vagon" />
+      <xs:complexType name="consultarCartasDePorte">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="parametros" type="tns:ParametrosConsulta" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ParametrosConsulta">
+        <xs:sequence>
+          <xs:element name="numerosCartaPorte">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="numeroCartaPorte" type="xs:long" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="consultarCartasDePorteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="respuesta" type="tns:RespuestaConsulta" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RespuestaConsulta">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="cartasPorte">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element name="cartaPorteTransporteAutomotor" type="tns:CartaPorteTransporteAutomotorConsulta" />
+                  <xs:element name="cartaPorteVagonFerroviario" type="tns:CartaPorteVagonFerroviarioConsulta" />
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="errores">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="tns:wsError" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteTransporteAutomotorConsulta">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteConsulta">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ctg" type="xs:string" />
+              <xs:element minOccurs="0" name="muestreoPesajeAnalisis" type="tns:MuestreoPesajeAnalisisTransporteAutomotor" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteConsulta" abstract="true">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="numeroCartaPorte" type="xs:long" />
+          <xs:element name="estado" type="tns:Estado" />
+          <xs:element minOccurs="0" name="fechaHoraRegistracion" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="intervinientes" type="tns:IntervinientesConsulta" />
+          <xs:element minOccurs="0" name="granosTransportados" type="tns:GranosTransportados" />
+          <xs:element minOccurs="0" name="destinoGranos" type="tns:DestinoGranos" />
+          <xs:element minOccurs="0" name="laboratorio" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="valorizaciones">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="valorizacion" type="tns:Valorizacion" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MuestreoPesajeAnalisisTransporteAutomotor">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="fechaHoraConfirmacionDefinitiva" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="idMuestra" type="xs:string" />
+          <xs:element minOccurs="0" name="kilosNetosSecos" type="xs:int" />
+          <xs:element minOccurs="0" name="tipoAnalisis" type="tns:TipoAnalisis" />
+          <xs:element minOccurs="0" name="resultadosAnalisis">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="resultado" type="tns:ResultadoAnalisis" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ResultadoAnalisis">
+        <xs:sequence>
+          <xs:element name="codigoBiotecnologia" type="xs:string" />
+          <xs:element name="porcentaje" type="xs:decimal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="IntervinientesConsulta">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="titular" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="remitenteComercial" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="destinatario" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="destino" type="tns:Interviniente" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Interviniente">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DocumentoInterviniente">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="razonSocial" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="DocumentoInterviniente">
+        <xs:sequence>
+          <xs:element name="cuit" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="GranosTransportados">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigoEspecie" type="xs:string" />
+          <xs:element name="establecimiento" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoBiotecnologiaDeclarada" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoLocalidadProcedencia" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DestinoGranos">
+        <xs:sequence>
+          <xs:element name="numeroPlantaDestino" type="xs:long" />
+          <xs:element name="codigoLocalidadDestino" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Valorizacion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="tipoFacturacion" type="tns:TipoFacturacion" />
+          <xs:element minOccurs="0" name="fechaValorizacion" type="xs:date" />
+          <xs:element minOccurs="0" name="empresaBiotecnologia" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="kilosValorizados" type="xs:int" />
+          <xs:element minOccurs="0" name="codigoBiotecnologia" type="xs:string" />
+          <xs:element minOccurs="0" name="importeTotalUSD" type="xs:decimal" />
+          <xs:element minOccurs="0" name="tipoCambio" type="xs:decimal" />
+          <xs:element minOccurs="0" name="items">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ItemValorizacion" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ItemValorizacion">
+        <xs:sequence>
+          <xs:element name="concepto" type="xs:string" />
+          <xs:element name="importe" type="xs:decimal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteVagonFerroviarioConsulta">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteConsulta">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="cantidadVagones" type="xs:int" />
+              <xs:element minOccurs="0" name="muestreoPesajeAnalisis" type="tns:MuestreoPesajeAnalisisVagonFerroviario" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="MuestreoPesajeAnalisisVagonFerroviario">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="fechaHoraConfirmacionDefinitiva" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="datosPorVagon">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="vagon" type="tns:VagonConsulta" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="VagonConsulta">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="numero" type="xs:string" />
+          <xs:element minOccurs="0" name="idMuestra" type="xs:string" />
+          <xs:element minOccurs="0" name="kilosNetosSecos" type="xs:int" />
+          <xs:element minOccurs="0" name="tipoAnalisis" type="tns:TipoAnalisis" />
+          <xs:element minOccurs="0" name="resultadosAnalisis">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="resultado" type="tns:ResultadoAnalisis" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="wsError">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:respuestaError">
+            <xs:sequence>
+              <xs:element name="numeroCartaPorte" type="xs:long" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="respuestaError">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="errores">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="tns:Error" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Error">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="descripcion" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="webServiceExceptionV2FaultDetailsBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="errores">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="tns:webServiceErrorV2" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="webServiceErrorV2">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="descripcion" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registrarCartaDePorte">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:ParametrosRegistro" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ParametrosRegistro">
+        <xs:sequence>
+          <xs:choice minOccurs="0">
+            <xs:element name="cartaPorteTransporteAutomotor" type="tns:CartaPorteTransporteAutomotorRegistro" />
+            <xs:element name="cartaPorteVagonFerroviario" type="tns:CartaPorteVagonFerroviarioRegistro" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteTransporteAutomotorRegistro">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteRegistro">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ctg" type="xs:integer" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteRegistro" abstract="true">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="numeroCartaPorte" type="xs:long" />
+          <xs:element name="intervinientes" type="tns:IntervinientesRegistro" />
+          <xs:element minOccurs="0" name="granosTransportados" type="tns:GranosTransportados" />
+          <xs:element minOccurs="0" name="destinoGranos" type="tns:DestinoGranos" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="IntervinientesRegistro">
+        <xs:sequence>
+          <xs:element name="titular" type="tns:IntervinienteRequerido" />
+          <xs:element minOccurs="0" name="remitenteComercial" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="destino" type="tns:DocumentoInterviniente" />
+          <xs:element minOccurs="0" name="destinatario" type="tns:DocumentoInterviniente" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="IntervinienteRequerido">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:DocumentoIntervinienteRequerido">
+            <xs:sequence>
+              <xs:element name="razonSocial" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="DocumentoIntervinienteRequerido">
+        <xs:sequence>
+          <xs:element name="cuit" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteVagonFerroviarioRegistro">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteRegistro">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="cantidadVagones" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="registrarCartaDePorteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="respuesta" type="tns:RespuestaRegistro" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RespuestaRegistro">
+        <xs:sequence>
+          <xs:choice minOccurs="0">
+            <xs:element name="muestraNoRequerida" type="tns:MuestraNoRequerida" />
+            <xs:element name="muestra" type="tns:MuestraRequerida" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MuestraNoRequerida">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:complexType name="MuestraRequerida">
+        <xs:sequence>
+          <xs:element name="tipoAnalisis" type="tns:TipoAnalisis" />
+          <xs:element name="laboratorio" type="tns:Interviniente" />
+          <xs:element minOccurs="0" name="laboratoriosSecundarios">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="laboratorio" type="tns:Interviniente" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="editarCartasDePorte">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="parametro" type="tns:ParametrosEdicion" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ParametrosEdicion">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="cartaPorteTransporteAutomotor" type="tns:CartaPorteTransporteAutomotorEdicion" />
+            <xs:element name="cartaPorteVagonFerroviario" type="tns:CartaPorteVagonFerroviarioEdicion" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteTransporteAutomotorEdicion">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteEdicion">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ctg" type="xs:integer" />
+              <xs:element minOccurs="0" name="muestreoPesajeTransporteAutomotor" type="tns:MuestreoPesajeTransporteAutomotorEdicion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteEdicion" abstract="true">
+        <xs:sequence>
+          <xs:element name="numeroCartaPorte" type="xs:long" />
+          <xs:element minOccurs="0" name="editarCartaPorte" type="xs:long" />
+          <xs:element minOccurs="0" name="intervinientes" type="tns:Intervinientes" />
+          <xs:element minOccurs="0" name="granosTransportados" type="tns:GranosTransportadosEdicion" />
+          <xs:element minOccurs="0" name="destinoGranos" type="tns:DestinoGranos" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MuestreoPesajeTransporteAutomotorEdicion">
+        <xs:sequence>
+          <xs:element name="kilosNetosSecos" type="xs:int" />
+          <xs:element name="idMuestra" type="xs:string" />
+          <xs:element minOccurs="0" name="cuitLaboratorio" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Intervinientes">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="titular" type="tns:IntervinienteRequerido" />
+          <xs:choice minOccurs="0">
+            <xs:element name="remitenteComercial" type="tns:Interviniente" />
+            <xs:element name="deleteRemitenteComercial" type="tns:DeleteInterviniente" />
+          </xs:choice>
+          <xs:element minOccurs="0" name="destinatario" type="tns:DocumentoInterviniente" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DeleteInterviniente">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:Interviniente">
+            <xs:sequence>
+              <xs:element name="eliminarRemitenteComercial" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="GranosTransportadosEdicion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="establecimiento" type="xs:string" />
+          <xs:choice minOccurs="0">
+            <xs:element name="biotecnologia" type="tns:BiotecnologiaEdicion" />
+            <xs:element name="eliminarBiotecnologia" type="tns:BiotecnologiaBorrar" />
+          </xs:choice>
+          <xs:element minOccurs="0" name="codigoLocalidadProcedencia" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="BiotecnologiaEdicion">
+        <xs:sequence>
+          <xs:element name="codigoBiotecnologiaDeclarada" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="BiotecnologiaBorrar">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BiotecnologiaEdicion">
+            <xs:sequence>
+              <xs:element name="eliminarCodigoBiotecnologiaDeclarada" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="CartaPorteVagonFerroviarioEdicion">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:CartaPorteEdicion">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="cantidadVagones" type="xs:int" />
+              <xs:element minOccurs="0" name="datosPorVagon">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="vagon" type="tns:VagonEdicion" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="VagonEdicion">
+        <xs:sequence>
+          <xs:element name="numero" type="xs:string" />
+          <xs:element minOccurs="0" name="idMuestra" type="xs:string" />
+          <xs:element minOccurs="0" name="kilosNetosSecos" type="xs:string" />
+          <xs:element minOccurs="0" name="cuitLaboratorio" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="editarCartasDePorteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="respuesta" type="tns:RespuestaEdicion" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RespuestaEdicion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="errores">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="tns:wsError" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rechazoCartasDePorte">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="tns:EntradaRechazo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="EntradaRechazo">
+        <xs:sequence>
+          <xs:element name="numeroCartaPorte" type="xs:long" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rechazoCartasDePorteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="respuesta" type="tns:SalidaRechazo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SalidaRechazo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="descripcion" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registrarMuestreoYPesaje">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RegistrarMuestreoPesaje" type="tns:registerSampleAndWeightRequest" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registerSampleAndWeightRequest">
+        <xs:sequence>
+          <xs:choice minOccurs="0">
+            <xs:element name="MuestreoPesajeTransporteAutomotor" type="tns:MuestreoPesajeTransporteAutomotor" />
+            <xs:element name="MuestreoPesajeVagonFerroviario" type="tns:MuestreoPesajeVagonFerroviario" />
+          </xs:choice>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MuestreoPesajeTransporteAutomotor">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:transportSampleRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="kilosNetosSecos" type="xs:int" />
+              <xs:element minOccurs="0" name="idMuestra" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="transportSampleRequest" abstract="true">
+        <xs:sequence>
+          <xs:element name="nroCartaPorte" type="xs:long" />
+          <xs:element minOccurs="0" name="cuitLaboratorio" type="xs:string" />
+          <xs:element minOccurs="0" name="fechaHoraConfirmacionDefinitiva" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="MuestreoPesajeVagonFerroviario">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:transportSampleRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="datosPorVagon">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="vagon" type="tns:vagon" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="vagon">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="numero" type="xs:string" />
+          <xs:element minOccurs="0" name="idMuestra" type="xs:string" />
+          <xs:element minOccurs="0" name="kilosNetosSecos" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="registrarMuestreoYPesajeResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="desvioCartasDePorte">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="parametro" type="tns:ParametrosDesvio" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ParametrosDesvio">
+        <xs:sequence>
+          <xs:element name="numeroCartaPorte" type="xs:string" />
+          <xs:element name="intervinientes" type="tns:IntervinientesDesvio" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="IntervinientesDesvio">
+        <xs:sequence>
+          <xs:element name="destino" type="tns:DestinoDesvio" />
+          <xs:element minOccurs="0" name="destinatario" type="tns:DestinatarioDesvio" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DestinoDesvio">
+        <xs:sequence>
+          <xs:element name="cuit" type="xs:string" />
+          <xs:element name="numeroPlantaDestino" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DestinatarioDesvio">
+        <xs:sequence>
+          <xs:element name="cuit" type="xs:string" />
+          <xs:element name="codigoLocalidad" type="xs:string" />
+          <xs:element name="razonSocial" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="desvioCartasDePorteResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="respuesta" type="tns:RespuestaDesvio" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RespuestaDesvio">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="descripcion" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="TipoAnalisis">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CUALITATIVO" />
+          <xs:enumeration value="CUANTITATIVO" />
+          <xs:enumeration value="NINGUNO" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="Estado">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="INGRESADA" />
+          <xs:enumeration value="PARCIALMENTE_INGRESADA" />
+          <xs:enumeration value="CONFIRMADA" />
+          <xs:enumeration value="ESPERA_DE_RESULTADOS" />
+          <xs:enumeration value="FINALIZADA_NEGATIVA" />
+          <xs:enumeration value="FINALIZADA_POSITIVA" />
+          <xs:enumeration value="ESPERA_DE_SER_INFORMADA" />
+          <xs:enumeration value="ESPERA_DE_VALORIZACION" />
+          <xs:enumeration value="VALORIZADA_CON_CONSUMO" />
+          <xs:enumeration value="VALORIZADA_SIN_CONSUMO" />
+          <xs:enumeration value="FINALIZADA_SIN_TESTEO" />
+          <xs:enumeration value="INICIAL" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="TipoFacturacion">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="DIRECTA" />
+          <xs:enumeration value="CUENTA_Y_ORDEN" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="falla" nillable="true" type="tns:webServiceExceptionV2FaultDetailsBean" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="editarCartasDePorteResponse">
+    <wsdl:part name="parameters" element="tns:editarCartasDePorteResponse" />
+  </wsdl:message>
+  <wsdl:message name="registrarMuestreoYPesaje">
+    <wsdl:part name="parameters" element="tns:registrarMuestreoYPesaje" />
+  </wsdl:message>
+  <wsdl:message name="editarCartasDePorte">
+    <wsdl:part name="parameters" element="tns:editarCartasDePorte" />
+  </wsdl:message>
+  <wsdl:message name="rechazoCartasDePorte">
+    <wsdl:part name="parameters" element="tns:rechazoCartasDePorte" />
+  </wsdl:message>
+  <wsdl:message name="registrarCartaDePorte">
+    <wsdl:part name="parameters" element="tns:registrarCartaDePorte" />
+  </wsdl:message>
+  <wsdl:message name="desvioCartasDePorteResponse">
+    <wsdl:part name="parameters" element="tns:desvioCartasDePorteResponse" />
+  </wsdl:message>
+  <wsdl:message name="consultarCartasDePorteResponse">
+    <wsdl:part name="parameters" element="tns:consultarCartasDePorteResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebServiceExceptionV2">
+    <wsdl:part name="WebServiceExceptionV2" element="tns:falla" />
+  </wsdl:message>
+  <wsdl:message name="registrarCartaDePorteResponse">
+    <wsdl:part name="parameters" element="tns:registrarCartaDePorteResponse" />
+  </wsdl:message>
+  <wsdl:message name="registrarMuestreoYPesajeResponse">
+    <wsdl:part name="parameters" element="tns:registrarMuestreoYPesajeResponse" />
+  </wsdl:message>
+  <wsdl:message name="desvioCartasDePorte">
+    <wsdl:part name="parameters" element="tns:desvioCartasDePorte" />
+  </wsdl:message>
+  <wsdl:message name="consultarCartasDePorte">
+    <wsdl:part name="parameters" element="tns:consultarCartasDePorte" />
+  </wsdl:message>
+  <wsdl:message name="rechazoCartasDePorteResponse">
+    <wsdl:part name="parameters" element="tns:rechazoCartasDePorteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WaybillManagementPODv2">
+    <wsdl:operation name="consultarCartasDePorte">
+      <wsdl:input name="consultarCartasDePorte" message="tns:consultarCartasDePorte" />
+      <wsdl:output name="consultarCartasDePorteResponse" message="tns:consultarCartasDePorteResponse" />
+      <wsdl:fault name="WebServiceExceptionV2" message="tns:WebServiceExceptionV2" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarCartaDePorte">
+      <wsdl:input name="registrarCartaDePorte" message="tns:registrarCartaDePorte" />
+      <wsdl:output name="registrarCartaDePorteResponse" message="tns:registrarCartaDePorteResponse" />
+      <wsdl:fault name="WebServiceExceptionV2" message="tns:WebServiceExceptionV2" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCartasDePorte">
+      <wsdl:input name="editarCartasDePorte" message="tns:editarCartasDePorte" />
+      <wsdl:output name="editarCartasDePorteResponse" message="tns:editarCartasDePorteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="rechazoCartasDePorte">
+      <wsdl:input name="rechazoCartasDePorte" message="tns:rechazoCartasDePorte" />
+      <wsdl:output name="rechazoCartasDePorteResponse" message="tns:rechazoCartasDePorteResponse" />
+      <wsdl:fault name="WebServiceExceptionV2" message="tns:WebServiceExceptionV2" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarMuestreoYPesaje">
+      <wsdl:input name="registrarMuestreoYPesaje" message="tns:registrarMuestreoYPesaje" />
+      <wsdl:output name="registrarMuestreoYPesajeResponse" message="tns:registrarMuestreoYPesajeResponse" />
+      <wsdl:fault name="WebServiceExceptionV2" message="tns:WebServiceExceptionV2" />
+    </wsdl:operation>
+    <wsdl:operation name="desvioCartasDePorte">
+      <wsdl:input name="desvioCartasDePorte" message="tns:desvioCartasDePorte" />
+      <wsdl:output name="desvioCartasDePorteResponse" message="tns:desvioCartasDePorteResponse" />
+      <wsdl:fault name="WebServiceExceptionV2" message="tns:WebServiceExceptionV2" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GestionarCartasDePortePESoapBinding" type="tns:WaybillManagementPODv2">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="editarCartasDePorte">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="editarCartasDePorte">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="editarCartasDePorteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registrarCartaDePorte">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="registrarCartaDePorte">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="registrarCartaDePorteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WebServiceExceptionV2">
+        <soap12:fault use="literal" name="WebServiceExceptionV2" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarCartasDePorte">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="consultarCartasDePorte">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="consultarCartasDePorteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WebServiceExceptionV2">
+        <soap12:fault use="literal" name="WebServiceExceptionV2" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="registrarMuestreoYPesaje">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="registrarMuestreoYPesaje">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="registrarMuestreoYPesajeResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WebServiceExceptionV2">
+        <soap12:fault use="literal" name="WebServiceExceptionV2" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="rechazoCartasDePorte">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="rechazoCartasDePorte">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="rechazoCartasDePorteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WebServiceExceptionV2">
+        <soap12:fault use="literal" name="WebServiceExceptionV2" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="desvioCartasDePorte">
+      <soap12:operation soapAction="" style="document" />
+      <wsdl:input name="desvioCartasDePorte">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="desvioCartasDePorteResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WebServiceExceptionV2">
+        <soap12:fault use="literal" name="WebServiceExceptionV2" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GestionarCartasDePortePE">
+    <wsdl:port name="WaybillManagementPODv2ImplPort" binding="tns:GestionarCartasDePortePESoapBinding">
+      <soap12:address location="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

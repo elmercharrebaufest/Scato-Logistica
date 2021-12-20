@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://scato.molinos.com/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="EgresoMaterialNoProductivo" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://scato.molinos.com/" location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?wsdl=wsdl0" />
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd3" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd0" namespace="http://scato.molinos.com/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Dto" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Comandos" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAnalisisDeCalidadService_AnalisisDeCalidad_InputMessage">
+    <wsdl:part name="parameters" element="tns:AnalisisDeCalidad" />
+  </wsdl:message>
+  <wsdl:message name="IAnalisisDeCalidadService_AnalisisDeCalidad_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AnalisisDeCalidadResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAnalisisDeCalidadService">
+    <wsdl:operation name="AnalisisDeCalidad">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAnalisisDeCalidadService/AnalisisDeCalidad" message="tns:IAnalisisDeCalidadService_AnalisisDeCalidad_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAnalisisDeCalidadService/AnalisisDeCalidadResponse" message="tns:IAnalisisDeCalidadService_AnalisisDeCalidad_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAutorizarTransportistaInhabilitadoService" type="i0:IAutorizarTransportistaInhabilitadoService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AutorizarTransportistaInhabilitado">
+      <soap:operation soapAction="http://scato.molinos.com/IAutorizarTransportistaInhabilitadoService/AutorizarTransportistaInhabilitado" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ISalidaDeCentroService" type="i0:ISalidaDeCentroService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SalidaDeCentro">
+      <soap:operation soapAction="http://scato.molinos.com/ISalidaDeCentroService/SalidaDeCentro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IAnalisisDeCalidadService" type="tns:IAnalisisDeCalidadService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AnalisisDeCalidad">
+      <soap:operation soapAction="http://tempuri.org/IAnalisisDeCalidadService/AnalisisDeCalidad" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IIngresarOrdenCargaInternaService" type="i0:IIngresarOrdenCargaInternaService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IngresarOrdenCargaInterna">
+      <soap:operation soapAction="http://scato.molinos.com/IIngresarOrdenCargaInternaService/IngresarOrdenCargaInterna" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IPesadaService" type="i0:IPesadaService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Pesada">
+      <soap:operation soapAction="http://scato.molinos.com/IPesadaService/Pesada" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ICargarPrecintosService" type="i0:ICargarPrecintosService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CargarPrecintos">
+      <soap:operation soapAction="http://scato.molinos.com/ICargarPrecintosService/CargarPrecintos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IIngresoDeObservacionesService" type="i0:IIngresoDeObservacionesService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="IngresoDeObservaciones">
+      <soap:operation soapAction="http://scato.molinos.com/IIngresoDeObservacionesService/IngresoDeObservaciones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IControlDePesoEsperadoService" type="i0:IControlDePesoEsperadoService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ControlDePesoEsperado">
+      <soap:operation soapAction="http://scato.molinos.com/IControlDePesoEsperadoService/ControlDePesoEsperado" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IVerificacionCamionRechazadoService" type="i0:IVerificacionCamionRechazadoService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="VerificacionCamionRechazado">
+      <soap:operation soapAction="http://scato.molinos.com/IVerificacionCamionRechazadoService/VerificacionCamionRechazado" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IControlPesoMaximoService" type="i0:IControlPesoMaximoService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ControlPesoMaximo">
+      <soap:operation soapAction="http://scato.molinos.com/IControlPesoMaximoService/ControlPesoMaximo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EgresoMaterialNoProductivo">
+    <wsdl:port name="BasicHttpBinding_IAutorizarTransportistaInhabilitadoService" binding="tns:BasicHttpBinding_IAutorizarTransportistaInhabilitadoService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_ISalidaDeCentroService" binding="tns:BasicHttpBinding_ISalidaDeCentroService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IAnalisisDeCalidadService" binding="tns:BasicHttpBinding_IAnalisisDeCalidadService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IIngresarOrdenCargaInternaService" binding="tns:BasicHttpBinding_IIngresarOrdenCargaInternaService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IPesadaService" binding="tns:BasicHttpBinding_IPesadaService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_ICargarPrecintosService" binding="tns:BasicHttpBinding_ICargarPrecintosService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IIngresoDeObservacionesService" binding="tns:BasicHttpBinding_IIngresoDeObservacionesService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IControlDePesoEsperadoService" binding="tns:BasicHttpBinding_IControlDePesoEsperadoService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IVerificacionCamionRechazadoService" binding="tns:BasicHttpBinding_IVerificacionCamionRechazadoService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IControlPesoMaximoService" binding="tns:BasicHttpBinding_IControlPesoMaximoService">
+      <soap:address location="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

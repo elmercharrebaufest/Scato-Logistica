@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConversionMaterialDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminar(Html, "ConversionMaterial"),
+            grid.Columna("Material.Descripcion", Textos.Material, x => x.MaterialDesc),
+            grid.Columna("CodigoCamara",  Textos.Camara_Codigo)))

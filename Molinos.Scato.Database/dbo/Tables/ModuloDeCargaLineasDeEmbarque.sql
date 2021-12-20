@@ -1,0 +1,22 @@
+﻿CREATE TABLE [dbo].[ModuloDeCargaLineasDeEmbarque]
+(
+	[Id]                INT IDENTITY (1, 1) NOT NULL,
+    [ModuloDeCarga_Id]  INT NOT NULL,
+    [Linea]             NVARCHAR(10) NULL,
+    [MaterialPuerto_Id] INT NULL,
+    [TkInicial]         NVARCHAR(10) NULL,
+    [TemperaturaInicial]FLOAT NULL,
+    [AlturaInicialCM]   FLOAT NULL,
+    [AlturaInicialMM]   FLOAT NULL,
+    [DensidadInicial]   FLOAT NULL,
+    [TemperaturaFinal]  FLOAT NULL,
+    [Litros]            FLOAT NULL,
+    [DensidadFinal]     FLOAT NULL,
+    [AlturaFinalCM]     FLOAT NULL,
+    [AlturaFinalMM]     FLOAT NULL,
+    [Kilos]             FLOAT NULL,
+    [TkFinal]           NVARCHAR(10) NULL,   
+    CONSTRAINT [PK_dbo.ModuloDeCargaLineasDeEmbarque] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_dbo.ModuloDeCargaLineasDeEmbarque_dbo.ModuloDeCarga_ModuloDeCarga_Id] FOREIGN KEY ([ModuloDeCarga_Id]) REFERENCES [dbo].[ModuloDeCarga] ([Id]) on delete cascade,
+    CONSTRAINT [FK_dbo.ModuloDeCargaLineasDeEmbarque_dbo.MaterialPuerto_MaterialPuerto_Id] FOREIGN KEY ([MaterialPuerto_Id]) REFERENCES [dbo].[MaterialPuerto] ([Id]),
+);

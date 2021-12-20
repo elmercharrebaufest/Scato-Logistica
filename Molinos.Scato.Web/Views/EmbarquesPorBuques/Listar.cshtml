@@ -1,0 +1,43 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<CargaDto>)ViewBag.Items;
+ 
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("Vapor.Nombre", Textos.OperacionesPuerto_Buque, m => m.Vapor),
+    grilla.Columna("Material.Descripcion", Textos.OperacionesPuerto_Commodity, m => m.Material),
+    grilla.Columna("Exportador.Nombre", Textos.OperacionesPuerto_Exportador, m => m.Exportador),
+    grilla.Columna("Destino.Nombre", Textos.OperacionesPuerto_Destino, m => m.Destino),
+    grilla.Columna("PesoProgramado", Textos.OperacionesPuerto_PesoProgramado),
+    grilla.Columna("ToneladasAW", Textos.OperacionesPuerto_ToneladasAW),
+    grilla.Columna("FechaInicio", Textos.OperacionesPuerto_Fecha, m => m.Fecha)
+    ))
+
+<script>
+    $(document).ready(
+        function () {
+            $('#grid thead tr th:nth-child(14) a').remove();
+            $('#grid thead tr th:nth-child(14)').text("% Cargado ▲▼");
+            $('#grid thead tr th:nth-child(14)').css("color", "#0055a5");
+            $('#grid thead tr th').css("vertical-align", "middle");
+            
+            $('#grid tbody tr td span').each(function (index) {
+                if ($(this)[0].innerText == "Falta Inicio") {
+                    $('#grid tbody tr:eq(' + index + ') td.editar-borrar-columna a').remove();
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 2 + ')').text('N/A');
+                };
+                if ($(this)[0].innerText != "En Progreso") {
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text('N/A');
+                } else {
+                    $('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text($('#grid tbody tr:eq(' + index + ') td:nth-child(' + 14 + ')').text() + "%");
+                };
+            });
+        });
+</script>

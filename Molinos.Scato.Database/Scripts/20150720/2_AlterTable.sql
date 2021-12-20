@@ -1,0 +1,1 @@
+ALTER TABLE [MuestraEnvioACamara] ALTER COLUMN [NroMuestra] varchar(15)

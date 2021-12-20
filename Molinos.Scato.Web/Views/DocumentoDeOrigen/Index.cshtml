@@ -1,0 +1,32 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.DocumentoDeOrigenDto
+@{
+    ViewBag.Title = Model.ActividadTitulo;
+    
+}
+
+<div class ="container">
+    <div class="titSecciones">@Model.ActividadTitulo</div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li>
+        @if (!Model.EsActividad)
+        {
+            @Html.ActionLink(Model.ActividadTitulo, "Seleccionar", Model.Actividad, new { id = Model.RecorridoId}, null)
+        }
+        else
+        {
+            @Html.ActionLink(Model.ActividadTitulo, "Index", Model.Actividad, new { id = Model.InstanceId}, null)
+        }
+    </li>
+    <li class="active">
+        @Html.ActionLink(Textos.DocumentoDeOrigen_Titulo, "Index", "DocumentoDeOrigen", Model, null)
+    </li>
+</ul>
+
+<div>
+    @{
+        Html.RenderAction("DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = Model.RecorridoId, tipoDoc = Model.TipoDocumentoIngreso, soloLectura = true, esDocumentoDeOrigen = true});
+    }
+</div>

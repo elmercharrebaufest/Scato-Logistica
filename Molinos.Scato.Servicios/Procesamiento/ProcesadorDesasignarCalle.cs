@@ -1,0 +1,88 @@
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Repositorio;
+using Molinos.Scato.Servicios.Conversiones;
+using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
+
+namespace Molinos.Scato.Servicios.Procesamiento
+{
+    public class ProcesadorDesasignarCalle : ProcesadorComando<DesasignarCalle>
+    {
+        private IAdministradorDeCalles administradorDeCalles;
+
+        public ProcesadorDesasignarCalle(IRepositorio repositorio, IConversor conversor, ILogger log,
+            IAdministradorDeCalles administradorDeCalles)
+            : base(repositorio, conversor, log)
+        {
+            this.administradorDeCalles = administradorDeCalles;
+        }
+
+        public override Resultado Ejecutar(DesasignarCalle comando)
+        {
+            var asignaciones = Repositorio.Listar<CallePorRecorrido>(
+                x => x.FechaEgreso == null && 
+                x.Id != comando.UltimaAsignacionId && 
+                (x.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow || x.CargaDeCupo.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow));
+            if (asignaciones.Any())
+            {
+                foreach (var asignacion in asignaciones)
+                {
+                    asignacion.Recorrido = asignacion.Recorrido;
+                    asignacion.Calle = asignacion.Calle;
+                    asignacion.FechaEgreso = DateTime.Now;
+                    if(asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
+                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
+                    {
+                        LLamarSiguienteCallePreCalado(asignacion);
+                        LiberarFilaSiQuedaVacia(asignacion);
+                    }                    
+                }
+                Repositorio.GuardarCambios();
+            }
+
+            return new Resultado();
+        }
+
+        private void LLamarSiguienteCallePreCalado(CallePorRecorrido asignacion)
+        {
+            var materialId = asignacion.Recorrido != null ? asignacion.Recorrido.Material.Id : asignacion.CargaDeCupo.Material.Id;
+            var puestosCalados = Repositorio.Listar<Calle>(x => x.TipoCalle == Dominio.Enums.TipoCalle.Calado && x.Material.Id == materialId && x.Automatica);
+            if (puestosCalados.Any())
+            {
+                var camionesLlamadosPorCalado = Repositorio.Contar<CallePorRecorrido>(
+                    x => x.FechaEgreso == null && x.Calle.FechaLLamada.HasValue && 
+                    (x.Recorrido.Material.Id == materialId || x.CargaDeCupo.Material.Id == materialId));
+
+                if (camionesLlamadosPorCalado < 8)
+                {
+                    var calle = administradorDeCalles.ObtenerSiguienteCalle(materialId);
+                    if (calle != null)
+                    {
+                        calle.Bloqueada = true;
+                        calle.FechaLLamada = DateTime.Now;
+                    }
+                    else
+                    {
+                        foreach(var puesto in puestosCalados)
+                        {
+                            //puesto.Automatica = false;
+                            puesto.Material = null;
+                        }
+                    }
+                }                
+            }            
+        }
+
+        private void LiberarFilaSiQuedaVacia(CallePorRecorrido asignacion)
+        {
+            var camionesEnFila = Repositorio.Contar<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == asignacion.Calle.Id);
+            if (camionesEnFila == 1)
+            {
+                asignacion.Calle.Bloqueada = false;
+                asignacion.Calle.FechaLLamada = null;
+            }
+        }
+    }
+}

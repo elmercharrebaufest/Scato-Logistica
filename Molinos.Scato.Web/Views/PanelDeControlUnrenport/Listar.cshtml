@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model FiltroPanelDeBajaCtgDefinitivaDto
+@{
+    Layout = null;
+    var items = (ListaPaginada<EnvioUrenportDto>)ViewBag.Items;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/panelControlBajaCtg.listar.js")"></script>
+@Html.Hidden("errorText", EstadoTransmisionASap.Error.DisplayEnum())
+@Html.Hidden("ids",Model.ToJson())
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("seleccionCol", string.Empty, f => Html.CheckBox("seleccion", false, new { value = f.Id, @class = "columna-checkbox " + (f.Estado == EstadoTransmisionASap.Error ? "" : "hide") })),
+    grilla.Columna("Estado", Textos.PanelDeControlTransSAP_Transmision),
+    grilla.Columna("NumeroDocumentoIngreso", Textos.TransmisionASap_NumeroDocumento),
+    grilla.Columna("Patente", Textos.TransmisionASap_Patente),
+    grilla.Columna("Fecha", Textos.TransmisionASap_Fecha),
+    grilla.Columna("Error", Textos.TransmisionASap_Error)))

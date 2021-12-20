@@ -1,0 +1,11 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.TalonarioDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Talonario_Modificar;
+}
+@Scripts.Render("~/bundles/jqueryval")
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new {@class = "form-horizontal", data_dialogo_titulo = Textos.Talonario_Modificar}))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

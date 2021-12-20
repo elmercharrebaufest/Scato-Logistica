@@ -1,0 +1,33 @@
+<ship-spinner *ngIf='mostrarSpinner' [message]="'Cargando Modulo de Calidad.\n Por favor espere...'"></ship-spinner>
+
+<div class="container-fluid fondo" id='carga-body'>
+
+    <div class="pt-4">
+        <div class="row">
+            <div class="col pt-4">
+                <h1>Módulo de Calidad</h1>
+            </div>
+            <div class="col-5 mr-3">
+                <app-estados-puerto-content></app-estados-puerto-content>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <app-navtabs-calidad *ngIf='mostrarTabs' (showPlano)='showPlano($event)' (changeEmbarque)='changeEmbarque()'>
+        </app-navtabs-calidad>
+    </div>
+
+    <!-- Utilizar un ngcontainer con ngIf para cambiar entre carga-solidos y carga-liquidos -->
+    <ng-container *ngIf='mostrarPlano'>
+        <app-plano-content (showCargas)='showCargas($event)'></app-plano-content>
+    </ng-container>
+
+    <ng-container *ngIf='mostrarCargas'>
+        <!--Modulos Solidos-->
+        <app-solidos *ngIf='!embarqueSelected.esLiquido' (hideSpinner)='hideSpinner($event)' ></app-solidos>
+        <!--Modulos Liquidos-->
+        <app-liquidos *ngIf='embarqueSelected.esLiquido' (hideSpinner)='hideSpinner($event)' ></app-liquidos>
+    </ng-container>
+
+</div>

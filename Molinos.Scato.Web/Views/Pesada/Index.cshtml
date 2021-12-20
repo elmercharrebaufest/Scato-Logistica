@@ -1,0 +1,118 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.Pesada
+@{
+    ViewBag.Title = Textos.Pesada;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="@Url.Script("~/Scripts/pesada.index.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/mousetrap.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/mousetrap-pause.js")" type="text/javascript"></script>
+}
+
+<div class ="container">
+    <div class="row">
+        <div class="titSecciones span6">@Textos.Workflow_Nombre - @(Textos.Pesada + " (" + Model.TipoPesada.DisplayEnum() + ")")</div>
+        <div class="span6">
+            @if (Model.TipoDeWorkflow == TipoDeWorkflow.Ingreso && !Model.Rechazado && Model.TipoPesada == TipoPesada.Bruto)
+            {
+                <button class="btn btn-primary pull-right" style="margin-left:5px" type="button" id="btnRechazar" tabindex="3">@Textos.PesaryRechazar</button>
+            }
+            @if (Model.Rechazado)
+            {
+                <span class="label label-important pull-right label-estado">
+                    @Textos.RechazadoMayus
+                </span>
+            }
+            @if (Model.TipoPesada == TipoPesada.Bruto && ViewBag.TieneDescuentoDeHumedad != null && (bool)ViewBag.TieneDescuentoDeHumedad)
+            {
+                <span class="label label-important pull-right label-estado">
+                    @Textos.Humedo
+                </span>
+            }
+            @if (Model.TipoPesada == TipoPesada.Bruto && ViewBag.TieneAnalisis != null && (bool)ViewBag.TieneAnalisis)
+            {
+                <span class="label label-important pull-right label-estado">
+                    @Textos.Analisis
+                </span>
+            }
+            else if (Model.TipoPesada == TipoPesada.Bruto && ViewBag.TieneAnalisis != null && !(bool)ViewBag.TieneAnalisis)
+            {
+                <span class="label label-success pull-right label-estado">
+                    @Textos.Conforme
+                </span>
+            }
+            @if (ViewBag.Escalable != null)
+            {
+                <span class="label label-info pull-right label-estado">
+                    @ViewBag.Escalable
+                </span>
+            }
+
+        </div>
+    </div>
+
+    <div class="container content grillaPad">
+        @using (Ajax.BeginForm("Index", Model.ActividadXaml, null, new AjaxOptions { OnComplete = "EvaluarResultado" }, new { @class = "form-horizontal form-search", id = "pesada-form", onsubmit = "AceptarFormulario()", data_mensaje_espera = Textos.Pesada }))
+        {
+            if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+            {
+                <div class="alert alert-error">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+            <input type="hidden" name="workflow" value="@ViewBag.Workflow" />
+            <input type="hidden" name="workflowDefinicionId" value="@ViewBag.WorkflowDefinicionId" />
+            @Html.HiddenFor(m => m.TipoPesada)
+            @Html.HiddenFor(m => m.ActividadXaml)
+            @Html.HiddenFor(m => m.Modalidad)
+            @Html.HiddenFor(m => m.PatenteOriginal)
+            @Html.HiddenFor(m => m.WorkflowInstanceId)
+            @Html.HiddenFor(m => m.BalanzaPuestoDeTrabajo)
+            @Html.Hidden("TipoVehiculo", (int)Model.TipoVehiculo)
+            @Html.Partial("~/Views/Pesada/_Pesada.cshtml")
+            <br />
+            <div class="row right">
+                <button class="btn btn-primary" type="submit" id="btnAceptar" tabindex="2">@Textos.Aceptar</button>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn", id = "botonCancelar", tabindex = "2" })
+
+            </div>
+
+            <div class="modal fade hide" id="dialogo-rechazar">
+                <div class="modal-header alert-error">
+                    <button type="button" class="close dialogo-rechazar-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h5><strong>@Textos.VerificacionCamionRechazado_Titulo</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        @Textos.VerificacionCamionRechazado_VehiculoRechazado
+
+                        <br />
+                        <br />
+
+                        @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge pull-right" })
+
+                        <br />
+                        <br />
+
+                        @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large pull-right" })
+
+                        <br />
+                        <br />
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn dialogo-rechazar-boton">@Textos.PesaryRechazar</button>
+                    <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div id="balanzaACero" data-balanza-cero-url='@Url.Action("BalanzaACero","BalanzaACero")'></div>

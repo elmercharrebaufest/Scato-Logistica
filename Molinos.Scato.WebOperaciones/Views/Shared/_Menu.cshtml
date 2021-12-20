@@ -1,0 +1,90 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebOperaciones.Helpers
+@using Molinos.Scato.Dominio.Dto;
+@{
+
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/_menu.js")"></script>
+
+    <div class="navbar-default navbar-menu" role="navigation">
+        <div class="navbar-header navbar-menu-header">
+            <div class="d-flex justify-content-center">
+                <a class="" href="@Url.Action("Index", "Index")">
+                    <img alt="Molinos" src="@Url.Action("Logo", "Index")" class="img-responsive menu-centrado">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row mt-2 py-2 px-4">
+            <div class="col-12 col-lg-2 m-1  panel-flatgreen rounded" id="graficodeplantahead">
+                <a class="link-white" href="@Url.Action("Index","InformacionMeteorologica")">
+                    <div class="row">
+                        <div class="col-1 mt-1 ">
+                            <i class="fa fa-thermometer-half icon-size" aria-hidden="true"></i>
+                        </div>
+                        <div class="col d-flex justify-content-center mt-2">
+                            <div class="titulo-header">@Textos.AFIP_MenuTitulo_InformacionMeteorologica</div>
+                        </div>
+                    </div>
+                    <!--Información a Mostrar-->
+                    <div class="d-flex justify-content-between"> <div>@Textos.AFIP_MenuGadget_InformacionMeteorologica_Temperatura</div> <div>@ViewBag.Temperatura</div> </div>
+                    <div class="d-flex justify-content-between"> <div>@Textos.AFIP_MenuGadget_InformacionMeteorologica_Humedad</div> <div>@ViewBag.Humedad</div> </div>
+                    <div class="d-flex justify-content-between"> <div>@Textos.AFIP_MenuGadget_InformacionMeteorologica_Viento</div> <div>@ViewBag.Viento</div> </div>
+                    <div class="d-flex justify-content-between"> <div>@Textos.AFIP_MenuGadget_InformacionMeteorologica_Lluvia</div> <div>@ViewBag.Lluvia</div> </div>
+                    <!--Información a Mostrar-->
+                </a>
+            </div>
+            <div class="col-12 col-lg m-1 panel-minigreen rounded">
+                <div class="row  h-100">
+                    <div class="col col border-right panel-palegreen rounded pb-1  border-top">
+                        <a class="link-white" href="@Url.Action("Index","PesadasOnline")">
+                            <div class="row">
+                                <div class="col-1  mt-1 ml-1">
+                                    <i class="fa fa-dolly icon-size" aria-hidden="true"></i>
+                                </div>
+                                <div class="col d-flex justify-content-center mt-2">
+                                    <div class="titulo-header">@Textos.AFIP_MenuTitulo_PesadasOnline</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @foreach (var dato in (List<ReportePesadaDto>)ViewBag.Datos)
+                                {
+                                    <!--Información a Mostrar-->
+                                    <div class="col-xs-12 m-auto">
+                                        <div> <span class="texto-tabla"><strong>@Textos.OperacionesPuerto_NumeroBalanza</strong></span> <span class="pull-right"><strong>@dato.NumeroBalanza</strong> </span> </div>
+                                        <div> <span class="texto-tabla">@Textos.AFIP_MenuGadget_PesadaOnline_One</span> <span class="pull-right">@(dato.IdCarga != 0 ? "Si" : "No")</span> </div>
+                                        <div> <span class="texto-tabla">@Textos.AFIP_MenuGadget_PesadaOnline_Two</span> <span class="pull-right">@dato.Commodity</span> </div>
+                                        <div> <span class="texto-tabla">@Textos.AFIP_MenuGadget_PesadaOnline_Three</span> <span class="pull-right">@(dato.PesoProgramado > 0 ? Math.Round((decimal)dato.TotalEmbarcado * 100 / dato.PesoProgramado) : 0)%</span> </div>
+                                    </div>
+                                    <!--Información a Mostrar-->
+                                }
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-1 border-top">
+                        <a class="link-white d-flex w-100 h-100 align-items-center justify-content-center" href="@Url.Action("Index","PesadasHistorica")">
+                            <i class="fa fa-history ml-2 fa-2x" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-2 m-1 rounded panel-minigreen">
+
+                <a class="link-white" href="@Url.Action("Index","Camara")">
+                    <div class="row ">
+
+                        <div class="col-1 mt-1 ml-1 ">
+                            <i class="fa fa-camera icon-size" aria-hidden="true"></i>
+                        </div>
+                        <div class=" col d-flex justify-content-center mt-2">
+                            <div class="titulo-header">@Textos.AFIP_MenuTitulo_Camaras</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between ">
+                        <div class="texto-tabla">@Textos.AFIP_MenuGadget_Camaras_One</div> <div>@ViewBag.Camaras.Count</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>

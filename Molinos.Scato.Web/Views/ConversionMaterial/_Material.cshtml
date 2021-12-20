@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ConversionMaterialDto
+@{
+    Layout = null;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+}
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(m => m.MaterialDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { id = "materialesDropDown" })
+        @Html.ValidationMessageFor(m => m.MaterialId)
+        @Html.Hidden("SetearMaterialesPorCamara", Url.Action("SetearMaterialesPorCamara"))
+        @Html.Hidden("ConsultarConversionPorCamara", Url.Action("Indexa"))
+        @Html.Hidden("ValorDefault",Textos.Default_Material)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoCamara, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoCamara, new {@class = "control input-large"})
+        @Html.ValidationMessageFor(m => m.CodigoCamara)
+    </div>
+</div>
+
+<div class="centered">
+    <button type="submit" class="btn btn-primary">@Textos.Agregar</button>
+</div>

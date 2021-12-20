@@ -1,0 +1,87 @@
+<ng-sidebar-container>
+  <ng-sidebar [(opened)]="opened" [keyClose]="keyClose" [closeOnClickOutside]="true" [animate]="animate" [dock]='false'
+    [dockedSize]='"60px"' [mode]="'over'" [autoFocus]='false'>
+
+    <div class='sidebar-header'>
+      <img src='assets/sidebar/Logo_Molinos_M.png' (click)='goHome()'>
+    </div>
+    <div class='links-container' #menuSide>
+      <a routerLink='/' *ngIf='tienePermiso(600)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "lineup" || rutaActual == ""'>
+          <div class='icon-lineup'></div>
+          <span>Line Up</span>
+        </div>
+      </a>
+
+      <!-- <hr *ngIf='tienePermiso(670)'>
+      <a routerLink='/reportes-informes' *ngIf='tienePermiso(670)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "reportes"'>
+          <img src='assets/sidebar-icons/reportes.svg' width="32">
+          <span>Reportes/Informes</span>
+        </div>
+      </a>
+
+      <hr *ngIf='tienePermiso(680)'>
+      <a routerLink='/buques' *ngIf='tienePermiso(680)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "buques"'>
+          <img src='assets/sidebar-icons/buques.svg' width="32">
+          <span>Buques</span>
+        </div>
+      </a> -->
+
+      <hr *ngIf='tienePermiso(630)'>
+      <a routerLink='/carga' *ngIf='tienePermiso(630)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "carga"'>
+          <div class='icon-operaciones'></div>
+          <span *ngIf='opened'>Operaciones</span>
+        </div>
+      </a>
+
+      <hr *ngIf='tienePermiso(640)'>
+      <a routerLink='/calidad' *ngIf='tienePermiso(640)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "calidad"'>
+          <div class='icon-recibidores'></div>
+          <span *ngIf='opened'>Recibidores</span>
+        </div>
+      </a>
+
+      <!-- <hr *ngIf='tienePermiso(650)'>
+      <a routerLink='/administracion' *ngIf='tienePermiso(650)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "administracion"'>
+          <img src='assets/sidebar-icons/administracion.svg' width="32">
+          <span>Administración</span>
+        </div>
+      </a>
+
+      <hr *ngIf='tienePermiso(660)'>
+      <a routerLink='/comex' *ngIf='tienePermiso(660)'>
+        <div (click)='closeSubmenus(menuSide)' class='item-container' [class.active-item]='rutaActual == "comex"'>
+          <img src='assets/sidebar-icons/comex.svg' width="32">
+          <span>Comex</span>
+        </div>
+      </a> -->
+
+      <!-- Ejemplo de menu-submenu -->
+      <!-- <a><div (click)='showSubmenu(menuSide, subCarga)'><img src='../../../assets/sidebar-icons/container.png' width="32"><span>Modulo de Carga</span></div></a>
+      <ul class='subItems' #subCarga>
+        <a routerLink='/carga'><li (click)='closeSubmenus(menuSide)'>Carga Solidos</li></a>
+        <a routerLink='/carga-liquidos'><li (click)='closeSubmenus(menuSide)'>Carga Liquidos</li></a>
+      </ul> -->
+
+      <hr>
+    </div>
+    <div class='sidebar-footer' *ngIf='opened'>
+      MOLINOS AGRO - SCATO PUERTO 2021
+    </div>
+  </ng-sidebar>
+
+  <div ng-sidebar-content>
+    <app-navbar [onClickHandler]="toggleOpened.bind(this)"></app-navbar>
+    <!-- <app-alert></app-alert> -->
+    <router-outlet></router-outlet>
+  </div>
+</ng-sidebar-container>
+
+<!-- <app-navbar></app-navbar>
+<app-alert></app-alert>
+<router-outlet></router-outlet> -->

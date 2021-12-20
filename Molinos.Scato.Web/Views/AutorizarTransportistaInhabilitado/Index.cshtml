@@ -1,0 +1,111 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RecorridoDto
+@{
+    ViewBag.Title = Textos.AutorizarTransportistaInhabilitado_Titulo;
+    var inhabilitacionChofer = (ListaPaginada<InhabilitacionChoferDto>)ViewBag.InhabilitacionChofer;
+    var inhabilitacionCamion = (ListaPaginada<InhabilitacionCamionDto>)ViewBag.InhabilitacionCamion;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+<style>
+    .margen-400 {
+        margin-left: -400px !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Menu_Administracion</div>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.LabelFor(model => model.TipoDocumentoIngreso, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.NumeroDocumentoIngreso, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.Material, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.Transportista, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.TipoComercial, new { @class = "control-label" })</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>@Html.DisplayFor(model => model.TipoDocumentoIngreso, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.NumeroDocumentoIngreso, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.Material.Descripcion, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.Transportista.RazonSocial, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.TipoComercial.Descripcion, new { @class = "control-label" })</b></td>
+        </tr>
+    </tbody>
+</table>
+
+
+@if (inhabilitacionChofer != null && inhabilitacionChofer.Any())
+{
+    <div id="gridContainer">
+        @Html.Partial("ListarInhabilitacionChofer", Model)
+    </div>
+}
+@if (inhabilitacionCamion != null && inhabilitacionCamion.Any())
+{
+    <div id="gridContainer2">
+        @Html.Partial("ListarInhabilitacionCamion", Model)
+    </div>
+}
+
+<div class="row-fluid">
+    <div class="span5">
+        <button class="confirmar-boton btn btn-primary pull-right" data-accion="TerminarInhabilitaciones" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.TerminarInhabilitaciones,Textos.Transportista_min)">
+            @Textos.TerminarInhabilitaciones
+        </button>
+    </div>
+    <div class="span4">
+        <button class="confirmar-boton btn btn-primary pull-right" data-accion="Autorizar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Autorizar,Textos.Transportista)">
+            @Textos.Autorizar
+        </button>
+    </div>
+    <div class="span1">
+        <button class="confirmar-boton btn btn-primary pull-right" data-accion="Rechazar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Rechazar,Textos.Transportista)">
+            @Textos.Rechazar
+        </button>
+    </div>
+</div>
+
+@* ReSharper disable Mvc.ActionNotResolved *@
+@* "Action" Es el nombre que hace que la clase HttpParamActionAttribute busque el action
+    correcto a partir del valor data-action de cada boton, permitiendo que un form ejecute diferentes action *@
+@using (Html.BeginForm("Action", "AutorizarTransportistaInhabilitado", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActAutorizarTransportistaInhabilitado }))
+{
+    @Html.Hidden("codigoWf", Model.Workflow.Codigo)
+    @Html.Hidden("instanceId", Model.InstanciaWorkflow)
+    @Html.Hidden("workflowDefinicionId", Model.WorkflowDefinicionId)
+    <div class="modal hide fade" id="dialogo-confirmar">
+        @* ReSharper restore Mvc.ActionNotResolved *@
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+            <div class="modal-body" id="dialogo-confirmar-text"></div>
+            <div class="control-group row" id="motivo">
+                <div class="controls span8">
+                    <div class="span2">
+                        @Html.LabelFor(model => model.MotivoAutorizacion, new { @class = "control-label" })
+
+                    </div>
+                    <div class="span4">
+                        @Html.TextAreaFor(model => model.MotivoAutorizacion, new { @class = "control", style = "width: 100%",data_toggle = "tooltip", title = @Textos.MotivoAutorizacion })
+                        @Html.ValidationMessageFor(model => model.MotivoAutorizacion)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+
+
+
+}

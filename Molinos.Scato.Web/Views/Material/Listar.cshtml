@@ -1,0 +1,28 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<MaterialDto>)ViewBag.Items;
+    //var matPorCentro = (IList<MaterialPorCentroDto>)ViewBag.MatPorCentro;
+    var almacenes = (IList<AlmacenDto>)ViewBag.Almacenes;
+}
+
+<script src="@Url.Script("~/Scripts/material.listarMateriales.js")" type="text/javascript"></script>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                 grid.ColumnaModificar(Html, "Material"),
+                 grid.Columna("Material.Descripcion", Textos.Descripcion, m => m.Descripcion),
+                 grid.Columna("Material.CodigoSAP", Textos.Codigo, m => m.CodigoSAP),
+                 //grid.Columna("AlmacenPredDesc", Textos.Material_AlmacenPred),
+                 //grid.Columna("Material.Cosecha", Textos.Material_Cosecha, m => m.Cosecha),
+                 grid.Columna("Material.UsaBinPallet", Textos.Material_BinPallet, m => ((bool)m.UsaBinPallet).Formatted()),
+                 grid.Columna("Material.EsUva", Textos.Material_EsUva, m => ((bool)m.EsUva).Formatted()),
+                 grid.Columna("Material.Commodity", Textos.Material_Commodity, m => ((bool)m.Commodity).Formatted()),
+                 grid.Columna("Camara.Descripcion", Textos.Material_Camara, m => m.CamaraDesc)))
+                 @*grid.Column(header: Textos.Almacen_Titulo, format: (item => 
+                     Html.Raw("<div class = 'ellipsis-overflow mostrar-lista'>" + Html.DisplayFor(a => almacenes).ToHtmlString() 
+                     + "<span class = 'tip'>" + Html.DisplayFor(a => almacenes).ToHtmlString() + "</span>" + "</div>")))))*@

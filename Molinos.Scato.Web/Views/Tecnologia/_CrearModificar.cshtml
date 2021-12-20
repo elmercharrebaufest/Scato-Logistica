@@ -1,0 +1,25 @@
+﻿@model Molinos.Scato.Dominio.Dto.TecnologiaDto
+@{
+    var empresas = (IEnumerable<SelectListItem>)ViewBag.Empresas;
+}
+<div class="control-group">
+    @Html.LabelFor(model => model.EmpresaId, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.EmpresaId, empresas)
+        @Html.ValidationMessageFor(model => model.EmpresaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Nombre, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Nombre, new {@class = "input-large"})
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Codigo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Codigo, new {@class = "input-large"})
+        @Html.ValidationMessageFor(model => model.Codigo)
+    </div>
+</div>

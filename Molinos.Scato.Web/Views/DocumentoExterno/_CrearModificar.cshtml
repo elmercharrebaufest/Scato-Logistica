@@ -1,0 +1,9 @@
+﻿@model Molinos.Scato.Dominio.Dto.DocumentoExternoDto
+   
+<div class="control-group">
+    @Html.LabelFor(m => m.NumeroDeDocumento, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.NumeroDeDocumento, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(m => m.NumeroDeDocumento)
+    </div>
+</div>

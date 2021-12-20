@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AjusteStockBinesDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "AjusteStockBines"),
+        grilla.Columna("Fecha", Textos.Fecha,x => FormattingHtmlHelper.Formatted(x.Fecha)),
+        grilla.Columna("Movimiento", Textos.Movimiento),
+        grilla.Columna("Material.Descripcion",Textos.Material, m => m.MaterialDescripcion),
+        grilla.Columna("Stock",Textos.Stock),
+        grilla.Columna("Centro.Descripcion", Textos.CentroINV,m => m.CentroDescripcion),
+        grilla.Columna("Proveedor.Descripcion",Textos.Productor, m => m.ProveedorDescripcion),
+        grilla.Columna("VinedoPropio.Descripcion",Textos.Filtrar_VinedoPropio, m => m.VinedoPropioDescripcion),
+        grilla.Columna("Observaciones",Textos.Observaciones)
+        ))
+</div>

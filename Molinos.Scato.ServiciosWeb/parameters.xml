@@ -1,0 +1,147 @@
+﻿<parameters>
+  <parameter name="LoginCms Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='LoginCms']
+                           /@address" />
+  </parameter>
+  <parameter name="Orquestador Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='Orquestador']
+                           /@address" />
+  </parameter>
+  <parameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='CTGServiceHttpSoap11Endpoint']
+                           /@address" />
+  </parameter>
+  <parameter name="ZSDWS_SCATO Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ZSDWS_SCATO']
+                           /@address" />
+  </parameter>
+  <parameter name="SapServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServiceDomain Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceDomain']
+                           /@value" />
+  </parameter>
+
+  <parameter name="CertificadoWsCtg Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='CertificadoWsCtg']
+                           /@value" />
+  </parameter>
+  
+  <parameter name="UrlNotificaciones Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlNotificaciones']
+                           /@value" />
+  </parameter>
+  <parameter name="UrlNotificacionesWeb Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlNotificacionesWeb']
+                           /@value" />
+  </parameter>
+  <parameter name="WaybillManagementPODImplPort Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='WaybillManagementPODImplPort']
+                           /@address" />
+  </parameter>
+  <parameter name="MonsantoServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="MonsantoServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="FotosPath Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='FotosPath']
+                           /@value" />
+  </parameter>
+  <parameter name="MailSettings Smtp From">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /@from" />
+  </parameter>
+  <parameter name="MailSettings Smtp Host">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@host" />
+  </parameter>
+  <parameter name="MailSettings Smtp Port">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@port" />
+  </parameter>
+  <parameter name="MailSettings Smtp EnableSsl">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@enableSsl" />
+    <parameterValidation kind="AllowBlank" />
+  </parameter>
+  <parameter name="calpesSoap Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='calpesSoap']
+                           /@address" />
+  </parameter>
+  <parameter name="UnreportAu Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UnreportAu']
+                           /@value" />
+  </parameter>
+  <parameter name="ServicioCNRTTipoVehiculoRest Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ServicioCNRTTipoVehiculoRest']
+                           /@value" />
+  </parameter>
+  <parameter name="urlBaseCircularApp Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='urlBaseCircularApp']
+                           /@value" />
+  </parameter>
+  <parameter name="apiTokenCircularApp Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='apiTokenCircularApp']
+                           /@value" />
+  </parameter>
+  <parameter name="SimularTurnoActivoCircular Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SimularTurnoActivoCircular']
+                           /@value" />
+  </parameter>
+  <parameter name="CpeEndPoint Service Endpoint Address">
+	<parameterEntry kind="XmlFile" scope="Web.config"
+	    		    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='CpeEndPoint']
+                           /@address" />
+  </parameter>
+  <parameter name="PdfCpeDpiX Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='PdfCpeDpiX']
+                           /@value" />
+  </parameter>
+  <parameter name="PdfCpeDpiY Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='PdfCpeDpiY']
+                           /@value" />
+  </parameter>
+</parameters>

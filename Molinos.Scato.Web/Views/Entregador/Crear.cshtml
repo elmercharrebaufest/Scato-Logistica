@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.EntregadorDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Entregador_Crear;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/entregador.crearModificar.js")"></script>
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Entregador_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

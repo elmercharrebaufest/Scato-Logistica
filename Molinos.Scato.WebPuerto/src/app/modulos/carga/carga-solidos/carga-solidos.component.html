@@ -1,0 +1,14 @@
+<ship-spinner *ngIf='cargaPdf' [src]='"pdf"'></ship-spinner>
+<app-grafico-carga id='graficoCargaCanva'
+    class='bg-white'></app-grafico-carga>
+<app-manos [celdasManoDeEmbarque]="celdasManoDeEmbarque" [sentidosManoDeEmbarque]="sentidosManoDeEmbarque"></app-manos>
+
+<!-- Prueba de Gonzalo -->
+<!-- <app-balanzas></app-balanzas> -->
+
+<div class="d-flex justify-content-center my-5">
+    <button type="button" class="btn btn-danger" [routerLink]="['/lineup']">CANCELAR</button>
+    <button type="button" class="btn btn-primary mx-5" (click)="guardar(false)">GUARDAR</button>
+    <button class="btn btn-secondary" (click)="imprimir()">IMPRIMIR</button>
+    <button type="button" class="btn btn-success mx-5" (click)="guardar(true)">FINALIZAR</button>
+</div>

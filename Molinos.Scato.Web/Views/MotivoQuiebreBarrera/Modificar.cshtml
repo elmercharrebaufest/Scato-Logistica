@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MotivoQuiebreBarreraDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.MotivoQuiebreBarrera_EditarMotivo;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/motivoDeQuiebre.modificar.js")"></script>
+
+<div id ="links"    
+     data-url-buscar-transportista ="@Url.Action("BuscarTransportista", "Consultas")"
+     data-url-buscar-transportista-unico = "@Url.Action("BuscarTransportistas", "Consultas")"
+    ></div>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.MotivoQuiebreBarrera_EditarMotivo }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_Modificar", Model)
+}

@@ -1,0 +1,77 @@
+﻿@using System.Globalization
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model PanelServerAppPoolDto
+@{
+    Layout = null;
+}
+
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+    });
+</script>
+@if (!String.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-error">
+        @Html.Label(Model.Error)
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered table-small" id="tablaServidor">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Espacio en disco</th>
+                <th>Memoria Disponible</th>
+                <th>Cpu</th>
+                <th>Sesiones</th>
+                <th>Conexiones</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>@Html.Label(Model.ServidorNombre)</td>
+                    <td>@Html.Label(Model.DiscoDisponible.ToString(CultureInfo.InvariantCulture)+" GB")</td>
+                    <td>@Html.Label(Model.MemoriaDisponible.ToString(CultureInfo.InvariantCulture)+" MB")</td>
+                    <td>@Html.Label(Model.CargaProcesador.ToString(CultureInfo.InvariantCulture) + " %")</td>
+                    <td>@Html.Label(Model.Sesiones.ToString(CultureInfo.InvariantCulture))</td>
+                    <td>@Html.Label(Model.CantidadDeConexiones.ToString(CultureInfo.InvariantCulture))</td>
+                </tr>
+            </tbody>
+    </table>
+    
+}
+@if (Model.AppPools != null)
+{
+    <div class="titSecciones">@Textos.ApplicationPools</div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 70px"></th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Procesos</th>
+                <th>Tiempo de Reciclado (min)</th>
+            </tr>
+        </thead>
+        @foreach (var appPool in Model.AppPools)
+        {
+            <tbody>
+                <tr>
+                    <td><a class="iniciar" title="Iniciar AppPool" href="@Url.Action("IniciarAppPool", new { servidorNombre = Model.ServidorNombre, appPoolName = appPool.Nombre })"><i class="icon-play" ></i></a>
+                        <a class="detener" title="Detener AppPool" href="@Url.Action("DetenerAppPool",new { servidorNombre= Model.ServidorNombre, appPoolName= appPool.Nombre })"><i class="icon-stop"></i></a>
+                        <a class="reciclar" title="Reciclar AppPool" href="@Url.Action("ReciclarAppPool", new { servidorNombre = Model.ServidorNombre, appPoolName = appPool.Nombre })"><i class="icon-refresh"></i></a>
+                        <a class="configurar" title="Configurar Reciclado" href="@Url.Action("ConfigurarReciclado", new { servidorNombre = Model.ServidorNombre, appPoolName = appPool.Nombre })"><i class="icon-edit"></i></a>
+                    </td>
+                    <td>@Html.Label(appPool.Nombre ?? "")</td>
+                    <td>@Html.Label(appPool.Estado ?? "")</td>
+                    <td>@Html.Label(appPool.Procesos.ToString())</td>
+                    <td>@Html.Label(appPool.TiempoReciclado ?? "")</td>
+                </tr>
+            </tbody>
+        }
+    </table>
+}
+

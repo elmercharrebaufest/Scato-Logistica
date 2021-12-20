@@ -1,0 +1,48 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ConversionCaracteristicaDto
+@{
+    Layout = null;
+    var caracteristicas = (IEnumerable<SelectListItem>)ViewBag.Caracteristicas;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+}
+
+@Html.ValidationSummary(true)
+@Html.Hidden("ConsultarConversionPorCamara", Url.Action("Indexa"))
+@*<div class="control-group">
+    @Html.LabelFor(model => model.CamaraDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CamaraId, camaras,Textos.Default_Camara, new { id = "camarasDropDown" })
+        @Html.ValidationMessageFor(model => model.CamaraId)
+        @Html.ActionLink(Textos.Filtrar, "Indexa", "ConversionCaracteristica", null, new {@class="btn", @id = "btnFiltrar"})
+    </div>
+</div>*@
+<div class="control-group">
+    @Html.LabelFor(m => m.MaterialDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { id = "materialesDropDown" })
+        @Html.ValidationMessageFor(m => m.MaterialId)
+        @Html.Hidden("SetearMaterialesPorCamara", Url.Action("SetearMaterialesPorCamara"))
+        @Html.Hidden("valorDefault",Textos.Default_Material, new {id = "valorDefault"})
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CaracteristicaDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CaracteristicaId, caracteristicas, Textos.Default_Caracteristica, new { id = "caracteristicasDropDown" })
+        @Html.ValidationMessageFor(m => m.CaracteristicaId)
+        @Html.Hidden("SetearCaracteristicasPorMaterial", Url.Action("SetearCaracteristicasPorMaterial"))
+        @Html.Hidden("valorDefaultCaracteristica",Textos.Default_Caracteristica, new {id = "valorDefaultCaracteristica"})
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoCamara, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoCamara, new {@class = "control input-large"})
+        @Html.ValidationMessageFor(m => m.CodigoCamara)
+    </div>
+</div>
+
+<div class="botones-carta-porte centered">
+    <button class="btn btn-primary" type="submit">@Textos.Agregar</button>
+</div>

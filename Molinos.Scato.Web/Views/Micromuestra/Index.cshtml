@@ -1,0 +1,73 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.MicromuestraModel
+@{  
+    ViewBag.Title = Textos.Micromuestra_Titulo;
+    var impresoras = (IEnumerable<SelectListItem>)ViewBag.Impresoras;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/Scripts/micromuestras.index.js")"></script>
+
+}
+
+<div class ="container">
+    <div class="titSecciones">@Textos.Micromuestra_Titulo</div>
+</div>
+<br/>
+<div id ="links" 
+     data-url-buscar-centros = "@Url.Action("BuscarCentros", "Consultas")"
+     data-url-buscar-centro-unico = "@Url.Action("BuscarCentroUnico", "Consultas")"
+    ></div>
+
+@using (Html.BeginForm("Index", "Micromuestra", null, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", data_mensaje_espera = Textos.Micromuestra_Titulo }))
+{
+    <div class="row">
+        <div class="span12">
+            <div class="control-group">
+                @Html.LabelFor(model => model.Centro, new { @class = "control-label"})
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Centro, new { @class = "control input-large" })
+                    @Html.ValidationMessageFor(model => model.Centro)
+                    @Html.HiddenFor(model => model.CentroId)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.CodigoBarras, new { @class = "control-label"})
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CodigoBarras, new { @class = "control input-large", autocomplete = "off", maxlength = 15, })
+                    @Html.ValidationMessageFor(model => model.CodigoBarras)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.ImpresoraId, new { @class = "control-label"})
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.ImpresoraId, impresoras)
+                    @Html.ValidationMessageFor(model => model.ImpresoraId)
+                </div>
+            </div>
+            <div class="botones-carta-porte">
+                <button id="aceptar" class="btn btn-primary" type="submit">@Textos.Aceptar</button>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class="btn"})
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

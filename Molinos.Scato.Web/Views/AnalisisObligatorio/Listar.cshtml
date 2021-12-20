@@ -1,0 +1,31 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AnalisisObligatorioDto>)ViewBag.Items;
+}
+
+<script src="@Url.Script("~/Scripts/material.listarMateriales.js")" type="text/javascript"></script>
+<style>
+    .tip {
+        max-width: 500px;
+        white-space: normal;
+    }
+</style>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "AnalisisObligatorio"),
+                grid.Columna("MaterialDescripcion", Textos.Material),
+                grid.Columna("IntervaloDeAnalisis", Textos.CaracteristicaDeCalidad_IntervaloDeAnalisis),
+                grid.Column(header: Textos.PuestoDeTrabajo, format: ((item) =>
+                {
+                    IEnumerable<PuestoDeTrabajoDto> puestosDto = (IList<PuestoDeTrabajoDto>)item.PuestosDeTrabajoAsociados;
+                    return Html.Raw("<div class = 'ellipsis-overflow mostrar-lista'>" + Html.DisplayFor(m => puestosDto).ToHtmlString()
+                                    + "<span class = 'tip'>" + Html.DisplayFor(m => puestosDto).ToHtmlString() + "</span>" + "</div>");
+                })
+                ), grid.Columna("UltimoAnalisis", Textos.UltimoCamionCalado),
+                grid.Columna("AlertarAnalisisIntervalo", Textos.AnalisisObligatorio_AlertarIntervalo)))

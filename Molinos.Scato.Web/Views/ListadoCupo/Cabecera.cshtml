@@ -1,0 +1,198 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model List<CupoMobileDto>
+@{
+    Layout = null;
+}
+<script>
+
+      
+</script>
+<div class="col-sm-3 col-xs-12 panel-padding padding-large"  style="cursor:pointer" data-html="true" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Cupeados">
+    <div class="row panel-margin panel-heading panel-darkblue">
+        <div class="titulo-header titulo-center">@Textos.Cupos_Del_Día</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <br />
+                <div>
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.Otorgados))</span>
+                </div>
+
+                @foreach (var material in Model)
+                {
+                    <div>
+                        <span class="texto-tabla"> @material.Material</span>
+                        <span class="pull-right numero-tabla"> @material.Otorgados</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-6  col-xs-12 panel-padding padding-large" style="cursor:pointer" data-toggle="popover" data-html="true"  data-placement="bottom" data-trigger="hover" data-content="@Textos.Arribados">
+    <div class="row panel-margin panel-heading panel-flatblue">
+        <div class="titulo-header titulo-center">@Textos.CuposDelDía_En_SAP</div>
+        <div class="row">
+            <div >
+                <div class="hoy col-xs-2 col-right col-xs-offset-4 text-center" style="padding:0;">
+                    <span class="texto-tabla"> @Textos.Cupos_DeHoy</span>
+                </div>
+            </div>
+            <div class="col-xs-2 col-right text-center" style="padding:0;">
+                <span class="texto-tabla"> @Textos.Cupos_Vencidos</span>
+            </div>
+            <div class="col-xs-2 col-right text-center" style="padding:0; ">
+                <span class="texto-tabla"> @Textos.Cupos_Futuro</span>
+            </div>
+            <div class="col-xs-2 col-right text-center" style="padding:0; ">
+                <span class="texto-tabla"> @Textos.SinCupo</span>
+            </div>
+        </div>
+        <div class="row" style="padding-top:0">
+            <div>
+                <div class="col-xs-4">
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0;">
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.ArribadosDia))</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.ArribadosVencidos))</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.ArribadosFuturos))</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.SinCupo))</span>
+                </div>
+            </div>
+
+            @foreach (var material in Model)
+            {
+                <div class="col-xs-4 ">
+                    <span class="texto-tabla"> @material.Material</span>
+                </div>                
+                <div  class="col-xs-2 text-center" style="padding:0" >
+                    <span class="pull-right numero-tabla"> @material.ArribadosDia</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @material.ArribadosVencidos</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @material.ArribadosFuturos</span>
+                </div>
+                <div class="col-xs-2 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla"> @material.SinCupo</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="col-sm-3 col-xs-12 panel-padding padding-large" style="cursor:pointer" data-toggle="popover" data-placement="bottom" data-html="true" data-trigger="hover" data-content="@Textos.Descargados">
+    <div class="row panel-margin panel-heading panel-paleblue">
+
+        <div class="titulo-header titulo-center">@Textos.Cupos_Etapa_Tara_Cuadro</div>
+        <div class="row">
+            <div class="col-xs-3 col-right col-xs-offset-6 text-center" style="padding:0; ">
+                <span class="texto-tabla"> @Textos.Cupos_DeHoy</span>
+            </div>
+            <div class="col-xs-2 col-right text-center" style="padding:0; ">
+                <span class="texto-tabla"> @Textos.Todos</span>
+            </div>
+        </div>
+        <div class="row" style="padding-top:0">
+            <div>
+                <div class="col-xs-6">
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                </div>
+                <div class="col-xs-3 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla">  @(Model.Sum(x => x.Descargados))</span>
+                </div>
+                <div class="col-xs-3 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla">  @(Model.Sum(x => x.DescargadosTodos))</span>
+                </div>
+            </div>
+            @foreach (var material in Model)
+            {
+                <div class="col-xs-6">
+                    <span class="texto-tabla"> @material.Material</span>
+                </div>
+                <div class="col-xs-3 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla">  @material.Descargados</span>
+                </div>
+                <div class="col-xs-3 text-center" style="padding:0">
+                    <span class="pull-right numero-tabla">  @material.DescargadosTodos</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="col-sm-4  col-xs-12 panel-padding padding-large"  style="cursor:pointer" data-html="true" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.CumplimientoDia">
+    <div class="row panel-margin panel-heading panel-lightblue">
+
+        <div class="titulo-header titulo-center">@Textos.Cupos_Cumplidos</div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div>
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.Otorgados) != 0 ? Model.Sum(x => x.ArribadosDia) * 100 / (Model.Sum(x => x.Otorgados)) : 0)%</span>
+                </div>
+                @foreach (var material in Model)
+                {
+                    <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @(material.Otorgados != 0 ? material.ArribadosDia * 100 / material.Otorgados : 0)%</span> </div>
+                }<br>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="col-sm-4 col-xs-12 panel-padding padding-large" cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-html="true" data-content="@Textos.Pendientes">
+    <div class="row panel-margin panel-heading panel-miniblue">
+        <div class="titulo-header col-sm-11">
+            @Textos.Cupos_PendientesValidacion
+        </div>
+        <div class="col-sm-1 titulo-header">@(Model.Sum(x => x.Pendiente)) </div>
+        <div class="titulo-header titulo-center">@Textos.Cupo_SinRecorrido</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <br />
+                <div>
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                    <span class="pull-right numero-tabla">@(Model.Where(a => a.Material != "Otros").Sum(x => x.SinRecorrido))</span>
+                </div>
+
+                @foreach (var material in Model.Where(a => a.Material != "Otros"))
+                {
+                    <div>
+                        <span class="texto-tabla"> @material.Material</span>
+                        <span class="pull-right numero-tabla"> @material.SinRecorrido</span>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-4 col-xs-12 panel-padding padding-large"  style="cursor:pointer" data-toggle="popover" data-placement="top" data-html="true" data-trigger="hover" data-content="@Textos.Excedente">
+    <div class="row panel-margin panel-heading panel-superminiblue">
+
+        <div class="titulo-header titulo-center">@Textos.Cupos_ExcedentesdelDía</div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <br />
+                <div>
+                    <span class="texto-tabla numero-tabla-negrita"> @Textos.Total</span>
+                    <span class="pull-right numero-tabla"> @(Model.Sum(x => x.Excedente))</span>
+                </div>
+                @foreach (var material in Model)
+                {
+                    <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.Excedente</span> </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

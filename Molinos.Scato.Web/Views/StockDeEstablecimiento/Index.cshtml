@@ -1,0 +1,55 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@{
+    ViewBag.Title = Textos.StockDeEstablecimiento_Titulo;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+
+<div class ="container-fluid">
+    <ul class="nav nav-tabs">
+        @if (PermisosHelper.Is(PermisosScato.AbmEstablecimiento))
+        {
+            <li >
+                @Html.ActionLink(Textos.Establecimiento_Titulo, "Index", "Establecimiento")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.AbmStockDeEstablecimiento))
+        {
+            <li class="active">
+                @Html.ActionLink(Textos.StockDeEstablecimiento_Titulo, "Index", "StockDeEstablecimiento")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.AbmCosecha))
+        {
+            <li>
+                @Html.ActionLink(Textos.Cosechas_Titulo, "Index", "Cosecha")
+            </li>
+        }
+     </ul>
+    <div class="titSecciones">@Textos.Administracion_StockDeEstablecimientos</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_StockDeEstablecimientos)            
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                
+            }
+        </div>
+        @Html.ActionLink(Textos.StockDeEstablecimiento_Nuevo, "Crear", "StockDeEstablecimiento", null, new { @class = "ajax-editar-link btn btn-primary pull-right"})
+    </div>
+
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+

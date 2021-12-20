@@ -1,0 +1,95 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model List<EstadoMaterialDto>
+    <div class="row mt-2 mx-1 justify-content-center" id="graficodeplantahead">
+        <div class="col panel-heading col-12 col-sm-5 col-lg bg-molinos m-2">
+            <div class="row">
+                <i class="fa fa-industry icon-size fa-3x m-1" aria-hidden="true"></i>
+                <div class="col m-auto">
+                    @Textos.GraficoDePlanta_CamionesEnCircuito
+                </div>
+            </div>
+            @foreach (var material in Model)
+            {
+                <div class="d-flex justify-content-between">
+                    <div>@material.Material</div>
+                    <div>@material.CamionesEnPlanta</div>
+                </div>
+            }
+        </div>
+        <div class="col panel-heading col-12 col-sm-6 col-lg bg-molinos-t1 m-2">
+            <div class="row">
+                <i class="fa fa-dolly icon-size fa-3x m-1" aria-hidden="true"></i>
+                <div class="col m-auto">
+                    @Textos.GraficoDePlanta_CamionesDescargados
+                </div>
+            </div>
+            @foreach (var material in Model)
+            {
+                <div class="d-flex mx-1 justify-content-between">
+                    <div class="col-6 p-0">@material.Material</div>
+                    <div class="col p-0">@material.CamionesEnElDia</div>
+                    <div class="col p-0">@material.Peso.ToStringAbreviado()</div>
+                </div>
+            }
+        </div>
+        <div class="col panel-heading col-12 col-sm col-lg bg-molinos-t2 m-2">
+            <div class="row">
+                <i class="fa fa-truck  icon-size fa-3x m-1" aria-hidden="true"></i>
+                <div class="col m-auto">
+                    @(ViewBag.MostrarIngresos?Textos.GraficoDePlanta_TotalEnElDia : Textos.CamionesEgreso)
+                </div>
+            </div>
+            @foreach (var material in Model)
+            {
+                <div class="row mx-1 justify-content-between">
+                    <div>@material.Material</div>
+                    <div>@material.TotalIngresosEnElDia</div>
+                </div>
+            }
+        </div>
+        <div class="col panel-heading col-12 col-sm col-lg bg-molinos-t3 m-2">
+            <a class="link-white" href="@Url.Action("Index","CamionesRechazados")">
+                <div class="row">
+                    <i class="fa fa-ban icon-siz fa-3x m-1" aria-hidden="true"></i>
+                    <div class="col m-auto">
+                        @Textos.GraficoDePlanta_CamionesRechazados
+                    </div>
+                </div>
+                @foreach (var material in Model)
+                {
+                    <div class="row mx-1 justify-content-between">
+                        <div>@material.Material</div>
+                        <div>@material.Rechazados</div>
+                    </div>
+                }
+            </a>
+        </div>
+        <div class="col panel-heading col-12  col-sm col-lg bg-molinos-t4 m-2">
+            <a class="link-white" href="@Url.Action("Index","Cupo")">
+                <div class="row">
+                    <i class="fa fa-file-alt icon-size fa-3x m-1" aria-hidden="true"></i>
+                    <div class="col m-auto">
+                        @Textos.Cupos
+                    </div>
+                </div>
+                <div class="row mx-1 justify-content-between">
+                    <div>@Textos.Cupos_Del_Día</div>
+                    <div>@(@ViewBag.CupeadosMenu == null ? 0 : @ViewBag.CupeadosMenu)</div>
+                </div>
+                <div class="row mx-1 justify-content-between">
+                    <div>@Textos.CuposDelDía_En_SAP</div>
+                    <div>@(@ViewBag.ArribadosMenu == null ? 0 : @ViewBag.ArribadosMenu)</div>
+                </div>
+                <div class="row mx-1 justify-content-between">
+                    <div>@Textos.Cupos_Etapa_Tara </div>
+                    <div>@(@ViewBag.DescargadosMenu == null ? 0 : @ViewBag.DescargadosMenu)</div>
+                </div>
+                <div class="row mx-1 justify-content-between">
+                    <div>Cumplimiento</div>
+                    <div>@(@ViewBag.CumplimientoMenu == null ? 0 : @ViewBag.CumplimientoMenu) %</div>
+                </div>
+            </a>
+        </div>
+    </div>

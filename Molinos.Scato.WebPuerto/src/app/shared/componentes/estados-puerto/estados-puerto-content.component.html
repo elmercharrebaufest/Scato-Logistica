@@ -1,0 +1,22 @@
+﻿<div class="container mt-4 pr-1 align-derecha" *ngIf="estadoPuerto">
+  <div class="form-row justify-content-end">
+    <div class="col-3 pr-0" style="display:flex">
+      <label for="estadoCalado" class="col-form-label font-weight-bold mr-1">Calado:</label>
+      <input type="number" class="form-control" [(ngModel)]="estadoCalado" (change)="modificarEstadosPuerto()"
+        ngbTooltip="{{estadoPuerto.fechaCalado | date : 'dd-MM-yyyy HH:mm'}}">
+    </div> 
+    <div class="col-5 pr-0" style="display:flex">
+      <label for="estadoUbicacion" class="col-form-label font-weight-bold ml-3 mr-1">Ubicación:</label>
+      <input type="text" class="form-control" [(ngModel)]="estadoUbicacion" (change)="modificarEstadosPuerto()"
+        ngbTooltip="{{estadoPuerto.fechaUbicacion | date : 'dd-MM-yyyy HH:mm'}}">
+    </div>
+  </div>
+
+  <div class="form-row justify-content-end mt-2">
+    <div class="col-3 pr-0" style="display:flex">
+      <label for="estadoAltura" class="col-form-label font-weight-bold mr-1">Altura:</label>
+      <input type="number" class="form-control" [(ngModel)]="estadoAltura" (change)="modificarEstadosPuerto()"
+        ngbTooltip="{{estadoPuerto.fechaAlturaRio | date : 'dd-MM-yyyy HH:mm'}}">
+    </div>
+  </div>
+</div>

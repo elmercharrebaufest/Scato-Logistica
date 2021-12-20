@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.CosechaDto
+@{ }
+@Html.ValidationSummary(true)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new { @class = "input-small cosechaValidacion cosechaValidacionDiferencia", autocomplete = "off", data_error = string.Format(Textos.Atencion_CosechaInvalida), data_errordiferencia = string.Format(Textos.Atencion_CosechaInvalidaDiferencia)})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+        @Html.HiddenFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.EpaPesoDescontado, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.EpaPesoDescontado, new {@class = "input-small"})
+    </div>
+</div>

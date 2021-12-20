@@ -1,0 +1,45 @@
+﻿@model Molinos.Scato.Dominio.Dto.TaraRomaneoDto
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Codigo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Codigo, new {@class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Codigo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion)
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Peso, new {@class = "control-label campoNumerico"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Peso)
+        @Html.ValidationMessageFor(model => model.Peso)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Importacion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.Importacion, new {@class = "control"})
+        @Html.ValidationMessageFor(m => m.Importacion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CargaPesoManual, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.CargaPesoManual, new {@class = "control"})
+        @Html.ValidationMessageFor(m => m.CargaPesoManual)
+    </div>
+</div>
+
+
+
+

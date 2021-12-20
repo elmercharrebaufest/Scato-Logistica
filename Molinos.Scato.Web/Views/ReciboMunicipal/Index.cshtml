@@ -1,0 +1,31 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ReciboMunicipalDto
+@{
+    ViewBag.Title = Textos.ReciboMunicipal_Titulo;
+}
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.css")" rel="stylesheet" type="text/css">
+<script src="@Url.Script("~/Scripts/ControlCalado.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/Scripts/bootstrap-datetimepicker.js")" type="text/javascript"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.ReciboMunicipal_Titulo</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_ReciboMunicipal)
+                  <input class="span2" size="16" id="datetimepickerDesde" type="text" name="filtro" value="" autocomplete="off">
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+            }
+
+        </div>
+        @Html.ActionLink(Textos.ReciboMunicipal_Nuevo, "Crear", "ReciboMunicipal", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
+    </div>
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>

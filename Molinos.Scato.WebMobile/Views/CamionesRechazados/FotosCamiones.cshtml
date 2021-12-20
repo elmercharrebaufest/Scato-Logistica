@@ -1,0 +1,62 @@
+﻿@using System.Web.Optimization
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model FotosDto
+
+@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/fotos.css")" rel="stylesheet" type="text/css">
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.spinner').hide();
+        $("#InfoModal").modal();
+    });
+</script>
+<div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header justify-content-center">
+            <span class="rounded bg-molinos text-light mx-1 p-1">@Model.Patente</span>
+            <span class="rounded bg-molinos-t1 text-light mx-1 p-1">@Model.NumeroDocumentoIngreso</span>
+            <span class="rounded bg-molinos-t2 text-light mx-1 p-1">@Model.Material</span>
+        </div>
+        <div class="modal-body-info">
+            @if (Model.Fotos.Count > 0)
+            {
+                <div id="thumbnail-preview-indicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+
+                        @for (var index = 0; index < Model.Fotos.Count; index++)
+                        {
+                            <li class="@(index == 0 ? "active" : "")" data-slide-to="@index" data-target="#thumbnail-preview-indicators">
+                                <div class="thumbnail">
+                                    <img class="img-responsive" alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].FotoChica))" />
+                                </div>
+                            </li>
+                        }
+                    </ol>
+                    <div class="carousel-inner">
+                        @for (var index = 0; index < Model.Fotos.Count; index++)
+                        {
+                            <div class="carousel-item @(index == 0 ? "active" : "")">
+                                <h5 class="text-center my-0 alert alert-info">@Model.Patente | @Model.Fotos[0].Actividad @Model.Fotos[0].Fecha</h5>
+                                <img class="d-block w-100" alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].Foto))" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="h4 alert alert-warning text-center my-0"><i class="fa fa-camera-retro fa-5x"></i></div>
+                <div class="h4 alert alert-warning text-center my-0">@Textos.NoHayFotos</div>
+            }
+        </div>
+        <div class="modal-footer">
+
+            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

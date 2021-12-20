@@ -1,0 +1,146 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+
+@{
+
+    Layout = null;
+
+    var items = (ListaPaginada<InstanciaWorkflowDto>)ViewBag.Items;
+
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+
+    columnas.Add(grid.ColumnaCheckBoxConMaterial(Html, Textos.Asignar, "Asignar"));
+    Model.Columnas = Model.Columnas.Count == 1 ? Model.Columnas.FirstOrDefault().Split('|', ',').ToList() : Model.Columnas;
+    columnas.Add(grid.ColumnaVerFotos(Html, ""));
+    if (Model.Columnas.Contains("Patente"))
+    {
+        columnas.Add(grid.Columna("Patente", Textos.Camion_Patente, x => Html.Raw(x.Patente + (x.TipoVehiculo == TipoVehiculo.Tren ? " <i class=\"fa fa-train\">" : " " ))));
+    }
+    if (Model.Columnas.Contains("Workflow"))
+    {
+        columnas.Add(grid.Columna("Workflow", Textos.Workflow));
+    }
+    if (Model.Columnas.Contains("MaterialId"))
+    {
+        columnas.Add(grid.Columna("MaterialCodigoSap", Textos.Workflow_MaterialId));
+    }
+
+    if (Model.Columnas.Contains("MaterialDescripcion"))
+    {
+        columnas.Add(grid.Columna("Material.Descripcion", Textos.Material, x => Html.Raw(x.Material
+            + (x.EsProteinaBaja ? "<span class='label label-important'>" + Textos.EsProteinaBaja + " <strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("PROTEINAS") ? x.CaracteristicasDeCalidad["PROTEINAS"] : "") + "</strong></span>" : string.Empty)
+            + (x.EsProteinaAlta ? "<span class='label label-success'>" + "Proteína Alta" + " <strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("PROTEINAS") ? x.CaracteristicasDeCalidad["PROTEINAS"] : "") + "</strong></span>" : string.Empty)
+             + (x.EsSustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)
+             + (x.TieneInsectosVivos ? "<span class='label label-warning'><i class=\"fas fa-bug\"></i><strong>" + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("INSECTOS VIVOS") ? x.CaracteristicasDeCalidad["INSECTOS VIVOS"] : "") + (x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey("INSECTOS Y ARACNIDOS	") ? x.CaracteristicasDeCalidad["INSECTOS Y ARACNIDOS	"] : "") + "</strong></span>" : string.Empty)
+             + (x.TipoVehiculo == TipoVehiculo.CamiónD && x.MaterialId == 4 ? " <span class='label label-inverse'>Camión D(52,5)</span>" : string.Empty )
+             )));
+    }
+    if (Model.Columnas.Contains("Transportista"))
+    {
+        columnas.Add(grid.Columna("Transportista", Textos.Transportista));
+    }
+    if (Model.Columnas.Contains("Cuit"))
+    {
+        columnas.Add(grid.Columna("Cuit", Textos.Centro_Cuit));
+    }
+    if (Model.Columnas.Contains("TipoDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("TipoDocumentoIngreso", Textos.TipoDocumentoIngreso, t => ((TipoDocumentoIngreso)t.TipoDocumentoDeIngreso).DisplayEnum()));
+    }
+    if (Model.Columnas.Contains("NumeroDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso, x => x.NumeroDocumentoDeIngreso));
+    }
+    if (Model.Columnas.Contains("Calidad"))
+    {
+        columnas.Add(grid.Columna("Calidad", Textos.Workflow_Calidad));
+    }
+    if (Model.Columnas.Contains("CentroId"))
+    {
+        columnas.Add(grid.Columna("CentroCodigoSap", Textos.Workflow_CentroId));
+    }
+    if (Model.Columnas.Contains("Centro"))
+    {
+        columnas.Add(grid.Columna("Centro", Textos.Centro));
+    }
+    //if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    //{
+    //    columnas.Add(grid.Columna("FechaCreacion", Textos.ListaDeCamiones_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacion)));
+    //}
+    if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    {
+        columnas.Add(grid.Columna("Calado.FechaCreacion", Textos.ListaDeCamiones_FechaCalado, x => FormattingHtmlHelper.FormattedTime(x.FechaCalado)));
+    }
+    if (Model.Columnas.Contains("TipoComercial.Descripcion"))
+    {
+        columnas.Add(grid.Columna("TipoComercial.Descripcion", Textos.TipoComercial, x => x.TipoComercial));
+    }
+    if (Model.Columnas.Contains("Humedad"))
+    {
+        columnas.Add(grid.Columna("Humedad", Textos.Workflow_Humedad));
+    }
+    if (Model.Columnas.Contains("Calle"))
+    {
+        columnas.Add(grid.Columna("Calle", Textos.Workflow_Fila, x => x.Calle));
+    }
+    var caracteristicas = (string[]) ViewBag.Caracteristicas;
+    if (caracteristicas != null)
+    {
+        columnas.AddRange(caracteristicas.Where(x => x != "PROTEINAS").Select(caracteristica => grid.Columna(caracteristica, caracteristica, x => x.CaracteristicasDeCalidad != null && x.CaracteristicasDeCalidad.ContainsKey(caracteristica) ? x.CaracteristicasDeCalidad[caracteristica] : "", null, false)));
+    }
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<script>
+    $(document).ready(
+        function () {
+            //$("tr td input.estado-descuento").parent().parent().addClass("estado-descuento");
+            //$("tr td input.estado-asignado").parent().parent().addClass("estado-asignado");
+            $("tr td input.estado-rechazado").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-rechazado");
+                });
+            $("tr td input.estado-grano-verde").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-grano-verde");
+                });
+            $("tr td input.estado-cuerpo-extraño").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-cuerpo-extraño");
+                });
+            $("tr td input.estado-dañado").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-dañado");
+                });
+            $("tr td input.estado-humedo").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-humedo");
+                });
+            if ($("#grid tbody tr").length == $(".columna-checkbox:checkbox:checked").length) {
+                $("#grid thead tr th:first").html("<input type='checkbox' id='SeleccionarTodos' checked/>");
+            } else {
+                $("#grid thead tr th:first").html("<input type='checkbox' id='SeleccionarTodos'/>");
+            }
+            $("#SeleccionarTodos").change(function () {
+                if ($(this).is(':checked')) {
+                    $(".columna-checkbox").prop("checked", true);
+                    $(".columna-checkbox").trigger("change");
+                } else {
+                    $(".columna-checkbox").prop("checked", false);
+                    $(".columna-checkbox").trigger("change");
+                }
+                countChecked();
+            });
+        });
+</script>
+<div class="controls">
+    @Html.Grilla(items,columnasFunc)
+</div>
+
+

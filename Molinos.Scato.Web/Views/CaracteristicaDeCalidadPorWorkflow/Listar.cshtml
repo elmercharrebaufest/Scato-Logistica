@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<CaracteristicaDeCalidadPorWorkflowDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminarModificar(this.Html, "CaracteristicaDeCalidadPorWorkflow"),
+            grid.Columna("Material.Descripcion",  Textos.Material, x => x.MaterialDescripcion),
+            grid.Columna("Workflow.Descripcion", Textos.Workflow, x => x.WorkflowDesc),
+            grid.Columna("Workflow.TipoDeWorkflow", Textos.Tipo, x => x.WorkflowTipo)))

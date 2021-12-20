@@ -1,0 +1,219 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.CargaDeAnalisisDeCalidadModel
+@{
+    ViewBag.Title = Textos.CargaDeAnalisisDeCalidad_Titulo;
+
+    var tipoComercial = (string)ViewBag.TipoComercial;
+    var material = (string)ViewBag.Material;
+    var cicloDeCalado = (int)ViewBag.CicloDeCalado;
+    var documentoIngreso = (TipoDocumentoIngreso)ViewBag.DocumentoIngreso;
+    var numeroDocumento = (string)ViewBag.NumeroDocumentoIngreso;
+    var validaPatente = Model.ValidaPatente;
+    var numeroDeOrdern = Model.NumeroDeOrden;
+    var caracteristicas = (IEnumerable<SelectListItem>)ViewBag.Caracteristicas;
+    var workflowInstancia = (Guid)ViewBag.WorkflowInstancia;
+    var agenteCompras = (string)ViewBag.AgenteCompras;
+    var caracteristicasMensajes = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasMensajes);
+    
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/scripts/knockout-2.2.1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.maskedinput.js"></script>
+    <script type="text/javascript" src="@Url.Script("~/Scripts/analisisdecalidad.index.js")"></script>
+}
+<style>
+    .tablaDatos {
+        width: 960px;
+    }
+
+    .form-horizontal .control-group {
+        margin-bottom: 1px;
+        padding-left: 10px;
+    }
+
+    .row-fluid-boxed {
+        margin-right: 0;
+        width: 48.71% !important;
+    }
+
+    .paddinRows {
+        padding-left: 20px;
+    }
+</style>
+
+<div class="container-fluid text-center">
+    <div class="titSecciones pull-left" style="display:inline-block;">@Textos.CargaDeAnalisisDeCalidad_Titulo</div>
+    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
+        <h4 style="margin-top: 0; margin-bottom: 0">@material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+    </span>
+
+    @if ((bool)ViewBag.CupoEsFabrica)
+    {
+        <span class="label label-yellow text-center">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.CupoFabrica)</h4>
+        </span>
+    }
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active">
+        @Html.ActionLink(Textos.CargaDeAnalisisDeCalidad_Titulo, "Index", "AnalisisDeCalidad")
+    </li>
+    <li>
+        @Html.ActionLink(Textos.DocumentoDeOrigen_Titulo, "Index", "DocumentoDeOrigen", new DocumentoDeOrigenDto { InstanceId = workflowInstancia, TipoDocumentoIngreso = documentoIngreso, Actividad = "AnalisisDeCalidad", ActividadTitulo = Textos.CargaDeAnalisisDeCalidad_Titulo, RecorridoId = Model.RecorridoId, EsActividad = true }, null)
+    </li>
+</ul>
+@if ( caracteristicasMensajes.Any())
+{
+    <div class="alert alert-warning">
+        @string.Format(Textos.VehiculoConAdvertencia, String.Join(", ", caracteristicasMensajes.Select(x => x.Caracteristica)))
+    </div>
+}
+
+@if (ViewBag.EnvioDirectoACamara != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        @Html.ViewBag.EnvioDirectoACamara
+    </div>
+}
+
+<div class="row-fluid">
+    <table class="tablaDatos span12search">
+        <tr>
+            <th>@Html.Label(Textos.Patente)</th>
+            <th>@Html.Label(Textos.PatenteAcoplado)</th>
+            @if (!string.IsNullOrEmpty((string)ViewBag.TarjetaDeAcceso))
+            {
+                <th>@Html.Label(Textos.Tarjeta)</th>
+            }
+            <th>@Html.Label(Textos.FechaIngreso)</th>
+            <th>@Html.Label(Textos.TipoComercial)</th>
+            <th>@Html.Label(documentoIngreso.DisplayEnum())</th>
+            <th>@Html.Label(Textos.CTG)</th>
+            <th>@Html.Label(Textos.TitularCP)</th>
+            <th>@Html.Label(Textos.CartaPorte_RtteComercial)</th>
+            <th>@Html.Label(Textos.CartaPorte_AgenteCompras)</th>
+            <th>@Html.Label(Textos.Entregador)</th>
+            <th>@Html.Label(Textos.Calado_Ciclo)</th>
+            <th>@Html.Label(Textos.CargaDeAnalisisDeCalidad_NroOrden)</th>
+        </tr>
+        <tr>
+            <td>@ViewBag.Patente</td>
+            <td>@ViewBag.PatenteAcoplado</td>
+            @if (!string.IsNullOrEmpty((string)ViewBag.TarjetaDeAcceso))
+            {
+                <td>@ViewBag.TarjetaDeAcceso</td>
+            }
+            <td>@ViewBag.FechaIngreso</td>
+            <td>@Html.DisplayFor(model => tipoComercial)</td>
+            <td>@numeroDocumento</td>
+            <td>@ViewBag.CTG</td>
+            <td>@ViewBag.TitularCP</td>
+            <td>@ViewBag.RtteComercial</td>
+            <td>@agenteCompras</td>
+            <td>@ViewBag.TieneEntregador</td>
+            <td>@cicloDeCalado</td>
+            <td>@numeroDeOrdern</td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+@Html.Hidden("ObtenerCaracteristicasCaladasUrl", Url.Action("ObtenerCaracteristicasCaladas"))
+@Html.Hidden("ErrorCampoNumerico", string.Format(Textos.Error_SoloNumerico, Textos.Calado_Valor))
+@Html.Hidden("ErrorRangoValor", Textos.AnalisisDeCalidad_FueraDeRango)
+@Html.Hidden("ErrorCampoRequerido", String.Format(Textos.Error_Requerido, Textos.CargaDeAnalisisDeCalidad_ValorAnalisis))
+
+@using (Ajax.BeginForm("Index", "AnalisisDeCalidad", null, new AjaxOptions { OnComplete = "EvaluarResultado" }, new { @class = "form-horizontal form-search container-fluid", id = "calidad-form", data_bind = "submit: aceptarFormulario", data_mensaje_espera = Textos.ActAnalisisDeCalidad }))
+{
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary(true)
+        </div>
+    }
+
+    @Html.HiddenFor(m => m.PatenteOriginal)
+    @Html.HiddenFor(m => m.ValidaPatente)
+    @Html.HiddenFor(m => m.NumeroDeOrden)
+    @Html.Hidden("TipoVehiculo", (int)Model.TipoVehiculo)
+    @Html.Hidden("workflowNombre", (string)ViewBag.WorkflowNombre)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    @Html.Hidden("workflowInstancia", workflowInstancia)
+    @Html.HiddenFor(m => m.AnalisisPorCaracteristicas, new { data_bind = "value: ko.toJSON(analisisPorCaracteristicaLista)" })
+    @Html.Hidden("EsTrigoPan", (bool)ViewBag.EsTrigoPan)
+    <div class="row">
+        <div class="span6">
+            <div class="row paddinRows">
+                <div class="control-group">
+                    @Html.LabelFor(model => model.Patente):
+                    @if (!validaPatente)
+                    {
+                        @Html.TextBox("Patente", Model.PatenteOriginal, new { @class = "control input-small patente-internacional uppercase", @readonly = "readonly", autocomplete = "off" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.Patente, new { @class = "control input-small patente-internacional uppercase", data_patente_url = Url.Action("ValidarPatente"), autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.Patente)
+                    }
+                    <br />
+                </div>
+            </div>
+            <div class="row paddinRows">
+                <br />
+                <div class="control-group">
+                    @Html.Label(Textos.Calado_Caracteristica):
+                    @Html.DropDownList("Caracteristicas", caracteristicas, new { @class = "input-xlarge" })
+                    <input id="agregarCaracteristica" class="btn btn-warning" type="button" data-bind="click: addAnalisisPorCaracteristica" data-caracteristica-url="@Url.Action("ObtenerCaracteristica")" value="@Textos.Agregar" />
+                </div>
+            </div>
+        </div>
+        <div class="span6" style="margin-bottom: 20px">
+            @Html.TextAreaFor(model => model.Comentario, new { rows = "5", cols = "70", maxlength = "100", placeholder = "Sin Comentarios", disabled = true, style = "width: 455px; height: 73px;" })
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>@Textos.Calado_Caracteristica</th>
+                <th>@Textos.CargaDeAnalisisDeCalidad_ValorCalado</th>
+                <th>@Textos.CargaDeAnalisisDeCalidad_ValorAnalisis</th>
+                <th>@Textos.Calado_Unidad</th>
+                <th>@Textos.Calado_Rango</th>
+                <th>@Textos.Eliminar</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: analisisPorCaracteristicaLista">
+            <tr>
+                <td data-bind="text: Caracteristica" />
+                <td data-bind="commaDecimalFormatter: ValorCalado" />
+                <td>
+                    <div class="control-group">
+                        <input type="text" data-bind="value: newValorAnalisis, attr: { id: ValorId, name: ValorId, 'data-rango': Rango}" class="input-small control validarNumero validarRango requerido" />
+                        @Html.ValidationMessage("valor", new { @class = "help-block", data_bind = "attr: { 'data-valmsg-for': ValorId }" })
+                    </div>
+                </td>
+                <td data-bind="text: Unidad" />
+                <td data-bind="text: Rango" />
+                <td><a href="#" data-bind="click: $root.removeAnalisisPorCaracteristica" tabindex="-1"><i class="icon-trash" data-bind="visible: Eliminable"></i></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="control-group paddingRight cajaButtons">
+        <button class="btn btn-primary" type="submit" id="btnAceptar">@Textos.Aceptar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    </div>
+
+    <div class="hidden">
+        <p id="error">@Textos.Calado_CaracteristicaExistente</p>
+    </div>
+}

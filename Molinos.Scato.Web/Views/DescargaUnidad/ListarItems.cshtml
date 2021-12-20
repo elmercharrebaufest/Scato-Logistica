@@ -1,0 +1,62 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.DescargaUnidadDto
+@{
+    Layout = null;
+}
+
+
+    <div style="max-height:170px;overflow:auto;margin-bottom: 3px">
+    <table class="table table-striped table-bordered">
+        <thead> 
+            <tr>
+                <th>@Textos.Rechazar</th>
+                <th>@Textos.Romaneo_ItemNro</th>
+                <th>@Textos.Romaneo_RemitoNro</th>
+                <th>@Textos.AñoSap</th>
+                <th>@Textos.NroMovimientoSap</th>
+                <th>@Textos.PesoBruto</th>
+                <th>@Textos.PesoTara</th>
+                <th>@Textos.PesoNeto</th>
+                <th>@Textos.Material</th>
+                <th>@Textos.Almacen</th>
+                <th>@Textos.Romaneo_LoteTropa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DescargaUnidadItems != null)
+            {
+                for (int i = 0; i < Model.DescargaUnidadItems.Count; i++)
+                {
+                    @Html.HiddenFor(m => m.DescargaUnidadItems[i].Id)
+                    @Html.HiddenFor(m => m.DescargaUnidadItems[i].ItemNro)
+                    if (!Model.DescargaUnidadItems[i].Rechazado)
+                    {
+                        <tr>
+                            @if (Model.Estado != EstadoDescargaUnidad.Finalizado)
+                            {
+                                <td>@Html.CheckBoxFor(m => m.DescargaUnidadItems[i].Rechazado)</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].ItemNro)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].RemitoNro)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].EjercicioDocMaterial)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].DocMaterial)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].PesoBruto)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].PesoTara)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].PesoNeto)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].Material)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].Almacen)</td>
+                            <td>@Html.DisplayFor(m => m.DescargaUnidadItems[i].LoteProveedor)</td>
+                        </tr>
+                    }
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+ 

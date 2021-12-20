@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConsultaCasilleroAntiguedadDto>)ViewBag.Items;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/consultaCasillero.Antiguedad.listar.js")"></script>
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("Centro", Textos.Centro),
+    grilla.Columna("OcupadosMas", Textos.ConsultaCasillero_OcupadosMas),
+    grilla.Columna("OcupadosMenos", Textos.ConsultaCasillero_OcupadosMenos),
+    grilla.Columna("Libres", Textos.ConsultaCasillero_Libres)))

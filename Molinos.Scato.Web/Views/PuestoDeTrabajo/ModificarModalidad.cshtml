@@ -1,0 +1,25 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.CambioModalidadPuestoModel
+@{
+    Layout = null;
+    ViewBag.Title = Textos.PuestoDeTrabajo_ModificarModalidad_Titulo;
+}
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("ModificarModalidad", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.PuestoDeTrabajo_ModificarModalidad_Titulo }))
+{
+    <div class="control-group">
+        @Html.LabelFor(model => model.Automatico, new {@class = "control-label"})
+        <div class="controls">
+            @Html.CheckBoxFor(m => m.Automatico)
+            @Html.ValidationMessageFor(model => model.Automatico)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.Motivo, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextAreaFor(model => model.Motivo, 8, 20, new { @class = "input-large" })
+            @Html.ValidationMessageFor(model => model.Motivo)
+        </div>
+    </div>
+}

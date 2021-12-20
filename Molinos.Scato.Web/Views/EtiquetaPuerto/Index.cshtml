@@ -1,0 +1,101 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@model Molinos.Scato.Dominio.Dto.ImpEtiquetaPuertoDto
+@{
+    ViewBag.Title = Textos.EtiquetaPuerto_Titulo;
+    var impresoras = (IEnumerable<SelectListItem>)ViewBag.Impresoras;
+}
+@section scripts
+{
+    <script>
+        urlTemplate = '@Url.Action("DescargarTemplate", "EtiquetaPuerto")';
+        urlImprimir = '@Url.Action("Imprimir", "EtiquetaPuerto")';
+        hayEtiquetas = @Html.Raw(ViewBag.HayItems);
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Script("~/Scripts/etiquetaPuerto.js")"></script>
+}
+
+<link href="~/Content/bulma.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.EtiquetaPuerto_Titulo</div>
+</div>
+<br />
+<div id="links"></div>
+<div class="container grillaPad">
+    @using (Html.BeginForm("Index", "EtiquetaPuerto", FormMethod.Post, new { @id = "uploadFormEtiquetaPuerto", enctype = "multipart/form-data" }))
+    {
+        <div class="row-fluid">
+            <div class="span12">
+                <fieldset class="grupo-carta-porte">
+                    <div class="row row-carta-porte">
+                        <div class="field span6" id="file-js-example" style="margin-top: 3px;">
+                            <div class="file is-info has-name">
+                                <label class="file-label" style="margin:0">
+                                    <input class="file-input" type="file" name="resume" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    <span class="file-cta" style="width:123px; height:19px">
+                                        <span class="file-label">
+                                            Seleccione Archivo
+                                        </span>
+                                    </span>
+                                    <span class="file-name" style="color: gray; width:197px; height:19px">
+                                        Ningún Archivo Seleccionado
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        @*<button type="submit" class="btn btn-success" id="guardar" style="width:85%; display: none">Guardar</button>*@
+                        @*<div class="field span2" style="margin-top: 3px;">
+
+                            </div>*@
+                        <div class="field span2" style="margin-top: 3px;">
+                            <button type="button" class="btn btn-warning" id="template" style="width:85%" onclick="descargarTemplate()"> <i class="icon-download-alt"> </i> Template</button>
+                        </div>
+                        <div class="field span4" style="float: right; margin-top: 3px;">
+                            <button type="button" class="btn btn-info" id="imprimirEtiquetas" style="width:85%"><i class="icon-print"> </i> Imprimir Etiquetas</button>
+                        </div>
+                    </div>
+                    @*@Html.ValidationMessageFor(model = Model.)*@
+                </fieldset>
+            </div>
+        </div>
+
+        if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+        {
+            <div class="alert alert-error">
+                @Html.ValidationSummary(true)
+            </div>
+        }
+        else if (ViewBag.success != null)
+        {
+            <div class="alert alert-success">
+                @Html.Raw(ViewBag.success)
+            </div>
+        }
+    }
+
+    <div id="gridContainer" data-grid-url="@Url.Action("Index", "EtiquetaPuerto")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+
+<div id="diag-imprimir" data-imprimir-url="@Url.Action("Imprimir", "EtiquetaPuerto")">
+    <div class="modal fade hide" id="dialogo-imprimir">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h5>@Textos.SeleccionarImpresora_Titulo</h5>
+        </div>
+        <div class="modal-body" id="dialogo-imprimir-body">
+            @Textos.Impresora:
+            <h5>@Html.DropDownList("ImpresoraDropDown", impresoras)</h5>
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-imprimir-imprimir" class="btn">@Textos.Imprimir</button>
+            <button id="dialogo-imprimir-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+</div>
+<iframe id="my_iframe" style="display:none;"></iframe>

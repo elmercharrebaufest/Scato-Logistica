@@ -1,0 +1,57 @@
+label{
+    font-weight: bold;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    padding: 0px;
+    margin: 0px;
+}
+
+.input_img {  position:relative;}
+.input_img input { margin:0 0 0 4px;}
+
+.imgClockInput1 { 
+    display:block; 
+    position:absolute; 
+    top:0.5rem; 
+    right: 0.5rem; 
+}
+
+.imgClockInput2 { 
+    display:block; 
+    position:absolute; 
+    top:0.5rem; 
+    right: 0.5rem;
+}
+
+.max-40vh{
+    max-height: 217px;
+    height: 217px;
+    padding-bottom: 30px;
+}
+
+.float-down-arrow{
+    position: absolute;
+    right: 2.5rem;
+    bottom: 0;
+    font-size: 1.3rem;
+}
+
+.pt-btn-add{
+    padding-top: 7px;
+}
+
+.full-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-center i{
+    margin-top: 17px;
+    color: red !important;
+}
+
+.full-center i:hover{
+    cursor: pointer;
+}

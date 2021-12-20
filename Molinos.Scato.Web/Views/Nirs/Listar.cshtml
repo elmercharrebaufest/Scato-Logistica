@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<NirsDto>)ViewBag.Items;
+}
+
+
+@Html.Grilla(items,
+        grid => grid.Columns(
+            grid.ColumnaEliminarModificar(Html, "NIRS"),
+            grid.Columna("DescripcionCorta", Textos.DescripcionCorta),
+            grid.Columna("Descripcion",  Textos.Balanza_Descripcion),
+            grid.Columna("Modalidad",  Textos.Balanza_Modalidad,canSort:false)))

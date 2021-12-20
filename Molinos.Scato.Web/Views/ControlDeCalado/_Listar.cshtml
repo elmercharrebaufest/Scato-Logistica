@@ -1,0 +1,96 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.ControlDeCaladoModel
+
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/columna.css")">
+
+@{
+    Layout = null;
+}
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+    });
+</script>
+@if (Model.CaladosPorHora != null && Model.UltimoCamion != null)
+{
+    var calados = Model.CaladosPorHora;
+    var ultimoCamion = Model.UltimoCamion;
+
+    <div class="col-lg-12" style="margin-top: 20px;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Textos.CamionesCalados</th>
+                    @foreach (var calador in Model.EstadisticasCalado.FirstOrDefault().Caladores)
+                    {
+                        <th>@calador.Calador</th>
+                    }
+                    <th>@Textos.CamionesConformes</th>
+                    <th>@Textos.EnAnalisis</th>
+                    <th>@Textos.Rechazos</th>
+                    <th>@Textos.Recalados</th>
+                    <th>@Textos.Producto</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var estadistica in Model.EstadisticasCalado)
+                {
+                    <tr>
+                        <td>@estadistica.Total</td>
+                        @foreach (var calador in estadistica.Caladores)
+                        {
+                            <td>@calador.Cantidad</td>
+                        }
+                        <td>@estadistica.CantidadConforme</td>
+                        <td>@estadistica.CantidadEnAnalisis</td>
+                        <td>@estadistica.CantidadRechazados</td>
+                        <td>@estadistica.CantidadReclado</td>
+                        <td>@estadistica.Material</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-lg-12 prueba" style="margin-top: 15px;">
+        <div>
+            @Html.Label(Textos.CamionesCaladosPorHora + ": " + calados, new { @class = "letraColorMolinos negrita", @style = "font-size: 22px; margin-top:-15px;" })
+        </div>
+        <div>
+            @Html.Label(Textos.UltimoCamionCalado, new { @class = "letraColorMolinos negrita", @style = "font-size: 15px; margin-top: 22px;" })
+        </div>
+        <div class="row" style="margin-left: 0px;">
+            <div class="col-lg-3">
+                @Html.Label(Textos.Patente + ":", new { @class = "letraColorMolinos negrita" })
+                @Html.Label(Textos.NumeroDocumentoIngreso + ":", new { @class = "letraColorMolinos negrita" })
+                @Html.Label(Textos.NroTarjetaAcceso + ":", new { @class = "letraColorMolinos negrita" })
+                @Html.Label(Textos.TipoDocumentoIngreso + ":", new { @class = "letraColorMolinos negrita" })
+            </div>
+            <div class="col-lg-3">
+                @Html.Label(ultimoCamion.Patente ?? "")
+                @Html.Label(ultimoCamion.NumeroDocumentoIngreso ?? "")
+                @Html.Label(ultimoCamion.TarjetaDeAcceso ?? "")
+                @Html.Label(ultimoCamion.TipoDocumentoIngreso.ToString())
+            </div>
+            <div class="col-lg-3">
+                @Html.Label(Textos.Calador + ":", new { @class = "letraColorMolinos negrita" })
+                @Html.Label(Textos.Workflow_FechaCalado + ":", new { @class = "letraColorMolinos negrita" })
+                @Html.Label(Textos.Material + ":", new { @class = "letraColorMolinos negrita" })
+            </div>
+            <div class="col-lg-3">
+                @Html.Label(ultimoCamion.Calado.Usuario ?? "")
+                @Html.Label(ultimoCamion.Calado.FechaCreacion.HasValue ? ultimoCamion.Calado.FechaCreacion.Value.ToString("dd/MM/yyyy HH:mm") : "")
+                @Html.Label(ultimoCamion.Material.Descripcion ?? "")
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-error" style="margin-top: 15px;">
+        <strong>@Textos.NoHayResultados</strong>
+    </div>
+}

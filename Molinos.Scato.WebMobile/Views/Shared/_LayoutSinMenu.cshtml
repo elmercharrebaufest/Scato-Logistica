@@ -1,0 +1,50 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- link rel manifest -->
+    <link rel="manifest" href="./manifest.json" crossorigin="use-credentials">
+    <!--  iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Scato App Mobile">
+    <link rel="apple-touch-icon" href="./images/icons/icon-152x152.png">
+    <!-- description  -->
+    <meta name="description" content="Scato App Mobile">
+    <meta name="theme-color" content="#059a0f" />
+    <meta name="viewport" content="width=device-width,	initial-scale=1,	shrink-to-fit=no ,
+          maximum-scale=1, user-scalable=no">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="@Html.Action("Favicon","Index")" type="image/x-icon" />
+    <link rel="apple-touch-icon" src="@Html.Action("Favicon","Index")">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("content", required: false)
+
+    <script>
+        var loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
+    </script>
+    @Scripts.Render("~/bundles/jquery-common")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EDDB8K231H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-EDDB8K231H');
+    </script>
+</head>
+<body id="body">
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+</body>
+</html>

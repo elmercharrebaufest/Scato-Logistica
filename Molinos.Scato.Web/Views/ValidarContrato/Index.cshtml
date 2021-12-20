@@ -1,0 +1,48 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.ValidarContratoModel
+
+@{
+    ViewBag.Title = Textos.ActValidarContrato;
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/validarcontrato.index.js")" type="text/javascript"></script>
+}
+
+    <div class="container-fluid">
+        <div class="titSecciones">@Textos.ActValidarContrato</div>
+    </div>
+<br />
+
+@using (Html.BeginForm("Index", "ValidarContrato", FormMethod.Post, new { @class = "form-horizontal container-fluid causaBlock", data_mensaje_espera = Textos.ActValidarContrato, onsubmit = "return false;" }))
+{
+    @Html.HiddenFor(m => m.InstanciaWorkflow)
+    @Html.HiddenFor(m => m.WorkflowDefinicionId)
+
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary(true)
+        </div>
+    }
+    <div class="control-group">
+        @Html.Label(Textos.Material_Contrato + ":", new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.Contrato, new { @class = "control input-medium", maxlength = 15 })
+            @Html.ValidationMessageFor(model => model.Contrato)
+        </div>
+    </div>
+    <div class="modal-footer">
+        @Html.ActionLink(Textos.Aceptar, "Aceptar", "ValidarContrato", null, new { @class = "contrato-boton btn btn-primary causaBlock", id = "btnAceptar" })
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-primary" })
+    </div>
+
+    <span>&nbsp;</span>
+}
+
+<div id="mensajeContrato">
+</div>

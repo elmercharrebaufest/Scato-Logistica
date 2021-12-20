@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Molinos.Scato.Web.ServicioHub.ServicioNotificarUsuario" CodeBehind="ServicioNotificarUsuario.svc.cs" Factory="Ninject.Extensions.Wcf.NinjectServiceHostFactory"%>

@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ActividadConCargaAutomaticaDto
+@{
+    var workflows = ((IEnumerable<SelectListItem>)ViewBag.Workflows) ?? new List<SelectListItem>();
+    var actividades = ((IEnumerable<SelectListItem>)ViewBag.Actividades) ?? new List<SelectListItem>();
+}
+<style>
+    .validation-summary-errors {
+            color: #ff0000;
+    }
+</style>
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+@Html.Hidden("ObtenerActividadesUrl", Url.Action("ObtenerActividades"))
+@Html.Hidden("BuscandoActividadesMensaje", Textos.ControlDeTiempo_BuscandoActividades)
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.WorkflowId, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.WorkflowId, workflows, string.Empty, new {@class = "control input-xlarge"})
+        @Html.ValidationMessageFor(model => model.WorkflowId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Actividad, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.Actividad, actividades, string.Empty, new {@class = "control input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Actividad)
+    </div>
+</div>

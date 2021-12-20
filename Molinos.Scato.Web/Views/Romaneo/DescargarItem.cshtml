@@ -1,0 +1,155 @@
+﻿@using System.Web.Script.Serialization
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RomaneoItemDto
+@{
+    ViewBag.Title = Textos.RomaneoDescargar_Titulo;
+    Layout = null;
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+    var taraRomaneos = (IEnumerable<SelectListItem>)ViewBag.TaraRomaneos;
+    var pesosTaraRomaneos = (List<string>)ViewBag.TaraRomaneosPesos;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Script("~/Scripts/descargarItemEnRomaneo.js")" type="text/javascript"></script>
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+    .validation-summary-errors {
+        color: #ff0000;
+        max-width: 900px;
+    }
+</style>
+<script>
+    var pesosTaraRomaneos = @Html.Raw(new JavaScriptSerializer().Serialize(pesosTaraRomaneos));
+    $("#taraRomaneoDropDown").change(DefinirPesoTara);
+    DefinirPesoTara();
+
+    function DefinirPesoTara() {
+        var id = $("#taraRomaneoDropDown").val();
+        $.each(pesosTaraRomaneos, function (indice, valor) {
+            var datos = valor.split(',');
+            if (id == datos[0]) {
+                if (datos[1] == "True") {
+                    $('#PesoTara').removeAttr('readonly');
+                    $('#PesoTara').val(0);
+                    ActualizarPesoNeto();
+                } else {
+                    $('#PesoTara').attr('readonly', 'readonly');
+                    $('#PesoTara').val(parseInt(datos[2]));
+                    ActualizarPesoNeto();
+                    ValidarObjeto($("#descargar-form"), $("#PesoTara"));
+                }
+                return;
+            }
+        });
+    }
+</script>
+@using (Ajax.BeginForm("DescargarItem", null, new AjaxOptions(), new { id = "descargar-form", @class = "form-horizontal causaBlock", data_dialogo_titulo = Textos.RomaneoDescargar_Titulo, data_mensaje_espera = Textos.Romaneo_Descarga }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.ItemNro)
+    @Html.HiddenFor(m => m.RomaneoId)
+    @Html.Hidden("proximoItem", false)
+    @Html.Hidden("centroId", (int)ViewBag.CentroId)
+    <div class="row">
+        <table class="tablaDatos span12">
+            <tr>
+                <th>@Html.Label(Textos.Romaneo_RomaneoNro)</th>
+                <th>@Html.Label(Textos.Romaneo_ItemNro)</th>
+                <th>@Html.Label(Textos.Romaneo_RemitoNro)</th>
+                <th>@Html.Label(Textos.RomaneoDescargar_FechaRemito)</th>
+                
+            </tr>
+            <tr>
+                <td>@Html.DisplayFor(m => m.RomaneoId)</td>
+                <td>@Html.DisplayFor(m => m.ItemNro)</td>
+                <td>@Html.TextBoxFor(m => m.RemitoNro, new { @class = "input-medium", id="remitoNro"})@Html.ValidationMessageFor(m => m.RemitoNro)</td>
+                <td class="FechaFabricacion">@Html.EditorFor(m => m.FechaRemito)@Html.ValidationMessageFor(m => m.FechaRemito)</td>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+         <div class="span12 bordeGris"  style="border-bottom-style: solid">
+             <br/>
+             <div class="span12 row-carta-porte">
+                 <div class="span6" style="margin-left: 0">
+                     <div class="control-group">
+                         @Html.Label(Textos.Material, new { @class = "control-label" })
+                         <div class="controls">
+                             @Html.DropDownListFor(m => m.MaterialId, (IEnumerable<SelectListItem>)ViewBag.Materiales, new { @class = "control" })
+                             @Html.ValidationMessageFor(m => m.MaterialId)
+                         </div>
+                     </div>
+                     <div class="control-group">
+                         @Html.Label(Textos.RomaneoDescargar_LoteNro, new { @class = "control-label" })
+                         <div class="controls">
+                             @Html.TextBoxFor(m => m.LoteProveedor, new { @class = "control input-large" })
+                             @Html.ValidationMessageFor(m => m.LoteProveedor)
+                         </div>
+                     </div>
+                 </div>
+                 <div class="span6" style="margin-left: 0">
+                     <div class="control-group">
+                         @Html.Label(Textos.Almacen, new { @class = "control-label" })
+                         <div class="controls">
+                             @Html.DropDownListFor(m => m.AlmacenId, (IEnumerable<SelectListItem>)ViewBag.Almacenes, new { @class = "control" })
+                             @Html.ValidationMessageFor(m => m.AlmacenId)
+                         </div>
+                     </div>
+                     <div class="control-group FechaFabricacion">
+                         @Html.Label(Textos.RomaneoDescargar_FechaFabricacion, new { @class = "control-label" })
+                         <div class="controls">
+                             @Html.EditorFor(m => m.FechaFabricacion)
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="span12 bordeGris"  style="border-bottom-style: solid">@Textos.Descargar_PesoEnPlanta
+            <div class="span12 row-carta-porte">
+                    <div class="span4" id="balanza" style="float:left;">
+                        <label class="control-label ysmall">@Textos.Balanza_Titulo:</label>
+                        @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-small ", data_balanza_url = Url.Action("ObtenerBalanza"), data_balanza_modalidad = "" })
+                        <button id="tomarPeso" class="btn btn-primary" type="button"  data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
+                        @Html.ValidationMessageFor(model => model.BalanzaId)
+                    </div>
+                    <div class="span3">
+                        <label class="control-label ysmall">@Textos.Tara:</label>
+                        <div class="controls-xsmall" style="display: inline-block;">
+                            @Html.DropDownListFor(model => model.TaraRomaneoId, taraRomaneos, new { @class = "control input-small", @id = "taraRomaneoDropDown" })
+                            @Html.ValidationMessageFor(m => m.TaraRomaneoId)
+                        </div>
+                </div>
+            </div>
+            <div class="span12 row-carta-porte">
+                <div class="span4">
+                    <label class="control-label ysmall">@Textos.PesoBruto:</label>
+                    <div class="controls-xsmall" style="display:inline-block;">
+                        @Html.TextBoxFor(m => m.PesoBruto, new { @class = "control input-small campoNumerico", @readonly = "readonly", data_peso_url = Url.Action("TomarPeso", "PesadaBruto") })
+                        @Html.ValidationMessageFor(m => m.PesoBruto)
+                    </div>
+                </div>
+                <div class="span4">
+                    <label class="control-label ysmall">@Textos.PesoTara:</label>
+                    <div class="controls-xsmall" style="display:inline-block;">
+                        @Html.TextBoxFor(m => m.PesoTara, new { @class = "control input-small campoNumerico" })
+                        @Html.ValidationMessageFor(m => m.PesoTara)
+                    </div>
+                </div>
+                <div class="span3">
+                    <label class="control-label ysmall">@Textos.PesoNeto:</label>
+                    <div class="controls-xsmall" style="display:inline-block;">
+                        @Html.TextBoxFor(m => m.PesoNeto, new { @class = "control input-small campoNumerico", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.PesoNeto)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

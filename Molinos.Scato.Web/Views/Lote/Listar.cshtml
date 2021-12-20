@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<LoteListaDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaSeleccionar(this.Html, "Lote"),
+            grid.Columna("NumeroDeLote", Textos.Lote_NroLote),
+            grid.Columna("Fecha",  Textos.Lote_FechaDescarga),
+            grid.Columna("CamaraDesc", Textos.Camara)))

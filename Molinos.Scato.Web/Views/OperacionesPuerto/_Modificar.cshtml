@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CargaFiltroDto
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<BalanzadaDto>)ViewBag.Items;
+}
+<!-- SI se agrega o saca una columna de esta grilla actualizar la variable numeroColumnaEnvadoASAP -->
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaModificarCarga(Html, "Modificar","Balanzada", "ajax-editar-link", true),
+    grilla.Columna("Id", Textos.OperacionesPuerto_NumeroPesada),
+    grilla.Columna("NumeroBalanza", Textos.OperacionesPuerto_NumeroBalanza),
+    grilla.Columna("PesoBruto", Textos.OperacionesPuerto_PesoBruto),
+    grilla.Columna("PesoTara", Textos.OperacionesPuerto_PesoTara),
+    grilla.Columna("PesoNeto", Textos.OperacionesPuerto_PesoNeto),
+    grilla.Columna("EnviadoASap", Textos.OperacionesPuerto_EnviadoASap, x => x.EnviadoASap == true ? "Si" : "No"),
+    grilla.Columna("Fecha", Textos.AFIP_Balanzada_Fecha)
+    ))
+
+<div>
+    <a href="javascript:void(0);" onclick="history.go(-1);" class="ajax-editar-link btn pull-right" style="margin-left:10px;" id="backLink">@Textos.Volver</a>
+</div>
+
+<div id="errores" class="field-validation-error help-block">
+    <ul>
+
+    </ul>
+</div>
+

@@ -1,0 +1,92 @@
+﻿@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CalleDto
+@{
+    var caracteristicasCalidad = ((IEnumerable<SelectListItem>)ViewBag.CaracteristicasCalidad) ?? new List<SelectListItem>();
+}
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"
+     data-url-buscar-caracteristicasDeCalidad="@Url.Action("BuscarCaracteristicasDeCalidadPorMaterial","Consultas")"
+     data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") "></div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Codigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Codigo, new { @class = "input-medium" })
+        @Html.ValidationMessageFor(model => model.Codigo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Nombre, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.Nombre)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.TipoCalle, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EnumDropDownListFor(model => model.TipoCalle, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.TipoCalle)
+    </div>
+</div>
+
+<div class="control-group calidad-group" style="display:none">
+    @Html.LabelFor(model => model.TipoCalidad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EnumDropDownListFor(model => model.TipoCalidad, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.TipoCalidad)
+    </div>
+</div>
+<div class="control-group material-group" style="display:none">
+    @Html.LabelFor(m => m.MaterialDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.MaterialDesc)
+        @Html.HiddenFor(model => model.MaterialId)
+        @Html.ValidationMessageFor(m => m.MaterialId)
+    </div>
+</div>
+
+<div class="control-group caracteristicas-calidad-group" style="display:none">
+    @Html.LabelFor(m => m.CaracteristicaDeCalidadDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CaracteristicaDeCalidadDesc, caracteristicasCalidad, string.Empty, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.CaracteristicaDeCalidadDesc)
+        @Html.HiddenFor(model => model.CaracteristicaDeCalidadId)
+        @Html.ValidationMessageFor(m => m.CaracteristicaDeCalidadId)
+    </div>
+</div>
+
+
+<div class="control-group caracteristicas-calidad-group" style="display:none">
+    @Html.LabelFor(m => m.RangoCaracteristicaCalidadMinimo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.RangoCaracteristicaCalidadMinimo, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.RangoCaracteristicaCalidadMinimo)
+    </div>
+</div>
+<div class="control-group caracteristicas-calidad-group" style="display:none">
+    @Html.LabelFor(m => m.RangoCaracteristicaCalidadMaximo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.RangoCaracteristicaCalidadMaximo,  new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.RangoCaracteristicaCalidadMaximo)
+    </div>
+</div>
+
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CantidadDeCamiones, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CantidadDeCamiones, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.CantidadDeCamiones)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Deshabilitada, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.Deshabilitada, new { @class = "input-large", data_toggle = "tooltip" })
+        @Html.ValidationMessageFor(model => model.Deshabilitada)
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<MuestraEnvioACamaraAuditoriaDto>)ViewBag.Items;
+}
+
+<script>
+    $(document).ready(
+        function () {
+            $("tr td.valorCalado").each(
+                function (index, vCalado) {
+                    var valorC = $(vCalado).html();
+                    var valorCamara = $(vCalado).parent().find(".valorCamara").html();
+                    if (valorC != valorCamara && valorCamara != '') {
+                        $(vCalado).parent().each(
+                            function (index, element) {
+                                $(element).find("td").addClass("estado-rechazado");
+                            });
+                    }
+                });
+        });
+</script>
+
+<div style="font-size: 11px">
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.Columna("Material", Textos.Material),
+            //grid.Columna("Vendedor",  Textos.Lote_Vendedor),
+            //grid.Columna("Corredor", Textos.Lote_Corredor),
+            grid.Columna("FechaDescarga",  Textos.Lote_FechaDescarga),
+            grid.Columna("PesoNeto",  Textos.PesoNeto),
+            //grid.Columna("Localidad",  Textos.Lote_Localidad),
+            grid.Columna("Patente",  Textos.Lote_Patente),
+            grid.Columna("NroMuestra",  Textos.Lote_NumeroMuestra),
+            //grid.Columna("NroMuestraTerceros",  Textos.Lote_NroMuestraTerceros),
+            grid.Columna("CamaraDesc",  Textos.Camara),
+            grid.Columna("Perito", Textos.Perito),
+            grid.Columna("ValorCalado",  Textos.Calado_Valor, null, "valorCalado"),
+            grid.Columna("ValorCamara", Textos.Camara, null, "valorCamara")
+
+            ))
+    </div>

@@ -1,0 +1,26 @@
+﻿@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ReportePesadaSeisHorasDto>)ViewBag.Items;
+}
+
+
+<script type="text/javascript" src="~/scripts/reportePesadaPorTurnos.crear.js"></script>
+<div id="over">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+                grilla.Columna("Vapor", Textos.AFIP_ListarCarga_Vapor, null),
+                grilla.Columna("Material", Textos.AFIP_ListarCarga_Commodity),
+                grilla.Columna("Exportador", Textos.AFIP_ListarCarga_Exportador,null),
+                grilla.Columna("Fecha", Textos.AFIP_ListarCarga_Fecha, x => FormattingHtmlHelper.Formatted(x.Fecha)),
+                grilla.Columna("Total", Textos.AFIP_ReportePorTurnos_Total, null),
+                grilla.Columna("RangoCeroASeis", Textos.AFIP_ReportePorTurnos_CeroASeis, null),
+                grilla.Columna("RangoSeisADoce", Textos.AFIP_ReportePorTurnos_SeisADoce,null),
+                grilla.Columna("RangoDoceADieciseis", Textos.AFIP_ReportePorTurnos_DoceADiesiocho, null),
+                grilla.Columna("RangoDieciseisAveinticuatro", Textos.AFIP_ReportePorTurnos_DiesiochoAVeinticuatro, null)
+    ))
+</div>

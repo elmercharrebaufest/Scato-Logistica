@@ -1,0 +1,67 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CargaDeCupoDto
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $('.btn').click(function () {
+            BlockUI();
+        });
+
+        if ($("#foto1").length > 0) {
+            $('#fotoDiv').css('display', 'inline');
+            $('.ocultar').hide();
+        }
+    });
+
+</script>
+<style>
+</style>
+@Html.Hidden("FotoMesaDigitalizacion1", (byte[])ViewBag.FotoMesaDigitalizacion1)
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Pendiente</div>
+</div>
+
+<div id="Automatica" class="container-fluid">
+    <div>
+        @if (!Model.CPE)
+        {
+            <text>
+                <h4>@Textos.PendienteMensaje <strong>@(!string.IsNullOrEmpty(Model.NumeroCartaPorte) ? Model.NumeroCartaPorte : "Numero de carta de porte no ingresado en garita") </strong></h4>
+            </text>
+        }
+        else
+        {
+            <text>
+                <h4>Elija el workflow para la CGT: <strong>@(!string.IsNullOrEmpty(Model.CTG) ? Model.CTG : "Numero de CTG no ingresado en garita") </strong></h4>
+            </text>
+        }
+    </div>
+    <div class="row-fluid">
+        <div class="span4">
+            <h5>Patente: @Html.DisplayFor(x => x.Patente)</h5>
+            <h5>Cupo: @Html.DisplayFor(x => x.Cupo)</h5>
+
+@Html.ActionLink(@Textos.ActIngresarCartaPorte, "Index", "CargarCartaPorte", new { workflow = ViewBag.IngresoPorCompra, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
+@Html.ActionLink(@Textos.ActIngresarCartaPorteRedespacho, "Index", "IngresarCartaPorteRedespacho", new { workflow = ViewBag.IngresoPorRedespacho, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block" })
+        </div>
+        <div class="span8 control-group control-group-no-bottom borde ocultar fondo">
+            @if (!Model.CPE)
+            {
+                <text> 
+                    No se encontró la foto para la CCPP : <strong>@(!string.IsNullOrEmpty(Model.NumeroCartaPorte) ? Model.NumeroCartaPorte : "Numero de carta de porte no ingresado en garita") </strong>
+                </text>
+            }
+        </div>
+        <div class="span8 control-group control-group-no-bottom sinBorde" id="fotoDiv">
+            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
+
+            }
+            <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,2400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FA51B713-73F4-40C3-ACA3-8F2210400E08}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Molinos.Scato.Web</RootNamespace>
+    <AssemblyName>Molinos.Scato.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BrockAllen.CookieTempData, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BrockAllen.CookieTempData.dll.1.2.1\lib\net45\BrockAllen.CookieTempData.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassia">
+      <HintPath>..\packages\Cassia.2.0.0.60\lib\2.0\Cassia.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc">
+      <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.6\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.WinForms, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WinForms.1.5.0.6\lib\net45\HtmlRenderer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Activities.Extensions, Version=2.0.6.9, Culture=neutral, PublicKeyToken=23b0c89d0d5ad43f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Activities.UnitTesting, Version=2.0.6.9, Culture=neutral, PublicKeyToken=30c1df11edd2bb96, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.UnitTesting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.StoreManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SqlServer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SqlServer.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.1\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librerias\MigraDoc.DocumentObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librerias\MigraDoc.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering, Version=1.32.3885.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Librerias\MigraDoc.RtfRendering.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler, Version=3.1.1.140, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MiniProfiler.3.1.1.140\lib\net40\MiniProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler.EntityFramework">
+      <HintPath>..\packages\MiniProfiler.EF5.3.0.11\lib\net40\MiniProfiler.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler.Mvc">
+      <HintPath>..\packages\MiniProfiler.MVC4.3.0.11\lib\net40\MiniProfiler.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcReportViewer, Version=0.8.5816.27247, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcReportViewer.0.8.3\lib\net45\MvcReportViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging.Log4Net">
+      <HintPath>..\packages\Ninject.Extensions.Logging.Log4net.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Wcf">
+      <HintPath>..\packages\Ninject.Extensions.Wcf.3.0.0.5\lib\net45-full\Ninject.Extensions.Wcf.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common">
+      <HintPath>..\packages\Ninject.Web.Common.3.0.0.7\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc">
+      <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.identitymodel.services" />
+    <Reference Include="System.IdentityModel.Tokens.ValidatingIssuerNameRegistry">
+      <HintPath>..\packages\System.IdentityModel.Tokens.ValidatingIssuerNameRegistry.4.5.1\lib\net45\System.IdentityModel.Tokens.ValidatingIssuerNameRegistry.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.40804.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AjaxEditSuccessResult.cs" />
+    <Compile Include="App_GlobalResources\Errores.fr.designer.cs">
+      <DependentUpon>Errores.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Errores.en.designer.cs">
+      <DependentUpon>Errores.en.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Errores.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errores.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\SignalRStartup.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Log4NetConfig.cs" />
+    <Compile Include="App_Start\MiniProfiler.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Atributos\AjaxOnlyAttribute.cs" />
+    <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
+    <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
+    <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
+    <Compile Include="Controllers\CaladoRechazarController.cs" />
+    <Compile Include="Controllers\NotificacionAplicacionController.cs" />
+    <Compile Include="Controllers\DevolucionDeReciboMunicipalController.cs" />
+    <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
+    <Compile Include="Controllers\EtiquetaPuertoController.cs" />
+    <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
+    <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
+    <Compile Include="Controllers\CamionDemoradoController.cs" />
+    <Compile Include="Controllers\VideoCamaraBalanzaController.cs" />
+    <Compile Include="Controllers\VideoCamaraController.cs" />
+    <Compile Include="Controllers\LoteAuditoriaController.cs" />
+    <Compile Include="Controllers\PagoDeReciboMunicipalController.cs" />
+    <Compile Include="Controllers\PendienteController.cs" />
+    <Compile Include="Controllers\CaladoEnPlantaController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\DocumentoExternoController.cs" />
+    <Compile Include="Controllers\GraficoDePlantaImgController.cs" />
+    <Compile Include="Controllers\TransmisionASapManualController.cs" />
+    <Compile Include="Controllers\ReglaDeAnalisisObligatorioController.cs" />
+    <Compile Include="Controllers\AnalisisObligatorioController.cs" />
+    <Compile Include="Controllers\HabilitacionDeVehiculosController.cs" />
+    <Compile Include="Controllers\BalanzadaController.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoMercaderiaController.cs" />
+    <Compile Include="Controllers\MaterialPuertoController.cs" />
+    <Compile Include="Controllers\ExportadorController.cs" />
+    <Compile Include="Controllers\DestinoController.cs" />
+    <Compile Include="Controllers\BodegaController.cs" />
+    <Compile Include="Controllers\EmbarqueLiquidosController.cs" />
+    <Compile Include="Controllers\PanelDeControlUnrenportController.cs" />
+    <Compile Include="Controllers\VaporController.cs" />
+    <Compile Include="Controllers\OperacionesPuertoController.cs" />
+    <Compile Include="Controllers\ActividadPorDispositivoController.cs" />
+    <Compile Include="Controllers\AjustarCalidadController.cs" />
+    <Compile Include="Controllers\AjusteDeStockController.cs" />
+    <Compile Include="Controllers\AjusteStockBinesController.cs" />
+    <Compile Include="Controllers\AlmacenController.cs" />
+    <Compile Include="Controllers\AsignacionDeRecorridoController.cs" />
+    <Compile Include="Controllers\AsignacionTarjetaDeAccesoController.cs" />
+    <Compile Include="Controllers\AsignarTicketMunicipalController.cs" />
+    <Compile Include="Controllers\AutorizarRecepcionUvasController.cs" />
+    <Compile Include="Controllers\AutorizarTransportistaInhabilitadoController.cs" />
+    <Compile Include="Controllers\BalanzaACeroController.cs" />
+    <Compile Include="Controllers\BalanzaPuertoController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BocaDestinoController.cs" />
+    <Compile Include="Controllers\BorradoDeDocumentoController.cs" />
+    <Compile Include="Controllers\CaladoController.cs" />
+    <Compile Include="Controllers\CalidadMaterialController.cs" />
+    <Compile Include="Controllers\CargarCartaPorteController.cs" />
+    <Compile Include="Controllers\AnalisisDeCalidadController.cs" />
+    <Compile Include="Controllers\CaracteristicaDeCalidadController.cs" />
+    <Compile Include="Controllers\CargarOrdenDeDescargaController.cs" />
+    <Compile Include="Controllers\CargarOrdenDeDescargaFasonController.cs" />
+    <Compile Include="Controllers\CasilleroController.cs" />
+    <Compile Include="Controllers\CategoriaController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\CentroController.cs" />
+    <Compile Include="Controllers\ChoferController.cs" />
+    <Compile Include="Controllers\CiuAnuladoController.cs" />
+    <Compile Include="Controllers\ConfirmacionDeCargaDescargaController.cs" />
+    <Compile Include="Controllers\ConsultaCasilleroController.cs" />
+    <Compile Include="Controllers\ConsultasController.cs" />
+    <Compile Include="Controllers\ControlDePesoEsperadoController.cs" />
+    <Compile Include="Controllers\ControlPesoMaximoController.cs" />
+    <Compile Include="Controllers\BalanzaController.cs" />
+    <Compile Include="Controllers\ControlPesoOrigenController.cs" />
+    <Compile Include="Controllers\ConversionCentroController.cs" />
+    <Compile Include="Controllers\CoordinacionController.cs" />
+    <Compile Include="Controllers\AutorizarDescuentosEntregadorController.cs" />
+    <Compile Include="Controllers\CamaraController.cs" />
+    <Compile Include="Controllers\BajaCTGController.cs" />
+    <Compile Include="Controllers\AltaCTGController.cs" />
+    <Compile Include="Controllers\ConversionProcedenciaController.cs" />
+    <Compile Include="Controllers\ConversionCaracteristicaController.cs" />
+    <Compile Include="Controllers\ConversionGrupoController.cs" />
+    <Compile Include="Controllers\ControlPesoNetoController.cs" />
+    <Compile Include="Controllers\CargarCartaPortePrestamoController.cs" />
+    <Compile Include="Controllers\BajaCTGDefinitivoController.cs" />
+    <Compile Include="Controllers\CargarOrdenEntrePlantasController.cs" />
+    <Compile Include="Controllers\ControlPesoNetoDescargaUnidadController.cs" />
+    <Compile Include="Controllers\CargarOrdenDeCargaContenedorController.cs" />
+    <Compile Include="Controllers\CalleController.cs" />
+    <Compile Include="Controllers\ControlDeBalanzaController.cs" />
+    <Compile Include="Controllers\CargarHojaDeRutaController.cs" />
+    <Compile Include="Controllers\CargarHojaDeRutaYerbateraController.cs" />
+    <Compile Include="Controllers\ActividadConCargaAutomaticaController.cs" />
+    <Compile Include="Controllers\AsignacionDeEstablecimientoController.cs" />
+    <Compile Include="Controllers\CamionesRechazadosController.cs" />
+    <Compile Include="Controllers\CaracteristicaDeCalidadPorWorkflowController.cs" />
+    <Compile Include="Controllers\CargaDeCupoController.cs" />
+    <Compile Include="Controllers\AvisoDeQuiebreController.cs" />
+    <Compile Include="Controllers\ControlDeCaladoController.cs" />
+    <Compile Include="Controllers\HistoricoDeFotosController.cs" />
+    <Compile Include="Controllers\NirsController.cs" />
+    <Compile Include="Controllers\PasoPorBalanzaController.cs" />
+    <Compile Include="Controllers\FotoController.cs" />
+    <Compile Include="Controllers\CosechaController.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoImportacionesController.cs" />
+    <Compile Include="Controllers\ListadoCupoController.cs" />
+    <Compile Include="Controllers\MatriculaController.cs" />
+    <Compile Include="Controllers\AsignacionDeContingenciaController.cs" />
+    <Compile Include="Controllers\PesadaCargaExportacionController.cs" />
+    <Compile Include="Controllers\ReportePesadaSeisHorasController.cs" />
+    <Compile Include="Controllers\ServicioSapZE7550Controller.cs" />
+    <Compile Include="Controllers\StockDeEstablecimientoController.cs" />
+    <Compile Include="Controllers\PesoMaximoPorTipoVehiculoController.cs" />
+    <Compile Include="Controllers\KmPorProveedorController.cs" />
+    <Compile Include="Controllers\PanelDeControlBajaCtgDefinitivaController.cs" />
+    <Compile Include="Controllers\ExcepcionAlDescuentoController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\GenerarArchivoDeMovimientosController.cs" />
+    <Compile Include="Controllers\GraficoDePlantaController.cs" />
+    <Compile Include="Controllers\IngresoDeDatosDeExportacionController.cs" />
+    <Compile Include="Controllers\PanelServiciosWebController.cs" />
+    <Compile Include="Controllers\FirmaController.cs" />
+    <Compile Include="Controllers\SugerenciaController.cs" />
+    <Compile Include="Controllers\ServicioSapIngresosBodegaController.cs" />
+    <Compile Include="Controllers\MovimientoDeBinesController.cs" />
+    <Compile Include="Controllers\PanelServerAppPoolController.cs" />
+    <Compile Include="Controllers\PanelWorkflowsController.cs" />
+    <Compile Include="Controllers\RangosDeRedondeoController.cs" />
+    <Compile Include="Controllers\VerificarImpresionController.cs" />
+    <Compile Include="Controllers\LoteBiotecnologiaController.cs" />
+    <Compile Include="Controllers\HealthTestController.cs" />
+    <Compile Include="Controllers\ProveedorExcluidoIntactaController.cs" />
+    <Compile Include="Controllers\CaladoAntiguoController.cs" />
+    <Compile Include="Controllers\LogHumedimetroController.cs" />
+    <Compile Include="Controllers\TecnologiaController.cs" />
+    <Compile Include="Controllers\EmpresaController.cs" />
+    <Compile Include="Controllers\PesadaBrutoVagonController.cs" />
+    <Compile Include="Controllers\PesadaTaraVagonController.cs" />
+    <Compile Include="Controllers\EstablecimientoController.cs" />
+    <Compile Include="Controllers\EtiquetaAuditoriaController.cs" />
+    <Compile Include="Controllers\ExportacionDeArchivosINVController.cs" />
+    <Compile Include="Controllers\IngresoBinSalidaController.cs" />
+    <Compile Include="Controllers\RemitoBodegaUvaPropiaController.cs" />
+    <Compile Include="Controllers\DistribucionDeAlmacenesController.cs" />
+    <Compile Include="Controllers\RemitoBodegaUvaTercerosController.cs" />
+    <Compile Include="Controllers\RemitoBodegaVinoController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\VariedadPorVinedoController.cs" />
+    <Compile Include="Controllers\VerificarLimiteDeCreditoVentaEnSAPController.cs" />
+    <Compile Include="Controllers\VinedoPropioController.cs" />
+    <Compile Include="Controllers\ImpresoraController.cs" />
+    <Compile Include="Controllers\IngresoCIUController.cs" />
+    <Compile Include="Controllers\ServicioSapMov291Controller.cs" />
+    <Compile Include="Controllers\EnTransitoController.cs" />
+    <Compile Include="Controllers\EnPlayaExternaController.cs" />
+    <Compile Include="Controllers\PesadaBrutoController.cs" />
+    <Compile Include="Controllers\PesadaTaraController.cs" />
+    <Compile Include="Controllers\EnEsperaIndianapolisController.cs" />
+    <Compile Include="Controllers\EnEsperaAduanaController.cs" />
+    <Compile Include="Controllers\ExportacionDeArchivosController.cs" />
+    <Compile Include="Controllers\ReporteControlDeBalanzaController.cs" />
+    <Compile Include="Controllers\ListaDeTareasAutomatizadaController.cs" />
+    <Compile Include="Controllers\ImprimirTarjetaDeAccesoController.cs" />
+    <Compile Include="Controllers\PuestoComandoController.cs" />
+    <Compile Include="Controllers\ControlDeTiempoController.cs" />
+    <Compile Include="Controllers\MotivoQuiebreBarreraController.cs" />
+    <Compile Include="Controllers\ReasignacionDeTarjetaController.cs" />
+    <Compile Include="Controllers\PuestoDeTrabajoController.cs" />
+    <Compile Include="Controllers\CargarCartaPorteFasonController.cs" />
+    <Compile Include="Controllers\AutorizarTiempoEnTransitoController.cs" />
+    <Compile Include="Controllers\TarjetaRangoController.cs" />
+    <Compile Include="Controllers\PuestosDeCargaDescargaController.cs" />
+    <Compile Include="Controllers\IngresoRemitoTercerosController.cs" />
+    <Compile Include="Controllers\ReciboMunicipalController.cs" />
+    <Compile Include="Controllers\ResumenDeRecepcionController.cs" />
+    <Compile Include="Controllers\TaraContenedorController.cs" />
+    <Compile Include="Controllers\DescargaUnidadController.cs" />
+    <Compile Include="Controllers\CargarCartaPorteRedespachoDesvioController.cs" />
+    <Compile Include="Controllers\IngresoNumeroCotController.cs" />
+    <Compile Include="Controllers\DocumentoIngresoController.cs" />
+    <Compile Include="Controllers\IngresoRemitoController.cs" />
+    <Compile Include="Controllers\LiberacionDeCasillerosController.cs" />
+    <Compile Include="Controllers\ListadoDeCalidadesController.cs" />
+    <Compile Include="Controllers\ServicioSap_Z4030Controller.cs" />
+    <Compile Include="Controllers\ServicioSapPesaNetoController.cs" />
+    <Compile Include="Controllers\LibroMovimientosExistenciaGranosController.cs" />
+    <Compile Include="Controllers\DocumentoDeImpresionPorCentroController.cs" />
+    <Compile Include="Controllers\DocumentoDeImpresionController.cs" />
+    <Compile Include="Controllers\FormatoDeImpresionController.cs" />
+    <Compile Include="Controllers\ServicioSapIngresosEgresosFazonesController.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoPrestamoController.cs" />
+    <Compile Include="Controllers\IngresarOrdenDeCargaInternaFasonController.cs" />
+    <Compile Include="Controllers\ControlDeIngresoController.cs" />
+    <Compile Include="Controllers\SincronizarMaestrosController.cs" />
+    <Compile Include="Controllers\TarjetaBloqueadaController.cs" />
+    <Compile Include="Controllers\TarjetaSupervisorController.cs" />
+    <Compile Include="Controllers\VerificacionCotController.cs" />
+    <Compile Include="Controllers\ValidarContratoController.cs" />
+    <Compile Include="Controllers\GenerarArchivosOnccaController.cs" />
+    <Compile Include="Controllers\ServicioSapEgresosNoProductivosController.cs" />
+    <Compile Include="Controllers\IngresoDeLoteController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\ReimpresionDeDocumentosController.cs" />
+    <Compile Include="Controllers\VerificacionSalidaFleteController.cs" />
+    <Compile Include="Controllers\VinedoTercerosController.cs" />
+    <Compile Include="Controllers\VisteoController.cs" />
+    <Compile Include="Controllers\IngresarOrdenCargaFasController.cs" />
+    <Compile Include="Controllers\RomaneoController.cs" />
+    <Compile Include="Controllers\LoteController.cs" />
+    <Compile Include="Controllers\ServicioSapFill_Z1000Controller.cs" />
+    <Compile Include="Controllers\MaterialPorWorkflowController.cs" />
+    <Compile Include="Controllers\MicromuestraController.cs" />
+    <Compile Include="Controllers\ModificarDocumentoDeIngresoController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
+    <Compile Include="Controllers\ServicioSapMov975Controller.cs" />
+    <Compile Include="Controllers\ServicioSapMovAjusteController.cs" />
+    <Compile Include="Controllers\ServicioSapMov305Controller.cs" />
+    <Compile Include="Controllers\ExistePedidoDeTrasladoController.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoController.cs" />
+    <Compile Include="Controllers\ExcepcionEnvioCamaraController.cs" />
+    <Compile Include="Controllers\EntregadorController.cs" />
+    <Compile Include="Controllers\HumedimetroController.cs" />
+    <Compile Include="Controllers\IngresoDeTransportistaController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\MotivoController.cs" />
+    <Compile Include="Controllers\DocumentoDeOrigenController.cs" />
+    <Compile Include="Controllers\PanelDeControlTransaccionesSapController.cs" />
+    <Compile Include="Controllers\PermisoController.cs" />
+    <Compile Include="Controllers\RolController.cs" />
+    <Compile Include="Controllers\SalidaDeCentroController.cs" />
+    <Compile Include="Controllers\IngresoDeObservacionesController.cs" />
+    <Compile Include="Controllers\IngresarOrdenCargaInternaController.cs" />
+    <Compile Include="Controllers\PesadaController.cs" />
+    <Compile Include="Controllers\SuplenciaController.cs" />
+    <Compile Include="Controllers\ConversionMaterialController.cs" />
+    <Compile Include="Controllers\TalonarioController.cs" />
+    <Compile Include="Controllers\TaraRomaneoController.cs" />
+    <Compile Include="Controllers\TipoComercialPorWfController.cs" />
+    <Compile Include="Controllers\ListaDeCamionesController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\CargarPrecintosController.cs" />
+    <Compile Include="Controllers\TipoComercialController.cs" />
+    <Compile Include="Controllers\InhabilitacionCamionController.cs" />
+    <Compile Include="Controllers\ExcepcionAlControlController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\InhabilitacionChoferController.cs" />
+    <Compile Include="Controllers\MaterialController.cs" />
+    <Compile Include="Controllers\TipoDocumentoIdentidadController.cs" />
+    <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
+    <Compile Include="Controllers\TransaccionSAPController.cs" />
+    <Compile Include="Controllers\TransportistaController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Controllers\VerificacionCamionRechazadoController.cs" />
+    <Compile Include="CultureAwareQueryStringValueProvider.cs" />
+    <Compile Include="CultureAwareQueryStringValueProviderFactory.cs" />
+    <Compile Include="EXCEL\ExcelDetalleDeMovimientos.cs" />
+    <Compile Include="EXCEL\ExcelMovimientosDeTercerosPendientes.cs" />
+    <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
+    <Compile Include="EXCEL\ExcelMovimientosDeTercerosEgresos.cs" />
+    <Compile Include="EXCEL\ExcelMuestrasPendientesReporte.cs" />
+    <Compile Include="Filtros\ViewBagToResponseHeaderAttribute.cs" />
+    <Compile Include="Firmware\FirmwareBase.cs" />
+    <Compile Include="Firmware\FirmwareControlDePeso.cs" />
+    <Compile Include="Firmware\FirmwareControlDePesoRechazar.cs" />
+    <Compile Include="Firmware\FirmwareImprimeTarjetaDeAcceso.cs" />
+    <Compile Include="Firmware\FirmwareControlDePesoAceptar.cs" />
+    <Compile Include="Firmware\FirmwarePuestoDesatendido.cs" />
+    <Compile Include="Firmware\FirmwarePuestoRequiereOperario.cs" />
+    <Compile Include="Firmware\FirmwarePuestoBalanzaAutomatico.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\ExtensionesCheckBoxListFor.cs" />
+    <Compile Include="Helpers\ExtensionesInt.cs" />
+    <Compile Include="Helpers\ExtensionesUrl.cs" />
+    <Compile Include="Helpers\FormattingHtmlHelper.cs" />
+    <Compile Include="Helpers\ReportServerConnectionScato.cs" />
+    <Compile Include="Helpers\ZPLImageConveter.cs" />
+    <Compile Include="Models\ArchivosTxt\BahiaBlanca.cs" />
+    <Compile Include="Models\ArchivosTxt\ListadoCamiones.cs" />
+    <Compile Include="Models\ArchivosTxt\OnccaRecibidas.cs" />
+    <Compile Include="Models\ArchivosTxt\OnccaEmitidas.cs" />
+    <Compile Include="Models\ArchivosTxt\Rosario02.cs" />
+    <Compile Include="Models\ArchivosTxt\Rosario01.cs" />
+    <Compile Include="Models\ArchivosTxt\Rosario03.cs" />
+    <Compile Include="Models\ArchivosTxt\TxtColumnaAttribute.cs" />
+    <Compile Include="Models\ArchivosTxt\TxtHelper.cs" />
+    <Compile Include="Models\ArchivosXml\Cliente.cs" />
+    <Compile Include="Models\ArchivosXml\ClienteSolicitud.cs" />
+    <Compile Include="Models\ArchivosXml\ClienteRelacion.cs" />
+    <Compile Include="Models\ArchivosXml\CampoAdicional.cs" />
+    <Compile Include="Models\ArchivosXml\Conjunto.cs" />
+    <Compile Include="Models\ArchivosXml\Resumen.cs" />
+    <Compile Include="Models\ArchivosXml\Observacion.cs" />
+    <Compile Include="Models\ArchivosXml\Muestra.cs" />
+    <Compile Include="Models\ArchivosXml\Presentacion.cs" />
+    <Compile Include="Models\ArchivosXml\Solicitud.cs" />
+    <Compile Include="Models\ControlDeCaladoModel.cs" />
+    <Compile Include="Models\CasilleroModel.cs" />
+    <Compile Include="Models\EtiquetaAuditoriaModel.cs" />
+    <Compile Include="Models\FiltroReportePesadaSeisHorasModel.cs" />
+    <Compile Include="Models\IngresoNumeroCotModel.cs" />
+    <Compile Include="Models\AsignacionTarjetaDeAccessoModel.cs" />
+    <Compile Include="Models\ControlDeBalanzaModel.cs" />
+    <Compile Include="Models\FechaModel.cs" />
+    <Compile Include="Models\ImpresionTarjetaDeAccesoModel.cs" />
+    <Compile Include="Models\IngresoCIUModel.cs" />
+    <Compile Include="Models\CambioModalidadPuestoModel.cs" />
+    <Compile Include="Models\PesadaCargaExportacion.cs" />
+    <Compile Include="Models\PlanillaF515ViewModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
+    <Compile Include="Models\ResumenDeRecepcionModel.cs" />
+    <Compile Include="Models\FiltroRecorridoModel.cs" />
+    <Compile Include="Models\ValidarContratoModel.cs" />
+    <Compile Include="Models\IngresoDeLoteModel.cs" />
+    <Compile Include="Models\MicromuestraModel.cs" />
+    <Compile Include="PDF\PdfMovimientosPendientes.cs" />
+    <Compile Include="PDF\PdfLoteReporte.cs" />
+    <Compile Include="Seguridad\ClaimsTransformationHttpModule.cs" />
+    <Compile Include="Seguridad\PermisosHelper.cs" />
+    <Compile Include="Seguridad\ScatoClaimsAuthenticationManager.cs" />
+    <Compile Include="Models\CookieUsuario.cs" />
+    <Compile Include="Filtros\HttpParamActionAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ExtensionesHtml.cs" />
+    <Compile Include="Helpers\ExtensionesModelState.cs" />
+    <Compile Include="Helpers\ExtensionesSelectList.cs" />
+    <Compile Include="Helpers\ExtensionesWebGrid.cs" />
+    <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
+    <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
+    <Compile Include="Models\CambiarCentroRespuesta.cs" />
+    <Compile Include="Models\CargaDeAnalisisDeCalidadModel.cs" />
+    <Compile Include="Models\Pesada.cs" />
+    <Compile Include="Models\DatosUsuario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicioHub\FirmwareFactory.cs" />
+    <Compile Include="ServicioHub\HubClient.cs" />
+    <Compile Include="ServicioHub\HubClientFactory.cs" />
+    <Compile Include="ServicioHub\HubClientNotificar.cs" />
+    <Compile Include="ServicioHub\ServicioSuscriptor.svc.cs">
+      <DependentUpon>ServicioSuscriptor.svc</DependentUpon>
+    </Compile>
+    <Compile Include="ServicioHub\NotificarLectura.cs" />
+    <Compile Include="ServicioHub\NotificarUsuario.cs" />
+    <Compile Include="ServicioHub\ServicioNotificarUsuario.svc.cs">
+      <DependentUpon>ServicioNotificarUsuario.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SessionManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="bfdev258.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-duallistbox.css" />
+    <Content Include="Content\bootstrap-duallistbox.min.css" />
+    <Content Include="Content\bootstrap-responsive.css" />
+    <Content Include="Content\bootstrap-responsive.min.css" />
+    <Content Include="Content\bootstrap-toggle.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bulma.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
+    <Content Include="Content\colorPicker.css" />
+    <Content Include="Content\columna.css" />
+    <Content Include="Content\fa-brands.css" />
+    <Content Include="Content\fa-brands.min.css" />
+    <Content Include="Content\fa-regular.css" />
+    <Content Include="Content\fa-regular.min.css" />
+    <Content Include="Content\fa-solid.css" />
+    <Content Include="Content\fa-solid.min.css" />
+    <Content Include="Content\fontawesome-all.css" />
+    <Content Include="Content\fontawesome-all.min.css" />
+    <Content Include="Content\fontawesome.css" />
+    <Content Include="Content\fontawesome.min.css" />
+    <Content Include="Content\fonts\icomoon.svg" />
+    <Content Include="Content\icomoon.css" />
+    <Content Include="Content\images\barcode.png" />
+    <Content Include="Content\images\qaimage.png" />
+    <Content Include="Content\pesadaCargaExportacion.css" />
+    <Content Include="Content\fotos.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\graficoDePlanta.css" />
+    <Content Include="Content\images\arrow.gif" />
+    <Content Include="Content\images\barra-header.png" />
+    <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\fondo-header.png" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\images\icon-baufest.png" />
+    <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\themes\base\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.menu.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.spinner.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
+    <Content Include="Content\themes\base\minified\images\animated-overlay.gif" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\ui.jqgrid.css" />
+    <Content Include="bfdev258-Branch.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MvcReportViewer.aspx" />
+    <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Scripts\balanzaAutomatica.js" />
+    <Content Include="Scripts\bootstrap-toggle.min.js" />
+    <Content Include="Scripts\camionDemorado.js" />
+    <Content Include="Scripts\caladoRechazar.js" />
+    <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\notificacionAplicacion.js" />
+    <Content Include="Scripts\devolucionDeReciboMunicipal.js" />
+    <Content Include="Scripts\documentoExterno.js" />
+    <Content Include="Scripts\draggable_background.js" />
+    <Content Include="Scripts\interact.min.js" />
+    <Content Include="Scripts\jquery.elevatezoom.js" />
+    <Content Include="Scripts\pagoDeReciboMunicipal.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\chartjs-plugin-annotation.js" />
+    <Content Include="Scripts\chartjs-plugin-annotation.min.js" />
+    <Content Include="Scripts\cliente.crearModificar.js" />
+    <Content Include="Scripts\Chart.bundle.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\reglaDeAnalisisObligatorio.js" />
+    <Content Include="Scripts\graficoToneladasPorDia.js" />
+    <Content Include="Scripts\planillaf515.js" />
+    <Content Include="Scripts\graficoToneladasPorRangoDeDias.js" />
+    <Content Include="Scripts\inhabilitacionChofer.CrearModificar.js" />
+    <Content Include="libman.json" />
+    <Content Include="Content\fonts\icomoon.eot" />
+    <Content Include="Content\fonts\icomoon.ttf" />
+    <Content Include="Content\fonts\icomoon.woff" />
+    <None Include="Scripts\jquery-1.11.0.intellisense.js" />
+    <Content Include="Scripts\jquery-1.11.0.js" />
+    <Content Include="Scripts\jquery-1.11.0.min.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.min.js" />
+    <Content Include="Scripts\modalidad.js" />
+    <Content Include="Scripts\HabilitacionDeVehiculos.js" />
+    <Content Include="Scripts\asignacionDeTarjeta.js" />
+    <Content Include="Scripts\asignacionDeContingencia.js" />
+    <Content Include="Scripts\balanzada.crear.js" />
+    <Content Include="Scripts\balanzada.index.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\cargaDeCupo.form.js" />
+    <Content Include="Scripts\ControlCalado.js" />
+    <Content Include="Scripts\graficoDePlantaCabezera.js" />
+    <Content Include="Scripts\actividadPorDispositivo.index.js" />
+    <Content Include="Scripts\actividadPorDispositivo.js" />
+    <Content Include="Scripts\ajusteStockBines.index.js" />
+    <Content Include="Scripts\asignacionDeEstablecimiento.js" />
+    <Content Include="Scripts\asignar.js" />
+    <Content Include="Scripts\asignarTicketMunicipal.index.js" />
+    <Content Include="Scripts\autorizarRecepcionUvas.js" />
+    <Content Include="Scripts\bootstrap-filestyle.min.js" />
+    <Content Include="Scripts\cargaDeCupo.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\ciuAnulado.crear.js" />
+    <Content Include="Scripts\configurartabla.js" />
+    <Content Include="Scripts\controlDeBalanza.js" />
+    <Content Include="Scripts\actividadConCargaAutomatica.js" />
+    <Content Include="Scripts\calado2.js" />
+    <Content Include="Scripts\conversionCentro.js" />
+    <Content Include="Scripts\camionesRechazados.index.js" />
+    <Content Include="Scripts\caracteristicaPorWorkflow.js" />
+    <Content Include="Scripts\exportador.crear.js" />
+    <Content Include="Scripts\MvcReportViewer.js" />
+    <Content Include="Scripts\src\annotation.js" />
+    <Content Include="Scripts\src\element.js" />
+    <Content Include="Scripts\src\events.js" />
+    <Content Include="Scripts\src\helpers.js" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\types\box.js" />
+    <Content Include="Scripts\src\types\line.js" />
+    <Content Include="Scripts\tarjetaSupervisor.CrearModificar.js" />
+    <Content Include="Scripts\reportePesadaPorTurnos.crear.js" />
+    <Content Include="Scripts\nirs.Modalidad.js" />
+    <Content Include="Scripts\nirs.Index.js" />
+    <Content Include="Scripts\inputmask\bindings\inputmask.binding.js" />
+    <Content Include="Scripts\inputmask\bindings\inputmask.binding.min.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jqlite.min.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jquery.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.jquery.min.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.js" />
+    <Content Include="Scripts\inputmask\dependencyLibs\inputmask.dependencyLib.min.js" />
+    <Content Include="Scripts\inputmask\global\document.js" />
+    <Content Include="Scripts\inputmask\global\document.min.js" />
+    <Content Include="Scripts\inputmask\global\window.js" />
+    <Content Include="Scripts\inputmask\global\window.min.js" />
+    <Content Include="Scripts\inputmask\inputmask.date.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.date.extensions.min.js" />
+    <Content Include="Scripts\inputmask\inputmask.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.extensions.min.js" />
+    <Content Include="Scripts\inputmask\inputmask.js" />
+    <Content Include="Scripts\inputmask\inputmask.min.js" />
+    <Content Include="Scripts\inputmask\inputmask.numeric.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.numeric.extensions.min.js" />
+    <Content Include="Scripts\inputmask\inputmask.phone.extensions.js" />
+    <Content Include="Scripts\inputmask\inputmask.phone.extensions.min.js" />
+    <Content Include="Scripts\inputmask\jquery.inputmask.js" />
+    <Content Include="Scripts\inputmask\jquery.inputmask.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-be.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-be.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-ca.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-ca.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-hu.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-hu.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-it.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-it.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-mx.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-mx.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-nl.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-nl.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-ru.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone-ru.min.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone.js" />
+    <Content Include="Scripts\inputmask\phone-codes\phone.min.js" />
+    <Content Include="Scripts\jquery.inputmask.bundle.js" />
+    <Content Include="Scripts\jquery.inputmask.bundle.min.js" />
+    <Content Include="Scripts\matricula.Modificar.js" />
+    <Content Include="Scripts\cosecha.js" />
+    <Content Include="Scripts\materialPuerto.crear.js" />
+    <Content Include="Scripts\embarqueLiquidos.crear.js" />
+    <Content Include="Scripts\operacionesPuerto.modificar.js" />
+    <Content Include="Scripts\operacionesPuerto.crear.js" />
+    <Content Include="Scripts\operacionesPuerto.js" />
+    <Content Include="Scripts\pesadaCargaExportacion.index.js" />
+    <Content Include="Scripts\stockDeEstablecimiento.js" />
+    <Content Include="Scripts\graficoEficienciaHidraulicas.js" />
+    <Content Include="Scripts\graficoCamionesDia.js" />
+    <Content Include="Scripts\graficoCamionesHora.js" />
+    <Content Include="Scripts\kmPorProveedor.js" />
+    <Content Include="Scripts\panelControlBajaCtg.index.js" />
+    <Content Include="Scripts\panelControlBajaCtg.listar.js" />
+    <Content Include="Scripts\excepcionAlDescuento.js" />
+    <Content Include="Scripts\impresora.listarCola.js" />
+    <Content Include="Scripts\Impresora.index.js" />
+    <Content Include="Scripts\IngresoDeDatosDeExportacion.js" />
+    <Content Include="Scripts\graficoDePlanta.js" />
+    <Content Include="Scripts\firma.index.js" />
+    <Content Include="Scripts\firma.Modificar.js" />
+    <Content Include="Scripts\inhabilitacionCamion.js" />
+    <Content Include="Scripts\jquery-1.11.2.min.js" />
+    <Content Include="Scripts\jquery.mousetrap.js" />
+    <Content Include="Scripts\jquery.showCredits.js" />
+    <Content Include="Scripts\movimientodebines.index.js" />
+    <Content Include="Scripts\sugerencia.index.js" />
+    <Content Include="Scripts\inhabilitacionCamion.CrearModificar.js" />
+    <Content Include="Scripts\tiff.min.js" />
+    <Content Include="Scripts\transmisionASapManual.js" />
+    <Content Include="Scripts\url.js" />
+    <Content Include="Scripts\analisisObligatorio.CrearModificar.js" />
+    <Content Include="Scripts\validarFechasConRango.js" />
+    <Content Include="Scripts\workflowMovBines.index.js" />
+    <Content Include="Scripts\mostrarSubZonas.js" />
+    <Content Include="Scripts\mostrarZonas.js" />
+    <Content Include="Scripts\panelServerAppPool.js" />
+    <Content Include="Scripts\panelWorkflows.js" />
+    <Content Include="Scripts\verificarImpresion.js" />
+    <Content Include="Scripts\loteBiotecnologia.js" />
+    <Content Include="Scripts\etiquetaAuditoria.js" />
+    <Content Include="Scripts\logHumedimetro.js" />
+    <Content Include="Scripts\mousetrap-pause.js" />
+    <Content Include="Scripts\mousetrap-pause.min.js" />
+    <Content Include="Scripts\mousetrap.js" />
+    <Content Include="Scripts\mousetrap.min.js" />
+    <Content Include="Scripts\validarFechaYHoras.js" />
+    <Content Include="Scripts\exportacionDeArchivosINV.js" />
+    <Content Include="Scripts\hojaDeRuta.index.js" />
+    <Content Include="Scripts\asignacionDeRecorrido.js" />
+    <Content Include="Scripts\hojaDeRutaYerbatera.index.js" />
+    <Content Include="Scripts\ingresoBinSalida.js" />
+    <Content Include="Scripts\remitoBodegaVino.index.js" />
+    <Content Include="Scripts\verificacionCot.js" />
+    <Content Include="Scripts\vinedoTerceros_validarCuit.js" />
+    <Content Include="Scripts\remitoBodegaUva.index.js" />
+    <Content Include="Scripts\remitoBodegaUvaTerceros.index.js" />
+    <Content Include="Scripts\variedadPorVinedo.js" />
+    <Content Include="Scripts\distribucionDeAlmacenes.js" />
+    <Content Include="Scripts\vinedoPropio.js" />
+    <Content Include="Scripts\vinedos.js" />
+    <Content Include="Scripts\vinedos.CrearModificar.js" />
+    <Content Include="Scripts\exportacionDeArchivos.js" />
+    <Content Include="Scripts\jquery.bootstrap-duallistbox.js" />
+    <Content Include="Scripts\jquery.bootstrap-duallistbox.min.js" />
+    <Content Include="Scripts\listaDeTareasAutomatizada.js" />
+    <Content Include="Scripts\motivoDeQuiebre.modificar.js" />
+    <Content Include="Scripts\puestoDeTrabajo.js" />
+    <Content Include="ServicioHub\ServicioSuscriptor.svc" />
+    <Content Include="Scripts\casilleroCrear.js" />
+    <Content Include="Scripts\casilleroEliminar.js" />
+    <Content Include="Scripts\casilleroModificar.js" />
+    <Content Include="Scripts\exportacionDeArchivos.js" />
+    <Content Include="Scripts\ingresoNumeroCot.index.js" />
+    <Content Include="Scripts\consultaCasillero.Antiguedad.index.js" />
+    <Content Include="Scripts\consultaCasillero.Antiguedad.listar.js" />
+    <Content Include="Scripts\consultaCasillero.Casillero.index.js" />
+    <Content Include="Scripts\consultaCasillero.Casillero.listar.js" />
+    <Content Include="Scripts\jquery.bootstrap-duallistbox.js" />
+    <Content Include="Scripts\jquery.bootstrap-duallistbox.min.js" />
+    <Content Include="Scripts\liberacionDeCasilleros.index.js" />
+    <Content Include="Scripts\liberacionDeCasilleros.listar.js" />
+    <Content Include="SLOSCATOPROD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VICSCATOPROD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\autocompletar.js" />
+    <Content Include="Scripts\bajaCTG.js" />
+    <Content Include="Scripts\calle.js" />
+    <Content Include="Scripts\calidadMaterial.js" />
+    <Content Include="Scripts\calidadMaterial.crearModificar.js" />
+    <Content Include="Scripts\casilleroCrear.js" />
+    <Content Include="Scripts\casilleroEliminar.js" />
+    <Content Include="Scripts\casilleroModificar.js" />
+    <Content Include="Scripts\controlTiempoDeTransito.js" />
+    <Content Include="Scripts\motivoQuiebreBarrera.js" />
+    <Content Include="Scripts\reasignacionDeTarjeta.js" />
+    <Content Include="Scripts\puestoComando.js" />
+    <Content Include="Scripts\validarRangos.js" />
+    <Content Include="Scripts\ordenDeCargaContenedor.js" />
+    <Content Include="Scripts\descargaUnidad.index.js" />
+    <Content Include="Scripts\descargaUnidad.descargaUnidad.js" />
+    <Content Include="Scripts\descargarItemEnUnidades.js" />
+    <Content Include="Scripts\borradoDeDocumento.js" />
+    <Content Include="Scripts\documentoImpresion.js" />
+    <Content Include="Scripts\envioACamara.js" />
+    <Content Include="Scripts\ingresoRemito.js" />
+    <Content Include="Scripts\ordenEntrePlantas.index.js" />
+    <Content Include="Scripts\modificarDocumentoIngreso.js" />
+    <Content Include="Scripts\ajustarCalidad.js" />
+    <Content Include="Scripts\ajusteDeStock.index.js" />
+    <Content Include="Scripts\autorizarTransportistaInhabilitado.js" />
+    <Content Include="Scripts\bocaDestino.js" />
+    <Content Include="Scripts\camion.js" />
+    <Content Include="Scripts\cartaporte.index.js" />
+    <Content Include="Scripts\analisisdecalidad.index.js" />
+    <Content Include="Scripts\coordinacion.js" />
+    <Content Include="Scripts\autorizarDescuentosEntregador.js" />
+    <Content Include="Scripts\calado.js" />
+    <Content Include="Scripts\cartaporte.redespacho.index.js" />
+    <Content Include="Scripts\conversionProcedencia.js" />
+    <Content Include="Scripts\conversionGrupo.js" />
+    <Content Include="Scripts\conversionCaracteristica.js" />
+    <Content Include="Scripts\cartaporte.redespacho.prestamo.index.js" />
+    <Content Include="Scripts\LibroDeMovimientosYExistenciaDeGranos.js" />
+    <Content Include="Scripts\formatoDeImpresion.index.js" />
+    <Content Include="Scripts\reimpresionDeDocumentos.index.js" />
+    <Content Include="Scripts\formatoDeImpresion.js" />
+    <Content Include="Scripts\permiso.modificar-crear.js" />
+    <Content Include="Scripts\ordenDeDescargaFason.index.js" />
+    <Content Include="Scripts\rechazarCamion.js" />
+    <Content Include="Scripts\transaccionASap.js" />
+    <Content Include="Scripts\validarcontrato.index.js" />
+    <Content Include="Scripts\generararchivosoncca.index.js" />
+    <Content Include="Scripts\ingresodelote.index.js" />
+    <Content Include="Scripts\verificacionVisteo.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\proveedor.modificar.js" />
+    <Content Include="Scripts\romaneo.romaneo.js" />
+    <Content Include="Scripts\modificarCartaporte.index.js" />
+    <Content Include="Scripts\ordenCargaFas.js" />
+    <Content Include="Scripts\descargarItemEnRomaneo.js" />
+    <Content Include="Scripts\romaneo.index.js" />
+    <Content Include="Scripts\micromuestras.index.js" />
+    <Content Include="Scripts\lote.index.js" />
+    <Content Include="Scripts\materialPorWorkflow.js" />
+    <Content Include="Scripts\humedimetro.Index.js" />
+    <Content Include="Scripts\humedimetro.Modalidad.js" />
+    <Content Include="Scripts\materialAlmacen.js" />
+    <Content Include="Scripts\panelDeTransaccionesSap.index.js" />
+    <Content Include="Scripts\mostrarProvinciasLocalidades.js" />
+    <Content Include="Scripts\excepcionEnvioCamara.js" />
+    <Content Include="Scripts\entregador.crearModificar.js" />
+    <Content Include="Scripts\knockout.simpleGrid.1.3.js" />
+    <Content Include="Scripts\ordenDeDescarga.index.js" />
+    <Content Include="Scripts\rol.CrearModificar.js" />
+    <Content Include="Scripts\conversionMaterial.js" />
+    <Content Include="Scripts\usuario.CrearModificar.js" />
+    <Content Include="Scripts\vagon.js" />
+    <Content Include="VICSCATOQA.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="log4net.config" />
+    <Content Include="parameters.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\excepcionAlControl.js" />
+    <Content Include="Scripts\balanzaACero.js" />
+    <Content Include="Scripts\centro.index.js" />
+    <Content Include="Scripts\centro.Modificar.js" />
+    <Content Include="Scripts\listaDeCamiones.js" />
+    <Content Include="Scripts\jquery.colorPicker.js" />
+    <Content Include="Scripts\jquery.colorPicker.min.js" />
+    <Content Include="Scripts\pesada.tomarPeso.js" />
+    <Content Include="Scripts\pesada.index.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
+    <Content Include="Scripts\jquery.blockUI.min.js" />
+    <Content Include="Scripts\controlDePesoEsperado.js" />
+    <Content Include="Scripts\controlPesoMaximo.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\json2.min.js" />
+    <Content Include="Scripts\ordencargainterna.index.js" />
+    <Content Include="Scripts\validarCuil.js" />
+    <Content Include="Scripts\jquery-ui-i18n.js" />
+    <Content Include="Scripts\jquery-ui-i18n.min.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.af-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.af.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.am-ET.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.am.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-AE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-BH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-DZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-EG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-IQ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-JO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-KW.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-LB.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-LY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-MA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-OM.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-QA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-SA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-SY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-TN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar-YE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ar.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.arn-CL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.arn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.as-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.as.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.az-Cyrl-AZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.az-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.az-Latn-AZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.az-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.az.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ba-RU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ba.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.be-BY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.be.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bg-BG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bg.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bn-BD.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bn-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bo-CN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bo.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.br-FR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.br.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bs-Cyrl-BA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bs-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bs-Latn-BA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bs-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.bs.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ca-ES.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ca.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.co-FR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.co.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.cs-CZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.cs.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.cy-GB.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.cy.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.da-DK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.da.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de-AT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de-CH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de-DE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de-LI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de-LU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.de.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.dsb-DE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.dsb.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.dv-MV.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.dv.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.el-GR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.el.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-029.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-AU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-BZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-CA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-GB.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-IE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-JM.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-MY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-NZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-PH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-SG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-TT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-US.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.en-ZW.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-AR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-BO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-CL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-CO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-CR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-DO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-EC.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-ES.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-GT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-HN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-MX.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-NI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-PA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-PE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-PR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-PY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-SV.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-US.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-UY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es-VE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.es.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.et-EE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.et.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.eu-ES.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.eu.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fa-IR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fa.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fi-FI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fi.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fil-PH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fil.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fo-FO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fo.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-BE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-CA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-CH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-FR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-LU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr-MC.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fy-NL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.fy.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ga-IE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ga.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gd-GB.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gd.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gl-ES.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gsw-FR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gsw.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gu-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.gu.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ha-Latn-NG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ha-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ha.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.he-IL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.he.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hi-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hi.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hr-BA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hr-HR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hsb-DE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hsb.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hu-HU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hu.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hy-AM.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.hy.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.id-ID.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.id.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ig-NG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ig.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ii-CN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ii.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.is-IS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.is.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.it-CH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.it-IT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.it.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.iu-Cans-CA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.iu-Cans.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.iu-Latn-CA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.iu-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.iu.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ja-JP.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ja.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ka-GE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ka.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kk-KZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kk.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kl-GL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.km-KH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.km.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kn-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ko-KR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ko.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kok-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.kok.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ky-KG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ky.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lb-LU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lb.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lo-LA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lo.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lt-LT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lt.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lv-LV.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.lv.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mi-NZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mi.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mk-MK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mk.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ml-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ml.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mn-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mn-MN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mn-Mong-CN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mn-Mong.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.moh-CA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.moh.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mr-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ms-BN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ms-MY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ms.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mt-MT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.mt.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nb-NO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nb.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ne-NP.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ne.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nl-BE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nl-NL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nn-NO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.no.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nso-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.nso.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.oc-FR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.oc.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.or-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.or.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pa-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pa.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pl-PL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.prs-AF.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.prs.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ps-AF.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ps.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pt-BR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pt-PT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.pt.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.qut-GT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.qut.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.quz-BO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.quz-EC.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.quz-PE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.quz.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.rm-CH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.rm.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ro-RO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ro.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ru-RU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ru.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.rw-RW.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.rw.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sa-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sa.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sah-RU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sah.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.se-FI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.se-NO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.se-SE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.se.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.si-LK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.si.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sk-SK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sk.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sl-SI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sma-NO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sma-SE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sma.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.smj-NO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.smj-SE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.smj.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.smn-FI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.smn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sms-FI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sms.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sq-AL.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sq.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Cyrl-BA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Cyrl-CS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Cyrl-ME.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Cyrl-RS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Latn-BA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Latn-CS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Latn-ME.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Latn-RS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sv-FI.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sv-SE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sv.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sw-KE.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.sw.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.syr-SY.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.syr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ta-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ta.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.te-IN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.te.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tg-Cyrl-TJ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tg-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tg.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.th-TH.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.th.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tk-TM.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tk.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tn-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tr-TR.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tr.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tt-RU.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tt.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tzm-Latn-DZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tzm-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.tzm.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ug-CN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ug.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uk-UA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uk.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ur-PK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.ur.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uz-Cyrl-UZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uz-Cyrl.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uz-Latn-UZ.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uz-Latn.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.uz.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.vi-VN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.vi.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.wo-SN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.wo.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.xh-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.xh.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.yo-NG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.yo.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-CHS.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-CHT.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-CN.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-Hans.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-Hant.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-HK.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-MO.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-SG.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh-TW.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zh.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zu-ZA.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.culture.zu.js" />
+    <Content Include="Scripts\jquery.globalize\cultures\globalize.cultures.js" />
+    <Content Include="Scripts\jquery.globalize\globalize.js" />
+    <Content Include="Scripts\precinto.CargarPrecintos.js" />
+    <Content Include="Scripts\tiposComercialesPorWf.Crear.js" />
+    <Content Include="Scripts\material.listarMateriales.js" />
+    <Content Include="Scripts\materiales.Modificar.js" />
+    <Content Include="Scripts\scatocommon.globalize.js" />
+    <Content Include="Scripts\mostrarLocalidades.js" />
+    <Content Include="Scripts\validarFechas.js" />
+    <Content Include="Scripts\chofer.crearModificar.js" />
+    <Content Include="Scripts\accordion.icon.js" />
+    <Content Include="Scripts\balanza.index.js" />
+    <Content Include="Scripts\caracteristicaDeCalidad.js" />
+    <Content Include="Scripts\cartaporte.cargar.js" />
+    <Content Include="Scripts\controlDeTiempos.crearModificar.js" />
+    <Content Include="Scripts\consultaCasillero.Muestra.index.js" />
+    <Content Include="Content\panels.less" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery.maskedinput.js" />
+    <Content Include="Scripts\scatocommon.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.js" />
+    <Content Include="Scripts\jquery-ui-1.10.3.min.js" />
+    <Content Include="Scripts\jquery-1.11.0.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.1.debug.js" />
+    <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\scatocommon.validate.js" />
+    <Content Include="Scripts\validarPatente.js" />
+    <Content Include="Scripts\verificacionCamionRechazado.js" />
+    <Content Include="Scripts\_menu.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\panelDeTransaccionesSap.listar.js" />
+    <Content Include="ServicioHub\ServicioNotificarUsuario.svc" />
+    <Content Include="Views\BalanzaAutomatica\BalanzaTren.cshtml" />
+    <Content Include="Views\ExcepcionAlDescuento\Crear.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\ExcepcionAlDescuento\Index.cshtml" />
+    <Content Include="Views\ExcepcionAlDescuento\Listar.cshtml" />
+    <Content Include="Views\ExcepcionAlDescuento\Modificar.cshtml" />
+    <Content Include="Views\ExcepcionAlDescuento\_CrearModificar.cshtml" />
+    <Content Include="Views\ListaDeCamiones\Index.cshtml" />
+    <Content Include="Views\ListaDeCamiones\Listar.cshtml" />
+    <Content Include="Views\RemitoBodegaVino\Index.cshtml" />
+    <Content Include="Views\RemitoBodegaVino\_Orden.cshtml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\TipoDocumentoIdentidad\Index.cshtml" />
+    <Content Include="Views\Material\_CrearModificar.cshtml" />
+    <Content Include="Views\Material\Index.cshtml" />
+    <Content Include="Views\Material\Listar.cshtml" />
+    <Content Include="Views\Chofer\Index.cshtml" />
+    <Content Include="Views\Chofer\Crear.cshtml" />
+    <Content Include="Views\Chofer\Listar.cshtml" />
+    <Content Include="Views\Chofer\Modificar.cshtml" />
+    <Content Include="Views\Chofer\_CrearModificar.cshtml" />
+    <Content Include="Views\TipoDocumentoIdentidad\Modificar.cshtml" />
+    <Content Include="Views\TipoDocumentoIdentidad\_CrearModificar.cshtml" />
+    <Content Include="Views\TipoDocumentoIdentidad\Crear.cshtml" />
+    <Content Include="Views\Transportista\Index.cshtml" />
+    <Content Include="Views\Transportista\Listar.cshtml" />
+    <Content Include="Views\Transportista\Crear.cshtml" />
+    <Content Include="Views\Transportista\Modificar.cshtml" />
+    <Content Include="Views\Transportista\_CrearModificar.cshtml" />
+    <Content Include="Views\Almacen\Index.cshtml" />
+    <Content Include="Views\Almacen\Listar.cshtml" />
+    <Content Include="Views\Material\Almacenes.cshtml" />
+    <Content Include="Views\Almacen\Materiales.cshtml" />
+    <Content Include="Views\Almacen\Modificar.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\Index.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\Listar.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\Crear.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\_CrearModificar.cshtml" />
+    <Content Include="Scripts\validarCuit.js" />
+    <Content Include="Views\TipoDocumentoIdentidad\Listar.cshtml" />
+    <Content Include="Views\ExcepcionAlControl\Index.cshtml" />
+    <Content Include="Views\ExcepcionAlControl\Crear.cshtml" />
+    <Content Include="Views\TipoComercial\Crear.cshtml" />
+    <Content Include="Views\TipoComercial\Index.cshtml" />
+    <Content Include="Views\TipoComercial\Listar.cshtml" />
+    <Content Include="Views\ExcepcionAlControl\Modificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControl\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControl\Listar.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Material\DisplayTemplates\AlmacenDto.cshtml" />
+    <Content Include="Views\Almacen\DisplayTemplates\MaterialDto.cshtml" />
+    <Content Include="Views\Centro\Index.cshtml" />
+    <Content Include="Views\Centro\Modificar.cshtml" />
+    <Content Include="Views\Centro\SeleccionarCentro.cshtml" />
+    <Content Include="Views\Centro\ListarSeleccionarCentro.cshtml" />
+    <Content Include="Views\CargarPrecintos\Index.cshtml" />
+    <Content Include="Views\TipoComercialPorWf\Crear.cshtml" />
+    <Content Include="Views\TipoComercialPorWf\Index.cshtml" />
+    <Content Include="Views\TipoComercialPorWf\Listar.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaInterna\Index.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaInterna\_Orden.cshtml" />
+    <Content Include="Views\IngresoDeObservaciones\Index.cshtml" />
+    <Content Include="Views\ControlDePesoEsperado\Index.cshtml" />
+    <Content Include="Views\Pesada\Index.cshtml" />
+    <Content Include="Views\Pesada\_Pesada.cshtml" />
+    <Content Include="Views\Pesada\TomarPeso.cshtml" />
+    <Content Include="Views\AutorizarTransportistaInhabilitado\Index.cshtml" />
+    <Content Include="Views\AutorizarTransportistaInhabilitado\ListarInhabilitacionCamion.cshtml" />
+    <Content Include="Views\AutorizarTransportistaInhabilitado\ListarInhabilitacionChofer.cshtml" />
+    <Content Include="Views\ControlPesoMaximo\Index.cshtml" />
+    <Content Include="Views\Balanza\_CrearModificar.cshtml" />
+    <Content Include="Views\Balanza\Crear.cshtml" />
+    <Content Include="Views\Balanza\Index.cshtml" />
+    <Content Include="Views\Balanza\Listar.cshtml" />
+    <Content Include="Views\Balanza\Modificar.cshtml" />
+    <Content Include="Views\Balanza\Modalidad.cshtml" />
+    <Content Include="Views\BalanzaACero\BalanzaACero.cshtml" />
+    <Content Include="Views\Almacen\Crear.cshtml" />
+    <Content Include="Views\Almacen\_CrearModificar.cshtml" />
+    <Content Include="Views\TipoComercial\Modificar.cshtml" />
+    <Content Include="Views\TipoComercial\_CrearModificar.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\_CrearModificar.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\Crear.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\Index.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\Listar.cshtml" />
+    <Content Include="Views\VerificacionCamionRechazado\Index.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidad\Index.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidad\Listar.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidad\Crear.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidad\Modificar.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidad\_CrearModificar.cshtml" />
+    <Content Include="Views\Coordinacion\Index.cshtml" />
+    <Content Include="Views\Coordinacion\Listar.cshtml" />
+    <Content Include="Views\Coordinacion\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\AutorizarDescuentosEntregador\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\AutorizarDescuentosEntregador\Index.cshtml" />
+    <Content Include="Views\AutorizarDescuentosEntregador\Listar.cshtml" />
+    <Content Include="Views\DocumentoDeOrigen\Index.cshtml" />
+    <Content Include="Views\Camara\Index.cshtml" />
+    <Content Include="Views\Camara\Listar.cshtml" />
+    <Content Include="Views\Camara\Crear.cshtml" />
+    <Content Include="Views\Camara\Modificar.cshtml" />
+    <Content Include="Views\Camara\_CrearModificar.cshtml" />
+    <Content Include="Views\Motivo\_CrearModificar.cshtml" />
+    <Content Include="Views\Motivo\Crear.cshtml" />
+    <Content Include="Views\Motivo\Index.cshtml" />
+    <Content Include="Views\Motivo\Listar.cshtml" />
+    <Content Include="Views\Motivo\Modificar.cshtml" />
+    <Content Include="Views\Calado\Index.cshtml" />
+    <Content Include="Views\Humedimetro\Index.cshtml" />
+    <Content Include="Views\Humedimetro\Listar.cshtml" />
+    <Content Include="Views\Humedimetro\Crear.cshtml" />
+    <Content Include="Views\Humedimetro\Modificar.cshtml" />
+    <Content Include="Views\Humedimetro\_CrearModificar.cshtml" />
+    <Content Include="Views\Humedimetro\Modalidad.cshtml" />
+    <Content Include="Views\BocaDestino\Crear.cshtml" />
+    <Content Include="Views\BocaDestino\Index.cshtml" />
+    <Content Include="Views\BocaDestino\Listar.cshtml" />
+    <Content Include="Views\BocaDestino\Modificar.cshtml" />
+    <Content Include="Views\BocaDestino\_CrearModificar.cshtml" />
+    <Content Include="Views\IngresoDeTransportista\Index.cshtml" />
+    <Content Include="Views\BajaCTG\Index.cshtml" />
+    <Content Include="Views\AnalisisDeCalidad\Index.cshtml" />
+    <Content Include="Views\Rol\Index.cshtml" />
+    <Content Include="Views\Rol\Listar.cshtml" />
+    <Content Include="Views\Rol\DisplayTemplates\PermisoDto.cshtml" />
+    <Content Include="Views\Rol\Crear.cshtml" />
+    <Content Include="Views\Rol\Modificar.cshtml" />
+    <Content Include="Views\Rol\_CrearModificar.cshtml" />
+    <Content Include="Views\Permiso\Index.cshtml" />
+    <Content Include="Views\Permiso\Listar.cshtml" />
+    <Content Include="Views\Permiso\Crear.cshtml" />
+    <Content Include="Views\Permiso\Modificar.cshtml" />
+    <Content Include="Views\Permiso\_CrearModificar.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\Listar.cshtml" />
+    <Content Include="Views\Usuario\DisplayTemplates\RolDto.cshtml" />
+    <Content Include="Views\Usuario\DisplayTemplates\CentroDto.cshtml" />
+    <Content Include="Views\Usuario\Crear.cshtml" />
+    <Content Include="Views\Usuario\Modificar.cshtml" />
+    <Content Include="Views\Usuario\_CrearModificar.cshtml" />
+    <Content Include="Views\CargarCartaPorte\Index.cshtml" />
+    <Content Include="Views\CargarCartaPorte\_Orden.cshtml" />
+    <Content Include="Views\ConfirmacionDeCargaDescarga\Index.cshtml" />
+    <Content Include="Views\Suplencia\Index.cshtml" />
+    <Content Include="Views\Suplencia\Listar.cshtml" />
+    <Content Include="Views\Suplencia\Crear.cshtml" />
+    <Content Include="Views\Suplencia\Modificar.cshtml" />
+    <Content Include="Views\Suplencia\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionEnvioCamara\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionEnvioCamara\Index.cshtml" />
+    <Content Include="Views\ExcepcionEnvioCamara\Listar.cshtml" />
+    <Content Include="Views\ExcepcionEnvioCamara\Modificar.cshtml" />
+    <Content Include="Views\Entregador\_CrearModificar.cshtml" />
+    <Content Include="Views\Entregador\Crear.cshtml" />
+    <Content Include="Views\Entregador\Index.cshtml" />
+    <Content Include="Views\Entregador\Listar.cshtml" />
+    <Content Include="Views\Entregador\Modificar.cshtml" />
+    <Content Include="Views\ControlPesoOrigen\Index.cshtml" />
+    <Content Include="Views\AltaCTG\Index.cshtml" />
+    <Content Include="Views\IngresarCartaPorteRedespacho\Index.cshtml" />
+    <Content Include="Views\TransaccionSAP\Index.cshtml" />
+    <Content Include="Views\TransaccionSAP\Listar.cshtml" />
+    <Content Include="Views\TransaccionSAP\Crear.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesSap\Index.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesSap\Listar.cshtml" />
+    <Content Include="Views\Rol\DisplayTemplates\UsuarioDto.cshtml" />
+    <Content Include="Views\ExistePedidoDeTraslado\Index.cshtml" />
+    <Content Include="Views\Coordinacion\_TransportistaRecalar.cshtml" />
+    <Content Include="Views\Coordinacion\_TransportistaEnviaACamara.cshtml" />
+    <Content Include="Views\ServicioSapMov975\Index.cshtml" />
+    <Content Include="Views\ServicioSapMovAjuste\Index.cshtml" />
+    <Content Include="Views\ServicioSapMov305\Index.cshtml" />
+    <Content Include="Views\MaterialPorWorkflow\_CrearModificar.cshtml" />
+    <Content Include="Views\MaterialPorWorkflow\Crear.cshtml" />
+    <Content Include="Views\MaterialPorWorkflow\Index.cshtml" />
+    <Content Include="Views\MaterialPorWorkflow\Listar.cshtml" />
+    <Content Include="Views\MaterialPorWorkflow\Modificar.cshtml" />
+    <Content Include="Views\Calado\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\Material\Crear.cshtml" />
+    <Content Include="Views\Material\Modificar.cshtml" />
+    <Content Include="Views\ServicioSapFill_Z1000\Index.cshtml" />
+    <Content Include="Views\Lote\Index.cshtml" />
+    <Content Include="Views\Lote\LoteCreado.cshtml" />
+    <Content Include="Views\ConversionMaterial\Index.cshtml" />
+    <Content Include="Views\ConversionMaterial\ListarConversionMateriales.cshtml" />
+    <Content Include="Views\ConversionMaterial\_Material.cshtml" />
+    <Content Include="Views\ConversionProcedencia\_Procedencia.cshtml" />
+    <Content Include="Views\ConversionProcedencia\Index.cshtml" />
+    <Content Include="Views\ConversionProcedencia\ListarConversionProcedencias.cshtml" />
+    <Content Include="Views\ConversionGrupo\_Grupo.cshtml" />
+    <Content Include="Views\ConversionGrupo\Index.cshtml" />
+    <Content Include="Views\ConversionGrupo\ListarConversionGrupos.cshtml" />
+    <Content Include="Views\ConversionCaracteristica\_Caracteristica.cshtml" />
+    <Content Include="Views\ConversionCaracteristica\Index.cshtml" />
+    <Content Include="Views\ConversionCaracteristica\ListarConversionCaracteristicas.cshtml" />
+    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Lote\BuscarLote.cshtml" />
+    <Content Include="Views\Lote\Listar.cshtml" />
+    <Content Include="Views\Lote\Ver.cshtml" />
+    <Content Include="Views\Lote\Seleccionar.cshtml" />
+    <Content Include="Views\Lote\ListarMuestas.cshtml" />
+    <Content Include="Views\CargarCartaPorte\Vagon.cshtml" />
+    <Content Include="Views\CargarCartaPorte\Camion.cshtml" />
+    <Content Include="Views\TaraRomaneo\Index.cshtml" />
+    <Content Include="Views\TaraRomaneo\Crear.cshtml" />
+    <Content Include="Views\TaraRomaneo\Listar.cshtml" />
+    <Content Include="Views\TaraRomaneo\Modificar.cshtml" />
+    <Content Include="Views\TaraRomaneo\_CrearModificar.cshtml" />
+    <Content Include="Views\Talonario\Index.cshtml" />
+    <Content Include="Views\Talonario\Crear.cshtml" />
+    <Content Include="Views\Talonario\Listar.cshtml" />
+    <Content Include="Views\Talonario\Modificar.cshtml" />
+    <Content Include="Views\Talonario\_CrearModificar.cshtml" />
+    <Content Include="Views\AjustarCalidad\Index.cshtml" />
+    <Content Include="Views\Micromuestra\Index.cshtml" />
+    <Content Include="Views\ControlPesoNeto\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\CartaPorte.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenCargaInterna.cshtml" />
+    <Content Include="Views\CargarOrdenDeDescarga\Index.cshtml" />
+    <Content Include="Views\CargarOrdenDeDescarga\_Orden.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaFas\_Orden.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaFas\Index.cshtml" />
+    <Content Include="Views\Romaneo\Index.cshtml" />
+    <Content Include="Views\Romaneo\ListarItems.cshtml" />
+    <Content Include="Views\Romaneo\DescargarItem.cshtml" />
+    <Content Include="Views\Visteo\Index.cshtml" />
+    <Content Include="Views\Romaneo\Romaneo.cshtml" />
+    <Content Include="Views\ReimpresionDeDocumentos\Index.cshtml" />
+    <Content Include="Views\GenerarArchivosOncca\Index.cshtml" />
+    <Content Include="Views\IngresoDeLote\Index.cshtml" />
+    <Content Include="Views\IngresoDeLote\Confirmacion.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
+    <Content Include="Views\Proveedor\Listar.cshtml" />
+    <Content Include="Views\Proveedor\Modificar.cshtml" />
+    <Content Include="Views\Proveedor\_Modificar.cshtml" />
+    <Content Include="Views\ServicioSapEgresosNoProductivos\Index.cshtml" />
+    <Content Include="Views\VerificacionCot\Index.cshtml" />
+    <Content Include="Views\ValidarContrato\Confirmacion.cshtml" />
+    <Content Include="Views\ValidarContrato\Index.cshtml" />
+    <Content Include="Views\IngresarCartaPorteRedespachoPrestamo\Index.cshtml" />
+    <Content Include="Views\CargarCartaPortePrestamo\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenDeDescarga.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenCargaFas.cshtml" />
+    <Content Include="Views\CargarOrdenDeDescargaFason\Index.cshtml" />
+    <Content Include="Views\CargarOrdenDeDescargaFason\_Orden.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaInternaFason\Index.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaInternaFason\_Orden.cshtml" />
+    <Content Include="Views\DocumentoDeImpresion\_CrearModificar.cshtml" />
+    <Content Include="Views\DocumentoDeImpresion\Index.cshtml" />
+    <Content Include="Views\DocumentoDeImpresion\Listar.cshtml" />
+    <Content Include="Views\DocumentoDeImpresion\Modificar.cshtml" />
+    <Content Include="Views\ExcepcionEnvioCamara\Crear.cshtml" />
+    <Content Include="Views\DocumentoDeImpresion\Crear.cshtml" />
+    <Content Include="Views\BajaCTGDefinitivo\Index.cshtml" />
+    <Content Include="Views\AjusteDeStock\Index.cshtml" />
+    <Content Include="Views\FormatoDeImpresion\Index.cshtml" />
+    <Content Include="Views\FormatoDeImpresion\Listar.cshtml" />
+    <Content Include="Views\FormatoDeImpresion\Modificar.cshtml" />
+    <Content Include="Views\FormatoDeImpresion\Crear.cshtml" />
+    <Content Include="Views\FormatoDeImpresion\_CrearModificar.cshtml" />
+    <Content Include="Views\DocumentoDeImpresionPorCentro\_CrearModificar.cshtml" />
+    <Content Include="Views\DocumentoDeImpresionPorCentro\Crear.cshtml" />
+    <Content Include="Views\DocumentoDeImpresionPorCentro\Index.cshtml" />
+    <Content Include="Views\DocumentoDeImpresionPorCentro\Listar.cshtml" />
+    <Content Include="Views\DocumentoDeImpresionPorCentro\Modificar.cshtml" />
+    <Content Include="Views\ControlDeIngreso\OrdenDeDescargaFason.cshtml" />
+    <Content Include="Views\ControlDeIngreso\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\ServicioSapIngresosEgresosFazones\Index.cshtml" />
+    <Content Include="Views\LibroMovimientosExistenciaGranos\Index.cshtml" />
+    <Content Include="Views\VerificacionSalidaFlete\Index.cshtml" />
+    <Content Include="Views\IngresarOrdenCargaFas\_OrdenModificar.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenCargaInternaFason.cshtml" />
+    <Content Include="Views\ServicioSapPesaNeto\Index.cshtml" />
+    <Content Include="Views\CargarOrdenEntrePlantas\_Orden.cshtml" />
+    <Content Include="Views\CargarOrdenEntrePlantas\Index.cshtml" />
+    <Content Include="Views\IngresoRemito\_Orden.cshtml" />
+    <Content Include="Views\IngresoRemito\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenEntrePlantas.cshtml" />
+    <Content Include="Views\DescargaUnidad\DescargarItem.cshtml" />
+    <Content Include="Views\DescargaUnidad\Index.cshtml" />
+    <Content Include="Views\DescargaUnidad\ListarItems.cshtml" />
+    <Content Include="Views\DescargaUnidad\DescargaUnidad.cshtml" />
+    <Content Include="Views\ControlPesoNetoDescargaUnidad\Index.cshtml" />
+    <Content Include="Views\SincronizarMaestros\Proveedores.cshtml" />
+    <Content Include="Views\SincronizarMaestros\Materiales.cshtml" />
+    <Content Include="Views\SincronizarMaestros\Clientes.cshtml" />
+    <Content Include="Views\BorradoDeDocumento\Index.cshtml" />
+    <Content Include="Views\BorradoDeDocumento\Listar.cshtml" />
+    <Content Include="Views\CargarOrdenDeCargaContenedor\_Orden.cshtml" />
+    <Content Include="Views\CargarOrdenDeCargaContenedor\Index.cshtml" />
+    <Content Include="Views\TaraContenedor\_CrearModificar.cshtml" />
+    <Content Include="Views\TaraContenedor\Crear.cshtml" />
+    <Content Include="Views\TaraContenedor\Index.cshtml" />
+    <Content Include="Views\TaraContenedor\Listar.cshtml" />
+    <Content Include="Views\TaraContenedor\Modificar.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Remito.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenDeCargaContenedor.cshtml" />
+    <Content Include="Views\ResumenDeRecepcion\Index.cshtml" />
+    <Content Include="Views\Calle\_CrearModificar.cshtml" />
+    <Content Include="Views\Calle\Crear.cshtml" />
+    <Content Include="Views\Calle\Index.cshtml" />
+    <Content Include="Views\Calle\Listar.cshtml" />
+    <Content Include="Views\Calle\Modificar.cshtml" />
+    <Content Include="Views\CalidadMaterial\Index.cshtml" />
+    <Content Include="Views\CalidadMaterial\ListarCalidades.cshtml" />
+    <Content Include="Views\CalidadMaterial\Crear.cshtml" />
+    <Content Include="Views\CalidadMaterial\Modificar.cshtml" />
+    <Content Include="Views\CalidadMaterial\_CrearModificar.cshtml" />
+    <Content Include="Views\Casillero\Index.cshtml" />
+    <Content Include="Views\Casillero\Listar.cshtml" />
+    <Content Include="Views\Casillero\Crear.cshtml" />
+    <Content Include="Views\Casillero\Modificar.cshtml" />
+    <Content Include="Views\Casillero\EliminarMasivo.cshtml" />
+    <Content Include="Views\Casillero\_CrearModificarEliminar.cshtml" />
+    <Content Include="Views\TarjetaBloqueada\Index.cshtml" />
+    <Content Include="Views\TarjetaBloqueada\Listar.cshtml" />
+    <Content Include="Views\TarjetaBloqueada\Modificar.cshtml" />
+    <Content Include="Views\TarjetaBloqueada\_CrearModificar.cshtml" />
+    <Content Include="Views\TarjetaBloqueada\Bloquear.cshtml" />
+    <Content Include="Views\IngresoRemitoTerceros\Index.cshtml" />
+    <Content Include="Views\TarjetaRango\_CrearModificar.cshtml" />
+    <Content Include="Views\TarjetaRango\Crear.cshtml" />
+    <Content Include="Views\TarjetaRango\Index.cshtml" />
+    <Content Include="Views\TarjetaRango\Listar.cshtml" />
+    <Content Include="Views\TarjetaRango\Modificar.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\Index.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\Listar.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\Crear.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\_CrearModificar.cshtml" />
+    <Content Include="Views\PuestosDeCargaDescarga\_CrearModificar.cshtml" />
+    <Content Include="Views\PuestosDeCargaDescarga\Crear.cshtml" />
+    <Content Include="Views\PuestosDeCargaDescarga\Index.cshtml" />
+    <Content Include="Views\PuestosDeCargaDescarga\Listar.cshtml" />
+    <Content Include="Views\PuestosDeCargaDescarga\Modificar.cshtml" />
+    <Content Include="Views\PuestoComando\Index.cshtml" />
+    <Content Include="Views\PuestoComando\Listar.cshtml" />
+    <Content Include="Views\ControlDeTiempo\Index.cshtml" />
+    <Content Include="Views\ControlDeTiempo\Listar.cshtml" />
+    <Content Include="Views\ControlDeTiempo\Crear.cshtml" />
+    <Content Include="Views\ControlDeTiempo\_CrearModificar.cshtml" />
+    <Content Include="Views\ControlDeTiempo\Modificar.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\Index.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\Listar.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\Crear.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\Modificar.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\_CrearModificar.cshtml" />
+    <Content Include="Views\CargarCartaPorteFason\Index.cshtml" />
+    <Content Include="Views\ActividadPorDispositivo\Index.cshtml" />
+    <Content Include="Views\ActividadPorDispositivo\Listar.cshtml" />
+    <Content Include="Views\ActividadPorDispositivo\Crear.cshtml" />
+    <Content Include="Views\ActividadPorDispositivo\Modificar.cshtml" />
+    <Content Include="Views\ActividadPorDispositivo\_CrearModificar.cshtml" />
+    <Content Include="Views\AutorizarTiempoEnTransito\Index.cshtml" />
+    <Content Include="Views\AsignacionTarjetaDeAcceso\Index.cshtml" />
+    <Content Include="Views\MotivoQuiebreBarrera\_Modificar.cshtml" />
+    <Content Include="Views\MotivoQuiebreBarrera\Index.cshtml" />
+    <Content Include="Views\MotivoQuiebreBarrera\Listar.cshtml" />
+    <Content Include="Views\MotivoQuiebreBarrera\Modificar.cshtml" />
+    <Content Include="Views\PuestoComando\Asignar.cshtml" />
+    <Content Include="Views\ImprimirTarjetaDeAcceso\Index.cshtml" />
+    <Content Include="Views\PuestoComando\ConfigurarTabla.cshtml" />
+    <Content Include="Views\ReasignacionDeTarjeta\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Pesada.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\AnalisisDeCalidad.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\AsignacionDeRuta.cshtml" />
+    <Content Include="Views\ControlDeBalanza\PesarDetalle.cshtml" />
+    <Content Include="Views\ControlDeBalanza\Index.cshtml" />
+    <Content Include="Views\AjusteDeStock\Listar.cshtml" />
+    <Content Include="Views\AjusteDeStock\_CrearModificar.cshtml" />
+    <Content Include="Views\AjusteDeStock\Modificar.cshtml" />
+    <Content Include="Views\AjusteDeStock\Crear.cshtml" />
+    <Content Include="Views\ReporteControlDeBalanza\Index.cshtml" />
+    <Content Include="Views\ReporteControlDeBalanza\Listar.cshtml" />
+    <Content Include="Views\ListaDeTareasAutomatizada\Index.cshtml" />
+    <Content Include="Views\BalanzaACero\Index.cshtml" />
+    <Content Include="Views\ServicioSapMov291\Index.cshtml" />
+    <Content Include="Views\ExportacionDeArchivos\Index.cshtml" />
+    <Content Include="Views\Impresora\Index.cshtml" />
+    <Content Include="Views\Impresora\Crear.cshtml" />
+    <Content Include="Views\Impresora\Listar.cshtml" />
+    <Content Include="Views\Impresora\Modificar.cshtml" />
+    <Content Include="Views\Impresora\_CrearModificar.cshtml" />
+    <Content Include="Views\CiuAnulado\Index.cshtml" />
+    <Content Include="Views\CiuAnulado\Listar.cshtml" />
+    <Content Include="Views\CiuAnulado\Crear.cshtml" />
+    <Content Include="Views\CiuAnulado\_Crear.cshtml" />
+    <Content Include="Views\IngresoCIU\Index.cshtml" />
+    <Content Include="Views\VinedoPropio\Index.cshtml" />
+    <Content Include="Views\VinedoPropio\Listar.cshtml" />
+    <Content Include="Views\VinedoPropio\Crear.cshtml" />
+    <Content Include="Views\VinedoPropio\_CrearModificar.cshtml" />
+    <Content Include="Views\VinedoPropio\Modificar.cshtml" />
+    <Content Include="Views\VariedadPorVinedo\Modificar.cshtml" />
+    <Content Include="Views\AutorizarRecepcionUvas\Index.cshtml" />
+    <Content Include="Views\AutorizarRecepcionUvas\ListarInhabilitacionCamion.cshtml" />
+    <Content Include="Views\AutorizarRecepcionUvas\ListarInhabilitacionChofer.cshtml" />
+    <Content Include="Views\RemitoBodegaUvaPropia\Index.cshtml" />
+    <Content Include="Views\RemitoBodegaUvaPropia\_Orden.cshtml" />
+    <Content Include="Views\VariedadPorVinedo\Crear.cshtml" />
+    <Content Include="Views\VariedadPorVinedo\_CrearModificar.cshtml" />
+    <Content Include="Views\VariedadPorVinedo\Index.cshtml" />
+    <Content Include="Views\VariedadPorVinedo\Listar.cshtml" />
+    <Content Include="Views\PuestoDeTrabajo\ModificarModalidad.cshtml" />
+    <Content Include="Views\DistribucionDeAlmacenes\Index.cshtml" />
+    <Content Include="Views\CargarCartaPorteRedespachoDesvio\Index.cshtml" />
+    <Content Include="Views\IngresoNumeroCot\Confirmacion.cshtml" />
+    <Content Include="Views\IngresoNumeroCot\Index.cshtml" />
+    <Content Include="Views\IngresoBinSalida\Index.cshtml" />
+    <Content Include="Views\VinedoTerceros\Crear.cshtml" />
+    <Content Include="Views\VinedoTerceros\Index.cshtml" />
+    <Content Include="Views\VinedoTerceros\Listar.cshtml" />
+    <Content Include="Views\VinedoTerceros\Modificar.cshtml" />
+    <Content Include="Views\VinedoTerceros\_CrearModificar.cshtml" />
+    <Content Include="Views\RemitoBodegaUvaTerceros\Index.cshtml" />
+    <Content Include="Views\RemitoBodegaUvaTerceros\_Orden.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\RemitoBodegaUvaPropia.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\RemitoBodegaUvaTerceros.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\RemitoBodegaVino.cshtml" />
+    <Content Include="Views\LiberacionDeCasilleros\Index.cshtml" />
+    <Content Include="Views\LiberacionDeCasilleros\Listar.cshtml" />
+    <Content Include="Views\ConsultaCasillero\Antiguedad.cshtml" />
+    <Content Include="Views\ConsultaCasillero\Casillero.cshtml" />
+    <Content Include="Views\ConsultaCasillero\Muestra.cshtml" />
+    <Content Include="Views\ConsultaCasillero\ListarAntiguedad.cshtml" />
+    <Content Include="Views\ConsultaCasillero\ListarCasillero.cshtml" />
+    <Content Include="Views\ConsultaCasillero\ListarMuestra.cshtml" />
+    <Content Include="Views\CargarHojaDeRuta\Index.cshtml" />
+    <Content Include="Views\CargarHojaDeRuta\_Orden.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\HojaDeRuta.cshtml" />
+    <Content Include="Views\AsignacionDeRecorrido\Index.cshtml" />
+    <Content Include="Views\AsignacionDeRecorrido\Listar.cshtml" />
+    <Content Include="Views\AsignacionDeRecorrido\_CrearModificar.cshtml" />
+    <Content Include="Views\AsignacionDeRecorrido\Crear.cshtml" />
+    <Content Include="Views\AsignacionDeRecorrido\Modificar.cshtml" />
+    <Content Include="Views\CargarHojaDeRutaYerbatera\_Orden.cshtml" />
+    <Content Include="Views\CargarHojaDeRutaYerbatera\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\HojaDeRutaYerbatera.cshtml" />
+    <Content Include="Views\ServicioSap_Z4030\Index.cshtml" />
+    <Content Include="Views\ListadoDeCalidades\Index.cshtml" />
+    <Content Include="Views\ExportacionDeArchivosINV\Index.cshtml" />
+    <Content Include="Views\ActividadConCargaAutomatica\_CrearModificar.cshtml" />
+    <Content Include="Views\ActividadConCargaAutomatica\Crear.cshtml" />
+    <Content Include="Views\ActividadConCargaAutomatica\Index.cshtml" />
+    <Content Include="Views\ActividadConCargaAutomatica\Listar.cshtml" />
+    <Content Include="Views\ActividadConCargaAutomatica\Modificar.cshtml" />
+    <Content Include="Views\EtiquetaAuditoria\Index.cshtml" />
+    <Content Include="Views\Establecimiento\_CrearModificar.cshtml" />
+    <Content Include="Views\Establecimiento\Crear.cshtml" />
+    <Content Include="Views\Establecimiento\Index.cshtml" />
+    <Content Include="Views\Establecimiento\Listar.cshtml" />
+    <Content Include="Views\Establecimiento\Modificar.cshtml" />
+    <Content Include="Views\AsignacionDeEstablecimiento\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Listar.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\OrdenDeDescargaFason.cshtml" />
+    <Content Include="Views\Empresa\_CrearModificar.cshtml" />
+    <Content Include="Views\Empresa\Crear.cshtml" />
+    <Content Include="Views\Empresa\Index.cshtml" />
+    <Content Include="Views\Empresa\Listar.cshtml" />
+    <Content Include="Views\Empresa\Modificar.cshtml" />
+    <Content Include="Views\Tecnologia\_CrearModificar.cshtml" />
+    <Content Include="Views\Tecnologia\Crear.cshtml" />
+    <Content Include="Views\Tecnologia\Index.cshtml" />
+    <Content Include="Views\Tecnologia\Listar.cshtml" />
+    <Content Include="Views\Tecnologia\Modificar.cshtml" />
+    <Content Include="Views\ReimpresionDeDocumentos\Listar.cshtml" />
+    <Content Include="Views\CaladoAntiguo\Index.cshtml" />
+    <Content Include="Views\CaladoAntiguo\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\ProveedorExcluidoIntacta\Crear.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\ProveedorExcluidoIntacta\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\ProveedorExcluidoIntacta\Listar.cshtml" />
+    <Content Include="Views\ProveedorExcluidoIntacta\_CrearModificar.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\LogHumedimetro\Index.cshtml" />
+    <Content Include="Views\VerificarImpresion\Index.cshtml" />
+    <Content Include="Views\AjusteStockBines\Index.cshtml" />
+    <Content Include="Views\AjusteStockBines\Listar.cshtml" />
+    <Content Include="Views\AjusteStockBines\Crear.cshtml" />
+    <Content Include="Views\AjusteStockBines\_CrearModificar.cshtml" />
+    <Content Include="Views\AjusteStockBines\Modificar.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesSap\_CrearModificar.cshtml" />
+    <Content Include="Views\PanelDeControlTransaccionesSap\Modificar.cshtml" />
+    <Content Include="Views\AsignacionDeEstablecimiento\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\ConversionCentro\Index.cshtml" />
+    <Content Include="Views\ConversionCentro\ListarConversionCentros.cshtml" />
+    <Content Include="Views\ConversionCentro\_Centro.cshtml" />
+    <Content Include="Views\PanelServerAppPool\Index.cshtml" />
+    <Content Include="Views\PanelServerAppPool\Listar.cshtml" />
+    <Content Include="Views\PanelServerAppPool\ListarEventLogs.cshtml" />
+    <Content Include="Views\AsignarTicketMunicipal\Index.cshtml" />
+    <Content Include="Views\AsignarTicketMunicipal\Listar.cshtml" />
+    <Content Include="Views\AsignarTicketMunicipal\Modificar.cshtml" />
+    <Content Include="Views\AsignarTicketMunicipal\_CrearModificar.cshtml" />
+    <Content Include="Views\PanelWorkflows\Index.cshtml" />
+    <Content Include="Views\PanelWorkflows\Listar.cshtml" />
+    <Content Include="Views\PanelWorkflows\ListarLogActividadControlRecorrido.cshtml" />
+    <Content Include="Views\LoteBiotecnologia\BuscarLote.cshtml" />
+    <Content Include="Views\LoteBiotecnologia\Listar.cshtml" />
+    <Content Include="Views\LoteBiotecnologia\ListarMuestas.cshtml" />
+    <Content Include="Views\LoteBiotecnologia\Seleccionar.cshtml" />
+    <Content Include="Views\ServicioSapIngresosBodega\Index.cshtml" />
+    <Content Include="Views\MovimientoDeBines\_CrearModificar.cshtml" />
+    <Content Include="Views\MovimientoDeBines\Crear.cshtml" />
+    <Content Include="Views\MovimientoDeBines\Index.cshtml" />
+    <Content Include="Views\MovimientoDeBines\Listar.cshtml" />
+    <Content Include="Views\MovimientoDeBines\Modificar.cshtml" />
+    <Content Include="Views\MovimientoDeBines\CrearWorkflow.cshtml" />
+    <Content Include="Views\MovimientoDeBines\WorkflowCreado.cshtml" />
+    <Content Include="Views\Firma\Index.cshtml" />
+    <Content Include="Views\PanelServiciosWeb\Index.cshtml" />
+    <Content Include="Views\PanelServiciosWeb\Listar.cshtml" />
+    <Content Include="Views\AjustarCalidad\AjustarCalidad.cshtml" />
+    <Content Include="Views\AjustarCalidad\Listar.cshtml" />
+    <Content Include="Views\GenerarArchivoDeMovimientos\BuscarArchivo.cshtml" />
+    <Content Include="Views\GenerarArchivoDeMovimientos\Index.cshtml" />
+    <Content Include="Views\GenerarArchivoDeMovimientos\Listar.cshtml" />
+    <Content Include="Views\GenerarArchivoDeMovimientos\ListarMuestas.cshtml" />
+    <Content Include="Views\GenerarArchivoDeMovimientos\Seleccionar.cshtml" />
+    <Content Include="Views\GraficoDePlanta\Index.cshtml" />
+    <Content Include="Views\GraficoDePlanta\Modificar.cshtml" />
+    <Content Include="Views\IngresoDeDatosDeExportacion\Index.cshtml" />
+    <Content Include="Views\Impresora\ListarCola.cshtml" />
+    <Content Include="Views\Sugerencia\Index.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Centro\Listar.cshtml" />
+    <Content Include="Views\Centro\Crear.cshtml" />
+    <Content Include="Views\Centro\_CrearModificar.cshtml" />
+    <Content Include="Views\PanelDeControlBajaCtgDefinitiva\Index.cshtml" />
+    <Content Include="Views\PanelDeControlBajaCtgDefinitiva\Listar.cshtml" />
+    <Content Include="Views\KmPorProveedor\_CrearModificar.cshtml" />
+    <Content Include="Views\KmPorProveedor\Crear.cshtml" />
+    <Content Include="Views\KmPorProveedor\Index.cshtml" />
+    <Content Include="Views\KmPorProveedor\Listar.cshtml" />
+    <Content Include="Views\KmPorProveedor\Modificar.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_CamionesPorHora.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoCamionesPorHora.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoDePlanta.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_CamionesPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoCamionesPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_EficienciaHidraulicas.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoEficienciaHidraulicas.cshtml" />
+    <Content Include="Views\PesoMaximoPorTipoVehiculo\_CrearModificar.cshtml" />
+    <Content Include="Views\PesoMaximoPorTipoVehiculo\Crear.cshtml" />
+    <Content Include="Views\PesoMaximoPorTipoVehiculo\Index.cshtml" />
+    <Content Include="Views\PesoMaximoPorTipoVehiculo\Listar.cshtml" />
+    <Content Include="Views\PesoMaximoPorTipoVehiculo\Modificar.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\Modificar.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\Modificar.cshtml" />
+    <Content Include="Views\StockDeEstablecimiento\_CrearModificar.cshtml" />
+    <Content Include="Views\StockDeEstablecimiento\Crear.cshtml" />
+    <Content Include="Views\StockDeEstablecimiento\Index.cshtml" />
+    <Content Include="Views\StockDeEstablecimiento\Listar.cshtml" />
+    <Content Include="Views\StockDeEstablecimiento\Modificar.cshtml" />
+    <Content Include="Views\Cosecha\_CrearModificar.cshtml" />
+    <Content Include="Views\Cosecha\Crear.cshtml" />
+    <Content Include="Views\Cosecha\Index.cshtml" />
+    <Content Include="Views\Cosecha\Listar.cshtml" />
+    <Content Include="Views\Cosecha\Modificar.cshtml" />
+    <Content Include="Views\Categoria\Crear.cshtml" />
+    <Content Include="Views\Categoria\Index.cshtml" />
+    <Content Include="Views\Categoria\Listar.cshtml" />
+    <Content Include="Views\Categoria\Modificar.cshtml" />
+    <Content Include="Views\Categoria\_CrearModificar.cshtml" />
+    <Content Include="Views\Matricula\Index.cshtml" />
+    <Content Include="Views\Matricula\Listar.cshtml" />
+    <Content Include="Views\Matricula\Modificar.cshtml" />
+    <Content Include="Views\Matricula\_CrearModificar.cshtml" />
+    <Content Include="Views\CamionesRechazados\Index.cshtml" />
+    <Content Include="Views\CamionesRechazados\Listar.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidadPorWorkflow\_CrearModificar.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidadPorWorkflow\Crear.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidadPorWorkflow\Index.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidadPorWorkflow\Listar.cshtml" />
+    <Content Include="Views\CaracteristicaDeCalidadPorWorkflow\Modificar.cshtml" />
+    <Content Include="Views\Impresora\Validar.cshtml" />
+    <Content Include="Views\Foto\Fotos.cshtml" />
+    <Content Include="Views\Foto\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Fotos.cshtml" />
+    <Content Include="Views\CargaDeCupo\Index.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoDePlantaCabezera.cshtml" />
+    <Content Include="Views\ListadoCupo\Index.cshtml" />
+    <Content Include="Views\CargaDeCupo\Form.cshtml" />
+    <Content Include="Views\ListadoCupo\Cabecera.cshtml" />
+    <Content Include="Views\IngresarCartaPorteRedespachoImportaciones\Index.cshtml" />
+    <Content Include="Views\AsignacionDeContingencia\Index.cshtml" />
+    <Content Include="Views\AsignacionDeContingencia\Listar.cshtml" />
+    <Content Include="Views\ServicioSapZE7550\Index.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\_CrearModificar.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\Crear.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\DisplayTemplates\CentroDto.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\DisplayTemplates\RolDto.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\Index.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\Listar.cshtml" />
+    <Content Include="Views\RangosDeRedondeo\Modificar.cshtml" />
+    <Content Include="Views\PesadaCargaExportacion\_PesadaTara.cshtml" />
+    <Content Include="Views\PesadaCargaExportacion\Index.cshtml" />
+    <Content Include="Views\PesadaCargaExportacion\TomarPeso.cshtml" />
+    <Content Include="Views\PesadaCargaExportacion\_Carga.cshtml" />
+    <Content Include="Views\PesadaCargaExportacion\_PesadaBruto.cshtml" />
+    <Content Include="Views\AvisoDeQuiebre\_CrearModificar.cshtml" />
+    <Content Include="Views\AvisoDeQuiebre\Index.cshtml" />
+    <Content Include="Views\AvisoDeQuiebre\Listar.cshtml" />
+    <Content Include="Views\AvisoDeQuiebre\Modificar.cshtml" />
+    <Content Include="Views\OperacionesPuerto\_Modificar.cshtml" />
+    <Content Include="Views\OperacionesPuerto\Index.cshtml" />
+    <Content Include="Views\OperacionesPuerto\Listar.cshtml" />
+    <Content Include="Views\OperacionesPuerto\Modificar.cshtml" />
+    <Content Include="Views\Balanzada\_CrearModificar.cshtml" />
+    <Content Include="Views\Balanzada\_Modificar.cshtml" />
+    <Content Include="Views\Balanzada\Crear.cshtml" />
+    <Content Include="Views\Balanzada\Modificar.cshtml" />
+    <Content Include="Views\ReportePesadaSeisHoras\Listar.cshtml" />
+    <Content Include="Views\ReportePesadaSeisHoras\Index.cshtml" />
+    <Content Include="Views\Vapor\_CrearModificar.cshtml" />
+    <Content Include="Views\Vapor\Crear.cshtml" />
+    <Content Include="Views\Vapor\Index.cshtml" />
+    <Content Include="Views\Vapor\Listar.cshtml" />
+    <Content Include="Views\Vapor\Modificar.cshtml" />
+    <Content Include="Views\Bodega\_CrearModificar.cshtml" />
+    <Content Include="Views\Bodega\Crear.cshtml" />
+    <Content Include="Views\Bodega\Index.cshtml" />
+    <Content Include="Views\Bodega\Listar.cshtml" />
+    <Content Include="Views\Bodega\Modificar.cshtml" />
+    <Content Include="Views\Destino\_CrearModificar.cshtml" />
+    <Content Include="Views\Destino\Crear.cshtml" />
+    <Content Include="Views\Destino\Index.cshtml" />
+    <Content Include="Views\Destino\Listar.cshtml" />
+    <Content Include="Views\Destino\Modificar.cshtml" />
+    <Content Include="Views\Exportador\_CrearModificar.cshtml" />
+    <Content Include="Views\Exportador\Crear.cshtml" />
+    <Content Include="Views\Exportador\Index.cshtml" />
+    <Content Include="Views\Exportador\Listar.cshtml" />
+    <Content Include="Views\Exportador\Modificar.cshtml" />
+    <Content Include="Views\MaterialPuerto\_CrearModificar.cshtml" />
+    <Content Include="Views\MaterialPuerto\Crear.cshtml" />
+    <Content Include="Views\MaterialPuerto\Index.cshtml" />
+    <Content Include="Views\MaterialPuerto\Listar.cshtml" />
+    <Content Include="Views\MaterialPuerto\Modificar.cshtml" />
+    <Content Include="Views\BalanzaPuerto\_CrearModificar.cshtml" />
+    <Content Include="Views\BalanzaPuerto\Crear.cshtml" />
+    <Content Include="Views\BalanzaPuerto\Index.cshtml" />
+    <Content Include="Views\BalanzaPuerto\Listar.cshtml" />
+    <Content Include="Views\BalanzaPuerto\Modificar.cshtml" />
+    <Content Include="Views\Nirs\_CrearModificar.cshtml" />
+    <Content Include="Views\Nirs\Crear.cshtml" />
+    <Content Include="Views\Nirs\Index.cshtml" />
+    <Content Include="Views\Nirs\Listar.cshtml" />
+    <Content Include="Views\Nirs\Modalidad.cshtml" />
+    <Content Include="Views\Nirs\Modificar.cshtml" />
+    <Content Include="Views\HistoricoDeFotos\Index.cshtml" />
+    <Content Include="Views\HistoricoDeFotos\_Listar.cshtml" />
+    <Content Include="Views\ControlDeCalado\_Listar.cshtml" />
+    <Content Include="Views\ControlDeCalado\Index.cshtml" />
+    <Content Include="Views\OperacionesPuerto\CrearInicio.cshtml" />
+    <Content Include="Views\OperacionesPuerto\_CrearInicio.cshtml" />
+    <Content Include="Views\OperacionesPuerto\_CrearFin.cshtml" />
+    <Content Include="Views\OperacionesPuerto\CrearFin.cshtml" />
+    <Content Include="Views\EmbarqueLiquidos\_CrearModificar.cshtml" />
+    <Content Include="Views\EmbarqueLiquidos\_Modificar.cshtml" />
+    <Content Include="Views\EmbarqueLiquidos\Crear.cshtml" />
+    <Content Include="Views\EmbarqueLiquidos\Modificar.cshtml" />
+    <Content Include="Views\HabilitacionDeVehiculos\Index.cshtml" />
+    <Content Include="Views\HabilitacionDeVehiculos\Listar.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\Modificar.cshtml" />
+    <Content Include="Views\ReciboMunicipal\_CrearModificar.cshtml" />
+    <Content Include="Views\ReciboMunicipal\Crear.cshtml" />
+    <Content Include="Views\ReciboMunicipal\Index.cshtml" />
+    <Content Include="Views\ReciboMunicipal\Listar.cshtml" />
+    <Content Include="Views\ReciboMunicipal\Modificar.cshtml" />
+    <Content Include="Views\TarjetaSupervisor\DisplayTemplates\PuestoDeTrabajoDto.cshtml" />
+    <Content Include="Views\IngresarCartaPorteRedespachoMercaderia\Index.cshtml" />
+    <Content Include="Views\Reportes\PlanillaF515.cshtml" />
+    <Content Include="Views\Reportes\ReportViewer.cshtml" />
+    <Content Include="Views\PanelDeControlUnrenport\Index.cshtml" />
+    <Content Include="Views\PanelDeControlUnrenport\Listar.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoToneladasPorRangoDeDias.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoToneladasPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
+    <Content Include="Views\ReglaDeAnalisisObligatorio\_CrearModificar.cshtml" />
+    <Content Include="Views\ReglaDeAnalisisObligatorio\Crear.cshtml" />
+    <Content Include="Views\ReglaDeAnalisisObligatorio\Index.cshtml" />
+    <Content Include="Views\ReglaDeAnalisisObligatorio\Listar.cshtml" />
+    <Content Include="Views\ReglaDeAnalisisObligatorio\Modificar.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\_CrearModificar.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\Crear.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\DisplayTemplates\PuestoDeTrabajoDto.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\Index.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\Listar.cshtml" />
+    <Content Include="Views\AnalisisObligatorio\Modificar.cshtml" />
+    <Content Include="Views\VerificarLimiteDeCreditoVentaEnSAP\Index.cshtml" />
+    <Content Include="Views\CaladoEnPlanta\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\CaladoEnPlanta\Index.cshtml" />
+    <Content Include="Views\Cliente\_CrearModificar.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Cliente\Listar.cshtml" />
+    <Content Include="Views\Cliente\Modificar.cshtml" />
+    <Content Include="Views\TransmisionASapManual\Index.cshtml" />
+    <Content Include="Views\Pesada\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\GraficoDePlanta\Cabecera.cshtml" />
+    <Content Include="Views\GraficoDePlantaImg\Cabecera.cshtml" />
+    <Content Include="Views\InhabilitacionChofer\Historico.cshtml" />
+    <Content Include="Views\InhabilitacionCamion\Historico.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\Recorrido.cshtml" />
+    <Content Include="Views\DocumentoExterno\Listar.cshtml" />
+    <Content Include="Views\Pendiente\Index.cshtml" />
+    <Content Include="Views\CargaDeCupo\Listar.cshtml" />
+    <Content Include="Views\CaladoRechazar\Index.cshtml" />
+    <Content Include="Views\CaladoRechazar\_TransportistaRechazado.cshtml" />
+    <Content Include="Views\PagoDeReciboMunicipal\Index.cshtml" />
+    <Content Include="Views\EnTransito\Index.cshtml" />
+    <Content Include="Views\EnPlayaExterna\Index.cshtml" />
+    <Content Include="Views\SalidaDeCentro\Index.cshtml" />
+    <Content Include="Views\DevolucionDeReciboMunicipal\Index.cshtml" />
+    <Content Include="Views\DocumentoExterno\Modificar.cshtml" />
+    <Content Include="Views\DocumentoExterno\_CrearModificar.cshtml" />
+    <Content Include="Views\LoteAuditoria\BuscarLote.cshtml" />
+    <Content Include="Views\LoteAuditoria\Listar.cshtml" />
+    <Content Include="Views\LoteAuditoria\ListarMuestas.cshtml" />
+    <Content Include="Views\LoteAuditoria\Seleccionar.cshtml" />
+    <Content Include="Views\LoteBiotecnologia\Index.cshtml" />
+    <Content Include="Views\ModificarDocumentoDeIngreso\DatosExportacion.cshtml" />
+    <Content Include="Views\VideoCamara\Index.cshtml" />
+    <Content Include="Views\VideoCamara\Camaras.cshtml" />
+    <Content Include="Views\AsignacionDeContingencia\Motivo.cshtml" />
+    <Content Include="Views\EmbarquesPorBuques\Index.cshtml" />
+    <Content Include="Views\EmbarquesPorBuques\Listar.cshtml" />
+    <Content Include="Views\BalanzaAutomatica\Index.cshtml" />
+    <Content Include="Views\BalanzaAutomatica\Balanza.cshtml" />
+    <Content Include="Views\CamionDemorado\Index.cshtml" />
+    <Content Include="Views\SalidaDeCentroPlaya\Index.cshtml" />
+    <Content Include="Views\AsignacionDeEstablecimiento\_VehiculoDemorado.cshtml" />
+    <Content Include="Views\ControlDeCalado\_PinchazosPorCalada.cshtml" />
+    <Content Include="Views\BalanzaAutomatica\AccionesEspeciales.cshtml" />
+    <Content Include="Views\VideoCamaraBalanza\Camaras.cshtml" />
+    <Content Include="Views\VideoCamaraBalanza\Index.cshtml" />
+    <Content Include="Views\DocumentoExterno\Index.cshtml" />
+    <Content Include="Views\EtiquetaPuerto\Index.cshtml" />
+    <Content Include="Views\BalanzaAutomatica\BalanzaExpo.cshtml" />
+    <Content Include="Views\NotificacionAplicacion\_Listar.cshtml" />
+    <Content Include="Views\NotificacionAplicacion\_NotificacionActiva.cshtml" />
+    <Content Include="Views\NotificacionAplicacion\Index.cshtml" />
+    <Content Include="Views\Pendiente\PendienteNogranos.cshtml" />
+    <Content Include="Views\BalanzaAutomatica\PesadaVagones.cshtml" />
+    <Content Include="Views\CamionesPendientesNoGranos\Index.cshtml" />
+    <Content Include="Views\CamionDemorado\OrdenCargaFas.cshtml" />
+    <Content Include="Views\CamionDemorado\_OrdenFas.cshtml" />
+    <None Include="Web.Jenkins.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="webfonts\fa-brands-400.svg" />
+    <Content Include="webfonts\fa-regular-400.svg" />
+    <Content Include="webfonts\fa-solid-900.svg" />
+    <Content Include="webfonts\fa-solid-900.woff2" />
+    <Content Include="webfonts\fa-solid-900.woff" />
+    <Content Include="webfonts\fa-solid-900.ttf" />
+    <Content Include="webfonts\fa-solid-900.eot" />
+    <Content Include="webfonts\fa-regular-400.woff2" />
+    <Content Include="webfonts\fa-regular-400.woff" />
+    <Content Include="webfonts\fa-regular-400.ttf" />
+    <Content Include="webfonts\fa-regular-400.eot" />
+    <Content Include="webfonts\fa-brands-400.woff2" />
+    <Content Include="webfonts\fa-brands-400.woff" />
+    <Content Include="webfonts\fa-brands-400.ttf" />
+    <Content Include="webfonts\fa-brands-400.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="fonts\" />
+    <Folder Include="Views\AprobarCalidadEntregador\" />
+    <Folder Include="WfEditor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.Actividades\Molinos.Scato.Actividades.csproj">
+      <Project>{98EC024C-6439-44B1-8B1E-29E457B2201F}</Project>
+      <Name>Molinos.Scato.Actividades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dependencias\Molinos.Scato.Dependencias.csproj">
+      <Project>{52dc0858-f415-4fe7-aea5-1e60652db421}</Project>
+      <Name>Molinos.Scato.Dependencias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dominio\Molinos.Scato.Dominio.csproj">
+      <Project>{9bc79c49-4f39-409f-a3d4-f1dabb8122b4}</Project>
+      <Name>Molinos.Scato.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Repositorio\Molinos.Scato.Repositorio.csproj">
+      <Project>{c26344c6-9829-4673-940a-a3f44cfa945c}</Project>
+      <Name>Molinos.Scato.Repositorio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Servicios\Molinos.Scato.Servicios.csproj">
+      <Project>{15b3e0d2-6217-493a-a690-158c497f5318}</Project>
+      <Name>Molinos.Scato.Servicios</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Errores.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Errores.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Errores.en.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Errores.en.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Errores.fr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Errores.fr.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>56683</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost/Scato.Web</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost/Scato.Web</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

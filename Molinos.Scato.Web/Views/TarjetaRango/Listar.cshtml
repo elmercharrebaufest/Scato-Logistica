@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<TarjetaRangoDto>)ViewBag.Items; 
+}
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "TarjetaRango"),
+                grid.Columna("ValidoDesde", Textos.TarjetaRango_ValidoDesde, x => FormattingHtmlHelper.Formatted(x.ValidoDesde)),
+                grid.Columna("ValidoHasta", Textos.TarjetaRango_ValidoHasta, x => FormattingHtmlHelper.Formatted(x.ValidoHasta)),
+                grid.Columna("Codigo", Textos.Codigo),
+                grid.Columna("RangoDesde", Textos.TarjetaRango_RangoDesde),
+                grid.Columna("RangoHasta", Textos.TarjetaRango_RangoHasta)
+                ))

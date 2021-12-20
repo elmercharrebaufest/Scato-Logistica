@@ -1,0 +1,86 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Web.Models.Pesada
+@{
+    Layout = null;
+    var actividad = (PermisosScato)ViewBag.Etapa;
+}
+<div class="row-fluid row-fluid-ie7 " id="peso-tara-columna">
+    <div id="peso-tara" class="span12 margin-top border text-center @(actividad != PermisosScato.ActividadPesadaTara ? "disabled-div" : "")" @(actividad != PermisosScato.ActividadPesadaTara ? "readonly" : "")>
+
+        <table class="full-width">
+            <thead>
+                <tr>
+                    <td colspan="4">
+                        <div class="grey-background">
+                            <p class="text-center margin-top bold-text"><span class="titulo">Peso Tara</span></p>
+                        </div>
+                        <div id="balanza" style="padding-bottom: 0; margin-left:15px;margin-right:15px; background-color: @Model.Color">
+                            @Model.Balanza
+                            @if (PermisosHelper.Is(PermisosScato.ActividadPesadaTara))
+                            {
+                                <button id="btnACeroTara" type="button" class="btn hide" tabindex="1" style="margin-left: 15px">@Textos.BalanzaACero_Titulo</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="2">
+                        <div class="control-group">
+                            <div class="controls tomarpeso-container">
+                                <div class="input-append">
+                                    @if (PermisosHelper.Is(PermisosScato.ActividadPesadaTara))
+                                    {
+                                        <button id="tomarPesoTara" class="btn" type="button" tabIndex="2" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-display labelPeso">Peso Tara</span>
+                                    }
+                                </div>
+                                <div class="input-append">
+                                    @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso2" ,@id="pesoTaraText", @readonly = "readonly", tabIndex = "-10", data_peso_url = Url.Action("TomarPeso", Model.ActividadXaml), style = "margin-right:10px" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Peso)
+                            </div>
+                        </div>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="boton-carga-container">
+            @if (PermisosHelper.Is(PermisosScato.ActividadPesadaTara))
+            {
+                <button type="submit" id="boton-finalizado-tara" class="btn">
+                    <span class="boton-carga">Finalizar Pesaje</span>
+                </button>
+            }
+            else if (actividad == PermisosScato.ActividadPesadaTara)
+            {
+                <div class="alert alert-info" style="text-align:center; margin-bottom:0">
+                    <strong>Esperando Pesada...</strong>
+                </div>
+                <script type="text/javascript">
+                    setTimeout(function () {
+                        $.get(pesadaTaraUrl, function (data) {
+                            $('#pesadaTaraDiv').html(data);
+                        });
+                    }, 1500)
+                </script>
+            }
+            else
+            {
+                <script type="text/javascript">
+                    $.get(pesadaCargaUrl, function (data) {
+                        $('#cargaDiv').html(data);
+                    });
+                </script>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.TransportistaDto
+
+@{
+    ViewBag.Title = Textos.Transportista_Crear;
+    string workflow = ViewBag.Workflow;
+    Guid workflowInstance = ViewBag.WorkflowInstance;
+    string numeroDocumentoIngreso = ViewBag.NumeroDocumentoIngreso;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarCuit.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/mostrarLocalidades.js")"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        if ($("#foto1").length > 0) {
+            $('#fotoDiv').css('display', 'inline');
+            $('.ocultar').hide();
+        }
+    });
+    jQuery(document).ready(function ($) {
+        $('#Cuit').focus();
+    });
+</script>
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+
+    form {
+        margin: auto;
+        width: 600px;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span6">
+
+
+
+            <div class="container-fluid">
+                <div class="titSecciones">@Textos.Transportista_Titulo</div>
+            </div>
+            @using (Html.BeginForm("Index", "IngresoDeTransportista", FormMethod.Post, new { @class = "form-horizontal causaBlock", data_dialogo_titulo = Textos.Transportista_Crear, data_mensaje_espera = Textos.ActIngresoDeTransportista }))
+            {
+                @Html.Hidden("Id", 0)
+                @Html.Hidden("WorkflowInstance", workflowInstance)
+                @Html.Hidden("workflow", workflow)
+                @Html.Hidden("numeroDocumentoIngreso", numeroDocumentoIngreso)
+                @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+                @Html.Partial("~/Views/Transportista/_CrearModificar.cshtml", Model)
+                <button type="submit" class="btn btn-primary">@Textos.Aceptar</button>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-primary" })
+            }
+
+        </div>
+        <div class="span6 control-group control-group-no-bottom borde ocultar fondo">
+            No se encontró la foto para la CCPP
+        </div>
+        <div class="span6 control-group control-group-no-bottom sinBorde" id="fotoDiv">
+            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
+
+            }
+            <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+        </div>
+    </div>
+</div>

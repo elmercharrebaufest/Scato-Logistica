@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<RecorridoDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaSeleccionar(Html, "AjustarCalidad","", false),
+    grilla.Columna("TipoVehiculo", Textos.Vehiculo, x => x.TipoVehiculo),
+    grilla.Columna("TipoDocumentoIngreso", Textos.TipoDocumentoIngreso),
+    grilla.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso),
+    grilla.Columna("Patente", Textos.Camion_Patente),
+    grilla.Columna("FechaInicio", Textos.FechaInicio),
+    grilla.Columna("FechaEgreso", Textos.FechaFin),
+    grilla.Columna("Workflow.Descripcion", Textos.Workflow, x => x.Workflow.Descripcion),
+    grilla.Columna("Estado", Textos.Estado)
+    ))

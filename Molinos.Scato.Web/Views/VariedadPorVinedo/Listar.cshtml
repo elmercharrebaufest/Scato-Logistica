@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<VariedadPorVinedoDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "VariedadPorVinedo"),
+        grilla.Columna("Cosecha", Textos.Vinedos_Cosecha),
+        grilla.Columna("Variedad", Textos.Vinedos_Variedad),
+        grilla.Columna("Hectareas", Textos.Vinedos_Hectareas),
+        grilla.Columna("AvisoCorte", Textos.Vinedos_AvisoCorte),
+        grilla.Columna("TopeHectarea", Textos.Vinedos_TopeHectarea),
+        grilla.Columna("KgRecibidos", Textos.Vinedos_KgRecibidos),
+        grilla.Columna("KgARecibir", Textos.Vinedos_KgARecibir)))
+</div>

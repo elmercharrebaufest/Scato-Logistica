@@ -1,0 +1,3 @@
+﻿Estimados,<br/>
+El usuario <b>{0}</b> a configurado la cantidad de pinchazos por calada en <b>{1}</b> a la fecha {2} <br/>
+con el siguiente motivo: {3}.

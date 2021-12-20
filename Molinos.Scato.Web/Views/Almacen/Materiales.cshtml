@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model IList<Molinos.Scato.Dominio.Dto.MaterialDto>
+
+@{
+    ViewBag.Title = Textos.Material_Titulo;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<h2>@Textos.Material_Titulo</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>@Textos.Codigo</th>
+            <th>@Textos.Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var material in Model)
+        {
+            <tr>
+                <td>@material.CodigoSAP</td>
+                <td>@material.Descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>

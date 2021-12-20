@@ -1,0 +1,56 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ServicioASapDto
+@{
+    ViewBag.Title = Textos.PesaNeto_Titulo;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .field-validation-error {
+        color: #ff0000;
+        font-size: 12px;
+    }
+</style>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.PesaNeto_Titulo</div>
+</div>
+@Html.ValidationMessageFor(model => model.WorkflowId)
+@* ReSharper disable Mvc.ActionNotResolved *@
+@using (Html.BeginForm("Action", "ServicioSapPesaNeto", FormMethod.Post, new { @class = "form-horizontal causaBlock container-fluid", data_mensaje_espera = Textos.ActPesaNeto }))
+{
+@* ReSharper restore Mvc.ActionNotResolved *@
+       @* <div>
+            <h4>@Textos.SalidaDeOrigenEnRedespacho_Titulo</h4>
+        </div> *@
+    <div class="modal-body">
+        @Html.HiddenFor(model => model.WorkflowCodigo)
+        @Html.HiddenFor(model => model.WorkflowId)
+        @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+        <div class="control-group">
+            @Textos.SalidaDeOrigenEnRedespacho_Pregunta
+
+        </div>        
+    </div>
+        <div class="modal-footer">
+            <button id="dialogo-encolar" class="confirmar-boton btn " data-accion="encolar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Encolar, Textos.PesaNeto_Trasmision)">@Textos.Encolar</button>
+            <button id="dialogo-eliminar" class="confirmar-boton btn " data-accion="reintentar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Reintentar, Textos.PesaNeto_Trasmision)">@Textos.Reintentar</button>
+            <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+        </div>
+        
+
+
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}

@@ -1,0 +1,64 @@
+﻿@model Molinos.Scato.Dominio.Dto.CaracteristicaDeCalidadPorWorkflowDto
+@{
+    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
+    var caracteristicas = new List<SelectListItem>();
+}
+<script type="text/javascript">
+    var urlObtenerCaracteristicas = "@Url.Action("SetearCaracteristicasCalidadDropDownList", "CaracteristicaDeCalidadPorWorkflow")";
+    var caracteristicaCalidadId = "";
+    @if (Model != null) {
+        <text>
+    caracteristicaCalidadId = [@string.Join(", ", Model.CaracteristicasDeCalidadId ?? new List<int>())];
+    cargarCaracteristicas();
+        </text>
+    }
+</script>
+
+<div id ="links" 
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+    ></div>
+
+@Html.ValidationSummary(true)
+@Html.ValidationMessage("")
+
+<div class="control-group">
+    @Html.LabelFor(m => m.WorkflowDesc, new {@class = "control-label"})
+    <div class="controls">
+        @if (Model != null && Model.Id != 0)
+        {
+            @Html.DropDownListFor(model => model.WorkflowId, workflows, new {@class = "control input-large", @disabled = "disabled"})
+            @Html.HiddenFor(model => model.WorkflowId)
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.WorkflowId, workflows, new {@class = "control input-large"}) 
+        }
+        @Html.ValidationMessageFor(m => m.WorkflowId)
+    </div>
+</div> 
+<div class="control-group">
+    @Html.LabelFor(m => m.MaterialDescripcion, new {@class = "control-label"})
+    <div class="controls">
+        @if (Model != null && Model.Id != 0)
+        {
+            @Html.TextBoxFor(model => model.MaterialDescripcion, new {@class = "control input-medium", @readonly = "readonly"})
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.MaterialDescripcion, new {@class = "control input-medium"})   
+        }
+        @Html.ValidationMessageFor(m => m.MaterialDescripcion)
+        @Html.ValidationMessageFor(m => m.MaterialId)
+        @Html.HiddenFor(model => model.MaterialId)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CaracteristicaDeCalidadDesc, new {@class = "control-label"})
+    <div class="controls">
+        <div id="caracteristicasDropdown">
+        </div>
+        @Html.ValidationMessageFor(model => model.CaracteristicaDeCalidadId)
+    </div>
+</div>

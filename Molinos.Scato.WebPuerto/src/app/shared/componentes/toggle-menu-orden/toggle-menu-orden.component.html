@@ -1,0 +1,6 @@
+<div class="cursorPointer my-auto lh-9 s16 ancho ancho border text-sm-center" (click)="toggleMenu()">
+  <i class="fa fa-sort-down "></i>
+  <div *ngIf="showMenu" class="listadoAcciones" (click)="$event.stopPropagation()">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="34" viewBox="0 0 34 34">
+  <defs>
+    <clipPath id="clip-Radio_button_green">
+      <rect width="34" height="34"/>
+    </clipPath>
+  </defs>
+  <g id="Radio_button_green" data-name="Radio button_green" clip-path="url(#clip-Radio_button_green)">
+    <rect width="34" height="34" fill="#fff"/>
+    <g id="Grupo_219" data-name="Grupo 219" transform="translate(-389 -352)">
+      <g id="Elipse_24" data-name="Elipse 24" transform="translate(389 352)" fill="none" stroke="#5cb85c" stroke-width="1">
+        <circle cx="17" cy="17" r="17" stroke="none"/>
+        <circle cx="17" cy="17" r="16.5" fill="none"/>
+      </g>
+      <circle id="Elipse_23" data-name="Elipse 23" cx="13" cy="13" r="13" transform="translate(393 356)" fill="#5cb85c"/>
+    </g>
+  </g>
+</svg>

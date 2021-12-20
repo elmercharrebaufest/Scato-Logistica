@@ -1,0 +1,129 @@
+﻿<Window x:Class="Molinos.Scato.WfEditor.Views.GuardarWorkflowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:Molinos.Scato.WfEditor.Properties"
+        xmlns:local="clr-namespace:Molinos.Scato.WfEditor.Conversores"
+        xmlns:validaciones="clr-namespace:Molinos.Scato.WfEditor.Validaciones"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        Title="{x:Static properties:Resources.TituloGuardarWorkflow}" MinHeight="200" Width="400" WindowStyle="ToolWindow"
+        DataContext="{Binding Path=GuardarWorkflowViewModel, Source={StaticResource ViewModelLocator}}" 
+        SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <local:BooleanoAVisibilityConverter x:Key="BooleanoAVisibilityConverter" />
+            <local:InvierteBooleanoConverter x:Key="InvierteBooleanoConverter" />
+            <Style TargetType="TextBox">
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ObtenerCentrosCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="100*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComo}" Margin="1"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" FlowDirection="LeftToRight" Orientation="Horizontal" VerticalAlignment="Center">
+            <RadioButton Content="{x:Static properties:Resources.GuardarComoWorkflowExistente}" Margin="5" GroupName="GuardarComo" IsChecked="{Binding Path=EsWorkflowExistente, UpdateSourceTrigger=PropertyChanged}" />
+            <RadioButton Content="{x:Static properties:Resources.GuardarComoWorkflowNuevo}" Margin="5" GroupName="GuardarComo" IsChecked="{Binding Path=EsWorkflowExistente, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource InvierteBooleanoConverter}}" />
+        </StackPanel>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoWorkflowCentro}" Margin="1" Visibility="{Binding Path=EsWorkflowExistente, Converter={StaticResource BooleanoAVisibilityConverter}}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="1" Visibility="{Binding Path=EsWorkflowExistente, Converter={StaticResource BooleanoAVisibilityConverter}}"
+                      ItemsSource="{Binding Path=Centros}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{Binding Path=WorkflowCentroId, UpdateSourceTrigger=PropertyChanged}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding ObtenerWorkflowsCommand}" CommandParameter="{Binding WorkflowCentroId}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ComboBox>
+        
+        <Label Grid.Row="2" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoWorkflow}" Margin="1" Visibility="{Binding Path=EsWorkflowExistente, Converter={StaticResource BooleanoAVisibilityConverter}}"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" Margin="1" Visibility="{Binding Path=EsWorkflowExistente, Converter={StaticResource BooleanoAVisibilityConverter}}"
+                      ItemsSource="{Binding Path=Workflows}" DisplayMemberPath="Codigo" SelectedValuePath="Id" SelectedValue="{Binding Path=WorkflowId, UpdateSourceTrigger=PropertyChanged}"/>
+            
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Visibility="{Binding Path=EsNuevoWorkflow, Converter={StaticResource BooleanoAVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoWorkflowDatos}" Margin="1" Grid.ColumnSpan="2"/>
+            <Label Grid.Row="1" Grid.Column="0" Margin="1" Content="{x:Static properties:Resources.GuardarComoWorkflowCodigo}" />
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding Path=WorkflowCodigo, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Margin="1" Content="{x:Static properties:Resources.GuardarComoWorkflowDescripcion}" />
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding Path=WorkflowDescripcion, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Margin="1" Content="{x:Static properties:Resources.GuardarComoWorkflowTipo}" />
+            <ComboBox Grid.Row="3" Grid.Column="1" Margin="1" 
+                      ItemsSource="{Binding Path=TiposWorkflow}" SelectedValue="{Binding Path=WorkflowTipo}"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoWorkflowActivo}" Margin="1"/>
+            <CheckBox Grid.Row="4" Grid.Column="1" Margin="1" VerticalAlignment="Center" IsChecked="{Binding Path=WorkflowActivo}"/>
+
+            <Label Grid.Row="5" Grid.Column="0" Margin="1" Content="{x:Static properties:Resources.GuardarComoWorkflowCentro}" />
+            <ComboBox Grid.Row="5" Grid.Column="1" Margin="1" 
+                      ItemsSource="{Binding Path=Centros}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{Binding Path=WorkflowCentroId, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="100*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoDatosVersion}" Margin="1" Grid.ColumnSpan="2"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoDefinicionComentarios}" Margin="1"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="1" 
+                     Text="{Binding Path=DefinicionComentarios, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Grid.Row="2" Grid.Column="0" Content="{x:Static properties:Resources.GuardarComoDefinicionActiva}" Margin="1"/>
+            <CheckBox Grid.Row="2" Grid.Column="1" Margin="5,1,1,1" VerticalAlignment="Center" IsChecked="{Binding Path=DefinicionActiva}"/>
+            <Label Grid.Row="3" Grid.Column="0" Margin="1" Content="{x:Static properties:Resources.WorkflowFechaActivacion}" />
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" Margin="1">
+                <DatePicker SelectedDate="{Binding DefinicionFechaActivacion, UpdateSourceTrigger=PropertyChanged}" Margin="5,1,1,5" Width="129"/>
+                <xctk:TimePicker Value="{Binding DefinicionFechaActivacion, UpdateSourceTrigger=PropertyChanged}" AllowSpin="False" ShowButtonSpinner="False" Width="121" Margin="10,1,1,5" />
+            </StackPanel>
+        </Grid>
+       <StackPanel Grid.Row="5" Grid.ColumnSpan="2" FlowDirection="LeftToRight" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{x:Static properties:Resources.Guardar}" Margin="3" Width="100" Command="{Binding GuardarCommand}" Click="CerrarVentana" />
+            <Button Content="{x:Static properties:Resources.Cancelar}" Margin="3" Width="100" Click="CerrarVentana"/>
+        </StackPanel>
+    </Grid>
+</Window>

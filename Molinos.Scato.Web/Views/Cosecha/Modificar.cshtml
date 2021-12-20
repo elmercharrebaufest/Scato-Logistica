@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CosechaDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Cosecha_Modificar;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/cosecha.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Cosecha_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}
+<script>
+    $(document).ready(function () {
+        $('#Descripcion').attr("readonly", "readonly");
+        $('#Descripcion').attr("disabled", "disabled");
+    });
+</script>

@@ -1,0 +1,417 @@
+<div class="row">
+  <!-- Inicio BALANZA 7 -->
+  <div class="col">
+    <div id="balanza7" class="mt-4 px-4 pb-4 shadow" style="background-color: white; min-height: 5rem;">
+      <app-collapse-button collapseSelectorId="collapseBalanza7"></app-collapse-button>
+      <h4 class="colorTitulo pt-4">Balanza 7</h4>
+      <h6 class="colorSubTitulo">Start: 20/07/2021 18:00hs</h6>
+      
+      <div class="alert alert-warning" role="alert" *ngIf="balanza7DiferenteNombre" >
+        El nombre del buque no coincide con el registrado en balanzadas.
+      </div>
+
+      <div id="collapseBalanza7" class="collapse show">
+        <table class="claseTable" id="excel-table7">
+
+          <div fxLayout='row wrap' class="mt-4">
+            <div fxFlex='100'>
+              <div fxLayout='row wrap' class="tituloCentrado" >
+                <tr class="claseTr" >
+                  <th>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='4'>
+                      <input type="checkbox" 
+                            (click)="seleccionarTodo(7)">
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='15'>
+                      <label>Fecha</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='10'>
+                      <label>Hora</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='20'>
+                      <label>Tn</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='15'>
+                      <label>Producto</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='13'>
+                      <label>Bodega</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='10'>
+                        <label>% carga</label>
+                    </div>
+                  </th>
+                </tr>
+              </div>
+            </div>
+          </div>
+
+          <div class='max-5vh'>
+            <perfect-scrollbar>
+              <form [formGroup]="balanza7Form">
+                <ng-container formArrayName="balanzas7" >
+                  <ng-container *ngFor="let balanza of balanza7Form.get('balanzas7').value; let i = index"
+                                [formGroupName]="i" >
+                    
+                    <div fxLayout='row wrap' class="distancia-filas" >
+                      <div fxFlex='100'>
+                        <div fxLayout='row wrap'>
+                          
+                          <tbody>
+                            <tr class="claseTr" >
+                              <td class="claseTd" >
+                                <div class="form-group alineaCheck borde-div" fxFlex='4'>
+                                  <input type="checkbox" 
+                                        *ngIf="balanza.toneladas<1000"
+                                        formControlName="seleccionado">
+                                </div>
+                                <div class="form-group" fxFlex='15'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="fecha"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='10'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="hora"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <!-- Inicio Toneladas -->
+                                <div class="form-group" fxFlex='20' *ngIf="balanza.toneladas>999">
+                                  <input type="text"
+                                        class="inputLineasEmbarque" 
+                                        formControlName="toneladas"
+                                        [attr.disabled]="true">
+                                </div>
+                                <div class="form-group lineas" fxFlex='20' *ngIf="balanza.toneladas<1000">
+
+                                  <div class="col borde-div">
+                                    <div class="row">
+                                      <div class="col" *ngIf="balanza.toneladas>0">
+                                        <input type="text"
+                                              class="inputLineasEmbarque" 
+                                              formControlName="toneladas"
+                                              [attr.disabled]="true"
+                                              [ngClass]="'bajaCarga'">
+                                      </div>
+                                      <div class="col" *ngIf="balanza.toneladas==0">
+                                        <input type="text"
+                                              class="inputLineasEmbarque"
+                                              value="STOP"
+                                              [attr.disabled]="true"
+                                              [ngClass]="'stop'" >
+                                      </div>
+        
+                                      <i class="fas fa-angle-down" (click)='openModalAddBuque(addBuque33)'></i>
+                                      <!-- Modal de carga de buques sin plano de carga -->
+                                      <ng-template #addBuque33 let-c="close" let-d="dismiss">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title" 
+                                              id="modal-basic-title"
+                                              [class]=" balanza.toneladas==0 ? 'stop' : 
+                                                        balanza.toneladas<1000 ? 'bajaCarga' : 
+                                                        '' " > Balanzada: {{balanza.fecha}} - {{balanza.hora}} </h4>
+                                          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class='modal-body'>
+                                          <label class="ngbDropdownMenu">Motivo:</label>
+    
+                                          <select class="custom-select" 
+                                                  formControlName="motivosFallasBalanza"
+                                                  [compareWith]="compareMotivosBalanzas">
+                                            <option value="" selected></option>
+                                            <option *ngFor="let mb of motivosBalanzas78" [ngValue]="mb"> {{ mb.siglas}} - {{ mb.nombre }} </option>
+                                          </select>
+    
+                                          <hr>
+                                          <label class="ngbDropdownMenu">Observación:</label>
+    
+                                          <div class="col">
+                                            <div class="row">
+                                              <textarea cols="20" rows="4" formControlName="observaciones" class="custom-textarea"></textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-outline-dark" (click)="c(guardarModal(i, balanza.numeroBalanza))">Guardar</button>
+                                        </div>
+                                      </ng-template>
+                                    </div>
+                                    
+                                    <div class="row" *ngIf="balanza.toneladas<1000" >
+                                      <label class="observacion" *ngIf="balanza.observaciones" >Ver observaciones</label>
+                                      <label class="observacion" *ngIf="!balanza.observaciones" >Agregar obs.</label>
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <!-- Fin Toneladas -->
+                                <div class="form-group" fxFlex='15'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="producto"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='13'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="bodega"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='10'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="porcentajeCarga"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+      
+                              </td>
+                            </tr>
+                            
+                          </tbody>
+
+                        </div>
+                      </div>
+                      <i class='fas fa-angle-down float-down-arrow' *ngIf='i > 6'></i>
+                    </div>
+
+                  </ng-container>
+                </ng-container>
+              </form>
+            </perfect-scrollbar>
+          </div>
+
+        </table>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="colorSubTitulo">End: 21/07/2021 18:30hs</h6>
+        </div>
+        <div class="col totales">
+          Tn. Totales<br>
+          <ul>
+            <li *ngFor="let res7 of resultado7" > {{ res7.producto }}: {{ res7.toneladas | number }} Tn </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin BALANZA 7 -->
+
+  <!-- Inicio BALANZA 8 -->
+  <div class="col">
+    <div id="balanza8" class="mt-4 px-4 pb-4 shadow" style="background-color: white; min-height: 5rem;">
+      <app-collapse-button collapseSelectorId="collapseBalanza8"></app-collapse-button>
+      <h4 class="colorTitulo pt-4">Balanza 8</h4>
+      <h6 class="colorSubTitulo">Start: 20/08/2021 18:00hs</h6>
+
+      <div class="alert alert-warning" role="alert" *ngIf="balanza8DiferenteNombre" >
+        El nombre del buque no coincide con el registrado en balanzadas.
+      </div>
+      
+      <div id="collapseBalanza8" class="collapse show">
+        <table class="claseTable" id="excel-table8">
+
+          <div fxLayout='row wrap' class="mt-4">
+            <div fxFlex='100'>
+              <div fxLayout='row wrap' class="tituloCentrado" >
+                <tr class="claseTr" >
+                  <th>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='4'>
+                      <input type="checkbox" 
+                            (click)="seleccionarTodo(8)">
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='15'>
+                      <label>Fecha</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='10'>
+                      <label>Hora</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='20'>
+                      <label>Tn</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='15'>
+                      <label>Producto</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='13'>
+                      <label>Bodega</label>
+                    </div>
+                    <div class="form-group div-active pl-2 borde-div" fxFlex='10'>
+                        <label>% carga</label>
+                    </div>
+                  </th>
+                </tr>
+              </div>
+            </div>
+          </div>
+
+          <div class='max-5vh'>
+            <perfect-scrollbar>
+              <form [formGroup]="balanza8Form">
+                <ng-container formArrayName="balanzas8" >
+                  <ng-container *ngFor="let balanza of balanza8Form.get('balanzas8').value; let i = index"
+                                [formGroupName]="i" >
+                    
+                    <div fxLayout='row wrap' class="distancia-filas" >
+                      <div fxFlex='100'>
+                        <div fxLayout='row wrap'>
+                          
+                          <tbody>
+                            <tr class="claseTr" >
+                              <td class="claseTd" >
+                                <div class="form-group alineaCheck borde-div" fxFlex='4'>
+                                  <input type="checkbox" 
+                                        *ngIf="balanza.toneladas<1000"
+                                        formControlName="seleccionado">
+                                </div>
+                                <div class="form-group" fxFlex='15'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="fecha"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='10'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="hora"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <!-- Inicio Toneladas -->
+                                <div class="form-group" fxFlex='20' *ngIf="balanza.toneladas>999">
+                                  <input type="text"
+                                        class="inputLineasEmbarque" 
+                                        formControlName="toneladas"
+                                        [attr.disabled]="true">
+                                </div>
+                                <div class="form-group lineas" fxFlex='20' *ngIf="balanza.toneladas<1000">
+
+                                  <div class="col borde-div">
+                                    <div class="row">
+                                      <div class="col" *ngIf="balanza.toneladas>0">
+                                        <input type="text"
+                                              class="inputLineasEmbarque" 
+                                              formControlName="toneladas"
+                                              [attr.disabled]="true"
+                                              [ngClass]="'bajaCarga'">
+                                      </div>
+                                      <div class="col" *ngIf="balanza.toneladas==0">
+                                        <input type="text"
+                                              class="inputLineasEmbarque"
+                                              value="STOP"
+                                              [attr.disabled]="true"
+                                              [ngClass]="'stop'" >
+                                      </div>
+        
+                                      <i class="fas fa-angle-down" (click)='openModalAddBuque(addBuque33)'></i>
+                                      <!-- Modal de carga de buques sin plano de carga -->
+                                      <ng-template #addBuque33 let-c="close" let-d="dismiss">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title" 
+                                              id="modal-basic-title"
+                                              [class]=" balanza.toneladas==0 ? 'stop' : 
+                                                        balanza.toneladas<1000 ? 'bajaCarga' : 
+                                                        '' " > Balanzada: {{balanza.fecha}} - {{balanza.hora}} </h4>
+                                          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class='modal-body'>
+                                          <label class="ngbDropdownMenu">Motivo:</label>
+    
+                                          <select class="custom-select" 
+                                                  formControlName="motivosFallasBalanza"
+                                                  [compareWith]="compareMotivosBalanzas">
+                                            <option value="" selected></option>
+                                            <option *ngFor="let mb of motivosBalanzas78" [ngValue]="mb"> {{ mb.siglas }} - {{ mb.nombre }} </option>
+                                          </select>
+    
+                                          <hr>
+                                          <label class="ngbDropdownMenu">Observación:</label>
+    
+                                          <div class="col">
+                                            <div class="row">
+                                              <textarea cols="20" rows="4" formControlName="observaciones" class="custom-textarea"></textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-outline-dark" (click)="c(guardarModal(i, balanza.numeroBalanza))">Guardar</button>
+                                        </div>
+                                      </ng-template>
+                                    </div>
+                                    
+                                    <div class="row" *ngIf="balanza.toneladas<1000" >
+                                      <label class="observacion" *ngIf="balanza.observaciones" >Ver observaciones</label>
+                                      <label class="observacion" *ngIf="!balanza.observaciones" >Agregar obs.</label>
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <!-- Fin Toneladas -->
+                                <div class="form-group" fxFlex='15'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="producto"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='13'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="bodega"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+                                <div class="form-group" fxFlex='10'>
+                                  <input type="text" 
+                                        class="inputLineasEmbarque" 
+                                        formControlName="porcentajeCarga"
+                                        [attr.disabled]="true"
+                                        [ngClass]="{'stop': balanza.toneladas==0, 'bajaCarga': (balanza.toneladas>0 && balanza.toneladas<1000)}"/>
+                                </div>
+      
+                              </td>
+                            </tr>
+                            
+                          </tbody>
+
+                        </div>
+                      </div>
+                      <i class='fas fa-angle-down float-down-arrow' *ngIf='i > 6'></i>
+                    </div>
+
+                  </ng-container>
+                </ng-container>
+              </form>
+            </perfect-scrollbar>
+          </div>
+
+        </table>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h6 class="colorSubTitulo">End: 21/08/2021 18:30hs</h6>
+        </div>
+        <div class="col totales">
+          Tn. Totales<br>
+          <ul>
+            <li *ngFor="let res8 of resultado8" > {{ res8.producto }}: {{ res8.toneladas | number }} Tn </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fin BALANZA 8 -->
+</div>
+
+<button class=" btn btn-primary m-4" (click)='terminarCargaExportar()'>TERMINAR CARGA Y EXPORTAR PLANILLAS</button>

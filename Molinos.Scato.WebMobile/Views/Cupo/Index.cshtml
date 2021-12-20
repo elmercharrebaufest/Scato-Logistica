@@ -1,0 +1,193 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model List<CupoMobileDto>
+@{
+    ViewBag.Title = Textos.ListadoDeCupos_Titulo;
+
+    var materialDesc = ViewBag.MaterialDescripcion;
+}
+
+<script src="~/scripts/Chart.js" type="text/javascript"></script>
+
+<style>
+    .popover-content {
+        color: black;
+        font-size: 10px !important;
+        font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif" !important;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+
+    });
+</script>
+
+<div class="row mx-1 mt-2 justify-content-center" id="graficodeplantahead">
+    <div class="col-12 col-sm panel-heading panel-darkblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Cupeados">
+        <div class="text-center" >@Textos.Cupos_Del_Día</div>
+        <br />
+        <div class="d-flex justify-content-between">
+            <div> @Textos.Total</div>
+            <div> @(Model.Sum(x => x.Otorgados))</div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="d-flex justify-content-between text-nowrap">
+                <div> @material.Material</div>
+                <div> @material.Otorgados</div>
+            </div>
+        }
+    </div>
+    <div class="col-12 col-sm panel-heading panel-flatblue m-2" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="right" data-trigger="hover" data-content="@Textos.Descargados">
+        <div class="text-center">@Textos.Cupos_Etapa_Tara_Cuadro</div>
+        <div class="row flex-nowrap">
+            <div class="offset-5 col">
+                @Textos.Cupos_DeHoy
+            </div>
+            <div class="col">
+                @Textos.Todos
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                @Textos.Total
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.Descargados))
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.DescargadosTodos))
+            </div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="row">
+                <div class="col-5 text-nowrap">
+                    @material.Material
+                </div>
+                <div class="col">
+                    @material.Descargados
+                </div>
+                <div class="col">
+                    @material.DescargadosTodos
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="col-12 panel-heading panel-paleblue m-2" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-content="@Textos.Arribados">
+        <div class="text-center">@Textos.CuposDelDía_En_SAP</div>
+        <div class="row">
+            <div class="col offset-3" >
+                @Textos.Cupos_DeHoy
+            </div>
+            <div class="col" >
+                @Textos.Cupos_Vencidos
+            </div>
+            <div class="col" >
+                @Textos.Cupos_Futuro
+            </div>
+            <div class="col text-nowrap" >
+                @Textos.SinCupo
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                @Textos.Total
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.ArribadosDia))
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.ArribadosVencidos))
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.ArribadosFuturos))
+            </div>
+            <div class="col">
+                @(Model.Sum(x => x.SinCupo))
+            </div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="row">
+                <div class="col-3 text-nowrap ">
+                    @material.Material
+                </div>
+                <div class="col">
+                    @material.ArribadosDia
+                </div>
+                <div class="col">
+                    @material.ArribadosVencidos
+                </div>
+                <div class="col">
+                    @material.ArribadosFuturos
+                </div>
+                <div class="col">
+                    @material.SinCupo
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="row mx-1" id="graficodeplantahead">
+    <div class="col panel-heading panel-lightblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.CumplimientoDia">
+        <div class="text-center">@Textos.Cupos_Cumplidos</div>
+        <br />
+        <div class="d-flex justify-content-between">
+            <div>@Textos.Total</div>
+            <div>@(Model.Sum(x => x.Otorgados) != 0 ? Model.Sum(x => x.ArribadosDia) * 100 / (Model.Sum(x => x.Otorgados)) : 0)%</div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="d-flex justify-content-between text-nowrap">
+                <div>@material.Material</div>
+                <div>@(material.Otorgados != 0 ? (material.ArribadosDia * 100 / material.Otorgados) : 0)%</div>
+            </div>
+        }
+    </div>
+    <div class="col-sm-4 col-xs-12 panel-padding padding-large panel-margin panel-heading panel-miniblue" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="@Textos.Pendientes">
+        <div class="row d-flex justify-content-between ">
+            <div class="titulo-header" >
+                @Textos.Cupos_PendientesValidacion
+            </div>
+            <div class="titulo-header text-center" >@(Model.Sum(x => x.Pendiente)) </div>
+            <div class="col-sm-12 titulo-header text-center">@Textos.Cupo_SinRecorrido</div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <br />
+                <div class="d-flex justify-content-between">
+                    <span> @Textos.Total</span>
+                    <span>@(Model.Where(a => a.Material != "Otros").Sum(x => x.SinRecorrido))</span>
+                </div>
+
+                @foreach (var material in Model.Where(a => a.Material != "Otros"))
+                {
+                    <div class="d-flex justify-content-between text-nowrap">
+                        <span> @material.Material</span>
+                        <span> @material.SinRecorrido</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col panel-heading panel-superminiblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Excedente">
+        <div class="text-center">@Textos.Cupos_ExcedentesdelDía</div>
+        <br />
+        <div class="d-flex justify-content-between">
+            <div>@Textos.Total</div>
+            <div>@(Model.Sum(x => x.Excedente))</div>
+        </div>
+        @foreach (var material in Model)
+        {
+            <div class="d-flex justify-content-between text-nowrap">
+                <div>@material.Material</div>
+                <div>@material.Excedente</div>
+            </div>
+        }
+    </div>
+</div>
+

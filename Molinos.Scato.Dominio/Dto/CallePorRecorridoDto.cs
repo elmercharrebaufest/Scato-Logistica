@@ -1,0 +1,22 @@
+﻿
+using Molinos.Scato.Dominio.Enums;
+using System;
+
+namespace Molinos.Scato.Dominio.Dto
+{
+    public sealed class CallePorRecorridoDto
+    {
+        public int Id { get; set; }
+        public string Patente { get; set; }
+        public int MaterialId { get; set; }
+        public string MaterialDesc { get; set; }
+        public int CalleId { get; set; }
+        public int Calidad { get; set; }
+        public DateTime FechaIngeso { get; set; }
+        public bool UltimoDeLaFila { get; set; }
+        public bool Rechazado { get; set; }
+        public bool AsignadoEnPuestoComando { get; set; }
+        public TipoCalle TipoCalle { get; set; }
+        public bool Escalable { get; set; }
+    }
+}

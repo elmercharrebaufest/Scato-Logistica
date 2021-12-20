@@ -1,0 +1,69 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model FotosDto
+@{
+    int recorridoId = ViewBag.RecorridoId;
+    bool esRechazado = ViewBag.Rechazado;
+    string tipoDocumento = ViewBag.TipoDocumentoString;
+    string patente = ViewBag.Patente;
+    string numeroDoc = ViewBag.NumeroDocumento;
+    bool tieneDatosExportacion = ViewBag.TieneDatosExportacion;
+}
+
+    <div class="container-fluid">
+        @{
+            <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
+            <br />
+            <div class="row">
+                <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+                <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+                <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+                <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+                <div class="span2 negrita" style="">@Textos.Patente</div>
+                <label class="span2" style="margin-left:-43px">@patente</label>
+                <div class="right">
+                    @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+<div class ="container-fluid">
+    <ul class="nav nav-tabs">
+        <li>
+            @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        <li>
+            @Html.ActionLink(Textos.Pesada, "Pesada", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        <li>
+            @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AnalisisDeCalidad, "AnalisisDeCalidad", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        <li>
+            @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AsignacionDeRuta, "AsignacionDeRuta", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        <li class="active">
+            @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_Fotos, "Fotos", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        <li>
+            @Html.ActionLink(Textos.Recorrido, "Recorrido", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+        </li>
+        @if (tieneDatosExportacion)
+        {
+            <li>
+                @Html.ActionLink(Textos.DatosExportacion, "DatosExportacion", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+        }
+        @if (esRechazado)
+        {
+            <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+        }
+    </ul>
+</div>
+
+@Html.Partial("~/Views/Foto/Fotos.cshtml",Model)
+
+ 

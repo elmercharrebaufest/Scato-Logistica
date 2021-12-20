@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlDeTiempoDto
+
+@{
+    ViewBag.Title = Textos.ControlDeTiempo_Editar;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Script("~/Scripts/controlDeTiempos.crearModificar.js")" type="text/javascript"></script>
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.ControlDeTiempo_Editar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

@@ -1,0 +1,21 @@
+<!-- Plano Content PlaceHolder -->
+<!--<app-periodo-carga></app-periodo-carga>-->
+<ship-spinner *ngIf='cargaPdf' [src]='"pdf"'></ship-spinner>
+<div id="grafico-liquidos" class="mt-4 shadow bg-white min-h5">
+    <app-tanques></app-tanques>
+</div>
+
+<div class="row mt-4" id='lineas-embarque-print'>
+  <div class="col">
+    <div id="lineasEmbarque" class="shadow" style="background-color: white; min-height: 5rem;">
+      <app-lineas></app-lineas>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center my-5">
+    <button type="button" class="btn btn-danger" [routerLink]="['/lineup']">CANCELAR</button>
+    <button type="button" class="btn btn-primary mx-5" (click)="guardar(false)">GUARDAR</button>
+    <button class="btn btn-secondary" (click)="imprimir()">IMPRIMIR</button>
+    <button type="button" class="btn btn-success mx-5" (click)="guardar(true)">FINALIZAR</button>
+</div>

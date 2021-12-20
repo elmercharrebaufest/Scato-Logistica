@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[EstadoMaterial] (
+    [Id]                         INT            IDENTITY (1, 1) NOT NULL,
+    [CamionesEnElDia]      INT  NOT NULL,
+	[CamionesEnPlanta]      INT  NOT NULL,
+	[TotalIngresosEnElDia]      INT  NOT NULL,
+	[Rechazados]      INT  NOT NULL,
+	[Peso]      INT  NOT NULL,
+	[Material]      nvarchar(100)  NOT NULL,
+	[CentroId]      INT  NOT NULL,
+	[EsGrano]      bit  NOT NULL,
+	[EsIngreso]      bit  NOT NULL
+	    CONSTRAINT [PK_dbo.EstadoMaterial] PRIMARY KEY CLUSTERED ([Id] ASC), 
+);

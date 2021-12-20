@@ -1,0 +1,39 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.IngresoDeLoteModel
+
+@{
+    ViewBag.Title = Textos.ActIngresoDeLote;
+    Layout = null;
+}
+
+@using (Html.BeginForm("Confirmar", "IngresoDeLote", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActIngresoDeLote }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.InstanciaWorkflow)
+    @Html.HiddenFor(model => model.Centro)
+    @Html.HiddenFor(model => model.AlmacenId)
+    @Html.HiddenFor(model => model.WorkflowDefinicionId)
+    @Html.HiddenFor(model => model.Kgs)
+    @Html.HiddenFor(model => model.Material)
+    @Html.HiddenFor(model => model.NroLote)
+    <div class="modal fade" id="dialogo-lote">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-lote-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Html.DisplayFor(m => m.Mensaje)</h5>
+    </div>
+    <div class="modal-body" id="dialogo-lote-body">
+        <div class="control-group">
+            <div class="controls">
+                @Html.DisplayFor(m => m.Mensaje)<br/>
+                @Textos.IngresarLote_DeseaContinuar
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+@*        <button type="submit" class="btn lote-boton">@Textos.Si</button>*@
+        @Html.ActionLink(Textos.Si, "Confirmar", "IngresoDeLote", null, new{@class = "lote-boton btn btn-primary causaBlock"}) 
+        <button data-dismiss="modal" class="btn btn-warning dialogo-lote-cerrar">@Textos.No</button>
+    </div>
+</div>
+    
+}

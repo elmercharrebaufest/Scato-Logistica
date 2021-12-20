@@ -1,0 +1,159 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.BuscarLoteAuditoriaDto
+@{
+    ViewBag.Title = Textos.BuscarLote_Titulo;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.camaras;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/loteBiotecnologia.js")"></script>
+<link href="~/Content/bulma.min.css" rel="stylesheet" />
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"></div>
+<ul class="nav nav-tabs">
+    @if (PermisosHelper.Is(PermisosScato.ArmarLote))
+    {
+        <li>
+            @Html.ActionLink(Textos.Lote_Titulo, "Index", "Lote")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.BuscarLote))
+    {
+        <li>
+            @Html.ActionLink(Textos.BuscarLote_Titulo, "BuscarLote", "Lote")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.TablaConversionMaterial))
+    {
+        <li>
+            @Html.ActionLink(Textos.TablaConversion, "Index", "ConversionMaterial")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+    {
+        <li>
+            @Html.ActionLink(Textos.ArmarLoteBiotecnologia, "Index", "LoteBiotecnologia")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+    {
+        <li>
+            @Html.ActionLink(Textos.BuscarLoteBiotecnologia, "BuscarLote", "LoteBiotecnologia")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteAuditoria))
+    {
+        <li class="active">
+            @Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")
+        </li>
+    }
+</ul>
+<div class="container">
+    <div class="titSecciones">@Textos.BuscarLote_Titulo</div>
+</div>
+
+@using (Html.BeginForm("SubirArchivo", "LoteAuditoria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container grillaPad">
+        <div class="row-fluid">
+            <div class="span12">
+                <fieldset class="grupo-carta-porte">
+                    Subir resultados de Cámara
+                    <div class="row row-carta-porte">
+                        <div class="field span4" id="file-js-example" style="margin-top: 3px;">
+                            <div class="file is-info has-name">
+                                <label class="file-label" style="margin:0">
+                                    <input class="file-input" multiple="multiple" type="file" name="resume">
+                                    <span class="file-cta" style="width:123px; height:19px">
+                                        <span class="file-label">
+                                            Seleccione Archivo
+                                        </span>
+                                    </span>
+                                    <span class="file-name" style="color: gray; width:197px; height:19px">
+                                        Ningún Archivo Seleccionado
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="span2" style="margin-top: 6px; margin-left: -2px;">
+                            <button type="submit" class="btn" id="guardar" style="width:85%">Guardar</button>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ArchivoRutaDestino)
+                </fieldset>
+            </div>
+        </div>
+    </div>
+}
+<div class="container content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("BuscarLote", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" }))
+            {
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left;">
+                    <div style="width: 400px; float: left;">
+                        @Html.Label(Textos.FechaDesde)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.EditorFor(model => model.FechaDesde)
+                        </div>
+                        @Html.Label(Textos.FechaHasta)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.EditorFor(model => model.FechaHasta)
+                        </div>
+                        @Html.Label(Textos.Camara)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.DropDownListFor(model => model.CamaraId, camaras, Textos.Default_Camara, new { id = "camaraDropDown" })
+                        </div>
+                        @Html.Label(Textos.Material)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.TextBoxFor(model => model.Material, new { @class = "control" })
+                            @Html.ValidationMessageFor(model => model.Material)
+                            @Html.HiddenFor(model => model.MaterialId)
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left; margin-left: 5px; height: 152px; margin-bottom: 5px;">
+                    <div style="float: left;">
+                        @Html.Label(Textos.Lote_NroLote)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.TextBoxFor(model => model.NroLote, new { @class = "input-large" })
+                        </div>
+                    </div>
+                </fieldset>
+                <center>
+                    <button type="submit" class="btn">@Textos.BuscarLote</button>
+                </center>
+            }
+        </div>
+    </div>
+
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>
+
+<script>
+    const fileInput = document.querySelector('#file-js-example input[type=file]');
+    $("#file-js-example").change(function () {
+        if (fileInput.files.length > 0) {
+            const fileName = document.querySelector('#file-js-example .file-name');
+            fileName.textContent = fileInput.files[0].name;
+        }
+    });
+    $('#documentos').val(null);
+
+    $("#guardar").click(function () {
+
+        var $fileUpload = $("input[type='file']");
+        if (parseInt($fileUpload.get(0).files.length) > 200) {
+            MostrarAlertaError("Solo puede subir un máximo de 200 archivos");
+            return false;
+        } else {
+            BlockUI();
+            return true;
+        }
+    });
+</script>

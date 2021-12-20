@@ -1,0 +1,49 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@model Molinos.Scato.Dominio.Dto.BalanzadaDto
+
+@{
+    var items = (ListaPaginada<BalanzadaDto>)ViewBag.Items;
+}
+
+<div class="row-fluid">
+    <div class="span6">
+        @Html.HiddenFor(m => m.CargaInicial_NumeroBalanza)
+        <div class="control-group">
+            @Html.LabelFor(m => m.Id, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Id, new { @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Id)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.NumeroBalanza, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.NumeroBalanza, new { @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.NumeroBalanza)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.PesoBruto, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.PesoBruto)
+                @Html.ValidationMessageFor(m => m.PesoBruto)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.PesoTara, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.PesoTara)
+                @Html.ValidationMessageFor(m => m.PesoTara)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.PesoNeto, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.PesoNeto)
+                @Html.ValidationMessageFor(m => m.PesoNeto)
+            </div>
+        </div>
+    </div>
+</div>
+

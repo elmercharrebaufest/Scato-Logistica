@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CentroDto
+
+@{
+    ViewBag.Title = Textos.Centro_Crear;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/Scripts/validarFechas.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/scripts/validarCuit.js")" type="text/javascript" ></script>
+<script src="@Url.Script("~/scripts/mostrarLocalidades.js")" type="text/javascript" ></script>
+<script src="@Url.Script("~/scripts/centro.Modificar.js")" type="text/javascript" ></script>
+
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions { OnSuccess = "redireccionarSiFueExitoso"}, new { @class = "form-horizontal", data_dialogo_titulo = Textos.Centro_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

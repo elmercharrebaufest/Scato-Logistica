@@ -1,0 +1,39 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.ValidarContratoModel
+
+@{
+    ViewBag.Title = Textos.ActValidarContrato;
+    Layout = null;
+}
+<script type="text/javascript">
+    function VolverListaDeCamiones() {
+        window.location = $('#ListaDeCamionesUrl').val();
+    }
+</script>
+
+@using (Ajax.BeginForm("Confirmar", "ValidarContrato", null, new AjaxOptions { OnComplete = "VolverListaDeCamiones" }, new { @class = "causaBlock", data_mensaje_espera = Textos.ActValidarContrato }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.InstanciaWorkflow)
+    @Html.HiddenFor(model => model.WorkflowDefinicionId)
+    @Html.HiddenFor(model => model.Contrato)
+    <div class="modal fade" id="dialogo-contrato">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-contrato-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Html.DisplayFor(m => m.Mensaje)</h5>
+    </div>
+    <div class="modal-body" id="dialogo-contrato-body">
+        <div class="control-group">
+            <div class="controls">
+                @Html.DisplayFor(m => m.Mensaje)<br/>
+                @Textos.IngresarLote_DeseaContinuar
+            </div>
+        </div>
+    </div>
+        <div class="modal-footer">
+            <input type="submit" class="contrato-boton btn btn-primary" value="@Textos.Si" id="btnConfirmar" />
+            <button data-dismiss="modal" class="btn btn-warning dialogo-contrato-cerrar">@Textos.No</button>
+        </div>
+</div>
+    
+}

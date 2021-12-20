@@ -1,0 +1,47 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoToneladasRangoDeDiasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoToneladasPorRangoDeDias.js")"></script>
+<br />
+<div id="graficotoneladasporrangodedias" class="col border rounded panel-padding">
+
+    <form id="formToneladasPorDia">
+        <div class="form-row">
+            <div class="col-12 col-sm h5 mt-auto  text-center">
+                @Textos.ToneladasPorRangoDia
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "form-control", @id = "materialDescripcionToneladasDias" })
+                @Html.ValidationMessageFor(model => model.MaterialDescripcion)
+                @Html.HiddenFor(model => model.MaterialId, new { @id = "materialIdToneladasPorDia" })
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.LabelFor(model => model.FechaDesde, new { @class = "sr-only FechaDesde" })
+                <div class="input-group date ancho-maximo FechaDesde">
+                    @Html.EditorFor(model => model.FechaDesde, Model != null ? Model.FechaDesde.FormattedFixed() : string.Empty)
+                </div>
+                @Html.ValidationMessageFor(model => model.FechaDesde)
+            </div>
+            <div class="col-12 col-sm m-auto">
+                @Html.LabelFor(model => model.FechaHasta, new { @class = "sr-only" })
+                <div class="input-group date ancho-maximo FechaHasta">
+                    @Html.EditorFor(model => model.FechaHasta, Model != null ? Model.FechaHasta.FormattedFixed() : string.Empty)
+                </div>
+                @Html.ValidationMessageFor(model => model.FechaHasta)
+            </div>
+            <div class="col-12 col-sm m-auto">
+                <button class="btn btn-outline-success w-100" data-bind="click: generarGraficoToneladasPorRangoDeDias">@Textos.Generar</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row" id="partialContainerToneladasPorRangoDeDias">
+        @Html.Partial("_GraficoToneladasPorRangoDeDias", Model)
+    </div>
+</div>
+<div id="autocompleteCorr"></div>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>

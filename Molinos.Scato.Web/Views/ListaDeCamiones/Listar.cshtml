@@ -1,0 +1,133 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model FiltroListaDeWorkflowsDto
+
+@{
+
+    Layout = null;
+    var items = (ListaPaginada<InstanciaWorkflowDto>)ViewBag.Items;
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+
+    columnas.Add(grid.ColumnaEjecutar(Html, "btn"));
+
+    Model.Columnas = Model.Columnas.Count == 1 ? Model.Columnas.FirstOrDefault().Split('|', ',').ToList() : Model.Columnas;
+    if (Model.Columnas.Contains("Foto"))
+    {
+        columnas.Add(grid.ColumnaVerFotos(Html, "btn"));
+    }
+    if (Model.Columnas.Contains("TipoVehiculo"))
+    {
+        columnas.Add(grid.Columna("TipoVehiculo", Textos.Workflow_TipoVehiculo));
+    }
+    if (Model.Columnas.Contains("Patente"))
+    {
+        // columnas.Add(grid.Columna("Patente", Textos.Camion_Patente, (item) => new MvcHtmlString("<div class='" + (item.EstaDemorado ? " rowEstaDemorado " : "") + (item.Rechazado ? " rowRechazado " : "") + "'>" + item.Patente + "</div>")));
+        columnas.Add(grid.ColumnaConsultaVehiculo(Html, "ModificarDocumentoDeIngreso"));
+    }
+    if (Model.Columnas.Contains("ProximaEtapa"))
+    {
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty) + (item.ProximaAccion.Contains("Pendiente") ? Html.BotonLink(Textos.Eliminar, "Eliminar", "CargaDeCupo", new { Id = item.RecorridoId }, " ajax-borrar-link", "icon-trash", true).ToHtmlString() : string.Empty) + (item.EsEspecial && !item.CaracteristicasNoCorrenspodenEspecial ? " <strong style='color: #ffe135;' >" + Textos.CalidadEspecial + "</strong>" : string.Empty) + (item.AnalisisObligatorio ? " <span  class='label label-warning'> <strong  >" + Textos.AnalisisObligatorio + "</strong> </span>" : string.Empty) + (item.VehiculoDemorado ? "<i class=\"fa fa-hourglass-half\"/>" : "") + (item.LlegoEnHorario ? "<i class=\"icon-time\" title=\"Priorizar\"></i>" : ""))));
+    }
+    if (Model.Columnas.Contains("Workflow"))
+    {
+        columnas.Add(grid.Columna("Workflow", Textos.Workflow));
+    }
+    if (Model.Columnas.Contains("MaterialId"))
+    {
+        columnas.Add(grid.Columna("MaterialCodigoSap", Textos.Workflow_MaterialId));
+    }
+    if (Model.Columnas.Contains("Material"))
+    {
+        columnas.Add(grid.Columna("Material", Textos.Material));
+    }
+    if (Model.Columnas.Contains("Transportista"))
+    {
+        columnas.Add(grid.Columna("Transportista", Textos.Transportista));
+    }
+    if (Model.Columnas.Contains("Cuit"))
+    {
+        columnas.Add(grid.Columna("Cuit", Textos.Centro_Cuit));
+    }
+    if (Model.Columnas.Contains("TipoDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("TipoDocumentoDeIngreso", Textos.TipoDocumentoIngreso, t => ((TipoDocumentoIngreso)t.TipoDocumentoDeIngreso).DisplayEnum()));
+    }
+    if (Model.Columnas.Contains("NumeroDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("NumeroDocumentoDeIngreso", Textos.NumeroDocumentoIngreso));
+    }
+    if (Model.Columnas.Contains("Calidad"))
+    {
+        columnas.Add(grid.Columna("Calidad", Textos.Workflow_Calidad));
+    }
+    if (Model.Columnas.Contains("CentroId"))
+    {
+        columnas.Add(grid.Columna("CentroCodigoSap", Textos.Workflow_CentroId));
+    }
+    if (Model.Columnas.Contains("Centro"))
+    {
+        columnas.Add(grid.Columna("Centro", Textos.Centro));
+    }
+    if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    {
+        columnas.Add(grid.Columna("FechaCreacion", Textos.ListaDeCamiones_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacion)));
+    }
+    if (Model.Columnas.Contains("FechaUltimaModificacion") || Model.OrdenarPor == "FechaUltimaModificacion")
+    {
+        columnas.Add(grid.Columna("FechaUltimaModificacion", Textos.ListaDeCamiones_FechaUltimaModificacion, x => FormattingHtmlHelper.FormattedTime(x.FechaUltimaModificacion)));
+    }
+    if (Model.Columnas.Contains("NumeroDeTarjeta"))
+    {
+        columnas.Add(grid.Columna("NumeroDeTarjeta", Textos.NumeroTarjeta));
+    }
+    if (Model.Columnas.Contains("ChoferDNI"))
+    {
+        columnas.Add(grid.Columna("ChoferDNI", Textos.ChoferDNI));
+    }
+    if (Model.Columnas.Contains("ChoferNombre"))
+    {
+        columnas.Add(grid.Columna("ChoferNombre", Textos.ChoferNombre));
+    }
+    if (Model.Columnas.Contains("Procedencia"))
+    {
+        columnas.Add(grid.Columna("Procedencia", Textos.Procedencia));
+    }
+    if (Model.Columnas.Contains("Entregador"))
+    {
+        columnas.Add(grid.Columna("Entregador", Textos.CartaPorte_Entregador));
+    }
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+<script>
+    $(document).ready(
+        function () {
+            $("tr td div.rowEstaDemorado").parent().parent().addClass("estado-retrasado");
+            $("tr td a.rowRechazado").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-rechazado");
+                });
+            $("tr td a.rowReingresado").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("estado-reingresado");
+                });
+            $("tr td a.rowPrioridadCircular").parent().parent().find("td").each(
+                function (index, element) {
+                    $(element).addClass("prioridad-circular");
+                });
+            if ($("#hOrdenarPor").length > 0 && $("#filtroOrdenarPor").length > 0) {
+                $("#filtroOrdenarPor").val($("#hOrdenarPor").val());
+                $("#filtroDirOrden").val($("#hDirOrden").val());
+            }
+        }
+    );
+</script>
+@Html.HiddenFor(model => model.OrdenarPor, new { id = "hOrdenarPor" })
+@Html.HiddenFor(model => model.DirOrden, new { id = "hDirOrden" })
+<div class="controls">
+    @Html.Grilla(items, columnasFunc)
+</div>

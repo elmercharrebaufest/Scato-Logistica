@@ -1,0 +1,25 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TransportistaDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "Transportista"),
+        grilla.Columna("Cuit", Textos.Transportista_Cuit),
+        grilla.Columna("RazonSocial", Textos.Transportista_RazonSocial),
+        grilla.Columna("Domicilio", Textos.Transportista_Domicilio),
+        grilla.Columna("Provincia.Descripcion", Textos.Transportista_Provincia, c => c.Provincia),
+        grilla.Columna("Localidad.Descripcion", Textos.Transportista_Localidad, c => c.Localidad),
+        grilla.Columna("MedioDePago", Textos.Transportista_MedioDePago, t => ((MedioDePago)t.MedioDePago).DisplayEnum())
+        ))
+</div>

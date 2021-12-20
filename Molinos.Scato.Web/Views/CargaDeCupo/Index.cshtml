@@ -1,0 +1,40 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CargaDeCupoDto
+@{
+    /**/
+
+    var puestoDeTrabajo = (string)ViewBag.PuestoDeTrabajo;
+    ViewBag.Title = Textos.CargaDeCupo;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="~/Scripts/jquery.inputmask.bundle.js"></script>
+    <script src="~/scripts/jquery.elevatezoom.js" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/cargaDeCupo.js")" type="text/javascript"></script>
+}
+<div id="links"
+     data-url-listar="@Url.Action("Listar", "CargaDeCupo")"
+     data-url-obtener-carta-porte-ctg="@Url.Action("ObtenerCupoCtg", "CargaDeCupo")"
+     data-url-obtener-patente="@Url.Action("ObtenerFoto", "CargaDeCupo")"
+     data-url-obtener-material="@Url.Action("ObtenerMaterial", "CargaDeCupo")"
+     data-url-obtener-cpe="@Url.Action("ObtenerCPE", "CargaDeCupo")"></div>
+
+@Html.Hidden("puestoDeTrabajo", puestoDeTrabajo)
+@Html.Hidden("centroId", (int)ViewBag.CentroId)
+@Html.Hidden("ValidandoCupo", Textos.CargaDeCupo_Validando)
+@Html.Hidden("ValidarCupoUrl", Url.Action("ValidarCupoEnSap"))
+
+@Html.Hidden("CodigoCamaraPatente", (string)ViewBag.CodigoCamaraPatente)
+@Html.Hidden("CodigoCamaraPatenteDir", (string)ViewBag.CodigoCamaraPatenteDir)
+@Html.Hidden("CodigoCamaraCP", (string)ViewBag.CodigoCamaraCP)
+@Html.Hidden("CodigoCamaraCPDir", (string)ViewBag.CodigoCamaraCPDir)
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "formContainer" }, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.CargaDeCupo }))
+{
+    <div id="formContainer">
+        @Html.Partial("Form")
+    </div>
+}

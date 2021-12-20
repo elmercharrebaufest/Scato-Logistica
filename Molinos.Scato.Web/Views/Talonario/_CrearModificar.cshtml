@@ -1,0 +1,41 @@
+﻿@model Molinos.Scato.Dominio.Dto.TalonarioDto
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Sucursal, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Sucursal)
+        @Html.ValidationMessageFor(model => model.Sucursal)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PrimerNumero, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PrimerNumero)
+        @Html.ValidationMessageFor(model => model.PrimerNumero)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.UltimoNumero, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.UltimoNumero, new {@class = "control"})
+        @Html.ValidationMessageFor(m => m.UltimoNumero)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.ProximoNumero, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.ProximoNumero, new {@class = "control"})
+        @Html.ValidationMessageFor(m => m.ProximoNumero)
+    </div>
+</div>

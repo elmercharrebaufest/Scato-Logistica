@@ -1,0 +1,118 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlDeBalanzaDto
+
+@{
+    ViewBag.Title = Textos.Pesada_ControlBalanza;
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+}
+<style>
+    .tablaDatos {width: 960px;}
+    .validation-summary-errors { color: #b94a48; font-size: 15px;}
+    .tablaDatos {width: 960px;}
+    .form-horizontal .control-group {margin-bottom: 1px; padding-left: 10px;}
+    .row-fluid-boxed { margin-right: 0; width: 48.71% !important;}
+</style> 
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/controlDeBalanza.js")"></script>
+   
+}
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.ControlDeBalanza</div> <br/>
+</div>
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "pesadaContainer", OnComplete = "Completado()" }, new { id = "form-pesar", @class = "causaBlock", data_mensaje_espera = Textos.Buscando }))
+{
+    <div class="row-fluid">
+        <div class="span6 control-group">
+            @Textos.Patente:
+            @Html.TextBoxFor(model => model.Patente, new { @class = "control input-small patente-internacional uppercase", autocomplete = "off", maxlength = 7 })
+        </div>
+    </div>
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+    {
+            <div class="alert alert-error">
+                @Html.ValidationSummary(true)
+            </div>
+    }
+    @(Textos.Balanza_Titulo + ": ")
+    @Html.DropDownList("balanza", balanzas, new { @class = "control input-xlarge centered balanza", data_balanza_url = Url.Action("ObtenerBalanza") })
+    @Html.Hidden("modalidad", Modalidad.Manual)
+    @Html.Hidden("puestoDeTrabajoPc")
+    @Html.Hidden("ObtenerPesadasUrl",Url.Action("ObtenerPesadas"))
+    @Html.Hidden("DiferenciaMensaje",Textos.ControlDeBalanza_Diferencia)
+
+    <input type="hidden" name="muestrasTomadas2" data-bind="value: ko.toJSON(muestras)" />
+    <button class="btn btn-primary agregarMuestra pull-right" type="button" data-peso-url = "@Url.Action("TomarPeso")" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.ControlDeBalanza_TomarPeso</button>
+}
+
+<div id="pesadaContainer">
+    @Html.Partial("PesarDetalle", Model)
+</div>
+
+<div id="muestrasDePeso">
+    <div class="modal hide fade form-horizontal" id="dialogo-editar-muestras">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+            <h4 id="dialogo-editar-muestras-title">@Textos.ControlDeBalanza_NuevoPeso</h4>
+        </div>
+        <div class="modal-body" id ="dialogo-editar-muestras-body">
+            <form id="muestras" data-bind="submit: addMuestra">
+                <div class="control-group">
+                    @Html.Label(Textos.Peso, new { @class = "control-label" })
+                    <div class="controls">
+                        <input data-bind="value: newValor" id="valor" name="valor" class="valorVacio input-small" data-error-numerico = "@string.Format(Textos.Error_SoloNumerico, Textos.Peso)"/>
+                    </div>
+                    <div class="control-group">@Html.ValidationMessage("valor", new { @class = "validaValorVacio help-block" })</div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <input id="dialogo-editar-muestras-guardar" type="button" class="btn btn-primary aceptar-muestra" value="@Textos.Guardar"/>
+            <input id="dialogo-editar-muestras-cancelar" type="button" class="btn" value="@Textos.Cancelar"/>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>@Textos.Fecha</th>
+                <th>@Textos.Hora</th>
+                <th>@Textos.Balanza_Titulo</th>
+                <th>@Textos.ControlDeBalanza_PesoObtenido</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: muestras">
+            <tr>
+                <td data-bind="text: FechaFormateada"/>
+                <td data-bind="text: HoraFormateada"/>
+                <td data-bind="text: BalanzaNombre" />
+                <td data-bind="formattedFloat: Peso" />
+            </tr>    
+        </tbody>
+    </table>       
+
+    @using (Ajax.BeginForm("Confirmar", "ControlDeBalanza", null, new AjaxOptions { OnComplete = "EvaluarResultado" }, new { @class = "form-horizontal form-search", id = "confirmar-form", data_mensaje_espera = Textos.ControlDeBalanza }))
+    {
+        @Html.Hidden("instanceId")
+        @Html.Hidden("controlDeBalanzaId")
+        @Html.Hidden("tipoPesada")
+        @Html.Hidden("finalizar")
+        @Html.Hidden("balanzaId")
+        <input type="hidden" name="muestrasTomadas" data-bind="value: ko.toJSON(muestras)" />
+        <span>@Textos.Observaciones :&nbsp;</span>
+        @Html.TextArea("observaciones", null, new { @class = "input-xxlarge" })
+        <br/><br/>
+        <div id="mostrarDiferencias"></div>
+        <div class="row">
+            <div class="right">
+                <input type="button" name="btnAceptar" id="btnAceptar" class="btn aceptar" value="@Textos.Aceptar"/>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                <input type="button" name="btnFinalizar" id="btnFinalizar" class="btn btn-primary aceptar" value="@Textos.ControlDeBalanza_Finalizar"/>
+            </div>
+        </div>  
+    }
+</div>

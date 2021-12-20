@@ -1,0 +1,12 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ReciboMunicipalDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.ReciboMunicipal_Crear;
+}
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.ReciboMunicipal_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

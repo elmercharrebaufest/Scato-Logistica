@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<CalidadMaterialDto>)ViewBag.Items; 
+}
+@Html.Grilla(items,
+    grid => grid.Columns(
+    grid.ColumnaEliminar(Html, "CalidadMaterial"),
+    grid.Columna("Descripcion", Textos.Descripcion),
+    grid.Columna("ValorDesde", Textos.Descuento_ValorDesde),
+    grid.Columna("ValorHasta", Textos.Descuento_ValorHasta),
+    grid.Columna("TieneAnalisis", Textos.CalidadMaterial_TieneAnalisis, m => ((bool)m.TieneAnalisis).Formatted())))

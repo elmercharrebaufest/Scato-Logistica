@@ -1,0 +1,130 @@
+﻿@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Web.Models.PesadaCargaExportacion
+@{
+    Layout = null;
+    var actividad = (PermisosScato)ViewBag.Etapa;
+    var pesoNetoEsperado = (int)ViewBag.Peso;
+}
+
+<script>
+
+</script>
+
+@Html.Hidden("pesoNetoEsperado", pesoNetoEsperado)
+
+<div class="row-fluid row-fluid-ie7" id="carga-container">
+    <div id="carga" class="span12 margin-top border text-center @(actividad != PermisosScato.ActividadConfirmacionDeCargaDescarga ? " disabled-div" : "" )" @(actividad != PermisosScato.ActividadConfirmacionDeCargaDescarga ? "readonly" : "")>
+        <div class="grey-background">
+            <p class="text-center margin-top bold-text"><span class="titulo">Carga</span></p>
+        </div>
+
+        @if (PermisosHelper.Is(PermisosScato.ActividadConfirmacionDeCargaDescarga))
+        {
+
+            <div class="muestra" style="background-color: rgb(0, 255, 0)">
+                <span>Neto Esperado:</span>
+                <span>@Html.Raw(pesoNetoEsperado)</span>
+            </div>
+            <div id="pesoNetoContainer" class="peso-neto-container hidden" style="font-size:20px">
+                <span>Neto Actual:</span>
+                <span id="pesoNetoBalanza" style="color:white"></span>
+            </div>
+
+            <div class="boton-parcial-container">
+                <button type="button" id="boton-parcial" class="confirmar-boton btn" data-mensaje="@string.Format(Textos.ConfirmaciónGenérica3, Textos.Carga_Parcial)"><span class="boton-carga">Carga Parcial</span></button>
+            </div>
+            <div class="boton-finalizar-container">
+                <button type="button" id="boton-finalizado" class="confirmar-boton btn" data-mensaje="@string.Format(Textos.ConfirmaciónGenérica3,Textos.Carga_Finalizada)"><span class="boton-carga">Carga Finalizada</span></button>
+            </div>
+            <div class="boton-cancelar-container" style="padding:3px">
+                @if (PermisosHelper.Is(PermisosScato.CancelarPesadaCargaExportacion))
+                {
+                    <button type="button" id="boton-cancelar" class="btn btn-warning cancelar-boton"><span class="boton-carga">@Textos.Cancelar</span></button>
+                }
+            </div>
+            if (actividad == PermisosScato.ActividadConfirmacionDeCargaDescarga)
+            {
+                <script type="text/javascript">
+                    CalcularPeso();
+                </script>
+            }
+
+        }
+        else if (actividad == PermisosScato.ActividadConfirmacionDeCargaDescarga)
+        {
+            <div class="alert alert-info" style="text-align:center; margin-bottom:0" id="boton-finalizado">
+                <strong>Esperando Carga...</strong>
+            </div>
+            <script type="text/javascript">
+                setTimeout(function () {
+                    $.get(pesadaCargaUrl, function (data) {
+                        if (!cancelarTimeout) {
+                            $('#cargaDiv').html(data);
+                        }
+                    });
+                }, 1500)
+            </script>
+            <div class="boton-cancelar-container" style="padding:3px">
+                @if (PermisosHelper.Is(PermisosScato.CancelarPesadaCargaExportacion))
+                {
+                    <button type="button" id="boton-cancelar" class="btn btn-warning cancelar-boton"><span class="boton-carga">@Textos.Cancelar</span></button>
+                }
+            </div>
+        }
+        else if (actividad == PermisosScato.ActividadPesadaTara)
+        {
+            <script type="text/javascript">
+
+                setTimeout(function () {
+                    $.get(pesadaCargaUrl, function (data) {
+                        $('#cargaDiv').html(data);
+                    });
+                }, 1500)
+            </script>
+        }
+        else if (actividad == PermisosScato.ActividadPesadaBruto || actividad == PermisosScato.ActividadConfirmacionDeCargaDescarga)
+        {
+            <script type="text/javascript">
+                $.get(pesadaBrutoUrl, function (data) {
+                    $('#pesadaBrutoDiv').html(data);
+                });
+            </script>
+        }
+        else
+        {
+            <script type="text/javascript">
+                window.location = $("#ListaDeCamionesUrl").val();
+            </script>
+        }
+    </div>
+
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="boton-parcial-confirmar" type="submit" class="btn" name="submitAction">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="dialogo-cancelar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+            @string.Format(Textos.ConfirmaciónGenérica3, Textos.Carga_Cancelada)
+        </div>
+        <div class="modal-footer">
+            @Html.ActionLink(Textos.Aceptar, "Cancelar", "PesadaCargaExportacion", new { workflowInstanceId = ViewBag.WorkflowInstanceId, workflowDefinicionId = ViewBag.WorkflowDefinicionId }, new { @class = "btn", @id = "cancelar" })
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+</div>

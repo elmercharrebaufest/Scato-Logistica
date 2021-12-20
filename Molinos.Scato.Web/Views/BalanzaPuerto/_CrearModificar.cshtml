@@ -1,0 +1,48 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.BalanzaPuertoDto
+@{
+    var cabezales = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+}
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoBalanza, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoBalanza, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.CodigoBalanza)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoDispositivo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CodigoDispositivo, cabezales, Textos.Default_Ninguno)
+        @Html.ValidationMessageFor(model => model.CodigoDispositivo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.UltimaValidacion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.UltimaValidacion, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.UltimaValidacion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Administrativa, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.Administrativa, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Administrativa)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.OffSetPlc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.OffSetPlc, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.OffSetPlc)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.IntentosValidacion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.IntentosValidacion, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.IntentosValidacion)
+    </div>
+</div>

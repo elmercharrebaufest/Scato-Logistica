@@ -1,0 +1,56 @@
+﻿<parameters>
+  <parameter name="ServicioRepositorio Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioRepositorio']
+                           /@address" />
+  </parameter>
+  <parameter name="FirmaProvider Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='FirmaProvider']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioComandos Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioComandos']
+                           /@address" />
+  </parameter>
+  <parameter name="ListaDeWorkflows Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ListaDeWorkflows']
+                           /@address" />
+  </parameter>
+  <parameter name="FederationMetadataLocation Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ida:FederationMetadataLocation']
+                           /@value" />
+  </parameter>
+  <parameter name="Issuer Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ida:Issuer']
+                           /@value" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@issuer" />
+  </parameter>
+  <parameter name="IssuerTrust Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/@name" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/validIssuers/add/@name" />
+  </parameter>
+  <parameter name="RealmUrl Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@realm" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@reply" />
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/audienceUris/add/@value" />
+  </parameter>
+  <parameter name="Thumbprint Identity Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/keys/add/@thumbprint" />
+  </parameter>
+</parameters>

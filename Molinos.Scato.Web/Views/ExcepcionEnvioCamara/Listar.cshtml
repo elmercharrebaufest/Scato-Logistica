@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ExcepcionEnvioCamaraDto>)ViewBag.Items;
+}
+
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminarModificar(this.Html, "ExcepcionEnvioCamara"),
+            grid.Columna("MaterialDesc", Textos.Material),
+            //grid.Columna("CaracteristicaDesc",  Textos.Caracteristica),
+            grid.Columna("TipoComercialDesc", Textos.TipoComercial),
+            grid.Columna("ProveedorDesc",  Textos.Proveedor),
+            grid.Columna("EntregadorDesc",  Textos.Entregador)))

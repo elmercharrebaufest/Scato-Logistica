@@ -1,0 +1,7 @@
+Estimados,<br/>
+Se cerró la barrera {0}, en el día {1} <br/>
+<br/>
+<img src="data:image/jpg;base64,{4}" />
+<br/>
+Últimos movimientos de {2}:<br/>
+{3}

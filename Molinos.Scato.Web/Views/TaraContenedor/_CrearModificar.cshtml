@@ -1,0 +1,23 @@
+﻿@model Molinos.Scato.Dominio.Dto.TaraContenedorDto
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoContenedor, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoContenedor, new {@class = "input-medium"})
+        @Html.ValidationMessageFor(model => model.CodigoContenedor)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoTara, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoTara, new {@class = "input-medium"})
+        @Html.ValidationMessageFor(model => model.PesoTara)
+    </div>
+</div>

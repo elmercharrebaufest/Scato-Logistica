@@ -1,0 +1,86 @@
+﻿@model Molinos.Scato.Dominio.Dto.BalanzaAutomaticaDto
+
+@{
+    var vagones = (List<SelectListItem>)ViewBag.Vagones;
+}
+<div class="span12 card form-search carta-vagon" id="@Model.PuestoId">
+    @Html.Hidden("notificacionId" + Model.PuestoId)
+    @Html.Hidden("tarjeta" + Model.PuestoId)
+    @Html.Hidden("peso" + Model.PuestoId)
+    @Html.Hidden("instanceId" + Model.PuestoId)
+    <div class="row-fluid card-head" style="min-height:inherit">
+        <div class="span3" style="border:none">
+            <span>@Model.NombreBalanza</span>
+        </div>
+        <div class="span3" style="border:none">
+            <span class="nombre" id="@("etapa"+Model.PuestoId)">En Espera</span>
+        </div>
+        <div class="span4" style="border:none; margin-left:0">
+            <strong>Vagon</strong>
+            @Html.DropDownList("patente" + Model.PuestoId, vagones, new { @class = "select-vagones" })
+            <button class="btn btn-secondary vagones" data-id="@(Model.PuestoId)" id="@("actualizar"+Model.PuestoId)"><i class="fa  fa-redo"></i></button>
+            <button class="btn btn-secondary aceptar-vagon vagon" data-id="@(Model.PuestoId)" id="@("aceptar"+Model.PuestoId)"><i class="fa fa-check"></i></button>
+        </div>
+        <div class="span1" style="border:none">
+            <a class="btn btn-acciones-especiales" data-id="@Model.PuestoId">Opciones</a>
+        </div>
+    </div>
+    <div class="row-fluid card-body">
+
+        <div class="row-fluid">
+            <table class="table encabezado">
+                <tr>
+                    <th>Doc ingreso</th>
+                    <th>N° Documento</th>
+                    <th>Material</th>
+                    <th>Tipo Comercial</th>
+                    <th>Entregador</th>
+                </tr>
+                <tr>
+                    <td id="@("doc-ing"+Model.PuestoId)">Doc ingreso</td>
+                    <td id="@("cp"+Model.PuestoId)">N° Documento</td>
+                    <td id="@("material"+Model.PuestoId)">Material</td>
+                    <td id="@("tipo-comercial"+Model.PuestoId)">Tipo Comercial</td>
+                    <td id="@("entregador"+Model.PuestoId)">Entregador</td>
+                </tr>
+            </table>
+        </div>
+        <div class="row-fluid">
+            <table class="table cuerpo">
+                <tr>
+                    <th>Peso bruto</th>
+                    <td><span id="@("peso-bruto"+Model.PuestoId)"></span><span>Kg.</span></td>
+                    <th>Origen Bruto</th>
+                    <td><span id="@("orgBruto"+Model.PuestoId)"></span><span>Kg.</span></td>
+                    <th>Dif</th>
+                    <td><span id="@("difPeso"+Model.PuestoId)"></span><span>Kg.</span></td>
+                    <th>Peso</th>
+                    <td><span id="@("peso-vagon"+Model.PuestoId)">0</span> <span>Kg.</span> </td>
+                    <td><a class="btn tomarPeso btn-balanza @("btn"+ Model.PuestoId)" data-tipo="vagon" data-id="@Model.PuestoId" data-balanza-id="@Model.BalanzaId">Pesar</a></td>
+                </tr>
+                <tr>
+                    <th>Peso Tara</th>
+                    <td> <span id="@("peso-tara"+Model.PuestoId)"></span><span>Kg.</span></td>
+                    <th>Origen Tara</th>
+                    <td> <span id="@("orgTara"+Model.PuestoId)"></span> <span>Kg.</span> </td>
+                    <th>Dif</th>
+                    <td> <span id="@("difNeto"+Model.PuestoId)"></span></td>
+                    <th></th>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td></td>
+                    <th></th>
+                    <td></td>
+                    <th></th>
+                    <td></td>
+                    <th>Neto</th>
+                    <td><span id="@("peso-neto-tren"+Model.PuestoId)" data-bruto="0">0</span><span>Kg.</span> </td>
+                    <td><a class="btn btn-balanza @("btn"+ Model.PuestoId) btn-modal-finalizar" data-id="@Model.PuestoId" data-balanza-id="@Model.BalanzaId">Finalizar</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

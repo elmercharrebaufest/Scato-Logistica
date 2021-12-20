@@ -1,0 +1,5 @@
+-- Carga de Centros
+BEGIN
+INSERT INTO [Scato].[dbo].[Centro]
+VALUES ('1169', 'Puerto Necochea', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 0, NULL, NULL, NULL) 
+END

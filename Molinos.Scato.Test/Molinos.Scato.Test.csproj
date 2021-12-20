@@ -1,0 +1,1031 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5BC633FF-DD2A-4AFA-ACE3-EE11A4599199}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Molinos.Scato.Test</RootNamespace>
+    <AssemblyName>Molinos.Scato.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\Jenkins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Activities.Extensions">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Activities.UnitTesting">
+      <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.UnitTesting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.StoreManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.13\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.13\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.40804.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actividades\ActualizarMuestraEnvioACamaraTest.cs" />
+    <Compile Include="Actividades\AlmacenarPrecintosTest.cs" />
+    <Compile Include="Actividades\AceptarCamionTest.cs" />
+    <Compile Include="Actividades\ConsultarDestinatarioCtgTest.cs" />
+    <Compile Include="Actividades\ConsultarDatosMailStockTest.cs" />
+    <Compile Include="Actividades\EnviarMailAsyncTest.cs" />
+    <Compile Include="Actividades\RegistrarEpaTest.cs" />
+    <Compile Include="Actividades\ImpresionDeclaracionFosfinaV2Test.cs" />
+    <Compile Include="Actividades\CrearIngresoDeDatosDeExportacionTest.cs" />
+    <Compile Include="Actividades\ImpresionTicketPesadaAduanaTest.cs" />
+    <Compile Include="Actividades\ImpresionTicketPesadaBodegaTest.cs" />
+    <Compile Include="Actividades\EnviarMailTest.cs" />
+    <Compile Include="Actividades\IngresosBodegaTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\IngresosBodegaTransmisionASapTest.cs" />
+    <Compile Include="Actividades\IngresosBodegaGenerarRequestTest.cs" />
+    <Compile Include="Actividades\RemitoACCPPTest.cs" />
+    <Compile Include="Actividades\CrearRemitoTest.cs" />
+    <Compile Include="Actividades\EgresosMaterialNoProductivoTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\EgresosMaterialNoProductivoTransmisionASapTest.cs" />
+    <Compile Include="Actividades\FletesDobleTramoTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\FletesDobleTramoTransmisionASapTest.cs" />
+    <Compile Include="Actividades\GuardarFechaEgresoTest.cs" />
+    <Compile Include="Actividades\ImpresionAsignacionDeRutaTest.cs" />
+    <Compile Include="Actividades\ImpresionCertificacionDeCartaPorteTest.cs" />
+    <Compile Include="Actividades\ImpresionCertificadoDeAnalisisTest.cs" />
+    <Compile Include="Actividades\ImpresionConstanciaDeEntregaLaserTest.cs" />
+    <Compile Include="Actividades\ImpresionDeclaracionFosfinaTest.cs" />
+    <Compile Include="Actividades\ImpresionFormulario239Test.cs" />
+    <Compile Include="Actividades\ImpresionGenericaTest.cs" />
+    <Compile Include="Actividades\ImpresionLoteACamaraTest.cs" />
+    <Compile Include="Actividades\ImpresionMuestraCaladoTest.cs" />
+    <Compile Include="Actividades\ImpresionSolicitudDeAnalisisTest.cs" />
+    <Compile Include="Actividades\ImpresionTicketPesadaTest.cs" />
+    <Compile Include="Actividades\InformarCupoGenerarRequestTest.cs" />
+    <Compile Include="Actividades\InformarCupoTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="ControllersMobile\CamionesRechazadosControllerTest.cs" />
+    <Compile Include="ControllersMobile\CupoControllerTest.cs" />
+    <Compile Include="ControllersMobile\EstadoDeCalleControllerTest.cs" />
+    <Compile Include="ControllersMobile\EstadoDePlantaControllerTest.cs" />
+    <Compile Include="ControllersMobile\IndexControllerTest.cs" />
+    <Compile Include="ControllersMobile\TiempoEnTransitoControllerTest.cs" />
+    <Compile Include="Controllers\AsignacionDeContingenciaControllerTest.cs" />
+    <Compile Include="Controllers\CargaDeCupoTest.cs" />
+    <Compile Include="Controllers\AsignarTicketMunicipalControllerTest.cs" />
+    <Compile Include="Controllers\BalanzaControllerTest.cs" />
+    <Compile Include="Controllers\ClienteControllerTest.cs" />
+    <Compile Include="Controllers\NirsControllerTest.cs" />
+    <Compile Include="Controllers\PagoDeReciboMunicipalControllerTest.cs" />
+    <Compile Include="Controllers\RangosDeRedondeoControllerTest.cs" />
+    <Compile Include="Controllers\ConversionCentroControllerTest.cs" />
+    <Compile Include="Controllers\CoordinacionControllerTest.cs" />
+    <Compile Include="Controllers\CosechaControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapZE7550ControllerTest.cs" />
+    <Compile Include="Controllers\StockDeEstablecimientoControllerTest.cs" />
+    <Compile Include="Controllers\PesoMaximoPorTipoVehiculoControllerTest.cs" />
+    <Compile Include="Controllers\KmPorProveedorControllerTest.cs" />
+    <Compile Include="Controllers\PanelDeControlBajaCtgDefinitivaControllerTest.cs" />
+    <Compile Include="Controllers\ExcepcionAlDescuentoControllerTest.cs" />
+    <Compile Include="Controllers\SugerenciaControllerTest.cs" />
+    <Compile Include="Controllers\GenerarArchivoDeMovimientosControllerTest.cs" />
+    <Compile Include="Controllers\GraficoDePlantaControllerTest.cs" />
+    <Compile Include="Controllers\IngresoDeDatosDeExportacionControllerTest.cs" />
+    <Compile Include="Controllers\PanelServiciosWebControllerTest.cs" />
+    <Compile Include="Controllers\FirmaControllerTest.cs" />
+    <Compile Include="Controllers\MovimientoDeBinesControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapIngresosBodegaControllerTest.cs" />
+    <Compile Include="Controllers\IngresoRemitoControllerTest.cs" />
+    <Compile Include="Actividades\IngresosEgresosFazonesGenerarRequestTest.cs" />
+    <Compile Include="Actividades\IngresosEgresosFazonesTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\IngresosEgresosFazonesTransmisionASapTest.cs" />
+    <Compile Include="Actividades\IngresosPorCompraDeGranosGenerarRequestTest.cs" />
+    <Compile Include="Actividades\IngresosPorCompraDeGranosTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\IngresosPorCompraDeGranosTransmisionASapTest.cs" />
+    <Compile Include="Actividades\LlegadaADestinoEnRedespachosGenerarRequestTest.cs" />
+    <Compile Include="Actividades\LlegadaADestinoEnRedespachosTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\LlegadaADestinoEnRedespachosTransmisionASapTest.cs" />
+    <Compile Include="Actividades\ObtenerCaracteristicasDeCalidadTest.cs" />
+    <Compile Include="Actividades\ObtenerInstanceIdTest.cs" />
+    <Compile Include="Actividades\PesaNetoTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\PesaNetoTransmisionASapTest.cs" />
+    <Compile Include="Actividades\SalidaDeOrigenEnRedespachosGenerarRequestTest.cs" />
+    <Compile Include="Actividades\SalidaDeOrigenEnRedespachosTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\SalidaDeOrigenEnRedespachosTransmisionASapTest.cs" />
+    <Compile Include="Actividades\ValidarContratoEnSapTest.cs" />
+    <Compile Include="Actividades\VerificacionCotEnSapTest.cs" />
+    <Compile Include="Actividades\VerificacionTransportistaExisteTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeLlamadaComplianceTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeLlamadaSapTest.cs" />
+    <Compile Include="Actividades\VerificarPedidoDeTrasladoEnSAPTest.cs" />
+    <Compile Include="Actividades\VerificarReimpresionTest.cs" />
+    <Compile Include="Actividades\MovimientosStockTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\MovimientoStockSapGenerarRequestTest.cs" />
+    <Compile Include="Actividades\MovimientoStockTransmisionSapTest.cs" />
+    <Compile Include="Actividades\VerificarProveedorExcluidoIntactaTest.cs" />
+    <Compile Include="Actividades\CrearRemitoBodegaVinoTest.cs" />
+    <Compile Include="Actividades\ControlarDiferenciaDePesoTest.cs" />
+    <Compile Include="Actividades\ControlarPesoMaximoTest.cs" />
+    <Compile Include="Actividades\ControlarPesoOrigenTest.cs" />
+    <Compile Include="Actividades\ControlRecorridoTest.cs" />
+    <Compile Include="Actividades\ControlarIngresoTest.cs" />
+    <Compile Include="Actividades\CoordinacionRechazadoTest.cs" />
+    <Compile Include="Actividades\AsignarEstablecimientoTest.cs" />
+    <Compile Include="Actividades\RegistrarCartadePorteGenerarRequestTest.cs" />
+    <Compile Include="Actividades\RegistrarCartadePorteTransmisionAMonsantoAsincronicoTest.cs" />
+    <Compile Include="Actividades\RegistrarCartadePorteTransmisionAMonsantoTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeRegistrarMuestreoYPesajeTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeRegistrarCartadePorteTest.cs" />
+    <Compile Include="Actividades\RegistrarMuestreoYPesajeTransmisionAMonsantoAsincronicoTest.cs" />
+    <Compile Include="Actividades\RegistrarMuestreoYPesajeTransmisionAMonsantoTest.cs" />
+    <Compile Include="Actividades\RegistrarMuestreoYPesajeGenerarRequestTest.cs" />
+    <Compile Include="Actividades\ImpresionEtiquetaIntactaTest.cs" />
+    <Compile Include="Actividades\BalanzaACeroSiEsTrenTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Actividades\NotificarMensajePorPuestoTest.cs" />
+    <Compile Include="Actividades\ProveedorEsSustentableTest.cs" />
+    <Compile Include="Actividades\VerificarPuestoDeCargaDescargaTest.cs" />
+    <Compile Include="Actividades\VerificarSalidaFleteTest.cs" />
+    <Compile Include="Actividades\VerificarTransportistaHabilitadoTest.cs" />
+    <Compile Include="Actividades\VerificarVisteoTest.cs" />
+    <Compile Include="Actividades\TerminarInhabilitacionTest.cs" />
+    <Compile Include="Actividades\TransportistaInhabilitadoTest.cs" />
+    <Compile Include="Actividades\RefrescarCartaDePorteTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenCargaFasTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenCargaInternaTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenCargaInternaFasonTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenDeDescargaTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenEntrePlantasTest.cs" />
+    <Compile Include="Actividades\RechazarCamionTest.cs" />
+    <Compile Include="Actividades\ObtenerToleranciaRomaneoTest.cs" />
+    <Compile Include="Actividades\ObtenerToleranciaOrigenTest.cs" />
+    <Compile Include="Actividades\ObtenerTipoComercialTest.cs" />
+    <Compile Include="Actividades\ObtenerCentroTest.cs" />
+    <Compile Include="Actividades\NotificarUsuarioTest.cs" />
+    <Compile Include="Actividades\LogActividadTest.cs" />
+    <Compile Include="Actividades\LeerToleranciaRechazoTest.cs" />
+    <Compile Include="Actividades\LeerPesoMaximoTest.cs" />
+    <Compile Include="Actividades\InicializarCaladoTest.cs" />
+    <Compile Include="Actividades\IngresoDeCartaPorteRedespachoTest.cs" />
+    <Compile Include="Actividades\IngresarTransportistaOrdenCargaFasTest.cs" />
+    <Compile Include="Actividades\IngresarTransportistaOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Actividades\IngresarTransportistaOrdenDeDescargaTest.cs" />
+    <Compile Include="Actividades\IngresarTransportistaOrdenCargaInternaFason.cs" />
+    <Compile Include="Actividades\IngresarTransportistaTest.cs" />
+    <Compile Include="Actividades\IngresarEnvioACamaraTest.cs" />
+    <Compile Include="Actividades\GuardarNumeroCotTest.cs" />
+    <Compile Include="Actividades\EgresosMaterialNoProductivoGenerarRequestTest.cs" />
+    <Compile Include="Actividades\CrearOrdenCargaFasTest.cs" />
+    <Compile Include="Actividades\CrearOrdenEntrePlantasTest.cs" />
+    <Compile Include="Actividades\FinalizarRomaneoTest.cs" />
+    <Compile Include="Actividades\ExisteExcepcionAlControlTest.cs" />
+    <Compile Include="Actividades\DarDeBajaCtgDefinitivoAutomaticaTest.cs" />
+    <Compile Include="Actividades\DarDeBajaCtgManualTest.cs" />
+    <Compile Include="Actividades\DarDeAltaCtgManualTest.cs" />
+    <Compile Include="Actividades\DarDeBajaCtgAutomaticaTest.cs" />
+    <Compile Include="Actividades\DarDeAltaCtgAutomaticaTest.cs" />
+    <Compile Include="Actividades\CrearCartaPorteTest.cs" />
+    <Compile Include="Actividades\ControlarPesoTest.cs" />
+    <Compile Include="Actividades\ControlarTiempoEnTransitoTest.cs" />
+    <Compile Include="Actividades\AutorizarTiempoEnTransitoTest.cs" />
+    <Compile Include="Actividades\AsignarTarjetaTest.cs" />
+    <Compile Include="Actividades\AutorizacionRecepcionUvasTest.cs" />
+    <Compile Include="Actividades\ConversionKilosALitrosTest.cs" />
+    <Compile Include="Actividades\ActualizarVehiculoTest.cs" />
+    <Compile Include="Actividades\AsignarAutomaticamentePuestoComandoTest.cs" />
+    <Compile Include="Actividades\AlmacenarCaladoTest.cs" />
+    <Compile Include="Actividades\AutorizarDescuentoEntregadorTest.cs" />
+    <Compile Include="Actividades\CrearHojaDeRutaYerbateraTest.cs" />
+    <Compile Include="Actividades\CrearHojaDeRutaTest.cs" />
+    <Compile Include="Actividades\GuardarPesoNetoTransileTest.cs" />
+    <Compile Include="Actividades\IngresarBinSalidaTest.cs" />
+    <Compile Include="Actividades\CrearRemitoBodegaUvaTest.cs" />
+    <Compile Include="Actividades\DistribuirAlmacenesTest.cs" />
+    <Compile Include="Actividades\ActualizarAlmacenTest.cs" />
+    <Compile Include="Actividades\VerificarKilosDeclaradosPorFincaTest.cs" />
+    <Compile Include="Actividades\ImpresionEnvioMuestraAuditoriaTest.cs" />
+    <Compile Include="Actividades\IngresarCIUTest.cs" />
+    <Compile Include="Actividades\NotificarMensajeTest.cs" />
+    <Compile Include="Actividades\ResetearAnalisisDeCalidadTest.cs" />
+    <Compile Include="Actividades\EgresoSinFleteFasonesTransmisionASapAsincronicoTest.cs" />
+    <Compile Include="Actividades\EgresoSinFleteFasonesTransmisionASapTest.cs" />
+    <Compile Include="Actividades\EgresoSinFleteFazonesGenerarRequestTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeDescargaTest.cs" />
+    <Compile Include="Actividades\GenerarControlDeBalanzaTest.cs" />
+    <Compile Include="Actividades\GuardarControlBalanzaTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeControlDeBalanzaTest.cs" />
+    <Compile Include="Actividades\PuestoComandoTest.cs" />
+    <Compile Include="Actividades\VerificarPuestoComandoTest.cs" />
+    <Compile Include="Actividades\ImpresionControlDeCargaTest.cs" />
+    <Compile Include="Actividades\VerificarCorrespondeImprimirReciboMunicipalTest.cs" />
+    <Compile Include="Actividades\FinDeActividadTest.cs" />
+    <Compile Include="Actividades\ImpresionReciboMunicipalTest.cs" />
+    <Compile Include="Actividades\VerificarTiempoMaximoActividadesTest.cs" />
+    <Compile Include="Actividades\RefrescarRemitoTest.cs" />
+    <Compile Include="Actividades\ImpresionInformeDeRecepcionTest.cs" />
+    <Compile Include="Actividades\CrearOrdenDeCargaContenedorTest.cs" />
+    <Compile Include="Actividades\ImpresionDocumentoEntradaTest.cs" />
+    <Compile Include="Actividades\FinalizarDescargaUnidadTest.cs" />
+    <Compile Include="Actividades\DescargaUnidadTest.cs" />
+    <Compile Include="Actividades\IngresoRemitoTest.cs" />
+    <Compile Include="Actividades\EliminarRecorridoTest.cs" />
+    <Compile Include="Actividades\FletesDobleTramoGenerarRequestTest.cs" />
+    <Compile Include="Actividades\InvocarNuevoWorkflowTest.cs" />
+    <Compile Include="Actividades\IngresarPesoSimuladoTest.cs" />
+    <Compile Include="Actividades\CrearRecorridoTest.cs" />
+    <Compile Include="Actividades\ObtenerValoresSapTest.cs" />
+    <Compile Include="Actividades\CrearOrdenCargaInternaFasonTest.cs" />
+    <Compile Include="Actividades\CrearOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Actividades\CrearOrdenDeDescargaTest.cs" />
+    <Compile Include="Actividades\GenerarMuestraEnvioACamaraTest.cs" />
+    <Compile Include="Actividades\IngresarAnalisisDeCalidadTest.cs" />
+    <Compile Include="Actividades\GuardarDatosProximaActividadTest.cs" />
+    <Compile Include="Actividades\IngresarPesoTest.cs" />
+    <Compile Include="Actividades\IngresarObservacionesTest.cs" />
+    <Compile Include="Actividades\MarcarWorkflowTerminadoTest.cs" />
+    <Compile Include="Actividades\ObtenerTipoDeValidacionCtgTest.cs" />
+    <Compile Include="Actividades\PersistirPropiedadesCustomTest.cs" />
+    <Compile Include="Actividades\CrearOrdenCargaInternaTest.cs" />
+    <Compile Include="Actividades\PesaNetoGenerarRequestTest.cs" />
+    <Compile Include="Actividades\RefrescarOrdenDeCargaContenedorTest.cs" />
+    <Compile Include="Actividades\VerificarCamionRechazadoTest.cs" />
+    <Compile Include="Controllers\ActividadPorDispositivoControllerTest.cs" />
+    <Compile Include="Controllers\AjustarCalidadControllerTest.cs" />
+    <Compile Include="Controllers\AjusteDeStockControllerTest.cs" />
+    <Compile Include="Controllers\AjusteStockBinesControllerTest.cs" />
+    <Compile Include="Controllers\AltaCTGControllerTest.cs" />
+    <Compile Include="Controllers\AutorizarDescuentosEntregadorControllerTest.cs" />
+    <Compile Include="Controllers\BajaCTGControllerTest.cs" />
+    <Compile Include="Controllers\BajaCTGDefinitivoControllerTest.cs" />
+    <Compile Include="Controllers\BorradoDeDocumentoControllerTest.cs" />
+    <Compile Include="Controllers\CaladoAntiguoControllerTest.cs" />
+    <Compile Include="Controllers\CamaraControllerTest.cs" />
+    <Compile Include="Controllers\CargarCartaPorteControllerTest.cs" />
+    <Compile Include="Controllers\CargarCartaPortePrestamoControllerTest.cs" />
+    <Compile Include="Controllers\CargarHojaDeRutaControllerTest.cs" />
+    <Compile Include="Controllers\CargarOrdenDeDescargaFasonControllerTest.cs" />
+    <Compile Include="Controllers\CargarPrecintosControllerTest.cs" />
+    <Compile Include="Controllers\CargarOrdenDeDescargaControllerTest.cs" />
+    <Compile Include="Controllers\CasilleroControllerTest.cs" />
+    <Compile Include="Controllers\CiuAnuladoControllerTest.cs" />
+    <Compile Include="Controllers\DocumentoDeOrigenControllerTest.cs" />
+    <Compile Include="Controllers\ExistePedidoDeTrasladoControllerTest.cs" />
+    <Compile Include="Controllers\IngresoNumeroCotControllerTest.cs" />
+    <Compile Include="Controllers\ListaDeCamionesControllerTest.cs" />
+    <Compile Include="Controllers\ListadoDeCalidadesControllerTest.cs" />
+    <Compile Include="Controllers\ModificarDocumentoDeIngresoControllerTest.cs" />
+    <Compile Include="Controllers\PanelServerAppPoolControllerTest.cs" />
+    <Compile Include="Controllers\PanelWorkflowsControllerTest.cs" />
+    <Compile Include="Controllers\ReimpresionDeDocumentosControllerTest.cs" />
+    <Compile Include="Controllers\ReportesControllerTest.cs" />
+    <Compile Include="Controllers\SalidaDeCentroControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapFill_Z1000ControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapIngresosEgresosFazonesControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapMov305ControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapMov975ControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapMovAjusteControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapPesaNetoControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSap_Z4030ControllerTest.cs" />
+    <Compile Include="Controllers\SincronizarMaestrosControllerTest.cs" />
+    <Compile Include="Controllers\VerificacionSalidaFleteControllerTest.cs" />
+    <Compile Include="Controllers\VerificarImpresionControllerTest.cs" />
+    <Compile Include="Controllers\IngresoDeLoteControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapEgresosNoProductivosControllerTest.cs" />
+    <Compile Include="Controllers\GenerarArchivosOnccaControllerTest.cs" />
+    <Compile Include="Controllers\LoteBiotecnologiaControllerTest.cs" />
+    <Compile Include="Controllers\HealthTestControllerTest.cs" />
+    <Compile Include="Controllers\ValidarContratoControllerTest.cs" />
+    <Compile Include="Controllers\VerificacionCotControllerTest.cs" />
+    <Compile Include="Controllers\ControlDeIngresoControllerTest.cs" />
+    <Compile Include="Controllers\ConsultasControllerTest.cs" />
+    <Compile Include="Controllers\ProveedorExcluidoIntactaControllerTest.cs" />
+    <Compile Include="Controllers\LogHumedimetroControllerTest.cs" />
+    <Compile Include="Controllers\ConfrimacionDeCargaDescargaControllerTest.cs" />
+    <Compile Include="Controllers\ConsultaCasilleroControllerTest.cs" />
+    <Compile Include="Controllers\ControlDePesoEsperadoControllerTest.cs" />
+    <Compile Include="Controllers\ControlPesoMaximoControllerTest.cs" />
+    <Compile Include="Controllers\CaracteristicaDeCalidadControllerTest.cs" />
+    <Compile Include="Controllers\AutorizarTransportistaInhabilitadoControllerTest.cs" />
+    <Compile Include="Controllers\BocaDestinoControllerTest.cs" />
+    <Compile Include="Controllers\AnalisisDeCalidadControllerTest.cs" />
+    <Compile Include="Controllers\ControlPesoOrigenControllerTest.cs" />
+    <Compile Include="Controllers\ConversionMaterialControllerTest.cs" />
+    <Compile Include="Controllers\ConversionProcedenciaControllerTest.cs" />
+    <Compile Include="Controllers\ConversionCaracteristicaControllerTest.cs" />
+    <Compile Include="Controllers\ConversionGrupoControllerTest.cs" />
+    <Compile Include="Controllers\ControlPesoNetoControllerTest.cs" />
+    <Compile Include="Controllers\CargarOrdenEntrePlantasControllerTest.cs" />
+    <Compile Include="Controllers\ControlPesoNetoDescargaUnidadControllerTest.cs" />
+    <Compile Include="Controllers\CargarOrdenDeCargaContenedorControllerTest.cs" />
+    <Compile Include="Controllers\CalleControllerTest.cs" />
+    <Compile Include="Controllers\CalidadMaterialControllerTest.cs" />
+    <Compile Include="Controllers\ControlDeTiempoControllerTest.cs" />
+    <Compile Include="Controllers\CargarCartaPorteFasonControllerTest.cs" />
+    <Compile Include="Controllers\AsignacionTarjetaDeAccesoControllerTest.cs" />
+    <Compile Include="Controllers\ControlDeBalanzaControllerTest.cs" />
+    <Compile Include="Controllers\BalanzaACeroControllerTest.cs" />
+    <Compile Include="Controllers\AutorizarRecepcionUvasControllerTest.cs" />
+    <Compile Include="Controllers\AsignacionDeRecorridoControllerTest.cs" />
+    <Compile Include="Controllers\CargarHojaDeRutaYerbateraControllerTest.cs" />
+    <Compile Include="Controllers\ActividadConCargaAutomaticaControllerTest.cs" />
+    <Compile Include="Controllers\AsignacionDeEstablecimientoControllerTest.cs" />
+    <Compile Include="Controllers\CaladoControllerTest.cs" />
+    <Compile Include="Controllers\EmpresaControllerTest.cs" />
+    <Compile Include="Controllers\TecnologiaControllerTest.cs" />
+    <Compile Include="Controllers\PesadaBrutoVagonControllerTest.cs" />
+    <Compile Include="Controllers\PesadaTaraControllerTest.cs" />
+    <Compile Include="Controllers\EstablecimientoControllerTest.cs" />
+    <Compile Include="Controllers\EtiquetaAuditoriaControllerTest.cs" />
+    <Compile Include="Controllers\ExportacionDeArchivosINVControllerTest.cs" />
+    <Compile Include="Controllers\RemitoBodegaUvaTercerosControllerTest.cs" />
+    <Compile Include="Controllers\RemitoBodegaVinoControllerTest.cs" />
+    <Compile Include="Controllers\VinedoTercerosControllerTest.cs" />
+    <Compile Include="Controllers\IngresoBinSalidaControllerTest.cs" />
+    <Compile Include="Controllers\DistribucionDeAlmacenesControllerTest.cs" />
+    <Compile Include="Controllers\RemitoBodegaUvaPropiaControllerTest.cs" />
+    <Compile Include="Controllers\VariedadPorVinedoControllerTest.cs" />
+    <Compile Include="Controllers\ImpresoraControllerTest.cs" />
+    <Compile Include="Controllers\ExportacionDeArchivosControllerTest.cs" />
+    <Compile Include="Controllers\IngresoCIUControllerTest.cs" />
+    <Compile Include="Controllers\ServicioSapMov291ControllerTest.cs" />
+    <Compile Include="Controllers\EnTransitoControllerTest.cs" />
+    <Compile Include="Controllers\EnPlayaExternaControllerTest.cs" />
+    <Compile Include="Controllers\PesadaBrutoControllerTest.cs" />
+    <Compile Include="Controllers\PesadaTaraVagonControllerTest.cs" />
+    <Compile Include="Controllers\EnEsperaAduanaControllerTest.cs" />
+    <Compile Include="Controllers\EnEsperaIndianapolisControllerTest.cs" />
+    <Compile Include="Controllers\ReporteControlDeBalanzaControllerTest.cs" />
+    <Compile Include="Controllers\ListaDeTareasAutomatizadaControllerTest.cs" />
+    <Compile Include="Controllers\ImprimirTarjetaDeAccesoControllerTest.cs" />
+    <Compile Include="Controllers\PuestoComandoControllerTest.cs" />
+    <Compile Include="Controllers\MotivoQuiebreBarreraControllerTest.cs" />
+    <Compile Include="Controllers\ReasignacionDeTarjetaControllerTest.cs" />
+    <Compile Include="Controllers\PuestoDeTrabajoControllerTest.cs" />
+    <Compile Include="Controllers\AutorizarTiempoEnTransitoControllerTest.cs" />
+    <Compile Include="Controllers\TarjetaRangoControllerTest.cs" />
+    <Compile Include="Controllers\PuestosDeCargaDescargaControllerTest.cs" />
+    <Compile Include="Controllers\IngresoRemitoTercerosControllerTest.cs" />
+    <Compile Include="Controllers\ReciboMunicipalControllerTest.cs" />
+    <Compile Include="Controllers\TarjetaBloqueadaControllerTest.cs" />
+    <Compile Include="Controllers\ResumenDeRecepcionControllerTest.cs" />
+    <Compile Include="Controllers\TaraContenedorControllerTest.cs" />
+    <Compile Include="Controllers\DescargaUnidadControllerTest.cs" />
+    <Compile Include="Controllers\IngresarRemitoControllerTest.cs" />
+    <Compile Include="Controllers\CargarCartaPorteRedespachoDesvioControllerTest.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoControllerTest.cs" />
+    <Compile Include="Controllers\IngresarCartaPorteRedespachoPrestamoControllerTest.cs" />
+    <Compile Include="Controllers\LiberacionDeCasillerosControllerTest.cs" />
+    <Compile Include="Controllers\LibroMovimientosExistenciaGranosControllerTest.cs" />
+    <Compile Include="Controllers\ProveedorControllerTest.cs" />
+    <Compile Include="Controllers\SuplenciaControllerTest.cs" />
+    <Compile Include="Controllers\TarjetaSupervisorControllerTest.cs" />
+    <Compile Include="Controllers\VinedoPropioControllerTest.cs" />
+    <Compile Include="Controllers\VisteoControllerTest.cs" />
+    <Compile Include="Controllers\FormatoDeImpresionControllerTest.cs" />
+    <Compile Include="Controllers\DocumentoDeImpresionPorCentroControllerTest.cs" />
+    <Compile Include="Controllers\OrdenCargaInternaFasonControllerTest.cs" />
+    <Compile Include="Controllers\DocumentoDeImpresionControllerTest.cs" />
+    <Compile Include="Controllers\RomaneoControllerTest.cs" />
+    <Compile Include="Controllers\OrdenCargaFasControllerTest.cs" />
+    <Compile Include="Controllers\MicromuestraControllerTest.cs" />
+    <Compile Include="Controllers\LoteControllerTest.cs" />
+    <Compile Include="Controllers\MaterialPorWorkflowControllerTest.cs" />
+    <Compile Include="Controllers\PanelDeControlTransaccionesSapControllerTest.cs" />
+    <Compile Include="Controllers\ExcepcionEnvioCamaraControllerTest.cs" />
+    <Compile Include="Controllers\EntregadorControllerTest.cs" />
+    <Compile Include="Controllers\IngresoDeTransportistaControllerTest.cs" />
+    <Compile Include="Controllers\HumedimetroControllerTest.cs" />
+    <Compile Include="Controllers\MotivoControllerTest.cs" />
+    <Compile Include="Controllers\IngresoDeObservacionesControllerTest.cs" />
+    <Compile Include="Controllers\OrdenCargaInternaControllerTest.cs" />
+    <Compile Include="Controllers\PermisoControllerTest.cs" />
+    <Compile Include="Controllers\PesadaControllerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\RolControllerTest.cs" />
+    <Compile Include="Controllers\TalonarioControllerTest.cs" />
+    <Compile Include="Controllers\TaraRomaneoControllerTest.cs" />
+    <Compile Include="Controllers\TipoComercialPorWfControllerTest.cs" />
+    <Compile Include="Controllers\InhabilitacionChoferControllerTest.cs" />
+    <Compile Include="Controllers\InhabilitacionCamionControllerTest.cs" />
+    <Compile Include="Controllers\TipoComercialControllerTest.cs" />
+    <Compile Include="Controllers\TipoDocumentoIdentidadControllerTest.cs" />
+    <Compile Include="Controllers\AlmacenControllerTest.cs" />
+    <Compile Include="Controllers\CentroControllerTest.cs" />
+    <Compile Include="Controllers\ExcepcionAlControlControllerTest.cs" />
+    <Compile Include="Controllers\MenuControllerTest.cs" />
+    <Compile Include="Controllers\ChoferControllerTest.cs" />
+    <Compile Include="Controllers\MaterialControllerTest.cs" />
+    <Compile Include="Controllers\TransaccionSAPControllerTest.cs" />
+    <Compile Include="Controllers\TransportistaControllerTest.cs" />
+    <Compile Include="Controllers\UsuarioControllerTest.cs" />
+    <Compile Include="Controllers\VerificacionCamionRechazadoControllerTest.cs" />
+    <Compile Include="Helpers\ZPLConveterTest.cs" />
+    <Compile Include="Helpers\ExtensionesHtmlTest.cs" />
+    <Compile Include="Helpers\ExtensionesReflectionTest.cs" />
+    <Compile Include="FactoryContext.cs" />
+    <Compile Include="FactoryConversor.cs" />
+    <Compile Include="Meta\ExistenciaUnitTestsTest.cs" />
+    <Compile Include="Mock\FakeHttpMessageHandler.cs" />
+    <Compile Include="Mock\NullLogger.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatenteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarClienteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarConsistenciaBalanzadasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLecturaBalanzadaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCargaDeCupoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarZE7550TransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeNirsTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCosechaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCosechaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCosechaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRegistroStockEpaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarStockDeEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarStockDeEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearStockDeEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarInhabilitacionCamionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarInhabilitacionChoferTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPesoMaximoPorTipoVehiculoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPesoMaximoPorTipoVehiculoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPesoMaximoPorTipoVehiculoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuarioUltimoLoginTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarKmPorProveedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarKmPorProveedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearKmPorProveedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlDescuentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlDescuentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlDescuentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearSugerenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirPruebaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearIngresoDeDatosDeExportacionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesadaAduanaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearArchivoDeMovimientosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteDeRedespachoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesadaBodegaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarDestinatarioCTGTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFirmaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivoForzarCeroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMovimientoDeBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMovimientoDeBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarGraficoDePlantaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMovimientoDeBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteBiotecnologiaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosBodegaTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarInformarCupoTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarTransmisionSapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAjusteStockBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAjusteStockBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarProveedorExcluidoIntactaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearProveedorExcluidoIntactaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAceptarCamionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAjusteStockBinesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoBalanzaBrutoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPagaTicketMunicipalTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRemitoBodegaVinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemitoBodegaVinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinDeWorkflowTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosExcelTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosPdfTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaDePorteRegistradaServicioMonsantoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarMuestreoPesajeTransporteAutomotorTransmisionAMonsantoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarMuestreoPesajeVagonFerroviarioTransmisionAMonsantoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCartaPorteTransporteAutomotorRegistroTransmisionAMonsantoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCartaPorteVagonFerroviarioRegistroTransmisionAMonsantoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTecnologiaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTecnologiaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTecnologiaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEmpresaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEmpresaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEmpresaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarNotificacionesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaIntactaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPrimerLecturaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAjusteDeStockTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearActividadConCargaAutomaticaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogTarjetaSupervisorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarActividadConCargaAutomaticaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaAuditoriaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarActividadConCargaAutomaticaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAsignacionDeRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAsignacionDeRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAsignacionDeRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHojaDeRutaYerbateraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCargarBinesSalidaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHojaDeRutaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVinedoTercerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVinedoTercerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPesoNetoTransileTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVinedoTercerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDistribucionDeAlmacenesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemitoBodegaUvaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPesoNetoBodegaEnLitrosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVariedadPorVinedoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVinedoPropioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVariedadPorVinedoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCiuAnuladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCiuAnuladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVinedoPropioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraAuditoriaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorInstalarImpresoraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarImpresoraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearImpresoraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarImpresoraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEstadoConexionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarModalidadPuestoDeTrabajoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoAnalisisDeCalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEgresoSinFleteFazonesTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarLecturaDeTarjetaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivoQuiebreBarreraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoControlBalanzaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorControlDeBalanzaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAjusteDeStockTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarConfiguracionDeTablaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirControlDeCargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTarjetaDeAccesoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMotivoQuiebreBarreraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirReciboMunicipalTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearReasignacionDeTarjetaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinDeActividadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoNumeroCIUTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoTarjetaDeAccesoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearActividadPorDispositivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarActividadPorDispositivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAutorizarTiempoEnTransitoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPuestoDeTrabajoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarActividadPorDispositivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPuestoDeTrabajoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPuestoDeTrabajoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarTiempoEnTransitoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarControlDeTiempoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarControlDeTiempoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearControlDeTiempoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTarjetaSupervisorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaSupervisorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTarjetaRangoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaRangoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTarjetaRangoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPuestosDeCargaDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPuestosDeCargaDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPuestosDeCargaDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCasillerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearReciboMunicipalTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCasillerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarReciboMunicipalTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTarjetaBloqueadaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaBloqueadaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorBloquearTarjetaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCalleTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCalleTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCalleTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCalidadMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCalidadMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCasillerosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRemitoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirInformeDeRecepcionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirResumenDeRecepcionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeCargaContenedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTaraContenedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTaraContenedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTaraContenedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeCargaContenedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDescargaUnidadItemTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVariedadPorVinedoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVinedoPropioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarDescargaUnidadItemTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarDescargaUnidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemitoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenEntrePlantasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarFletesDobleTramoTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMicroMuestrasPorCasilleroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMicroMuestrasPorCasilleroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoAlmacenTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoNumeroCotTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarValoresSapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPesaNetoTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirLibroMovimientosExistenciaGranosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeImpresionModeloTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearFormatoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoDeImpresionPorCentroPorCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDocumentoDeImpresionPorCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFormatoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarFormatoDeCampoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarFormatoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoDeImpresionPorCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosEgresosFazonesTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorBajaCTGDefinitivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAjusteDeStockTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenCargaInternaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenCargaInternaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaFasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaInternaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenDeDescargaFasonTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarImpresionesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoDeImpresionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenEntrePlantasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPesoVehiculoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEgresosMaterialNoProductivoTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCargaFasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenDeDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinalizarRomaneoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarProveedorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoTerminadoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVehiculoDocumentoInternoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarRomaneoItemTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenCargaFasTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarMaterialesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarProveedoresTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarClientesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRomaneoItemTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarRomaneoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaPorteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaInternaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeDescargaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMicromuestraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogActividadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTalonarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTaraRomaneoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionGrupoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionCaracteristicaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionProcedenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionCaracteristicaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionGrupoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionProcedenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTalonarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTaraRomaneoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCertificadoDeCartaPorteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeEntradaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirConstanciaDeEntregaLaserTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirFormulario239Test.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirAsignacionDeRutaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCertificadoDeAnalisisTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDeclaracionFosfinaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirSolicitudDeAnalisisTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEnvioACamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEnvioLoteACamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesadaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMuestraEnvioACamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosPorCompraDeGranosTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFechaEgresoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMaterialPorWorkflowTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterialPorWorkflowTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMaterialPorWorkflowTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizaLlegadaADestinoEnRedespachosTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarSalidaDeOrigenEnRedespachosTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaCartaPorteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAjusteDeDiferenciasEnRedespachosTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAlmacenPorMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAlmacenPorMaterialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAltaCTGTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAltaCTGTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDecisionEntregadorCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarTransmisionASapTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransaccionSAPTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDescuentoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionEnvioCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEntregadorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionEnvioCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTransaccionSAPTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEntregadorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEntregadorTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionEnvioCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorBajaCTGTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBajaCTGTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearSuplenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVagonesTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCartaPorteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAnalisisDeCalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBocaDestinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHumedimetroModificarModalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHumedimetroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeHumedadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPermisoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRolTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearUsuarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBocaDestinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarHumedimetroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPermisoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarRolTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarSuplenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarUsuarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBocaDestinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarHumedimetroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMotivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMotivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCamaraTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCaracteristicaDeCalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCaracteristicaDeCalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCaracteristicaDeCalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanzaModificarModalidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanzaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanzaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBalanzaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAlmacenTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAlmacenTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPermisoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoDatosProximaActividadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPesoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoDestinoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanzaEstaEnCeroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAlmacenarObservacionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorAlmacenarPrecintosTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarNotificacionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearNotificacionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarNotificacionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearControlRecorridoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorIngresarOrdenCargaInternaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAlmacenTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCentroTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterialTest.cs" />
+    <Compile Include="Mock\MockHttpSession.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoComercialPorWfTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoComercialPorWfTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearInhabilitacionCamionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearInhabilitacionChoferTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControl.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTransportista.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRolTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarSuplenciaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTalonarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTaraRomaneoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTransportistaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarChoferTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarChoferTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearChoferTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTipoComercialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoComercialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoComercialTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoDocumentoIdentidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTipoDocumentoIdentidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoDocumentoIdentidadTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuarioTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarCamionTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarValorCaladoTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorSuscribirEventosTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\AnalisisDeCalidad\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\CalculadoraDescuentoTest.cs" />
+    <Compile Include="Servicios\ServicioComandosTest.cs" />
+    <Compile Include="Servicios\ServicioMercadoPagoTest.cs" />
+    <Compile Include="Servicios\ServicioRepositorioTest.cs" />
+    <Compile Include="Servicios\ServicioWorkflowsTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\Molinos.Scato.Dominio.Comandos.Resultado.datasource" />
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo.wsdl" />
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo1.wsdl" />
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\Molinos.Scato.Test.AnalisisDeCalidad.IngresarOrdenCargaInternaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\Molinos.Scato.Test.AnalisisDeCalidad.PesadaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AnalisisDeCalidad\Molinos.Scato.Test.AnalisisDeCalidad.SalidaDeCentroResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.Actividades\Molinos.Scato.Actividades.csproj">
+      <Project>{98EC024C-6439-44B1-8B1E-29E457B2201F}</Project>
+      <Name>Molinos.Scato.Actividades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dependencias\Molinos.Scato.Dependencias.csproj">
+      <Project>{52DC0858-F415-4FE7-AEA5-1E60652DB421}</Project>
+      <Name>Molinos.Scato.Dependencias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dominio\Molinos.Scato.Dominio.csproj">
+      <Project>{9bc79c49-4f39-409f-a3d4-f1dabb8122b4}</Project>
+      <Name>Molinos.Scato.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Repositorio\Molinos.Scato.Repositorio.csproj">
+      <Project>{C26344C6-9829-4673-940A-A3F44CFA945C}</Project>
+      <Name>Molinos.Scato.Repositorio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Servicios\Molinos.Scato.Servicios.csproj">
+      <Project>{15B3E0D2-6217-493A-A690-158C497F5318}</Project>
+      <Name>Molinos.Scato.Servicios</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.WebMobile\Molinos.Scato.WebMobile.csproj">
+      <Project>{4C4B9149-A86A-4C7C-A4CB-90FFE40E734D}</Project>
+      <Name>Molinos.Scato.WebMobile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Web\Molinos.Scato.Web.csproj">
+      <Project>{FA51B713-73F4-40C3-ACA3-8F2210400E08}</Project>
+      <Name>Molinos.Scato.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AnalisisDeCalidad\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AnalisisDeCalidad\EgresoMaterialNoProductivo.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AnalisisDeCalidad\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AnalisisDeCalidad\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AnalisisDeCalidad\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Helpers\zpl_original.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <!-- Mark the project as being a test project -->
+    <SonarQubeTestProject>true</SonarQubeTestProject>
+  </PropertyGroup>
+</Project>

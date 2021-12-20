@@ -1,0 +1,78 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.BocaDestinoDto
+@{
+    var paises = (IEnumerable<SelectListItem>)ViewBag.Paises;
+    var provincias = (IEnumerable<SelectListItem>)ViewBag.Provincias;
+    var localidades = (IEnumerable<SelectListItem>)ViewBag.Localidades;
+}
+<div id ="links" 
+     data-url-obtener-proveedores-sap ="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor ="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
+    ></div>
+@Html.ValidationSummary(true)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Proveedor, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Proveedor, new { @class = "control input-medium input-xlarge" })
+        @*@Html.DropDownListFor(model => model.ProveedorId, proveedores,"(proveedor)")*@
+        @Html.ValidationMessageFor(model => model.Proveedor)
+        @Html.HiddenFor(model => model.ProveedorId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.NombreBocaDeDestino, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NombreBocaDeDestino, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.NombreBocaDeDestino)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Pais, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.PaisId, paises, new { id = "paisesDropDown" })
+         @Html.ValidationMessageFor(model => model.PaisId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Provincia, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ProvinciaId, provincias,Textos.Default_Provincia, new { id = "provinciasDropDown" })
+        @Html.ValidationMessageFor(model => model.ProvinciaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Localidad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.LocalidadId, localidades,Textos.Default_Localidad, new { id = "localidadesDropDown" })
+        @Html.ValidationMessageFor(model => model.LocalidadId)
+        @Html.Hidden("CargarProvincias", Url.Action("CargarProvincias"))
+        @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
+        @Html.Hidden("ValorDefaultLocalidad",Textos.Default_Localidad)
+        @Html.Hidden("ValorDefaultProvincia",Textos.Default_Provincia)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Domicilio, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Domicilio, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Domicilio)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoPostal, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoPostal, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.CodigoPostal)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoONCCA, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoONCCA, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.CodigoONCCA)
+    </div>
+</div>
+
+<div id="autocompleteProv"></div>

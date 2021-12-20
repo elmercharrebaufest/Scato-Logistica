@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ActividadPorDispositivoDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "ActividadPorDispositivo"),
+    grilla.Columna("Workflow.Descripcion", Textos.Workflow_Nombre, x => x.WorkflowDescripcion),
+    grilla.Columna("Actividad", Textos.Actividad, x => Textos.ResourceManager.GetString("Act" + x.Actividad) ?? x.Actividad),
+    grilla.Column("Salida", Textos.Salida, null, null, false),
+    grilla.Columna("VideoCamarasString", Textos.ActividadPorDispositivo_Camara)
+    ))
+

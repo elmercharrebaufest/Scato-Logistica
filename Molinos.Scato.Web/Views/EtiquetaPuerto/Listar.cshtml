@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ImpEtiquetaPuertoDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaPrevisualizar(Html, "EtiquetaPuerto"),
+    grilla.Columna("Vapor", "Vapor"),
+    grilla.Columna("Cargador", "Cargador"),
+    grilla.Columna("Mercaderia", "Mercaderia"),
+    grilla.Columna("Destino", Textos.Destino),
+    grilla.Columna("Kg", "Kg"),
+    grilla.Columna("NumeroLote", Textos.Lote_NroLote),
+    grilla.Columna("Bodega", "Bodega"),
+    grilla.Columna("Control", "Control"),
+    grilla.Columna("Fecha", Textos.Fecha, (x) => { return x.Value.Fecha == null ? string.Empty : ((DateTime)x.Value.Fecha).ToString("dd/MM/yyyy"); })
+    ))

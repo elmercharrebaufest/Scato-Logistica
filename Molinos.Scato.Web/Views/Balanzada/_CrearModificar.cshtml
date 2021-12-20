@@ -1,0 +1,63 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.BalanzadaDto
+
+@Html.HiddenFor(m => m.CargaInicial_NumeroBalanza)
+@Html.HiddenFor(m => m.Id)
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Id, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Id, new { @readonly = "readonly" })
+        @Html.ValidationMessageFor(m => m.Id)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.NumeroBalanza, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.NumeroBalanza, new { @readonly = "readonly" })
+        @Html.ValidationMessageFor(m => m.NumeroBalanza)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CargaInicial_Id, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.CargaInicial_Id, new { @readonly = "readonly" })
+        @Html.ValidationMessageFor(model => model.CargaInicial_Id)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.PesoBruto, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PesoBruto, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(m => m.PesoBruto)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.PesoTara, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PesoTara, new { @class = "input-large" })
+        @Html.ValidationMessageFor(m => m.PesoTara)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.PesoNeto, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PesoNeto, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(m => m.PesoNeto)
+        <div id="PesoNetoError" class="field-validation-error help-block" style="display:none">El peso neto no coincide con el peso bruto menos el peso tara</div>
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Fecha, new { @class = "control-label" })
+    <div class="controls">
+        <input type="datetime" id="Fecha" name="Fecha" class="control input-large" data-val="true" value="@string.Format("{0:dd/MM/yyyy HH:mm}", Model.Fecha)">
+        @Html.ValidationMessageFor(model => model.Fecha)
+        @Html.ValidationMessage("ModificarBalanzada")
+        @Html.ValidationMessage("FechaInvalida")
+    </div>
+</div>
+
+@Html.ValidationMessage("EnvioASAPFallido")
+

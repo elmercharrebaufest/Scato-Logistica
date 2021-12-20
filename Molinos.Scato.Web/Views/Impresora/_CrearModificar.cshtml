@@ -1,0 +1,23 @@
+﻿@model Molinos.Scato.Dominio.Dto.ImpresoraDto
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Direccion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Direccion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Direccion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.IsZebra, new {@class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.IsZebra, new {@class = "input-xlarge"})
+    </div>
+</div>

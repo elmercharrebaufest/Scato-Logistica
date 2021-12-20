@@ -1,0 +1,13 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.GraficoCamionesDiaDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+}
+<script type="text/javascript">
+    var urlGenerarCamionesDia = '@Url.Action("GenerarGraficoCamionesPorDia","Index")'
+</script>
+
+<div class="col-12 borde-grafico">
+    <canvas id="myChartCamionesDia"></canvas>
+    <div class="text-eje-x text-center">@Textos.DiasAtras</div>
+</div>

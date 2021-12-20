@@ -1,0 +1,53 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.TransmisionASapManualDto
+@{
+    ViewBag.Title = Textos.TransmisionASapManual;
+    var funciones = (IEnumerable<SelectListItem>)ViewBag.FuncionesSap;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script src="@Url.Script("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/transmisionASapManual.js")"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.TransmisionASapManual</div>
+</div>
+
+<style>
+    .ui-resizable-handle {
+    transform: translateY(-100%);
+}
+</style>
+<div class="" id="editContainer">
+    <div class="control-group" style="margin-bottom: 10px;margin-top: 10px">
+
+
+        <div class="control-group" style="margin-bottom: 10px">
+
+            @Html.Label(Textos.FuncionSAP, new { style = "display: inline-block; margin-right:10px" })
+            @Html.DropDownList("funcionSeleccionada", funciones, new { id = "funcionSeleccionada", style = "display: inline-block; margin-right:10px" })
+
+           
+
+        </div>
+        <div class="control-group" style="margin-bottom: 10px">
+
+            @Html.Label(Textos.Documento + ", " + Textos.Patente, new { style = "display: inline-block; margin-right:10px" })
+            @Html.TextAreaFor(model => model.DocumentoPatente, 10, 40, new { @class = "validarValor", style = "width:100%" })
+
+
+        </div>
+        <div class="control-group" style="margin-bottom: 10px">
+            @Html.ActionLink(Textos.TransmisionASapManual_CrearTransmision, "Index", "TransmisionASapManual", new { }, new { @class = "btn btn-primary", @id = "btnGenerarTransmision" })
+        </div>
+
+    </div>
+</div>

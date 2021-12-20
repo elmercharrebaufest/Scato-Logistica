@@ -1,0 +1,209 @@
+<ship-spinner [message]="'Cargando Line Up. Por favor, espere...'" *ngIf='mostrarSpinner'></ship-spinner>
+<div class="container-fluid mt-4" style="flex-direction: column;" *ngIf='mostrarContent'>
+  <div class="row m-lg-4">
+    <div class="col pl-0">
+      <div class="row">
+        <div class="col">
+          <label>Actualizado: {{fechaActualizacion | date : 'dd-MM H:mm'}}hs</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h1>Line up coordinación</h1>
+        </div>
+      </div>
+      <br/>
+      <table class="mt-5">
+        <tr>
+          <td><button class="btn btn-muelles color-muelle-sanbenito">San Benito</button></td>
+          <td><button class="btn btn-estados-muelles"
+            [ngClass]="estadoSanBenito() == 'Operando' ?
+                'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">
+            {{estadoSanBenito()}}</button></td>
+          <td style="width: 10px"></td>
+          <td><button class="btn btn-muelles color-muelle-nouryon" (click)='goNouryon()'>Nouryon</button></td>
+          <td><button class="btn btn-estados-muelles"
+            [ngClass]="estadoNoryon() == 'Operando' ?
+                'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">        
+            {{estadoNoryon()}}</button></td>
+        </tr>       
+
+        <tr>
+          <td style="padding-top: 10px"><button class="btn btn-muelles color-muelle-vicentin" (click)='goVicentin()'>Vicentin</button></td>
+          <td style="padding-top: 10px"><button class="btn btn-estados-muelles"
+            [ngClass]="estadoVicentin() == 'Operando' ?
+                  'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'"> 
+            {{estadoVicentin()}}</button></td>
+          <td style="width: 10px"></td>
+          <td style="padding-top: 10px"><button class="btn btn-muelles color-muelle-otros-muelles" (click)='goOtrosMuelles()'>Otros Muelles</button></td>
+          <td style="padding-top: 10px"><button class="btn btn-estados-muelles"
+            [ngClass]="estadoOtros() == 'Operando' ?
+                'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">         
+            {{estadoOtros()}}</button></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-lg-1 col-md-2 text-center">
+      <button type="button" class="btn btn-light btn-circle " (click)="cambiarVista()">
+        <i class="fa fa-calendar fa-2x c-celeste" [ngClass]="{'fa-calendar': !mostrarCalendario, 'fa-list-ul': mostrarCalendario}"></i>
+      </button>
+      <!--<input class="form-control search" type="search" placeholder="&#xF002; Buscar" aria-label="Search">-->
+    </div>
+    <div class="col pr-0">
+      <div class="row">
+        <div class="col text-sm-center text-md-right">                         
+          <ng-container *ngIf="hasPermisoAltaEmbarque()">
+            <button class="btn btn-molinos" (click)="altaEmbarque()">+Crear alta de embarque</button>
+          </ng-container>        
+        </div>
+      </div>    
+
+      <app-estados-puerto-content></app-estados-puerto-content>
+    </div>    
+  </div>
+  <app-cargando-muelle *ngIf="sanBenitoCargandoMuelle" [instanciaWorkflow]="sanBenitoCargandoMuelle"></app-cargando-muelle>
+  <div fxFlex *ngIf="listadoEmbarques">
+    <div *ngIf="!mostrarCalendario">
+      <div class="row m-lg-4" *ngFor="let instanciaWorkflow of sanBenito; let i = index;" #puertoSanBenito>
+        <app-lineup-embarque *ngIf="!(sanBenitoCargandoMuelle?.id == instanciaWorkflow.id) && instanciaWorkflow.embarque.ubicacion !=1" [instanciaWorkflow]="instanciaWorkflow" [observador]="observador" [index]="i" class="w-100 mb-4"></app-lineup-embarque>
+      </div>
+      <div class="row">
+        <div class="col align-self-start">
+        </div>
+        <div class="col m-lg-4 align-self-center  text-center">
+          <ng-container *ngIf="hasPermisoAltaEmbarque()">
+            <button class="btn btn-success" (click)="altaEmbarque()">Agregar otro embarque</button>
+          </ng-container>
+        </div>
+        <div class="col m-lg-4 align-self-end text-right">
+          <ng-container *ngIf="hasPermisoMail()">
+            <button class="btn btn-light mr-3" (click)="enviarPorMail()">ENVIAR POR MAIL</button>
+          </ng-container>
+          <ng-container *ngIf="hasPermisoExcel()">
+            <button class="btn btn-light" (click)="exportarEmbarques()">EXPORTAR A EXCEL</button>
+          </ng-container>
+        </div>
+      </div>
+      <ng-container *ngIf="vicentin.length > 0">
+        <hr />
+        <div class="row m-lg-4">
+          <div class="col m-lg-0">
+            <div class="row" id='muelleVicentin'>
+              <!--<div class="col text-gris">-->
+                <!--<label><strong>Muelle Vicentin: </strong><span class="text-success">{{estadoMuelle(filtrarVicentin())}}</span></label>-->
+              <!--</div>-->
+              <button class="btn btn-muelles color-muelle-vicentin">Vicentin</button>
+                <button class="btn btn-estados-muelles"
+                  [ngClass]="estadoVicentin() == 'Operando' ?
+                  'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">        
+                {{estadoVicentin()}}</button>
+            </div>
+          </div>
+        </div>
+        <div class="row m-lg-4" *ngFor="let instanciaWorkflow of vicentin; let i = index;">
+          <app-lineup-embarque *ngIf="instanciaWorkflow.embarque.ubicacion  != 1" [instanciaWorkflow]="instanciaWorkflow" [observador]="observador" [index]="i" class="w-100 mb-4"></app-lineup-embarque>
+        </div>
+        <div class="row">
+          <div class="col align-self-start">
+          </div>
+          <div class="col m-lg-4 align-self-center  text-center">
+            <ng-container *ngIf="hasPermisoAltaEmbarque()">
+              <button class="btn btn-success" (click)="altaEmbarque()">Agregar otro embarque</button>
+            </ng-container>
+          </div>
+          <div class="col m-lg-4 align-self-end text-right">
+            <ng-container *ngIf="hasPermisoMail()">
+              <button class="btn btn-light mr-3" (click)="enviarPorMail()">ENVIAR POR MAIL</button>
+            </ng-container>
+            <ng-container *ngIf="hasPermisoExcel()">
+              <button class="btn btn-light" (click)="exportarEmbarques()">EXPORTAR A EXCEL</button>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="noryon.length > 0">
+        <hr />
+        <div class="row m-lg-4">
+          <div class="col m-lg-0">
+            <div class="row" id='muelleNouryon'>
+              <!--<div class="col text-gris">
+                <label><strong>Muelle Nouryon: </strong><span class="text-success">{{estadoMuelle(filtrarNoryon())}}</span></label>
+              </div>-->
+              <button class="btn btn-muelles color-muelle-nouryon">Nouryon</button>
+                <button class="btn btn-estados-muelles"
+                  [ngClass]="estadoNoryon() == 'Operando' ?
+                  'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">        
+                {{estadoNoryon()}}</button>
+            </div>
+          </div>
+        </div>
+        <div class="row m-lg-4" *ngFor="let instanciaWorkflow of noryon; let i = index;">
+          <app-lineup-embarque *ngIf="instanciaWorkflow.embarque.ubicacion  != 1" [instanciaWorkflow]="instanciaWorkflow" [observador]="observador" [index]="i" class="w-100 mb-4"></app-lineup-embarque>
+        </div>
+        <div class="row">
+          <div class="col align-self-start">
+          </div>
+          <div class="col m-lg-4 align-self-center  text-center">
+            <ng-container *ngIf="hasPermisoAltaEmbarque()">
+              <button class="btn btn-success" (click)="altaEmbarque()">Agregar otro embarque</button>
+            </ng-container>
+          </div>
+          <div class="col m-lg-4 align-self-end text-right">
+            <ng-container *ngIf="hasPermisoMail()">
+              <button class="btn btn-light mr-3" (click)="enviarPorMail()">ENVIAR POR MAIL</button>
+            </ng-container>
+            <ng-container *ngIf="hasPermisoExcel()">
+              <button class="btn btn-light" (click)="exportarEmbarques()">EXPORTAR A EXCEL</button>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="otrosMuelles.length > 0">
+        <hr />
+        <div class="row m-lg-4">
+          <div class="col m-lg-0">
+            <div class="row" id='muelleOtrosMuelles'>
+              <button class="btn btn-muelles color-muelle-otros-muelles">Otros Muelles</button>
+                <button class="btn btn-estados-muelles"
+                  [ngClass]="estadoOtros() == 'Operando' ?
+                  'btn-estado-muelle-operando' : 'btn-estado-muelle-no-operando'">        
+                {{estadoOtros()}}</button>
+            </div>
+          </div>
+        </div>
+        <div class="row m-lg-4" *ngFor="let instanciaWorkflow of otrosMuelles; let i = index;">
+          <app-lineup-embarque *ngIf="instanciaWorkflow.embarque.ubicacion  != 1" (showSpinner)='showSpinner($event)' [instanciaWorkflow]="instanciaWorkflow" [observador]="observador" [index]="i" class="w-100 mb-4"></app-lineup-embarque>
+        </div>
+        <div class="row">
+          <div class="col align-self-start">
+          </div>
+          <div class="col m-lg-4 align-self-center  text-center">
+            <ng-container *ngIf="hasPermisoAltaEmbarque()">
+              <button class="btn btn-success" (click)="altaEmbarque()">Agregar otro embarque</button>
+            </ng-container>
+          </div>
+          <div class="col m-lg-4 align-self-end text-right">
+            <ng-container *ngIf="hasPermisoMail()">
+              <button class="btn btn-light mr-3" (click)="enviarPorMail()">ENVIAR POR MAIL</button>
+            </ng-container>
+            <ng-container *ngIf="hasPermisoExcel()">
+              <button class="btn btn-light" (click)="exportarEmbarques()">EXPORTAR A EXCEL</button>
+            </ng-container>
+          </div>
+        </div>
+        <hr />
+      </ng-container>
+    </div>
+
+    <div class="row m-lg-4" *ngIf="mostrarCalendario">
+      <app-lineup-calendario [listadoEmbarques]="listadoEmbarques" class="w-100 mb-4"></app-lineup-calendario>
+    </div>
+  </div>
+
+  <div class="row m-lg-4" [hidden]="listadoEmbarques">
+
+    <h4>Loading . . . Please Wait</h4>
+  </div>
+</div>
+
+<p-toast position='top-center' key='access-lineup'></p-toast>

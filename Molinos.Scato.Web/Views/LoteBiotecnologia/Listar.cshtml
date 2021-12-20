@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<LoteBiotecnologiaListaDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaSeleccionar(Html, "LoteBiotecnologia"),
+            grid.Columna("NumeroDeLote", Textos.Lote_NroLote),
+            grid.Columna("Fecha",  Textos.Lote_FechaDescarga),
+            grid.Columna("Material.Descripcion",  Textos.Material, x => x.MaterialDesc),
+            grid.Columna("FechaDesde",  Textos.Lote_FechaMuestraDesde),
+            grid.Columna("FechaHasta",  Textos.Lote_FechaMuestraHasta),
+            grid.Columna("Camara.Descripcion", Textos.Camara, x => x.CamaraDesc)))

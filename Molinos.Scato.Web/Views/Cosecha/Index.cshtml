@@ -1,0 +1,50 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@{
+    ViewBag.Title = Textos.Cosechas_Titulo;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+
+<div class ="container-fluid">
+    <ul class="nav nav-tabs">
+        @if (PermisosHelper.Is(PermisosScato.AbmEstablecimiento))
+        {
+            <li >
+                @Html.ActionLink(Textos.Establecimiento_Titulo, "Index", "Establecimiento")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.AbmStockDeEstablecimiento))
+        {
+            <li>
+                @Html.ActionLink(Textos.StockDeEstablecimiento_Titulo, "Index", "StockDeEstablecimiento")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.AbmCosecha))
+        {
+            <li class="active">
+                @Html.ActionLink(Textos.Cosechas_Titulo, "Index", "Cosecha")
+            </li>
+        }
+     </ul>
+    <div class="titSecciones">@Textos.Administracion_Cosechas</div>
+</div>
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_Cosechas)            
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+            }
+        </div>
+        @Html.ActionLink(Textos.Cosecha_Nueva, "Crear", "Cosecha", null, new { @class = "ajax-editar-link btn btn-primary pull-right"})
+    </div>
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+

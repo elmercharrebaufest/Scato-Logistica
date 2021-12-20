@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6846a7a5-3f66-46de-9e93-568688ea6128" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="EgresoMaterialNoProductivo.xsd" MetadataType="Schema" ID="38aae0d6-d3fe-499a-9c19-a6fa269b4a15" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd5" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo1.xsd" MetadataType="Schema" ID="17ac89e9-742b-4144-b6ef-97b901b7b616" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd0" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo2.xsd" MetadataType="Schema" ID="949336a6-3495-4f3c-aa79-04e1358d8558" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd1" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo3.xsd" MetadataType="Schema" ID="40e29bf9-3f80-4536-8f0a-8f2642c779ee" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd2" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo4.xsd" MetadataType="Schema" ID="f71a2760-12d2-4ed6-bf8c-fbc8e07e8f3d" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd3" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo5.xsd" MetadataType="Schema" ID="68d6cff4-e5cd-4528-bd4d-594a19e19dad" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd4" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo.disco" MetadataType="Disco" ID="a959f4ff-81d2-43fe-8142-4e544cad6283" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?disco" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo.wsdl" MetadataType="Wsdl" ID="de16b1e7-aeaa-4e11-9d7b-c9f486ed3957" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?wsdl=wsdl0" />
+    <MetadataFile FileName="EgresoMaterialNoProductivo1.wsdl" MetadataType="Wsdl" ID="fef79d89-0e60-45f3-ba41-f2e6860d7ea5" SourceId="1" SourceUrl="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

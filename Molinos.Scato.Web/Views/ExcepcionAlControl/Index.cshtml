@@ -1,0 +1,45 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@{
+    ViewBag.Title = Textos.ExcepcionAlControl_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_Transportistas</div>
+</div>
+
+<ul class="nav nav-tabs">
+    @if (PermisosHelper.Is(PermisosScato.AbmTransportista))
+    {
+        <li>
+            @Html.ActionLink(Textos.Transportista_Titulo, "Index", "Transportista")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.AbmExcepcionAlControl))
+    {
+        <li class="active">
+            @Html.ActionLink(Textos.ExcepcionAlControl_Titulo, "Index", "ExcepcionAlControl")
+        </li>
+    }
+</ul>
+
+<div class="container-fluid grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_Excepciones)
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                
+            }
+        </div>
+        @Html.ActionLink(Textos.ExcepcionAlControl_Nuevo, "Crear", "ExcepcionAlControl", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
+    </div>
+    
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+

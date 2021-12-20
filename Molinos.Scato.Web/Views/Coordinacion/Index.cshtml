@@ -1,0 +1,190 @@
+﻿@using Molinos.Scato.Actividades.Helpers
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model RecorridoDto
+@{
+    ViewBag.Title = Textos.Coordinacion_Titulo;
+    var caracteristicasNoAceptables = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasNoAceptables);
+    var caracteristicasMensajes = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasMensajes);
+    var agente = (string)ViewBag.AgenteCompras;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/coordinacion.js")"></script>
+
+<div class="container text-center">
+    <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Coordinacion_Titulo</div>
+    @if ((bool)ViewBag.TrigoEspecial && (bool)ViewBag.CaracteristicasNoCorrenspodenEspecial)
+    {
+        <span class="label label-yellow text-center">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.NoCumpleCaracteristicasEspeciales)</h4>
+        </span>
+    }
+    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
+        <h4 style="margin-top: 0; margin-bottom: 0">@Model.Material.Descripcion @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+    </span>
+
+    @if ((bool)ViewBag.CupoEsFabrica)
+    {
+        <span class="label label-yellow text-center">
+            <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.CupoFabrica)</h4>
+        </span>
+    }
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active">
+        @Html.ActionLink(Textos.Coordinacion_Titulo, "Index", "Coordinacion")
+    </li>
+    <li>
+        @Html.ActionLink(Textos.DocumentoDeOrigen_Titulo, "Index", "DocumentoDeOrigen", new DocumentoDeOrigenDto { InstanceId = Model.InstanciaWorkflow, TipoDocumentoIngreso = Model.TipoDocumentoIngreso, Actividad = "Coordinacion", ActividadTitulo = Textos.Coordinacion_Titulo, RecorridoId = Model.Id, EsActividad = true }, null)
+    </li>
+</ul>
+
+@if (ViewBag.EnvioDirectoACamara != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        @Html.ViewBag.EnvioDirectoACamara
+    </div>
+}
+
+        @if ((bool)ViewBag.EsAceptable && caracteristicasMensajes.Any())
+        {
+            <div class="alert alert-warning">
+                @string.Format(Textos.VehiculoConAdvertencia,String.Join(", ", caracteristicasMensajes.Select(x => x.Caracteristica)))
+            </div>
+        }
+
+<div class="">
+    <div class="">
+        @if (!(bool)ViewBag.EsAceptable)
+        {
+            <div class="alert alert-error">
+                @string.Format(Textos.VehiculoNoAceptable, caracteristicasNoAceptables.Where(x => x.NoAceptarSiSeDefineUnValor).Select(x => x.Caracteristica).Aggregate((a, x) => a + ", " + x))
+            </div>
+        }
+    </div>
+</div>
+
+<table class="tablaDatos span12search" style="margin-left: 0;width: 100%">
+    <thead>
+        <tr>
+            <th>@Html.LabelFor(model => model.Patente, new { @class = "control-label" })</th>
+            <th>@Html.Label(Textos.PatenteAcoplado)</th>
+            <th>@Html.Label(Textos.Tarjeta)</th>
+            <th>@Html.Label(Textos.FechaIngreso)</th>
+            <th>@Html.LabelFor(model => model.Transportista, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoNetoOrigen, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoNeto, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoDiferencia, new { @class = "control-label" })</th>
+            <th>@Html.Label(Textos.CartaPorte_Cupo)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(model => model.Patente, new { @class = "control-label" })</td>
+            <td>@ViewBag.PatenteAcoplado</td>
+            <td>@ViewBag.TarjetaDeAcceso</td>
+            <td>@ViewBag.FechaIngreso</td>
+            <td>@Html.DisplayFor(model => model.Transportista.RazonSocial, new { @class = "control-label" })</td>
+            <td>@Html.DisplayFor(model => model.PesoNetoOrigen, new { @class = "control-label" })</td>
+            <td>@Html.DisplayFor(model => model.PesoNeto, new { @class = "control-label" })</td>
+            <td>@Html.DisplayFor(model => model.PesoDiferencia, new { @class = "control-label" })</td>
+            <td>@ViewBag.Cupo</td>
+        </tr>
+    </tbody>
+    <thead>
+        <tr>
+            <th>@Html.LabelFor(model => model.TipoComercial, new { @class = "control-label" })</th>
+            <th>@Html.Label((Model.TipoDocumentoIngreso).DisplayEnum())</th>
+            <th>@Html.Label(Textos.CTG)</th>
+            <th>@Html.Label(Textos.TitularCP)</th>
+            <th>@Html.Label(Textos.CartaPorte_RtteComercial)</th>
+            <th>@Html.Label(Textos.CartaPorte_AgenteCompras, new { @class = "control-label" })</th>
+            <th>@Html.Label(Textos.Entregador)</th>
+            <th>@Html.LabelFor(model => model.Calado.CicloDeCalado, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.Calado.Comentario, new { @class = "control-label" })</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(model => model.TipoComercial.Descripcion, new { @class = "control-label" })</td>
+            <td>@Html.DisplayFor(model => model.NumeroDocumentoIngreso, new { @class = "control-label" })</td>
+            <td>@ViewBag.CTG</td>
+            <td>@ViewBag.TitularCP</td>
+            <td>@ViewBag.RtteComercial</td>
+            <td>@agente</td>
+            <td>@ViewBag.TieneEntregador</td>
+            <td>@Html.DisplayFor(model => model.Calado.CicloDeCalado, new { @class = "control-label" })</td>
+            <td>@ViewBag.Comentario</td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.Calado.EstaAutorizadoPorEntregador)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.LabelFor(model => model.Calado.EstaAutorizadoPorEntregador, new { @class = "control-label" })</th>
+            </tr>
+        </thead>
+    </table>
+}
+<h4>@Textos.CaracteristicaDeCalidad_Titulo:</h4>
+<div id="gridContainer">
+    @Html.Partial("Listar")
+</div>
+
+<div class="row-fluid">
+    <div class="span2">
+        @Html.ActionLink(Textos.Coordinacion_Recalar, "Recalar", "Coordinacion", new { codigoWf = Model.Workflow.Codigo, workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.InstanciaWorkflow }, new { @class = "rechazar-boton btn btn-primary pull-right" })
+    </div>
+    @if ((bool)ViewBag.EsAceptable)
+    {
+        <div class="span2">
+            @Html.ActionLink(Textos.Coordinacion_EnviarACamara, "EnviarACamara", "Coordinacion", new { codigoWf = Model.Workflow.Codigo, workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.InstanciaWorkflow, caladoId = Model.Calado.Id, materialId = Model.Material.Id }, new { @class = "rechazar-boton btn btn-primary pull-right" })
+        </div>
+    }
+    <div class="span2">
+        @Html.ActionLink(Textos.Rechazar, "Rechazar", "Coordinacion", new { codigoWf = Model.Workflow.Codigo, workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.InstanciaWorkflow }, new { @class = "rechazar-boton btn btn-primary pull-right" })
+    </div>
+    <div class="span2">
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    </div>
+    @if ((bool)ViewBag.EsAceptable)
+    {
+        <div class="span2">
+            <button class="confirmar-boton btn btn-primary pull-right" data-accion="Aceptar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Aceptar, Textos.ActAnalisisDeCalidad)">
+                @Textos.Aceptar
+            </button>
+        </div>
+    }
+</div>
+
+@* ReSharper disable Mvc.ActionNotResolved *@
+@* "Action" Es el nombre que hace que la clase HttpParamActionAttribute busque el action
+    correcto a partir del valor data-action de cada boton, permitiendo que un form ejecute diferentes action *@
+@using (Html.BeginForm("Action", "Coordinacion", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActCoordinacion }))
+{
+    @Html.Hidden("codigoWf", Model.Workflow.Codigo)
+    @Html.Hidden("instanceId", Model.InstanciaWorkflow)
+    @Html.Hidden("workflowDefinicionId", Model.WorkflowDefinicionId)
+    <div class="modal hide fade" id="dialogo-confirmar">
+        @* ReSharper restore Mvc.ActionNotResolved *@
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn confirmar" name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}
+
+<div id="mensajeRechazar">
+
+</div>

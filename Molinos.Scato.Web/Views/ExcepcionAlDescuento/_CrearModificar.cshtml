@@ -1,0 +1,88 @@
+﻿@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ExcepcionAlDescuentoDto
+@{
+    var caracteristicas = new List<SelectListItem>();
+    var camaras = (IList<SelectListItem>)ViewBag.Camaras;
+}
+<script type="text/javascript">
+    var urlObtenerCaracteristicas = "@Url.Action("SetearCaracteristicasCalidadDropDownList", "ExcepcionAlDescuento")";
+    var caracteristicaCalidadId = "";
+    @if (Model != null) {
+        <text>
+            caracteristicaCalidadId = "@Model.CaracteristicaDeCalidadId";
+            cargarCaracteristicas();
+        </text>
+    }
+</script>
+<div id ="links" 
+     data-url-obtener-proveedores-sap ="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor ="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
+    
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+    
+     data-url-buscar-centro ="@Url.Action("BuscarCentroUnico", "Consultas")"
+     data-url-buscar-centros = "@Url.Action("BuscarCentros", "Consultas")"
+    ></div>
+
+@Html.ValidationSummary(true)
+@Html.ValidationMessage("")
+
+<div class="control-group">
+    @Html.LabelFor(model => model.ProveedorDescripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ProveedorDescripcion, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(model => model.ProveedorDescripcion)
+        @Html.HiddenFor(model => model.ProveedorId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.MaterialDescripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.MaterialDescripcion, new {@class = "control input-medium"})
+        @Html.ValidationMessageFor(m => m.MaterialDescripcion)
+        @Html.HiddenFor(model => model.MaterialId)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CaracteristicaDeCalidadDescripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CaracteristicaDeCalidadId,caracteristicas, new { @id = "caracteristicasDropdown" })
+        @Html.ValidationMessageFor(model => model.CaracteristicaDeCalidadDescripcion)
+    </div>
+</div>
+
+<div class="control-group FechaDesde">
+    @Html.LabelFor(model => model.FechaDesde, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.FechaDesde, Model != null ? Model.FechaDesde.FormattedFixed() : string.Empty)
+        @Html.ValidationMessageFor(model => model.FechaDesde)
+    </div>
+</div>
+<div class="control-group FechaHasta">
+    @Html.LabelFor(model => model.FechaHasta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.FechaHasta, Model != null ? Model.FechaHasta.FormattedFixed() : string.Empty)
+        @Html.ValidationMessageFor(model => model.FechaHasta)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Motivo, new {@class = "control-label"})
+    <div class="controls">
+        @*@Html.TextArea("TextoSugerencia", new {rows = 7, cols = 47, style = "width: 96%", maxlength="4000"})*@
+        @Html.TextBoxFor(model => model.Motivo, new {@class = "control input-large", maxlength="4000"})
+        @Html.ValidationMessageFor(m => m.Motivo)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CamaraId, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CamaraId, camaras)
+        @Html.ValidationMessageFor(model => model.CamaraId)
+    </div>
+</div>
+
+<div id="autocompleteCorr"></div>

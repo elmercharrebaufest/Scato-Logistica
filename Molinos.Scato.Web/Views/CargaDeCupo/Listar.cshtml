@@ -1,0 +1,80 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+
+    Layout = null;
+    var items = (InstanciaWorkflowDto[])ViewBag.Items;
+}
+<style>
+    th {
+        color: #36634b !important;
+    }
+
+    #tablacuposCargados.table th, #tablacuposCargados.table td {
+        text-align: center !important;
+        /*line-height: 4px !important;*/
+        vertical-align: text-top;
+    }
+</style>
+
+<table class="table table-striped" id="tablacuposCargados">
+    <thead>
+        <tr>
+            <th>@Textos.Garita</th>
+            <th>@Textos.Patente</th>
+            <th>@Textos.Cupo_NumeroDeCartaPorte</th>
+            <th>@Textos.FormatoDeCampo_Fila</th>
+            <th>@Textos.Tarjeta</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in items)
+        {
+
+            var claseFila = "";
+            if (i.LlegoEnHorario == true)
+            {
+                claseFila = "ingresoConCircular";
+            }
+            if(i.NoGranos == true)
+            {
+                claseFila = "noGranos";
+            }
+            <tr class=@claseFila>
+                @if (i.PuestoDeTrabajo.Contains("2"))
+                {
+                    <td>2</td>
+                }
+                else
+                {
+                    <td>1</td>
+                }
+                <td>@i.Patente</td>
+                @if (@i.CPE)
+                {
+                    <td>@i.CTG</td>
+                }
+                else
+                {
+                    <td>@i.NumeroDocumentoDeIngreso</td>
+                }                
+                <td>@i.Calle</td>
+                <td>@i.NumeroDeTarjeta</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<style>
+    .ingresoConCircular {
+        font-weight: bold;
+        color: green;
+    }
+    .noGranos {
+        font-weight: bold;
+        color: midnightblue;
+    }
+</style>

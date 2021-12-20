@@ -1,0 +1,95 @@
+﻿@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@model Molinos.Scato.Dominio.Dto.HistoricoInhabilitacionChoferDto
+@{
+    Layout = null;
+    ViewBag.Title = "Historico";
+}
+
+
+@if (Model.Historico.Any() || Model.Autorizacion.Any())
+{
+    <h4 class="centered">Histórico</h4>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="background-color: #12a17d;"></th>
+                <th class="centered" style="border-left:none; background: rgb(18, 161, 125); color: white;" colspan="3">Inhabilitaciones</th>
+                <th class="centered" style="background: rgb(72, 132, 100); color: white;" colspan="3">Modificación</th>
+            </tr>
+            <tr>
+
+                <th class="centered">Responsable</th>
+                <th class="centered">@Textos.FechaHasta</th>
+                <th class="centered">@Textos.FechaDesde</th>
+                <th class="centered">@Textos.Motivo</th>
+                <th class="centered">Fecha</th>
+                <th class="centered">@Textos.JustificacionCambioInhabilitacionChofer</th>
+                <th class="centered">Responsable</th>
+
+            </tr>
+            @foreach (var mat in Model.Historico)
+            {
+                <tr>
+
+                    @{var fecha = mat.Fecha.ToString("dd/MM/yyyy hh\\:mm tt");}
+                    @{var fechaDesde = mat.FechaDesde.ToString("dd/MM/yyyy");}
+                    @{var fechaHasta = mat.FechaHasta.ToString("dd/MM/yyyy");}
+                    <td class="centered">@Html.DisplayFor(model => mat.NombreUsuarioResponsable)</td>
+                    <td class="centered">@fechaHasta</td>
+                    <td class="centered">@fechaDesde</td>
+                    <td>@Html.DisplayFor(model => mat.Motivo)</td>
+                    <td class="centered">@fecha</td>
+                    <td>@Html.DisplayFor(model => mat.Comentario)</td>
+                    <td class="centered">@Html.DisplayFor(model => mat.NombreUsuarioCambio)</td>
+
+                </tr>
+            }
+        <thead>
+    </table>
+    <br />
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="centered" style="color: white; background-color: rgb(133, 142, 173);" colspan="3">Autorizaciones</th>
+            </tr>
+            <tr>
+                <th class="centered">Responsable</th>
+                <th class="centered">@Textos.Fecha</th>
+                <th class="centered">@Textos.Motivo</th>
+
+            </tr>
+            @foreach (var mat in Model.Autorizacion)
+            {
+                <tr>
+                    <td class="centered">@Html.DisplayFor(model => mat.NombreUsuarioResponsable)</td>
+                    @{var fecha = mat.Fecha.ToString("dd/MM/yyyy hh\\:mm tt");}
+                    <td class="centered">@fecha</td>
+                    <td>@Html.DisplayFor(model => mat.Comentario)</td>
+
+
+                </tr>
+            }
+        <thead>
+    </table>
+    <style>
+        #dialogo-ver {
+            left: 23%;
+            width: 95%;
+        }
+    </style>
+}
+else
+{
+    <div>
+        <label>La Inhabilitación seleccionada no posee historial</label>
+    </div>
+    <style>
+        #dialogo-ver {
+            left: 55% !important;
+            width: auto !important;
+        }
+    </style>
+}
+

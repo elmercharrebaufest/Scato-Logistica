@@ -1,0 +1,3 @@
+﻿@using Molinos.Scato.Web.Helpers
+@model DateTime?
+@Html.TextBox(String.Empty, Model.Formatted(), new { @class = "date control input-small", placeholder = ViewBag.EditorForPlaceholder , data_date_format = Html.ClientDateFormat()})

@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Usuario] (
+    [Id]                         INT            IDENTITY (1, 1) NOT NULL,
+    [NombreUsuario]                NVARCHAR (40)  NOT NULL,
+    [Apellido]               NVARCHAR (40)  NOT NULL,
+    [Nombre]               NVARCHAR (40)  NOT NULL,
+    [Email]               NVARCHAR (80)  NULL,
+	[UltimoLogin]			DATETIME NULL,
+	[Matricula]               NVARCHAR (40)  NULL,
+	[Firma] VARCHAR (8000) NULL,
+	[AvisoQuiebreApertura]			BIT  NOT NULL DEFAULT 0,
+	[AvisoQuiebreCierre]               BIT   NOT NULL DEFAULT 0,
+	[ReasignacionDeTarjeta]               BIT   NOT NULL DEFAULT 0,
+	[AvisoAutorizarTiempoEnTransito]      BIT   NOT NULL DEFAULT 0,
+    [FirmaImagen] VARBINARY(MAX) NULL, 
+    [AvisoAutorizarTiempoEnTransitoConfirmado] BIT NOT NULL DEFAULT 0, 
+    [AvisoAutorizarTiempoEnTransitoRechazado] BIT NOT NULL DEFAULT 0, 
+    [AvisoContingencia] BIT NOT NULL DEFAULT 0, 
+    [AvisoEntregaHexano] BIT NOT NULL DEFAULT 0, 
+    [AvisoLineUp] BIT NOT NULL DEFAULT 0,
+    [AvisoCambioPinchazosPorCalada] BIT NOT NULL DEFAULT 0,
+    [AvisoPlanoDeCarga] BIT NOT NULL DEFAULT 0,
+    [AvisoModuloDeCarga] BIT NOT NULL DEFAULT 0,
+    CONSTRAINT [PK_dbo.Usuario] PRIMARY KEY CLUSTERED ([Id] ASC),
+);
+
+GO

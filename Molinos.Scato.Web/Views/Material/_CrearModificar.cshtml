@@ -1,0 +1,444 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MaterialDto
+
+@{
+    ViewBag.Title = Textos.Modificar;
+    Layout = null;
+    // var almacenes = (IEnumerable<SelectListItem>) ViewBag.Almacenes;
+    var almacenesList = Json.Encode((AlmacenDto[])ViewBag.AlmacenesList);
+    var almacenesTodos = Json.Encode((AlmacenDto[])ViewBag.AlmacenesTodos);
+    var defaultAlmacen = Textos.Default_Almacen;
+
+    var analisisInterno = (int?)ViewBag.AnalisisInterno;
+    var muestraAuditoria = (decimal?)ViewBag.MuestraAuditoria;
+    var almacenPredId = (int?)ViewBag.AlmacenPredId;
+    var correspondeDescarga = (bool)ViewBag.CorrespondeDescarga;
+    var requiereTecnologia = (bool)ViewBag.RequiereTecnologia;
+    var materialDeTerceros = (bool)ViewBag.MaterialDeTerceros;
+    var imprimeReciboMunicipal = (bool)ViewBag.ImprimeReciboMunicipal;
+    var mostrarEnWebMobile = (bool)ViewBag.MostrarEnWebMobile;
+    var descripcionWebMobile = (string)ViewBag.DescripcionWebMobile;
+    var noValidaCG = (bool)ViewBag.NoValidaCG;
+    var epaStockPorCorte = (int?)ViewBag.EpaStockPorCorte;
+    var ignoraContingencia = (bool)ViewBag.IgnoraContingencia;
+    var orden = (int?)ViewBag.Orden;
+    var variedades = (IEnumerable<SelectListItem>)ViewBag.Variedades;
+}
+
+@using (Ajax.BeginForm("Modificar", "Material", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Material_Modificar, data_dialogo_extraclass = "dialog-grande", id = "formEditar" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+
+    <style>
+        .span6 {
+            width: 430px;
+            /*border: solid 1px #c3c3c3;*/
+        }
+
+        .span3 {
+            width: 200px;
+            /*border: solid 1px #c3c3c3;*/
+        }
+
+        .form-horizontal .control-label {
+            width: 170px;
+            font-size: 12px;
+        }
+
+        .modal-body {
+            padding-right: 0px !important;
+        }
+
+        div.modal .control-group {
+            margin-bottom: 5px;
+            padding-left: 10px;
+            font-size: 12px;
+        }
+
+        label.checkbox {
+            font-size: 12px;
+        }
+
+        .tablaDatos label {
+            margin-bottom: 0;
+        }
+
+        .control-label2 {
+            width: auto;
+            display: inline;
+            font-size: 12px;
+        }
+
+        .help-inline {
+            padding-left: 0;
+        }
+
+        .modal-body {
+            max-height: 440px !important;
+            width: 905px !important;
+        }
+
+        .span6 {
+            width: 400px;
+        }
+    </style>
+    
+    <div class="row" style="height: auto;">
+        <div class="span6">
+            <div class="control-group">
+                @Html.LabelFor(model => model.CodigoSAP, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CodigoSAP, new { @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.CodigoSAP)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.Descripcion, new { @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.Descripcion)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.DescripcionCorta, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.DescripcionCorta, new { @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.DescripcionCorta)
+                </div>
+            </div>
+
+            <div class="control-group">
+                @Html.LabelFor(model => model.CodigoEspecie, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CodigoEspecie, new { @class = "control input-small" })
+                    @Html.ValidationMessageFor(model => model.CodigoEspecie)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.UnidadDeMedidad, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.UnidadDeMedidad, new { @class = "control input-small" })
+                    @Html.ValidationMessageFor(model => model.UnidadDeMedidad)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.FactorConversion, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.FactorConversion, new { @class = "control input-small campoNumerico" })
+                    @Html.ValidationMessageFor(model => model.FactorConversion)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.TipoDeGrano, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.TipoDeGrano, new { @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.TipoDeGrano)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.CodigoONCCA, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CodigoONCCA, new { @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.CodigoONCCA)
+                </div>
+            </div>
+
+            <div class="control-group">
+                @Html.LabelFor(model => model.PesoTeoricoSap, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.PesoTeoricoSap, new { @class = "control input-small campoNumerico" })
+                    @Html.ValidationMessageFor(model => model.PesoTeoricoSap)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.RequiereNumeroTropa, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.RequiereNumeroTropa, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.RequiereNumeroTropa)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.NirsCodigoProducto, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.NirsCodigoProducto, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.NirsCodigoProducto)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.Oleico, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.Oleico, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Oleico)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.EsGrano, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.EsGrano, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.EsGrano)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.EsInsumo, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.EsInsumo, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.EsInsumo)
+                </div>
+            </div>
+        </div>
+        <div class="span6">
+            
+            <div class="control-group">
+                @Html.LabelFor(model => model.RequiereAnexoInase, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.RequiereAnexoInase, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.RequiereAnexoInase)
+                </div>
+            </div>
+            <fieldset class="grupo-carta-porte">
+                @Textos.Material_DatosPorCentro
+                <div class="control-group">
+                    @Html.Label(Textos.Material_AlmacenPred, new { @class = "control-label" })
+                    <div class="controls">
+                        @*@Html.DropDownListFor(model => model.AlmacenPredId, almacenes, Textos.Default_Almacen, new {@class = "control input-medium"})*@
+                        <input type="hidden" name="almacenesEliminados" data-bind="value: ko.toJSON(almacenesEliminados)" />
+                        <input type="hidden" name="almacenes" data-bind="value: ko.toJSON(almacenes)" />
+                        @Html.Hidden("almacenPredId", almacenPredId, new { id = "almacenPredIdVal" })
+                        <select id="AlmacenPredId" class="control input-medium" data-val="true" data-val-number="@Textos.Error_SoloNumerico"
+                                data-bind=" options: almacenes, optionsValue: function (item) { return item.Id },
+    optionsText: function (item) { return item.Descripcion + ' (' + item.CodigoSAP + ')' },
+    optionsCaption: defaultAlmacen">
+                        </select>
+                    </div>
+                    <input id="mostrarAlmat" class="btn btn-primary" type="button" value="@Textos.Agregar" />
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_CamaraPred, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownList("CamaraId", (IEnumerable<SelectListItem>)ViewBag.Camaras, Textos.Default_Camara, new { @class = "control input-medium" })
+                        @Html.ValidationMessage("CamaraId")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_CorrespondeDescarga, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("CorrespondeDescarga", correspondeDescarga)
+                        @Html.ValidationMessage("CorrespondeDescarga")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_RequiereTecnologia, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("RequiereTecnologia", requiereTecnologia)
+                        @Html.ValidationMessage("RequiereTecnologia")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_MaterialDeTerceros, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("MaterialDeTerceros", materialDeTerceros)
+                        @Html.ValidationMessage("MaterialDeTerceros")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_ImprimeReciboMunicipal, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("ImprimeReciboMunicipal", imprimeReciboMunicipal)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_MostrarEnWebMobile, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("MostrarEnWebMobile", mostrarEnWebMobile)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_DescripcionWebMobile, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBox("DescripcionWebMobile", descripcionWebMobile, new { @class = "control input-medium descripcionWebMobile" })
+                    </div>
+                </div>
+                <div class="control-group orden">
+                    @Html.Label(@Textos.OrdenDescripcionMaterialMobile, new { @class = "control-label" })
+                    <div class="controls ">
+                        @Html.TextBox("Orden", orden, new { @class = "control input-medium" })
+                        @Html.ValidationMessageFor(model => model.Orden)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_NoValidaCG, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("NoValidaCG", noValidaCG)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_AnalisisInterno, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBox("analisisInterno", analisisInterno, new { @class = "control input-medium porcentajeValido" })
+                        @Html.ValidationMessage("analisisInterno")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.Material_PorcentajeMustraAuditoria, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBox("muestraAuditoria", muestraAuditoria, new { @class = "control input-medium campoNumerico porcentajeValido", data_error_porcentaje_invalido = string.Format(Textos.Error_RangoPorcentaje) })
+                        @Html.ValidationMessage("muestraAuditoria")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.EPAStockPorCorte, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBox("epaStockPorCorte", epaStockPorCorte, new { @class = "control input-medium campoNumerico" })
+                        @Html.ValidationMessage("epaStockPorCorte")
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.Label(Textos.IgnoraContingencia, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.CheckBox("ignoraContingencia", ignoraContingencia, new { @class = "control input-medium campoNumerico" })
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="span3">
+            <div class="control-group">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.UsaBinPallet, new { id = "binpallet", style = "padding-left: 0px" })
+                    <span class="helper">@Textos.Material_BinPallet</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.UsaBinPallet)
+            </div>
+
+            <div class="control-group binpallet">
+                @Html.LabelFor(model => model.Peso, new { @class = "control-label minilabel" })
+                @Html.EditorFor(model => model.Peso)
+                @Html.ValidationMessageFor(model => model.Peso)
+            </div>
+            <div class="control-group binpallet">
+                @Html.LabelFor(model => model.Clase, new { @class = "control-label minilabel" })
+                @Html.EnumDropDownListFor(model => model.Clase, Textos.Default_Clase, new { @class = "control input-small", data_clase_granel = ClaseBin.Granel })
+                @Html.ValidationMessageFor(m => m.Clase)
+            </div>
+        </div>
+
+        <div class="span3" style="margin-left: 20px">
+            <div class="control-group">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.EsUva, new { id = "esUva", style = "padding-left: 0px" })
+                    <span class="helper">@Textos.Material_EsUva</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.EsUva)
+            </div>
+            <div class="control-group uva">
+                @Html.LabelFor(model => model.VariedadId, new { @class = "control-label minilabel" })
+                @Html.DropDownListFor(model => model.VariedadId, variedades, Textos.Default_Variedad, new { @class = "dropDownVariedadId control input-medium", Id = "dropDownVariedadId", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_Variedad) })
+                @Html.ValidationMessageFor(model => model.VariedadId)
+            </div>
+        </div>
+
+        <div class="span3" style="margin-left: 20px">
+
+            <div class="control-group" id="cosechaValida">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.EsCosecha, new { @class="cosechaValida", style = "padding-left: 0px", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaVigenciaInvalida) })
+                    <span class="helper">@Textos.Material_EsCosecha</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.EsCosecha)
+            </div>
+
+            @*<div class="control-group cosecha" id="cosechaValida">
+                @Html.LabelFor(model => model.Cosecha, new { @class = "control-label minilabel" })
+                @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-mini cosecha cosechaValida", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaInvalida) })
+                @Html.ValidationMessageFor(model => model.Cosecha)
+            </div>*@
+            <div class="control-group cosecha">
+                @Html.LabelFor(model => model.VigenciaDesde, new { @class = "control-label minilabel" })
+                @Html.TextBoxFor(model => model.VigenciaDesde, new { @class = "control input-mini campoNumerico" })
+                @Html.ValidationMessageFor(model => model.VigenciaDesde)
+            </div>
+            <div class="control-group cosecha">
+                @Html.LabelFor(model => model.VigenciaHasta, new { @class = "control-label minilabel" })
+                @Html.TextBoxFor(model => model.VigenciaHasta, new { @class = "control input-mini campoNumerico" })
+                @Html.ValidationMessageFor(model => model.VigenciaHasta)
+            </div>
+        </div>
+
+        <div class="span3" style="margin-left: 20px">
+            <div class="control-group">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.Commodity, new { id = "commodity", style = "padding-left: 0px" })
+                    <span class="helper">@Textos.Material_Commodity</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.Commodity)
+            </div>
+
+            <div class="control-group">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.Lote, new { id = "commodity", style = "padding-left: 0px" })
+                    <span class="helper">@Textos.Material_Lote</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.Lote)
+            </div>
+            <div class="control-group">
+                <label class="input-control checkbox">
+                    @Html.CheckBoxFor(model => model.Contrato, new { id = "commodity", style = "padding-left: 0px" })
+                    <span class="helper">@Textos.Material_Contrato</span>
+                </label>
+                @Html.ValidationMessageFor(model => model.Contrato)
+            </div>
+            <div class="control-group commodity">
+                @Html.LabelFor(model => model.AlmacenOrigenId, new { @class = "control-label minilabel" })
+                @Html.DropDownListFor(model => model.AlmacenOrigenId, (IEnumerable<SelectListItem>)ViewBag.AlmacenesSinCentro, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.AlmacenOrigenId)
+            </div>
+        </div>
+    </div>
+}
+
+
+<div class="modal fade hide" id="dialogo-almat">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-almat-cancelar" aria-hidden="true">&times;</button>
+        <h4>Agregar Almacen por Material</h4>
+    </div>
+    <div class="modal-body" id="dialogo-almat-body" data-almacenes="@almacenesList" data-almacenes-sin-asignar="@almacenesTodos" data-default-almacen="@defaultAlmacen" data-error-predeterminado="@Textos.Error_EliminarPredeterminado">
+        <div class="control-group form-inline">
+            <select data-bind=" options: almacenesSinAsignar,
+    optionsText: function (item) { return item.Descripcion + ' (' + item.CodigoSAP + ')' },
+    value: selectedItem,
+    optionsCaption: defaultAlmacen">
+            </select>
+            <button data-bind="click: $root.botonAgregarAlmacen, enable: selectedItem != null" class="btn-small">Agregar Almacen</button>
+        </div>
+        <div class="control-group">
+            <table class="tablaDatos span4">
+                <thead>
+                    <tr>
+                        <th>@Textos.Descripcion</th>
+                        <th>@Textos.Almacen_CodigoSAP</th>
+                        <th>@Textos.Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: almacenes">
+                    <tr>
+                        <td data-bind="text: Descripcion" />
+                        <td data-bind="text: CodigoSAP" />
+                        <td><a href="#" data-bind="click: $root.removerAlmacen"><i class="icon-trash"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" id="almacenesList" name="almacenes" data-bind="value: ko.toJSON(almacenes)" />
+        <input type="hidden" id="almacenesEliminados" name="almacenesEliminados" data-bind="value: ko.toJSON(almacenesEliminados)" />
+        <button id="dialogo-almat-aceptar" class="btn btn-warning dialogo-almat-cancelar">@Textos.Aceptar</button>
+    </div>
+</div>

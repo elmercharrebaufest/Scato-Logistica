@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<MotivoQuiebreBarreraDto>) ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaModificar(Html, "MotivoQuiebreBarrera"),
+        grilla.Columna("PuestoTrabajo", Textos.PuestoDeTrabajo),
+        grilla.Columna("Apertura", Textos.Tipo, x => x.Apertura ? "Quiebre" : "Cierre"),
+        grilla.Columna("Fecha", Textos.MotivoQuiebreBarrera_FechaHoraQuiebre),
+        grilla.ColumnaVerFotoDeQuiebre(Html)
+        ))

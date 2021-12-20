@@ -1,0 +1,37 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.Pesada
+
+@{
+    ViewBag.Title = Textos.TomarPeso;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Script("~/Scripts/pesada.tomarPeso.js")" type="text/javascript"></script>
+
+@using (Ajax.BeginForm("TomarPeso", Model.ActividadXaml, null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.TomarPeso }))
+{
+    <div class="control-group">
+        <label class="control-label">@(Model != null && Model.Modalidad == Modalidad.Manual ? Textos.PesoManual : Textos.Peso) :</label>
+        <div class="controls">
+            @if (Model != null && Model.Modalidad == Modalidad.Automática)
+            {
+                @Html.TextBoxFor(p => p.Peso, new {@class = "control input-small", @readonly = "readonly"})
+                @Html.ValidationMessageFor(p => p.Peso)
+            }
+            else
+            {
+                @Html.TextBoxFor(p => p.Peso, new{ @class="control input-small"})
+                @Html.ValidationMessageFor(p => p.Peso)
+            }
+        </div>
+    </div>
+}
+    
+    
+
+    
+    
+    

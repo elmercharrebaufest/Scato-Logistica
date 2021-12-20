@@ -1,0 +1,101 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ExportacionDeArchivosDto
+@{
+    ViewBag.Title = Textos.ExportacionDeArchivos;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<link href="~/Content/bootstrap-duallistbox.css" rel="stylesheet">
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.bootstrap-duallistbox.js")"></script>
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="~/scripts/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/exportacionDeArchivos.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechaYHoras.js")"></script>
+
+@Html.Hidden("CentrosJson", (string)ViewBag.Centros)
+@Html.Hidden("TiposComercialesJson", (string)ViewBag.TiposComerciales)
+@Html.Hidden("MaterialesJson", (string)ViewBag.Materiales)
+
+@Html.HiddenFor(x => x.Centros,new{ id = "CentrosSeleccionados"})
+@Html.HiddenFor(x => x.Materiales,new{ id = "MaterialesSeleccionados"})
+@Html.HiddenFor(x => x.TiposComerciales,new{ id = "TiposComercialesSeleccionados"})
+<style>
+    .control-group {
+    margin-bottom: 10px!important;
+    }
+</style>
+<div id ="links" 
+     data-url-obtener-centros ="@Url.Action("ObtenerCentros", "ExportacionDeArchivos")"
+     data-url-obtener-materiales ="@Url.Action("ObtenerMateriales", "ExportacionDeArchivos")"
+     data-url-obtener-tiposcomerciales ="@Url.Action("ObtenerTiposComerciales", "ExportacionDeArchivos")"
+></div>
+
+<div class ="container">
+    <div class="titSecciones">@Textos.ExportacionDeArchivos</div>
+</div>
+
+<div class="container content grillaPad">
+    <div class="row">
+        <div class="span5 grupo-carta-porte">
+            @Html.Hidden("PaginaCentros", 2)
+            <select multiple="multiple" size="7" name="duallistbox_centros" class="centros" data-bind="options: centros, optionsText: 'Descripcion', optionsValue: 'Id'"></select>
+        </div>
+        <div class="span5 grupo-carta-porte">
+            @Html.Hidden("PaginaMateriales", 2)
+            <select multiple="multiple" size="7" name="duallistbox_materiales" class="materiales" data-bind="options: materiales, optionsText: 'Descripcion', optionsValue: 'Id'"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span5 grupo-carta-porte">
+            @Html.Hidden("PaginaTiposComerciales", 2)
+            <select multiple="multiple" size="7" name="duallistbox_tiposComerciales" class="tiposComerciales" data-bind="options: tiposComerciales, optionsText: 'Descripcion', optionsValue: 'Id'"></select>
+        </div>
+        <div class="span5 grupo-carta-porte">
+
+            @using (Html.BeginForm("Index", null, FormMethod.Post, new { @class = "form-horizontal", id = "orden-form"}))
+            {
+                @Html.ValidationSummary(true)
+                <input type="hidden" name="Centros" id="Centros" data-bind="value: ko.toJSON(centrosSeleccionados)" />
+                <input type="hidden" name="Materiales" id="Materiales" data-bind="value: ko.toJSON(materialesExcluidos)" />
+                <input type="hidden" name="TiposComerciales" id="TiposComerciales" data-bind="value: ko.toJSON(tiposComercialesSeleccionados)" />
+
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.FechaDesde, new { @class = "control-label small" })
+                    <label><small class="datetimeFormat">Ej: 01/01/2015 11:00 am</small></label>
+                    <div class="FechaDesde">
+                        @Html.TextBoxFor(m => m.FechaDesde,new { @class = "control input-large" })
+                        @Html.ValidationMessageFor(model => model.FechaDesde)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.FechaHasta, new { @class = "control-label small" })
+                    <label><small class="datetimeFormat">Ej: 01/01/2015 11:00 pm</small></label>
+                    <div class="FechaHasta">
+                        @Html.TextBoxFor(m => m.FechaHasta, new { @class = "control input-large"})
+                        @Html.ValidationMessageFor(model => model.FechaHasta)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.IncluirRechazados, new { @class = "control-label small" })
+                    <div class="">
+                        @Html.CheckBoxFor(m => m.IncluirRechazados, new { @class = "control input-small " })
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.TipoArchivo, new { @class = "control-label small" })
+                    <div class="">
+                        @Html.EnumDropDownListFor(model => model.TipoArchivo, Textos.Default_Documento)
+                        @Html.ValidationMessageFor(model => model.TipoArchivo)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    <div class="controls cajaButtons">
+                        <button type="submit" class="btn" id="botonaceptar">@Textos.Aceptar</button>
+                        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

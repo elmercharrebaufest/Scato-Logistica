@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://beta.webcompliance.com.ar/webcompliance/webservice/agroacopios" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="Datos" targetNamespace="http://beta.webcompliance.com.ar/webcompliance/webservice/agroacopios" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="http://beta.webcompliance.com.ar/webcompliance/webservice/agroacopios">
+      <xsd:complexType name="Datos">
+        <xsd:all>
+          <xsd:element name="cuit" type="xsd:string" />
+          <xsd:element name="dni" type="xsd:string" />
+          <xsd:element name="patente1" type="xsd:string" />
+          <xsd:element name="patente2" type="xsd:string" />
+          <xsd:element name="planta" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="Response">
+        <xsd:all>
+          <xsd:element name="colorEmpresa" type="xsd:int" />
+          <xsd:element name="codigoError" type="xsd:int" />
+          <xsd:element name="nombreEmpresa" type="xsd:string" />
+          <xsd:element name="colorChofer" type="xsd:int" />
+          <xsd:element name="nombreChofer" type="xsd:string" />
+          <xsd:element name="colorVehiculo1" type="xsd:int" />
+          <xsd:element name="codigoVehiculo1" type="xsd:string" />
+          <xsd:element name="colorVehiculo2" type="xsd:int" />
+          <xsd:element name="codigoVehiculo2" type="xsd:string" />
+          <xsd:element name="codigoCombinacion" type="xsd:string" />
+          <xsd:element name="pallets" type="xsd:int" />
+          <xsd:element name="avlChofer" type="xsd:string" />
+          <xsd:element name="avlVehiculo1" type="xsd:string" />
+          <xsd:element name="avlVehiculo2" type="xsd:string" />
+          <xsd:element name="subcontrataChofer" type="xsd:string" />
+          <xsd:element name="subcontrataVehiculo1" type="xsd:string" />
+          <xsd:element name="subcontrataVehiculo2" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="controlarDatosRequest">
+    <wsdl:part name="datos" type="tns:Datos" />
+  </wsdl:message>
+  <wsdl:message name="controlarDatosResponse">
+    <wsdl:part name="controlarDatosReturn" type="tns:Response" />
+  </wsdl:message>
+  <wsdl:portType name="DatosPort">
+    <wsdl:operation name="controlarDatosAgroacopios">
+      <wsdl:input message="tns:controlarDatosRequest" />
+      <wsdl:output message="tns:controlarDatosResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DatosBinding" type="tns:DatosPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="controlarDatosAgroacopios">
+      <soap:operation soapAction="http://beta.webcompliance.com.ar/webcompliance/webservice/agroacopios#controlarDatosAgroacopios" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DatosService">
+    <wsdl:port name="DatosPort" binding="tns:DatosBinding">
+      <soap:address location="http://beta.webcompliance.com.ar/webcompliance/webservice/agroacopios" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

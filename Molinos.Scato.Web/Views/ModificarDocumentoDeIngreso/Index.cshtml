@@ -1,0 +1,156 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ModificarDocumentoDeIngresoDto
+@{
+    if (ViewBag.SoloLectura == null)
+    {
+        ViewBag.SoloLectura = false;
+    }
+    if (ViewBag.FiltrarPorTarjeta == null)
+    {
+        ViewBag.FiltrarPorTarjeta = false;
+    }
+    var filtrarPorTarjeta = (bool)ViewBag.FiltrarPorTarjeta;
+    var soloLectura = (bool)ViewBag.SoloLectura;
+    ViewBag.Title = soloLectura ? Textos.ConsultarDocumentoDeIngreso_Titulo : Textos.ModificarDocumentoDeIngreso_Titulo;
+
+}
+@section scripts
+{
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/modificarDocumentoIngreso.js")"></script>
+}
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+    .date{
+        width:40%!important;
+    }
+    
+</style>
+<div class="container-fluid">
+    <div class="titSecciones">@ViewBag.Title</div>
+</div>
+
+
+<div id="links"
+     data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-obtener-fotos="@Url.Action("ObtenerFotoDeCartaPorte", "Foto")"
+     data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")">
+</div>
+@{
+    using (Ajax.BeginForm("Listar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search causaBlock", data_mensaje_espera = Textos.Buscando }))
+    {
+        @Html.Hidden("soloLectura", soloLectura)
+        @Html.HiddenFor(m => m.FiltrarPorTarjeta, filtrarPorTarjeta)
+        <div class="" id="editContainer">
+            <div style="margin-bottom: 10px;margin-top: 10px">
+                @if (!filtrarPorTarjeta)
+                {
+                    <div class="row-fluid" style="margin-bottom: 10px">
+
+                        <div class="span2">
+                            @Html.EnumDropDownListFor(model => model.TipoDocumentoIngreso, new { id = "documentos", style = "display: inline-block;width:100%" })
+                        </div>
+                        <div class="span1" style="text-align: right">
+                            @Html.Label(Textos.NumeroDocumentoIngreso + ":", new { style = "display: inline-block; margin-right:10px" })
+                        </div>
+                        <div class="span2">
+                            @Html.TextBoxFor(model => model.NumeroDocumentoIngreso, new { id = "numDocumento", style = "display: inline-block;width:67%" })
+
+                        </div>
+                        <div class="span1" style="margin-left:2%">
+                            @Html.Label(Textos.Patente + ":", new { style = "display: inline-block;" })
+
+                        </div>
+                        <div class="span2" style="margin-left:0%">
+                            @Html.TextBoxFor(model => model.Patente, new { id = "patente", @class = "uppercase", style = "display: inline-block; width:73%" })
+
+                        </div>
+                        <div class="span1" style="margin-left:2%">
+                            @Html.Label(Textos.BuscarCartaPorte_FechaDesde + ":", new { style = "display: inline-block" })
+                        </div>
+                        <div class="span3 sinBorde" style="margin-left:2.5%">
+                            @{ ViewBag.EditorForPlaceholder = "Desde";}
+                            @Html.EditorFor(model => model.FechaDesdeCP)
+                            @{ ViewBag.EditorForPlaceholder = "Hasta";}
+                            @Html.EditorFor(model => model.FechaHastaCP)
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span2">
+                            @Html.Label(Textos.Proveedor + ":", new { style = "display: inline-block; margin-right:10px" })
+
+                        </div>
+                        <div class="span2" style="margin-left:-7%">
+                            @Html.TextBoxFor(model => model.TitularCartaPorte, new { style = "display: inline-block; width:118%" })
+
+                        </div>
+                        <div class="span2">
+                            @Html.HiddenFor(model => model.TitularCartaPorteId)
+
+                        </div>
+                        <div class="controls-small">
+                            @Html.ValidationMessageFor(model => model.Patente)
+                        </div>
+                        <div class="span2" style=" margin-left:-8.6%">
+                            @Html.Label(Textos.Corredor + ":", new { style = "display: inline-block; margin-right:10px; " })
+                        </div>
+                        <div class="span2" style=" margin-left:-2%">
+                            @Html.TextBoxFor(model => model.Corredor, new { style = "display: inline-block; margin-right:10px; width:109%" })
+                            @Html.HiddenFor(model => model.CorredorId)
+                        </div>
+                        <div class="span2" style=" margin-left:7%">
+                            @Html.Label(Textos.BuscarCartaPorte_FechaDesdeTara + ":", new { style = "display: inline-block" })
+                        </div>
+                        <div class="span3 sinBorde" style=" margin-left:-5.9%">
+                            @{ ViewBag.EditorForPlaceholder = "Desde";}
+                            @Html.EditorFor(model => model.FechaTaraDesdeCP)
+                            @{ ViewBag.EditorForPlaceholder = "Hasta";}
+                            @Html.EditorFor(model => model.FechaTaraHastaCP)
+                        </div>
+                    </div>
+                    <div class="row-fluid" style="margin-bottom: 10px">
+                        <div class="span2">
+                            @Html.Label(Textos.Material + ":", new { style = "display: inline-block" })
+                        </div>
+                        <div class="span2" style=" margin-left:-7%">
+                            @Html.TextBoxFor(model => model.MaterialDesc, new { style = "display: inline-block; width:118%" })
+                            @Html.HiddenFor(model => model.MaterialId)
+                        </div>
+
+
+                        <div style="width:35%; display: none">
+                            @Html.Label(Textos.BuscarCartaPorte_FechaVencimiento + ":", new { style = "display: inline-block; margin-right:10px; width:50%" })
+                            @Html.EditorFor(model => model.FechaVto, new { @class = "uppercase", style = "display: inline-block;", autocomplete = "off" })
+                        </div>
+                        <div style="width:35%; display: none">
+                            @Html.Label(Textos.BuscarCartaPorte_FechaDigitalizacion + ":", new { style = "display: inline-block; margin-right:10px; width:50%" })
+                            @Html.EditorFor(model => model.FechaDigitalizacion, new { @class = "uppercase", style = "display: inline-block;", autocomplete = "off" })
+                        </div>
+                    </div>
+
+                    @Html.ValidationMessage("NumeroDocumentoIngreso", new { id = "errorValidationMessage" })
+                }
+                else
+                {
+                    @Html.Label(Textos.NumeroTarjeta + ":", new { style = "display: inline-block; margin-right:10px" })
+                    @Html.TextBoxFor(model => model.NumeroDeTarjeta, new { @class = "campoNumerico", style = "display: inline-block" })
+                    <div class="controls-small">
+                        @Html.ValidationMessage("NumeroDocumentoIngreso", new { id = "errorValidationMessage" })
+                    </div>
+                }
+                <button id="btnBuscarRecorridos" type="submit" class="btn btn-primary" style=" float: right; margin-left:10px; margin-bottom: 5px;">@Textos.Buscar</button>
+
+            </div>
+        </div>
+    }
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+
+}

@@ -1,0 +1,61 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RomaneoDto
+@{
+    ViewBag.Title = Textos.Romaneo_Titulo;
+    var romaneos = (IEnumerable<SelectListItem>)ViewBag.Romaneos;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="@Url.Script("~/Scripts/romaneo.index.js")" type="text/javascript"></script>
+}
+
+<div class="container content grillaPad">
+    <div class="titSecciones">@Textos.Romaneo_Titulo</div>
+    <div class="row">
+        <div class="span12search bordeGris" style="border-bottom-style: solid; margin-bottom: 15px;">
+            @using (Ajax.BeginForm("CargarRomaneo", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { @class = "causaBlock form-horizontal form-search", data_mensaje_espera = Textos.ActRomaneo }))
+            {
+                <label class="control-label">@Textos.Romaneo_RomaneoNro:</label>
+                @Html.Hidden("workflowInstanceId", Model.WorkflowInstanceId)
+                @Html.DropDownListFor(model => model.Numero, romaneos, new { id = "dropDownNumerosRomaneo", @class = "control input" })
+                <button type="submit" class="btn btn-primary" id="cargarRomaneo">@Textos.Romaneo_Abrir</button>
+                <button type="submit" class="btn btn-primary" id="nuevoRomaneo">@Textos.Romaneo_Nuevo</button>
+            }
+        </div>
+    </div>
+
+    <div id="gridContainer">
+        @Html.Partial("Romaneo", Model)
+    </div>
+
+    @* ReSharper disable Mvc.ActionNotResolved *@
+    @using (Html.BeginForm("Action", "Romaneo", FormMethod.Post, new { @class = "causaBlock form-horizontal form-search", data_mensaje_espera = Textos.ActRomaneo }))
+    {
+    @* ReSharper restore Mvc.ActionNotResolved *@
+        @Html.HiddenFor(model => model.WorkflowInstanceId)
+        @Html.HiddenFor(model => model.Numero, new { id = "NumeroIndex"})
+        <div class="modal hide fade" id="dialogo-confirmar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>@Textos.Confirmacion</h4>
+            </div>
+            <div class="modal-body" id="dialogo-confirmar-body">
+                
+            </div>
+            <div class="modal-body">
+                @Html.CheckBoxFor(model => model.Imprimir)
+                @Html.LabelFor(model => model.Imprimir)
+            </div>
+            <div class="modal-footer">
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+                <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+

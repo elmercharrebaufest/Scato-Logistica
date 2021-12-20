@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<CosechaDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "Cosecha"),
+        grilla.Columna("Descripcion", Textos.Cosecha),
+        grilla.Columna("EpaPesoDescontado", Textos.EPApesoDescontado, x => x.EpaPesoDescontado == true ? "Si" : "No")
+        ))
+</div>

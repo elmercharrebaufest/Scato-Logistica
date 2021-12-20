@@ -1,0 +1,72 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+
+@{
+    Layout = null;
+    ViewBag.Title = "Listar";
+    
+    var items = (ListaPaginada<InstanciaWorkflowDto>)ViewBag.Items;
+    
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+    
+    Model.Columnas = Model.Columnas.Count == 1 ? Model.Columnas.FirstOrDefault().Split('|', ',').ToList() : Model.Columnas;
+    
+    columnas.Add(grid.ColumnaAsignarTicketMunicipal(Html, "AsignarTicketMunicipal"));
+    if (Model.Columnas.Contains("Patente"))
+    {
+        columnas.Add(grid.Columna("Patente", Textos.Camion_Patente));
+    }
+    if (Model.Columnas.Contains("Workflow"))
+    {
+        columnas.Add(grid.Columna("Workflow", Textos.Workflow));
+    }
+    if (Model.Columnas.Contains("MaterialId"))
+    {
+        columnas.Add(grid.Columna("MaterialCodigoSap", Textos.Workflow_MaterialId));
+    }
+    if (Model.Columnas.Contains("Material"))
+    {
+        columnas.Add(grid.Columna("Material", Textos.Material));
+    }
+    if (Model.Columnas.Contains("TipoDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("TipoDocumentoDeIngreso", Textos.TipoDocumentoIngreso, t => ((TipoDocumentoIngreso)t.TipoDocumentoDeIngreso).DisplayEnum()));
+    }
+    if (Model.Columnas.Contains("NumeroDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("NumeroDocumentoDeIngreso", Textos.NumeroDocumentoIngreso));
+    }
+    if (Model.Columnas.Contains("CentroId"))
+    {
+        columnas.Add(grid.Columna("CentroCodigoSap", Textos.Workflow_CentroId));
+    }
+    if (Model.Columnas.Contains("Centro"))
+    {
+        columnas.Add(grid.Columna("Centro", Textos.Centro));
+    }
+    if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    {
+        columnas.Add(grid.Columna("FechaCreacion", Textos.Workflow_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacion)));
+    }
+    if (Model.Columnas.Contains("TipoComercial"))
+    {
+        columnas.Add(grid.Columna("TipoComercial", Textos.TipoComercial));
+    }
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<script>
+    $(document).ready(
+        function () {
+            $("tr td a.modificado").parent().parent().addClass("estado-asignado");
+        });
+</script>
+<div class="controls">
+    @Html.Grilla(items,columnasFunc)
+</div>

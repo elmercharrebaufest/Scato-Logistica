@@ -1,0 +1,60 @@
+﻿<Window x:Class="Molinos.Scato.WfEditor.Views.ActivarWorkflowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:Molinos.Scato.WfEditor.Properties"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="{x:Static properties:Resources.TituloActivarDesactivar}" Width="800" MinHeight="200"
+        DataContext="{Binding Path=ActivarWorkflowViewModel, Source={StaticResource ViewModelLocator}}" 
+        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" SizeToContent="Height"
+        Name="Window">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ObtenerCentrosCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="300"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="{x:Static properties:Resources.WorkflowsDisponibles}"></Label>
+            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Centros}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{Binding Path=WorkflowCentroId, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ObtenerWorkflowsCommand}" CommandParameter="{Binding WorkflowCentroId}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+        </Grid>
+        
+        <DataGrid Name="WorkflowsGrid" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=Workflows, Mode=OneWay}"                
+                  SelectionMode="Single" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowCodigo}" Binding="{Binding Codigo}" />
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowDescripcion}" Binding="{Binding Descripcion}" Width="*"/>
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowTipo}" Binding="{Binding TipoDeWorkflow}" />
+                <DataGridCheckBoxColumn Header="{x:Static properties:Resources.WorkflowActivo}" Binding="{Binding Activo}" />
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="{x:Static properties:Resources.Activar}" Command="{Binding DataContext.ActivarWorkflowCommand, ElementName=WorkflowsGrid}" CommandParameter="{Binding}" Margin="1" Width="80"/>
+                                <Button Content="{x:Static properties:Resources.Desactivar}" Command="{Binding DataContext.DesactivarWorkflowCommand, ElementName=WorkflowsGrid}"  CommandParameter="{Binding}" Margin="1" Width="80"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

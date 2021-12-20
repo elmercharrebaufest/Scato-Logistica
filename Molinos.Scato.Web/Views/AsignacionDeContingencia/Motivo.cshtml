@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.NirsModificacionModalidadDto
+@{
+    Layout = null;
+}
+
+    <div id="contingenciaModal" class="modal hide fade"
+         data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+        <div class="modal-header">
+            <h3>¿Seguro quiere modificar la contingencia?</h3>
+        </div>
+
+        <div class="modal-body form-horizontal">
+
+            <div class="control-group">
+                @Html.Label("Motivo", new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
+                </div>
+            </div>
+            
+                <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+                <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo","10")</span>
+           
+            @Html.Hidden("elemento-id")
+            @Html.Hidden("elemento-grano")
+            @Html.Hidden("elemento-contingencia")
+        </div>
+
+        <div class="modal-footer">
+            <a href="#" id="guardar" class="btn btn-primary">Aceptar</a>
+            <a href="#" id="cancelar" class="btn close">Cancelar</a>
+        </div>
+    </div>

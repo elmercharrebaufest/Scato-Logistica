@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Enums
+@model Molinos.Scato.Web.Models.ControlDeCaladoModel
+
+@{
+    Layout = null;
+}
+
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+    });
+</script>
+
+    <span class="col-xs-12"><strong><u>Ultima modificación</u></strong></span>
+    <span class="col-xs-6"><strong>Fecha:</strong> @Html.Raw(Model.UltimoCambioPinchazo.FechaModificacion != DateTime.MinValue ? Model.UltimoCambioPinchazo.FechaModificacion.ToString("dd/MM/yyyy HH:mm") : string.Empty)</span>
+    <span class="col-xs-6"><strong>Usuario:</strong> @Html.Raw(Model.UltimoCambioPinchazo.Usuario != null ? string.Format("{0} {1} ({2})", Model.UltimoCambioPinchazo.Usuario.Nombre, Model.UltimoCambioPinchazo.Usuario.Apellido, Model.UltimoCambioPinchazo.Usuario.NombreUsuario) : string.Empty)</span>
+    <span class="col-xs-12"><strong>Motivo:</strong> @Html.Raw(Model.UltimoCambioPinchazo.Motivo ?? string.Empty)</span>
+
+

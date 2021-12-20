@@ -1,0 +1,78 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.MuestraEnvioACamaraDto
+
+@{
+    ViewBag.Title = Textos.VerificacionCamionEnviarACamara_Titulo;
+    string workflow = ViewBag.Workflow;
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/envioACamara.js")"></script>
+
+@using (Html.BeginForm("TransportistaEnviarACamara", "Coordinacion", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActCoordinacion }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.CaladoId)
+    @Html.HiddenFor(model => model.NroMuestra)
+    @Html.HiddenFor(model => model.CentroId)
+    @Html.HiddenFor(model => model.HuboExcepcion)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    <div class="modal fade" id="dialogo-rechazar">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-rechazar-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.VerificacionCamionEnviarACamara_Titulo</h5>
+    </div>
+    <div class="modal-body" id="dialogo-cerear-body">
+        <div class="control-group">
+            @Textos.Camara : @Html.DropDownListFor(model => model.CamaraId, (IEnumerable<SelectListItem>) ViewBag.Camaras, new {@class = "input-xlarge pull-right"})
+            <br/>
+            <br/>
+            <div class="controls">
+                <table class="tablaDatos span6">
+                    <thead>
+                        <tr>
+                            <th>@Textos.Caracteristica</th>
+                            <th>@Textos.Coordinacion_EnviarACamara</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.Hidden("cantidadCaracteristicas", Model.CaracteristicasDeCalidad.Count, new {id = "cantidadCaracteristicas"})
+                        @for (var i = 0; i < Model.CaracteristicasDeCalidad.Count; i++)
+                        {
+                            <tr>
+                                @Html.HiddenFor(m => m.CaracteristicasDeCalidad[i].Id)
+                                <td>
+                                    @Html.DisplayFor(m => m.CaracteristicasDeCalidad[i].Descripcion)
+                                </td>
+                                @if (Model.CaracteristicasDeCalidad[i].SituacionEnvioACamara == EnvioACamara.Siempre)
+                                {
+                                    <td>@Html.CheckBoxFor(m => m.CaracteristicasDeCalidad[i].SeEnviaACamara, new {disabled = "disabled", @checked = "true" })</td>
+                                }
+                                else if (Model.CaracteristicasDeCalidad[i].SituacionEnvioACamara == EnvioACamara.Nunca)
+                                {
+                                    <td>@Html.CheckBoxFor(m => m.CaracteristicasDeCalidad[i].SeEnviaACamara, new {disabled = "disabled", @class = "nunca"})</td>
+                                }
+                                else
+                                {
+                                    <td>@Html.CheckBoxFor(m => m.CaracteristicasDeCalidad[i].SeEnviaACamara)</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn" id="enviar">@Textos.Coordinacion_EnviarACamara</button>
+        <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+    </div>
+</div>
+    
+}

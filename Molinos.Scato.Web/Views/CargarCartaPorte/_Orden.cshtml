@@ -1,0 +1,814 @@
+﻿@using System.Configuration
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CartaPorteDto
+@{
+    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+    var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
+    var bocasDestino = (IEnumerable<SelectListItem>)ViewBag.BocasDestino;
+    var tecnologias = (IEnumerable<SelectListItem>)ViewBag.Tecnologias;
+    var tipoVehiculo = new List<SelectListItem>();
+
+    var tiposCategorias = (IEnumerable<SelectListItem>)ViewBag.TiposCategorias;
+    var deshabilitarTitular = (bool)(ViewBag.DeshabilitarTitular ?? false);
+    var deshabilitarEntregador = (bool)(ViewBag.DeshabilitarEntregador ?? false);
+    var deshabilitarDestinatario = (bool)(ViewBag.DeshabilitarDestinatario ?? false);
+    var deshabilitarTransportista = (bool)(ViewBag.DeshabilitarTransportista ?? false);
+    var deshabilitarPatentes = (bool)(ViewBag.DeshabilitarPatentes ?? false);
+    var fechaVtoVacia = (bool)(ViewBag.VaciarFechaVto ?? false);
+    var requiereCupo = (bool)(ViewBag.RequiereCupo ?? false);
+    var validarCupo = (bool)(ViewBag.ValidarCupo ?? false);
+    var descargaCartaPortePorCtg = (bool)(ViewBag.DescargaCartaPortePorCtg ?? false);
+    var habilitarSiemprePeso = (bool)(ViewBag.HabilitarSiemprePeso ?? false);
+    var habilitarSiempreProcedencia = (bool)(ViewBag.HabilitarSiempreProcedencia ?? false);
+    var habilitarSiempreCTG = (bool)(ViewBag.HabilitarSiempreCTG ?? false);
+    var requiereNumeroAduana = (bool)(ViewBag.RequiereNumeroAduana ?? false);
+    var aceptaPendiente = (bool)(ViewBag.AceptaPendiente ?? false);
+    var aceptaRechazar = (bool)(ViewBag.AceptaRechazar ?? false);
+    var esIngreso = (bool)(ViewBag.EsIngreso ?? false);
+    var controlarTiempoPorCTG = (bool)(ViewBag.ControlarTiempoPorCTG ?? false);
+    var listaRamalFerroviario = (IEnumerable<SelectListItem>)ViewBag.ListaRamalFerroviario;
+
+    var workflow = (string)ViewBag.Workflow;
+    var ListaMateriales = (Molinos.Scato.Dominio.Dto.MaterialPorWorkflowDto[])ViewBag.ListaMateriales;
+
+    var tabIndexFechaCp = esIngreso ? 0 : -1;
+    var tabIndexCTG = esIngreso ? 0 : -1;
+    var dias = Double.Parse(ConfigurationManager.AppSettings["DiasAntiguedadFechaCP"]);
+
+    if (tiposComerciales.Count() == 1)
+    {
+        Model.TipoComercialId = Convert.ToInt32(tiposComerciales.First().Value);
+    }
+
+
+    if (ViewBag.SoloLectura == null)
+    {
+        ViewBag.SoloLectura = false;
+    }
+    bool soloLectura = ViewBag.SoloLectura;
+    var ocultar = Model.TomarFotoEnMesa ? "" : "display: none;";
+    var leerCpDeFoto = Model.LeerCPDeFoto ? "" : "display: none;";
+    var IdCartaPorte = Model.Id;
+    var fechaCPIni = Model.FechaCP.Formatted();
+    var fechaVTOcp = Model.FechaVto.Formatted();
+    var vehiculoJsonModel = Model.VehiculoJson;
+    var cupo = Model.Cupo;
+    var tipoVehi = Model.TipoVehiculoInt;
+    var esEgreso = (bool)(ViewBag.EsEgreso ?? false);
+}
+
+@Html.Hidden("deshabilitarTitular", deshabilitarTitular, new { id = "deshabilitarTitular" })
+@Html.Hidden("deshabilitarEntregador", deshabilitarEntregador, new { id = "deshabilitarEntregador" })
+@Html.Hidden("deshabilitarDestinatario", deshabilitarDestinatario, new { id = "deshabilitarDestinatario" })
+@Html.Hidden("deshabilitarTransportista", deshabilitarTransportista, new { id = "deshabilitarTransportista" })
+@Html.Hidden("deshabilitarPatentes", deshabilitarPatentes, new { id = "deshabilitarPatentes" })
+@Html.Hidden("habilitarSiemprePeso", habilitarSiemprePeso, new { id = "habilitarSiemprePeso" })
+@Html.Hidden("habilitarSiempreProcedencia", habilitarSiempreProcedencia, new { id = "habilitarSiempreProcedencia" })
+@Html.Hidden("habilitarSiempreCTG", habilitarSiempreCTG, new { id = "habilitarSiempreCTG" })
+@Html.Hidden("RequiereNumeroAduana", requiereNumeroAduana)
+
+@Html.Hidden("fechaVtoVacia", fechaVtoVacia, new { id = "fechaVtoVacia" })
+
+@Html.Hidden("esIngreso", esIngreso, new { id = "esIngreso" })
+@Html.Hidden("controlarTiempoPorCTG", controlarTiempoPorCTG, new { id = "controlarTiempoPorCTG" })
+@Html.Hidden("workflow", workflow, new { id = "workflow" })
+@Html.Hidden("RequiereCupo", requiereCupo)
+@Html.Hidden("ValidarCupo", validarCupo)
+@Html.Hidden("dias", dias)
+@Html.Hidden("ListaMateriales", Html.Raw(Json.Encode(ListaMateriales)))
+@Html.HiddenFor(x => x.TomarFotoEnMesa)
+@Html.HiddenFor(x => x.LeerCPDeFoto)
+@Html.Hidden("cartaPorteId", IdCartaPorte)
+@Html.Hidden("fechaCPIni", fechaCPIni)
+@Html.Hidden("fechaVTOcp", fechaVTOcp)
+@Html.Hidden("vehiculoJsonModel", vehiculoJsonModel)
+@Html.Hidden("cupoModel", cupo)
+@Html.Hidden("TipoVehiculoModel", tipoVehi)
+@Html.Hidden("esEgreso", esEgreso)
+
+<div id="links"
+     data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"
+     data-url-buscar-proveedorconboca-unico="@Url.Action("BuscarProveedorConBocaDestinoUnico", "Consultas")"
+     data-url-buscar-proveedoresconboca="@Url.Action("BuscarProveedoresConBocaDestino", "Consultas")"
+     data-url-buscar-entregador="@Url.Action("BuscarEntregador", "Consultas")"
+     data-url-buscar-entregadores="@Url.Action("BuscarEntregadores", "Consultas")"
+     data-url-obtener-carta-porte="@Url.Action("ObtenerCartaPorte", "CargarCartaPorte")"
+     data-url-obtener-carta-porte-redespacho="@Url.Action("ObtenerCartaPorteRedespacho", "IngresarCartaPorteRedespacho")"
+     data-url-obtener-carta-porte-ctg="@Url.Action("ObtenerCartaPorteCtg", "CargarCartaPorte")"
+     data-url-buscar-centros="@Url.Action("BuscarCentros", "Consultas")"
+     data-url-buscar-centro-unico="@Url.Action("BuscarCentroUnico", "Consultas")"
+     data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+     data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"
+     data-url-buscar-procedencias="@Url.Action("BuscarProcedencias", "Consultas")"
+     data-url-buscar-procedencia-unica="@Url.Action("BuscarProcedenciaUnica", "Consultas")"
+     data-url-buscar-bocas="@Url.Action("ObtenerBocasDestino", "Consultas")"
+     data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
+     data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
+     data-url-obtener-clientes-sap="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-cliente-unico="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-obtenertiposvehiculo="@Url.Action("ObtenerTiposVehiculo", "Consultas")"
+     data-url-obtener-foto-mesa="@Url.Action("TomarFotoMesaDigitalizacion", "CargarCartaPorte")"
+     data-url-obtener-carta-porte-electronica="@Url.Action("ObtenerCartaPorteElectronica", "CargarCartaPorte")"
+     data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
+     data-url-obtener-carta-porte-ctg-compragranos="@Url.Action("ObtenerCartaPorteCtgCompraGranos", "CargarCartaPorte")"
+     data-url-obtener-imagen-cpe="@Url.Action("ObtenerImagenCpe", "CargarCartaPorte")">
+</div>
+@Html.HiddenFor(m => m.TipoDeWorkflow)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.EsClienteDestinatario)
+
+<div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido"></div>
+
+<div class="row-fluid row-fluid-ie7" style="@( Model.LeerCPDeFoto ?"flex-direction:column-reverse": "")">
+    <div class="@(Model.LeerCPDeFoto ? "span6 primeracolumna" : "")" id="primeraColumna">
+        <div class="@(Model.LeerCPDeFoto ? "span12" : "span6 primeracolumna")">
+            <fieldset>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        <label class="control-label small">@Textos.CartaPorte_CargarPorCtg</label>
+                        <div class="controls-small">
+                            <input class="control" type="checkbox" id="DescargaCartaPortePorCtg" checked="@descargaCartaPortePorCtg">
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom check-cpe" style="display: none">
+                        @Html.LabelFor(model => model.Cpe, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.CheckBoxFor(model => model.Cpe, new { @class = "control input-small" })
+                        </div>
+                    </div>
+
+                    @if (Model.LeerCPDeFoto)
+                    {
+                        <div class="span6 control-group control-group-no-bottom">
+                            <label class="control-label small">@Textos.CartaPorte_Alinear</label>
+                            <div class="controls-small">
+                                <input class="control" type="checkbox" id="alineacion">
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.DropDownListFor(model => model.TipoVehiculo, tipoVehiculo, new { @id = "tipoVehiculoDropdown", @class = "control input-small", autocomplete = "off", style = "width:105px" })
+                            @Html.ValidationMessageFor(model => model.TipoVehiculo)
+                            @Html.HiddenFor(model => model.TipoVehiculoInt)
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.TipoComercial, new { @class = "control-label small" })
+                        <div class="" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>) ViewBag.TiposComercialesTransportista).Select(x => x)))'>
+                            @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control input-small", style = "width:105px" })
+                            @Html.ValidationMessageFor(model => model.TipoComercialId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.NroCartaPorte, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBoxFor(model => model.NroCartaPorte, new { @class = "control input-small campoNumerico", data_opcion_error = Textos.Entregador_Error_MailOpcion, autocomplete = "off", maxlength = 12, data_error_existente = Textos.CartaPorte_Existente })
+                            @Html.ValidationMessageFor(model => model.NroCartaPorte, null, new { @class = "nroCP" })
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom numero-operativo" style="display:none;">
+                        @Html.LabelFor(model => model.NumeroOperativo, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBoxFor(model => model.NumeroOperativo, new { @class = "control input-small", maxlength = 10, @onkeypress = "return isNumberKey(event)" })
+                            @Html.ValidationMessageFor(model => model.NumeroOperativo)
+                        </div>
+                    </div>
+                    <div>
+                        @Html.LabelFor(model => model.CEE, new { @class = "control-label small", style = "display: none;" })
+                        <div class="">
+                            @Html.Hidden("CEE", "99")
+                            @Html.ValidationMessageFor(model => model.CEE)
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte row-sucursal-ctg ">
+                    <div class="span12 control-group control-group-no-bottom  row-sucursal-ctg">
+                        @Html.LabelFor(model => model.CTG, new { @class = "control-label small" })
+                        <div style="display: inline-flex;">
+                            <div class="">
+                                @Html.TextBoxFor(model => model.Sucursal, new { @class = "control input-small", maxlength = 5, @onkeypress = "return isNumberKey(event)" })
+                                @Html.ValidationMessageFor(model => model.Sucursal)
+                            </div>
+                            <div class=""><a id="guion-concatenacion">&nbsp;-&nbsp;</a></div>
+                            <div class="">
+                                @Html.TextBoxFor(model => model.CTG, new { @class = "control input-small uppercase ctgRequerido", data_toggle = "tooltip", maxlength = 8, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CTG }), @tabindex = tabIndexCTG, @onkeypress = "return isNumberKey(event)" })
+                                @Html.ValidationMessageFor(model => model.CTG)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom FechaEmision">
+                        @Html.LabelFor(model => model.FechaEmision, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBox("FechaEmision", Model.FechaEmision.Formatted(), new { @class = "control input-small", @tabindex = "-1" })
+                            @Html.ValidationMessageFor(model => model.FechaEmision)
+                        </div>
+                    </div>
+                    @*@if (esIngreso)
+                    {
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.Label("Imagen Cpe", new { @class = "control-label small" })
+                            <div class="controls-small">
+                                <a id="" href="#" data-bind="click: consultarImagenCpe" class="btn">
+                                    <i class="fa icon-picture"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }*@
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom FechaCP">
+                        @Html.LabelFor(model => model.FechaCP, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBox("FechaCP", Model.FechaCP.Formatted(), new { @class = "date control input-small FechaCPValidacion", data_date_format = Html.ClientDateFormat(), data_error = string.Format(Textos.Error_FechaMenor + "<br/>" + Textos.CartaPorte_FechaIngreso, new[] { Textos.CartaPorte_FechaCP }), data_error2 = string.Format(Textos.Error_FechaCPAntigua + "<br/>", Textos.CartaPorte_FechaCP, Model.FechaEmision.AddDays(-dias).Formatted(), new[] { Textos.CartaPorte_FechaCP }), @tabindex = tabIndexFechaCp })
+                            @Html.ValidationMessageFor(model => model.FechaCP)
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom FechaVto">
+                        @Html.LabelFor(model => model.FechaVto, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBox("FechaVto", Model.FechaVto.Formatted(), new { @class = "date control input-small FechaVtoValidacion FechaVtoValidacionMaxima", data_date_format = Html.ClientDateFormat(), data_error = string.Format(Textos.Error_FechaMayor + "<br/>" + Textos.CartaPorte_FechaIngreso, new[] { Textos.CartaPorte_FechaVto }), data_error_maxima = string.Format(Textos.Error_FechaVto + "<br/>" + Textos.CartaPorte_FechaIngreso) })
+                            @Html.ValidationMessageFor(model => model.FechaVto)
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.TipoCategoria, new { @class = "control-label small" })
+                        <div class="controls-small" id="tiposCategorias" data-alta-rapida='@Html.Raw(Json.Encode(((IList<SelectListItem>) ViewBag.TiposCategorias).Select(x => x)))'>
+                            @Html.DropDownListFor(model => model.TipoCategoriaId, tiposCategorias, Textos.Default_TipoCategoria, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.TipoCategoriaId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte" id="DivNroCartaPorteOrigen">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.NroCartaPorteOrigen, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBoxFor(model => model.NroCartaPorteOrigen, new { @class = "control input-small campoNumerico", autocomplete = "off", maxlength = 12 })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row-carta-porte row-ramal-precinto">
+                    <div class="span12 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.CodigoRamal, new { @class = "control-label small" })
+                        <div class="controls-small" id="listaRamalFerroviario" data-alta-rapida='@Html.Raw(Json.Encode(((IList<SelectListItem>) ViewBag.ListaRamalFerroviario).Select(x => x)))'>
+                            @Html.DropDownListFor(model => model.CodigoRamalId, listaRamalFerroviario, Textos.Default_TipoRamal, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.CodigoRamalId)
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte row-ramal-precinto">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.NumeroPrecinto, new { @class = "control-label small" })
+                        <div class="">
+                            @Html.TextBoxFor(model => model.NumeroPrecinto, new { @class = "control input-small", maxlength = 20 })
+                            @Html.ValidationMessageFor(model => model.NumeroPrecinto)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="grupo-carta-porte">
+                @Textos.CartaPorte_DatosTrasladoGranos
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.TitularCartaPorte, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.TitularCartaPorte, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.TitularCartaPorte)
+                        @Html.HiddenFor(model => model.TitularCartaPorteId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Intermediario, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Intermediario, new { @class = "control input-xlarge  " })
+                        @Html.ValidationMessageFor(model => model.Intermediario)
+                        @Html.HiddenFor(model => model.IntermediarioId)
+
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.RtteComercial, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.RtteComercial, new { @class = "control input-xlarge  rtteComercialValidacion ", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_RtteComercial }) })
+                        @Html.ValidationMessageFor(model => model.RtteComercial)
+                        @Html.HiddenFor(model => model.RtteComercialId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.RtteComercialVentaSecundario, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.RtteComercialVentaSecundario, new { @class = "control input-xlarge  rtteComercialValidacion ", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_RtteComercial }) })
+                        @Html.ValidationMessageFor(model => model.RtteComercialVentaSecundario)
+                        @Html.HiddenFor(model => model.RtteComercialVentaSecundarioId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.RtteComercialVentaSecundario2, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.RtteComercialVentaSecundario2, new { @class = "control input-xlarge  rtteComercialValidacion ", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_RtteComercial }) })
+                        @Html.ValidationMessageFor(model => model.RtteComercialVentaSecundario2)
+                        @Html.HiddenFor(model => model.RtteComercialVentaSecundario2Id)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Corredor, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Corredor, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.Corredor)
+                        @Html.HiddenFor(model => model.CorredorId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.CorredorVendedorSecundario, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.CorredorVendedorSecundario, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.CorredorVendedorSecundario)
+                        @Html.HiddenFor(model => model.CorredorVendedorSecundarioId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.AgenteCompras, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.AgenteCompras, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.AgenteCompras)
+                        @Html.HiddenFor(model => model.AgenteComprasId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom" hidden>
+                    @Html.LabelFor(model => model.CorredorVendedor, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.CorredorVendedor, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.CorredorVendedor)
+                        @Html.HiddenFor(model => model.CorredorVendedorId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Entregador, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Entregador, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.Entregador)
+                        @Html.HiddenFor(model => model.EntregadorId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Destinatario, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Destinatario, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.Destinatario)
+                        @Html.HiddenFor(model => model.DestinatarioId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Destino, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Destino, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.Destino)
+                        @Html.HiddenFor(model => model.DestinoId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.IntermediarioFlete)
+                        @Html.HiddenFor(model => model.IntermediarioFleteId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Transportista, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Transportista, new { @class = "control input-xlarge ", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
+                        @Html.ValidationMessageFor(model => model.Transportista)
+                        @Html.HiddenFor(model => model.TransportistaId)
+                        @Html.HiddenFor(model => model.EsTransportista)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom row-tranportista-tramo2" style="display:none;">
+                    @Html.LabelFor(model => model.TransportistaTramo2, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.TransportistaTramo2, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.TransportistaTramo2)
+                        @Html.HiddenFor(model => model.TransportistaTramo2Id)
+                        @Html.HiddenFor(model => model.EsTransportistaTramo2)
+                    </div>
+                </div>
+                @Textos.CartaPorte_DatosChofer
+
+                <div class="row row-carta-porte">
+                    <div id="divSpan6" class="span8 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control input-medium cuilValido", data_error_cuil_invalido = string.Format(Textos.CuilInvalido) })
+                            @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control input-medium" })
+
+                            @Html.ValidationMessageFor(model => model.Chofer.Cuil)
+                        </div>
+                    </div>
+                    <div class="span4 control-group control-group-no-bottom">
+                        <label class="control-label xsmall-label">Extranjero</label>
+                        <div class="controls-small">
+                            @Html.CheckBoxFor(model => model.EsExtranjero, new { @class = "input-small", @id = "esExtranjero", @name = "esExtranjero" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Chofer.TipoDocumentoIdentidadId, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new { @class = "control  input-small", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Chofer.TipoDocumentoIdentidadId)
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control input-small ", maxlength = 8 })
+                            @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-carta-porte">
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Chofer.Nombre, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.HiddenFor(model => model.Chofer.Id)
+                            @Html.TextBoxFor(model => model.Chofer.Nombre, new { @class = "control input-small ", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Nombre" }) })
+                            @Html.ValidationMessageFor(model => model.Chofer.Nombre)
+                        </div>
+                    </div>
+                    <div class="span6 control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Chofer.Apellido, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.Chofer.Apellido, new { @class = "control input-small ", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" }) })
+                            @Html.ValidationMessageFor(model => model.Chofer.Apellido)
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="@(Model.LeerCPDeFoto ? "span12 sinMargenIzquierdo" : "span6 segundacolumna")">
+
+            <div>
+                <fieldset class="grupo-carta-porte">
+                    @Textos.CartaPorte_DatosGranos
+                    <div class="control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Material, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control input-large" })
+                            @Html.ValidationMessageFor(model => model.MaterialId)
+                        </div>
+                    </div>
+                    <div class="row row-carta-porte">
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Variedad, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.TextBoxFor(model => model.Variedad, new { @class = "control input-small", autocomplete = "off", tabindex = "-1" })
+                                @Html.ValidationMessageFor(model => model.Variedad)
+                            </div>
+                        </div>
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Cosecha, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-small cosechaValidacion cosechaValidacionDiferencia cosechaValidacionMaterial", autocomplete = "off", data_error = string.Format(Textos.Atencion_CosechaInvalida), data_errordiferencia = string.Format(Textos.Atencion_CosechaInvalidaDiferencia), data_errorcosechavalidacionmaterial = string.Format(Textos.Atencion_CosechaInvalidacionMaterial) })
+                                @Html.ValidationMessageFor(model => model.Cosecha)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Procedencia, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.Procedencia, new { @class = "control input-large procedenciaRequerido", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_Procedencia }) })
+                            @Html.ValidationMessageFor(model => model.Procedencia)
+                            @Html.HiddenFor(model => model.ProcedenciaId)
+                        </div>
+                    </div>
+                    <div class="row row-carta-porte">
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.CodEstab, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.TextBoxFor(model => model.CodEstab, new { @class = "control input-small codEstabRequerido", maxlength = 6, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_CodEstab }) })
+                                @Html.ValidationMessageFor(model => model.CodEstab)
+                            </div>
+                        </div>
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.TrigoEspecial, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.CheckBoxFor(model => model.TrigoEspecial, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.TrigoEspecial)
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            @if (requiereCupo && Model.LeerCPDeFoto)
+            {
+                <div class="row row-carta-porte">
+                    <fieldset class="grupo-carta-porte">
+                        <div class="row row-carta-porte">
+                            <div id="divSpan6" class="span8 control-group control-group-no-bottom">
+                                <label class="control-label small">@Textos.CartaPorte_Cupo</label>
+                                <div class="controls-small">
+                                    @Html.TextBoxFor(model => model.Cupo, new { @class = "control input-medium cupoValidacion", autocomplete = "off", maxlength = 16, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_Cupo }) })
+                                    @Html.ValidationMessageFor(model => model.Cupo)
+                                </div>
+                            </div>
+                            <div class="span4 control-group control-group-no-bottom">
+                                <label class="control-label xsmall-label">@Textos.SinCupo</label>
+                                <div class="controls-small">
+                                    <input name="SinCupo" type="checkbox" value="SinCupo" id="checkSinCupo" class="input-small" style="margin-top:8px" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            @Html.ValidationMessage("Vehiculo")
+            <div id="vehiculo" data-vagon="@Url.Action("MostrarVagones", "CargarCartaPorte")" data-camion="@Url.Action("MostrarCamion", "CargarCartaPorte")" data-camionjson="@Url.Action("MostrarCamionJson","CargarCartaPorte")" data-vagonjson="@Url.Action("MostrarVagonesJson","CargarCartaPorte")">
+                @if (Model.TipoVehiculo == TipoVehiculo.Tren)
+                {
+                    @Html.Partial("~/Views/CargarCartaPorte/Vagon.cshtml", Model)
+                }
+                else
+                {
+                    @Html.Partial("~/Views/CargarCartaPorte/Camion.cshtml", Model)
+                }
+            </div>
+            @if (requiereCupo && !Model.LeerCPDeFoto)
+            {
+                <div class="row row-carta-porte">
+                    <fieldset class="grupo-carta-porte">
+                        <div class="row row-carta-porte">
+                            <div id="divSpan6" class="span8 control-group control-group-no-bottom">
+                                <label class="control-label small">@Textos.CartaPorte_Cupo</label>
+                                <div class="controls-small">
+                                    @Html.TextBoxFor(model => model.Cupo, new { @class = "control input-medium cupoValidacion", autocomplete = "off", maxlength = 16, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_Cupo }) })
+                                    @Html.ValidationMessageFor(model => model.Cupo)
+                                </div>
+                            </div>
+                            <div class="span4 control-group control-group-no-bottom">
+                                <label class="control-label xsmall-label">@Textos.SinCupo</label>
+                                <div class="controls-small">
+                                    <input name="SinCupo" type="checkbox" value="SinCupo" id="checkSinCupo" class="input-small" style="margin-top:8px" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            @if (requiereNumeroAduana)
+            {
+                <div class="row row-carta-porte">
+                    <fieldset class="grupo-carta-porte">
+                        <div class="row row-carta-porte">
+                            <div id="divSpan6" class="span6 control-group control-group-no-bottom">
+                                <label class="control-label small">@Textos.CartaPorte_NumeroAduana</label>
+                                <div class="controls-small">
+                                    @Html.TextBoxFor(model => model.NumeroAduana, new { @class = "control input-medium numeroAduanaValidacion", autocomplete = "off", maxlength = 20, data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_NumeroAduana }) })
+                                    @Html.ValidationMessageFor(model => model.NumeroAduana)
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+            <div>
+                <fieldset class="grupo-carta-porte">
+                    <label class="control-label small">@Textos.CartaPorte_Flete</label>
+                    <label class="radio inline small shrink">
+                        @Html.RadioButtonFor(model => model.FletePagado, true)
+                        @Textos.CartaPorte_FletePagado
+                    </label>
+                    <label class="radio inline small shrink">
+                        @Html.RadioButtonFor(model => model.FleteAPagar, false)
+                        @Textos.CartaPorte_FleteAPagar
+                    </label>
+                </fieldset>
+            </div>
+            <div>
+                <fieldset>
+                    <div class="control-group control-group-no-bottom">
+                        @Html.LabelFor(model => model.Desvio, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.CheckBoxFor(model => model.Desvio, new { @class = "control" })
+                            @Html.ValidationMessageFor(model => model.Desvio)
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="row row-carta-porte">
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Prestador, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.HiddenFor(model => model.PrestadorId)
+                                @Html.TextBoxFor(model => model.Prestador, new { @class = "control input-small  ", data_error = string.Format(Textos.Error_Requerido, new[] { Textos.CartaPorte_Prestador }) })
+                                @Html.ValidationMessageFor(model => model.Prestador)
+                            </div>
+                        </div>
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.AcuerdoMarco, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.TextBoxFor(model => model.AcuerdoMarco, new { @class = "control input-small", autocomplete = "off" })
+                                @Html.ValidationMessageFor(model => model.AcuerdoMarco)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-carta-porte">
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.BocaDestino, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.DropDownListFor(model => model.BocaDestinoId, bocasDestino, new { @class = "control input-small", id = "bocaDestino" })
+                                @Html.ValidationMessageFor(model => model.BocaDestino)
+                            </div>
+                        </div>
+                        <div class="span6 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Caratula, new { @class = "control-label small" })
+                            <div class="controls-small">
+                                @Html.TextBoxFor(model => model.Caratula, new { @class = "control input-small", autocomplete = "off" })
+                                @Html.ValidationMessageFor(model => model.Caratula)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-carta-porte" id="observaciones-div" style="display:none;">
+                        <div class="span12 control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.Observacion, new { @class = "control-label small" })
+                            <div>
+                                @Html.TextAreaFor(model => model.Observacion, new { @class = "control input", id = "observacion" })
+                                @Html.ValidationMessageFor(model => model.Observacion)
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mensajeAnexo" data-error-requerido="@String.Format(Textos.Error_Requerido,Textos.CartaPorte_CodigoAnexo)"></div>
+                    @if (Model.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+                    {
+                        <div class="row row-carta-porte">
+                            <div class="span6 control-group control-group-no-bottom hide" id="divanexo" data-materiales-anexos='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.MaterialesConAnexo).Select(x => x)))'>
+                                @Html.HiddenFor(model => model.RequiereAnexoInase)
+                                @Html.LabelFor(model => model.CodigoAnexo, new { @class = "control-label small" })
+                                <div class="controls-small">
+                                    @Html.TextBoxFor(model => model.CodigoAnexo, new { @class = "control input-small", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.CodigoAnexo)
+                                </div>
+                            </div>
+
+                            <div class="span6 control-group control-group-no-bottom hide pull-right" id="divtecnologia" data-materiales-tecnologias='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.MaterialesConTecnologia).Select(x => x)))'>
+                                @Html.HiddenFor(model => model.RequiereTecnologia)
+                                @Html.LabelFor(model => model.Tecnologia, new { @class = "control-label small" })
+                                <div class="controls-small">
+                                    @Html.DropDownListFor(model => model.TecnologiaId, tecnologias, Textos.Default_Tecnologia, new { @class = "control input-small" })
+                                    @Html.ValidationMessageFor(model => model.TecnologiaId)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </fieldset>
+            </div>
+            @Html.Hidden("VehiculoDemorado", false)
+            @if (!soloLectura)
+            {
+                <div class="botones-carta-porte centered">
+                    <button id="aceptar" class="btn btn-primary aceptar-carga-porte" type="button">@Textos.Aceptar</button>
+                    @if (aceptaPendiente)
+                    {
+
+                        <button id="pendiente" class="btn btn-warning" type="button">@Textos.Demorar</button>
+                    }
+                    @if (aceptaRechazar)
+                    {
+                        <button id="rechazar" class="btn btn-primary" type="button">@Textos.Rechazar</button>
+                    }
+                    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="@(Model.LeerCPDeFoto ? "span7 columnaFoto" : "span3") control-group control-group-no-bottom borde ocultar fondo">
+        <a id="" href="#" class="btn tomarFoto1" style="@(ocultar) position: absolute;float:left;">
+            <i class="fa fa-camera"></i>
+        </a>
+    </div>
+    <div class="@(Model.LeerCPDeFoto ? "span7 columnaFoto" : "span3") control-group control-group-no-bottom sinBorde foto1-conteiner">
+        <div id="fotoDiv" style="display:none;">
+            <ul class="nav nav-tabs" style="margin-bottom:2px;" id="tabFotos">
+                <li>
+                    <a class="nav-link" href="#fotoDiv1" aria-controls="fotoDiv1" role="tab" data-toggle="tab">Foto 1</a>
+                </li>
+                <li class="fotoLi2">
+                    <a class="nav-link" href="#fotoDiv2" aria-controls="fotoDiv2" role="tab" data-toggle="tab">Foto 2</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade" role="tabpanel" id="fotoDiv1">
+                    <a id="" href="#" class="btn tomarFoto1" style="position: absolute;float:left;z-index: 9999;">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                    <div id="opacitysup" class="@(Model.LeerCPDeFoto ? "" : "hidden") sombrado" style="position: absolute;float:left; opacity:0.3; width: 812.3px;background-color: black;margin-left:0"></div>
+                    <div id="opacityinf" class="@(Model.LeerCPDeFoto ? "" : "hidden") sombrado" style="position: absolute;float:left; opacity:0.3; width: 812.3px;background-color: black;margin-left:0"></div>
+
+                    @Html.Hidden("FotoMesaDigitalizacion1", (byte[])ViewBag.FotoMesaDigitalizacion1)
+                    @Html.Hidden("PuestoDeTrabajo", (string)ViewBag.PuestoDeTrabajo)
+                    <img id="foto1" src="">
+
+                    <img src="" id="place-holder-1" class="@(Model.LeerCPDeFoto ? "hidden" : "")" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+                </div>
+                <div class="tab-pane fade" role="tabpanel" id="fotoDiv2">
+                    @Html.Hidden("FotoMesaDigitalizacion2")
+                    <a id="" href="#" class="btn tomarFoto2" style="position: absolute;float:left;">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                    <img id="foto2" src="">
+                    <img src="" id="place-holder-2" class="@(Model.LeerCPDeFoto ? "hidden" : "")" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div id="autocompleteTCP"></div>
+<div id="autocompleteInt"></div>
+<div id="autocompletePres"></div>
+<div id="autocompleteRtte"></div>
+<div id="autocompleteCorr"></div>
+<div id="autocompleteAgc"></div>
+<div id="autocompleteDest"></div>
+<div id="autocompleteDestino"></div>
+<div id="autocompleteTran"></div>
+
+
+<div class="modal hide fade" id="dialogo-confirmar">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>@Textos.Confirmacion</h4>
+    </div>
+    <div class="modal-body" id="dialogo-confirmar-body">
+        @Textos.CartaPorte_Reutilizar
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+        <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+    </div>
+</div>
+
+<div class="modal hide fade" id="dialogo-demorar">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>@Textos.Demorar</h4>
+    </div>
+    <div class="modal-body form-horizontal" id="dialogo-confirmar-body">
+        @Textos.Motivo:
+        <div class="controls-small">
+            @Html.TextAreaFor(model => model.MotivoDemora, new { @class = "form-control", style = "width:350px;" })
+
+            <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+            <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-demorar-confirmar" type="button" class="btn" value="">@Textos.Aceptar</button>
+        <button id="dialogo-demorar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+    </div>
+</div>
+@if (Model.LeerCPDeFoto)
+{
+    <style>
+        .primeracolumna {
+            width: 40% !important;
+        }
+
+        .span7.columnaFoto {
+            width: 52% !important;
+        }
+
+        .input-xlarge {
+            width: 60% !important;
+        }
+
+        .controls-small {
+            width: 100%;
+        }
+    </style>
+}
+

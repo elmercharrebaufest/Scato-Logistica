@@ -1,0 +1,73 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.FiltroReportePesadaSeisHoras
+@{
+    ViewBag.Title = Textos.OperacionesPuerto_ReportePorTurnos_Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var exportadores = (IEnumerable<SelectListItem>)ViewBag.Exportadores;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+}
+
+<div class="container-fluid">
+    <div class="titSecciones">@ViewBag.Title</div>
+</div>
+<div class="container-fluid content grillaPad">
+    @using (Ajax.BeginForm("Listar", "ReportePesadaSeisHoras", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" }))
+    {
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Filtro
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="row-fluid">
+                            <div class="span2">
+                                @Html.Label(@Textos.AFIP_PesadaOnline_FechaInicio)
+                            </div>
+                            <div class="span2">
+                                @Html.EditorFor(model => model.FechaDesde, Model != null ? Model.FechaDesde.FormattedFixed() : string.Empty)
+                            </div>
+
+                            <div class="span2">
+                                @Html.Label(@Textos.AFIP_ListarCarga_Exportador)
+                            </div>
+                            <div class="span2">
+                                @Html.DropDownListFor(model => model.Exportador_Id, exportadores, Textos.Default_Exportador, new { id = "exportadoresDropDown" })
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span2">
+                                @Html.Label(@Textos.AFIP_PesadaHistorica_FechaFin)
+                            </div>
+                            <div class="span2">
+                                @Html.EditorFor(model => model.FechaHasta, Model != null ? Model.FechaHasta.FormattedFixed() : string.Empty)
+                            </div>
+                            
+                            <div class="span2">
+                                @Html.Label(@Textos.AFIP_ListarCarga_Commodity)
+                            </div>
+                            <div class="span2">
+                                @Html.DropDownListFor(model => model.Material_Id, materiales, Textos.Default_Material_Todos, new { id = "materialesDropDown" })
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span12 cajaButtons2" style="margin-left: -108px">
+                                <input class="btn btn-default col-xs-12" value="@Textos.Aceptar" type="submit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>
+
+

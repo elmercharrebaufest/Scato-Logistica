@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ArchivoDeMovimientosDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaSeleccionar(Html, "GenerarArchivoDeMovimientos"),
+            grid.Columna("NumeroDeArchivo", Textos.Numero),
+            grid.Columna("Fecha",  Textos.Lote_FechaDescarga, x => FormattingHtmlHelper.FormattedTime(x.Fecha)),
+            grid.Columna("Material.Descripcion",  Textos.Material, x => x.MaterialDesc),
+            grid.Columna("FechaDesde",  Textos.Lote_FechaMuestraDesde, x => FormattingHtmlHelper.FormattedTime(x.FechaDesde)),
+            grid.Columna("FechaHasta",  Textos.Lote_FechaMuestraHasta, x => FormattingHtmlHelper.FormattedTime(x.FechaHasta)),
+            grid.Columna("TipoDeWorkflow", Textos.Movimiento)))

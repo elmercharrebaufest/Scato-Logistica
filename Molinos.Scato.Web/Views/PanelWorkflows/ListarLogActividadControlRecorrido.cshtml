@@ -1,0 +1,83 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@model FiltroListaDeWorkflowsDto
+@{
+    Layout = null;
+    ViewBag.Title = "ListarLogActividadControlRecorrido";
+    var logItems = (List<ControlRecorridoLogActividadConsultaDto>)ViewBag.LogItems;
+    <style>
+        #tablaLogs .ControlRecorrido {
+            color: #0000ff;
+        }
+
+        #tablaLogs .LogActividad {
+            color: #008f00;
+        }
+
+        
+
+        .input-color {
+            position: relative;
+        }
+
+        .modal {
+            left: 30%!important;
+            right: 10%!important;
+        }
+            .input-color input {
+                padding-left: 20px;
+            }
+
+            .input-color .color-box {
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                left: 5px;
+                top: 5px;
+            }
+    </style>
+    <div class="span2">
+        <div class="input-color">
+            <div class="color-box" style="background-color: #0000FF"></div>
+            <input type="text" value="ControlRecorrido" />
+
+        </div>
+    </div>
+    <div class="span2">
+        <div class="input-color">
+            <div class="color-box" style="background-color: #008f00"></div>
+            <input type="text" value="LogActividad" />
+        </div>
+    </div>
+    <table class="table table-striped table-bordered table-small" style="white-space: nowrap; table-layout: fixed;" id="tablaLogs">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Actividad</th>
+            <th>Comentario</th>
+            <th>Usuario</th>
+        </tr>
+        </thead>
+        @foreach (var item in logItems)
+        {
+            <tbody>
+            <tr class="@item.Tabla">
+                <td>@item.Fecha</td>
+                <td>@item.Actividad</td>
+                <td style="overflow: hidden; text-overflow: ellipsis" data-toggle="tooltip" title="@item.Comentario">
+                    @if ((item.Comentario != null) && (item.Comentario.Length > 14))
+                    {
+                        <button class="btn" onclick="copia_portapapeles('@item.Comentario.Replace(Environment.NewLine, "")')">Copiar</button>
+                        @item.Comentario
+                    }
+                    else
+                    {
+                        @item.Comentario
+                    }
+                </td>
+                <td>@item.Usuario</td>
+            </tr>
+            </tbody>
+        }
+    </table>
+}
+

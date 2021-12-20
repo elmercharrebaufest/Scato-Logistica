@@ -1,0 +1,100 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    string workflow = ViewBag.Workflow;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="@Url.Script("~/Scripts/verificacionCamionRechazado.js")" type="text/javascript"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Visteo</div>
+</div>
+<br />
+@using (Html.BeginForm("Index", "Visteo", FormMethod.Post, new {@class = "form-horizontal container causaBlock"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.ActividadXaml)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    @Html.HiddenFor(model => model.Decision, new {@class = "valorDecision"})
+    <div class="row-fluid row-fluid-ie7">
+        
+        <div class="span6">    
+            <div class="control-group">
+                <div class="control-label">@Textos.Camion_Patente:</div>
+                <div class="controls">
+                    <div class="control margin">@ViewBag.Patente</div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"> @Textos.TipoComercial:</div>
+                <div class="controls">
+                    <div class="control margin">@ViewBag.TipoComercial</div>
+                </div>
+            </div>
+        </div>
+        <div class="span6">    
+            <div class="control-group">
+                <div class="control-label"> @Textos.Material:</div>
+                <div class="controls">
+                    <div class="control margin">@ViewBag.Material</div>
+                </div>
+            </div>
+        </div>
+        
+        @if (ViewBag.Cliente != null && ViewBag.ClienteCodigoSap != null)
+        {
+            <div class="span6">    
+                <div class="control-group">
+                    <div class="control-label"> @Textos.Cliente:</div>
+                    <div class="controls">
+                        <div class="control margin">@ViewBag.Cliente</div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label"> @Textos.ClienteCodigoSap:</div>
+                    <div class="controls">
+                        <div class="control margin">@ViewBag.ClienteCodigoSap</div>
+                    </div>
+                </div>
+            </div>
+        }    
+    </div>
+   
+    <div class="centered">
+        <div class="">
+
+            <br />
+            @Html.ActionLink(Textos.ModificarDocumento, "Seleccionar", "ModificarDocumentoDeIngreso", new { id = ViewBag.RecorridoId, soloLectura = false }, new { target = "_blank", @class = "btn" })
+
+            <br />
+            <br />
+            <div class=""> @Textos.VehiculoEnCondiciones_Pregunta:</div>
+        </div>
+    </div>
+    <div class="centered">
+        <button type="submit" class="btn btn-primary rechazar">@Textos.Si</button>
+        <button type="submit" class="btn no-rechazar">@Textos.No</button>
+    </div>
+    <br/>
+    if(ViewBag.Estado != null)
+    {
+        <div class="alert alert-error" id="validation-patente-alert">
+            <div id="validation-patente">
+                @ViewBag.Estado
+            </div>
+        </div>
+     }
+}

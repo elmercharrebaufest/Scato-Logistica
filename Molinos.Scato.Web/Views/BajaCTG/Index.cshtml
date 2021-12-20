@@ -1,0 +1,135 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.BajaCTGDto
+@{
+    ViewBag.Title = Textos.BajaCTG_Titulo;
+    var reintentar = (bool)ViewBag.VerReintentar;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bajaCTG.js")"></script>
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+        if ($("#foto1").length > 0) {
+            $('#fotoDiv').css('display', 'inline');
+            $('.ocultar').hide();
+        }
+    });
+
+
+    $(function () {
+        $("#CodigoDeBaja").focus();
+    });
+</script>
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+        font-size: 12px;
+    }
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.BajaCTG</div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span6">
+
+
+            @* ReSharper disable Mvc.ActionNotResolved *@
+            @using (Html.BeginForm("Action", "BajaCTG", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActBajaCTG }))
+            {
+                @* ReSharper restore Mvc.ActionNotResolved *@
+
+                <div id="Automatica">
+                    <div>
+                        <h4>@Textos.BajaCTG_BajaAutomaticaError</h4>
+                        @Html.ValidationMessageFor(model => model.Errores)
+                    </div>
+                    <div class="control-group"></div>
+                    <div class="modal-footer">
+                        <button id="dialogo-reintentar" class="confirmar-boton btn " data-accion="ReintentarCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Reintentar, Textos.CTG)">@Textos.Reintentar</button>
+                        <button id="boton-manual" class="btn ">@Textos.BajaCTG_Manual</button>
+                        <button id="dialogo-demorar" class="confirmar-boton btn " type="button" data-accion="Demorar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Demorar, Textos.Vehiculo)">@Textos.Demorar</button>
+                        <button id="dialogo-rechazar" class="confirmar-boton btn " data-accion="Rechazar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Rechazar, Textos.Vehiculo)">@Textos.Rechazado</button>
+                        <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+                    </div>
+                </div>
+
+                <div id="Manual">
+                    <div>
+                        <h4>@Textos.BajaCTG_Titulo</h4>
+                    </div>
+                    <div class="modal-body">
+                        @Html.HiddenFor(model => model.WorkflowCodigo)
+                        @Html.HiddenFor(model => model.WorkflowId)
+                        @Html.HiddenFor(model => model.Cpe)
+                        @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+                        @Html.Hidden("verReintentar", reintentar)
+                        @Html.Hidden("postDeManual", (bool)ViewBag.PostDeManual)
+                        <div class="control-group">
+                            @Html.Label(Textos.BajaCTG_Codigo)
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.CodigoDeBaja, new { @class = "input-large", maxlength = Model.Cpe ? 12 : 8 })
+                                @Html.ValidationMessageFor(model => model.CodigoDeBaja)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="dialogo-dardebaja" class="confirmar-boton btn " data-accion="CargarBajaCtg" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.DarDeBaja, Textos.CTG)">@Textos.Aceptar</button>
+                        <button id="dialogo-demorar" class="confirmar-boton btn " data-accion="Demorar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Demorar, Textos.Vehiculo)">@Textos.Demorar</button>
+                        <button id="dialogo-rechazar" class="confirmar-boton btn " data-accion="Rechazar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Rechazar, Textos.Vehiculo)">@Textos.Rechazado</button>
+                        <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
+                        <button id="boton-volver" class="btn pull-left">@Textos.Volver</button>
+                    </div>
+                </div>
+
+
+
+                <div class="modal hide fade" id="dialogo-confirmar">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4>@Textos.Confirmacion</h4>
+                    </div>
+                    <div class="modal-body" id="dialogo-confirmar-body">
+                        <div id="demorar" style="display:none">
+                            <div class="control-group">
+                                @Html.Label("Motivo Demora", new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.TextArea("MotivoDemora", new { id = "motivoDemora", @class = "form-control", style = "width:350px;"})
+                                    <br />
+                                    @Html.ValidationMessage("MotivoDemora",string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requerido", style = "display:none; color:red;" })
+                                    @Html.ValidationMessage("MotivoDemora",string.Format(Textos.Error_LargoMensaje, Textos.Motivo,"10"), new { @id = "largoMensaje",style = "display:none; color:red;"})
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+                        <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+        <div class="span6 control-group control-group-no-bottom borde ocultar fondo">
+            No se encontró la foto para la CCPP
+        </div>
+        <div class="span6 control-group control-group-no-bottom sinBorde" id="fotoDiv">
+            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
+
+            }
+            <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
+        </div>
+    </div>
+</div>

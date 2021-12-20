@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AjusteDeStockDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "AjusteDeStock"),
+        grilla.Columna("TipoComprobanteOnccaDesc", Textos.TipoDocumentoIngreso),
+        grilla.Columna("NumeroDocumentoIngreso", Textos.DocumentoIngreso),
+        grilla.Columna("MaterialDesc", Textos.Material),
+        grilla.Columna("PesoBrutoIngreso", Textos.AjusteDeStock_PesoBrutoIngreso),
+        grilla.Columna("PesoNetoEgreso", Textos.AjusteDeStock_PesoNetoEgreso),
+        grilla.Columna("PesoNetoIngreso", Textos.AjusteDeStock_PesoNetoIngreso),
+        grilla.Columna("Fecha", Textos.Fecha,x => FormattingHtmlHelper.Formatted(x.Fecha))
+        ))
+</div>

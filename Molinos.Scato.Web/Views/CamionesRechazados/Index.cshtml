@@ -1,0 +1,136 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+@{
+    ViewBag.Title = Textos.CamionesRechazados;
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/camionesRechazados.index.js")"></script>
+}
+<style>
+    thead {
+        color: #0055a5;
+    }
+    #grid .editar-borrar-columna {
+        text-align: center;
+    }
+</style>
+<div id ="linksRechazados" 
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+></div>
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.CamionesRechazados</div>
+</div>
+<div class="container-fluid content grillaPad">
+    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form-comando", @class = "form-search", onsubmit = "CopiarFiltros()" }))
+    {
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <div class="checkbox pull-right topRight">
+                        <label>
+                            <input name="checkbox" id="modoDeRefresco" type="checkbox" value="1" checked="checked" />@Textos.ListaDeCamiones_Refrescar
+                        </label>
+                    </div>
+                    <div id="DropDownColumnas" class="btn-group pull-right topRight">
+                        <a id="DropDownColumnasBoton" class="btn dropdown-toggle" data-toggle="dropdown" href="#">@Textos.Columnas
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu columnasdropdown">
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Foto" id="checkFoto" checked="@true" />@Textos.Workflow_Foto
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Patente" id="checkPatente" checked="@true" />@Textos.Camion_Patente
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Material" id="checkMaterial" checked="@true" />@Textos.Material
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="NumeroDocumentoIngreso" id="checkNumeroDocumentoIngreso" checked="@true" />@Textos.NumeroDocumentoIngreso
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="NumeroDeTarjeta" id="checkNumeroDeTarjeta" checked="@true" />@Textos.Workflow_NumeroDeTarjeta
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="ProximaEtapa" id="checkProximaEtapa" />@Textos.Workflow_ProximaAccion
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="RechazoEtapa" id="checkRechazoEtapa" checked="@true" />@Textos.Workflow_RechazoEtapa
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="FechaCreacion" id="checkFechaCreacion" checked="@true" />@Textos.Workflow_FechaCreacion
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="FechaCalado" id="checkFechaCalado" checked="@true" />@Textos.Workflow_FechaCalado
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Transportista" id="checkTransportista" checked="@true" />@Textos.Transportista
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="EnPlanta" id="checkEnPlanta" checked="@true" />@Textos.CamionesRechazadosEnPlanta
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Proveedor" id="checkProveedor" checked="@true" />@Textos.Proveedor
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TieneEntregador" id="checkTieneEntregador" checked="@true" />@Textos.Entregador
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="MotivoDeRechazo" id="checkMotivoDeRechazo" checked="@true" />@Textos.Motivo
+                            </li>
+                        </ul>
+                    </div>
+                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Filtrar
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="span4">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.NumeroDocumentoDeIngreso, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.NumeroDocumentoDeIngreso, new { @class = "" })
+                                    @Html.Hidden("filtroNumeroDocumentoDeIngreso", Model.NumeroDocumentoDeIngreso)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.Patente, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.Patente, new { @class = "patente-internacional uppercase" })
+                                    @Html.Hidden("filtroPatente", Model.Patente)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group-puesto-comando">
+                                @Html.LabelFor(model => model.MaterialDesc, new {@class = "wsmall"})
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.MaterialDesc, new {@class = "control"})
+                                    @Html.HiddenFor(model => model.MaterialId)
+                                    @Html.ValidationMessageFor(m => m.MaterialId)
+                                    @Html.Hidden("filtroMaterialId", Model.MaterialId)
+                                </div>
+                            </div>
+                            @Html.ValidationSummary(true)
+                            <div class="cajaButtons">
+                            <button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px">@Textos.Filtrar</button> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div id="gridContainer" style="clear:both;" data-error-material="@Textos.Error_DiferentesMateriales" data-error-sustentable="@Textos.Error_DiferentesTipos" data-grid-url="@Url.Action("Index", "CamionesRechazados")">
+    </div>
+</div>

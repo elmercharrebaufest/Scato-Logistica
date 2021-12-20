@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Molinos.Scato.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{2a13f03d-a296-4ce5-859f-a3a26b884e0d}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>Molinos.Scato.Database</RootNamespace>
+    <AssemblyName>Molinos.Scato.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU' ">
+    <OutputPath>bin\Jenkins\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Pre-Deployment" />
+    <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="Scripts\20150226" />
+    <Folder Include="Scripts\20150312" />
+    <Folder Include="Scripts\20150327" />
+    <Folder Include="Scripts\20150617" />
+    <Folder Include="Scripts\20150504" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="Scripts\20150717" />
+    <Folder Include="Scripts\20150720" />
+    <Folder Include="Scripts\20150902" />
+    <Folder Include="Scripts\20151030" />
+    <Folder Include="Scripts\20160524 - Configuracion de Workflows" />
+    <Folder Include="Scripts\20200512 - Credenciales MercadoPago" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Molinos.Scato.Database.publish.xml" />
+    <None Include="Molinos.Scato.Database.bfdev226.publish.xml" />
+    <Build Include="dbo\Tables\ControlRecorrido.sql" />
+    <None Include="Molinos.Scato.Database.GVICSQLTEST2016.publish.xml" />
+    <None Include="Scripts\Roles-Chivilcoy.sql" />
+    <None Include="Scripts\CopiarWorkflows.QA.sql" />
+    <None Include="Molinos.Scato.Database.lucsql2008-scato.publish.xml" />
+    <None Include="Scripts\20150327\1_TitulosOncca.sql" />
+    <None Include="Molinos.Scato.Database.bfdev226-Branch.publish.xml" />
+    <Build Include="dbo\Tables\LoteBiotecnologia.sql" />
+    <None Include="Molinos_1.Scato.Database.publish.xml" />
+    <None Include="Molinos.Scato.Database.GVICSQLTEST2016.Puerto.publish.xml" />
+    <Build Include="dbo\Tables\ConfiguracionAutomatizacionEtapas.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Balanza.sql" />
+    <Build Include="dbo\Tables\Almacen.sql" />
+    <Build Include="dbo\Tables\Camara.sql" />
+    <Build Include="dbo\Tables\Chofer.sql" />
+    <Build Include="dbo\Tables\ExcepcionAlControl.sql" />
+    <Build Include="dbo\Tables\InhabilitacionCamion.sql" />
+    <Build Include="dbo\Tables\InhabilitacionChofer.sql" />
+    <Build Include="dbo\Tables\Localidad.sql" />
+    <Build Include="dbo\Tables\Material.sql" />
+    <Build Include="dbo\Tables\Notificacion.sql" />
+    <Build Include="dbo\Tables\Observacion.sql" />
+    <Build Include="dbo\Tables\OrdenCargaInterna.sql" />
+    <Build Include="dbo\Tables\Precinto.sql" />
+    <Build Include="dbo\Tables\Provincia.sql" />
+    <Build Include="dbo\Tables\Recorrido.sql" />
+    <Build Include="dbo\Tables\TipoComercial.sql" />
+    <Build Include="dbo\Tables\TipoDocumentoIdentidad.sql" />
+    <Build Include="dbo\Tables\Transportista.sql" />
+    <Build Include="dbo\Tables\Workflow.sql" />
+    <Build Include="dbo\Tables\WorkflowTipoComercial.sql" />
+    <Build Include="dbo\Tables\TipoBalanza.sql" />
+    <Build Include="dbo\Tables\BalanzaModificacionModalidad.sql" />
+    <Build Include="dbo\Tables\CaracteristicaDeCalidad.sql" />
+    <Build Include="dbo\Tables\Centro.sql" />
+    <Build Include="dbo\Tables\Motivo.sql" />
+    <Build Include="dbo\Tables\Humedimetro.sql" />
+    <Build Include="dbo\Tables\Calado.sql" />
+    <Build Include="dbo\Tables\CaladoPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\HumedimetroModificacionModalidad.sql" />
+    <Build Include="dbo\Tables\BocaDestino.sql" />
+    <Build Include="dbo\Tables\Usuario.sql" />
+    <Build Include="dbo\Tables\Rol.sql" />
+    <Build Include="dbo\Tables\Permiso.sql" />
+    <Build Include="dbo\Tables\UsuarioCentro.sql" />
+    <Build Include="dbo\Tables\UsuarioRol.sql" />
+    <Build Include="dbo\Tables\RolPermiso.sql" />
+    <Build Include="dbo\Tables\CartaPorte.sql" />
+    <Build Include="dbo\Tables\Vehiculo.sql" />
+    <Build Include="dbo\Tables\AnalisisDeCalidad.sql" />
+    <Build Include="dbo\Tables\AnalisisPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\Cliente.sql" />
+    <Build Include="dbo\Tables\ExcepcionEnvioCamara.sql" />
+    <Build Include="dbo\Tables\CaracteristicaMaterial.sql" />
+    <Build Include="dbo\Tables\Pais.sql" />
+    <Build Include="dbo\Tables\Suplencia.sql" />
+    <Build Include="dbo\Tables\TicketAccesoAfip.sql" />
+    <Build Include="dbo\Tables\BajaCTG.sql" />
+    <Build Include="dbo\Tables\Descuento.sql" />
+    <Build Include="dbo\Tables\Entregador.sql" />
+    <Build Include="dbo\Tables\Proveedor.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroDocumento.sql" />
+    <Build Include="dbo\Tables\TransmisionASap.sql" />
+    <Build Include="dbo\Tables\AltaCTG.sql" />
+    <Build Include="dbo\Tables\TransaccionSAP.sql" />
+    <Build Include="dbo\Tables\MaterialAlmacen.sql" />
+    <Build Include="dbo\Tables\AjusteDeDiferenciasEnRedespachosTransmisionASap.sql" />
+    <Build Include="dbo\Tables\LlegadaAdestinosEnRedespachosTransmisionASap.sql" />
+    <Build Include="dbo\Tables\SalidaDeOrigenEnRedespachosTransmisionASap.sql" />
+    <Build Include="dbo\Tables\IngresosPorCompraDeGranosTransmisionASap.sql" />
+    <Build Include="dbo\Tables\MuestraEnvioACamara.sql" />
+    <Build Include="dbo\Tables\CaracteristicaDeCalidadEnvioACamara.sql" />
+    <Build Include="dbo\Tables\MaterialPorCentro.sql" />
+    <Build Include="dbo\Tables\MaterialPorWorkflow.sql" />
+    <Build Include="dbo\Tables\Lote.sql" />
+    <Build Include="dbo\Tables\PuestosDeCargaDescarga.sql" />
+    <Build Include="dbo\Tables\Calle.sql" />
+    <Build Include="dbo\Tables\ConversionMaterial.sql" />
+    <Build Include="dbo\Tables\ConversionProcedencia.sql" />
+    <Build Include="dbo\Tables\ConversionGrupo.sql" />
+    <Build Include="dbo\Tables\ConversionCaracteristica.sql" />
+    <Build Include="dbo\Tables\LogActividad.sql" />
+    <Build Include="dbo\Tables\ELMAH_Error.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorsXml.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_GetErrorXml.sql" />
+    <Build Include="dbo\Stored Procedures\ELMAH_LogError.sql" />
+    <Build Include="dbo\Tables\TipoDocumentoIngreso.sql" />
+    <Build Include="dbo\Tables\TipoPesada.sql" />
+    <Build Include="dbo\Tables\TipoVehiculo.sql" />
+    <Build Include="dbo\Tables\FuncionSap.sql" />
+    <Build Include="dbo\Tables\TipoDeWorkflow.sql" />
+    <Build Include="dbo\Tables\Modalidad.sql" />
+    <Build Include="dbo\Tables\TaraRomaneo.sql" />
+    <Build Include="dbo\Tables\Talonario.sql" />
+    <Build Include="dbo\Tables\OrdenDeDescarga.sql" />
+    <Build Include="dbo\Tables\Romaneo.sql" />
+    <Build Include="dbo\Tables\RomaneoItem.sql" />
+    <Build Include="dbo\Tables\LogSincronizacion.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroOrdenDeDescarga.sql" />
+    <Build Include="dbo\Tables\WorkflowDefinicion.sql" />
+    <Build Include="dbo\Tables\OrdenCargaFas.sql" />
+    <Build Include="dbo\Tables\AjusteDeCalidad.sql" />
+    <Build Include="dbo\Tables\RomaneoItemPedido.sql" />
+    <Build Include="dbo\Tables\EstadoRomaneo.sql" />
+    <Build Include="dbo\Tables\ImpAsignacionDeRuta.sql" />
+    <Build Include="dbo\Tables\ImpCertificadoDeAnalisis.sql" />
+    <Build Include="dbo\Tables\ImpCertificadoDeAnalisisAnalisisPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\ImpCertificadoDeAnalisisCaladoPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\ImpCertificadoDeCartaPorte.sql" />
+    <Build Include="dbo\Tables\ImpConstanciaDeEntregaLaser.sql" />
+    <Build Include="dbo\Tables\CaracteristicasCalidadValor.sql" />
+    <Build Include="dbo\Tables\ImpDeclaracionFosfina.sql" />
+    <Build Include="dbo\Tables\ImpDocumentoDeEntrada.sql" />
+    <Build Include="dbo\Tables\ImpFormulario239.sql" />
+    <Build Include="dbo\Tables\ImpIdentificacionEnvioLoteACamara.sql" />
+    <Build Include="dbo\Tables\ImpIdentificacionMicromuestra.sql" />
+    <Build Include="dbo\Tables\ImpIdentificacionMuestraCalado.sql" />
+    <Build Include="dbo\Tables\ImpTicketPesada.sql" />
+    <Build Include="dbo\Tables\ImpSolicitudDeAnalisis.sql" />
+    <Build Include="dbo\Tables\Impresion.sql" />
+    <Build Include="dbo\Tables\EgresosNoProductivosTransmisionASap.sql" />
+    <Build Include="dbo\Tables\MotivoExcepcionAlControl.sql" />
+    <Build Include="dbo\Tables\OrdenDeDescargaFason.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroOrdenDeDescargaFason.sql" />
+    <Build Include="dbo\Tables\OrdenCargaInternaFason.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroDocumentoFason.sql" />
+    <Build Include="dbo\Tables\DocumentoDeImpresion.sql" />
+    <Build Include="dbo\Tables\FormatoDePapel.sql" />
+    <Build Include="dbo\Tables\Impresora.sql" />
+    <Build Include="dbo\Tables\AjusteDeStock.sql" />
+    <Build Include="dbo\Tables\DocumentoDeImpresionPorCentro.sql" />
+    <Build Include="dbo\Tables\Campo.sql" />
+    <Build Include="dbo\Tables\FormatoDeCampo.sql" />
+    <Build Include="dbo\Tables\FormatoDeImpresion.sql" />
+    <Build Include="dbo\Tables\Letra.sql" />
+    <Build Include="dbo\Tables\ImpImpresionGenerica.sql" />
+    <Build Include="dbo\Tables\GeneradorSecuenciaEnvioACamara.sql" />
+    <Build Include="dbo\Tables\IngresosEgresosFazonesTransmisionASap.sql" />
+    <Build Include="dbo\Tables\Workflow_Temp.sql" />
+    <Build Include="dbo\Tables\PesaNetoTransmisionASap.sql" />
+    <Build Include="dbo\Tables\RecepcionYRedespacho.sql" />
+    <Build Include="dbo\Tables\TipoComprobanteOncca.sql" />
+    <Build Include="dbo\Tables\OrdenEntrePlantas.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroOrdenEntrePlantas.sql" />
+    <Build Include="dbo\Tables\Remito.sql" />
+    <Build Include="dbo\Tables\LogModificacionDocumentoIngreso.sql" />
+    <Build Include="dbo\Tables\LogModificacionDocumentoIngresoCampo.sql" />
+    <Build Include="dbo\Tables\DescargaUnidad.sql" />
+    <Build Include="dbo\Tables\DescargaUnidadItem.sql" />
+    <Build Include="dbo\Tables\DescargaUnidadItemPedido.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroOrdenDeCargaContenedor.sql" />
+    <Build Include="dbo\Tables\OrdenDeCargaContenedor.sql" />
+    <Build Include="dbo\Tables\TaraContenedor.sql" />
+    <Build Include="dbo\Tables\ImpInformeDeRecepcion.sql" />
+    <Build Include="dbo\Tables\ImpInformeDeRecepcionItem.sql" />
+    <Build Include="dbo\Tables\CalidadMaterial.sql" />
+    <Build Include="dbo\Tables\Casillero.sql" />
+    <Build Include="dbo\Tables\TarjetaBloqueada.sql" />
+    <Build Include="dbo\Tables\ReciboMunicipal.sql" />
+    <Build Include="dbo\Tables\TarjetaRango.sql" />
+    <Build Include="dbo\Tables\TarjetaSupervisor.sql" />
+    <Build Include="dbo\Tables\Lector.sql" />
+    <Build Include="dbo\Tables\PuestoDeTrabajo.sql" />
+    <Build Include="dbo\Tables\ControlDeTiempo.sql" />
+    <Build Include="dbo\Tables\ActividadPorDispositivo.sql" />
+    <Build Include="dbo\Tables\AutorizarTiempoEnTransito.sql" />
+    <Build Include="dbo\Tables\ReasignacionDeTarjeta.sql" />
+    <Build Include="dbo\Tables\ImpReciboMunicipal.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroDeTicket.sql" />
+    <None Include="Scripts\CopiarWorkflows.DEV.sql" />
+    <Build Include="dbo\Tables\MotivoQuiebreBarrera.sql" />
+    <Build Include="dbo\Tables\ImpControlDeCarga.sql" />
+    <Build Include="dbo\Tables\GeneradorControlDeCarga.sql" />
+    <Build Include="dbo\Tables\RecorridoPuestosDeCargaDescarga.sql" />
+    <Build Include="dbo\Tables\ConfiguracionDeTabla.sql" />
+    <Build Include="dbo\Tables\ConfiguracionDeTablaCaracteristicaDeCalidad.sql" />
+    <Build Include="dbo\Tables\ControlDeBalanzaPesada.sql" />
+    <Build Include="dbo\Tables\ControlDeBalanza.sql" />
+    <Build Include="dbo\Tables\LecturaDeTarjeta.sql" />
+    <Build Include="dbo\Tables\EgresoSinFleteFazonesTransmisionASap.sql" />
+    <Build Include="dbo\Tables\EstadoConexion.sql" />
+    <Build Include="dbo\Tables\ImpIdentificacionMuestraAuditoria.sql" />
+    <Build Include="dbo\Tables\Salida.sql" />
+    <Build Include="dbo\Tables\PuestoDeTrabajoModificacionModalidad.sql" />
+    <Build Include="dbo\Tables\Cuartel.sql" />
+    <Build Include="dbo\Tables\CiuAnulado.sql" />
+    <Build Include="dbo\Tables\VariedadPorVinedo.sql" />
+    <Build Include="dbo\Tables\Variedad.sql" />
+    <Build Include="dbo\Tables\RemitoBodegaUva.sql" />
+    <Build Include="dbo\Tables\Vinedo.sql" />
+    <Build Include="dbo\Tables\TipoVehiculoBodega.sql" />
+    <Build Include="dbo\Tables\RemitoBodegaUva.sql" />
+    <Build Include="dbo\Tables\DescargaDeBines.sql" />
+    <Build Include="dbo\Tables\DistribucionDeAlmacen.sql" />
+    <Build Include="dbo\Tables\DistribucionDeAlmacenes.sql" />
+    <Build Include="dbo\Tables\Casillero.sql" />
+    <Build Include="dbo\Tables\SalidaDeBines.sql" />
+    <Build Include="dbo\Tables\CargaDeBines.sql" />
+    <Build Include="dbo\Tables\RemitoBodegaVino.sql" />
+    <Build Include="dbo\Tables\MicroMuestrasPorCasillero.sql" />
+    <Build Include="dbo\Tables\HojaDeRuta.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroHojaDeRuta.sql" />
+    <Build Include="dbo\Tables\AsignacionDeRecorrido.sql" />
+    <Build Include="dbo\Tables\HojaDeRutaYerbatera.sql" />
+    <Build Include="dbo\Tables\FletesDobleTramoTransmisionASap.sql" />
+    <Build Include="dbo\Tables\AsignacionDeRecorridoPuestosDeCargaDescarga.sql" />
+    <Build Include="dbo\Tables\ActividadConCargaAutomatica.sql" />
+    <Build Include="dbo\Tables\LogTarjetaSupervisor.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaAuditoria.sql" />
+    <Build Include="dbo\Tables\Establecimiento.sql" />
+    <Build Include="dbo\Tables\TipoMicromuestra.sql" />
+    <Build Include="dbo\Tables\DocumentoBorrado.sql" />
+    <Build Include="dbo\Tables\LogAjusteDeStock.sql" />
+    <Build Include="dbo\Tables\CaracteristicaDeCalidadMaestro.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaIntacta.sql" />
+    <Build Include="dbo\Tables\Empresa.sql" />
+    <Build Include="dbo\Tables\Tecnologia.sql" />
+    <Build Include="dbo\Tables\MuestreoPesajeTransporteAutomotorTransmisionAMonsanto.sql" />
+    <Build Include="dbo\Tables\MuestreoPesajeVagonFerroviarioTransmisionAMonsanto.sql" />
+    <Build Include="dbo\Tables\Vagon.sql" />
+    <Build Include="dbo\Tables\CartaPorteVagonFerroviarioRegistroTransmisionAMonsanto.sql" />
+    <Build Include="dbo\Tables\CartaPorteTransporteAutomotorRegistroTransmisionAMonsanto.sql" />
+    <None Include="Scripts\ActividadUpdate.sql" />
+    <None Include="Scripts\20150226\1_BorraCaladosPorCaracteristicaDuplicados.sql" />
+    <None Include="Scripts\20150226\2_BorraAnalisisPorCaracteristicaHumedadNull.sql" />
+    <None Include="Scripts\20150226\3_ActualizaRecorridoIdOrdenCargaFas.sql" />
+    <None Include="Scripts\20150312\1_ActualizaRecorridoIdDocumentos.sql" />
+    <None Include="Scripts\20150312\2_AsignarPatenteAReciboMunicipal.sql" />
+    <Build Include="dbo\Tables\CartaDePorteRegistradaServicioMonsanto.sql" />
+    <None Include="Scripts\20150312\3_CrearCentroNecochea.sql" />
+    <Build Include="dbo\Tables\MuestraDeHumedad.sql" />
+    <None Include="Scripts\20150617\1_BorraMuestraDeHumedad.sql" />
+    <None Include="Scripts\20150504\3_ArchivarLogActividad.sql" />
+    <None Include="Scripts\20150504\1_PermisoColumnaNombreActividades.sql" />
+    <None Include="Scripts\20150504\2_PuestoDeTrabajoColumnaEncolaLecturas.sql" />
+    <Build Include="dbo\Tables\LogActividadHistorico.sql" />
+    <Build Include="dbo\Views\LogActividadUnion.sql" />
+    <Build Include="dbo\Tables\ProveedorExcluidoIntacta.sql" />
+    <Build Include="dbo\Tables\AjusteStockBines.sql" />
+    <Build Include="dbo\Tables\Zona.sql" />
+    <Build Include="dbo\Tables\SubZona.sql" />
+    <None Include="Scripts\20150717\1_ZonaSubZona.sql" />
+    <None Include="Scripts\20150720\1_Permiso.sql" />
+    <None Include="Scripts\20150720\2_AlterTable.sql" />
+    <Build Include="dbo\Tables\InformarCupoTransmisionASap.sql" />
+    <Build Include="dbo\Tables\ConversionCentro.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroMuestraAuditoria.sql" />
+    <None Include="Scripts\20150902\FnSplit.sql" />
+    <Build Include="dbo\Tables\LogExceptuadosTicketMunicipal.sql" />
+    <Build Include="dbo\Tables\MuestraEnvioACamaraBiotecnologia.sql" />
+    <Build Include="dbo\Tables\IngresosBodegaTransmisionASap.sql" />
+    <None Include="Scripts\20151030\CalcularSaldosFunction.sql" />
+    <Build Include="dbo\Tables\MovimientoDeBines.sql" />
+    <Build Include="dbo\Tables\MotivoForzarCero.sql" />
+    <Build Include="dbo\Tables\Firma.sql" />
+    <Build Include="dbo\Tables\DestinatarioCTG.sql" />
+    <Build Include="dbo\Tables\ImpTicketPesadaBodega.sql" />
+    <Build Include="dbo\Tables\ImpTicketPesadaBodegaCaladoPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\TipoImpresion.sql" />
+    <Build Include="dbo\Tables\LoteDeRedespacho.sql" />
+    <Build Include="dbo\Tables\MovimientoDeTerceros.sql" />
+    <Build Include="dbo\Tables\ArchivoDeMovimientos.sql" />
+    <Build Include="dbo\Tables\GraficoDePlanta.sql" />
+    <None Include="Scripts\20160524 - Configuracion de Workflows\Configuracion MRP.sql" />
+    <Build Include="dbo\Tables\IngresoDeDatosDeExportacion.sql" />
+    <Build Include="dbo\Tables\ImpTicketPesadaAduana.sql" />
+    <Build Include="dbo\Tables\Sugerencia.sql" />
+    <Build Include="dbo\Tables\ExcepcionAlDescuento.sql" />
+    <Build Include="dbo\Tables\LogABM.sql" />
+    <Build Include="dbo\Tables\KmPorProveedor.sql" />
+    <Build Include="dbo\Tables\TicketMunicipalBorrado.sql" />
+    <Build Include="dbo\Tables\PesoMaximoPorTipoVehiculo.sql" />
+    <Build Include="dbo\Tables\StockDeEstablecimiento.sql" />
+    <Build Include="dbo\Tables\RegistroStockEPA.sql" />
+    <Build Include="dbo\Tables\Cosecha.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaRubrosAnalizar.sql" />
+    <Build Include="dbo\Tables\Categoria.sql" />
+    <Build Include="dbo\Tables\CaracteristicasAnalizadas.sql" />
+    <Build Include="dbo\Tables\VideoCamara.sql" />
+    <Build Include="dbo\Tables\CaracteristicaDeCalidadPorWorkflow.sql" />
+    <Build Include="dbo\Tables\CargaDeCupo.sql" />
+    <Build Include="dbo\Tables\CupoMobile.sql" />
+    <Build Include="dbo\Tables\ImpReciboMunicipalImportacion.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroDeTicketImportacion.sql" />
+    <Build Include="dbo\Tables\ZE7550TransmisionASap.sql" />
+    <Build Include="dbo\Tables\MotivoHumedadManual.sql" />
+    <Build Include="dbo\Tables\RangosDeRedondeo.sql" />
+    <Build Include="dbo\Tables\Vapor.sql" />
+    <Build Include="dbo\Tables\Balanzada.sql" />
+    <Build Include="dbo\Tables\Carga.sql" />
+    <Build Include="dbo\Tables\RegistroBalanzaPuerto.sql" />
+    <Build Include="dbo\Tables\BalanzaPuerto.sql" />
+    <Build Include="dbo\Tables\Bodega.sql" />
+    <Build Include="dbo\Tables\Destino.sql" />
+    <Build Include="dbo\Tables\Exportador.sql" />
+    <Build Include="dbo\Tables\MaterialPuerto.sql" />
+    <Build Include="dbo\Tables\Nirs.sql" />
+    <Build Include="dbo\Tables\NirsModificacionModalidad.sql" />
+    <Build Include="dbo\Tables\MuestraDeNirs.sql" />
+    <Build Include="dbo\Tables\ImpAsigRecorrCtrolCalid.sql" />
+    <Build Include="dbo\Tables\ImpAsigRecorrCtrolCalidCaladoPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\ImpAsigRecorrCtrolCalidAnalisisPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\MotivoReasignacionDeTarjeta.sql" />
+    <Build Include="dbo\Tables\PuestoDeTrabajoTarjetaSupervisor.sql" />
+    <Build Include="dbo\Tables\Adjunto.sql" />
+    <Build Include="dbo\Tables\GeneradorNumeroDeTicket2.sql" />
+    <Build Include="dbo\Tables\EnvioUrenport.sql" />
+    <Build Include="dbo\Tables\ReglaDeAnalisisObligatorio.sql" />
+    <Build Include="dbo\Tables\AnalisisObligatorio.sql" />
+    <Build Include="dbo\Tables\AnalisisObligatorioPuestoDeTrabajo.sql" />
+    <Build Include="dbo\Tables\CaladoEnPlanta.sql" />
+    <Build Include="dbo\Tables\CaladoEnPlantaPorCaracteristica.sql" />
+    <Build Include="dbo\Tables\ImpCartaPorteUrenport.sql" />
+    <Build Include="dbo\Tables\LogLecturaDeTarjeta.sql" />
+    <Build Include="dbo\Tables\HistoricoInhabilitacionChofer.sql" />
+    <Build Include="dbo\Tables\HistoricoInhabilitacionCamion.sql" />
+    <Build Include="dbo\Tables\AutorizacionChofer.sql" />
+    <Build Include="dbo\Tables\AutorizacionCamion.sql" />
+    <Build Include="dbo\Tables\DocumentoExterno.sql" />
+    <Build Include="dbo\Tables\EstadoMaterial.sql" />
+    <Build Include="dbo\Tables\Stock.sql" />
+    <Build Include="dbo\Tables\ImpGaritaSalida.sql" />
+    <Build Include="dbo\Tables\ImpResumenHojaDeRuta.sql" />
+    <Build Include="dbo\Tables\DatosDeWorkflow.sql" />
+    <Build Include="dbo\Tables\CredencialMercadoPago.sql" />
+    <Build Include="dbo\Tables\PagoConMercadoPago.sql" />
+    <None Include="Scripts\20200512 - Credenciales MercadoPago\AgregarCredencialesMercadoPago.sql" />
+    <Build Include="dbo\Tables\GaritaDeSalida.sql" />
+    <Build Include="dbo\Tables\MaterialReporteDeMovimientos.sql" />
+    <Build Include="dbo\Tables\LoteAuditoria.sql" />
+    <Build Include="dbo\Tables\MuestraEnvioACamaraAuditoria.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaAuditoriaCamara.sql" />
+    <Build Include="dbo\Tables\Contingencia.sql" />
+    <Build Include="dbo\Tables\MaterialPuertoCantidad.sql" />
+    <Build Include="dbo\Tables\Embarque.sql" />
+    <Build Include="dbo\Tables\LineUp.sql" />
+    <Build Include="dbo\Tables\PlanoDeCarga.sql" />
+    <Build Include="dbo\Tables\EstadoPuerto.sql" />
+    <Build Include="dbo\Tables\AgenciaMaritimaPuerto.sql" />
+    <Build Include="dbo\Tables\CoordinadorPuerto.sql" />
+    <Build Include="dbo\Tables\CargaComercial.sql" />
+    <Build Include="dbo\Tables\Estiba.sql" />
+    <Build Include="dbo\Tables\AgenciaControlPrivado.sql" />
+    <Build Include="dbo\Tables\AgenteControlPrivado.sql" />
+    <Build Include="dbo\Tables\PlanoDeCargaBodega.sql" />
+    <Build Include="dbo\Tables\PlanoDeCargaAgenteControlPrivado.sql" />
+    <Build Include="dbo\Tables\CallePorRecorrido.sql" />
+    <Build Include="dbo\Tables\PinchazosPorCalada.sql" />
+    <Build Include="dbo\Tables\ATAPuerto.sql" />
+    <Build Include="dbo\Tables\TipoDeBuquePuerto.sql" />
+    <Build Include="dbo\Tables\UbicacionDeBuquePuerto.sql" />
+    <Build Include="dbo\Tables\MensajeCartelLed.sql" />
+    <Build Include="dbo\Tables\CargaComercialHistorico.sql" />
+    <Build Include="dbo\Tables\PlanoDeCargaAgenteControlPrivadoHistorico.sql" />
+    <Build Include="dbo\Tables\PlanoDeCargaBodegaHistorico.sql" />
+    <Build Include="dbo\Tables\PlanoDeCargaHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaTabiquesDeEmbarque.sql" />
+    <Build Include="dbo\Tables\ModuloDeCarga.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaElementoGrafico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaManosDeEmbarque.sql" />
+    <Build Include="dbo\Tables\CeldaManoDeEmbarque.sql" />
+    <Build Include="dbo\Tables\SentidoManoDeEmbarque.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaElementoGraficoHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaManosDeEmbarqueHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaTabiquesDeEmbarqueHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaManosDeEmbarqueDetalle.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaManosDeEmbarqueDetalleHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaHabilitacionDeTanques.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaLineasDeEmbarque.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaHabilitacionDeTanquesHistorico.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaLineasDeEmbarqueHistorico.sql" />
+    <Build Include="dbo\Tables\MotivosLimpieza.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPeriodoDeCarga.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaUmap.sql" />
+    <Build Include="dbo\Tables\MotivosFallasBalanza.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaMangueraCarga.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPlanillaDeEmbarque.sql" />
+    <Build Include="dbo\Tables\MotivosDeCorte.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPlanillaDeTurnos.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPlanillaDeTurnosTurnos.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPlanillaDeTurnosTurnosDetalles.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaPlanillaDeTurnosTurnosCortes.sql" />
+    <Build Include="dbo\Tables\TurnoPuerto.sql" />
+    <Build Include="dbo\Tables\CubitacionDeTanques.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaBalanzas.sql" />
+    <Build Include="dbo\Tables\ModuloDeCargaRitmosEmbarque.sql" />
+    <Build Include="dbo\Tables\LlenadoMilimetroPorTanque.sql" />
+    <Build Include="dbo\Tables\DensidadPorTemperaturaDeMaterial.sql" />
+    <Build Include="dbo\Tables\EstadoBuque.sql" />
+    <Build Include="dbo\Tables\ConfiguracionMail.sql" />
+    <Build Include="dbo\Tables\EquivalenciasCaracteristicasCpOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\CaracteristicasCartaPorteOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\CartaPorteOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\CartaPorteElectronica.sql" />
+    <Build Include="dbo\Tables\LogAfipCpe.sql" />
+    <Build Include="dbo\Tables\NotificacionAplicacion.sql" />
+    <Build Include="dbo\Tables\AlmacenReporteDeMovimientos.sql" />
+    <Build Include="dbo\Tables\NotificacionAplicacion.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaPuerto.sql" />
+    <Build Include="dbo\Tables\RamalFerroviario.sql" />
+    <Build Include="dbo\Tables\LogCambioDeModalidadCalle.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="EsAmbienteBF">
+      <DefaultValue>False</DefaultValue>
+      <Value>$(SqlCmdVar__2)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="WorkflowsDir">
+      <DefaultValue>$(SolutionDir)Molinos.Scato.Workflow\</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Molinos.Scato.Database.refactorlog" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,126 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ValoresPagarConMercadoPagoDto
+@{
+    var puestoDeTrabajo = (int)ViewBag.PuestoDeTrabajoId;
+    var garita = (string)ViewBag.Garita;
+    ViewBag.Title = @Textos.DevolucionImpuestoMunicipal_Titulo;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/devolucionDeReciboMunicipal.js")" type="text/javascript"></script>
+}
+
+<div id="links"
+     data-url-pago="@Url.Action("PagarConMercadoPago", "DevolucionDeReciboMunicipal")"
+     data-url-devolucion="@Url.Action("DevolverConMercadoPago", "DevolucionDeReciboMunicipal")"
+     data-url-datos="@Url.Action("ObtenerDatos", "DevolucionDeReciboMunicipal")"
+     data-url-pagoconfectivo="@Url.Action("PagarConEfectivo", "DevolucionDeReciboMunicipal")"></div>
+
+
+
+<style>
+    .loader {
+        border: 5px solid #f3f3f3; /* Light grey */
+        border-top: 5px solid green; /* Blue */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 2s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+@Html.Hidden("garita", garita)
+@Html.Hidden("puestoDeTrabajo", puestoDeTrabajo)
+@Html.Hidden("centroId", (int)ViewBag.CentroId)
+@Html.Hidden("montoCobrado", null, new { @id = "montoCobrado", @class = " input-medium uppercase", @readonly = "readonly" })
+@Html.Hidden("RecorridoId", null, new { @id = "RecorridoId", @class = " input-medium uppercase", @readonly = "readonly" })
+@Html.Hidden("medioDePago", null, new { @id = "medioDePago", @class = " input-medium uppercase", @readonly = "readonly" })
+
+
+
+<span class="label label-success hidden" id="labelConectado">@Textos.Conectado</span>
+<span class="label label-important hidden" id="labelDesconectado">@Textos.Desconectado</span>
+
+<div class="row-fluid" style="margin:0px">
+    <div class="row-fluid">
+        @*se muestran errores de patentes*@
+        <div class="span12 alert alert-info hide" id="validation-patente-danger">
+            @*<button type="button" class="close" id="validation-danger-close">×</button>*@
+            <div id="validation-danger">
+
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        @*se muestran errores de tarjetas*@
+        <div class="span12 alert alert-error hide" id="validation-patente-alert">
+            @*<button type="button" class="close" id="validation-patente-close">×</button>*@
+            <div id="validation-patente">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container centered" style="padding:3%;">
+    <div class="titSecciones">@Textos.DevolucionImpuestoMunicipal_Titulo</div>
+</div>
+
+<div class=" container text-center center content form-horizontal">
+    <div class="control-group  sinMargen">
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            @Html.Label("N° Tarjeta:", new { @class = " control-label menosAncho" })
+            @Html.TextBox("numTarjeta", "esperando...", new { @id = "numTarjeta", @class = "col-sm-10 control input-medium lowercase", @readonly = "readonly", data_toggle = "tooltip", @style = " cursor: pointer; " })
+        </div>
+    </div>
+    <div class="control-group sinMargen">
+
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            @Html.Label("Patente:", new { @class = "control-label menosAncho" })
+            @Html.TextBox("patente", "esperando...", new { @id = "patente", @class = "control input-medium lowercase", @readonly = "readonly", data_toggle = "tooltip", @style = " cursor: pointer; " })
+        </div>
+    </div>
+    <div class="control-group sinMargen">
+
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            @Html.Label("N° Carta de Porte:", new { @class = "control-label menosAncho" })
+            @Html.TextBox("numCartaPorte", "esperando...", new { @id = "numCartaPorte", @class = "control input-medium lowercase", @readonly = "readonly", data_toggle = "tooltip", @style = " cursor: pointer; " })
+        </div>
+    </div>
+    <div class="control-group sinMargen">
+
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            @Html.Label("Transportista:", new { @class = "control-label menosAncho" })
+            @Html.TextBox("transportista", "esperando...", new { @id = "transportista", @class = "control input-medium lowercase", @readonly = "readonly", data_toggle = "tooltip", @style = " cursor: pointer; " })
+        </div>
+    </div>
+    <div id="spinnerEsperandoLecturaQr">
+        <div class="controls menosAncho" style="max-width: 400px; margin-left: 32%;">
+            @Html.Label("Código QR:", new { @class = "control-label menosAncho" })
+            @Html.TextBox("tokenDePago", null, new { @id = "tokenDePago", @class = "control input-medium", data_toggle = "tooltip", placeholder = "Lea el código QR", @type = "password" })
+        </div>
+        <br />
+
+        <p style="margin-bottom:2%; font-weight:bold;" id="MensajeEstadoDePago"></p>
+
+        <div class="controls menosAncho" style="text-align: center;margin-left: 47%;margin-bottom:5%;">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <div class="controls menosAncho" style="margin-left: 0px;">
+        <button id="btnCancelar" class="btn btn-sm" name="submitAction">Cancelar</button>
+        <button id="btnCobrarEnEfectivo" class="btn btn-primary" type="submit" name="submitAction" style="visibility:hidden">Cobrar en Efectivo</button>
+        <button id="btnDevolverPago" class="btn btn-primary" type="submit" name="submitAction">Devolver pago</button>
+
+    </div>
+</div>

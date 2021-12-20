@@ -1,0 +1,337 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.EnviarMailStockEstablecimiento"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdc="clr-namespace:Molinos.Scato.Dominio.Comandos;assembly=Molinos.Scato.Dominio"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:Molinos.Scato.Actividades"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)" />
+    <x:Property Name="subject" Type="InArgument(x:String)" />
+    <x:Property Name="puestoDeTrabajoId" Type="InArgument(x:Int32)" />
+    <x:Property Name="MailsDestino" Type="InArgument(x:String)" />
+  </x:Members>
+  <this:EnviarMailStockEstablecimiento.MailsDestino>
+    <InArgument x:TypeArguments="x:String">
+      <Literal x:TypeArguments="x:String" Value="" />
+    </InArgument>
+  </this:EnviarMailStockEstablecimiento.MailsDestino>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.EnviarMailStockEstablecimiento_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+      <x:String>Molinos.Scato.Dominio.Enums</x:String>
+      <x:String>Molinos.Scato.Dominio.Comandos</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
+    <Flowchart.Variables>
+      <Variable x:TypeArguments="msdd:CentroDto" Name="centro" />
+      <Variable x:TypeArguments="x:String" Name="errorMensaje" />
+      <Variable x:TypeArguments="x:String" Name="NombreEstablecimiento" />
+      <Variable x:TypeArguments="x:String" Name="CodigoEstablecimiento" />
+      <Variable x:TypeArguments="x:String" Name="Cosecha" />
+      <Variable x:TypeArguments="x:String" Name="LocalidadEstablecimiento" />
+      <Variable x:TypeArguments="x:String" Name="ProvinciaEstablecimiento" />
+      <Variable x:TypeArguments="x:String" Name="RazonesSociales" />
+      <Variable x:TypeArguments="x:String" Name="StockDeclarado" />
+      <Variable x:TypeArguments="x:String" Name="StockDisponible" />
+      <Variable x:TypeArguments="x:String" Name="StockUtilizado" />
+      <Variable x:TypeArguments="x:Boolean" Name="SeEnviaMail" />
+      <Variable x:TypeArguments="msdc:Resultado" Name="Resultado" />
+      <Variable x:TypeArguments="x:String" Name="Corredores" />
+      <Variable x:TypeArguments="x:String" Name="Intermediarios" />
+      <Variable x:TypeArguments="x:String" Name="Remitentes" />
+    </Flowchart.Variables>
+    <Flowchart.StartNode>
+      <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+        <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+          <local:LogActividad.LogActividadDto>
+            <InArgument x:TypeArguments="msdd:LogActividadDto">
+              <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActEnvioMailAvisoStockEpa, WorkflowInstanceId = workflowId, ActividadXaml = "EnviarMailStockEstablecimiento" }</mca:CSharpValue>
+            </InArgument>
+          </local:LogActividad.LogActividadDto>
+        </local:LogActividad>
+        <FlowStep.Next>
+          <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+            <local:ConsultarDatosMailStock sap2010:WorkflowViewState.IdRef="ConsultarDatosMailStock_2">
+              <local:ConsultarDatosMailStock.CodigoEstablecimiento>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">CodigoEstablecimiento</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.CodigoEstablecimiento>
+              <local:ConsultarDatosMailStock.Corredores>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">Corredores</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Corredores>
+              <local:ConsultarDatosMailStock.Cosecha>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">Cosecha</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Cosecha>
+              <local:ConsultarDatosMailStock.Intermediarios>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">Intermediarios</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Intermediarios>
+              <local:ConsultarDatosMailStock.Localidad>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">LocalidadEstablecimiento</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Localidad>
+              <local:ConsultarDatosMailStock.NombreEstablecimiento>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">NombreEstablecimiento</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.NombreEstablecimiento>
+              <local:ConsultarDatosMailStock.Provincia>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">ProvinciaEstablecimiento</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Provincia>
+              <local:ConsultarDatosMailStock.RazonesSociales>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">RazonesSociales</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.RazonesSociales>
+              <local:ConsultarDatosMailStock.Remitentes>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">Remitentes</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Remitentes>
+              <local:ConsultarDatosMailStock.Resultado>
+                <OutArgument x:TypeArguments="msdc:Resultado">
+                  <mca:CSharpReference x:TypeArguments="msdc:Resultado">Resultado</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.Resultado>
+              <local:ConsultarDatosMailStock.SeEnviaMail>
+                <OutArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpReference x:TypeArguments="x:Boolean">SeEnviaMail</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.SeEnviaMail>
+              <local:ConsultarDatosMailStock.StockDeclarado>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">StockDeclarado</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.StockDeclarado>
+              <local:ConsultarDatosMailStock.StockDisponible>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">StockDisponible</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.StockDisponible>
+              <local:ConsultarDatosMailStock.StockUtilizado>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">StockUtilizado</mca:CSharpReference>
+                </OutArgument>
+              </local:ConsultarDatosMailStock.StockUtilizado>
+              <local:ConsultarDatosMailStock.WorkflowId>
+                <InArgument x:TypeArguments="s:Guid">
+                  <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+                </InArgument>
+              </local:ConsultarDatosMailStock.WorkflowId>
+            </local:ConsultarDatosMailStock>
+            <FlowStep.Next>
+              <FlowDecision x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                <FlowDecision.Condition>
+                  <mca:CSharpValue x:TypeArguments="x:Boolean">SeEnviaMail</mca:CSharpValue>
+                </FlowDecision.Condition>
+                <FlowDecision.True>
+                  <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_8">
+                    <local:EnviarMailAsync Attachments="{x:Null}" CC="{x:Null}" From="{x:Null}" sap2010:WorkflowViewState.IdRef="EnviarMailAsync_1">
+                      <local:EnviarMailAsync.Body>
+                        <InArgument x:TypeArguments="x:String">
+                          <mca:CSharpValue x:TypeArguments="x:String">Molinos.Scato.Dominio.Recursos.Textos.StockEstablecimientoMail</mca:CSharpValue>
+                        </InArgument>
+                      </local:EnviarMailAsync.Body>
+                      <local:EnviarMailAsync.Error>
+                        <OutArgument x:TypeArguments="x:String">
+                          <mca:CSharpReference x:TypeArguments="x:String">errorMensaje</mca:CSharpReference>
+                        </OutArgument>
+                      </local:EnviarMailAsync.Error>
+                      <local:EnviarMailAsync.InstanceId>
+                        <InArgument x:TypeArguments="s:Guid">
+                          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+                        </InArgument>
+                      </local:EnviarMailAsync.InstanceId>
+                      <local:EnviarMailAsync.Subject>
+                        <InArgument x:TypeArguments="x:String">
+                          <mca:CSharpValue x:TypeArguments="x:String">subject</mca:CSharpValue>
+                        </InArgument>
+                      </local:EnviarMailAsync.Subject>
+                      <local:EnviarMailAsync.To>
+                        <InArgument x:TypeArguments="x:String">
+                          <mca:CSharpValue x:TypeArguments="x:String">MailsDestino</mca:CSharpValue>
+                        </InArgument>
+                      </local:EnviarMailAsync.To>
+                      <local:EnviarMailAsync.Tokens>
+                        <InArgument x:TypeArguments="scg:IDictionary(x:String, x:String)">
+                          <mca:CSharpValue x:TypeArguments="scg:IDictionary(x:String, x:String)">new Dictionary&lt;String, String&gt; { { "[CodigoEstablecimiento]", CodigoEstablecimiento }, { "[RazonesSociales]", RazonesSociales }, { "[NombreEstablecimiento]", NombreEstablecimiento }, { "[ProvinciaEstablecimiento]", ProvinciaEstablecimiento }, { "[LocalidadEstablecimiento]", LocalidadEstablecimiento }, { "[Cosecha]", Cosecha }, { "[StockDeclarado]", StockDeclarado }, { "[StockUtilizado]", StockUtilizado }, { "[StockDisponible]", StockDisponible }, { "[Corredores]", Corredores }, { "[Intermediarios]", Intermediarios }, { "[Remitentes]", Remitentes } }</mca:CSharpValue>
+                        </InArgument>
+                      </local:EnviarMailAsync.Tokens>
+                    </local:EnviarMailAsync>
+                    <FlowStep.Next>
+                      <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_4">
+                        <local:FinDeActividad InstanceId="{x:Null}" NombreUsuario="{x:Null}" PuestoDeTrabajoId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+                          <local:FinDeActividad.ControlRecorridoDto>
+                            <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                              <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActEnvioMailAvisoStockEpa, ActividadXaml = "EnviarMailStockEstablecimiento", WorkflowInstanceId = workflowId, PuestoDeTrabajoId = puestoDeTrabajoId, Comentario = Resultado != null &amp;&amp; Resultado.Errores != null &amp;&amp; Resultado.Errores.Count &gt; 0 ? Resultado.Errores.FirstOrDefault().Value : "", Mensaje = SeEnviaMail ? Molinos.Scato.Dominio.Recursos.Textos.StockMailEnviado : Molinos.Scato.Dominio.Recursos.Textos.StockMailNoEnviado }</mca:CSharpValue>
+                            </InArgument>
+                          </local:FinDeActividad.ControlRecorridoDto>
+                        </local:FinDeActividad>
+                      </FlowStep>
+                    </FlowStep.Next>
+                  </FlowStep>
+                </FlowDecision.True>
+                <FlowDecision.False>
+                  <x:Reference>__ReferenceID0</x:Reference>
+                </FlowDecision.False>
+              </FlowDecision>
+            </FlowStep.Next>
+          </FlowStep>
+        </FlowStep.Next>
+      </FlowStep>
+    </Flowchart.StartNode>
+    <x:Reference>__ReferenceID1</x:Reference>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID2</x:Reference>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <sads:DebugSymbol.Symbol>d2dDOlxURlNcTW9saW5vcyAtIFNDVDIwMFxNb2xpbm9zLlNjYXRvLURFVlxNb2xpbm9zLlNjYXRvLkFjdGl2aWRhZGVzXEVudmlhck1haWxTdG9ja0VzdGFibGVjaW1pZW50by54YW1sHhkHGTYBAkkD9wEPAgEBXglkHgMB6ANnDbMBLQMBrAG3ARO3AV0DAZcB3QEZ4wEwAwGBAbsBFdoBLQIBAmEPYY8CAwHpA3kTeWcDAdMDfhN+cQMBvgONARONAWgDAakDbxNvYwMBlAOmAROmAWgDAf8CiAETiAFxAwHqArABE7ABWQMB1QKDARODAW4DAcACkgETkgFjAwGrApwBE5wBZQMBlgJ0E3RgAwGBApcBE5cBaAMB7AFqE2puAwHXAaEBE6EBZwMBwgGrAROrAWcDAa0B4AEf4AH4BAMBggHXARvXAaUFAgFs0gEb0gFlAgFXvgEbvgGXAQIBQs0BG80BYAIBLcMBG8MBbQIBGMgBG8gBYQIBAw==</sads:DebugSymbol.Symbol>
+  </Flowchart>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ConsultarDatosMailStock_2" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="EnviarMailAsync_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">0,379</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">0,259</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">100,281 100,379</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="70,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">265,226.5</av:Point>
+            <av:Size x:Key="ShapeSize">70,87</av:Size>
+            <av:PointCollection x:Key="TrueConnector">265,270 200,270</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">335,270 365,270 365,390 200,390</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,150</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,172 300,226.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_3">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,99</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,121 300,150</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="614,636">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,75</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,99</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.EnviarMailStockEstablecimiento_1" sap:VirtualizedContainerService.HintSize="654,716" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

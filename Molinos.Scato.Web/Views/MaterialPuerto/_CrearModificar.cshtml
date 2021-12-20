@@ -1,0 +1,25 @@
+﻿@model Molinos.Scato.Dominio.Dto.MaterialPuertoDto
+
+<div id="links"
+     data-url-buscar-almacenes="@Url.Action("BuscarAlmacenes", "Consultas")"
+     data-url-buscar-almacen="@Url.Action("BuscarAlmacen", "Consultas")"
+></div>
+<script type="text/javascript" src="~/scripts/materialPuerto.crear.js"></script>
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+    @Html.LabelFor(model => model.AlmacenDesc, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.AlmacenDesc, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.AlmacenDesc)
+        @Html.HiddenFor(model => model.Almacen_Id)
+    </div>
+    @Html.LabelFor(model => model.CodigoSAP, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoSAP, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.CodigoSAP)
+    </div>
+</div>

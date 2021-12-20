@@ -1,0 +1,111 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model CaladoPantallaDto
+@{
+    ViewBag.Title = Textos.Calado_Titulo;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/caladoRechazar.js")" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.get("@Url.Action("DocumentoOrigen","ModificarDocumentoDeIngreso")", { recorridoId: "@ViewBag.RecorridoId", tipoDoc: "@ViewBag.TipoDocumentoIngreso", soloLectura: "true", esDocumentoDeOrigen: "true" }, function (data) {
+                var html = $('<div>' + data + '</div>');
+                html.find('script[src$="/scatocommon.validate.js"]').remove();
+                var dataSinJs = html.html();
+                $("#documento").html(dataSinJs);
+
+                $('#documento').find('*').attr('disabled', true);
+                $('#agregarVagon').attr("style", "visibility: hidden");
+            });
+        });
+    </script>
+}
+
+<style>
+    .tablaDatos {
+        width: 960px;
+    }
+
+    .form-horizontal .control-group {
+        margin-bottom: 1px;
+        /*padding-left: 10px;*/
+    }
+
+    .table th, .table td {
+        padding-left: 1px;
+        padding-right: 1px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+
+    td .input-small {
+        margin-bottom: 0;
+        height: 14px;
+        line-height: 14px;
+        width: 70px;
+    }
+
+    .caladoObligatorio {
+        font-weight: bolder;
+    }
+
+    #calado {
+        font-size: 12px;
+    }
+
+    #MuestraConjunto {
+        width: 100px;
+    }
+
+    .label-naranja {
+        background-color: orange;
+        color: black;
+    }
+
+    .label-ancho-full {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+</style>
+
+
+<div class="container-fluid text-center">
+    <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Calado_Titulo</div>
+    @if ((bool)ViewBag.Rechazado)
+    {
+        <span class="label label-important pull-right">
+            <h4 style="margin-top: 0; margin-bottom: 0">@Textos.RechazadoMayus</h4>
+        </span>
+    }
+
+</div>
+
+@if (ViewBag.EnvioDirectoACamara != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        @Html.ViewBag.EnvioDirectoACamara
+    </div>
+}
+
+@Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn pull-right", id = "botonCancelar", @style = "margin-left: 4px;" })
+
+@Html.ActionLink(Textos.ExcesoDePeso_Rechazar, "Rechazar", "Calado", new { workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.WorkflowInstanceId }, new { @class = "rechazar rechazar-boton btn btn-primary pull-right"})
+
+
+<div class="container-fluid" id="documento">
+    <div class="blockUI blockMsg blockPage" style="padding: 10px 20px; border: 1px solid rgb(185, 74, 65); left: 574.5px; top: 207.66px; color: rgb(0, 85, 165); position: fixed; z-index: 2012; background-color: rgb(255, 255, 255);">Cargando , por favor espere ...</div>
+</div>
+
+
+
+
+<div id="mensajeRechazar">
+</div>
+

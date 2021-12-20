@@ -1,0 +1,120 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.AsignacionDeRecorridoDto
+@{
+    var calidades = (IEnumerable<SelectListItem>)ViewBag.Calidades;
+    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+    var balanzasBruto = (IEnumerable<SelectListItem>)ViewBag.BalanzasBruto;
+    var balanzasTara = (IEnumerable<SelectListItem>)ViewBag.BalanzasTara;
+    var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
+    var hidraulicas = (MultiSelectList)ViewBag.Hidraulicas;
+
+}
+
+<style>
+        
+    .span6 {
+        width: 430px;
+          
+        /*border: solid 1px #c3c3c3;*/
+    }
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+    .form-horizontal .control-label { width: 170px; font-size: 12px; }
+    #dialogo-editar-body { padding-right: 0px !important;}
+    #dialogo-editar .control-group {margin-bottom: 5px; padding-left: 10px; font-size: 12px; }
+    label.checkbox {font-size: 12px; }
+    .tablaDatos label { margin-bottom: 0; }
+    .control-label2 { width: auto; display: inline; font-size: 12px; }
+    .help-inline { padding-left: 0;}
+    #dialogo-editar-body { max-height: 440px !important;width: 905px !important;}
+    .span6{ width: 400px;}
+
+</style>
+
+
+@Html.ValidationSummary(true)
+
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group FechaDesde">
+            @Html.LabelFor(model => model.FechaDesde, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(model => model.FechaDesde, new { @class = "control input-large", tabindex = 1})
+                @Html.ValidationMessageFor(model => model.FechaDesde)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Material, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Material, new {@class = "control input-large", tabindex = 3})
+                @Html.ValidationMessageFor(m => m.MaterialPorCentroId)
+                @Html.HiddenFor(model => model.MaterialPorCentroId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Calle, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.CalleId, calles, new {tabindex = 5})
+                @Html.ValidationMessageFor(model => model.CalleId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.BalanzaBruto, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.BalanzaBrutoId, balanzasBruto, Textos.Default_BalanzaBruto, new {tabindex = 7})
+                @Html.ValidationMessageFor(model => model.BalanzaBrutoId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.HidraulicasId, new {@class = "control-label"})
+            <div class="controls">
+                @Html.CheckBoxListFor(model => model.HidraulicasId,hidraulicas)
+                @Html.ValidationMessageFor(model => model.HidraulicasId)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group FechaHasta">
+            @Html.LabelFor(model => model.FechaHasta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.FechaHasta, new { @class = "control input-large", tabindex = 2 })
+                @Html.ValidationMessageFor(model => model.FechaHasta)
+            </div>
+        </div>
+        @*<div class="control-group">
+            @Html.LabelFor(model => model.Calidad, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.CalidadId, calidades, new { id = "calidadesDropDown", tabindex = 4 })
+                @Html.ValidationMessageFor(model => model.CalidadId)
+                @Html.Hidden("CargarCalidades", Url.Action("CargarCalidades"))
+                @Html.Hidden("ValorDefaultCalidad",Textos.Default_Calidad)
+            </div>
+        </div>*@
+        <div class="control-group">
+            @Html.LabelFor(model => model.Workflow, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.WorkflowId, workflows, new { tabindex = 4 })
+                @Html.ValidationMessageFor(model => model.WorkflowId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.AlmacenDestino, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.AlmacenDestinoId, almacenes, new { tabindex = 6 })
+                @Html.ValidationMessageFor(model => model.AlmacenDestinoId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.BalanzaTara, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.BalanzaTaraId, balanzasTara, Textos.Default_BalanzaTara, new { tabindex = 8 })
+                @Html.ValidationMessageFor(model => model.BalanzaTaraId)
+            </div>
+        </div>
+
+    </div>
+</div>

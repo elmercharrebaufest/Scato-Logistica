@@ -1,0 +1,818 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Tablix Name="table1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>1.64583in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.66667in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.48598in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.40625in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.22in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Número Carta Porte</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Silver</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Material</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox3</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Silver</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox4">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Fecha Etiqueta</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox4</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Silver</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox5">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Tipo De Análisis</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox5</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Silver</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox6">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Laboratorio</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox6</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>Silver</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.21in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="NumeroCartaPorte">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!NumeroCartaPorte.Value</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>NumeroCartaPorte</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Material">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Material.Value</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Material</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="FechaImpresion">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!FechaImpresion.Value</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>FechaImpresion</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="TipoDeAnalisis">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!TipoDeAnalisis.Value</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>TipoDeAnalisis</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="LaboratorioNombre">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!LaboratorioNombre.Value</Value>
+                              <Style>
+                                <FontFamily>arial</FontFamily>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>LaboratorioNombre</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+              <KeepTogether>true</KeepTogether>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="table1_Details_Group">
+                <DataElementName>Detail</DataElementName>
+              </Group>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+              <DataElementName>Detail_Collection</DataElementName>
+              <DataElementOutput>Output</DataElementOutput>
+              <KeepTogether>true</KeepTogether>
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <NoRowsMessage>La búsqueda no ha arrojado resultados con los filtros ingresados.</NoRowsMessage>
+        <DataSetName>DataSet1</DataSetName>
+        <Top>0.06944in</Top>
+        <Height>0.43in</Height>
+        <Width>7.20473in</Width>
+        <Style />
+      </Tablix>
+    </ReportItems>
+    <Height>5.76368cm</Height>
+    <Style />
+  </Body>
+  <Width>18.30002cm</Width>
+  <Page>
+    <PageHeader>
+      <Height>2.64583cm</Height>
+      <PrintOnFirstPage>true</PrintOnFirstPage>
+      <PrintOnLastPage>true</PrintOnLastPage>
+      <ReportItems>
+        <Image Name="Image1">
+          <Source>Database</Source>
+          <Value>=First(Fields!Logo.Value, "ImagenDb")</Value>
+          <MIMEType>image/png</MIMEType>
+          <Sizing>FitProportional</Sizing>
+          <Height>0.31945in</Height>
+          <Width>1.40625in</Width>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </Image>
+        <Textbox Name="textbox1">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Reporte de Muestras Monsanto</Value>
+                  <Style>
+                    <FontSize>16pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>textbox1</rd:DefaultName>
+          <Top>0.03529cm</Top>
+          <Left>4.7447cm</Left>
+          <Height>0.31945in</Height>
+          <Width>3.46875in</Width>
+          <ZIndex>1</ZIndex>
+          <Style>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox7">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Hoja:  </Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+                <TextRun>
+                  <Value>= Globals!PageNumber &amp; "/" &amp; Globals!TotalPages</Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Fecha:  </Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+                <TextRun>
+                  <Value>= FormatDateTime(Now(), DateFormat.ShortDate)</Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <Format>"dd/MM/yyyy"</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Hora:  </Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+                <TextRun>
+                  <Value>= FormatDateTime(Now(), DateFormat.ShortTime)</Value>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox7</rd:DefaultName>
+          <Left>14.84752cm</Left>
+          <Height>1.44357cm</Height>
+          <Width>3.4525cm</Width>
+          <ZIndex>2</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox8">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>=First(Fields!CentroSap.Value, "Centro") &amp; " - " &amp; First(Fields!CentroDescripcion.Value, "Centro")</Value>
+                  <Style />
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox8</rd:DefaultName>
+          <Top>0.40278in</Top>
+          <Left>1.32633in</Left>
+          <Height>0.33333in</Height>
+          <Width>4.55208in</Width>
+          <ZIndex>3</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+        <Textbox Name="Textbox9">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>="Desde: " &amp; FormatDateTime(Parameters!FechaDesde.Value,DateFormat.ShortDate) &amp; " Hasta: " &amp; FormatDateTime(Parameters!FechaHasta.Value,DateFormat.ShortDate)</Value>
+                  <Style>
+                    <FontWeight>Bold</FontWeight>
+                    <Format>d</Format>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox9</rd:DefaultName>
+          <Top>0.76389in</Top>
+          <Height>0.25in</Height>
+          <Width>5.4075in</Width>
+          <ZIndex>4</ZIndex>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
+          </Style>
+        </Textbox>
+      </ReportItems>
+      <Style>
+        <Border>
+          <Style>None</Style>
+        </Border>
+      </Style>
+    </PageHeader>
+    <PageHeight>29.7cm</PageHeight>
+    <PageWidth>21cm</PageWidth>
+    <LeftMargin>1cm</LeftMargin>
+    <RightMargin>1cm</RightMargin>
+    <TopMargin>1cm</TopMargin>
+    <BottomMargin>1cm</BottomMargin>
+    <ColumnSpacing>1.27cm</ColumnSpacing>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="Scato_Reportes_Datasource">
+      <DataSourceReference>Scato_Reportes_Datasource</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>f0bb9f87-b74a-4e4e-97bd-802f52f3ec3a</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@FechaDesde">
+            <Value>=Parameters!FechaDesde.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@FechaHasta">
+            <Value>=Parameters!FechaHasta.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Material">
+            <Value>=Parameters!Material.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@CentroId">
+            <Value>=Parameters!CentroId.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>DECLARE @FechaDesdep DATETIME, 
+		@FechaHastap DATETIME,
+		@CentroIdp INT,
+		@Materialp INT
+
+SET		@FechaDesdep = @FechaDesde
+SET		@FechaHastap = @FechaHasta
+SET		@CentroIdp = @CentroId
+SET		@Materialp = @Material
+
+SELECT DISTINCT IEI.NumeroCartaPorte, IEI.Material, I.FechaImpresion, IEI.TipoDeAnalisis, IEI.LaboratorioNombre
+FROM            ImpEtiquetaIntacta AS IEI WITH(NOLOCK) LEFT OUTER JOIN
+						Impresion I WITH(NOLOCK) ON I.Id = IEI.Id LEFT JOIN
+                         Centro AS C WITH (nolock) ON IEI.Centro = C.Descripcion LEFT OUTER JOIN
+                         Material AS M WITH (nolock) ON IEI.Material = M.Descripcion
+						 
+WHERE        (@Material IS NULL OR @Material = M.Id)
+                AND (@CentroIdp IS NULL OR @CentroIdp = C.Id)
+                AND (@FechaHastap &gt;= I.FechaImpresion OR @FechaHastap IS NULL)AND( @FechaDesdep &lt;= I.FechaImpresion OR @FechaDesdep IS NULL)</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="NumeroCartaPorte">
+          <DataField>NumeroCartaPorte</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Material">
+          <DataField>Material</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaImpresion">
+          <DataField>FechaImpresion</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="TipoDeAnalisis">
+          <DataField>TipoDeAnalisis</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LaboratorioNombre">
+          <DataField>LaboratorioNombre</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Materiales">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@CentroId">
+            <Value>=Parameters!CentroId.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT        NULL AS Id, 'Todos' AS Material, ' ' AS ord
+UNION
+SELECT        Material.Id, Material.Descripcion AS Material, Material.Descripcion AS ord
+FROM            Material WITH (NOLOCK) INNER JOIN
+                         MaterialPorCentro WITH (NOLOCK) ON Material.Id = MaterialPorCentro.Material_Id AND MaterialPorCentro.Centro_Id = @CentroId
+WHERE        EXISTS
+                             (SELECT        1 AS Expr1
+                               FROM            Recorrido WITH (NOLOCK)
+                               WHERE        (Material_Id = Material.Id) AND (Centro_Id = @CentroId))
+ORDER BY ord</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Material">
+          <DataField>Material</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ord">
+          <DataField>ord</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Centro">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@CentroId">
+            <Value>=Parameters!CentroId.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT        CodigoSAP AS CentroSap, Descripcion AS CentroDescripcion
+FROM            Centro AS Centro WITH (NOLOCK)
+WHERE        (Id = @CentroId)</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="CentroSap">
+          <DataField>CentroSap</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="CentroDescripcion">
+          <DataField>CentroDescripcion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ImagenDb">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <CommandText>Select Top 1 Logo from Firma</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Logo">
+          <DataField>Logo</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="CentroId">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>5</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>CentroId</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="FechaDesde">
+      <DataType>DateTime</DataType>
+      <Prompt>Fecha/Hora Desde</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="FechaHasta">
+      <DataType>DateTime</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=Today()</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Fecha/Hora Hasta</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Material">
+      <DataType>Integer</DataType>
+      <Nullable>true</Nullable>
+      <Prompt>Material</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>Materiales</DataSetName>
+          <ValueField>Id</ValueField>
+          <LabelField>Material</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="Language">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>es-Ar</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Language</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+  </ReportParameters>
+  <EmbeddedImages>
+    <EmbeddedImage Name="SCATO_0056">
+      <MIMEType>image/jpeg</MIMEType>
+      <ImageData>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
+KKaaaaKKaaaaKKaaaaKK/9k=</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <Language>=Parameters!Language.Value</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
+  <rd:ReportID>c7143998-2927-402c-bd56-3261cb1e2485</rd:ReportID>
+</Report>

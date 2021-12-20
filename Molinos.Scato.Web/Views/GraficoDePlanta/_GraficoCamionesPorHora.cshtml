@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoCamionesHoraDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+<script type="text/javascript">
+    var urlGenerarCamionesHora = '@Url.Action("GenerarGraficoCamionesPorHora")'
+</script>
+<div class="col-lg-12 bordeGrisCompleto">
+    <canvas id="myChartCamiones"></canvas>
+    <div class="row" style="text-align: center; font-size: 12px; color: #666; font-family: Helvetica Neue, Helvetica, Arial, sans-serif">@Textos.HoraDelDia</div>
+</div>

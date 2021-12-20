@@ -1,0 +1,20 @@
+﻿CREATE TABLE [dbo].[ImpTicketPesada] (
+    [Id]                     INT             NOT NULL,
+	[NumeroIngreso]			NVARCHAR (50)    NULL,
+	[Emisor]				NVARCHAR (50)    NULL,
+	[DoimicilioCentro]		NVARCHAR (50)    NULL,
+	[TipoDocumento]			NVARCHAR (50)    NULL,
+	[NumeroDocumento]		NVARCHAR (50)    NULL,
+	[Material]				NVARCHAR (50)    NULL,
+	[PesoBruto]				NVARCHAR (50)    NULL,
+	[PesoTara]				NVARCHAR (50)    NULL,
+	[PesoNeto]				NVARCHAR (100)    NULL,
+	[Remitente]				NVARCHAR (50)    NULL,
+	[Transportista]			NVARCHAR (50)    NULL,
+	[CuitTransportista]		NVARCHAR (50)    NULL,
+	[PatenteAcoplado]		NVARCHAR (50)    NULL,
+	[Observaciones]			NVARCHAR (100)    NULL,
+	[Identidad]				int    NOT NULL,
+    CONSTRAINT [PK_dbo.ImpTicketPesada] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_dbo.ImpTicketPesada_dbo.ImpId] FOREIGN KEY ([Id]) REFERENCES [dbo].[Impresion] ([Id]) ON DELETE CASCADE
+);

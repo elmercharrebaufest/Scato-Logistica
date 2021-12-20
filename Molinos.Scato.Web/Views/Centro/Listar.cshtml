@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    var items = (ListaPaginada<CentroDto>)ViewBag.Items;
+    Layout = null;
+}
+<script src="@Url.Script("~/scripts/centro.index.js")" type="text/javascript" ></script>
+@Html.ActionLink(Textos.Centro_Nuevo, "Crear", "Centro", null, new { @class = "ajax-editar-centro-link btn btn-primary pull-right" })
+@Html.Grilla(items,
+        grid => grid.Columns(
+            grid.ColumnaModificar(Html, "Centro"),
+            grid.Columna("Descripcion", Textos.Descripcion),
+            grid.Columna("LocalidadDesc",  Textos.Centro_Localidad),
+            grid.Columna("ProvinciaDesc",  Textos.Centro_Provincia)))

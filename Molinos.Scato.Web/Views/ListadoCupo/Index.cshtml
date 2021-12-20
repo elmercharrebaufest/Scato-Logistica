@@ -1,0 +1,54 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model List<CupoMobileDto>
+@{
+    ViewBag.Title = Textos.ListadoDeCupos_Titulo;
+
+    var materialDesc = ViewBag.MaterialDescripcion;
+}
+<style>
+.popover-content{
+    color: black;
+    font-size:10px !important;
+    font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif" !important;
+}
+</style>
+<script src="~/scripts/Chart.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover(); 
+
+       
+        
+        setInterval(Refrescar, 30000);
+       
+    });
+
+    function Refrescar() {
+        $.get("@Url.Action("Cabecera")", function (data) {               
+            $("#graficodeplantahead").html(data);
+           $('[data-toggle="popover"]').popover(); 
+
+        
+        });
+         
+    };
+</script>
+
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/panels.less")">
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/columna.css")">
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/graficoDePlanta.css")">
+
+<div class="container">
+    <div class="titSecciones">@Textos.ListadoDeCupos_Titulo</div>
+</div>
+
+
+<div class="container content">
+    <div class="row" id="graficodeplantahead">
+        @Html.Partial("Cabecera", Model)
+    </div>
+
+
+</div>

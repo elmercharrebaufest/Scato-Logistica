@@ -1,0 +1,110 @@
+﻿<parameters>
+  <parameter name="ServicioWorkflows Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioWorkflows']
+                           /@address" />
+  </parameter> 
+  <parameter name="ServicioRepositorio Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioRepositorio']
+                           /@address" />
+  </parameter>
+  <parameter name="FirmaProvider Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='FirmaProvider']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioComandos Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioComandos']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioNotificarUsuario Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioNotificarUsuario']
+                           /@address" />
+  </parameter>
+  <parameter name="ZSDWS_SCATO Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ZSDWS_SCATO']
+                           /@address" />
+  </parameter>
+  <parameter name="SapServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="SapServiceDomain Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='SapServiceDomain']
+                           /@value" />
+  </parameter>
+  <parameter name="UrlBaseWorkflow Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlBaseWorkflow']
+                           /@value" />
+  </parameter>
+  <parameter name="Impresora Key">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='Impresora']
+                           /@value" />
+  </parameter>
+  <parameter name="ImpresoraTicket Key">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='ImpresoraTicket']
+                           /@value" />
+  </parameter>
+  <parameter name="MailSettings Smtp From">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /@from" />
+  </parameter>
+  <parameter name="MailSettings Smtp Host">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@host" />
+  </parameter>
+  <parameter name="MailSettings Smtp Port">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@port" />
+  </parameter>
+  <parameter name="MailSettings Smtp EnableSsl">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.net/mailSettings/smtp
+                           /network/@enableSsl" />
+    <parameterValidation kind="AllowBlank" />
+  </parameter>
+  <parameter name="WaybillManagementPODImplPort Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='WaybillManagementPODImplPort']
+                           /@address" />
+  </parameter>
+  <parameter name="MonsantoServiceUsername Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServiceUsername']
+                           /@value" />
+  </parameter>
+  <parameter name="MonsantoServicePassword Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='MonsantoServicePassword']
+                           /@value" />
+  </parameter>
+  <parameter name="WebMobile Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='WebMobile']
+                           /@value" />
+  </parameter>
+</parameters>

@@ -1,0 +1,37 @@
+.colorTitle{
+    color: #4D60A8;
+}
+.colorSubTitle{
+    color: #57cf9d;
+}
+
+label{
+    font-weight: bold;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    padding: 0px;
+    margin: 0px;
+}
+
+.input_img {  position:relative;}
+.input_img input { margin:0 0 0 4px;}
+
+.imgClockInput1 { 
+    display:block; 
+    position:absolute; 
+    top:0.5rem; 
+    left:4.5rem; 
+}
+
+.imgClockInput2 { 
+    display:block; 
+    position:absolute; 
+    top:0.5rem; 
+    left:6.5rem; 
+}
+
+
+.min-h5{
+  min-height: 5rem;
+}

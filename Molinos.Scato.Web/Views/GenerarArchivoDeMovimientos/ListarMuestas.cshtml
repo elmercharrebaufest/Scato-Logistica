@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<MovimientoDeTercerosListaDto>)ViewBag.Items;
+}
+<div style="font-size: 11px">
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.Columna("FechaDescarga",  Textos.Lote_FechaDescarga, x => FormattingHtmlHelper.FormattedTime(x.FechaDescarga)),
+            grid.Columna("TipoDocumentoIngreso",  Textos.TipoDocumentoIngreso),
+            grid.Columna("NroCartaPorteConFormato",  Textos.NumeroDocumentoIngreso),
+            grid.Columna("Patente",  Textos.Lote_Patente),
+            grid.Columna("Material", Textos.Material),
+            grid.Columna("PesoNeto",  Textos.PesoNeto),
+            grid.Columna("Transportista",  Textos.Transportista),
+            grid.Columna("CentroDestino", Textos.Destino)
+            ))
+    </div>

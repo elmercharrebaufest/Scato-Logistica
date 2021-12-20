@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<BalanzaDto>)ViewBag.Items;
+}
+
+
+@Html.Grilla(items,
+        grid => grid.Columns(
+            grid.ColumnaEliminarModificar(this.Html, "Balanza"),
+            grid.ColumnaCerear(this.Html, "Cerear"),
+            grid.Columna("Nombre",  Textos.Balanza_Descripcion),
+            grid.ColumnaColor("Color",  Textos.Balanza_Color,this.Html),
+            grid.Columna("TipoAcceso",  Textos.Balanza_Tipo),
+            grid.Columna("Modalidad",  Textos.Balanza_Modalidad),
+            grid.Columna("PuestoDeTrabajo", Textos.PuestoDeTrabajo),
+            grid.Columna("TipoVehiculo", Textos.Descripcion)
+            ))

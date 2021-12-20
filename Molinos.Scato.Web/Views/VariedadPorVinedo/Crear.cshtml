@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.VariedadPorVinedoDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.VariedadPorVinedo_Crear;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="~/scripts/knockout-2.2.1.js"  type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/vinedos.CrearModificar.js")"></script>
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.VariedadPorVinedo_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

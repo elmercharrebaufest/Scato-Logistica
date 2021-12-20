@@ -1,0 +1,170 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.SalidaDeCentroAutomatica"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="nombreUsuario" Type="InOutArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="puestoDeTrabajoId" Type="InOutArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.SalidaDeCentroAutomatica_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="SalidaDeCentroAutomatica" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+      <local:LogActividad.LogActividadDto>
+        <InArgument x:TypeArguments="msdd:LogActividadDto">
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto" xml:space="preserve">new LogActividadDto { 
+                Actividad = "Salida De Centro (A)", 
+                WorkflowInstanceId = workflowId, 
+                ActividadXaml = "SalidaDeCentroAutomatica" 
+            }</mca:CSharpValue>
+        </InArgument>
+      </local:LogActividad.LogActividadDto>
+    </local:LogActividad>
+    <local:ControlRecorrido sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
+      <local:ControlRecorrido.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto" xml:space="preserve">new ControlRecorridoDto
+            {
+                WorkflowInstanceId = workflowId,
+                NombreUsuario = nombreUsuario,
+                Actividad = "Salida de Centro (A)",
+                ActividadXaml = "SalidaDeCentroAutomatica",
+                Decision = true,
+                PuestoDeTrabajoId = puestoDeTrabajoId
+            }</mca:CSharpValue>
+        </InArgument>
+      </local:ControlRecorrido.ControlRecorridoDto>
+      <local:ControlRecorrido.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:ControlRecorrido.NombreUsuario>
+    </local:ControlRecorrido>
+    <local:MarcarWorkflowTerminado>
+      <local:MarcarWorkflowTerminado.InstanceId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+        </InArgument>
+      </local:MarcarWorkflowTerminado.InstanceId>
+      <sap2010:WorkflowViewState.IdRef>MarcarWorkflowTerminado_1</sap2010:WorkflowViewState.IdRef>
+    </local:MarcarWorkflowTerminado>
+    <local:LogActividad>
+      <local:LogActividad.LogActividadDto>
+        <InArgument x:TypeArguments="msdd:LogActividadDto">
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto" xml:space="preserve">new LogActividadDto 
+            { 
+                Actividad = "Fin De Workflow", 
+                ActividadXaml = "FinDeWorkflow",
+                WorkflowInstanceId = workflowId 
+            }</mca:CSharpValue>
+        </InArgument>
+      </local:LogActividad.LogActividadDto>
+      <sap2010:WorkflowViewState.IdRef>LogActividad_2</sap2010:WorkflowViewState.IdRef>
+    </local:LogActividad>
+    <local:FinDeActividad InstanceId="{x:Null}">
+      <local:FinDeActividad.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto" xml:space="preserve">new ControlRecorridoDto
+            {
+                WorkflowInstanceId = workflowId,
+                NombreUsuario = nombreUsuario,
+                Actividad = "Salida de Centro (A)",
+                ActividadXaml = "SalidaDeCentroAutomatica",
+                Decision = true,
+                PuestoDeTrabajoId = puestoDeTrabajoId
+            }</mca:CSharpValue>
+        </InArgument>
+      </local:FinDeActividad.ControlRecorridoDto>
+      <local:FinDeActividad.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.NombreUsuario>
+      <local:FinDeActividad.PuestoDeTrabajoId>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.PuestoDeTrabajoId>
+      <sap2010:WorkflowViewState.IdRef>FinDeActividad_1</sap2010:WorkflowViewState.IdRef>
+    </local:FinDeActividad>
+    <sads:DebugSymbol.Symbol>d3pDOlxEZXZlbG9wXFNDVDIwMCAtIFNjYXRvIElJXFNyY1xNb2xpbm9zLlNjYXRvLWJyYW5jaC1pdGVyYWNpb242LjVcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xTYWxpZGFEZUNlbnRyb0F1dG9tYXRpY2EueGFtbA5IA5gBDgIBAUkFUxoCASJUBWceAgEZaAVvJQIBFHAFfBoCAQ99BZYBHAIBAkwLUCACASNXC18gAgEeZAtkXgIBGmsLa1ECARVzC3ggAgEQgAELiAEgAgELjQELjQFeAgEHkgELkgFhAgED</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="MarcarWorkflowTerminado_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="LogActividad_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,394">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.SalidaDeCentroAutomatica_1" sap:VirtualizedContainerService.HintSize="262,474" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

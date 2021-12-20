@@ -1,0 +1,51 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlDeTiempoDto
+@{
+    var workflows = ((IEnumerable<SelectListItem>)ViewBag.Workflows) ?? new List<SelectListItem>();
+    var actividadesDesde = ((IEnumerable<SelectListItem>)ViewBag.ActividadesDesde) ?? new List<SelectListItem>();
+    var actividadesHasta = ((IEnumerable<SelectListItem>)ViewBag.ActividadesHasta) ?? new List<SelectListItem>();
+
+
+}
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.Hidden("ObtenerActividadesUrl", Url.Action("ObtenerActividades"))
+@Html.Hidden("BuscandoActividadesMensaje", Textos.ControlDeTiempo_BuscandoActividades)
+
+
+
+<div class="control-group">
+        @Html.LabelFor(model => model.WorkflowId, new {@class = "control-label"})
+        <div class="controls">
+            @Html.DropDownListFor(model => model.WorkflowId, workflows, string.Empty, new {@class = "control input-xlarge"})
+            @Html.ValidationMessageFor(model => model.WorkflowId)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.ActividadDesde, new {@class = "control-label"})
+        <div class="controls">
+            @Html.DropDownListFor(model => model.ActividadDesde, actividadesDesde, string.Empty, new {@class = "control input-xlarge"})
+            @Html.ValidationMessageFor(model => model.ActividadDesde)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.ActividadHasta, new {@class = "control-label"})
+        <div class="controls">
+            @Html.DropDownListFor(model => model.ActividadHasta, actividadesHasta, string.Empty, new {@class = "control input-xlarge"})
+            @Html.ValidationMessageFor(model => model.ActividadHasta)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.TiempoMaximo, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(model => model.TiempoMaximo, new {@class = "input-medium"})
+            @Html.ValidationMessageFor(model => model.TiempoMaximo)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.CodigoControl, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(model => model.CodigoControl, new {@class = "input-xlarge"})
+            @Html.ValidationMessageFor(model => model.CodigoControl)
+        </div>
+    </div>

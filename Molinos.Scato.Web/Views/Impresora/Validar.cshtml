@@ -1,0 +1,25 @@
+﻿@model List<Molinos.Scato.Dominio.Dto.ImpresoraEstadoDto>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+    <meta name="viewport" content="width=device-width"/>
+    <title>Validar</title>
+</head>
+<body>
+    <table>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>@i.Impresora</td>
+                <td>@i.Resultado</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

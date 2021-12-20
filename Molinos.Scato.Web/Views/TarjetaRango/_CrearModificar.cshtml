@@ -1,0 +1,60 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.TarjetaRangoDto
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+@Html.Hidden("rangoInvalido", Textos.TarjetaRango_ErrorRangos)
+<div class="control-group">
+    @Html.LabelFor(m => m.Codigo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Codigo, new {@class = "input-small", maxlength = "5"})
+        @Html.ValidationMessageFor(m => m.Codigo)
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+        <div class="control-group FechaDesde">
+            @Html.LabelFor(model => model.ValidoDesde, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBox("ValidoDesde", Model.ValidoDesde.Formatted(), new { @class = "date control input-small", data_date_format = Html.ClientDateFormat()})
+                @Html.ValidationMessageFor(model => model.ValidoDesde)
+            </div>
+        </div>
+    </div>    
+    <div class="span4" style="margin-left: 20px">
+        <div class="control-group FechaHasta">
+            @Html.LabelFor(model => model.ValidoHasta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBox("ValidoHasta", Model.ValidoHasta.Formatted(), new { @class = "date control input-small", data_date_format = Html.ClientDateFormat()})
+                @Html.ValidationMessageFor(model => model.ValidoHasta)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(model => model.RangoDesde, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.RangoDesde, new {@class = "input-small RangoDesde", maxlength = "5"})
+                @Html.ValidationMessageFor(model => model.RangoDesde)
+            </div>
+        </div>
+    </div>    
+    <div class="span4" style="margin-left: 20px">
+        <div class="control-group">
+            @Html.LabelFor(model => model.RangoHasta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.RangoHasta, new {@class = "input-small RangoHasta", maxlength = "5"})
+                @Html.ValidationMessageFor(model => model.RangoHasta)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

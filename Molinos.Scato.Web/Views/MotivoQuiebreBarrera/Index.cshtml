@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Textos.MotivoQuiebreBarrera_Titulo;
+    var puestos = (IEnumerable<SelectListItem>)ViewBag.PuestosDeTrabajo;
+}
+
+<div class ="container">
+    <div class="titSecciones">@Textos.Administracion_MotivoQuiebreBarrera</div>
+</div>
+<div class="container content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" ,@class = "form-search" }))
+            {
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div class="control-group" style="padding: 5px;">
+                            @Html.Label(Textos.PuestoDeTrabajo, new {@class = "control-label", @style = "float: left; margin-top: 5px;"})
+                            <div class="controls" style="float: left; margin-left: 5px;">
+                                @Html.DropDownList("puestoId", puestos, new {@class = "control input-large"})
+                                @*@Html.Hidden("puestoId")*@
+                            </div>
+                            <button type="submit" class="btn" style="float: left; margin-left: 5px;">@Textos.Filtrar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

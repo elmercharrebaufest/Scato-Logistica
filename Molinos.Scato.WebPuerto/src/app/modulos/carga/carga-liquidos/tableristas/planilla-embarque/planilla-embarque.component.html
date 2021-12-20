@@ -1,0 +1,87 @@
+<app-collapse-button collapseSelectorId='planillaEmbarque'></app-collapse-button>
+<h4 class='colorTitle py-4'>Planilla de embarque</h4>
+
+<div id='planillaEmbarque' class='pb-5 collapse show'>
+    <div fxLayout='row wrap'>
+        <div fxFlex='80' class='pr-4'>
+            <form [formGroup]='lineasEmbarque'>
+                <table class='table table-bordered turnos'>
+                    <thead>
+                        <tr class='table-active'>
+                            <th>Exportador</th>
+                            <th>Partida</th>
+                            <th>Tks de abordo</th>
+                            <th>Destino</th>
+                            <th>Tks de tierra</th>
+                            <th>Tn.</th>
+                            <th>Producto</th>
+                            <th>Comenzó</th>
+                            <th>Finalizó</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container formArrayName='linea'>
+                            <ng-container *ngFor='let l of linea.controls; let i = index' [formGroupName]='i'>
+                                <tr>
+                                    <td>
+                                        <select formControlName='exportador'>
+                                            <option *ngFor='let exportador of exportadores' [value]='exportador.exportador.id'>
+                                                {{exportador.exportador.nombre}}
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select formControlName='partida' (change)='autoCompleteParcel($event.target.value, l)'>
+                                            <option [value]='0'></option>
+                                            <option *ngFor='let bodega of bodegas' [value]='bodega.bodegaParcel'>{{bodega.bodegaParcel}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select formControlName='tksAbordo'>
+                                            <option [value]='0'></option>
+                                            <option *ngFor='let tanque of tanquesAbordo' [value]='tanque'>{{tanque}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select formControlName='destino'>
+                                            <option [value]='0'></option>
+                                            <option *ngFor='let bodega of bodegas' [value]='bodega.destino ? bodega.destino.id : ""'>{{bodega.destino ? bodega.destino.nombre : ''}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select formControlName='tksTierra'>
+                                            <option *ngFor='let linea of lineas' [value]='linea.tkInicial'>{{linea.tkInicial}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input formControlName='tn' type='number'>
+                                    </td>
+                                    <td>
+                                        <select formControlName='producto'>
+                                            <option [value]='0'></option>
+                                            <option *ngFor='let producto of productos' [value]='producto'>{{producto}}</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input formControlName='comenzo'>
+                                    </td>
+                                    <td>
+                                        <input formControlName='finalizo'>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div fxFlex='20' class='referencias'>
+            <span>REFERENCIAS</span>
+            <span><b>CSBO=</b> Aceite crudo de soja</span>
+            <span><b>CSFO=</b> Aceite crudo de girasol</span>
+            <span><b>RSBO=</b> Aceite refinado de soja</span>
+            <span><b>RSFO=</b> Aceite refinado de girasol</span>
+            <span><b>FAME=</b> Biodiesel</span>
+        </div>
+    </div>
+</div>

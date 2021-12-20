@@ -1,0 +1,50 @@
+.card-ritmo-grafico{
+    background-color: white !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.card-ritmo-grafico:first-child{
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+.card-ritmo-grafico{
+    background-color: transparent;
+    max-height: 250px;
+}
+
+.center-knob{
+    margin: 5px auto;
+}
+
+.ritmo-title{
+    border-bottom: 1px solid rgb(190, 190, 190);
+}
+
+.text-knob{
+    font-size: 10px;
+    position: absolute;
+    margin-top: 108px;
+    font-weight: 500;
+}
+
+::ng-deep .p-knob-text{
+    font-size: 1.1rem !important;
+    padding-bottom: 18px;
+}
+
+.footer-ritmos-text{
+    font-size: 11px;
+    margin-bottom: 0.3rem;
+    font-weight: 450;
+}
+
+.img-toneladas{
+    position: absolute;
+    width: 40px;
+    margin-top: -25px;
+}

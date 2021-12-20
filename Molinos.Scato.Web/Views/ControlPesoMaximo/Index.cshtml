@@ -1,0 +1,75 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Enums
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = Textos.ExcesoDePeso_Titulo;
+    string workflow = ViewBag.Workflow;
+    Model.Comentario = string.Format(Textos.ExcesoDePeso_Detalle, ViewBag.Peso, ViewBag.PesoMaximo);
+    bool controlPesoMaximoNotifica = ViewBag.ControlPesoMaximoNotifica;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="@Url.Script("~/Scripts/controlPesoMaximo.js")" type="text/javascript"></script>
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.ExcesoDePeso_Titulo</div>
+</div>
+
+@using (Html.BeginForm("Index", "ControlPesoMaximo", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActControlPesoMaximo }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.ActividadXaml)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.HiddenFor(model => model.Decision, new { @class = "valorDecision" })
+    @Html.HiddenFor(model => model.Comentario)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("notifica", controlPesoMaximoNotifica)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    <div class="centered">
+        @string.Format(Textos.ExcesoDePeso_Detalle, ViewBag.Peso, ViewBag.PesoMaximoReal)
+
+        <br />
+        <br />
+
+        @if ((TipoDeWorkflow)ViewBag.TipoDeWorkflow != TipoDeWorkflow.Egreso)
+        {
+
+            @(Textos.ExcesoDePeso_Motivo + ":")
+            @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>
+            )ViewBag.Motivos, new { @class = "input-xlarge" })
+
+        }
+        else
+        {
+            @Html.Hidden("Mensaje", "Rechazo por Exceso de Peso")
+        }
+
+
+        <br />
+        <br />
+
+        @if (controlPesoMaximoNotifica)
+        {
+            <button type="submit" class="btn btn-primary repesar">@Textos.Aceptar</button>
+        }
+        else
+        {
+            if ((TipoDeWorkflow)ViewBag.TipoDeWorkflow != TipoDeWorkflow.Ingreso)
+            {
+                <button type="submit" class="btn btn-primary repesar">@Textos.DiferenciaDePeso_Repesar</button>
+            }
+            if ((TipoDeWorkflow)ViewBag.TipoDeWorkflow != TipoDeWorkflow.Egreso)
+            {
+                <button type="submit" class="btn btn-primary rechazar">@Textos.ExcesoDePeso_Rechazar</button>
+            }
+        }
+    </div>
+}

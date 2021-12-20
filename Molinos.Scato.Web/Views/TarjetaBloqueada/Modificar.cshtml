@@ -1,0 +1,13 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.TarjetaBloqueadaDto
+@{
+    ViewBag.Title = Textos.TarjetaBloqueada_Modificar;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.TarjetaBloqueada_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

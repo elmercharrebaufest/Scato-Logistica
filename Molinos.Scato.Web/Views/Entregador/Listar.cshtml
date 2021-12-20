@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<EntregadorDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "Entregador"),
+    grilla.Columna("DescripcionCorta", Textos.DescripcionCorta),
+    grilla.Columna("RazonSocial", Textos.Transportista_RazonSocial),
+    grilla.Columna("Cuil", Textos.Chofer_Cuil)
+    ))
+

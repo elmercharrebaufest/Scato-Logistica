@@ -1,0 +1,185 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Web.Seguridad
+
+@model Molinos.Scato.Web.Models.Pesada
+@{
+    ViewBag.Title = Textos.ActBalanzaACero;
+    var modalidad = (Modalidad)ViewBag.Modalidad;
+
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+    var proximasBalanzas = (IEnumerable<SelectListItem>)ViewBag.ProximasBalanzas;
+    var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
+    var hidraulicas = (IEnumerable<SelectListItem>)ViewBag.Hidraulicas;
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+    var documentoIngreso = (TipoDocumentoIngreso)ViewBag.DocumentoIngreso;
+    var material = (string)ViewBag.Material;
+    var numeroDocumento = (string)ViewBag.NumeroDocumentoIngreso;
+    var tipoComercial = (string)ViewBag.TipoComercial;
+    var pesoBrutoOrigen = (int?)ViewBag.PesoBrutoOrigen;
+    var pesoTaraOrigen = (int?)ViewBag.PesoTaraOrigen;
+    var pesoBruto = (int?)ViewBag.PesoBruto;
+    var pesoTara = (int?)ViewBag.PesoTara;
+    var pesoNetoOrigen = pesoBrutoOrigen != null && pesoTaraOrigen != null ? pesoBrutoOrigen - pesoTaraOrigen : null;
+    var modificaAlmacen = (bool)ViewBag.ModificaAlmacen;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/balanzaACero.js")" type="text/javascript"></script>
+}
+    <style>
+        .tablaDatos {
+            width: 960px;
+            margin-bottom: 0;
+        }
+
+            .tablaDatos th {
+                margin-bottom: 0;
+                text-align: center;
+            }
+
+        .form-horizontal .control-group {
+            margin-bottom: 1px;
+            padding-left: 10px;
+        }
+
+        .separacion {
+            margin-bottom: 5px;
+        }
+    </style>
+
+<div class="container">
+    <div class="row">
+        <div class="titSecciones span6">@Textos.BalanzaACero_Titulo</div>
+    </div>
+
+    <div class="container content grillaPad">
+
+        <div class="row">
+            <table class="tablaDatos span12search">
+                <tr>
+                    <th>@Html.Label(Textos.Patente + ":")</th>
+                    <th>@Html.Label(Textos.Pesada_DocumentoIngreso + ":")</th>
+                    <th>@Html.Label(Textos.Pesada_NumeroDocumento + ":")</th>
+                    <th>@Html.Label(Textos.Material + ":")</th>
+                    <th>@Html.Label(Textos.TipoComercial + ":")</th>
+                    <th>@Html.Label(Textos.TieneEntregador + ":")</th>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayFor(model => model.PatenteOriginal)</td>
+                    <td>@documentoIngreso.DisplayEnum()</td>
+                    <td>@numeroDocumento</td>
+                    <td>@Html.DisplayFor(model => material)</td>
+                    <td>@Html.DisplayFor(model => tipoComercial)</td>
+                    <td>@ViewBag.TieneEntregador</td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="row-fluid row-fluid-ie7">
+            <div class="span12">
+                <fieldset class="grupo-carta-porte" style="text-align:center">
+                    @using (Html.BeginForm("Index", "BalanzaACero", FormMethod.Post, new { @id = "form-balanzaACero", @class = "form-horizontal", data_mensaje_espera = Textos.ActBalanzaACero }))
+                    {
+                        @Html.ValidationSummary(true)
+                        @Html.Hidden("BalanzaEnCeroUrl", Url.Action("BalanzaEnCero", "BalanzaACero"))
+                        @Html.Hidden("CerearBalanzaUrl", Url.Action("CerearBalanza", "BalanzaACero"))
+                        @Html.Hidden("AvanzarBalanzaUrl", Url.Action("Avanzar", "BalanzaACero"))
+                        @Html.Hidden("TomarPesoUrl", Url.Action("TomarPeso", "Pesada"))
+                        @Html.Hidden("InstanciaWorkflow", (Guid)ViewBag.InstanciaWorkflow)
+                        @Html.Hidden("BalanzaId", (int)ViewBag.BalanzaId)
+                        @Html.Hidden("WorkflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+                        @Html.Hidden("Modalidad", (int)modalidad)
+
+                        if (modalidad == Modalidad.Manual)
+                        {
+                            <h5>@Textos.ConfirmacionBalanzaManualACero</h5>
+                            <h5>@Textos.ConfirmacionBalanzaManualACero2</h5>
+                            <br />
+                            <input id="dialogo-BalanzaACero-enCero" type="button" class="btn" value="@Textos.Confirmar" />
+                        }
+                        else
+                        {
+                            <h5>@Textos.ConfirmacionBalanzaAutomaticaACero</h5>
+                            <h3 id="dialogo-BalanzaACero-balanzaPeso" data-obteniendo-peso="@Textos.ObteniendoPeso"></h3>
+                        }
+                        <input id="dialogo-BalanzaACero-dialogoCerear" type="button" class="btn btn-warning" value="@Textos.CerearBalanza" />
+
+
+                        <span>&nbsp;&nbsp;</span>
+                        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-primary" })
+                        if (PermisosHelper.Is(PermisosScato.ForzarCereo))
+                        {
+                            <span>&nbsp;&nbsp;</span>
+                            <input id="dialogo-Avanzar-dialogoAvanzar" type="button" class="btn btn-warning" value="@Textos.Avanzar" />
+                        }
+
+                    }
+                </fieldset>
+            </div>
+        </div>
+        <div class="row-fluid row-fluid-ie7">
+            <fieldset class="grupo-carta-porte">
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.Label(@Textos.Pesada_Almacen + ":", new { @class = "control-label" })
+                        <div class="controls control-text">
+                            @Model.AlmacenDesc
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        @Html.Label(@Textos.Hidraulica + ":", new { @class = "control-label" })
+                        <div class="controls">
+                            @Model.HidraulicaDesc
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.Label(@Textos.Calle + ":", new { @class = "control-label" })
+                        <div class="controls">
+                            <div class="control-text">
+                                @Model.CalleDesc
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade hide" id="dialogo-Cerear">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.DialogoCerear_Titulo</h5>
+    </div>
+    <div class="modal-body" id="dialogo-cerear-body">
+        <h5>@Textos.ConfirmacionCerearBalanza</h5>
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-cerear-cerear" class="btn btn-warning">@Textos.CerearBalanza</button>
+        <button id="dialogo-cerear-cancelar" data-dismiss="modal" class="btn">@Textos.Cancelar</button>
+    </div>
+</div>
+
+<div class="modal fade hide" id="dialogo-Avanzar">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.DialogoAvanzar_Titulo</h5>
+    </div>
+    <div class="modal-body" id="dialogo-avanzar-body">
+        <h5>@Textos.InhabilitacionChofer_Motivo</h5>
+        @Html.TextArea("Comentario", new { @class = "input-xlarge textarea-large" })
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-avanzar-avanzar" class="btn btn-warning">@Textos.Guardar</button>
+        <button id="dialogo-avanzar-cancelar" data-dismiss="modal" class="btn">@Textos.Cancelar</button>
+    </div>
+</div>

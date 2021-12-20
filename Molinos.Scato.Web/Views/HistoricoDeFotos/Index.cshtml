@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    var items = (IList<FotosDto>)ViewBag.Items;
+}
+<script src="@Url.Script("~/Scripts/Sugerencia.index.js")" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/columna.css")">
+
+<div class="titSecciones">@Textos.HistoricoDeCamiones</div>
+
+<div class="container-fluid content">
+    <div class="row">
+        <div class="span12search bordeGrisCompleto" style="width:auto; margin-left: 0;">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "historicoFotos" , OnBegin ="BlockUI()" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Patente)
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Buscar</button>
+            }
+        </div>
+    </div>
+    <div class="row" id="historicoFotos">
+        @Html.Partial("_Listar")
+    </div>
+</div>

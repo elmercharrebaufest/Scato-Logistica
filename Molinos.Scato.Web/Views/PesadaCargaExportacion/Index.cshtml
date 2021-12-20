@@ -1,0 +1,115 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Web.Models.PesadaCargaExportacion
+@{
+    ViewBag.Title = Textos.Pesada;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        pesadaBrutoUrl = "@Html.Raw(Url.Action("PesadaBruto", new { balanza = Model.Balanza, color = Model.Color,id = Model.WorkflowInstanceId }))";
+        pesadaTaraUrl = "@Html.Raw(Url.Action("PesadaTara", new { balanza = Model.Balanza, color = Model.Color, id = Model.WorkflowInstanceId }))";
+        pesadaCargaUrl = "@Html.Raw(Url.Action("Carga", new { balanza = Model.Balanza, id = Model.WorkflowInstanceId }))";
+    </script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="@Url.Script("~/Scripts/pesadaCargaExportacion.index.js")" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/pesadacargaexportacion.css")">
+    <script src="@Url.Script("~/Scripts/mousetrap.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/mousetrap-pause.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autorizarTransportistaInhabilitado.js")"></script>
+}
+<style>
+    .tablaDatos {
+        width: 100%;
+    }
+</style>
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Pesada</div>
+</div>
+<div class="container-fluid">
+    <div class="container-fluid content grillaPad">
+        <div id="principal-container" class="row-fluid">
+            <table class="tablaDatos">
+                <tr>
+                    <th>@Html.Label(Textos.Patente + ":")</th>
+                    <th>@Html.Label(Textos.Pesada_DocumentoIngreso + ":")</th>
+                    <th>@Html.Label(Textos.Pesada_NumeroDocumento + ":")</th>
+                    <th>@Html.Label(Textos.Material + ":")</th>
+                    <th>@Html.Label(Textos.TipoComercial + ":")</th>
+                    <th>@Html.Label(Textos.TieneEntregador + ":")</th>
+                </tr>
+                <tr>
+                    <td>@Model.Patente</td>
+                    <td>@Model.DocumentoIngreso</td>
+                    <td>@Model.NumeroDocumentoIngreso</td>
+                    <td>@Model.Material</td>
+                    <td>@Model.TipoComercial</td>
+                    <td>@ViewBag.TieneEntregador</td>
+                </tr>
+            </table>
+        </div>
+        <div id="3columnas" class="row-fluid">
+
+            @using (Ajax.BeginForm("Index", "PesadaCargaExportacion", null, new AjaxOptions { OnComplete = "EvaluarResultadoTara" }, new { @class = "span4 no-margin column-padding", id = "pesada-tara-form", onsubmit = "AceptarFormularioTara()", data_mensaje_espera = Textos.Pesada }))
+            {
+                @Html.HiddenFor(x => x.Modalidad)
+                @Html.HiddenFor(x => x.BalanzaId)
+                @Html.HiddenFor(x => x.Patente)
+                @Html.HiddenFor(x => x.PatenteOriginal)
+                @Html.HiddenFor(x => x.ActividadXaml)
+                @Html.HiddenFor(x => x.WorkflowInstanceId)
+                @Html.HiddenFor(x => x.WorkflowDefinicionId)
+                @Html.Hidden("TipoPesada", Molinos.Scato.Dominio.Enums.TipoPesada.Tara)
+                <div id="pesadaTaraDiv">
+                    @Html.Action("PesadaTara", new { balanza = Model.Balanza, color = Model.Color })
+                </div>
+            }
+
+            @using (Ajax.BeginForm("Carga", "PesadaCargaExportacion", null, new AjaxOptions { OnComplete = "EvaluarResultadoCarga" }, new { @class = "span4 no-margin column-padding", id = "carga-form", onsubmit = "AceptarFormularioCarga()", data_mensaje_espera = Textos.Pesada }))
+            {
+                @Html.HiddenFor(x => x.WorkflowInstanceId)
+                @Html.HiddenFor(x => x.WorkflowDefinicionId)
+                <div id="cargaDiv">
+                    @Html.Action("Carga")
+                </div>
+            }
+            @using (Ajax.BeginForm("Index", "PesadaCargaExportacion", null, new AjaxOptions { OnComplete = "EvaluarResultadoBruto" }, new { @class = "span4 no-margin column-padding", id = "pesada-bruto-form", onsubmit = "AceptarFormularioBruto()", data_mensaje_espera = Textos.Pesada }))
+            {
+                @Html.HiddenFor(x => x.Modalidad)
+                @Html.HiddenFor(x => x.BalanzaId)
+                @Html.HiddenFor(x => x.Patente)
+                @Html.HiddenFor(x => x.PatenteOriginal)
+                @Html.HiddenFor(x => x.ActividadXaml)
+                @Html.HiddenFor(x => x.WorkflowInstanceId)
+                @Html.HiddenFor(x => x.WorkflowDefinicionId)
+                @Html.Hidden("TipoPesada", Molinos.Scato.Dominio.Enums.TipoPesada.Bruto)
+                <div id="pesadaBrutoDiv">
+                    @Html.Action("PesadaBruto", new { balanza = Model.Balanza, color = Model.Color })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.EstaEnCero)
+<div id="balanzaACero" data-balanza-cero-url='@Url.Action("BalanzaACero","BalanzaACero")'></div>
+
+<div class="modal hide fade " id="dialogo-pesar">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" tabindex="-10">&times;</button>
+        <h4>@Textos.TomarPeso</h4>
+    </div>
+    <div class="modal-body" id="dialogo-pesar-body">
+        <div class="control-group">
+            <label class="control-label">@Textos.PesoManual:</label>
+            <div class="controls">
+                @Html.TextBox("PesoManual", null, new { @class = "control input-small", autocomplete = "off", tabIndex = 2 })
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input id="dialogo-pesar-guardar" type="button" class="btn btn-primary" tabindex="2" value="@Textos.Guardar" />
+        <input id="dialogo-pesar-cancelar" type="button" class="btn" tabindex="2" value="@Textos.Cancelar" />
+    </div>
+</div>

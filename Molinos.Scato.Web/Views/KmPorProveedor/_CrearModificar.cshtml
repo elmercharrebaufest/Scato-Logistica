@@ -1,0 +1,56 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.KmPorProveedorDto
+
+<div id ="links" 
+     data-url-obtener-clientes-sap ="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-cliente ="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-buscar-clientes = "@Url.Action("BuscarClientes", "Consultas")"
+
+    ></div>
+
+@Html.ValidationSummary(true)
+@Html.ValidationMessage("")
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CentroId, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CentroId, (IEnumerable<SelectListItem>)ViewBag.Centros, Textos.Default_Centro, new { id = "centrosDropDown", @class = "control input-medium" })
+        
+        @Html.ValidationMessageFor(model => model.CentroId)
+        @Html.HiddenFor(model => model.CentroId)
+        @Html.Hidden("ValorDefaultCentro", Textos.Default_Centro)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ClienteDescripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ClienteDescripcion, new {@class = "control input-medium"})
+        @Html.ValidationMessageFor(model => model.ClienteDescripcion)
+        @Html.HiddenFor(model => model.ClienteId)
+    </div>
+</div>
+<div class="control-group">
+                @Html.LabelFor(model => model.ProvinciaId, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.ProvinciaId, (IEnumerable<SelectListItem>)ViewBag.Provincias, Textos.Default_Provincia, new { id = "provinciasDropDown", @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.ProvinciaId)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.LocalidadId, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.LocalidadId, (IEnumerable<SelectListItem>)ViewBag.Localidades, Textos.Default_Localidad, new { id = "localidadesDropDown", @class = "control input-medium" })
+                    @Html.ValidationMessageFor(model => model.LocalidadId)
+                    @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
+                    @Html.Hidden("ValorDefault", Textos.Default_Localidad)
+                </div>
+            </div>
+<div class="control-group">
+    @Html.LabelFor(m => m.KmARecorrer, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.KmARecorrer, new {@class = "control input-medium"})
+        @Html.ValidationMessageFor(m => m.KmARecorrer)
+    </div>
+</div>
+
+<div id="autocompleteCorr"></div>

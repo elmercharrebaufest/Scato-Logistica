@@ -1,0 +1,41 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ActividadPorDispositivoDto
+@{
+    ViewBag.Title = Textos.ActividadPorDispositivo_Titulo;
+    var puestos = (IEnumerable<SelectListItem>)ViewBag.PuestosDeTrabajo;    
+}
+
+<script type="text/javascript" src="@Url.Script("~/scripts/actividadPorDispositivo.index.js")"></script>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_ActividadPorDispositivo</div>
+</div>
+
+@Html.Hidden("CrearUrl", Url.Action("Crear","ActividadPorDispositivo"))
+
+<div class="container-fluid content grillaPad">
+    @Html.ValidationSummary(true)
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.DropDownListFor(model => model.PuestoDeTrabajoId, puestos, new {id = "puesto"})
+                
+            }
+        </div>
+        @{
+            if (puestos.Any())
+            {
+                @Html.ActionLink(Textos.ActividadPorDispositivo_Nuevo, "Crear", "ActividadPorDispositivo", new {puestoId = Model.PuestoDeTrabajoId}, new {@class = "ajax-editar-link btn btn-primary pull-right", @id = "btnPuestoCrear"})
+            }
+            else
+            {
+                <input type="button" value="@Textos.ActividadPorDispositivo_Nuevo" disabled="disabled" class="btn btn-primary pull-right"/>
+            }
+        }
+    </div>
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ProveedorExcluidoIntactaDto>)ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminar(Html, "ProveedorExcluidoIntacta"),
+        grilla.Columna("Proveedor.CodigoSap", Textos.Almacen_CodigoSAP, c => c.CodigoSap),
+        grilla.Columna("Proveedor.RazonSocial", Textos.Centro_RazonSocial, c => c.RazonSocial),
+        grilla.Columna("Proveedor.Cuil", Textos.Chofer_Cuil, c => c.Cuil)
+        ))

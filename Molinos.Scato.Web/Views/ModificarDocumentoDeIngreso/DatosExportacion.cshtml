@@ -1,0 +1,266 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.IngresoDeDatosDeExportacionDto
+
+@{
+
+    bool esRechazado = ViewBag.Rechazado;
+    int recorridoId = ViewBag.RecorridoId;
+    string patente = ViewBag.Patente;
+    bool tieneDatosExportacion = ViewBag.TieneDatosExportacion;
+    string tipoDocumento = ViewBag.TipoDocumentoString;
+    string numeroDoc = ViewBag.NumeroDocumento;
+
+    var nacionalidades = (IEnumerable<SelectListItem>)ViewBag.Nacionalidades;
+    var firmas = (IEnumerable<SelectListItem>)ViewBag.Firmas;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/scripts/IngresoDeDatosDeExportacion.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+}
+    <div id="links"
+         data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+         data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"></div>
+<div class="container-fluid">
+    @{
+        <div class="titSecciones">@Textos.ConsultarDocumentoDeIngreso_Titulo</div>
+        <br />
+        <div class="row">
+            <div class="span2 negrita">@Textos.Workflow_TipoDocumentoDeIngreso</div>
+            <label class="span2" style="margin-left:-14px">@tipoDocumento</label>
+            <div class="span2 negrita">@Textos.NumeroDocumentoIngreso</div>
+            <label class="span2" style="margin-left:-53px">@numeroDoc</label>
+            <div class="span2 negrita" style="">@Textos.Patente</div>
+            <label class="span2" style="margin-left:-43px">@patente</label>
+            <div class="right">
+                @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
+
+            </div>
+        </div>
+
+
+    }
+
+</div>
+<div id="pesada">
+
+    <div class="container-fluid">
+        <ul class="nav nav-tabs">
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_DatosDeOrigen, "DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Pesada, "Pesada", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AnalisisDeCalidad, "AnalisisDeCalidad", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_AsignacionDeRuta, "AsignacionDeRuta", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.ConsultarDocumentoDeIngreso_Fotos, "Fotos", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            <li>
+                @Html.ActionLink(Textos.Recorrido, "Recorrido", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+            </li>
+            @if (tieneDatosExportacion)
+            {
+                <li class="active">
+                    @Html.ActionLink(Textos.DatosExportacion, "DatosExportacion", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoId, tipoDoc = ViewBag.TipoDoc, numeroDoc = ViewBag.NumeroDoc, patente = ViewBag.Patente, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false), rechazado = esRechazado, tieneDatosExportacion = tieneDatosExportacion }, null)
+                </li>
+            }
+            @if (esRechazado)
+            {
+                <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
+            }
+        </ul>
+    </div>
+
+
+
+    @using (Html.BeginForm("DatosExportacion", "ModificarDocumentoDeIngreso", null, FormMethod.Post, new { @class = "form-horizontal content container-fluid causaBlock", id = "orden-form" }))
+    {
+        if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+        {
+            <div class="alert alert-error">
+                @Html.ValidationSummary(true)
+            </div>
+        }
+
+        if (PermisosHelper.Is(PermisosScato.ModificarDatosExportacion))
+        {
+            <div class="row-fluid row-fluid-ie7">
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.PermisoEmbarque, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.PermisoEmbarque, new { @class = "control uppercase", maxlength = 16 })
+                                @Html.ValidationMessageFor(model => model.PermisoEmbarque)
+                                @Html.HiddenFor(model => model.PermisoEmbarque)
+                                @Html.HiddenFor(model => model.InstanciaWorkflow)
+                                @Html.HiddenFor(model => model.Id)
+                                @Html.HiddenFor(model => model.FiltrarPorTarjeta)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.IdentificadorContenedor, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.IdentificadorContenedor, new { @class = "control uppercase", maxlength = 16 })
+                                @Html.ValidationMessageFor(model => model.IdentificadorContenedor)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        @Html.Label(Textos.Firma_Exportador + ":", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.DropDownListFor(model => model.FirmaId, firmas, new { @class = "control" })
+                            @Html.ValidationMessageFor(model => model.FirmaId)
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.NacionalidadId, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.NacionalidadId, nacionalidades, Textos.Default_Nacionalidad)
+                                @Html.ValidationMessageFor(model => model.NacionalidadId)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.TransportistaId, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.Transportista, new { @class = "control autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
+                                @Html.ValidationMessageFor(model => model.Transportista)
+                                @Html.HiddenFor(model => model.TransportistaId)
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.PesoNeto, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => model.PesoNeto, new { @class = "control autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.PesoNeto) })
+                                @Html.ValidationMessageFor(model => model.PesoNeto)
+                                @Html.HiddenFor(model => model.PesoNeto)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-warning" type="submit" value="Guardar" name="submitAction">@Textos.Guardar</button>
+            </div>
+
+
+        }
+        else
+        {
+            <div class="row-fluid row-fluid-ie7">
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.PermisoEmbarque, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.PermisoEmbarque, new { @class = "control input-large" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.IdentificadorContenedor, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.IdentificadorContenedor, new { @class = "control input-large" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.Label(Textos.Cliente_Cuit, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.FirmaCuit, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.Label(Textos.Centro_RazonSocial, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.FirmaRazonSocial, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.Label(Textos.Nacionalidad, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Nacionalidad, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.Label(Textos.Transportista, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Transportista, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row row-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => Model.PesoNeto, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.PesoNeto, new { @class = "control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+</div>

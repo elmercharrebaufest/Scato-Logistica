@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.RangosDeRedondeoDto
+@{
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+}
+
+@Html.ValidationSummary(true)
+
+<div class="control-group">
+    @Html.LabelFor(model => model.MaterialPorCentroId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.MaterialPorCentroId, materiales)
+        @Html.ValidationMessageFor(model => model.MaterialPorCentroId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ValorDesde, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ValorDesde, new { @class = "input" })
+        @Html.ValidationMessageFor(model => model.ValorDesde)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ValorHasta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ValorHasta, new { @class = "input"})
+        @Html.ValidationMessageFor(model => model.ValorHasta)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ValorRedondeado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ValorRedondeado, new { @class = "input" })
+        @Html.ValidationMessageFor(model => model.ValorRedondeado)
+    </div>
+</div>

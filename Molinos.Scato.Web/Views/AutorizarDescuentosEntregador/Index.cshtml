@@ -1,0 +1,94 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RecorridoDto
+@{
+    ViewBag.Title = Textos.AutorizarDescuentosEntregador_Titulo;
+    
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autorizarDescuentosEntregador.js")"></script>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.AutorizarDescuentosEntregador_Titulo</div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active">
+        @Html.ActionLink(Textos.AutorizarDescuentosEntregador_Titulo, "Index", "AutorizarDescuentosEntregador")
+    </li>
+    <li>
+        @Html.ActionLink(Textos.DocumentoDeOrigen_Titulo, "Index", "DocumentoDeOrigen", new DocumentoDeOrigenDto{ InstanceId = Model.InstanciaWorkflow, TipoDocumentoIngreso = Model.TipoDocumentoIngreso, Actividad = "AutorizarDescuentosEntregador", ActividadTitulo = Textos.AutorizarDescuentosEntregador_Titulo, RecorridoId = Model.Id, EsActividad = true}, null)
+    </li>
+</ul>
+
+<table class="tablaDatos span12search">
+    <thead>
+        <tr>
+            <th>@Html.LabelFor(model => model.Patente, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.Transportista, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoNetoOrigen, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoNeto, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.PesoDiferencia, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.TipoComercial, new { @class = "control-label" })</th>
+            <th>@Html.Label(Textos.Material, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.NumeroDocumentoIngreso, new { @class = "control-label" })</th>
+            <th>@Html.LabelFor(model => model.Calado.CicloDeCalado, new { @class = "control-label" })</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>@Html.DisplayFor(model => model.Patente, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.Transportista.RazonSocial, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.PesoNetoOrigen, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.PesoNeto, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.PesoDiferencia, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.TipoComercial.Descripcion, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.Material.Descripcion, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.NumeroDocumentoIngreso, new { @class = "control-label" })</b></td>
+            <td><b>@Html.DisplayFor(model => model.Calado.CicloDeCalado, new { @class = "control-label" })</b></td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>@Textos.CaracteristicaDeCalidad_Titulo: </h4>
+<div id="gridContainer">
+    @Html.Partial("Listar")
+</div>
+
+<div class="row-fluid">
+    <div class="span8">
+        <button class="confirmar-boton btn btn-primary pull-right" data-accion="Aceptar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica,Textos.Autorizar,Textos.Descuento)">
+            @Textos.Autorizar
+        </button>
+    </div>
+    <div class="span2">
+        @Html.ActionLink(Textos.Rechazar, "Rechazar", "AutorizarDescuentosEntregador", new {codigoWf = Model.Workflow.Codigo, workflowDefinicionId = Model.WorkflowDefinicionId, instanceId = Model.InstanciaWorkflow }, new{@class = "rechazar-boton btn btn-primary pull-right"})
+    </div>
+    <div class="span2">
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new{@class = "btn"})
+    </div>
+</div>
+
+
+@using (Html.BeginForm("Aceptar", "AutorizarDescuentosEntregador", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.Actividad_AutorizarDescuentosEntregador }))
+{
+    @Html.Hidden("codigoWf", Model.Workflow.Codigo)
+    @Html.Hidden("instanceId", Model.InstanciaWorkflow)
+    @Html.Hidden("workflowDefinicionId", Model.WorkflowDefinicionId)
+    <div class="modal hide fade" id="dialogo-confirmar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body" id="dialogo-confirmar-body">
+        </div>
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+}
+
+<div id ="mensajeRechazar">
+    
+</div>

@@ -1,0 +1,569 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.CargarCartaPorte"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdc="clr-namespace:Molinos.Scato.Dominio.Comandos;assembly=Molinos.Scato.Dominio"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:msde="clr-namespace:Molinos.Scato.Dominio.Enums;assembly=Molinos.Scato.Dominio"
+ xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:p1="http://scato.molinos.com/"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="orden" Type="OutArgument(msdd:CartaPorteDto)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="centroId" Type="OutArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="hndInstance" Type="OutArgument(p:CorrelationHandle)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="tipoDocumentoIngreso" Type="OutArgument(msde:TipoDocumentoIngreso)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="InstanceId" Type="OutArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="fechaInicio" Type="OutArgument(s:DateTime)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="vehiculo" Type="OutArgument(msdd:VehiculoDto)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="NombreUsuario" Type="OutArgument(x:String)" />
+    <x:Property Name="puestoDeTrabajoId" Type="OutArgument(x:Int32)" />
+    <x:Property Name="vehiculoDemorado" Type="OutArgument(x:Boolean)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.CargarCartaPorte_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Comandos</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+      <x:String>System.ServiceModel.Activities</x:String>
+      <x:String>Molinos.Scato.Dominio.Enums</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="CargarCartaPorte" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="msdc:Resultado" Name="Resultado" />
+      <Variable x:TypeArguments="x:String" Name="centro" />
+      <Variable x:TypeArguments="x:String" Name="nombreWorkflow" />
+      <Variable x:TypeArguments="x:Int32" Name="workflowDefinicionId" />
+      <Variable x:TypeArguments="msdd:ControlRecorridoDto" Name="controlRecorrido" />
+    </Sequence.Variables>
+    <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
+      <Flowchart.StartNode>
+        <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+          <p:Receive x:Name="__ReferenceID0" CanCreateInstance="True" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="CargarCartaPorte" ServiceContractName="p1:ICargarCartaPorteService">
+            <p:ReceiveParametersContent>
+              <OutArgument x:TypeArguments="msdd:CartaPorteDto" x:Key="orden">
+                <mca:CSharpReference x:TypeArguments="msdd:CartaPorteDto">orden</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="msdd:VehiculoDto" x:Key="vehiculo">
+                <mca:CSharpReference x:TypeArguments="msdd:VehiculoDto">vehiculo</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="x:Int32" x:Key="centroId">
+                <mca:CSharpReference x:TypeArguments="x:Int32">centroId</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="nombreWorkflow">
+                <mca:CSharpReference x:TypeArguments="x:String">nombreWorkflow</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="x:Int32" x:Key="workflowDefinicionId">
+                <mca:CSharpReference x:TypeArguments="x:Int32">workflowDefinicionId</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="usuario">
+                <mca:CSharpReference x:TypeArguments="x:String">NombreUsuario</mca:CSharpReference>
+              </OutArgument>
+              <OutArgument x:TypeArguments="msdd:ControlRecorridoDto" x:Key="controlRecorrido">
+                <mca:CSharpReference x:TypeArguments="msdd:ControlRecorridoDto">controlRecorrido</mca:CSharpReference>
+              </OutArgument>
+            </p:ReceiveParametersContent>
+          </p:Receive>
+          <FlowStep.Next>
+            <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+              <local:ObtenerInstanceId sap2010:WorkflowViewState.IdRef="ObtenerInstanceId_1">
+                <local:ObtenerInstanceId.Result>
+                  <OutArgument x:TypeArguments="s:Guid">
+                    <mca:CSharpReference x:TypeArguments="s:Guid">InstanceId</mca:CSharpReference>
+                  </OutArgument>
+                </local:ObtenerInstanceId.Result>
+              </local:ObtenerInstanceId>
+              <FlowStep.Next>
+                <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+                  <local:CrearCartaPorte sap2010:WorkflowViewState.IdRef="CrearCartaPorte_1">
+                    <local:CrearCartaPorte.CartaPorte>
+                      <OutArgument x:TypeArguments="msdd:CartaPorteDto">
+                        <mca:CSharpReference x:TypeArguments="msdd:CartaPorteDto">orden</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.CartaPorte>
+                    <local:CrearCartaPorte.CentroId>
+                      <InArgument x:TypeArguments="x:Int32">
+                        <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.CentroId>
+                    <local:CrearCartaPorte.FechaInicio>
+                      <OutArgument x:TypeArguments="s:DateTime">
+                        <mca:CSharpReference x:TypeArguments="s:DateTime">fechaInicio</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.FechaInicio>
+                    <local:CrearCartaPorte.InstanciaWorkflowId>
+                      <InArgument x:TypeArguments="s:Guid">
+                        <mca:CSharpValue x:TypeArguments="s:Guid">InstanceId</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.InstanciaWorkflowId>
+                    <local:CrearCartaPorte.NombreWorkflow>
+                      <InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">nombreWorkflow</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.NombreWorkflow>
+                    <local:CrearCartaPorte.NumeroCartaPorte>
+                      <OutArgument x:TypeArguments="x:String">
+                        <mca:CSharpReference x:TypeArguments="x:String">centro</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.NumeroCartaPorte>
+                    <local:CrearCartaPorte.Orden>
+                      <InArgument x:TypeArguments="msdd:CartaPorteDto">
+                        <mca:CSharpValue x:TypeArguments="msdd:CartaPorteDto">orden</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.Orden>
+                    <local:CrearCartaPorte.Result>
+                      <OutArgument x:TypeArguments="msdc:Resultado">
+                        <mca:CSharpReference x:TypeArguments="msdc:Resultado">Resultado</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.Result>
+                    <local:CrearCartaPorte.TipoDocumentoIngreso>
+                      <OutArgument x:TypeArguments="msde:TipoDocumentoIngreso">
+                        <mca:CSharpReference x:TypeArguments="msde:TipoDocumentoIngreso">tipoDocumentoIngreso</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.TipoDocumentoIngreso>
+                    <local:CrearCartaPorte.Usuario>
+                      <InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">NombreUsuario</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.Usuario>
+                    <local:CrearCartaPorte.Vehiculo>
+                      <InArgument x:TypeArguments="msdd:VehiculoDto">
+                        <mca:CSharpValue x:TypeArguments="msdd:VehiculoDto">vehiculo</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.Vehiculo>
+                    <local:CrearCartaPorte.VehiculoDemorado>
+                      <OutArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpReference x:TypeArguments="x:Boolean">vehiculoDemorado</mca:CSharpReference>
+                      </OutArgument>
+                    </local:CrearCartaPorte.VehiculoDemorado>
+                    <local:CrearCartaPorte.WorkflowDefinicionId>
+                      <InArgument x:TypeArguments="x:Int32">
+                        <mca:CSharpValue x:TypeArguments="x:Int32">workflowDefinicionId</mca:CSharpValue>
+                      </InArgument>
+                    </local:CrearCartaPorte.WorkflowDefinicionId>
+                  </local:CrearCartaPorte>
+                  <FlowStep.Next>
+                    <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_10">
+                      <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+                        <local:LogActividad.LogActividadDto>
+                          <InArgument x:TypeArguments="msdd:LogActividadDto">
+                            <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = "Crear Carta Porte", WorkflowInstanceId = InstanceId, ActividadXaml = "CargarCartaPorte" }</mca:CSharpValue>
+                          </InArgument>
+                        </local:LogActividad.LogActividadDto>
+                      </local:LogActividad>
+                      <FlowStep.Next>
+                        <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_8">
+                          <local:PersistirPropiedadesCustom Calidad="{x:Null}" sap2010:WorkflowViewState.IdRef="PersistirPropiedadesCustom_1">
+                            <local:PersistirPropiedadesCustom.CentroId>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">centroId</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.CentroId>
+                            <local:PersistirPropiedadesCustom.ChoferDNI>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer.NumeroDeDocumento</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.ChoferDNI>
+                            <local:PersistirPropiedadesCustom.ChoferNombre>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer.NombreCompleto</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.ChoferNombre>
+                            <local:PersistirPropiedadesCustom.Cuit>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.Chofer.Cuil</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.Cuit>
+                            <local:PersistirPropiedadesCustom.MaterialId>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.MaterialId</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.MaterialId>
+                            <local:PersistirPropiedadesCustom.NumeroDocumentoDeIngreso>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.NroCartaPorte.ToString()</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.NumeroDocumentoDeIngreso>
+                            <local:PersistirPropiedadesCustom.Patente>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">vehiculo.Patente</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.Patente>
+                            <local:PersistirPropiedadesCustom.Procedencia>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.Procedencia</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.Procedencia>
+                            <local:PersistirPropiedadesCustom.TipoComercial>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">orden.TipoComercial</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.TipoComercial>
+                            <local:PersistirPropiedadesCustom.TipoComercialId>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.TipoComercialId</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.TipoComercialId>
+                            <local:PersistirPropiedadesCustom.TipoDocumentoDeIngreso>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">(int?)tipoDocumentoIngreso</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.TipoDocumentoDeIngreso>
+                            <local:PersistirPropiedadesCustom.TipoVehiculo>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">(int?)orden.TipoVehiculo</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.TipoVehiculo>
+                            <local:PersistirPropiedadesCustom.TransportistaId>
+                              <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">orden.TransportistaId</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.TransportistaId>
+                            <local:PersistirPropiedadesCustom.Workflow>
+                              <InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">nombreWorkflow</mca:CSharpValue>
+                              </InArgument>
+                            </local:PersistirPropiedadesCustom.Workflow>
+                          </local:PersistirPropiedadesCustom>
+                          <FlowStep.Next>
+                            <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                              <p:SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+                                <p:SendReply.CorrelationInitializers>
+                                  <p:QueryCorrelationInitializer>
+                                    <p:QueryCorrelationInitializer.CorrelationHandle>
+                                      <InArgument x:TypeArguments="p:CorrelationHandle">
+                                        <mca:CSharpValue x:TypeArguments="p:CorrelationHandle">hndInstance</mca:CSharpValue>
+                                      </InArgument>
+                                    </p:QueryCorrelationInitializer.CorrelationHandle>
+                                    <p:XPathMessageQuery x:Key="key1">
+                                      <p:XPathMessageQuery.Namespaces>
+                                        <ssx:XPathMessageContextMarkup>
+                                          <x:String x:Key="xgSc">http://scato.molinos.com/</x:String>
+                                        </ssx:XPathMessageContextMarkup>
+                                      </p:XPathMessageQuery.Namespaces>sm:body()/xgSc:CargarCartaPorteResponse/xgSc:instanceId</p:XPathMessageQuery>
+                                  </p:QueryCorrelationInitializer>
+                                </p:SendReply.CorrelationInitializers>
+                                <p:SendParametersContent>
+                                  <InArgument x:TypeArguments="msdc:Resultado" x:Key="resultado">
+                                    <mca:CSharpValue x:TypeArguments="msdc:Resultado">Resultado</mca:CSharpValue>
+                                  </InArgument>
+                                  <InArgument x:TypeArguments="s:Guid" x:Key="instanceId">
+                                    <mca:CSharpValue x:TypeArguments="s:Guid">InstanceId</mca:CSharpValue>
+                                  </InArgument>
+                                </p:SendParametersContent>
+                              </p:SendReply>
+                              <FlowStep.Next>
+                                <FlowDecision x:Name="__ReferenceID6" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                                  <FlowDecision.Condition>
+                                    <mca:CSharpValue x:TypeArguments="x:Boolean">Resultado.HayErrores</mca:CSharpValue>
+                                  </FlowDecision.Condition>
+                                  <FlowDecision.True>
+                                    <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_9">
+                                      <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1">
+                                        <TerminateWorkflow.Reason>
+                                          <InArgument x:TypeArguments="x:String">
+                                            <mca:CSharpValue x:TypeArguments="x:String">Molinos.Scato.Dominio.Recursos.Textos.Error_ActualizarGenerico</mca:CSharpValue>
+                                          </InArgument>
+                                        </TerminateWorkflow.Reason>
+                                      </TerminateWorkflow>
+                                    </FlowStep>
+                                  </FlowDecision.True>
+                                  <FlowDecision.False>
+                                    <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_12">
+                                      <local:FinDeActividad sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+                                        <local:FinDeActividad.ControlRecorridoDto>
+                                          <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                            <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto" xml:space="preserve">new ControlRecorridoDto
+            {
+                Actividad = controlRecorrido.Actividad,
+                ActividadXaml = controlRecorrido.ActividadXaml,
+                Comentario = controlRecorrido.Comentario,
+                Decision = controlRecorrido.Decision,
+                Fecha = controlRecorrido.Fecha,
+                Mensaje = controlRecorrido.Mensaje,
+                NombreUsuario = controlRecorrido.NombreUsuario,
+                PuestoDeTrabajoId = controlRecorrido.PuestoDeTrabajoId,
+                WorkflowInstanceId = InstanceId
+            }</mca:CSharpValue>
+                                          </InArgument>
+                                        </local:FinDeActividad.ControlRecorridoDto>
+                                        <local:FinDeActividad.InstanceId>
+                                          <InArgument x:TypeArguments="s:Nullable(s:Guid)">
+                                            <mca:CSharpValue x:TypeArguments="s:Nullable(s:Guid)">InstanceId</mca:CSharpValue>
+                                          </InArgument>
+                                        </local:FinDeActividad.InstanceId>
+                                        <local:FinDeActividad.NombreUsuario>
+                                          <OutArgument x:TypeArguments="x:String">
+                                            <mca:CSharpReference x:TypeArguments="x:String">NombreUsuario</mca:CSharpReference>
+                                          </OutArgument>
+                                        </local:FinDeActividad.NombreUsuario>
+                                        <local:FinDeActividad.PuestoDeTrabajoId>
+                                          <OutArgument x:TypeArguments="x:Int32">
+                                            <mca:CSharpReference x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpReference>
+                                          </OutArgument>
+                                        </local:FinDeActividad.PuestoDeTrabajoId>
+                                        <local:FinDeActividad.Result>
+                                          <OutArgument x:TypeArguments="msdc:Resultado">
+                                            <mca:CSharpReference x:TypeArguments="msdc:Resultado">Resultado</mca:CSharpReference>
+                                          </OutArgument>
+                                        </local:FinDeActividad.Result>
+                                      </local:FinDeActividad>
+                                    </FlowStep>
+                                  </FlowDecision.False>
+                                </FlowDecision>
+                              </FlowStep.Next>
+                            </FlowStep>
+                          </FlowStep.Next>
+                        </FlowStep>
+                      </FlowStep.Next>
+                    </FlowStep>
+                  </FlowStep.Next>
+                </FlowStep>
+              </FlowStep.Next>
+            </FlowStep>
+          </FlowStep.Next>
+        </FlowStep>
+      </Flowchart.StartNode>
+      <x:Reference>__ReferenceID1</x:Reference>
+      <x:Reference>__ReferenceID2</x:Reference>
+      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID4</x:Reference>
+      <x:Reference>__ReferenceID5</x:Reference>
+      <x:Reference>__ReferenceID6</x:Reference>
+      <x:Reference>__ReferenceID7</x:Reference>
+      <x:Reference>__ReferenceID8</x:Reference>
+      <x:Reference>__ReferenceID9</x:Reference>
+    </Flowchart>
+    <sads:DebugSymbol.Symbol>d0hDOlxtb2xpbm9zXE1vbGlub3MuU2NhdG9cTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xDYXJnYXJDYXJ0YVBvcnRlLnhhbWw4agOdAw4CAQFyBZsDEQIBAnULjQEXAwH6BJABD5YBKQMB6QSZARPbASsDAZgD3gEX5AEsAwGHA+cBG64CPgMBpgGxAh/JAi0CAXXNAiXNAngCAWXcAieBAz4CARTRAifXAjsCAQOKARGKAXcDAdsFfhF+XgMBywWHARGHAWQDAbsFeBF4ZgMBqwWBARGBAWUDAZsFhAERhAFqAwGLBXsRe2cDAfsEkwEVkwFjAwHqBNMBGdMBcAMB2QShARmhAV4DAckEtQEZtQFlAwG5BLoBGboBZgMBqQTEARnEAYQBAwGZBLABGbABZQMBiQScARmcAW4DAfkDqwEZqwFfAwHpA78BGb8BbgMB2QPYARnYAWoDAckDpgEZpgFsAwG5A8kBGckBZAMBqQPOARnOAWcDAZkD4QEd4QHjAQMBiAOhAiGhAoIBAwH3AuoBIeoBcgMB5wKIAiGIAm8DAdcCpgIhpgJ/AwHHAu8BIe8BfQMBtwKcAiGcAoQBAwGnAqsCIasCbQMBlwKSAiGSAnIDAYcCjQIhjQJwAwH3AZcCIZcCfwMB5wH+ASH+AXoDAdcBgwIhgwJ9AwHHAfkBIfkBcAMBtwH0ASH0AXoDAacBxgIlxgJrAwGWAcMCJcMCcgMBhgG2Aim2An0CAXbfAi3qAiACAVX0Ai30AoABAgFF/gIt/gKCAQIBNfkCLfkCgwECASXvAi3vAn8CARXUAi3UAqkBAgEE</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="255.333333333333,90.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ObtenerInstanceId_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CrearCartaPorte_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="PersistirPropiedadesCustom_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.333333333333,90.6666666666667" />
+      <sap2010:ViewStateData Id="TerminateWorkflow_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_9">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">20,639</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_12">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">360,649</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">264.5,576.5</av:Point>
+            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">264.5,620 120,620 120,639</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">334.5,620 460,620 460,649</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">172.5,445</av:Point>
+            <av:Size x:Key="ShapeSize">255.333333333333,90.6666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300.166666666667,535.666666666667 300.166666666667,565.666666666667 299.5,565.666666666667 299.5,576.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,389</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,411 300,445</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_10">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,339</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,361 300,389</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,289</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,311 300,339</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,229</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,251 300,289</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">172.5,95</av:Point>
+            <av:Size x:Key="ShapeSize">255.333333333333,90.6666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300.166666666667,185.666666666667 300.166666666667,215.666666666667 300,215.666666666667 300,229</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="614,872">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,74.6666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,95</av:PointCollection>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Double x:Key="Height">836</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="636,996">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.CargarCartaPorte_1" sap:VirtualizedContainerService.HintSize="676,1076" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

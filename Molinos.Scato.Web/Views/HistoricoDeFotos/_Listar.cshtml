@@ -1,0 +1,87 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (IList<FotosDto>)ViewBag.Items;
+}
+
+<style>
+    .follow {
+        /*position: fixed;*/
+        top: 150px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.unblockUI();
+    });
+
+
+    function OnSuccess() {
+        $.unblockUI();
+    }   
+
+    function OnFailure() {
+        modalFoto
+        MostrarAlertaError('Surgió un inconveniente al cargar la Imagen');
+    }
+</script>
+
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/columna.css")">
+
+<div class="col-lg-8">
+    <span class="follow" style="width: 99%;" id="modalFoto"></span>
+</div>
+<div class="col-lg-4">
+    <ul>
+        @foreach (var item in items)
+        {
+            <div class="row bordeGrisCompleto" style="margin-bottom: 10px;">
+                <div class="col-lg-2">
+                    @using (Ajax.BeginForm("IndexPorRecorrido", "Foto", new { id = item.RecorridoId, conJs = false }, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "modalFoto" ,OnBegin="BlockUI('Foto')",OnSuccess= "OnSuccess", OnFailure="OnFailure" }))
+                    {
+                        <button type="submit" class="btn" style="margin-top: 25px;padding: 2px;padding-left: 6px;padding-right: 6px;margin-left: 4px;"><i class="icon-picture"></i></button>
+                    }
+                </div>
+                <div class="col-lg-10" style="left: 20px;">
+                    <div class="row negrita">
+                        <div class="col-lg-6">
+                            <span class="letraColorMolinos">@Textos.Documento</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span class="letraColorMolinos">@Textos.NumeroDocumentoIngreso</span>
+                            <a target="_blank" href="@Url.Action("Seleccionar","ModificarDocumentoDeIngreso",new { id = item.RecorridoId})" class="btn btn-mini"><i class="icon-user"></i></a>
+                        </div>
+                    </div>
+                    <div class="row texto-tabla">
+                        <div class="col-lg-6">
+                            @item.TipoDocumento
+                        </div>
+                        <div class="col-lg-6">
+                            @item.NumeroDocumentoIngreso
+                        </div>
+                    </div>
+                    <div class="row negrita">
+                        <div class="col-lg-6">
+                            <span class="letraColorMolinos">@Textos.Material</span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span class="letraColorMolinos">@Textos.Fecha</span>
+                        </div>
+                    </div>
+                    <div class="row texto-tabla">
+                        <div class="col-lg-6">
+                            @item.Material
+                        </div>
+                        <div class="col-lg-6">
+                            @item.FechaInicio
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </ul>
+</div>

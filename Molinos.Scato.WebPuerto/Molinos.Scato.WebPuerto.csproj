@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Molinos.Scato.WebPuerto</RootNamespace>
+    <AssemblyName>Molinos.Scato.WebPuerto</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>4.3</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.3.2\lib\net45\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.WebHost, Version=3.3.2.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.2\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.3.1.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.3.1\lib\net45\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Services" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivator.1.5\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="e2e\protractor.conf.js" />
+    <Content Include="karma.conf.js" />
+    <Content Include="proxy.conf.js" />
+    <Content Include="SLOSCATOPROD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="src\app\app.component.css" />
+    <Content Include="src\app\app.component.html" />
+    <!-- Shared Componentes HTML/CSS -->
+    <Content Include="src\app\shared\componentes\alert\alert.component.css" />
+    <Content Include="src\app\shared\componentes\alert\alert.component.html" />
+    <Content Include="src\app\shared\componentes\confirmation-dialog\confirmation-dialog.component.css" />
+    <Content Include="src\app\shared\componentes\confirmation-dialog\confirmation-dialog.component.html" />
+    <Content Include="src\app\shared\componentes\estados-puerto\estados-puerto-content.component.css" />
+    <Content Include="src\app\shared\componentes\estados-puerto\estados-puerto-content.component.html" />
+    <Content Include="src\app\shared\componentes\layout\layout.component.css" />
+    <Content Include="src\app\shared\componentes\layout\layout.component.html" />
+    <Content Include="src\app\shared\componentes\navtabs\navtabs.component.css" />
+    <Content Include="src\app\shared\componentes\navtabs\navtabs.component.html" />
+    <Content Include="src\app\shared\componentes\toggle-menu-orden\toggle-menu-orden.component.css" />
+    <Content Include="src\app\shared\componentes\toggle-menu-orden\toggle-menu-orden.component.html" />
+    <Content Include="src\app\shared\componentes\navbar\navbar.component.css" />
+    <Content Include="src\app\shared\componentes\navbar\navbar.component.html" />
+    <Content Include="src\app\shared\componentes\collapse-button\collapse-button.component.css" />
+    <Content Include="src\app\shared\componentes\collapse-button\collapse-button.component.html" />
+    <Content Include="src\app\shared\componentes\toggle-menu-acciones\toggle-menu-acciones.component.css" />
+    <Content Include="src\app\shared\componentes\toggle-menu-acciones\toggle-menu-acciones.component.html" />
+    <Content Include="src\app\shared\componentes\spinner\spinner.component.css" />
+    <Content Include="src\app\shared\componentes\spinner\spinner.component.html" />
+    <Content Include="src\app\shared\componentes\navtabs-calidad\navtabs-calidad.component.css" />
+    <Content Include="src\app\shared\componentes\navtabs-calidad\navtabs-calidad.component.html" />
+    <Content Include="src\app\shared\componentes\iniciar-sesion\iniciar-sesion.component.css" />
+    <Content Include="src\app\shared\componentes\iniciar-sesion\iniciar-sesion.component.html" />
+    <!-- Shared Component HTML/CSS (modulares) -->
+    <Content Include="src\app\shared\componentes\modulos\calidad\obs-calidad\obs-calidad.component.html" />
+    <Content Include="src\app\shared\componentes\modulos\calidad\obs-calidad\obs-calidad.component.css" />
+    <Content Include="src\app\shared\componentes\modulos\carga\graficos-ritmos\graficos-ritmos.component.html" />
+    <Content Include="src\app\shared\componentes\modulos\carga\graficos-ritmos\graficos-ritmos.component.css" />
+    <Content Include="src\app\shared\componentes\modulos\carga\periodo-carga\periodo-carga.component.html" />
+    <Content Include="src\app\shared\componentes\modulos\carga\periodo-carga\periodo-carga.component.css" />
+    <Content Include="src\app\shared\componentes\modulos\carga\amarre\amarre.component.html" />
+    <Content Include="src\app\shared\componentes\modulos\carga\amarre\amarre.component.css" />
+    <!-- Lineup HTML/CSS -->
+    <Content Include="src\app\modulos\lineup\calendario\lineup-calendario.component.css" />
+    <Content Include="src\app\modulos\lineup\calendario\lineup-calendario.component.html" />
+    <Content Include="src\app\modulos\lineup\alta-embarque\alta-embarque.component.css" />
+    <Content Include="src\app\modulos\lineup\alta-embarque\alta-embarque.component.html" />
+    <Content Include="src\app\modulos\lineup\embarque\lineup-embarque.component.css" />
+    <Content Include="src\app\modulos\lineup\embarque\lineup-embarque.component.html" />
+    <Content Include="src\app\modulos\lineup\lineup.component.css" />
+    <Content Include="src\app\modulos\lineup\lineup.component.html" />
+    <Content Include="src\app\modulos\lineup\cargando-muelle\cargando-muelle.component.css" />
+    <Content Include="src\app\modulos\lineup\cargando-muelle\cargando-muelle.component.html" />
+    <!-- Plano Carga HTML/CSS -->
+    <Content Include="src\app\modulos\lineup\plano-de-carga\plano-de-carga.component.css" />
+    <Content Include="src\app\modulos\lineup\plano-de-carga\plano-de-carga.component.html" />
+    <Content Include="src\app\modulos\lineup\plano-de-carga\plano-content\plano-content.component.css" />
+    <Content Include="src\app\modulos\lineup\plano-de-carga\plano-content\plano-content.component.html" />
+    <!-- Carga HTML/CSS -->
+    <Content Include="src\app\modulos\carga\carga.component.css" />
+    <Content Include="src\app\modulos\carga\carga.component.html" />
+    <!-- Carga Liquidos HTML/CSS -->
+    <Content Include="src\app\modulos\carga\carga-liquidos\carga-liquidos.component.css" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\carga-liquidos.component.html" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\tableristas\mangueras-carga\mangueras-carga.component.html" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\tableristas\mangueras-carga\mangueras-carga.component.css" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\operaciones\tanques\tanques.component.html" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\operaciones\tanques\tanques.component.css" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\operaciones\lineas\lineas.component.html" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\operaciones\lineas\lineas.component.css" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\tableristas\planilla-embarque\planilla-embarque.component.html" />
+    <Content Include="src\app\modulos\carga\carga-liquidos\tableristas\planilla-embarque\planilla-embarque.component.css" />
+    <!-- Carga Solidos HTML/CSS -->
+    <Content Include="src\app\modulos\carga\carga-solidos\carga-solidos.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\carga-solidos.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\operaciones\grafico-carga\grafico-carga.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\operaciones\grafico-carga\grafico-carga.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\operaciones\manos\manos.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\operaciones\manos\manos.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas\balanzas.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas\balanzas.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas-ritmos\balanzas-ritmos.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas-ritmos\balanzas-ritmos.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\info-adicional\info-adicional.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\info-adicional\info-adicional.component.css" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\umap\umap.component.html" />
+    <Content Include="src\app\modulos\carga\carga-solidos\tableristas\umap\umap.component.css" />
+    <!-- Calidad HTML/CSS -->
+    <Content Include="src\app\modulos\calidad\calidad.component.html" />
+    <Content Include="src\app\modulos\calidad\calidad.component.css" />
+    <!-- Calidad Solidos HTML/CSS -->
+    <Content Include="src\app\modulos\calidad\solidos\solidos.component.html" />
+    <Content Include="src\app\modulos\calidad\solidos\solidos.component.css" />
+    <Content Include="src\app\modulos\calidad\solidos\nir\nir.component.html" />
+    <Content Include="src\app\modulos\calidad\solidos\nir\nir.component.css" />
+    <!-- Calidad Liquidos HTML/CSS -->
+    <Content Include="src\app\modulos\calidad\liquidos\liquidos.component.html" />
+    <Content Include="src\app\modulos\calidad\liquidos\liquidos.component.css" />
+    <!-- Assets -->
+    <Content Include="src\assets\burgerMenu.svg" />
+    <Content Include="src\assets\calendarInput.svg" />
+    <Content Include="src\assets\calendario.svg" />
+    <Content Include="src\assets\check.svg" />
+    <Content Include="src\assets\circlecheck.svg" />
+    <Content Include="src\assets\circlecross.svg" />
+    <Content Include="src\assets\circlegrey.svg" />
+    <Content Include="src\assets\collapseDown.svg" />
+    <Content Include="src\assets\collapseUp.svg" />
+    <Content Include="src\assets\circleNeutral.svg" />
+    <Content Include="src\assets\clip.svg" />
+    <Content Include="src\assets\information.svg" />
+    <Content Include="src\assets\logo.svg" />
+    <Content Include="src\assets\Mas.svg" />
+    <Content Include="src\assets\notificationButton.svg" />
+    <Content Include="src\assets\notificationsBell.svg" />
+    <Content Include="src\assets\planoDeCargaEnviadoButton.svg" />
+    <Content Include="src\assets\planoDeCargaEnviadoButtonInvertido.svg" />
+    <Content Include="src\assets\radioButtonGreen.svg" />
+    <Content Include="src\assets\radioButtonGrey.svg" />
+    <Content Include="src\assets\reloj.svg" />
+    <Content Include="src\assets\ship.svg" />
+    <Content Include="src\assets\trashIcon.svg" />
+    <Content Include="src\assets\user.svg" />
+    <Content Include="src\assets\liquido-drop-of-liquid.svg" />
+    <Content Include="src\assets\solido-jelly-beans.svg" />
+    <Content Include="src\assets\tanks\t-1.png" />
+    <Content Include="src\assets\tanks\t-2.png" />
+    <Content Include="src\assets\tanks\t-7.png" />
+    <Content Include="src\assets\tanks\t-8.png" />
+    <Content Include="src\assets\tanks\t-9.png" />
+    <Content Include="src\assets\tanks\t-20.png" />
+    <Content Include="src\assets\tanks\t-30.png" />
+    <Content Include="src\assets\tanks\t-31.png" />
+    <Content Include="src\assets\tanks\t-32.png" />
+    <Content Include="src\assets\tanks\t-33.png" />
+    <Content Include="src\assets\tanks\t-34.png" />
+    <Content Include="src\assets\tanks\t-35.png" />
+    <Content Include="src\assets\tanks\t-36.png" />
+    <Content Include="src\assets\tanks\t-37.png" />
+    <Content Include="src\assets\tanks\t-38.png" />
+    <Content Include="src\assets\tanks\t-40.png" />
+    <Content Include="src\assets\carga\toneladas.png" />
+    <Content Include="src\assets\carga\Icono_Toneladas.svg" />
+    <Content Include="src\assets\sidebar\Logo_Molinos_M.png" />
+    <Content Include="src\assets\sidebar-icons\administracion.svg" />
+    <Content Include="src\assets\sidebar-icons\buques.svg" />
+    <Content Include="src\assets\sidebar-icons\comex.svg" />
+    <Content Include="src\assets\sidebar-icons\lineup.svg" />
+    <Content Include="src\assets\sidebar-icons\operaciones.svg" />
+    <Content Include="src\assets\sidebar-icons\recibidores.svg" />
+    <Content Include="src\assets\sidebar-icons\reportes.svg" />
+    <Content Include="src\assets\spinner\ship-cargando.gif" />
+    <Content Include="src\assets\spinner\pdf-cargando.gif" />
+    <Content Include="src\favicon.ico" />
+    <Content Include="src\index.html" />
+    <Content Include="src\styles.css" />
+    <Content Include="src\Readme-Puerto.md" />
+    <!-- App TS -->
+    <TypeScriptCompile Include="e2e\src\app.e2e-spec.ts" />
+    <TypeScriptCompile Include="e2e\src\app.po.ts" />
+    <TypeScriptCompile Include="src\app\app-routing.module.ts" />
+    <TypeScriptCompile Include="src\app\app.component.spec.ts" />
+    <TypeScriptCompile Include="src\app\app.component.ts" />
+    <TypeScriptCompile Include="src\app\app.module.ts" />
+    <!-- Module Shared TS -->
+    <TypeScriptCompile Include="src\app\shared\shared.module.ts" />
+    <!-- componentes shared TS -->
+    <TypeScriptCompile Include="src\app\shared\componentes\shared-components.module.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\navbar\navbar.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\collapse-button\collapse-button.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\alert\alert.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\confirmation-dialog\confirmation-dialog.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\estados-puerto\estados-puerto-content.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\layout\layout.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\navtabs\navtabs.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\toggle-menu-acciones\toggle-menu-acciones.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\toggle-menu-orden\toggle-menu-orden.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\spinner\spinner.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\iniciar-sesion\iniciar-sesion.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\navtabs-calidad\navtabs-calidad.component.ts" />
+    <!-- Components Shared TS (modulares) -->
+    <TypeScriptCompile Include="src\app\shared\componentes\modulos\calidad\obs-calidad\obs-calidad.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\modulos\carga\graficos-ritmos\graficos-ritmos.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\modulos\carga\amarre\amarre.component.ts" />
+    <TypeScriptCompile Include="src\app\shared\componentes\modulos\carga\periodo-carga\periodo-carga.component.ts" />
+    <!-- servicios TS -->
+    <TypeScriptCompile Include="src\app\shared\servicios\alert.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\autenticador.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\confirmation-dialog.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\embarque.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\lineup.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\plano-de-carga.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\session.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\workflow.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\modulo-de-carga.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\datosEmbarqueProceso.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\estado-tanques.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\procesoGuardar.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\manosEmbarque.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\turnos.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\procesoCalidad.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\balanzas78.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\balanza.service.ts" />
+    <TypeScriptCompile Include="src\app\shared\servicios\lineas.service.ts" />
+    <!-- models TS -->
+    <TypeScriptCompile Include="src\app\shared\modelos\modulo-carga-listado.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\agencia-control-privado.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\agente-control-privado.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\ATA-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\carga-comercial.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\embarque-nav.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\mail.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\form-umap.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\motivo-limpieza.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\nav-tab-element.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\destino.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\estiba.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\exportador.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\plano-de-carga-bodega.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\plano-de-carga.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\mano-embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\modulo-carga.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\tabique-embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\elemento-grafico.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\sentido-mano-embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\celda-mano-embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\tipo-de-buque-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\ubicacion-de-buque-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\coordinador-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\alerta.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\estado-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\lineUp.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\linea-embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\instancia-wokflow-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\agencia-maritima-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\embarque.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\material-puerto-cantidad.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\material-puerto.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\permiso.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\habilitacion-tanques.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\motivo-balanza.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\balanza78.ts" />
+    <TypeScriptCompile Include="src\app\shared\modelos\balanza.ts" />
+    <!-- enums TS -->
+    <TypeScriptCompile Include="src\app\shared\enums\permisos-scato.ts" />
+    <TypeScriptCompile Include="src\app\shared\enums\tipo-alerta.ts" />
+    <!-- interfaces TS -->
+    <TypeScriptCompile Include="src\app\shared\interfaces\observador.ts" />
+    <TypeScriptCompile Include="src\app\shared\interfaces\load-screen.ts" />
+    <TypeScriptCompile Include="src\app\shared\interfaces\usuario.ts" />
+    <!-- seguridad -->
+    <TypeScriptCompile Include="src\app\shared\seguridad\login.guard.ts" />
+    <TypeScriptCompile Include="src\app\shared\seguridad\role.guard.ts" />
+    <!-- environment TS -->
+    <TypeScriptCompile Include="src\environments\environment.prod.ts" />
+    <TypeScriptCompile Include="src\environments\environment.ts" />
+    <!-- mains TS -->
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\polyfills.ts" />
+    <TypeScriptCompile Include="src\test.ts" />
+    <!-- calendrio TS -->
+    <TypeScriptCompile Include="src\app\modulos\lineup\calendario\lineup-calendario.component.ts" />
+    <!-- alta embarque TS -->
+    <TypeScriptCompile Include="src\app\modulos\lineup\alta-embarque\alta-embarque.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\alta-embarque\alta-embarque.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\alta-embarque\alta-embarque-routing.module.ts" />
+    <!-- lineup TS -->
+    <TypeScriptCompile Include="src\app\modulos\lineup\embarque\lineup-embarque.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\lineup.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\cargando-muelle\cargando-muelle.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\lineup.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\lineup-routing.module.ts" />
+    <!-- plano de carga TS -->
+    <TypeScriptCompile Include="src\app\modulos\lineup\plano-de-carga\plano-de-carga.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\plano-de-carga\plano-carga.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\plano-de-carga\plano-carga-routing.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\lineup\plano-de-carga\plano-content\plano-content.component.ts" />
+    <!-- carga TS -->
+    <TypeScriptCompile Include="src\app\modulos\carga\carga.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-routing.module.ts" />
+    <!-- carga liquido TS -->
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-liquidos\carga-liquidos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-liquidos\operaciones\tanques\tanques.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-liquidos\operaciones\lineas\lineas.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-liquidos\tableristas\planilla-embarque\planilla-embarque.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-liquidos\tableristas\mangueras-carga\mangueras-carga.component.ts" />
+    <!-- carga solido TS -->
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\carga-solidos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\operaciones\grafico-carga\grafico-carga.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\operaciones\manos\manos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas\balanzas.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\tableristas\balanzas-ritmos\balanzas-ritmos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\tableristas\info-adicional\info-adicional.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\carga\carga-solidos\tableristas\umap\umap.component.ts" />
+    <!-- Calidad TS -->
+    <TypeScriptCompile Include="src\app\modulos\calidad\liquidos\liquidos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\calidad\solidos\solidos.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\calidad\solidos\nir\nir.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\calidad\calidad.component.ts" />
+    <TypeScriptCompile Include="src\app\modulos\calidad\calidad-routing.module.ts" />
+    <TypeScriptCompile Include="src\app\modulos\calidad\calidad.module.ts" />
+    <Content Include="VICSCATOPROD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VICSCATOQA.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include=".browserslistrc" />
+    <Content Include=".editorconfig" />
+    <Content Include=".gitignore" />
+    <Content Include=".vscode\launch.json" />
+    <Content Include="angular.json" />
+    <Content Include="e2e\tsconfig.json" />
+    <Content Include="package-lock.json" />
+    <Content Include="package.json" />
+    <Content Include="proxy.conf.json" />
+    <Content Include="README.md" />
+    <Content Include="src\assets\.gitkeep" />
+    <Content Include="tsconfig.app.json" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tsconfig.spec.json" />
+    <Content Include="tslint.json" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.Actividades\Molinos.Scato.Actividades.csproj">
+      <Project>{98EC024C-6439-44B1-8B1E-29E457B2201F}</Project>
+      <Name>Molinos.Scato.Actividades</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dependencias\Molinos.Scato.Dependencias.csproj">
+      <Project>{52DC0858-F415-4FE7-AEA5-1E60652DB421}</Project>
+      <Name>Molinos.Scato.Dependencias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Dominio\Molinos.Scato.Dominio.csproj">
+      <Project>{9BC79C49-4F39-409F-A3D4-F1DABB8122B4}</Project>
+      <Name>Molinos.Scato.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Servicios\Molinos.Scato.Servicios.csproj">
+      <Project>{15B3E0D2-6217-493A-A690-158C497F5318}</Project>
+      <Name>Molinos.Scato.Servicios</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <DefaultItemExcludes>node_modules/**;$(DefaultItemExcludes)</DefaultItemExcludes>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61523</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/Scato.WebPuerto</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForPackageDependsOn>
+      CollectAngularFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForPackageDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CopyAllFilesToSingleFolderForMsdeployDependsOn>
+      CollectAngularFiles;
+      $(CopyAllFilesToSingleFolderForPackageDependsOn);
+    </CopyAllFilesToSingleFolderForMsdeployDependsOn>
+  </PropertyGroup>
+  <Target Name="CollectAngularFiles">
+    <ItemGroup>
+      <GeneratedScripts Include="dist\**\*" />
+      <FilesForPackagingFromProject Include="%(GeneratedScripts.Identity)">
+        <DestinationRelativePath>dist\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+      </FilesForPackagingFromProject>
+    </ItemGroup>
+  </Target>
+</Project>

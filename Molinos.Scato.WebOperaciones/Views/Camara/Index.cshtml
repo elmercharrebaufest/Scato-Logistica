@@ -1,0 +1,41 @@
+﻿@using Molinos.Scato.WebOperaciones.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@{
+    /**/
+
+    ViewBag.Title = Textos.AFIP_MenuTitulo_Camaras;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/camara.js")"></script>
+<link href="~/Content/camaras.css" rel="stylesheet" />
+<div class="col-12">
+    <h1 class="titulo-center">@ViewBag.Title</h1>
+</div>
+@if (camaras.Count() > 0)
+{
+    <div id="camaraContainer" class="row mx-2">
+        <div class="col">
+            <i class="mx-2 fa fa-camera fa-2x second" style="float: left;"></i>
+            @Html.DropDownList("camaras", camaras, new { @class = " btn btn-secondary dropdown-toggle", @id = "camara" })
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="border rounded" style="border-color:black !important;border-width:3px !important;" id="imagen-camara" data-url-foto="@Url.Action("TomarFoto")">
+            
+            @*<img id="imagen-camara" src="@Url.Action("TomarFoto", new { codigo = camaras.First().Value, timestamp = DateTime.Now.Millisecond })" data-url-foto="@Url.Action("TomarFoto")" alt="Error al obtener imagen" style="max-height: 560px; margin-bottom: 10%;" />*@
+        </div>
+    </div>
+}
+
+@if (camaras.Count() == 0)
+{
+    <div class="row alert-warning mx-5">
+        <div class="col-12 m-auto">
+            <h1 class="titulo-center">@Textos.AFIP_Camaras_NoDisponible</h1>
+        </div>
+        <div class="col-12 text-center">
+            <i class="fa fa-camera  fa-10x" aria-hidden="true"></i>
+        </div>
+    </div>
+}

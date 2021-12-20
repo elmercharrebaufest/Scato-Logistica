@@ -1,0 +1,130 @@
+﻿@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Recursos
+
+@model Molinos.Scato.Dominio.Dto.CargaDto
+@Html.ValidationSummary(true)
+
+
+<div id="links"
+     data-url-buscar-vapor="@Url.Action("BuscarVapor", "Consultas")"
+     data-url-buscar-vapores="@Url.Action("BuscarVapores", "Consultas")"
+     data-url-buscar-bodega="@Url.Action("BuscarBodega", "Consultas")"
+     data-url-buscar-bodegas="@Url.Action("BuscarBodegas", "Consultas")"
+     data-url-buscar-exportador="@Url.Action("BuscarExportador", "Consultas")"
+     data-url-buscar-exportadores="@Url.Action("BuscarExportadores", "Consultas")"
+     data-url-buscar-destino="@Url.Action("BuscarDestino", "Consultas")"
+     data-url-buscar-destinos="@Url.Action("BuscarDestinos", "Consultas")"
+     data-url-buscar-material="@Url.Action("BuscarMaterialPuerto", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMaterialesPuerto", "Consultas")"></div>
+
+@Html.HiddenFor(m => m.Tipo)
+<div class="control-group">
+    @Html.LabelFor(model => model.Id, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Id, new { @class = "input-large validarPositivo" })
+        @Html.ValidationMessageFor(model => model.Id)
+        @Html.ValidationMessage("CargaRepetidaBalanzaPuerto")
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.NumeroBalanza, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NumeroBalanza, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.NumeroBalanza)
+        @Html.ValidationMessage("NoExisteBalanzaBalanzaPuerto")
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Vapor, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Vapor, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.Vapor)
+        @Html.ValidationMessage("VaporDistintoInicioFin")
+        @Html.HiddenFor(model => model.VaporId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Bodega, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Bodega, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.Bodega)
+        @Html.ValidationMessage("BodegaDistintoInicioFin")
+        @Html.HiddenFor(model => model.BodegaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Exportador, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Exportador, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.Exportador)
+        @Html.ValidationMessage("ExportadorDistintoInicioFin")
+        @Html.HiddenFor(model => model.ExportadorId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Destino, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Destino, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.Destino)
+        @Html.ValidationMessage("DestinoDistintoInicioFin")
+        @Html.HiddenFor(model => model.DestinoId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Material, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Material, new { @class = "control input-large" })
+        @Html.ValidationMessageFor(model => model.Material)
+        @Html.ValidationMessage("MaterialDistintoInicioFin")
+        @Html.HiddenFor(model => model.MaterialId)
+    </div>
+</div>
+
+
+<div class="control-group">
+    @Html.LabelFor(model => model.ToneladasAW, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ToneladasAW, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.ToneladasAW)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Fecha, new { @class = "control-label" })
+    <div class="controls">
+        <input type="datetime" id="Fecha" name="Fecha" class="control input-large" data-val="true" value="@string.Format("{0:dd/MM/yyyy HH:mm}", Model.Fecha)">
+        @Html.ValidationMessageFor(model => model.Fecha)
+        @Html.ValidationMessage("FechaInvalida")
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.FechaInicio, new { @class = "control-label" })
+    <div class="controls">
+        <input type="datetime" id="Fecha" name="Fecha" class="control input-large" data-val="true" value="@string.Format("{0:dd/MM/yyyy HH:mm}", Model.FechaInicio)">
+        @Html.ValidationMessageFor(model => model.FechaInicio)
+        @Html.ValidationMessage("FechaInicioInvalida")
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.CargaOpuesta_Id, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EditorFor(model => model.CargaOpuesta_Id)
+        @Html.ValidationMessageFor(model => model.CargaOpuesta_Id)
+    </div>
+</div>
+@Html.ValidationMessage("CrearBalanzaPuerto")
+@Html.ValidationMessage("CrearBalanzaPuerto1")
+@Html.ValidationMessage("CrearBalanzaPuertoCargaIntermedio")
+
+
+<script>
+    $(document).ready(
+        function () {
+            $('#FechaInicio, #Fecha').datetimepicker({
+                format: 'dd/mm/yyyy hh:ii',
+                autoclose: true
+            });
+
+        });
+</script>

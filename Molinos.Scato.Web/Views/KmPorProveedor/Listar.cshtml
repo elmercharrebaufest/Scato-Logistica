@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<KmPorProveedorDto>) ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "KmPorProveedor"),
+        grilla.Columna("Centro.Descripcion", Textos.AdministracionDistancia_CentroOrigen, c => c.CentroDescripcion),
+        grilla.Columna("Cliente.Descripcion", Textos.AdministracionDistancia_ClienteDestino, c => c.ClienteDescripcion),
+        grilla.Columna("Localidad.Provincia.Descripcion", Textos.AdministracionDistancia_Provincia, c => c.ProvinciaDescripcion),
+        grilla.Columna("Localidad.Descripcion", Textos.AdministracionDistancia_Localidad, c => c.LocalidadDescripcion),
+        grilla.Columna("KmARecorrer", Textos.AdministracionDistancia_KmARecorrer, c => c.KmARecorrer)
+        ))
+</div>

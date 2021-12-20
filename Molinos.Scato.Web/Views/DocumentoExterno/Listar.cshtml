@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<DocumentoExternoDto>)ViewBag.Items;
+}
+<style>
+    .margen{
+        margin-left: 23%;
+    }
+    .centrar{
+        text-align: center;
+    }
+</style>
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(this.Html, "DocumentoExterno"),
+    grilla.Columna("ArchivoRutaDestino", "Descarga", x => @Html.ActionLink("Descargar", "DescargarArchivos", "DocumentoExterno", new { id = x.Id }, new { @class = "btn btn-primary margen" })),
+    grilla.Columna("TipoDocumentoIngreso", Textos.TipoDocumentoIngreso, t => ((TipoDocumentoIngreso)t.TipoDocumentoIngreso).DisplayEnum()),
+    grilla.Columna("NumeroDeDocumento", Textos.Chofer_NumeroDocumentoIdentidad),
+    grilla.Columna("Fecha", Textos.Fecha, x => FormattingHtmlHelper.Formatted(x.Fecha))
+))
+

@@ -1,0 +1,118 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ReglaDeAnalisisObligatorioDto
+@{
+     var provincias = (IEnumerable<SelectListItem>)ViewBag.Provincias;
+}
+
+<style>
+
+    .span6 {
+        width: 430px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .form-horizontal .control-label {
+        width: 170px;
+        font-size: 12px;
+    }
+
+    #dialogo-editar-body {
+        padding-right: 0px !important;
+    }
+
+    #dialogo-editar .control-group {
+        margin-bottom: 5px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    label.checkbox {
+        font-size: 12px;
+    }
+
+    .tablaDatos label {
+        margin-bottom: 0;
+    }
+
+    .control-label2 {
+        width: auto;
+        display: inline;
+        font-size: 12px;
+    }
+
+    .help-inline {
+        padding-left: 0;
+    }
+
+    #dialogo-editar-body {
+        max-height: 440px !important;
+        width: 905px !important;
+    }
+
+    .span6 {
+        width: 400px;
+    }
+</style>
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"
+     data-url-buscar-localidad="@Url.Action("BuscarProcedenciaUnica", "Consultas")"
+     data-url-buscar-localidades="@Url.Action("BuscarProcedencias", "Consultas")"></div>
+
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.Hidden("RegladeAnalisisObligatorioId", Model == null ? 0 : Model.Id)
+            @Html.LabelFor(m => m.MaterialDescripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(m => m.MaterialDescripcion)
+                @Html.HiddenFor(model => model.MaterialId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.LocalidadDescripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.LocalidadDescripcion, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(m => m.LocalidadDescripcion)
+                @Html.HiddenFor(model => model.LocalidadId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CantidadAnalisis, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CantidadAnalisis, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(m => m.CantidadAnalisis)
+                @Html.HiddenFor(model => model.CantidadAnalisis)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(m => m.Cosecha, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-large cosechaValidacion cosechaValidacionDiferencia", autocomplete = "off", data_error = string.Format(Textos.Atencion_CosechaInvalida), data_errordiferencia = string.Format(Textos.Atencion_CosechaInvalidaDiferencia) })
+                @Html.ValidationMessageFor(m => m.Cosecha)
+                @Html.HiddenFor(model => model.Cosecha)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ProvinciaDescripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.ProvinciaId, provincias, new { @class = "control", id = "bocaDestino" })
+                @Html.ValidationMessageFor(model => model.ProvinciaId)
+            </div>
+        </div>
+
+
+        <br />
+        <br />
+    </div>
+</div>

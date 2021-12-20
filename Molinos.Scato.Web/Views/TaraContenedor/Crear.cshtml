@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.TaraContenedorDto
+
+@{
+    ViewBag.Title = Textos.Crear;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.TaraContenedor_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)           
+}

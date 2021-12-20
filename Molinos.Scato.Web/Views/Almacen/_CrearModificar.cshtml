@@ -1,0 +1,70 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@model Molinos.Scato.Dominio.Dto.AlmacenDto
+
+@{
+    var materiales = (ListaPaginada<MaterialDto>)ViewBag.Materiales;
+}
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Descripcion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(m => m.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.DescripcionCorta, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.DescripcionCorta, new {@class = "input-large"})
+        @Html.ValidationMessageFor(m => m.DescripcionCorta)
+    </div>
+</div>
+        
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoSAP, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.CodigoSAP, new {@class = "control input-small"})
+        @Html.ValidationMessageFor(m => m.CodigoSAP)
+    </div>
+</div>
+
+<div class="row">
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoONCCA, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoONCCA, new {@class = "control input-small"})
+                @Html.ValidationMessageFor(m => m.CodigoONCCA)
+            </div>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.EsTanqueVino, new {@class = "control-label"})
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.EsTanqueVino, new {@class = "control"})
+                @Html.ValidationMessageFor(m => m.EsTanqueVino)
+            </div>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.EsSojaSustentable, new {@class = "control-label"})
+            <div class="controls">
+                @Html.CheckBoxFor(m => m.EsSojaSustentable, new {@class = "control"})
+                @Html.ValidationMessageFor(m => m.EsSojaSustentable)
+            </div>
+        </div>
+    </div>
+</div>
+        
+@*@Html.Grilla(materiales,
+        grid => grid.Columns(
+        grid.Columna("CodigoSAP", Textos.Codigo),
+        grid.Columna("Descripcion", Textos.Descripcion),
+        grid.ColumnaModificar(Html, "Material")))     *@   

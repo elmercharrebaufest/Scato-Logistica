@@ -1,0 +1,13 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.LoteDto
+@{
+    ViewBag.Title = Textos.Lote_Ver;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Seleccionar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Lote_Ver }))
+{
+    @Html.Partial("Seleccionar", Model)           
+}

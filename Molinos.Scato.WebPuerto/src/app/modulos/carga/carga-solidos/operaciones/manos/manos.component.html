@@ -1,0 +1,141 @@
+<div id="manosDeEmbarque" class="mt-4 shadow bg-white">
+    <div style='width: 100%; background-color: white;'>
+        <app-collapse-button collapseSelectorId="manosTabiques" class='px-4'></app-collapse-button>
+        <h4 class="colorTitle pb-4 px-4 m-0">Conformación de manos para embarque</h4>
+    </div>
+    <form id="manosTabiques" class="collapse show px-4 bg-white" [formGroup]="manosYTabiquesForm">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-active">
+                    <th scope="col">Mano</th>
+                    <th scope="col" colspan="2">Producto</th>
+                    <th scope="col">Celda</th>
+                    <th scope="col" colspan="2">Sentido</th>
+                    <th scope="col" colspan="2">% por mano</th>
+                    <th scope="col" colspan="2">Apertura portón</th>
+                    <th scope="col" colspan="2">Más producción</th>
+                    <th scope="col" colspan="6">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="manosDeEmbarque">
+                <ng-container *ngFor="let mano of manosYTabiquesForm.get('manosDeEmbarque')['controls']; let i=index"
+                    [formGroupName]="i">
+                    <tr>
+                        <td class="font-weight-bold text-center" scope="col" rowspan="7">
+                            <input type="text" formControlName="mano" style="text-align:center;" />
+                        </td>
+                        <ng-container [formGroup]="mano.controls.moduloDeCargaManosDeEmbarqueDetalle.controls[0]">
+                            <td scope="col" colspan="2">
+                                <select formControlName="materialPuerto" [compareWith]="compareMateriales">
+                                    <option [ngValue]="null"></option>
+                                    <option *ngFor="let p of productos" [ngValue]="p">{{ p.descripcionCorta }}</option>
+                                </select>
+                            </td>
+                            <td scope="col">
+                                <select formControlName="celdaManoDeEmbarque" [compareWith]="compareCeldas">
+                                    <option [ngValue]="null"></option>
+                                    <option *ngFor="let p of celdasManoDeEmbarque" [ngValue]="p">{{ p.nombre }}</option>
+                                </select>
+                            </td>
+                            <td scope="col" colspan="2">
+                                <select formControlName="sentidoManoDeEmbarque" [compareWith]="compareSentidos">
+                                    <option [ngValue]="null"></option>
+                                    <option class="{{'sentido sentido'+i +'-'+'0'+'-'+p.posicion}}"
+                                        *ngFor="let p of sentidosManoDeEmbarque" [ngValue]="p">{{ p.nombre }}</option>
+                                </select>
+                            </td>
+                            <td scope="col" colspan="2">
+                                <input type="text" formControlName="porcentajePorMano" />
+                            </td>
+                            <td scope="col" colspan="2">
+                                <!-- <input type="text" formControlName="aperturaPorton"/> -->
+                                <select formControlName="aperturaPorton">
+                                    <option value="null"></option>
+                                    <option value='true'>Si</option>
+                                    <option value='false'>No</option>
+                                </select>
+                            </td>
+                            <td scope="col" colspan="2">
+                                <select formControlName="masProduccion">
+                                    <option value="null"></option>
+                                    <option value='true'>Si</option>
+                                    <option value='false'>No</option>
+                                </select>
+                            </td>
+                        </ng-container>
+                        <td scope="col" colspan="6" rowspan="7">
+                            <textarea class="replaceToDiv" formControlName="observaciones"></textarea>
+                        </td>
+                    </tr>
+                    <ng-container formArrayName="moduloDeCargaManosDeEmbarqueDetalle">
+                        <tr *ngFor="let datosCelda of mano.controls.moduloDeCargaManosDeEmbarqueDetalle.controls; let j=index"
+                            [formGroupName]="j">
+                            <ng-container *ngIf="j != 0">
+                                <td scope="col" colspan="2">
+                                    <select formControlName="materialPuerto" [compareWith]="compareMateriales">
+                                        <option [ngValue]="null"></option>
+                                        <option *ngFor="let p of productos" [ngValue]="p">{{ p.descripcionCorta }}</option>
+                                    </select>
+                                </td>
+                                <td scope="col">
+                                    <select formControlName="celdaManoDeEmbarque" [compareWith]="compareCeldas">
+                                        <option [ngValue]="null"></option>
+                                        <option *ngFor="let p of celdasManoDeEmbarque" [ngValue]="p">{{ p.nombre }}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td scope="col" colspan="2">
+                                    <select formControlName="sentidoManoDeEmbarque" [compareWith]="compareSentidos">
+                                        <option [ngValue]="null"></option>
+                                        <option class="{{'sentido sentido'+i +'-'+j+'-'+p.posicion}}"
+                                            *ngFor="let p of sentidosManoDeEmbarque" [ngValue]="p">{{ p.nombre }}
+                                        </option>
+                                    </select>
+                                </td>
+                                <td scope="col" colspan="2">
+                                    <input type="text" formControlName="porcentajePorMano" />
+                                </td>
+                                <td scope="col" colspan="2">
+                                    <select formControlName="aperturaPorton">
+                                        <option value="null"></option>
+                                        <option value='true'>Si</option>
+                                        <option value='false'>No</option>
+                                    </select>
+                                </td>
+                                <td scope="col" colspan="2">
+                                    <select formControlName="masProduccion">
+                                        <option value="null"></option>
+                                        <option value='true'>Si</option>
+                                        <option value='false'>No</option>
+                                    </select>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        </table>
+
+        <div class="row mt-4">
+            <div class="col-5">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-active">
+                            <th scope="col">Tabique</th>
+                            <th scope="col">Entre columna</th>
+                            <th scope="col">Y columna</th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="tabiques">
+                        <tr *ngFor="let item of manosYTabiquesForm.get('tabiques')['controls']; let i=index"
+                            [formGroupName]="i">
+                            <td scope="col" style="height: 3rem;"><input type="number" formControlName="tabique" /></td>
+                            <td scope="col"><input type="number" formControlName="entreColumna" /></td>
+                            <td scope="col"><input type="number" formControlName="yColumna" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

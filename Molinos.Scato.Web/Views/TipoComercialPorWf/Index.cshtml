@@ -1,0 +1,44 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@{
+    ViewBag.Title = Textos.TipoComercialPorWf_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Administracion_TiposComerciales</div>
+</div>
+
+<ul class="nav nav-tabs">
+    @if (PermisosHelper.Is(PermisosScato.AbmTipoComercial))
+    {
+        <li>
+            @Html.ActionLink(Textos.TipoComercial_Titulo, "Index", "TipoComercial")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.AbmTipoComercialPorWf))
+    {
+        <li class="active">
+            @Html.ActionLink(Textos.TipoComercialPorWf_Titulo, "Index", "TipoComercialPorWf")
+        </li>
+    }
+</ul>
+
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" ,@class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_TiposComercialesPorWf)
+                <input type="text" name="filtro" class="input-large" />
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                
+            }
+        </div>
+        @Html.ActionLink(Textos.TipoComercial_Nuevo, "Crear", "TipoComercialPorWf", null , new {@class = "ajax-editar-link btn btn-primary pull-right"})
+    </div>
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

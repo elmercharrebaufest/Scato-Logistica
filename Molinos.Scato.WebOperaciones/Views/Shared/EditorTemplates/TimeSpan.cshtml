@@ -1,0 +1,12 @@
+﻿@using System.Globalization
+@using Molinos.Scato.WebOperaciones.Helpers
+@model TimeSpan?
+@Html.TextBox(String.Empty, Model.FormattedTimeFixed(), new {@class = "form-control", style="background-color: white" })
+
+<script type="text/javascript">
+    $(function() {
+        $('#@Html.IdForModel()').datetimepicker({
+            format: 'HH:mm'
+        });
+    });
+</script>

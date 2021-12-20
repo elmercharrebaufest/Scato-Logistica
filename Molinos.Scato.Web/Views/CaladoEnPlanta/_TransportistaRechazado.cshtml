@@ -1,0 +1,52 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = Textos.VerificacionCamionRechazado_Titulo;
+    string workflow = ViewBag.Workflow;
+    Layout = null;
+}
+
+@using (Html.BeginForm("TransportistaRechazado", "CaladoEnPlanta", FormMethod.Post, new { @class = "causaBlock" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.Hidden("Usuario", Model.NombreUsuario)
+    @Html.HiddenFor(model => model.Actividad)
+    @Html.HiddenFor(model => model.ActividadXaml)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    <div id="cladoEnPlantaForm"></div>
+    <div class="modal fade" id="dialogo-rechazar">
+        <div class="modal-header alert-error">
+            <button type="button" class="close dialogo-rechazar-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h5><strong>@Textos.VerificacionCamionRechazado_Titulo</strong></h5>
+        </div>
+        <div class="modal-body" id="dialogo-cerear-body">
+            <div>
+                @Textos.VerificacionCamionRechazado_VehiculoRechazado
+
+                <br />
+                <br />
+
+                @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge pull-right" })
+
+                <br />
+                <br />
+
+                @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large pull-right" })
+
+                <br />
+                <br />
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn dialogo-rechazar-boton">@Textos.Rechazar</button>
+            <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+        </div>
+    </div>
+
+}

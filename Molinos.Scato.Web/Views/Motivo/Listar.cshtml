@@ -1,0 +1,15 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<MotivoDto>)ViewBag.Items;
+}
+
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminarModificar(this.Html, "Motivo"),
+            grid.Columna("Descripcion", Textos.Descripcion),
+            grid.Columna("DescripcionCorta",  Textos.DescripcionCorta)))

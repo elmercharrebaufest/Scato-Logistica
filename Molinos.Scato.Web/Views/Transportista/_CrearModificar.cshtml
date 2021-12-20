@@ -1,0 +1,55 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.TransportistaDto
+@using Molinos.Scato.Web.Helpers
+@{
+    var provincias = (IEnumerable<SelectListItem>)ViewBag.Provincias;
+    var localidades = (IEnumerable<SelectListItem>)ViewBag.Localidades;
+}
+
+@Html.ValidationSummary(true)
+@Html.ValidationMessage("")
+<div class="control-group">
+    @Html.LabelFor(model => model.Cuit, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Cuit, new { @class = "input-xlarge cuitValido", data_error_cuit_invalido = string.Format(Textos.CuitInvalido) })
+        @Html.ValidationMessageFor(model => model.Cuit)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.RazonSocial, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.RazonSocial, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.RazonSocial)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Domicilio, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Domicilio, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Domicilio)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Provincia, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ProvinciaId, provincias, Textos.Default_Provincia, new { id = "provinciasDropDown" })
+        @Html.ValidationMessageFor(model => model.ProvinciaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Localidad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.LocalidadId, localidades, Textos.Default_Localidad, new { id = "localidadesDropDown" })
+        @Html.ValidationMessageFor(model => model.LocalidadId)
+        @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
+        @Html.Hidden("ValorDefault", Textos.Default_Localidad)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.MedioDePago, new { @class = "control-label" })
+    <div class="controls">
+        @Html.EnumDropDownListFor(model => model.MedioDePago, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.MedioDePago)
+    </div>
+</div>
+

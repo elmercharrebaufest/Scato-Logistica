@@ -1,0 +1,46 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.FormatoDeImpresion_Titulo;
+    var impresoras = (IEnumerable<SelectListItem>)ViewBag.Impresoras;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.FormatoDeImpresion_Titulo</div>
+</div>
+<script src="@Url.Script("~/Scripts/formatoDeImpresion.index.js")" type="text/javascript"></script>
+<div class="container-fluid content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris" style="width:auto">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                @Html.Label(Textos.Filtrar_FormatoDeImpresion)
+                <input type="text" name="filtro" class="input-large"/>
+                <button type="submit" class="btn">@Textos.Filtrar</button>
+                
+            }
+        </div>
+        @Html.ActionLink(Textos.FormatoDeImpresion_Nuevo, "Crear", "FormatoDeImpresion", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
+    </div>
+    
+    <div id="gridContainer" data-grid-url="@Url.Action("Index")">
+        @Html.Partial("Listar")
+    </div>
+</div>
+
+<div id="diag-imprimir" data-imprimir-url ="@Url.Action("Imprimir", "FormatoDeImpresion")">
+    <div class="modal fade hide" id="dialogo-imprimir">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.SeleccionarImpresora_Titulo</h5>
+    </div>
+        <div class="modal-body" id="dialogo-imprimir-body">
+            @Textos.Impresora:
+            <h5>@Html.DropDownList("ImpresoraDropDown",impresoras)</h5>
+        </div>
+    <div class="modal-footer">
+        <button id="dialogo-imprimir-imprimir" class="btn">@Textos.Imprimir</button>
+        <button id="dialogo-imprimir-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+    </div>
+</div>
+</div>

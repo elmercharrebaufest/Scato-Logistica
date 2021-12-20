@@ -1,0 +1,284 @@
+﻿@model Molinos.Scato.Web.Models.PlanillaF515ViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+<script src="~/Scripts/scatocommon.js"></script>
+<script src="~/Scripts/scatocommon.validate.js"></script>
+<script src="~/Scripts/autocompletar.js"></script>
+<script src="@Url.Script("~/Scripts/planillaf515.js")"></script>
+@*<script src="~/Scripts/validarFechas.js"></script>*@
+
+<script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
+<link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+
+
+<script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+
+<style>
+    /*.elementoEnLinea {
+        display: inline;
+    }*/
+
+    .margen-bottom {
+        margin-bottom: 2px;
+    }
+
+    .float-left {
+        float: left;
+    }
+
+    select, textarea, input[type='text'], input[type='password'], input[type='datetime'], input[type='datetime-local'], input[type='date'], input[type='month'], input[type='time'], input[type='week'], input[type='number'], input[type='email'], input[type='url'], input[type='search'], input[type='tel'], input[type='color'], .uneditable-input {
+        margin-bottom: 0px;
+    }
+
+    select {
+        width: 150px;
+    }
+
+    input, textarea, .uneditable-input {
+        width: 136px;
+    }
+</style>
+
+<div id="links"
+     data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"
+     data-url-buscar-proveedorconboca-unico="@Url.Action("BuscarProveedorConBocaDestinoUnico", "Consultas")"
+     data-url-buscar-proveedoresconboca="@Url.Action("BuscarProveedoresConBocaDestino", "Consultas")"
+     data-url-buscar-entregador="@Url.Action("BuscarEntregador", "Consultas")"
+     data-url-buscar-entregadores="@Url.Action("BuscarEntregadores", "Consultas")"
+     data-url-obtener-carta-porte="@Url.Action("ObtenerCartaPorte", "CargarCartaPorte")"
+     data-url-obtener-carta-porte-redespacho="@Url.Action("ObtenerCartaPorteRedespacho", "IngresarCartaPorteRedespacho")"
+     data-url-obtener-carta-porte-ctg="@Url.Action("ObtenerCartaPorteCtg", "CargarCartaPorte")"
+     data-url-buscar-centros="@Url.Action("BuscarCentros", "Consultas")"
+     data-url-buscar-centro-unico="@Url.Action("BuscarCentroUnico", "Consultas")"
+     data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+     data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"
+     data-url-buscar-procedencias="@Url.Action("BuscarProcedencias", "Consultas")"
+     data-url-buscar-procedencia-unica="@Url.Action("BuscarProcedenciaUnica", "Consultas")"
+     data-url-buscar-bocas="@Url.Action("ObtenerBocasDestino", "Consultas")"
+     data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
+     data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
+     data-url-obtener-clientes-sap="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-cliente-unico="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-obtener-filtros="@Url.Action("ObtenerFiltros", "Reportes")"
+     data-url-obtener-foto-mesa="@Url.Action("TomarFotoMesaDigitalizacion", "CargarCartaPorte")"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "ListadoDeCalidades")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "ListadoDeCalidades")"
+
+</div>
+<div class="container">
+    <div class="titSecciones">@Textos.PlanillaF515</div>
+</div>
+@{
+    ViewBag.Title = Textos.PlanillaF515;
+}
+@using (Ajax.BeginForm(null, null, new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "causaBlock" }))
+{
+    @Html.ValidationSummary(true)
+    <div class="accordion row-fluid">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                    <i class="icon-chevron-down"></i>
+                    @Textos.Filtrar
+                </a>
+            </div>
+            <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <div class="span4" style="border: 0px;">
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.CentroId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.CentroId, (IEnumerable<SelectListItem>)ViewBag.Centros, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.CentroId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.TipoComercialId, (IEnumerable<SelectListItem>)ViewBag.TipoComercial, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.TipoComercialId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.MaterialId, (IEnumerable<SelectListItem>)ViewBag.Materiales, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.MaterialId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.AlmacenOrigenId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <didesdev class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.AlmacenOrigenId, (IEnumerable<SelectListItem>)ViewBag.AlmacenOrigen, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.AlmacenOrigenId)
+                            </didesdev>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.AlmacenDestinoId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.AlmacenDestinoId, (IEnumerable<SelectListItem>)ViewBag.AlmacenOrigen, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.AlmacenDestinoId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.WorkflowId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.WorkflowId, (IEnumerable<SelectListItem>)ViewBag.Workflows, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.WorkflowId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom FechaDesde">
+                            @Html.LabelFor(model => model.FechaIngresoDesde, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBox("FechaIngresoDesde", Model.FechaIngresoDesde, new { @class = "control ", @tabindex = "-1" })
+                                @Html.ValidationMessageFor(model => model.FechaIngresoDesde)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom FechaHasta">
+                            @Html.LabelFor(model => model.FechaIngresoHasta, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBox("FechaIngresoHasta", Model.FechaIngresoHasta, new { @class = "control ", @tabindex = "-1" })
+                                @Html.ValidationMessageFor(model => model.FechaIngresoHasta)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4" style="border: 0px;">
+
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.Usuario, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBoxFor(model => model.Usuario, Textos.Usuario_Nombre, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.Usuario)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.Patente, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBoxFor(model => model.Patente, Textos.Patente, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.Patente)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.TipoPesadaId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.TipoPesadaId, (IEnumerable<SelectListItem>)ViewBag.TipoPesada, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.TipoPesadaId)
+
+                            </div>
+                        </div>
+
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.BalanzaBrutoId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.BalanzaBrutoId, (IEnumerable<SelectListItem>)ViewBag.Balanzas, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.BalanzaBrutoId)
+
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.BalanzaTaraId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.BalanzaTaraId, (IEnumerable<SelectListItem>)ViewBag.Balanzas, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.BalanzaTaraId)
+
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.TipoVehiculoInt, (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo, new { @class = "control ", @id = "tipoVehiculoDropdown" })
+                                @Html.ValidationMessageFor(model => model.TipoVehiculo)
+                                @Html.HiddenFor(model => model.TipoVehiculoInt)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom FechaDesdeEgreso">
+                            @Html.LabelFor(model => model.FechaSalidaDesde, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBox("FechaSalidaDesde", Model.FechaSalidaDesde.Value.ToString("dd/MM/yyyy HH:mm"), new { @class = "control ", @tabindex = "-1" })
+                                @Html.ValidationMessageFor(model => model.FechaSalidaDesde)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom FechaHastaEgreso">
+                            @Html.LabelFor(model => model.FechaSalidaHasta, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBox("FechaSalidaHasta", Model.FechaSalidaHasta.Value.ToString("dd/MM/yyyy HH:mm"), new { @class = "control ", @tabindex = "-1" })
+                                @Html.ValidationMessageFor(model => model.FechaSalidaHasta)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.ProveedorId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBoxFor(model => model.ProveedorDesc, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.ProveedorDesc)
+                                @Html.ValidationMessageFor(model => model.ProveedorId)
+                                @Html.HiddenFor(model => model.ProveedorId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.EntregadorId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBoxFor(model => model.EntregadorDesc, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.EntregadorDesc)
+                                @Html.ValidationMessageFor(model => model.EntregadorId)
+                                @Html.HiddenFor(model => model.EntregadorId)
+
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.CorredorId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.TextBoxFor(model => model.CorredorDesc, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.CorredorDesc)
+                                @Html.HiddenFor(model => model.CorredorId)
+
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.BocaDestinoId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.BocaDestinoId, (IEnumerable<SelectListItem>)ViewBag.BocasDestino, new { @class = "control" , @disabled = "disabled"})
+                                @Html.ValidationMessageFor(model => model.BocaDestinoId)
+
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.NivelDeDetalleId, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.NivelDeDetalleId, (IEnumerable<SelectListItem>)ViewBag.NivelDetalle, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.NivelDeDetalleId)
+                            </div>
+                        </div>
+                        <div class="control-group margen-bottom">
+                            @Html.LabelFor(model => model.RecorridosActivos, new { @class = "control-label small elementoEnLinea float-left" })
+                            <div class="controls-small elementoEnLinea">
+                                @Html.DropDownListFor(model => model.RecorridosActivos, (IEnumerable<SelectListItem>)ViewBag.RecorridosActivos, new { @class = "control" })
+                                @Html.ValidationMessageFor(model => model.RecorridosActivos)
+                            </div>
+                        </div>
+                        <br /><br />
+                        <div class="control-group margen-bottom">
+                            <div class="controls text-right">
+                                <button type="submit" id="btnBuscar" class="btn findensayos-btn">
+                                    <span class="glyphicon glyphicon-search">Buscar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="autocompleteCorr">
+
+    </div>
+
+}
+<div id="gridContainer">
+</div>

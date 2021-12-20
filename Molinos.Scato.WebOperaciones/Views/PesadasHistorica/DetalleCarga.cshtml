@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.WebOperaciones.Helpers
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@{
+    /**/
+
+    ViewBag.Title = "Detalle de Carga";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var items = (ListaPaginada<BalanzadaDto>)ViewBag.Items;
+}
+
+<div class="container-fluid">
+
+    <div class="content form">
+        <div>
+            <h1 class="titulo-center">@ViewBag.Title</h1>
+        </div>
+        <br />
+        <div id="gridContainer">
+            @Html.Grilla(items,
+                grilla => grilla.Columns(
+                    grilla.Columna("Fecha", Textos.AFIP_Balanzada_Fecha),
+                    grilla.Columna("PesoBruto", Textos.AFIP_Balanzada_PesoBruto),
+                        grilla.Columna("PesoTara", Textos.AFIP_Balanzada_PesoTara),
+                        grilla.Columna("PesoNeto", Textos.AFIP_Balanzada_PesoNeto),
+                        grilla.Columna("Capacidad", Textos.AFIP_Balanzada_Capacidad)
+            ))
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="javascript:void(0);" onclick="history.go(-1);" class="ajax-editar-link btn btn-success" id="backLink">Volver</a>
+        </div>
+    </div>
+</div>

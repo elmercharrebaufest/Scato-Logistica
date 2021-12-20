@@ -1,0 +1,191 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Models
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+@{
+    ViewBag.Title = Textos.ListaDeCamiones_Titulo;
+    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
+    var estados = (IEnumerable<SelectListItem>)ViewBag.Estados;
+    var cookie = new CookieUsuario();
+    var refresco = (string)cookie.Valor("Refresco") == "true" ? "checked" : string.Empty;
+    var mostrarAlertaPaseAutomatico = (bool)(ViewBag.MostrarValidacionEtapaAutomatica ?? false);
+    var mensajeAlertaPaseAutomatico = (string)ViewBag.MensajeValidacionEtapaAutomatica;
+}
+
+<script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/listaDeCamiones.js")"></script>
+
+@Html.Hidden("ListaAutomatizadaUrl", Url.Action("Index", "ListaDeTareasAutomatizada"))
+@Html.Hidden("BalanzaAutomatizadaUrl", Url.Action("Index", "BalanzaAutomatica"))
+@Html.Hidden("VenimosDeListaDeTareasAutomatizada", (bool)ViewBag.VenimosDeListaDeTareasAutomatizada)
+@Html.Hidden("mensajeAlertPaseAutomatico", mensajeAlertaPaseAutomatico)
+
+@if (mostrarAlertaPaseAutomatico && !string.IsNullOrEmpty(mensajeAlertaPaseAutomatico))
+{
+    <script type="text/javascript">
+        MostrarAlertaInfo($('#mensajeAlertPaseAutomatico').val(), 10000);
+    </script>
+}
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Menu_Administracion - @Textos.ListaDeCamiones_Titulo</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form-lista", @class = "form-search", onsubmit = "CopiarFiltros()" }))
+    {
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+
+                    <div class="checkbox pull-right topRight">
+                        <label>
+                            <input name="checkbox" id="modoDeRefresco" type="checkbox" value="1" @refresco />@Textos.ListaDeCamiones_Refrescar
+                        </label>
+                    </div>
+                    <div id="DropDownColumnas" class="btn-group pull-right topRight">
+                        <a id="DropDownColumnasBoton" class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            @Textos.Columnas
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu columnasdropdown">
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TipoVehiculo" id="checkTipoVehiculo" checked="@(Model.Columnas.Contains("TipoVehiculo") || Model.Columnas[0].Contains("TipoVehiculo"))" />@Textos.Workflow_TipoVehiculo
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Patente" id="checkPatente" checked="@(Model.Columnas.Contains("Patente") || Model.Columnas[0].Contains("Patente"))" />@Textos.Camion_Patente
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="ProximaEtapa" id="checkProximaEtapa" checked="@(Model.Columnas.Contains("ProximaEtapa") || Model.Columnas[0].Contains("ProximaEtapa"))" />@Textos.Workflow_ProximaAccion
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Workflow" id="checkWorkflow" checked="@(Model.Columnas.Contains("Workflow") || Model.Columnas[0].Contains("Workflow"))" />@Textos.ListaDeCamiones_Workflow
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="MaterialId" id="checkMaterialId" checked="@(Model.Columnas.Contains("MaterialId") || Model.Columnas[0].Contains("MaterialId"))" />@Textos.Workflow_MaterialId
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Material" id="checkMaterial" checked="@(Model.Columnas.Contains("Material") || Model.Columnas[0].Contains("Material"))" />@Textos.Material
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Transportista" id="checkTransportista" checked="@(Model.Columnas.Contains("Transportista") || Model.Columnas[0].Contains("Transportista"))" />@Textos.Transportista
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Cuit" id="checkCuit" checked="@(Model.Columnas.Contains("Cuit") || Model.Columnas[0].Contains("Cuit"))" />@Textos.Workflow_Cuit
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TipoDocumentoIngreso" id="checkTipoDocumentoIngreso" checked="@(Model.Columnas.Contains("TipoDocumentoIngreso") || Model.Columnas[0].Contains("TipoDocumentoIngreso"))" />@Textos.TipoDocumentoIngreso
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="NumeroDocumentoIngreso" id="checkNumeroDocumentoIngreso" checked="@(Model.Columnas.Contains("NumeroDocumentoIngreso") || Model.Columnas[0].Contains("NumeroDocumentoIngreso"))" />@Textos.NumeroDocumentoIngreso
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Calidad" id="checkCalidad" checked="@(Model.Columnas.Contains("Calidad") || Model.Columnas[0].Contains("Calidad"))" />@Textos.Workflow_Calidad
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="CentroId" id="checkCentroId" checked="@(Model.Columnas.Contains("CentroId") || Model.Columnas[0].Contains("CentroId"))" />@Textos.Workflow_CentroId
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Centro" id="checkCentro" checked="@(Model.Columnas.Contains("Centro") || Model.Columnas[0].Contains("Centro"))" />@Textos.Workflow_Centro
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="FechaCreacion" id="checkFechaCreacion" checked="@(Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))" />@Textos.Workflow_FechaCreacion
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="FechaUltimaModificacion" id="checkFechaUltimaModificacion" checked="@(Model.Columnas.Contains("FechaUltimaModificacion") || Model.Columnas[0].Contains("FechaUltimaModificacion"))" />@Textos.Workflow_FechaUltimaModificacion
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="NumeroDeTarjeta" id="checkNumeroDeTarjeta" checked="@(Model.Columnas.Contains("NumeroDeTarjeta") || Model.Columnas[0].Contains("NumeroDeTarjeta"))" />@Textos.NumeroTarjeta
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="ChoferDNI" id="checkChoferDNI" checked="@(Model.Columnas.Contains("ChoferDNI") || Model.Columnas[0].Contains("ChoferDNI"))" />@Textos.ChoferDNI
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="ChoferNombre" id="checkChoferNombre" checked="@(Model.Columnas.Contains("ChoferNombre") || Model.Columnas[0].Contains("ChoferNombre"))" />@Textos.ChoferNombre
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Procedencia" id="checkProcedencia" checked="@(Model.Columnas.Contains("Procedencia") || Model.Columnas[0].Contains("Procedencia"))" />@Textos.Procedencia
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Foto" id="checkFoto" checked="true" />@Textos.Workflow_Foto
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Entregador" id="checkEntregador" checked="@(Model.Columnas.Contains("Entregador") || Model.Columnas[0].Contains("Entregador"))" />@Textos.CartaPorte_Entregador
+                            </li>
+                        </ul>
+                    </div>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Filtrar
+                    </a>
+
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="row-fluid" style="margin-bottom:5px">
+                            @Html.ValidationSummary(true)
+                            <div class="span1">
+                                @Html.LabelFor(model => model.Workflow, new { @class = "control-label" })
+                            </div>
+                            <div class="span3 sinBorde">
+                                @Html.DropDownListFor(model => model.Workflow, workflows, Textos.Default_Workflow, new { @class = "responsivewidth" })
+                                @Html.Hidden("filtroWorkflow", Model.Workflow)
+                                @Html.Hidden("filtroTiempoMaxEntreActividades", Model.TiempoMaxEntreActividades)
+                            </div>
+                            <div class="span1 span1-1">
+                                @Html.LabelFor(model => model.TipoDocumentoDeIngreso, new { @class = "control-label" })
+                            </div>
+                            <div class="span3 sinBorde">
+                                @Html.EnumDropDownListFor(model => model.TipoDocumentoDeIngreso, Textos.Default_Documento, new { @class = "responsivewidth" })
+                                @Html.ValidationMessageFor(model => model.TipoDocumentoDeIngreso)
+                                @Html.Hidden("filtroTipoDocumentoDeIngreso", Model.TipoDocumentoDeIngreso)
+                            </div>
+                            <div class="span1">
+                                @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                            </div>
+                            <div class="span2 sinBorde">
+                                @Html.TextBoxFor(model => model.Patente, new { @class = "patente-internacional uppercase responsivewidth" })
+                                @Html.Hidden("filtroPatente", Model.Patente)
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="span1">
+                                @Html.LabelFor(model => model.ProximaAccion, new { @class = "control-label" })
+                            </div>
+                            <div class="span3 sinBorde">
+                                @Html.DropDownListFor(model => model.ProximaAccion, estados, Textos.Default_Estado, new { @class = "responsivewidth" })
+                                @Html.Hidden("filtroProximaAccion", Model.ProximaAccion)
+                            </div>
+                            <div class="span1 span1-1">
+                                @Html.LabelFor(model => model.NumeroDocumentoDeIngreso, new { @class = "control-label" })
+                            </div>
+                            <div class="span3 sinBorde">
+                                @Html.TextBoxFor(model => model.NumeroDocumentoDeIngreso, new { @class = "responsivewidth" })
+                                @Html.Hidden("filtroNumeroDocumentoDeIngreso", Model.NumeroDocumentoDeIngreso)
+                            </div>
+                            <div class="span3 sinBorde">
+                                @Html.CheckBoxFor(model => model.SoloDemorados)
+                                @Html.LabelFor(model => model.SoloDemorados)
+                                @Html.HiddenFor(model => model.SoloDemorados, new { id = "filtroSoloDemorados" })
+                            </div>
+                        </div>
+                        <div class="row-fluid">
+                            <div class="controls cajaButtons2">
+                                <button type="submit" class="btn">@Textos.Filtrar</button>
+                                @Html.HiddenFor(model => model.OrdenarPor, new { id = "filtroOrdenarPor" })
+                                @Html.HiddenFor(model => model.DirOrden, new { id = "filtroDirOrden" })
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div id="gridContainer" style="clear:both;" data-grid-url="@Url.Action("Index", "ListaDeCamiones")">
+        @*@Html.Partial("Listar")*@
+    </div>
+
+</div>

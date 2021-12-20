@@ -1,0 +1,25 @@
+﻿
+<div class="modal hide fade" id="vagones-modal"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Pesar Vagones:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="control-group">
+            @Html.Label("Pesar", new { @class = "control-label" })
+            <div class="controls">
+                <a class="btn pesar" data-puesto-id="@ViewBag.PuestoId">Pesar</a>
+                <a class="btn pesar-avanzar btn-aceptar" data-id="@(Model.PuestoId)">Pesar y Avanzar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a data-dismiss="modal" aria-hidden="true" href="#" class="btn close">Cerrar </a>
+    </div>
+</div>

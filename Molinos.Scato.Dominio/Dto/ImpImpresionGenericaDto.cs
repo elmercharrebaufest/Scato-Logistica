@@ -1,0 +1,123 @@
+﻿using System;
+using Molinos.Scato.Dominio.Enums;
+
+namespace Molinos.Scato.Dominio.Dto
+{
+    public sealed class ImpImpresionGenericaDto
+    {
+        public int Id { get; set; }
+        public string CTG { get; set; }
+        public string CTGSap { get; set; }
+
+        public DateTime FechaEmision { get; set; }
+        public DateTime FechaCP { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string TitularCP { get; set; }
+        public string CuitTitularCP { get; set; }
+        public string Intermediario { get; set; }
+        public string CuitIntermediario { get; set; }
+        public string RtteComercial { get; set; }
+        public string CuitRtteComercial { get; set; }
+        public string Corredor { get; set; }
+        public string CuitCorredor { get; set; }
+        public string Entregador { get; set; }
+        public string CuitEntregador { get; set; }
+        public string Destinatario { get; set; }
+        public string CuitDestinatario { get; set; }
+        public string Destino { get; set; }
+        public string CuitDestino { get; set; }
+        public string Transportista { get; set; }
+        public string CuitTransportista { get; set; }
+        public string Chofer { get; set; }
+        public string CuitChofer { get; set; }
+        public string Material { get; set; }
+        public string MaterialDescCorta { get; set; }
+        public string MaterialCodigoONCCA { get; set; }
+        public string Variedad { get; set; }
+        public string Cosecha { get; set; }
+        public string Procedencia { get; set; }
+        public string CodigoEstablecimiento { get; set; }
+        public string PesoBrutoOrigen { get; set; }
+        public string PesoTaraOrigen { get; set; }
+        public string PesoNetoOrigen { get; set; }
+        public string PatenteAcoplado { get; set; }
+        public string KmARecorrer { get; set; }
+        public string TarifaReferencia { get; set; }
+        public string TarifaTonelada { get; set; }
+        public string CodigoAnexo { get; set; }
+        public string Prestador { get; set; }
+        public string CuitPrestador { get; set; }
+        public string DomicilioBocaDestino { get; set; }
+        public string ProvinciaBocaDestino { get; set; }
+        public string LocalidadBocaDestino { get; set; }
+        public string BocaDestino { get; set; }
+        public string AcuerdoMarco { get; set; }
+        public string Caratula { get; set; }
+        public string PesoBruto { get; set; }
+        public string PesoTara { get; set; }
+        public string PesoNeto { get; set; }
+        public string PesoNetoSinHumedad { get; set; }
+        public string PesoNetoIngreso { get; set; }
+        public string PesoNetoEgreso { get; set; }
+        public string LocalidadCentroOrigen { get; set; }
+        public string ProvinciaCentroOrigen { get; set; }
+        public string CodigoPostalCentroOrigen { get; set; }
+        public string DireccionCentroOrigen { get; set; }
+        public string LocalidadCentroDestino { get; set; }
+        public string ProvinciaCentroDestino { get; set; }
+        public string DireccionClienteDestino { get; set; }
+        public string LocalidadClienteDestino { get; set; }
+        public string ProvinciaClienteDestino { get; set; }
+        public string CodigoPostalCentroDestino { get; set; }
+        public string DireccionCentroDestino { get; set; }
+        public string TipoDocumentoIngreso { get; set; }
+        public string TipoDeComprobanteONCCA { get; set; }
+        public string NumeroDeDocumentoDeIngreso { get; set; }
+        public string SaldosSTOCK { get; set; }
+        public string ObservacionesONCCA { get; set; }
+        public string Observaciones { get; set; }
+        public string FletePagado { get; set; }
+        public string FleteAPagar { get; set; }
+        public string TextoLibre { get; set; }
+        public bool EsSustentable { get; set; }
+        public string NumeroCiu { get; set; }
+        public string INVBodega { get; set; }
+        public string CuitBodega { get; set; }
+        public string IIBBBodega { get; set; }
+        public string RazonSocialVinatero { get; set; }
+        public string INVVinatero { get; set; }
+        public string CuitViñatero { get; set; }
+        public string IIBBViñatero { get; set; }
+        public string EsCamion { get; set; }
+        public string EsAcoplado { get; set; }
+        public string EsBines { get; set; }
+        public string EsMoliendaEnVinedos { get; set; }
+        public string EsTractor { get; set; }
+        public string MarcaVehiculo { get; set; }
+        public string ModeloVehiculo { get; set; }
+        public string INVVariedad { get; set; }
+        public string TenorAzucarino { get; set; }
+        public string EsUvaPropia { get; set; }
+        public string EsUvaTerceros { get; set; }
+        public string RazonSocialBodega { get; set; }
+        public decimal PesoNetoNumerico { get; set; }
+        public decimal PesoNetoSinhumedadNumerico { get; set; }
+        public DateTime FechaPesoNetoBodega { get; set; }
+        public TipoDeWorkflow TipoDeWorkflow { get; set; }
+        public string CorredorVendedor { get; set; }
+        public string CuitCorredorVendedor { get; set; }
+        public string IntermediarioFlete { get; set; }
+        public string MercadoATermino { get; set; }
+        public string CuitMercadoATermino { get; set; }
+        public string CuitIntermediarioDelFlete { get; set; }
+        public string Patente { get; set; }
+        public Guid WorkflowId { get; set; }
+        public DateTime FechaImpresion { get; set; }
+        public string Codigo { get; set; }
+        public string Impresora { get; set; }
+        public int RecorridoId { get; set; }
+
+        public bool EsTotalDia { get; set; }
+        public bool EsTotalMes { get; set; }
+    }
+}

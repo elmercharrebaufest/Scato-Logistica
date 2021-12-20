@@ -1,0 +1,26 @@
+﻿<parameters>
+  <parameter name="ServicioRepositorio Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioRepositorio']
+                           /@address" />
+  </parameter>
+  <parameter name="FirmaProvider Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='FirmaProvider']
+                           /@address" />
+  </parameter>
+  <parameter name="ServicioComandos Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ServicioComandos']
+                           /@address" />
+  </parameter>
+  <parameter name="ListaDeWorkflows Service Endpoint Address">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/system.serviceModel/client
+                           /endpoint[@name='ListaDeWorkflows']
+                           /@address" />
+  </parameter>
+</parameters>

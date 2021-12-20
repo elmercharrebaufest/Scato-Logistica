@@ -1,0 +1,50 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@{
+    var modalidad = Enum.ToObject(typeof(Modalidad), ViewBag.modalidad);
+
+}
+
+@Html.Hidden("BalanzaEnCeroUrl", Url.Action("BalanzaEnCero", "BalanzaACero"))
+@Html.Hidden("CerearBalanzaUrl", Url.Action("CerearBalanza", "BalanzaACero"))
+@Html.Hidden("TomarPesoUrl", Url.Action("TomarPeso", "Pesada"))
+<div class="modal hide fade" id="dialogo-BalanzaACero">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.BalanzaACero_Titulo</h5>
+    </div>
+    <div class="modal-body" id="dialogo-BalanzaACero-body">
+        @if (modalidad == Modalidad.Manual)
+        {
+            <h5>@Textos.ConfirmacionBalanzaManualACero</h5>
+        }
+        else
+        {
+            <h5>@Textos.ConfirmacionBalanzaAutomaticaACero</h5>
+            <h3 class="text-center" id ="dialogo-BalanzaACero-balanzaPeso" data-obteniendo-peso="@Textos.ObteniendoPeso"></h3>
+        }
+    </div>
+    <div class="modal-footer">
+        @if (modalidad == Modalidad.Manual)
+        {
+            <h5>@Textos.ConfirmacionBalanzaManualACero2</h5>
+            <button id="dialogo-BalanzaACero-enCero" class="btn" value="BalanzaEnCero">@Textos.Confirmar</button>
+        }
+        <button id="dialogo-BalanzaACero-dialogoCerear" class="btn btn-warning">@Textos.CerearBalanza</button>
+    </div>
+
+
+</div>
+<div class="modal fade hide" id="dialogo-Cerear">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>@Textos.DialogoCerear_Titulo</h5>
+    </div>
+    <div class="modal-body" id="dialogo-cerear-body">
+        <h5>@Textos.ConfirmacionCerearBalanza</h5>
+    </div>
+    <div class="modal-footer">
+        <button id="dialogo-cerear-cerear" class="btn btn-warning">@Textos.CerearBalanza</button>
+        <button id="dialogo-cerear-cancelar" data-dismiss="modal" class="btn">@Textos.Cancelar</button>
+    </div>
+</div>

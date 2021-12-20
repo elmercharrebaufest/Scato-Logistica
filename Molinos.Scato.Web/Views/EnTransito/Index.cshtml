@@ -1,0 +1,54 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ObservacionRDto
+
+@{
+    ViewBag.Title = Textos.ActEnTransito;
+    string workflow = ViewBag.Workflow;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.ActEnTransito</div>
+</div>
+
+@using (Html.BeginForm("Index", "EnTransito", FormMethod.Post, new { @class = "form-horizontal container-fluid causaBlock", data_mensaje_espera = Textos.ActIngresoDeObservaciones }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.WorkflowInstanceId)
+    @Html.Hidden("workflow", workflow)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    <div class="control-group">
+        <div class="control-label"> @(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum()):</div>
+        <div class="controls">
+            <div class="control margin">@ViewBag.NumeroDocumentoIngreso</div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="control-label">@Textos.Precinto_Patente:</div>
+        <div class="controls">
+            <div class="control margin">@ViewBag.Patente</div>
+            <input type="hidden" value="@ViewBag.Patente" id="patente" name="patente" />
+        </div>
+    </div>
+
+    <div class="control-group">
+        <div class="control-label">@Textos.Observacion_Observaciones:</div>
+        <div class="controls">
+            @Html.TextAreaFor(model => model.Observaciones, new { @class = "control margin textarea-large" })
+            @Html.ValidationMessageFor(model => model.Observaciones)
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">@Textos.Aceptar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn btn-primary" })
+    </div>
+}
+

@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@model int
+@{
+    ViewBag.Title = Textos.Lote_LoteCreado;
+}
+
+<div class ="container">
+    <div class="titSecciones">@Textos.Lote_LoteCreado @((string)ViewBag.numeroLote) </div>
+</div>
+<br/>
+<div class="">
+    @Html.ActionLink(Textos.Lote_NuevoLote, "Index", "Lote", null , new {@class = "btn btn-primary", style="align:right"})
+    @Html.ActionLink(Textos.Lote_Ver, "BuscarLote", "Lote", new BuscarLoteDto {LoteId = Model} , new {@class = "btn btn-primary", style="align:right"})
+    @Html.ActionLink(Textos.Lote_EmitirListado, "ImprimirLote", "Lote", new  {loteId = Model} , new {@class = "btn", style="align:right"})
+    @Html.ActionLink(Textos.Lote_GenerarArchivo, "GenerarArchivos", "Lote", new  {loteId = Model, vista = "LoteCreado"} , new {@class = "btn", style="align:right"})
+</div>

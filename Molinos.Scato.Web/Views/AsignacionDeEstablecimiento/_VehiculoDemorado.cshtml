@@ -1,0 +1,51 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = Textos.Demorar;
+    string workflow = ViewBag.Workflow;
+    Layout = null;
+}
+<script>
+    $(document).ready(function () {
+        $(".dialogo-aceptar-boton").click(function (e) {
+            if ($("#comentario").val() == "" || $("#comentario").val().length < "10") {
+                $("#requerido").hide();
+                $("#largoMensaje").hide();
+                e.preventDefault();
+                if ($("#comentario").val() == "") {
+                    $("#requerido").show();
+                }
+                else if ($("#comentario").val().length < "10") {
+                    $("#largoMensaje").show();
+                }
+            }
+        });
+    });
+</script>
+
+@using (Html.BeginForm("Pendiente", "AsignacionDeEstablecimiento", FormMethod.Post, new {@class = "causaBlock"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.Hidden("instanceId", (Guid)ViewBag.WorkflowInstanceId)
+    @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
+    <div class="modal fade" id="dialogo-demorar">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-demorar-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5><strong>@Textos.DemorarVehiculo</strong></h5>
+    </div>
+    <div class="modal-body" id="dialogo-cerear-body">
+        <div>
+            @Textos.Motivo : @Html.TextArea("comentario", new { @class = "input-xlarge textarea-large" })
+            <br />
+            @Html.ValidationMessage("MotivoDemora", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requerido", style = "display:none", @class = "text-danger" })
+            @Html.ValidationMessage("MotivoDemora", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensaje", style = "display:none", @class = "text-danger" })
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn dialogo-aceptar-boton">@Textos.Aceptar</button>
+        <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+    </div>
+</div>
+    
+}

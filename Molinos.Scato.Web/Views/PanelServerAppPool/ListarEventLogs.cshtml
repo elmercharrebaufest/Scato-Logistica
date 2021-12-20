@@ -1,0 +1,29 @@
+﻿@using System.Globalization
+@model Molinos.Scato.Dominio.Dto.PanelServerAppPoolDto
+@{
+    Layout = null;
+}
+
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+    });
+</script>
+@if (Model.ListaEventLogs != null)
+{
+    <table class="table table-striped table-bordered table-small" id="tablaLogs">
+        <thead>
+            <tr>
+                <th>Logs</th>
+            </tr>
+        </thead>
+        @foreach (var eventEntry in Model.ListaEventLogs)
+        {
+            <tbody>
+                <tr>
+                    <td>@eventEntry.TimeGenerated.ToString(CultureInfo.InvariantCulture) - @eventEntry.Message</td>
+                </tr>
+            </tbody>
+        }
+    </table>
+}

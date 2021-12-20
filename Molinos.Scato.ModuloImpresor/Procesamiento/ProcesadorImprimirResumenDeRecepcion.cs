@@ -1,0 +1,35 @@
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.ModuloImpresor.Impresion;
+using Ninject.Extensions.Logging;
+using System;
+
+namespace Molinos.Scato.ModuloImpresor.Procesamiento
+{
+    public class ProcesadorImprimirResumenDeRecepcion : ProcesadorComando<ImprimirResumenDeRecepcion>
+    {
+        public ProcesadorImprimirResumenDeRecepcion(ILogger log)
+            : base(log)
+        {
+        }
+
+        public override Resultado Ejecutar(ImprimirResumenDeRecepcion comando)
+        {
+            var resultado = new Resultado();
+            try
+            {
+                Log.Debug("Iniciando impresión de ResumenDeRecepcion en la impresora: " + comando.Dto.Impresora);
+
+                var impresora = new ResumenDeRecepcion(comando.Dto, comando.Dto.Impresora);
+                Log.Debug("Enviando a la impresora");
+                impresora.Print();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error al imprimir en la impresora: " + comando.Dto.Impresora);
+                resultado.Errores.Add("", String.Format(Textos.ImpresoraNoConecta, comando.Dto.Impresora));
+            }
+            return resultado;
+        }
+    }
+}

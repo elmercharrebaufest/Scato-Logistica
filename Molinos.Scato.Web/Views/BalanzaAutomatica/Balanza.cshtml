@@ -1,0 +1,112 @@
+﻿@model Molinos.Scato.Dominio.Dto.BalanzaAutomaticaDto
+
+<div class="span12 card form-search" id="@Model.PuestoId">
+    @Html.Hidden("notificacionId" + Model.PuestoId)
+    @Html.Hidden("tarjeta" + Model.PuestoId)
+    <div class="row-fluid card-head" style="min-height:inherit">
+        <div class="span3" style="border:none">
+            <span>@Model.NombreBalanza</span>
+        </div>
+        <div class="span3" style="border:none">
+            <span class="nombre" id="@("etapa"+Model.PuestoId)">En Espera</span>
+        </div>
+        <div class="span3" style="border:none">
+            <a class="btn btn-acciones-especiales" data-id="@Model.PuestoId">Opciones</a>
+        </div>
+        <div class="span3" style="border:none; margin-left:0">
+            
+        </div>
+    </div>
+    <div class="row-fluid card-body">
+        <div class="span4">
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong>N° Doc:</strong><span id="@("cp"+Model.PuestoId)"></span>
+                </div>
+                <div class="span6">
+                    <span id="@("material"+Model.PuestoId)">Material</span>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong>N° Tarj:</strong><span id="@("numeroTarjeta"+Model.PuestoId)"></span>
+                </div>
+                <div class="span6">
+                    <span id="@("vehiculo"+Model.PuestoId)">Vehiculo</span>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong>Entregador:</strong><span id="@("entregador"+Model.PuestoId)"></span>
+                </div>
+                <div class="span6">
+                    <span id="@("calle"+Model.PuestoId)">Calle</span>
+                </div>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong id="@("tipoPeso"+Model.PuestoId)">Peso:</strong><span id="@("peso"+Model.PuestoId)">0</span><span> Kg.</span>
+                </div>
+                <div class="span6">
+                    <strong>Dif:</strong><span id="@("difPeso"+Model.PuestoId)">0</span><span>Kg.</span>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong>Neto:</strong><span id="@("diferencia"+Model.PuestoId)">0</span><span> Kg.</span>
+                </div>
+                <div class="span6">
+                    <strong>Dif:</strong><span id="@("difNeto"+Model.PuestoId)">0</span><span> Kg.</span>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <strong id="@("tipoPesoOrigen"+Model.PuestoId)">Peso Org:</strong><span id="@("orgBruto"+Model.PuestoId)">0</span><span> Kg.</span>
+                </div>
+                <div class="span6">
+                    <strong>Neto Org:</strong><span id="@("orgNeto"+Model.PuestoId)">0</span><span> Kg.</span>
+                </div>
+            </div>
+        </div>
+        <div class="span2" style="margin-left:0">
+            <div>
+                <div class="row-fluid">
+                    <strong>Patente</strong>
+                </div>
+                <div class="row-fluid">
+                    <input id="@("patente"+Model.PuestoId)" class=" control PatenteRequerida patente-internacional uppercase input-small" type="text" disabled />
+                    <button class="btn btn-aceptar btn-secondary" data-id="@(Model.PuestoId)" id="@("aceptar"+Model.PuestoId)" disabled><i class="fa fa-check"></i></button>
+                </div>
+            </div>
+
+            <div class="text-center hidden" id="@("foto"+Model.PuestoId)">
+                <hr />
+                <canvas style="border: solid" id="@("canvas"+Model.PuestoId)"></canvas>
+            </div>
+            <div class="text-center hidden" id="@("noFoto"+Model.PuestoId)">
+                <hr />
+
+                <div style="border: solid red;text-align:center; vertical-align:middle;min-height:120px;line-height:120px; ">
+                    <span class="icon-camera"></span> No se pudo cargar la foto tomada
+                </div>
+            </div>
+        </div>
+        <div class="span2 estado-barreras-div">
+            <div class="span4" style="margin-left: -15px !important;">
+                <span id="@("barrera-entrada-"+Model.PuestoId)" class="bar-ico bar-ent icon-barrera-cerrada"></span>
+            </div>
+            <div class="span4" style="display: -webkit-inline-box; display: -ms-inline-flexbox; margin-left: 0 !important;">
+                <span id="@("sensor-ingreso-"+Model.PuestoId)" class="sensor sensor-ingreso sensor-disponible"></span>
+                <span id="@("sensor-trompa-"+Model.PuestoId)" class="sensor sensor-trompa sensor-disponible"></span>
+            </div>
+            <div class="span4" style="margin-left: 24px !important;">
+                <span id="@("barrera-salida-"+Model.PuestoId)" class="bar-ico bar-sal icon-barrera-cerrada"></span>
+            </div>
+        </div>
+        <div class="span1">
+            <img src="@(!string.IsNullOrEmpty(Model.CamaraUrl)?Model.CamaraUrl.Replace("http://","https://"):"")"/>
+        </div>
+    </div>
+</div>

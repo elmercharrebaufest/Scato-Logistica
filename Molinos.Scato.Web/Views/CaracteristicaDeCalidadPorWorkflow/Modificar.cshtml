@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.CaracteristicaDeCalidadPorWorkflowDto
+@{
+    ViewBag.Title = Textos.CaracteristicaDeCalidadPorWorkflow_Modificar;
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/caracteristicaPorWorkflow.js")"></script>
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.CaracteristicaDeCalidadPorWorkflow_Modificar }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CrearModificar", Model)           
+}

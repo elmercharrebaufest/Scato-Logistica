@@ -1,0 +1,242 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.AutorizarRecepcionUvas"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:local1="clr-namespace:Molinos.Scato.Actividades"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:msde="clr-namespace:Molinos.Scato.Dominio.Enums;assembly=Molinos.Scato.Dominio"
+ xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:p1="http://scato.molinos.com/"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="centroId" Type="InArgument(x:Int32)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="hndInstance" Type="InArgument(p:CorrelationHandle)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="nombreUsuario" Type="InOutArgument(x:String)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="Observacion" Type="OutArgument(x:String)" />
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)">
+      <x:Property.Attributes>
+        <RequiredArgumentAttribute />
+      </x:Property.Attributes>
+    </x:Property>
+    <x:Property Name="puestoDeTrabajoId" Type="OutArgument(x:Int32)" />
+    <x:Property Name="patente" Type="InArgument(x:String)" />
+    <x:Property Name="reintentar" Type="OutArgument(x:Boolean)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.AutorizarRecepcionUvas_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>System.ServiceModel.Activities</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="AutorizarRecepcionUvas" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="msdd:ControlRecorridoDto" Name="controlRecorridoDto" />
+    </Sequence.Variables>
+    <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
+      <local:LogActividad.LogActividadDto>
+        <InArgument x:TypeArguments="msdd:LogActividadDto">
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = "Autorizar Recepción de Uvas", WorkflowInstanceId = workflowId, ActividadXaml = "AutorizarRecepcionUvas" }</mca:CSharpValue>
+        </InArgument>
+      </local:LogActividad.LogActividadDto>
+    </local:LogActividad>
+    <local1:NotificarMensaje sap2010:WorkflowViewState.IdRef="NotificarMensaje_1">
+      <local1:NotificarMensaje.CentroId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">centroId</mca:CSharpValue>
+        </InArgument>
+      </local1:NotificarMensaje.CentroId>
+      <local1:NotificarMensaje.Mensaje>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">String.Format("El vehículo {0} requiere Autorización de Legales Bodega",patente)</mca:CSharpValue>
+        </InArgument>
+      </local1:NotificarMensaje.Mensaje>
+      <local1:NotificarMensaje.NombreUsuario>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">nombreUsuario</mca:CSharpValue>
+        </InArgument>
+      </local1:NotificarMensaje.NombreUsuario>
+      <local1:NotificarMensaje.TipoAlerta>
+        <InArgument x:TypeArguments="msde:TipoAlerta">
+          <mca:CSharpValue x:TypeArguments="msde:TipoAlerta">Molinos.Scato.Dominio.Enums.TipoAlerta.Informacion</mca:CSharpValue>
+        </InArgument>
+      </local1:NotificarMensaje.TipoAlerta>
+    </local1:NotificarMensaje>
+    <p:Receive x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="AutorizarRecepcionUvas" ServiceContractName="p1:IAutorizarRecepcionUvasService">
+      <p:Receive.CorrelatesOn>
+        <p:XPathMessageQuery x:Key="key1">
+          <p:XPathMessageQuery.Namespaces>
+            <ssx:XPathMessageContextMarkup>
+              <x:String x:Key="xgSc">http://scato.molinos.com/</x:String>
+            </ssx:XPathMessageContextMarkup>
+          </p:XPathMessageQuery.Namespaces>sm:body()/xgSc:AutorizarRecepcionUvas/xgSc:instanceId</p:XPathMessageQuery>
+      </p:Receive.CorrelatesOn>
+      <p:Receive.CorrelatesWith>
+        <InArgument x:TypeArguments="p:CorrelationHandle">
+          <mca:CSharpValue x:TypeArguments="p:CorrelationHandle">hndInstance</mca:CSharpValue>
+        </InArgument>
+      </p:Receive.CorrelatesWith>
+      <p:ReceiveParametersContent>
+        <OutArgument x:TypeArguments="s:Guid" x:Key="instanceId" />
+        <OutArgument x:TypeArguments="msdd:ControlRecorridoDto" x:Key="controlRecorridoDto">
+          <mca:CSharpReference x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpReference>
+        </OutArgument>
+      </p:ReceiveParametersContent>
+    </p:Receive>
+    <local:AutorizacionRecepcionUvas sap2010:WorkflowViewState.IdRef="AutorizacionRecepcionUvas_1">
+      <local:AutorizacionRecepcionUvas.ControlRecorrido>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+        </InArgument>
+      </local:AutorizacionRecepcionUvas.ControlRecorrido>
+      <local:AutorizacionRecepcionUvas.Observacion>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">Observacion</mca:CSharpReference>
+        </OutArgument>
+      </local:AutorizacionRecepcionUvas.Observacion>
+      <local:AutorizacionRecepcionUvas.Reintentar>
+        <OutArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpReference x:TypeArguments="x:Boolean">reintentar</mca:CSharpReference>
+        </OutArgument>
+      </local:AutorizacionRecepcionUvas.Reintentar>
+    </local:AutorizacionRecepcionUvas>
+    <If sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">reintentar</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Else>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <local:RechazarCamion sap2010:WorkflowViewState.IdRef="RechazarCamion_1">
+            <local:RechazarCamion.WorkflowInstanceId>
+              <InArgument x:TypeArguments="s:Guid">
+                <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+              </InArgument>
+            </local:RechazarCamion.WorkflowInstanceId>
+          </local:RechazarCamion>
+        </Sequence>
+      </If.Else>
+    </If>
+    <local:ControlRecorrido sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
+      <local:ControlRecorrido.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+        </InArgument>
+      </local:ControlRecorrido.ControlRecorridoDto>
+      <local:ControlRecorrido.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:ControlRecorrido.NombreUsuario>
+    </local:ControlRecorrido>
+    <p:SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+      <p:SendParametersContent>
+        <InArgument x:TypeArguments="x:Boolean" x:Key="resultado">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">reintentar</mca:CSharpValue>
+        </InArgument>
+      </p:SendParametersContent>
+    </p:SendReply>
+    <local:FinDeActividad InstanceId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
+      <local:FinDeActividad.ControlRecorridoDto>
+        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">controlRecorridoDto</mca:CSharpValue>
+        </InArgument>
+      </local:FinDeActividad.ControlRecorridoDto>
+      <local:FinDeActividad.NombreUsuario>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">nombreUsuario</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.NombreUsuario>
+      <local:FinDeActividad.PuestoDeTrabajoId>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpReference>
+        </OutArgument>
+      </local:FinDeActividad.PuestoDeTrabajoId>
+    </local:FinDeActividad>
+    <sads:DebugSymbol.Symbol>d19DOlxNb2xpbm9zXE1vbGlub3MgLSBTQ1QyMDBcTW9saW5vcy5TY2F0b1xNb2xpbm9zLlNjYXRvLkFjdGl2aWRhZGVzXEF1dG9yaXphclJlY2VwY2lvblV2YXMueGFtbB1XA9UBDgIBAVsFYRoDAbUBYgV3HwMBjAF4BYwBEQIBd40BBZ0BJwIBWJ4BBa8BCgIBQbABBbsBHgIBLLwBBcIBEwIBIcMBBdMBHAIBAl4LXuEBAwG2AWoLapkBAwGrAWULZVADAaEBbwtvVgMBlwF0C3SCAQMBjQGDAQuDAV8DAYIBiQELiQF0AgF4mgELmgFcAgFtkAELkAFsAgFjlQELlQFcAgFZoQELoQFUAgFCpQEJrQEUAgFMswELswFsAgE3uAELuAFeAgEtvwELvwFUAgEixgELxgFsAgEXywELywFeAgEN0AEL0AFhAgEDpgELrAEiAgFNqQERqQFXAgFO</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogActividad_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="NotificarMensaje_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="464,86" />
+      <sap2010:ViewStateData Id="AutorizacionRecepcionUvas_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="RechazarCamion_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,296" />
+      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="464,86" />
+      <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,982">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.AutorizarRecepcionUvas_1" sap:VirtualizedContainerService.HintSize="526,1062" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

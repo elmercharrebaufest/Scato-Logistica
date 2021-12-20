@@ -1,0 +1,440 @@
+<ship-spinner [message]="'Cargando Alta de Embarque. Por favor, espere...'" *ngIf='mostrarSpinner'></ship-spinner>
+<div class="container-fluid fondo">
+  <div class="col pl-0 pr-1">
+    <div class="row">
+      <div class="col pt-4">
+        <h1>Pre-line up</h1>
+      </div>
+      <div class="col mr-2">
+        <app-estados-puerto-content></app-estados-puerto-content>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <form [formGroup]="embarqueForm" class="mt-4">
+      <div class="col">
+        <div class="row">
+          <div class="col-md-8 shadow " style="background-color: white;">
+            <br>
+            <h4>Formulario pre-line up</h4>
+            <br>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="nombreBuque" class="font-weight-bold">Nombre Buque</label>
+                <input type="text" class="form-control" formControlName="nombreBuque"
+                      placeholder="Ingrese nombre buque" maxlength="50">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="tipoDeBuquePuerto" class="font-weight-bold">Tipo de Buque</label>
+                <select class="custom-select" formControlName="tipoDeBuque">
+                  <option value=""></option>
+                  <option *ngFor="let t of tipoDeBuquePuerto" [ngValue]="t">{{ t.nombre }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="coordinadoresList" class="font-weight-bold">Coordinador</label>
+                <div class="input-group">
+                  <tag-input formControlName="coordinadoresList"
+                            [placeholder]="'Ingrese el Coordinador'"
+                            [secondaryPlaceholder]="'Ingrese el Coordinador'"
+                            [identifyBy]="'id'"
+                            [displayBy]="'name'"
+                            [maxItems]="1"
+                            (onSelect)="ABM('Coordinador', 'Modificar-Eliminar')">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                        [autocompleteItems]="coordinadoresList"
+                                        [identifyBy]="'id'"
+                                        [displayBy]="'name'">
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Coordinador', 'Agregar')">
+                </div>
+              </div>
+
+
+              <div class="form-group col-md-6">
+                <label for="freeboard" class="font-weight-bold">Freeboard</label>
+                <input type="text" class="form-control" formControlName="freeboard"
+                      placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="ataList" class="font-weight-bold">A.T.A.</label>
+                <div class="input-group">
+                  <tag-input formControlName="ataList"
+                            [placeholder]="'Ingrese el A.T.A'"
+                            [secondaryPlaceholder]="'Ingrese el A.T.A'"
+                            [identifyBy]="'id'"
+                            [displayBy]="'name'"
+                            [maxItems]="1"
+                            (onSelect)="ABM('Ata', 'Modificar-Eliminar')">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                        [autocompleteItems]="ataList"
+                                        [identifyBy]="'id'"
+                                        [displayBy]="'name'">
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Ata', 'Agregar')">
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="agenciasList" class="font-weight-bold">Agencia</label>
+                <div class="input-group">
+                  <tag-input formControlName="agenciasList"
+                            [placeholder]="'Ingrese la Agencia'"
+                            [secondaryPlaceholder]="'Ingrese la Agencia'"
+                            [identifyBy]="'id'"
+                            [displayBy]="'name'"
+                            [maxItems]="1"
+                            (onSelect)="ABM('Agencia', 'Modificar-Eliminar')">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                        [autocompleteItems]="agenciasList"
+                                        [identifyBy]="'id'"
+                                        [displayBy]="'name'">
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Agencia', 'Agregar')">
+                </div>
+              </div>
+              <div>
+              </div>
+            </div>
+            <div class="form-row">
+
+              <div class="form-group col-md-6">
+                <label for="obligacionCarga" class="font-weight-bold">Obligación de carga</label>
+                <input type="date" max="3000-12-31" [ngClass]="{'input-error': submitted && f.obligacionCarga.errors}"
+                      min="1000-01-01" class="form-control" formControlName="obligacionCarga">
+              </div>
+
+              <div class="form-group col-6">
+                <div class="row">
+                  <div class="form-group col-md-8">
+                    <label for="fechaRecalada" class="font-weight-bold">Eta Recalada</label>
+                    <div class="input_img">
+                      <input type="date" max="3000-12-31" [ngClass]="{'input-error': submitted && f.fechaRecalada.errors}"
+                            min="1000-01-01" class="form-control" formControlName="fechaRecalada">
+                      <!-- <img src="assets/calendarInput.svg" class="imgCalendarInput">-->
+                    </div>
+
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label class="font-weight-bold">Hora</label>
+                    <div class="input_img">
+                      <input #horaRecalada class="form-control" [ngxTimepicker]="fullTime" [format]="24" (change)="validarAMPM($event)">
+                      <img src="assets/reloj.svg" class="imgClockInput">
+                    </div>
+                    <ngx-material-timepicker #fullTime (timeSet)="validarAMPM($event)"></ngx-material-timepicker>
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeAMPM($event)" type="radio" name="meridiemRecalada"
+                            formControlName="meridiemRecalada" id="AM" value='AM'>
+                      <label class="form-check-label" for="AM">AM</label>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeAMPM($event)" type="radio" name="meridiemRecalada"
+                            formControlName="meridiemRecalada" id="PM" value='PM' checked>
+                      <label class="form-check-label" for="PM">PM</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <div class="form-row">
+                  <div class="form-group col-4">
+                    <label class="font-weight-bold">Productos</label>
+                  </div>
+                  <div class="form-group col-8">
+                    <label class="font-weight-bold">Cantidad</label>
+                  </div>
+                </div>
+
+                <div class="mt-n3">
+                  <div formArrayName="materialesPuertoCantidad"
+                      *ngFor="let material of embarqueForm.get('materialesPuertoCantidad').value; let i = index; trackBy:trackByFn"
+                      class="form-row">
+                    <div class="form-group col-4">
+                      <input type="text" class="form-control" value="{{material.descripcionCorta}}" disabled>
+                    </div>
+                    <div class="form-group col-8">
+                      <div class="input-group" [formGroupName]="i">
+                        <input type="text" class="form-control" placeholder="Ingrese cantidad"
+                              formControlName="cantidad" (keypress)="numberOnly($event)"
+                              (change)="checkLiquidOrSolid(material)"
+                              [ngClass]="{'input-error': submitted && f.materialesPuertoCantidad.invalid}">
+                        <div class="input-group-append">
+                          <span class="input-group-text">Tn</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-n2">
+                    <p class="text-left">Por contrato</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="ubicacionDeBuquePuerto" class="font-weight-bold">Ubicación de Buque</label>
+                    <select class="custom-select" formControlName="ubicacionDeBuque">
+                      <option value=""></option>
+                      <option *ngFor="let t of ubicacionDeBuquePuerto" [ngValue]="t">{{ t.nombre }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="senasa" class="font-weight-bold">Corresponde SENASA</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="senasa"
+                            formControlName="senasa" id="senasa1" [value]=true>
+                      <label class="form-check-label" for="exampleRadios1"> Si</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="senasa"
+                            formControlName="senasa" id="senasa2" [value]=false checked>
+                      <label class="form-check-label" for="exampleRadios2">No</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <Label class="font-weight-bold">Muelle</Label>
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeSanBenito($event)" type="checkbox" value="" id="sanBenito" formControlName="sanBenito">
+                      <label class="form-check-label" for="sanBenito">
+                        San Benito
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeVicentin($event)" type="checkbox" value="" id="vicentin" formControlName="vicentin">
+                      <label class="form-check-label" for="vicentin">
+                        Vicentin
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeNoryon($event)" type="checkbox" value="" id="noryon" formControlName="noryon">
+                      <label class="form-check-label" for="noryon">
+                        Nouryon
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" (change)="onChangeotrosMuelles($event)" type="checkbox" value="" id="otrosMuelles" formControlName="otrosMuelles">
+                      <label class="form-check-label" for="otrosMuelles">
+                        Otros muelles
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row ml-1 mb-1">
+                  <div class="form-group" style="width: 100%;">
+                    <label for="observaciones" class="font-weight-bold">Observaciones</label>
+                    <textarea class="form-control" formControlName="observaciones" rows="4" maxlength="500" ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col ml-3 ">
+            <div class="row shadow" style="background-color: white;">
+              <div class="container">
+                <br>
+                <h4>Horas a la espera de limpieza</h4>
+                <br>
+                <div class="row">
+                  <div class="form-group col">
+                    <label for="fechaDesdeLimpieza" class="font-weight-bold">Desde</label>
+                    <div class="input_img">
+                      <input type="date" max="3000-12-31" [ngClass]="{'input-error': submitted && f.fechaDesdeLimpieza.errors}"
+                            min="1000-01-01" class="form-control" formControlName="fechaDesdeLimpieza">
+                    </div>
+                  </div>
+
+                  <div class="form-group col">
+                    <label class="font-weight-bold">Hora</label>
+                    <div class="input_img">
+                      <input #horaDesdeLimpieza class="form-control" [ngxTimepicker]="fullTime1" [format]="24" (change)="validarAMPM($event)">
+                      <img src="assets/reloj.svg" class="imgClockInput">
+                    </div>
+                    <ngx-material-timepicker #fullTime1 (timeSet)="validarAMPM($event)"></ngx-material-timepicker>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col">
+                    <label for="fechaHastaLimpieza" class="font-weight-bold">Hasta</label>
+                    <div class="input_img">
+                      <input type="date" max="3000-12-31" [ngClass]="{'input-error': submitted && f.fechaHastaLimpieza.errors}"
+                            min="1000-01-01" class="form-control" formControlName="fechaHastaLimpieza">
+                    </div>
+                  </div>
+
+                  <div class="form-group col">
+                    <label class="font-weight-bold">Hora</label>
+                    <div class="input_img">
+                      <input #horaHastaLimpieza class="form-control" [ngxTimepicker]="fullTime2" [format]="24" >
+                      <img src="assets/reloj.svg" class="imgClockInput">
+                    </div>
+                    <ngx-material-timepicker #fullTime2 ></ngx-material-timepicker>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="motivosLimpiezaList" class="font-weight-bold">Motivo</label>
+                  <div class="input-group">
+                    <tag-input formControlName="motivosLimpiezaList"
+                              [placeholder]="'Ingrese el Motivo'"
+                              [secondaryPlaceholder]="'Ingrese el Motivo'"
+                              [identifyBy]="'id'"
+                              [displayBy]="'name'"
+                              [maxItems]="1"
+                              (onSelect)="ABM('Motivo', 'Modificar-Eliminar')">
+                      <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                          [autocompleteItems]="motivosLimpiezaList"
+                                          [identifyBy]="'id'"
+                                          [displayBy]="'name'">
+                      </tag-input-dropdown>
+                    </tag-input>
+                    <img src="assets/Mas.svg" class="cursorPointer float-right ml-2" (click)="ABM('Motivo', 'Agregar')">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <div class="form-row ml-1 mb-1">
+                      <div class="form-group" style="width: 100%;">
+                        <label for="observacionesLimpieza" class="font-weight-bold">Observaciones</label>
+                        <textarea class="form-control" formControlName="observacionesLimpieza" rows="4" maxlength="500" ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row shadow mt-3 " style="background-color: white;">
+              <div class="container">
+                <br>
+                <h4>Ship Particular</h4>
+                <br>
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="destinoPuerto" class="font-weight-bold">Bandera</label>
+                    <select class="custom-select" formControlName="destino">
+                      <option value=""></option>
+                      <option *ngFor="let t of destinoPuerto" [ngValue]="t">{{ t.nombre }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col">
+                    <label for="porteNeto" class="font-weight-bold">Porte Neto</label>
+                    <input type="text" class="form-control" formControlName="porteNeto"
+                          placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+                  </div>
+
+                  <div class="form-group col">
+                    <label for="porteBruto" class="font-weight-bold">Porte Bruto</label>
+                    <input type="text" class="form-control" formControlName="porteBruto"
+                          placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+                  </div>
+                </div>
+
+                <div class="row">                      
+                  <div class="form-group col">
+                    <label for="eslora" class="font-weight-bold">Eslora</label>
+                    <input type="text" class="form-control" formControlName="eslora"
+                          placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+                  </div>
+  
+                  <div class="form-group col">
+                    <label for="manga" class="font-weight-bold">Manga</label>
+                    <input type="text" class="form-control" formControlName="manga"
+                          placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+                  </div>
+                </div>
+
+                <div class="row">                      
+                  <div class="form-group col">
+                    <label for="puntal" class="font-weight-bold">Puntal</label>
+                    <input type="text" class="form-control" formControlName="puntal"
+                          placeholder="Ej: 6.77" (keypress)="decimalOnly($event)">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col">
+                    <label for="fechaLibrePlatica" class="font-weight-bold">Libre Platica</label>
+                    <div class="input_img">
+                      <input type="date" max="3000-12-31" [ngClass]="{'input-error': submitted && f.fechaLibrePlatica.errors}"
+                            min="1000-01-01" class="form-control" formControlName="fechaLibrePlatica">
+                    </div>
+                  </div>
+
+                  <div class="form-group col">
+                    <label class="font-weight-bold">Hora</label>
+                    <div class="input_img">
+                      <input #horaLibrePlatica class="form-control" [ngxTimepicker]="fullTime3" [format]="24" >
+                      <img src="assets/reloj.svg" class="imgClockInput">
+                    </div>
+                    <ngx-material-timepicker #fullTime3 ></ngx-material-timepicker>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-center my-5">
+        <button type="button" class="btn btn-danger mx-5" [routerLink]="['/']">CANCELAR</button>
+        <button *ngIf="embarqueId == 0" type="button" class="btn btn-success" (click)="finalizarAlta()">FINALIZAR ALTA</button>
+        <button *ngIf="embarqueId != 0" type="button" class="btn btn-success" (click)="modificarEmbarque()">ACTUALIZAR</button>
+      </div>
+    </form>
+  </div>
+
+  <!----------------------------------------------->
+  <!--PANTALLA ABM: AGREGAR, MOFIFICAR Y ELIMINAR-->
+  <ng-template #modalABM let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{this.tituloABM}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" ngbAutofocus class="form-control" autocomplete="off" 
+                    value="{{this.opcionABMSeleccionada == 'Agregar' ? '' : datosABMPuerto()}}">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div *ngIf="this.opcionABMSeleccionada == 'Modificar-Eliminar'">
+          <button type="button" class="btn btn-danger" (click)="submitABM('Eliminar')">Eliminar {{this.pantallaSeleccionada}}</button>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="submitABM('Guardar')">Guardar</button>
+    </div>
+  </ng-template>
+  <!--PANTALLA ABM: AGREGAR, MOFIFICAR Y ELIMINAR-->
+  <!----------------------------------------------->
+</div>

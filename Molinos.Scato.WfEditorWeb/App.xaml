@@ -1,0 +1,10 @@
+﻿<Application x:Class="Molinos.Scato.WfEditorWeb.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Molinos.Scato.WfEditorWeb"
+             xmlns:viewModel="clr-namespace:Molinos.Scato.WfEditorWeb.ViewModel"
+             StartupUri="Views\MainWindow.xaml" DispatcherUnhandledException="OnDispatcherUnhandledException">
+    <Application.Resources>
+        <viewModel:ViewModelLocator x:Key="ViewModelLocator" />
+    </Application.Resources>
+</Application>

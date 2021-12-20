@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AnalisisPorCaracteristicaDto>)ViewBag.Caracteristicas;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.Columna("CaracteristicaDeCalidad.CaracteristicaDeCalidadMaestro.Descripcion", Textos.Descripcion, x => x.Caracteristica),
+    grilla.Columna("Unidad", Textos.Material_UnidadDeMedida),
+    grilla.Columna("ValorCalado", Textos.Calado_Valor),
+    grilla.Columna("ValorAnalisis", Textos.CargaDeAnalisisDeCalidad_ValorAnalisis),
+    grilla.Columna("DescuentoEnPorcentaje", Textos.DescuentoEnPorcentaje),
+    grilla.Columna("DescuentoEnKg", Textos.DescuentoEnKg),
+    grilla.Columna("Rango", Textos.Calado_Rango)
+    ))

@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Comandos.ResultadoSincronizarMateriales
+
+@{
+    ViewBag.Title = Textos.SincronizacionMateriales_Titulo;
+}
+
+<div class ="container">
+    <div class="titSecciones">@Textos.SincronizacionMateriales_Titulo</div>
+</div>
+
+@if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+{
+    <div class="alert alert-error">
+        @Html.ValidationSummary(true)
+    </div>
+}
+
+<div class="container content grillaPad">
+    <div id="gridContainer">
+
+@Html.Grilla(new ListaPaginada<MaterialDto>(Model.Items, 1, 1000, Model.Items.Count),
+             grid => grid.Columns(
+                grid.Columna("CodigoSAP", Textos.Almacen_CodigoSAP),
+                grid.Columna("Descripcion", Textos.Descripcion),
+                grid.Columna("UnidadDeMedidad", Textos.Material_UnidadDeMedida),
+                grid.Columna("Activo", Textos.Activo, m => ((bool)m.Activo).Formatted())
+                ))
+
+    </div>
+</div>

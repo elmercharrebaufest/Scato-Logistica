@@ -1,0 +1,79 @@
+i.c-celeste {
+  color: #3376A1;
+}
+
+.text-gris {
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--tipografia-secundaria-666666);
+  letter-spacing: 0px;
+  color: #666666;
+  opacity: 1;
+  margin: 0px !important;
+}
+
+.text-gris label {
+  margin: 0px !important;
+}
+
+.btn-molinos {
+  background-color: #1C7CD5;
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-14)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal 14px/24px Roboto;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+input.search {
+  font-family: Arial, FontAwesome
+}
+
+.btn-circle {
+  width: 50px;
+  height: 50px;
+  padding: 0px;
+  border-radius: 35px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.42857;
+}
+
+
+@media (max-width: 768px) {
+  .text-sm-center {
+    text-align: center;
+  }
+}
+
+.btn-muelles {
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-14)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: center;
+  font: normal normal 14px/24px Roboto;
+  letter-spacing: 0px;
+  opacity: 1;
+  width: 115px;
+  font-weight: bold;
+}
+
+.btn-estados-muelles {
+  background-color: #FFFFFF;
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-14)/var(--unnamed-line-spacing-24) var(--unnamed-font-family-roboto);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal 14px/24px Roboto;
+  letter-spacing: 0px;
+  opacity: 1;
+  width: 110px;
+  font-weight: bold;
+}
+
+.btn-estado-muelle-operando {
+  color: #5CB85C;
+}
+
+.btn-estado-muelle-no-operando {
+  color: #D9534F;
+}

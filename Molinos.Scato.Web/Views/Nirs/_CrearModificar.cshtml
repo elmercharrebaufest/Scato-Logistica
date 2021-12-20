@@ -1,0 +1,62 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.NirsDto
+@{
+    var cabezales = (IEnumerable<SelectListItem>)ViewBag.Nirs;
+}
+
+@Html.ValidationSummary(true)
+
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Descripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Descripcion)
+        @Html.ValidationMessageFor(m => m.Descripcion)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.DescripcionCorta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.DescripcionCorta)
+        @Html.ValidationMessageFor(m => m.DescripcionCorta)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.PuestoDeTrabajo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(m => m.PuestoDeTrabajo)
+        @Html.ValidationMessageFor(m => m.PuestoDeTrabajo)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Codigo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.Codigo, cabezales,Textos.Default_Ninguno)
+        @Html.ValidationMessageFor(model => model.Codigo)
+    </div>
+</div>
+
+<div class="control-group">
+    @if (Model == null || Model.Id == 0)
+    {
+        @Html.LabelFor(m => m.Modalidad, new { @class = "control-label" })
+        <div class="controls">
+            @Html.EnumDropDownListFor(model => model.Modalidad, new { @class = "modalidad-editar" })
+            @Html.ValidationMessageFor(m => m.Modalidad)
+        </div>
+    }
+    else
+    {
+        @Html.LabelFor(m => m.Modalidad, new { @class = "control-label" })
+        <div class="controls">
+            @Html.EnumDropDownListFor(model => model.Modalidad, new { @class = "modalidad-editar", disabled = "disabled" })
+            @Html.HiddenFor(model => model.Modalidad, new {@class = "modalidad-editar"})
+            @Html.ValidationMessageFor(m => m.Modalidad)
+            @Html.ActionLink(@Textos.Nirs_CambiarModalidad, "Modalidad", "Nirs", new { nirsId = Model.Id, modalidad = Model.Modalidad }, new { @class = "btn ajax-editar-modalidad-link pull-right" })
+        </div>
+    }
+</div>

@@ -1,0 +1,130 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.LibroMovimientosExistenciaGranosDto
+@{
+    ViewBag.Title = Textos.LibroDeMovimientosYExistenciaDeGranos;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+        font-size: 12px;
+    }
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/LibroDeMovimientosYExistenciaDeGranos.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>
+<div id ="links" 
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+    data-url-buscar-materialDesc ="@Url.Action("BuscarDescripcionCortaMaterial", "Consultas")"
+     data-url-buscar-materialesDesc = "@Url.Action("BuscarDescripcionesCortasMateriales", "Consultas")"
+    ></div>
+<div class ="container">
+    <div class="titSecciones">@Textos.LibroDeMovimientosYExistenciaDeGranos</div>
+</div>
+<div class="container content grillaPad">
+    @using (Html.BeginForm("Action", null, FormMethod.Post, new { @class = "causaBlock", id = "orden-form" }))
+    {
+        @Html.ValidationSummary(true)
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.LibroDeMovimientosYExistenciaDeGranos
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body in collapse">
+                    <div class="accordion-inner">
+                        <div class="span4">
+                            <div class="control-group">
+                                @Html.LabelFor(m => m.MaterialDesc, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control input-medium requerido" })
+                                    @Html.ValidationMessageFor(m => m.MaterialDesc)
+                                    @Html.HiddenFor(model => model.MaterialId)
+                                </div>
+                            </div>
+                            @if ((bool)ViewBag.LibroOnccaEsPorDescripcionCorta)
+                            {
+                                <div class="control-group">
+                                    @Html.LabelFor(m => m.MaterialDescripcionCorta, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.TextBoxFor(model => model.MaterialDescripcionCorta, new { @class = "control input-medium requerido" })
+                                        @Html.ValidationMessageFor(m => m.MaterialDescripcionCorta)
+                                        @Html.HiddenFor(model => model.MaterialDescripcionCortaId)
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                @Html.LabelFor(model => model.FechaDesde, new {@class = "control-label small"})
+                                <div class="FechaDesde">
+                                    @Html.TextBoxFor(m => m.FechaDesde, new { @class = "control "  })
+                                    @Html.ValidationMessageFor(model => model.FechaDesde)
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                @Html.LabelFor(model => model.FechaHasta, new {@class = "control-label small"})
+                                <div class="FechaHasta">
+                                    @Html.TextBoxFor(m => m.FechaHasta, new { @class = "control "  })
+                                    @Html.ValidationMessageFor(model => model.FechaHasta)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group">
+                                <div class="controls cajaButtons">
+                                    <button type="submit" class="btn" name="submitAction" value="GenerarPdf">@Textos.Previsualizar_Pdf</button>
+                                    <button type="submit" class="btn" name="submitAction" value="GenerarExcel">@Textos.Previsualizar_Excel</button>
+                                    <button type="submit" class="btn" name="submitAction" value="Imprimir">@Textos.Imprimir</button>
+                                    <button type="submit" class="btn" name="submitAction" value="CalcularHojas">@Textos.CalcularHojas</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (ViewBag.CantidadDeHojas != null)
+ {
+     <script>
+         $(document).ready(
+             function() {
+                 $('#dialogo-ver-libro').modal({
+                     backdrop: 'static',
+                     keyboard: false
+                 }).css({
+                     'top': '40%',
+                     'margin-top': function() {
+                         return -($(this).height() / 2);
+                     }
+                 });
+                 $('#dialogo-ver-libro-ok').click(function() {
+                     $('#dialogo-ver-libro').modal('hide');
+                 });
+             })
+     </script>
+     <div class="modal" id="dialogo-ver-libro">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                <br/>
+            </div>
+         <div class="modal-body" id ="dialogo-ver-body">
+             @Textos.HojasAImprimir  @ViewBag.CantidadDeHojas
+         </div>
+            <div class="modal-footer">
+                <input id="dialogo-ver-libro-ok" type="button" class="btn" value="@Textos.Ok"/>
+            </div>
+        </div>
+ }

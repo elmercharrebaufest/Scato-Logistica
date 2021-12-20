@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="Scato/Scato.WebOperaciones" />
+  <setParameter name="ServicioRepositorio Service Endpoint Address" value="http://bfdev260/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
+  <setParameter name="ServicioComandos Service Endpoint Address" value="http://bfdev260/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
+  <setParameter name="FirmaProvider Service Endpoint Address" value="http://bfdev260/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
+  <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
+  <setParameter name="Issuer Config" value="https://bfdev271.baunet.local/adfs/ls/" />
+  <setParameter name="IssuerTrust Identity Configuration" value="http://BFDEV271.baunet.local/adfs/services/trust" />
+  <setParameter name="RealmUrl Identity Configuration" value="http://bfdev260/Scato.WebMobile" />
+  <setParameter name="Thumbprint Identity Configuration" value="e3f6dbc4089a19356d8013b21ea48ddb5fdd9d46"/>
+</parameters>

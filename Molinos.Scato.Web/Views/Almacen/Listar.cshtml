@@ -1,0 +1,28 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AlmacenDto>)ViewBag.Items;
+    var materiales = (IList<MaterialDto>)ViewBag.Materiales;    
+}
+
+<script src="@Url.Script("~/Scripts/material.listarMateriales.js")" type="text/javascript"></script>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "Almacen"),
+                grid.Columna("Descripcion", Textos.Descripcion),
+                grid.Columna("DescripcionCorta", Textos.DescripcionCorta),
+                grid.Columna("CodigoSAP", Textos.Almacen_CodigoSAP),
+                grid.Columna("CodigoONCCA", Textos.Material_CodigoONCCA),
+                grid.Columna("EsTanqueVino", Textos.Almacen_EsTanqueVino, m => ((bool)m.EsTanqueVino).Formatted())
+                //grid.Column(header: Textos.Material_Titulo, format: ((item) =>
+                //    {
+                //        IEnumerable<MaterialDto> materialesDto = materiales.Where(mat => mat.AlmacenPredId == item.Id);
+                //        return Html.Raw("<div class = 'ellipsis-overflow mostrar-lista'>" + Html.DisplayFor(m => materialesDto).ToHtmlString()
+                //                        + "<span class = 'tip'>" + Html.DisplayFor(m => materialesDto).ToHtmlString() + "</span>" + "</div>");
+                //    }))
+                ))

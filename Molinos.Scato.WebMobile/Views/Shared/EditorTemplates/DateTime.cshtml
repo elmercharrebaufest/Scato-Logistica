@@ -1,0 +1,57 @@
+﻿@using System.Globalization
+@using Molinos.Scato.WebMobile.Helpers
+
+@model DateTime?
+@Html.TextBox(String.Empty, Model.Formatted(), new { @class = "form-control", data_date_format = "DD/MM/YYYY", @readonly = "readonly", style = "background-color: white" })
+@if (ViewData.ContainsKey("ShowTime") && (bool)ViewData["ShowTime"])
+{
+    @Html.TextBox("time", Model.HasValue ? Model.Value.ToString("HH:mm") : string.Empty, new { @class = "form-control", data_date_format = "HH:mm", @readonly = "readonly", style = "background-color: white" })
+}
+
+<script type="text/javascript">
+    $(function() {
+        // target only the input in this editor template
+        $('#@Html.IdForModel()').datetimepicker({
+            locale: "@CultureInfo.CurrentCulture.Name",
+            ignoreReadonly: true,
+            maxDate: 'now',
+            icons:
+            {
+                time: 'fas fa-clock',
+                date: 'fas fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-arrow-circle-left',
+                next: 'fas fa-arrow-circle-right',
+                today: 'far fa-calendar-check-o',
+                clear: 'fas fa-trash',
+                close: 'far fa-times'
+            }
+        });
+        $('#@Html.IdForModel()' + '_time').removeAttr("data-val-date");
+
+        @if (ViewData.ContainsKey("ShowTime") && (bool)ViewData["ShowTime"])
+        {
+            <text>
+                $('#@Html.IdForModel()' + '_time').datetimepicker({
+                        locale:'@CultureInfo.CurrentCulture.Name',
+                ignoreReadonly: true,
+                maxDate: 'now',
+                icons:
+                            {
+                            time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-arrow-circle-left',
+                    next: 'fas fa-arrow-circle-right',
+                    today: 'far fa-calendar-check-o',
+                    clear: 'fas fa-trash',
+                    close: 'far fa-times'
+                }
+                        });
+                $('#@Html.IdForModel()' + '_time').removeAttr('data-val-date');
+            </text> 
+        }
+    });
+</script>

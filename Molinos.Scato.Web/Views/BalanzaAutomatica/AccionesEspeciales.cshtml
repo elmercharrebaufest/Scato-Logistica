@@ -1,0 +1,62 @@
+﻿@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+
+@{
+    var barrerasApertura = (List<string>)ViewBag.BarrerasAperturaMaestro;
+    var barrerasCierre = (List<string>)ViewBag.BarrerasCierreMaestro;
+}
+<div class="modal hide fade" id="actividades-modal"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Acciones:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="control-group">
+            @Html.Label("Fuera de Servicio", new { @class = "control-label" })
+            <div class="controls">
+                <label class="switch sinMargen">
+                    <input type="checkbox" @(ViewBag.PuestoPausado ? "checked" : "unchecked")>
+                    <span data-puesto="@ViewBag.PuestoId" class="slider round pausa"></span>
+                </label>
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.Label("Entrada", new { @class = "control-label" })
+            <div class="controls">
+                <a class="btn tarjetaMaestro apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@(barrerasApertura.Where(x=>x.Contains("ENT")).FirstOrDefault())"><i class="fa fa-unlock"> </i> </a>
+                <a class="btn tarjetaMaestro cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@(barrerasCierre.Where(x=>x.Contains("ENT")).FirstOrDefault())"><i class="fa fa-lock"> </i> </a>
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.Label("Salida", new { @class = "control-label" })
+            <div class="controls">
+                <a class="btn tarjetaMaestro apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@(barrerasApertura.Where(x=>x.Contains("SAL")).FirstOrDefault())"><i class="fa fa-unlock"> </i> </a>
+                <a class="btn tarjetaMaestro cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@(barrerasCierre.Where(x=>x.Contains("SAL")).FirstOrDefault())"><i class="fa fa-lock"> </i> </a>
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.Label("Balanza a Cero", new { @class = "control-label" })
+            <div class="controls">
+                <a class="btn cerearBalanza" id="cerear-balanza" data-id="@(ViewBag.BalanzaId.Id)">Cerear</a>
+            </div>
+        </div>
+        @if (PermisosHelper.Is(PermisosScato.ForzarCereo))
+        {
+            <div class="control-group">
+                @Html.Label("Forzar a Cero", new { @class = "control-label" })
+                <div class="controls">
+                    <a class="btn forzarBalanza" id="forzarBalanza" data-id="@(ViewBag.BalanzaId.Id)">Avanzar</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="modal-footer">
+        <a data-dismiss="modal" aria-hidden="true" href="#" class="btn close">Cerrar </a>
+    </div>
+</div>

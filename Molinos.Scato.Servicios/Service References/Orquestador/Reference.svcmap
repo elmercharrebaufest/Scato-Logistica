@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5a95b703-d1ce-4342-8053-32a64b8e2323" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8080/ServicioOrquestador" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ServicioOrquestador11.disco" MetadataType="Disco" ID="873d5d8a-697e-4c92-a160-f67458faf43b" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?disco" />
+    <MetadataFile FileName="ServicioOrquestador66.xsd" MetadataType="Schema" ID="51cd7933-8698-4f8f-b72f-7128b8c7f401" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd2" />
+    <MetadataFile FileName="ServicioOrquestador67.xsd" MetadataType="Schema" ID="ef3674fa-4d20-4eaa-823f-d8f1ec7eaa05" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd3" />
+    <MetadataFile FileName="ServicioOrquestador68.xsd" MetadataType="Schema" ID="9b2fb794-d6bf-4e3a-8d34-98dba984f478" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd0" />
+    <MetadataFile FileName="ServicioOrquestador69.xsd" MetadataType="Schema" ID="8705297a-4417-4cdb-a49b-0cf1e6dfeeb1" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd1" />
+    <MetadataFile FileName="ServicioOrquestador610.xsd" MetadataType="Schema" ID="9cb4bfdb-561d-4ac8-a335-8ec6f045ac4c" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd4" />
+    <MetadataFile FileName="ServicioOrquestador611.xsd" MetadataType="Schema" ID="ef705356-53aa-4716-9d32-e4d94b58b95f" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd5" />
+    <MetadataFile FileName="ServicioOrquestador24.wsdl" MetadataType="Wsdl" ID="58a90aef-4eff-413b-a7a2-84192aff5cd6" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?wsdl" />
+    <MetadataFile FileName="ServicioOrquestador25.wsdl" MetadataType="Wsdl" ID="35a3a0dd-5697-4094-9bf7-7a4d943bd2e4" SourceId="1" SourceUrl="http://bfnb14462:8080/ServicioOrquestador?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,93 @@
+﻿@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+
+@model Molinos.Scato.Dominio.Dto.CargaFiltroDto
+@{
+    ViewBag.Title = Textos.EmbarquesPorBuques;
+}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/accordion.icon.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/scripts/jquery.maskedinput.js"></script>
+    <script type="text/javascript" src="~/scripts/autocompletar.js"></script>
+    <script type="text/javascript" src="~/scripts/operacionesPuerto.js"></script>
+}
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.EmbarquesPorBuques</div>
+</div>
+
+<div id="links"
+     data-url-buscar-vapor="@Url.Action("BuscarVapor", "Consultas")"
+     data-url-buscar-vapores="@Url.Action("BuscarVapores", "Consultas")"
+     data-url-buscar-bodega="@Url.Action("BuscarBodega", "Consultas")"
+     data-url-buscar-bodegas="@Url.Action("BuscarBodegas", "Consultas")"
+     data-url-buscar-exportador="@Url.Action("BuscarExportador", "Consultas")"
+     data-url-buscar-exportadores="@Url.Action("BuscarExportadores", "Consultas")"
+     data-url-buscar-destino="@Url.Action("BuscarDestino", "Consultas")"
+     data-url-buscar-destinos="@Url.Action("BuscarDestinos", "Consultas")"
+     data-url-buscar-material="@Url.Action("BuscarMaterialPuerto", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMaterialesPuerto", "Consultas")"></div>
+
+<div class="container-fluid content grillaPad">
+    <div class="row-fluid">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search", style = "margin-top:2%" }))
+            {
+             <div class="row-fluid">
+
+                <div class="span2">
+                    @Html.LabelFor(m => m.VaporDesc, new { @class = "control-label" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.VaporDesc, new { @class = "control input-medium", style = "width:89%" })
+                    @Html.ValidationMessageFor(model => model.VaporDesc)
+                    @Html.HiddenFor(model => model.IdVapor)
+                </div>
+
+                <div class="span2">
+                    @Html.LabelFor(m => m.DestinoDesc, new { @class = "control-label" })
+                </div>
+                <div class="span2">
+                    @Html.TextBoxFor(model => model.DestinoDesc, new { @class = "control input-medium", style = "width:89%" })
+                    @Html.ValidationMessageFor(model => model.DestinoDesc)
+                    @Html.HiddenFor(model => model.IdDestino)
+                </div>
+            </div>
+             <div class="row-fluid" style="border: 0px;">
+
+                 <div class="span2">
+                     @Html.LabelFor(m => m.ExportadorDesc, new { @class = "control-label" })
+                 </div>
+
+                 <div class="span2">
+                     @Html.TextBoxFor(model => model.ExportadorDesc, new { @class = "control input-medium", style = "width:89%" })
+                     @Html.ValidationMessageFor(model => model.ExportadorDesc)
+                     @Html.HiddenFor(model => model.IdExportador)
+                 </div>
+                 <div class="span2">
+                     @Html.LabelFor(m => m.MaterialDesc, new { @class = "control-label" })
+                 </div>
+                 <div class="span2">
+                     @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control input-medium", style = "width:89%" })
+                     @Html.ValidationMessageFor(model => model.MaterialDesc)
+                     @Html.HiddenFor(model => model.IdMaterial)
+                 </div>
+
+             </div>
+                <div class="span12" style="border: 0px;">
+                    <button type="submit" class="btn" style="float:right;margin-right:50px;">@Textos.Filtrar</button>
+                </div>
+
+
+            }
+        </div>
+    </div>
+
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+   
+</div>

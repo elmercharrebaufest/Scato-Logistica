@@ -1,0 +1,37 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlDeBalanzaDto
+@{
+    Layout = null;
+}
+<div class="row">
+    <table class="tablaDatos span12search">
+        <tr>
+            <th>@Html.Label(Textos.Pesada_NumeroDocumento)</th>
+            <th>@Html.Label(Textos.Patente)</th>
+            <th>@Html.Label(Textos.TipoComercial)</th>
+            <th>@Html.Label(Textos.Material)</th>
+        </tr>
+        <tr>
+            <td>@Html.DisplayFor(m => m.NumeroDocumentoIngreso)&nbsp;</td>
+            <td>
+                @if (Model != null && Model.RecorridoId > 0)
+                {
+                    @Html.DisplayFor(m => m.Patente)
+                }
+                &nbsp;
+            </td>
+            <td>@Html.DisplayFor(m => m.TipoComercial)&nbsp;</td>
+            <td>@Html.DisplayFor(m => m.Material)&nbsp;</td>
+        </tr>
+    </table>  
+</div>
+<br/>
+
+@Html.HiddenFor(m => m.Error)
+@Html.HiddenFor(m => m.ControlDeBalanzaId)
+@Html.HiddenFor(m => m.InstanciaWorkflow)
+@Html.HiddenFor(m => m.TipoPesada)
+@Html.HiddenFor(m => m.RecorridoId)
+@Html.HiddenFor(m => m.Observaciones)
+
+

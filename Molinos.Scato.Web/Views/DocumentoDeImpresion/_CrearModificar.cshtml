@@ -1,0 +1,25 @@
+﻿@model Molinos.Scato.Dominio.Dto.DocumentoDeImpresionDto
+@{
+}
+  
+<div class="control-group">
+    @Html.LabelFor(m => m.Codigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Codigo, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(m => m.Codigo)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Descripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(m => m.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.DescripcionCorta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.DescripcionCorta, new { @class = "input-xlarge" })
+        @Html.ValidationMessageFor(m => m.DescripcionCorta)
+    </div>
+</div>

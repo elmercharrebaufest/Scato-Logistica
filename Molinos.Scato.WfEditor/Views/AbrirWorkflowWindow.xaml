@@ -1,0 +1,85 @@
+﻿<Window x:Class="Molinos.Scato.WfEditor.Views.AbrirWorkflowWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:Molinos.Scato.WfEditor.Properties"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Title="{x:Static properties:Resources.TituloAbrirWorkflow}" Width="700" MinHeight="200" MaxHeight="800"
+        DataContext="{Binding Path=AbrirWorkflowViewModel, Source={StaticResource ViewModelLocator}}" 
+        WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner" SizeToContent="Height" ResizeMode="NoResize">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ObtenerCentrosCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="300"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="{x:Static properties:Resources.WorkflowsDisponibles}"></Label>
+            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=Centros}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{Binding Path=WorkflowCentroId, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ObtenerWorkflowsCommand}" CommandParameter="{Binding WorkflowCentroId}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ComboBox>
+        </Grid>
+        
+        <DataGrid Name="WorkflowsGrid" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=Workflows, Mode=OneWay}"
+                  SelectionMode="Single" SelectionUnit="FullRow" IsReadOnly="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding ObtenerVersionesCommand}" CommandParameter="{Binding ElementName=WorkflowsGrid, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowCodigo}" Binding="{Binding Codigo}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowDescripcion}" Binding="{Binding Descripcion}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowTipo}" Binding="{Binding TipoDeWorkflow}" IsReadOnly="True" />
+                <DataGridCheckBoxColumn Header="{x:Static properties:Resources.WorkflowActivo}" Binding="{Binding Activo}" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="2"  HorizontalAlignment="Right" Width="130" Margin="3" Content="{x:Static properties:Resources.AbrirUltimaVersion}" Command="{Binding AbrirUltimaVersionCommand}" CommandParameter="{Binding ElementName=WorkflowsGrid, Path=SelectedItem}" Click="CerrarVentana" />
+        <Expander Grid.Row="3" Header="{x:Static properties:Resources.VerVersionesAnteriores}" IsExpanded="{Binding Path=MostrarVersiones}" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Expanded">
+                    <i:InvokeCommandAction Command="{Binding ObtenerVersionesCommand}" CommandParameter="{Binding ElementName=WorkflowsGrid, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="50*"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="{x:Static properties:Resources.VersionesWorkflow}"></Label>
+                <DataGrid Name="DefinicionesGrid" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=DefinicionesWorkflow, Mode=OneWay}" IsReadOnly="True"
+                          SelectionMode="Single" SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.DefinicionFechaCreacion}" Binding="{Binding FechaCreacion}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.DefinicionNombreUsuario}" Binding="{Binding NombreUsuario}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="{x:Static properties:Resources.DefinicionComentario}" Binding="{Binding Comentario}" IsReadOnly="True" Width="*" />
+                        <DataGridCheckBoxColumn Header="{x:Static properties:Resources.DefinicionActiva}" Binding="{Binding Activa}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="{x:Static properties:Resources.WorkflowFechaActivacion}" Binding="{Binding FechaActivacion}"  IsReadOnly="True" Width="130" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button Grid.Row="2" Width="100" HorizontalAlignment="Right" Margin="3" Content="{x:Static properties:Resources.AbrirVersion}" 
+                    Command="{Binding AbrirVersionCommand}" CommandParameter="{Binding ElementName=DefinicionesGrid, Path=SelectedItem}" Click="CerrarVentana">
+                </Button>
+            </Grid>
+        </Expander>
+    </Grid>
+</Window>

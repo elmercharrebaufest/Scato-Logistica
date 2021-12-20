@@ -1,0 +1,168 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@model Molinos.Scato.Dominio.Dto.ProveedorDto
+
+@Html.ValidationSummary(true)
+
+@Html.HiddenFor(m => m.Descripcion)
+@Html.HiddenFor(m => m.Activo)
+<div class="row-fluid row-fluid-ie7">
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoSap, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.CodigoSap)
+                @Html.HiddenFor(m => m.CodigoSap)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.RazonSocial, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.RazonSocial)
+                @Html.HiddenFor(m => m.RazonSocial)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Cuil, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.Cuil)
+                @Html.HiddenFor(m => m.Cuil)
+            </div>
+        </div>
+    </div>
+    <div class="span2"></div>
+    <div class="span4">
+        <div class="control-group">
+            @Html.LabelFor(m => m.PaisDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.PaisDesc)
+                @Html.HiddenFor(m => m.PaisDesc)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ProvinciaDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.ProvinciaDesc)
+                @Html.HiddenFor(m => m.ProvinciaDesc)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.LocalidadDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.LocalidadDesc)
+                @Html.HiddenFor(m => m.LocalidadDesc)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Domicilio, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(m => m.Domicilio)
+                @Html.HiddenFor(m => m.Domicilio)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="control-group" style="display: inline-flex">
+    @Html.LabelFor(m => m.Mail, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Mail, new { @class = "control input-medium envioMail validarMail", data_mail_error = Textos.Entregador_MailObligatorio })
+    @Html.ValidationMessageFor(m => m.Mail)
+
+    @if (PermisosHelper.Is(PermisosScato.EnvioCamaraDirecto))
+    {
+        <label class="checkbox" style="margin-left: 95px">
+            @Html.CheckBoxFor(m => m.EnvioCamaraDirecto)
+            <span class="helper">@Textos.Entregador_EnvioCamaraDirecto </span>
+        </label>
+    }
+    else
+    {
+        <div>
+            @Html.HiddenFor(m => m.EnvioCamaraDirecto)
+        </div>
+    }
+</div>
+
+<table>
+    <tr>
+        <td style="width: 55%">
+            <div class="row-fluid-boxed">
+                <div class="row-fluid row-fluid-ie7">
+                    <div class="span12">
+                        <label class="input-control checkbox">
+                            @Html.CheckBoxFor(m => m.EnvioAutomaticoMail)
+                            <span class="helper">@Textos.Entregador_EnvioAutomaticoMail</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row-fluid row-fluid-ie7">
+                    <div class="span2">
+                    </div>
+                    <div class="span8  pull-right">
+                        <div class="control-group">
+                            <label class="input-control checkbox">
+                                @Html.CheckBoxFor(m => m.Analisis, new { @class = "envioMail validarOpcion", data_opcion_error = Textos.Entregador_Error_MailOpcion })
+                                <span class="helper">@Textos.Entrgador_Analisis</span>
+                            </label>
+                        </div>
+                        <div class="control-group">
+                            <label class="input-control checkbox">
+                                @Html.CheckBoxFor(m => m.Pesada, new { @class = "envioMail validarOpcion" })
+                                <span class="helper">@Textos.Entregador_Pesada</span>
+                            </label>
+                            @Html.ValidationMessageFor(m => m.Pesada)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+        <td>
+            <div class="row-fluid-boxed">
+                <div class="control-group">
+                    @Html.LabelFor(m => m.ToleranciaEnPorcentaje, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.ToleranciaEnPorcentaje, new { @class = "control input-small campoNumerico" })
+                        @Html.ValidationMessageFor(m => m.ToleranciaEnPorcentaje)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @Html.LabelFor(m => m.ToleranciaEnKg, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.ToleranciaEnKg, new { @class = "control input-small campoNumerico" })
+                        @Html.ValidationMessageFor(m => m.ToleranciaEnKg)
+                    </div>
+                </div>
+            </div>
+            <br />
+        </td>
+    </tr>
+</table>
+
+<div class="row">
+    <div class="span10">
+        <div class="control-group">
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.EsTitularCP)
+                <span class="helper">@Textos.Entregador_TitularCP</span>
+            </label>
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.EsIntermediario)
+                <span class="helper">@Textos.Entregador_Intermediario</span>
+            </label>
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.EsRemitenteComercial)
+                <span class="helper">@Textos.Entregador_RemitenteComercial</span>
+            </label>
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.EsDestinatario)
+                <span class="helper">@Textos.Entregador_Destinatario</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+
+
+

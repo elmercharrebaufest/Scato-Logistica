@@ -1,0 +1,16 @@
+Estimado,<br/>
+Establecimiento: [CodigoEstablecimiento]<br/>
+Razon Social: [RazonesSociales]<br/>
+Corredor: [Corredores]<br/>
+Intermediario: [Intermediarios]<br/>
+Remitente Comercial: [Remitentes]<br/>
+Nombre del Campo: [NombreEstablecimiento]<br/>
+Provincia: [ProvinciaEstablecimiento]<br/>
+Localidad: [LocalidadEstablecimiento]<br/>
+Cosecha: [Cosecha]<br/>
+Stock Declarado: [StockDeclarado]<br/>
+Stock Utilizado: [StockUtilizado]<br/>
+<b>Stock Disponible: [StockDisponible]</b><br/>
+<br/>
+Saludos cordiales,<br/>
+[Firma]

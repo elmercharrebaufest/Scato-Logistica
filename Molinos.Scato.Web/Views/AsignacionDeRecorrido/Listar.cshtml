@@ -1,0 +1,25 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<AsignacionDeRecorridoDto>)ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+            grilla => grilla.Columns(
+            grilla.ColumnaEliminarModificar(Html, "AsignacionDeRecorrido"),
+            grilla.Columna("FechaDesde", Textos.AsignacionDeRecorrido_FechaDesde, x => FormattingHtmlHelper.Formatted(x.FechaDesde)),
+            grilla.Columna("FechaHasta", Textos.AsignacionDeRecorrido_FechaHasta, x => FormattingHtmlHelper.Formatted(x.FechaHasta)),
+            grilla.Columna("MaterialPorCentro.Material.Descripcion", Textos.Material, x => x.Material),
+            @*grilla.Columna("Calidad.Descripcion", Textos.Calidad, x => x.Calidad),*@
+            grilla.Columna("Calle.Nombre", Textos.Calle, x => x.Calle),
+            grilla.Columna("Workflow.Descripcion", Textos.Workflow, x => x.Workflow),
+            grilla.Columna("BalanzaBruto.Nombre", Textos.BalanzaBruto, x => x.BalanzaBruto),
+            grilla.Columna("BalanzaTara.Nombre", Textos.BalanzaTara, x => x.BalanzaTara),
+            grilla.Columna("AlmacenDestino.Descripcion", Textos.AsignacionDeRecorrido_AlmacenDestino, x => x.AlmacenDestino)
+            ))
+    </div>

@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<FormatoDeImpresionDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminarImprimirModificar(this.Html, "FormatoDeImpresion"),
+            grid.Columna("Descripcion", Textos.Descripcion),
+            grid.Columna("FormatoDePapel.Descripcion", Textos.Formato, c => c.FormatoDePapelDescripcion),
+            grid.Columna("Posicion",  Textos.FormatoDeImpresion_Posicion, t => ((Posicion)t.Posicion).DisplayEnum()),
+            grid.Columna("Filas",  Textos.FormatoDeImpresion_Filas),
+            grid.Columna("Columnas",  Textos.FormatoDeImpresion_Columnas),
+            grid.Columna("MargenIzquierdo",  Textos.FormatoDeImpresion_MargenIzquierdo),
+            grid.Columna("MargenSuperior",  Textos.FormatoDeImpresion_MargenSuperior)))

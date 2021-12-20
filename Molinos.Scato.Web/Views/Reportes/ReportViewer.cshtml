@@ -1,0 +1,19 @@
+﻿@using MvcReportViewer
+@model Molinos.Scato.Web.Models.ReportViewModel
+
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    $('iframe').on('load', function () {
+        $.unblockUI();
+
+    });
+</script>
+
+
+    @Html.MvcReportViewerFluent(null).ReportPath("/Molinos.Scato.Reportes/" + Model.ReportPath
+        ).ReportParameters((IEnumerable<KeyValuePair<string, object>>)Model.ReportParameterList
+        ).Attributes(new { Height = 900, Width = "100%", style = "border: none" }
+        ).Method(FormMethod.Post)
+        

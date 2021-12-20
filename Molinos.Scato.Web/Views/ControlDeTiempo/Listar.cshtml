@@ -1,0 +1,18 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ControlDeTiempoDto>)ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "ControlDeTiempo"),
+        grilla.Columna("Workflow.Descripcion", Textos.Workflow_Nombre, x => x.WorkflowDescripcion),
+        grilla.Columna("ActividadDesde", Textos.ControlDeTiempo_ActividadDesde),
+        grilla.Columna("ActividadHasta", Textos.ControlDeTiempo_ActividadHasta),
+        grilla.Columna("TiempoMaximo", Textos.ControlDeTiempo_TiempoMaximo),
+        grilla.Columna("CodigoControl", Textos.ControlDeTiempo_ActividadDeControl)))

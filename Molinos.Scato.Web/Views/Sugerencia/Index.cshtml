@@ -1,0 +1,27 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">var caracterText = '@Textos.Caracteres_Restantes'</script>
+<script src="@Url.Script("~/Scripts/Sugerencia.index.js")" type="text/javascript"></script>
+<div id="diag-sugerencia" data-enviar-url="@Url.Action("Index", "Sugerencia")">
+    <div class="modal fade hide" id="dialogo-sugerencia" style="width: 350px">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Panel_Sugerencia</h4>
+            <div>@Textos.Sugerencias_Referidas</div>
+        </div>
+        <div class="modal-body" id="dialogo-imprimir-body">
+            @Html.TextArea("TextoSugerencia", new {rows = 7, cols = 47, style = "width: 96%", maxlength="4000"})
+            <div id="contador"></div> 
+        </div>
+        <div class="modal-footer">
+            <button id="boton-enviar" class="btn">@Textos.Enviar</button>
+            <button id="dialogo-imprimir-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        </div>
+    </div>
+</div>
+

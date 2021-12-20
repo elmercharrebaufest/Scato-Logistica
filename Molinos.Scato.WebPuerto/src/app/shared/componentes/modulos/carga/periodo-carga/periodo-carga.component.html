@@ -1,0 +1,144 @@
+<div id="periodoDeCarga" class="mt-4 px-4 pb-4 shadow" style="background-color: white;">
+    <app-collapse-button collapseSelectorId="collapsePeriodoDeCarga"></app-collapse-button>
+    <h4 class="colorTitle pt-4">Período de carga</h4>
+    <div id="collapsePeriodoDeCarga" class="collapse show">
+        <form [formGroup]="periodoCargaForm">
+            <div class="row">
+                <div class="col-4 border-right">
+                    <div class="form-row" formGroupName="amarro">
+                        <div class="form-group col-5">
+                            <label class="font-weight-bold">Amarró</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-3">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeAmarro"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput1">
+                            </div>
+                            <ngx-material-timepicker #fullTimeAmarro>
+                            </ngx-material-timepicker>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Viento</label>
+                            <input class="form-control" formControlName="viento"/>
+                        </div>
+                        <div class="form-group col-2">
+                            <label class="font-weight-bold">Dirección</label>
+                            <input class="form-control" formControlName="direccion"/>
+                        </div>
+                    </div>
+                    <div class="form-row" formGroupName="desamarro">
+                        <div class="form-group col-5">
+                            <label class="font-weight-bold">Desamarró</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-3">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeDesamarro"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput1">
+                            </div>
+                            <ngx-material-timepicker #fullTimeDesamarro>
+                            </ngx-material-timepicker>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>&nbsp;</label>
+                            <input class="form-control" formControlName="viento"/>
+                        </div>
+                        <div class="form-group col-2">
+                            <label>&nbsp;</label>
+                            <input class="form-control"  formControlName="direccion"/>
+                        </div>
+                    </div>
+                    <div class="form-row" formGroupName="habilitacion">
+                        <div class="form-group col-5">
+                            <label class="font-weight-bold">Habilitación</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-3">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeHabilitacion"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput1">
+                            </div>
+                            <ngx-material-timepicker #fullTimeHabilitacion>
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 border-right">
+                    <div class="form-row" formGroupName="conexionManguera">
+                        <div class="form-group col-8">
+                            <label class="font-weight-bold">Conexión de mangueras</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeMangueras"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput2">
+                            </div>
+                            <ngx-material-timepicker #fullTimeMangueras>
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+                    <div class="form-row" formGroupName="desconexionManguera">
+                        <div class="form-group col-8">
+                            <label class="font-weight-bold">Desconexión de mangueras</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeDescMangueras"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput2">
+                            </div>
+                            <ngx-material-timepicker #fullTimeDescMangueras>
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-row" formGroupName="comienzoCarga">
+                        <div class="form-group col-8">
+                            <label class="font-weight-bold">Comienzo de carga</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeCarga"
+                                    [format]="24" >
+                                <img src="assets/reloj.svg" class="imgClockInput2">
+                            </div>
+                            <ngx-material-timepicker #fullTimeCarga>
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+                    <div class="form-row" formGroupName="finCarga">
+                        <div class="form-group col-8">
+                            <label class="font-weight-bold">Finalización de carga</label>
+                            <input type="date" formControlName="fecha" max="3000-12-31" min="1000-01-01" class="form-control" />
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <div class="input_img">
+                                <input class="form-control" formControlName="hora" placeholder="00:00" [ngxTimepicker]="fullTimeFinCarga"
+                                    [format]="24" (blur)="clForm()" >
+                                <img src="assets/reloj.svg" class="imgClockInput2">
+                            </div>
+                            <ngx-material-timepicker #fullTimeFinCarga>
+                            </ngx-material-timepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

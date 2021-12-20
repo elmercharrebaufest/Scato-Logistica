@@ -1,0 +1,205 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.BalanzaDto
+@{
+    var cabezales = (IEnumerable<SelectListItem>) ViewBag.Balanzas;
+}
+
+@Html.ValidationSummary(true)
+@if (Model == null)
+{
+    @Html.Hidden("Id", (object) ViewBag.Id)
+    @Html.Hidden("CentroId", (object) ViewBag.CentroId)
+}
+else
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CentroId)
+}
+
+<script>
+    jQuery(document).ready(function($) {
+        $('#Color').colorPicker({ showHexField: false });
+    });
+</script>
+
+<div class="row-fluid">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(m => m.Color, new { @class = "control-label" })
+            <div class="controls">
+                @if (Model == null)
+                {
+                    <input id="Color" type="text" name="Color" alt="Cambiar color" data-text="Cambiar Color" value="#000000" style="visibility: hidden; position: absolute;" />
+                }
+                else
+                {
+                    <input id="Color" type="text" name="Color" alt="Cambiar color" data-text="Cambiar Color" value="@Model.Color" style="visibility: hidden; position: absolute;" />
+                }
+
+                @Html.ValidationMessageFor(m => m.Color)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Nombre, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Nombre)
+                @Html.ValidationMessageFor(m => m.Nombre)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.NombreCorto, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.NombreCorto)
+                @Html.ValidationMessageFor(m => m.NombreCorto)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CentroEmisor, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CentroEmisor)
+                @Html.ValidationMessageFor(m => m.CentroEmisor)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaOrigen, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaOrigen)
+                @Html.ValidationMessageFor(m => m.ToleranciaOrigen)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaRechazo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaRechazo)
+                @Html.ValidationMessageFor(m => m.ToleranciaRechazo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaxMil, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaxMil, new { @class = "campoNumerico" }) 
+                @Html.ValidationMessageFor(m => m.ToleranciaxMil)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.ToleranciaIndianapolis, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ToleranciaIndianapolis)
+                @Html.ValidationMessageFor(m => m.ToleranciaIndianapolis)
+            </div>
+        </div>
+        
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoLongitud, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoLongitud)
+                @Html.ValidationMessageFor(m => m.CodigoLongitud)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoLatitud, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoLatitud)
+                @Html.ValidationMessageFor(m => m.CodigoLatitud)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CodigoLot, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CodigoLot)
+                @Html.ValidationMessageFor(m => m.CodigoLot)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.CertificadoDeHabilitacion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CertificadoDeHabilitacion)
+                @Html.ValidationMessageFor(m => m.CertificadoDeHabilitacion)
+            </div>
+        </div>
+
+    </div>
+    
+    
+    
+
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.CodigoCabezal, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.CodigoCabezal, cabezales)
+                @Html.ValidationMessageFor(model => model.CodigoCabezal)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.TipoAcceso, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.TipoAcceso)
+                @Html.ValidationMessageFor(m => m.TipoAcceso)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.MaximoValorCereo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.MaximoValorCereo)
+                @Html.ValidationMessageFor(m => m.MaximoValorCereo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.Modelo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.Modelo)
+                @Html.ValidationMessageFor(m => m.Modelo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.NroSerie, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.NroSerie)
+                @Html.ValidationMessageFor(m => m.NroSerie)
+            </div>
+        </div>
+        <div class="control-group">
+            @if (Model == null)
+            {
+                @Html.LabelFor(m => m.Modalidad, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.EnumDropDownListFor(model => model.Modalidad)
+                    @Html.ValidationMessageFor(m => m.Modalidad)
+                </div>
+            }
+            else
+            {
+                @Html.LabelFor(m => m.Modalidad, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.EnumDropDownListFor(model => model.Modalidad, new { disabled = "disabled", @class = "" })
+                    @Html.HiddenFor(model => model.Modalidad)
+                    @Html.ValidationMessageFor(m => m.Modalidad)
+                    @Html.ActionLink(@Textos.Balanza_CambiarModalidad, "Modalidad", "Balanza", new { balanzaId = Model.Id, modalidad = Model.Modalidad }, new { @class = "btn ajax-editar-link pull-right" })
+                </div>
+            }
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.PuestoDeTrabajo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.PuestoDeTrabajo)
+                @Html.ValidationMessageFor(m => m.PuestoDeTrabajo)
+            </div>
+        </div>
+
+        <div class="control-group FechaDesde">
+            @Html.LabelFor(m => m.VencimientoDeCertificado, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.VencimientoDeCertificado, Model != null && Model.VencimientoDeCertificado.HasValue ? Model.VencimientoDeCertificado.Value.FormattedFixed() : string.Empty)
+                @Html.ValidationMessageFor(m => m.VencimientoDeCertificado)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EnumDropDownListFor(model => model.TipoVehiculo, new { @class = "input-medium" })
+            </div>
+        </div>
+    </div>
+</div>

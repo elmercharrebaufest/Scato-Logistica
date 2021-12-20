@@ -1,0 +1,20 @@
+﻿@model Molinos.Scato.Dominio.Dto.TarjetaBloqueadaDto
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.CentroId)
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Numero, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Numero, new {@class = "input-large", maxlength = "10"})
+        @Html.ValidationMessageFor(m => m.Numero)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.Motivo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextAreaFor(m => m.Motivo, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(m => m.Motivo)
+    </div>
+</div>

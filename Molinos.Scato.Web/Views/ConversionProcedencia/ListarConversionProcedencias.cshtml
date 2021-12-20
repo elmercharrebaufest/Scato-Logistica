@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConversionProcedenciaDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+            grid => grid.Columns(
+            grid.ColumnaEliminar(Html, "ConversionProcedencia"),
+            grid.Columna("ProcedenciaDesc", Textos.Procedencia),
+            grid.Columna("CodigoCamara",  Textos.TablaConversion_CodigoCamara)))

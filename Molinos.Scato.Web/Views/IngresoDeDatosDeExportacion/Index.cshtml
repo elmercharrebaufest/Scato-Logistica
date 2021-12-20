@@ -1,0 +1,107 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.IngresoDeDatosDeExportacionDto
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/scripts/IngresoDeDatosDeExportacion.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+}
+<style>
+    .tablaDatos{width:100%;}
+</style>
+
+<div id="links"
+     data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+     data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"></div>
+
+@{
+    var tipoDocumentoIngreso = (string)ViewBag.TipoDocumentoIngreso;
+    var numeroDocumentoIngreso = (string)ViewBag.NumeroDocumentoIngreso;
+    var patente = (string)ViewBag.Patente;
+    var material = (string)ViewBag.Material;
+    var firmas = (IEnumerable<SelectListItem>)ViewBag.Firmas;
+    var nacionalidades = (IEnumerable<SelectListItem>)ViewBag.Nacionalidades;
+}
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.Visteo</div>
+</div>
+
+@using (Html.BeginForm("Index", "IngresoDeDatosDeExportacion", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.InstanciaWorkflow)
+    @Html.HiddenFor(model => model.WorkflowDefinicionId)
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="row-fluid">
+        <table class="tablaDatos">
+            <tr>
+                <th>@Html.Label(Textos.TipoDocumentoIngreso + ":")</th>
+                <th>@Html.Label(Textos.NumeroDocumentoIngreso + ":")</th>
+                <th>@Html.Label(Textos.Camion_Patente + ":")</th>
+                <th>@Html.Label(Textos.Material + ":")</th>
+            </tr>
+            <tr>
+                <td>@tipoDocumentoIngreso</td>
+                <td>@numeroDocumentoIngreso</td>
+                <td>@patente</td>
+                <td>@material</td>
+            </tr>
+        </table>
+    </div>
+    <div class="control-group">
+        @Html.Label(Textos.Firma_Exportador + ":", new { @class = "control-label" })
+        <div class="controls">
+            @Html.DropDownListFor(model => model.FirmaId, firmas, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.FirmaId)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.PermisoEmbarque, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.PermisoEmbarque, new { @class = "control uppercase", maxlength = 16 })
+            @Html.ValidationMessageFor(model => model.PermisoEmbarque)
+            @Html.HiddenFor(model => model.PermisoEmbarque)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.IdentificadorContenedor, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.IdentificadorContenedor, new { @class = "control uppercase", maxlength = 16 })
+            @Html.ValidationMessageFor(model => model.IdentificadorContenedor)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.NacionalidadId, new { @class = "control-label" })
+        <div class="controls">
+            @Html.DropDownListFor(model => model.NacionalidadId, nacionalidades, Textos.Default_Nacionalidad)
+            @Html.ValidationMessageFor(model => model.NacionalidadId)
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(model => model.TransportistaId, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.Transportista, new { @class = "control autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
+            @Html.ValidationMessageFor(model => model.Transportista)
+            @Html.HiddenFor(model => model.TransportistaId)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.PesoNeto, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.PesoNeto, new { @class = "control autocompletado-obligatorio", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.PesoNeto) })
+            @Html.ValidationMessageFor(model => model.PesoNeto)
+            @Html.HiddenFor(model => model.PesoNeto)
+        </div>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary aceptar">@Textos.Aceptar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn", id = "botonCancelar" })
+    </div>
+    <div id="autocompleteTran"></div>
+}

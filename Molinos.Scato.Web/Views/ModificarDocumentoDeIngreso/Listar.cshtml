@@ -1,0 +1,55 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<RecorridoDto>)ViewBag.Items;
+    var error = (string)(ViewBag.Error ?? "");
+
+}
+<style>
+    .editar-borrar-columna {
+        width: 94px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        if ($('#Error').val() != "") {
+            $("#errorValidationMessage").html($('#Error').val());
+            $("#errorValidationMessage").addClass('field-validation-error');
+            $("#errorValidationMessage").removeClass('field-validation-valid');
+        } else {
+            $("#errorValidationMessage").addClass('field-validation-valid');
+            $("#errorValidationMessage").removeClass('field-validation-error');
+            $("#errorValidationMessage").html('');
+        }
+        $.unblockUI();
+        BajarTodasLasFotos();
+    });
+</script>
+@Html.Hidden("Error", error)
+
+@(new HtmlString(Html.Grilla(items,
+             grid => grid.Columns(
+                 grid.ColumnaSeleccionarDocumento(Html, "ModificarDocumentoDeIngreso", useAjax: false, filtrarPorTarjeta: (bool)(ViewBag.FiltrarPorTarjeta ?? false), soloLectura: (bool)(ViewBag.SoloLectura ?? false)),
+                 grid.ColumnaVerFotoCartaPorte(Html, "ObtenerFotoDeCartaPorte", "DescargarFotoDeCartaPorte", "Foto"),
+                 grid.Columna("Patente", Textos.Patente),
+                 grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso, x => String.IsNullOrEmpty(x.NumeroDocumentoIngresoLegal) ? x.NumeroDocumentoIngreso : x.NumeroDocumentoIngresoLegal),
+                 grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngresoInterno, x => String.IsNullOrEmpty(x.NumeroDocumentoIngresoLegal) ? "" : x.NumeroDocumentoIngreso),
+                grid.Columna("FechaInicio", Textos.FechaInicio, x => FormattingHtmlHelper.FormattedTime(x.FechaInicio)),
+                grid.Columna("Estado", Textos.Estado, x => Html.Raw(x.Estado + (x.Rechazado ? "<span class='label label-important'>" + "Rechazado" + "</span>" : ""))),
+                grid.Columna("TarjetaDeAcceso", Textos.Tarjeta)
+                )).ToHtmlString().Replace("[FotoHeader]",
+                    Html.Raw(
+                                "<button class=\"btn btn-primary ajax-popup-link3 btnDescargarFotos \" id=\"urlVer\" data-url=\"/Scato.Web/Foto/ObtenerFotoDeCartaPorte?id=\"><i class=\"icon-camera\"></i></button>"
+                                + "<button class=\"btn btn-primary ajax-popup-link3 btnDescargarFotos \" id=\"urlDescargar\"  data-url=\"/Scato.Web/Foto/DescargarFotoDeCartaPorte?id=\"><i class=\"icon-download-alt\"></i></button>"
+
+                                ).ToString()
+                                )
+    )
+)
+
+
+

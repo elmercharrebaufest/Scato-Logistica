@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ConversionProcedenciaDto
+@{
+    Layout = null;
+    var localidades = (IEnumerable<SelectListItem>)ViewBag.Localidades;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
+}
+
+@Html.ValidationSummary(true)
+@*<div class="control-group">
+    @Html.LabelFor(model => model.CamaraDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CamaraId, camaras,Textos.Default_Camara, new { id = "camarasDropDown" })
+        @Html.ValidationMessageFor(model => model.CamaraId)
+        @Html.ActionLink(Textos.Filtrar, "Indexa", "ConversionProcedencia", null, new {@class="btn", @id = "btnFiltrar"})
+    </div>
+</div>*@
+<div class="control-group">
+    @Html.LabelFor(m => m.ProcedenciaDesc, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ProcedenciaId, localidades, Textos.Default_Localidad, new { id = "localidadesDropDown" })
+        @Html.Hidden("ConsultarConversionPorCamara", Url.Action("Indexa"))
+        @Html.ValidationMessageFor(m => m.ProcedenciaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoCamara, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoCamara, new {@class = "control input-large"})
+        @Html.ValidationMessageFor(m => m.CodigoCamara)
+    </div>
+</div>
+
+<div class="botones-carta-porte centered">
+    <button class="btn btn-primary" type="submit">@Textos.Agregar</button>
+</div>

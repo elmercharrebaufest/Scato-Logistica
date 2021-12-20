@@ -1,0 +1,122 @@
+.colorTitulo{
+    color:#4D60A8
+}
+.colorSubTitulo{
+    color: #1F8649;
+}
+.inputLineasEmbarque{
+    width: 100%;
+    height: 100%;
+    /* border: none; */
+}
+.ngbDropdownMenu{
+    font-weight: bold;
+}
+.observacion{
+    color: #1C7CD5;
+    font-size: 12px;
+}
+.bajaCarga, .advertencia {
+    color: #F0AD4E;
+}
+.stop{
+    color: #D9534F;
+}
+.totales{
+    color: #1A1A1A;
+    font-size: 10px;
+}
+.textoGrilla{
+    color: #373A3C;
+}
+.btnMotivos{
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 0px;
+    padding-bottom: 3px;
+    height: 20px;
+}
+
+/* de lineas */
+.claseTable, .claseThead, .claseTr, .claseTd{
+    width: 100%;
+}
+.basurerito { 
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.alineaCheck{
+    text-align: center;
+    /* display: flex;
+    align-items: center; */
+}
+.max-5vh{
+    max-height: 400px;
+    height: 400px;
+    padding-bottom: 30px;
+    /* margin-top: -20px; */
+    margin-top: -1px;
+}
+.full-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.full-center i{
+    margin-top: 11px;
+    color: red !important;
+}
+.full-center i:hover{ cursor: pointer; }
+
+.btn-eliminar { 
+    place-self: flex-start; 
+    right: 0;
+    margin-right: 10px;
+}
+.distancia-filas{
+    /* margin-bottom: -9px; */
+    margin-bottom: -18px;
+}
+.lblCentrado{ text-align:center }
+.claseTd{ border: 0; }
+.pl-2, .px-2 {
+    padding-left: 0rem !important;
+}
+.pr-2, .px-2 {
+    padding-right: 0rem !important;
+}
+.tituloCentrado{
+    text-align: center;
+}
+.div-active {
+    border: 1px solid #dee2e6da;
+    background-color: #DADADA;
+    margin-bottom: 0px;
+    border-bottom-width: 0px;
+}
+.lineas{
+    border-bottom: 1px;
+}
+.borde-div{
+    border: 1px;
+    border-color: #0000007d;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.float-down-arrow{
+    position: absolute;
+    right: 2.5rem;
+    bottom: 0;
+    font-size: 1.3rem;
+}
+.custom-textarea{
+    width: 100%;
+}
+.btn-posicion{
+    right: 0;
+    position: absolute;
+}

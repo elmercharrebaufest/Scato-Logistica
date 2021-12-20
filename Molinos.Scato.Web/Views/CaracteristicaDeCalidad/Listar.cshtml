@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<CaracteristicaDeCalidadDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "CaracteristicaDeCalidad"),
+    grilla.Columna("MaterialPorCentro.Material.Descripcion", Textos.Material, x => x.MaterialDescripcion),
+    grilla.Columna("CaracteristicaDeCalidadMaestro.Descripcion", Textos.Descripcion, x => x.Descripcion),
+    grilla.Columna("UnidadDeMedida", Textos.Material_UnidadDeMedida),
+    grilla.Columna("CaladoMinimo", Textos.CaracteristicaDeCalidad_CaladoMinimo),
+    grilla.Columna("CaladoMaximo", Textos.CaracteristicaDeCalidad_CaladoMaximo),
+    grilla.Columna("EsHumedad", Textos.CaracteristicaDeCalidad_EsHumedad, x => ((bool) x.EsHumedad).Formatted())
+    ))

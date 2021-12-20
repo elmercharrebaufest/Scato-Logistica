@@ -1,0 +1,1121 @@
+﻿@using System.Configuration
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Models
+@using Molinos.Scato.Web.Seguridad
+@{
+    var cookie = new CookieUsuario();
+    var centroDescripcion = cookie.Valor("CentroDescripcion");
+    var workflows = (IList<WorkflowInfoDto>)ViewBag.Workflows;
+    var idiomas = (IEnumerable<SelectListItem>)ViewBag.Idiomas;
+    var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
+}
+
+
+@Scripts.Render("~/bundles/blockUI")
+<script>
+    //Se cierra el diálogo cuando se presiona ESC
+    $(document).keyup(function (e) {
+        if (e.keyCode == 27) {
+            $('#dialogo-editar').modal('hide');
+        }
+    });
+    var grupos = "@Html.Raw(ViewBag.Grupos)";
+</script>
+
+<script type="text/javascript" src="@Url.Script("~/scripts/_menu.js")"></script>
+
+<div class="navbar">
+    <div class="">
+        <div class="container-fluid cabezalApp">
+
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>-->
+            <!-- Be sure to leave the brand out there if you want it shown -->
+            <a class="brand" href="@Url.Action("Index", "ListaDeCamiones")"><img src="@Url.Action("Logo","Firma")" alt="Molinos"></a>
+
+            <ul class="nav nav-pills">
+                <li>
+                    @Html.ActionLink(Textos.ListaDeCamiones_Titulo, "Index", "ListaDeCamiones")
+                    @Html.Hidden("ListaDeCamionesUrl", Url.Action("Index", "ListaDeCamiones"))
+                    @Html.Hidden("BorrarPermisosCookie", Url.Action("BorrarPermisosCookie", "Menu"))
+                    @Html.Hidden("ActualizarCookie", Url.Action("ActualizarCookiePermisos", "Menu"))
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="dropdown menu-adminrepo">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Administracion <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_AsignacionDeRecorrido</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmCalidadMaterial))
+                                {
+                                    <li>@Html.ActionLink(Textos.CalidadMaterial_Titulo, "Index", "CalidadMaterial")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmAsignacionDeRecorrido))
+                                {
+                                    <li>@Html.ActionLink(Textos.AsignacionDeRecorrido_Titulo, "Index", "AsignacionDeRecorrido")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ActividadPuestoComando) || PermisosHelper.Is(PermisosScato.PuestoDeComando_CaladoEnPlanta))
+                                {
+                                    <li>@Html.ActionLink(Textos.PuestoComando_Titulo, "Index", "PuestoComando")</li>
+                                }
+                            </ul>
+                        </li>
+                        @if (PermisosHelper.Is(PermisosScato.AjusteYStockBines))
+                        {
+                            <li>@Html.ActionLink(Textos.AjusteYStockBines_Titulo, "Index", "AjusteStockBines")</li>
+                        }
+                        @if (PermisosHelper.Is(PermisosScato.MovimientoDeBines))
+                        {
+                            <li>@Html.ActionLink(Textos.MovimientoDeBines_Titulo, "Index", "MovimientoDeBines")</li>
+                        }
+                        @if (PermisosHelper.Is(PermisosScato.AsignacionDeContingencia))
+                        {
+                            <li>@Html.ActionLink(Textos.AsignacionDeContingencia_Titulo, "Index", "AsignacionDeContingencia")</li>
+                        }
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Bodega</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmVariedadPorVinedo))
+                                {
+                                    <li>@Html.ActionLink(Textos.VariedadPorVinedos_Titulo, "Index", "VariedadPorVinedo")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmVinedoTerceros))
+                                {
+                                    <li>@Html.ActionLink(Textos.VinedoTerceros_Titulo, "Index", "VinedoTerceros")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmVinedoPropio))
+                                {
+                                    <li>@Html.ActionLink(Textos.VinedoPropio_Titulo, "Index", "VinedoPropio")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Calidad</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Camaras</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmCamara))
+                                        {
+                                            <li>@Html.ActionLink(Textos.Camara_Titulo, "Index", "Camara")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmExcepcionEnvioCamara))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ExcepcionEnvioCamara_Titulo, "Index", "ExcepcionEnvioCamara")</li>
+                                        }
+                                       
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_AnalisisObligatorio</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmAnalisisObligatorio))
+                                        {
+                                            <li>@Html.ActionLink(Textos.AbmAnalisisObligatorio, "Index", "AnalisisObligatorio")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmReglasDeAnalisisObligatorio))
+                                        {
+                                            <li>@Html.ActionLink(Textos.AbmReglasDeAnalisisObligatorio_Titulo, "Index", "ReglaDeAnalisisObligatorio")</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.AbmCaracteristicaDeCalidad))
+                                {
+                                    <li>@Html.ActionLink(Textos.CaracteristicaDeCalidad_Titulo, "Index", "CaracteristicaDeCalidad")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCaracteristicaDeCalidad))
+                                {
+                                    <li>@Html.ActionLink(Textos.CaracteristicaDeCalidadPorWorkflow_Titulo, "Index", "CaracteristicaDeCalidadPorworkflow")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.RangosDeRedondeo))
+                                {
+                                    <li>@Html.ActionLink(Textos.RangosDeRedondeo, "Index", "RangosDeRedondeo")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmExcepcionAlDescuento))
+                                {
+                                    <li>@Html.ActionLink(Textos.ExcepcionAlDescuento_Titulo, "Index", "ExcepcionAlDescuento")</li>
+                                }
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Lotes</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLote))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ArmarLote, "Index", "Lote")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.BuscarLote))
+                                        {
+                                            <li>@Html.ActionLink(Textos.BuscarLote, "BuscarLote", "Lote")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.EmisionDeDetalleDeLote))
+                                        {
+                                            <li>@Html.ActionLink(Textos.EmisionDeDetalleDeLote, "Index", "Reportes", new { nombreReporte = "Emision de Detalle de Lote" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ListadoDePendientesDeArmadoDeLote))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ListadoDePendientesDeArmadoDeLote, "Index", "Reportes", new { nombreReporte = "Listado de Pendientes de Armado de Lote" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.TablaConversionMaterial))
+                                        {
+                                            <li>@Html.ActionLink(Textos.TablaConversion, "Index", "ConversionMaterial")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ArmarLoteBiotecnologia, "Index", "LoteBiotecnologia")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+                                        {
+                                            <li>@Html.ActionLink(Textos.BuscarLoteBiotecnologia, "BuscarLote", "LoteBiotecnologia")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLoteAuditoria))
+                                        {
+                                            <li>@Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")</li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Casilleros</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.GeneracionMicromuestras))
+                                {
+                                    <li>@Html.ActionLink(Textos.Micromuestra_Titulo, "Index", "Micromuestra")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCasillero))
+                                {
+                                    <li>@Html.ActionLink(Textos.Casillero_Titulo, "Index", "Casillero")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ConsultaCasillero))
+                                {
+                                    <li>@Html.ActionLink(Textos.ConsultaCasillero, "Antiguedad", "ConsultaCasillero")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.LiberacionDeCasilleros))
+                                {
+                                    <li>@Html.ActionLink(Textos.LiberacionDeCasilleros, "Index", "LiberacionDeCasilleros")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_ConfiguracionDelCentro</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmActividadConCargaAutomatica))
+                                {
+                                    <li>@Html.ActionLink(Textos.ActividadConCargaAutomatica_Titulo, "Index", "ActividadConCargaAutomatica")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmAlmacen))
+                                {
+                                    <li>@Html.ActionLink(Textos.Almacen_Titulo, "Index", "Almacen")</li>
+                                }
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Automatizacion</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmActividadPorDispositivo))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ActividadPorDispositivo_Titulo, "Index", "ActividadPorDispositivo")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmPuestoDeTrabajo, PermisosScato.AbmModalidadPuestoDeTrabajo))
+                                        {
+                                            <li>@Html.ActionLink(Textos.PuestoDeTrabajo_Titulo, "Index", "PuestoDeTrabajo")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamaras))
+                                        {
+                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamaras, "Index", "VideoCamara", null, new { @class = "ajax-popup-link" })</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasBalanza))
+                                        {
+                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasBalanza,"Index","VideoCamaraBalanza",null,new { @class="ajax-popup-link"})</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.AbmBalanza))
+                                {
+                                    <li>@Html.ActionLink(Textos.Balanza_Titulo, "Index", "Balanza")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCalle))
+                                {
+                                    <li>@Html.ActionLink(Textos.Calle_Titulo, "Index", "Calle")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCentro))
+                                {
+                                    <li>@Html.ActionLink(Textos.Centro_Titulo, "Index", "Centro")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmControlDeTiempo))
+                                {
+                                    <li>@Html.ActionLink(Textos.ControlDeTiempo_Titulo, "Index", "ControlDeTiempo")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmHumedimetro))
+                                {
+                                    <li>@Html.ActionLink(Textos.Humedimetro_Titulo, "Index", "Humedimetro")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmNirs))
+                                {
+                                    <li>@Html.ActionLink(Textos.Nirs_Titulo, "Index", "Nirs")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmHidraulica))
+                                {
+                                    <li>@Html.ActionLink(Textos.Hidraulica_Titulo, "Index", "PuestosDeCargaDescarga")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmInhabilitacionChofer))
+                                {
+                                    <li>@Html.ActionLink(Textos.Inhabilitaciones_Titulo, "Index", "InhabilitacionChofer")</li>
+                                }
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Materiales</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmMaterial))
+                                        {
+                                            <li>@Html.ActionLink(Textos.Material_Titulo, "Index", "Material")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmMaterialPorWorkflow))
+                                        {
+                                            <li>@Html.ActionLink(Textos.MaterialPorWorkflow_Titulo, "Index", "MaterialPorWorkflow")</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.AbmReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReciboMunicipal_Titulo, "Index", "ReciboMunicipal")</li>
+                                }
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Romaneo</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmTaraRomaneo))
+                                        {
+                                            <li>@Html.ActionLink(Textos.TaraRomaneo_Titulo, "Index", "TaraRomaneo")</li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_TiposComerciales</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmTipoComercial))
+                                        {
+                                            <li>@Html.ActionLink(Textos.TipoComercial_Titulo, "Index", "TipoComercial")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmTipoComercialPorWf))
+                                        {
+                                            <li>@Html.ActionLink(Textos.TipoComercialPorWf_Titulo, "Index", "TipoComercialPorWf")</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.AbmTipoDeVehiculo))
+                                {
+                                    <li>@Html.ActionLink(Textos.TiposDeVehiculos, "Index", "PesoMaximoPorTipoVehiculo")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.HabilitacionDeVehiculos))
+                                {
+                                    <li>@Html.ActionLink(Textos.HabilitacionDeVehiculos_Titulo, "Index", "HabilitacionDeVehiculos")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_ConfiguracionDeImpresiones</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmImpresiones))
+                                {
+                                    <li>@Html.ActionLink(Textos.Impresiones_Titulo, "Index", "DocumentoDeImpresion")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmImpresionPorCentro))
+                                {
+                                    <li>@Html.ActionLink(Textos.ImpresionesPorCentro_Titulo, "Index", "DocumentoDeImpresionPorCentro")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmFormatoDeImpresion))
+                                {
+                                    <li>@Html.ActionLink(Textos.FormatoDeImpresion_Titulo, "Index", "FormatoDeImpresion")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmImpresora))
+                                {
+                                    <li>@Html.ActionLink(Textos.Impresoras_Titulo, "Index", "Impresora")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_DatosGenerales</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmBocaDestino))
+                                {
+                                    <li>@Html.ActionLink(Textos.BocaDestino_Titulo, "Index", "BocaDestino")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmChofer))
+                                {
+                                    <li>@Html.ActionLink(Textos.Chofer_Titulo, "Index", "Chofer")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmAdministracionDistancias))
+                                {
+                                    <li>@Html.ActionLink(Textos.Abm_Distancia_Clientes, "Index", "KmPorProveedor")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmFirma))
+                                {
+                                    <li>@Html.ActionLink(Textos.Empresa, "Index", "Firma")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmEntregador))
+                                {
+                                    <li>@Html.ActionLink(Textos.Entregador_Titulo, "Index", "Entregador")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmEstablecimiento))
+                                {
+                                    <li>@Html.ActionLink(Textos.Establecimiento_Titulo, "Index", "Establecimiento")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmMotivo))
+                                {
+                                    <li>@Html.ActionLink(Textos.Motivo_Titulo, "Index", "Motivo")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmProveedor))
+                                {
+                                    <li>@Html.ActionLink(Textos.Proveedor_Titulo, "Index", "Proveedor")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmTaraContenedor))
+                                {
+                                    <li>@Html.ActionLink(Textos.TaraContenedor_Titulo, "Index", "TaraContenedor")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmTipoDocumentoIdentidad))
+                                {
+                                    <li>@Html.ActionLink(Textos.TipoDocumentoIdentidad_Titulo, "Index", "TipoDocumentoIdentidad")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmTransportista))
+                                {
+                                    <li>@Html.ActionLink(Textos.Transportistas_Titulo, "Index", "Transportista")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCategoria))
+                                {
+                                    <li>@Html.ActionLink(Textos.Categoria_Titulo, "Index", "Categoria")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmMatricula))
+                                {
+                                    <li>@Html.ActionLink(Textos.Matricula_Titulo, "Index", "Matricula")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmAvisoDeQuiebre))
+                                {
+                                    <li>@Html.ActionLink(Textos.AvisoDeQuiebre_Titulo, "Index", "AvisoDeQuiebre")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCliente))
+                                {
+                                    <li>@Html.ActionLink(Textos.Cliente_Titulo, "Index", "Cliente")</li>
+                                }
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InterfazAfip</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.PanelBajaCtgDefinitiva))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelBajaCtgDefinitiva, "Index", "PanelDeControlBajaCtgDefinitiva")</li>
+                                }
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InterfazDeTerceros</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.GenerarArchivosDeMovimientos))
+                                {
+                                    <li>@Html.ActionLink(Textos.GenerarArchivoDeMovimientos_Titulo, "Index", "GenerarArchivoDeMovimientos")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelDeControlUnrenport))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelDeControlUnrenport_Titulo, "Index", "PanelDeControlUnrenport")</li>
+                                }
+                            </ul>
+                        </li>
+
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InterfaceSAP</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmTransaccionSAP))
+                                {
+                                    <li>@Html.ActionLink(Textos.TransaccionSAP_Titulo, "Index", "TransaccionSAP")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesSap))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelDeControlTransSAP, "Index", "PanelDeControlTransaccionesSap")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesSapCupo))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelDeControlTransaccionesSapCupo, "Index", "PanelDeControlTransaccionesSap", new { tipoDeServicio = TipoDeServicio.Cupo }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.TransmisionASapManual))
+                                {
+                                    <li>@Html.ActionLink(Textos.TransmisionASapManual, "Index", "TransmisionASapManual")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_SistemaIndustria</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmTecnologia))
+                                {
+                                    <li>@Html.ActionLink(Textos.Tecnologia_Titulo, "Index", "Tecnologia")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmEmpresa))
+                                {
+                                    <li>@Html.ActionLink(Textos.Empresa_Titulo, "Index", "Empresa")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelDeControlTransaccionesSap))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelDeControlTransMonsanto, "Index", "PanelDeControlTransaccionesSap", new { tipoDeServicio = TipoDeServicio.Monsanto }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmProveedorExcluidoIntacta))
+                                {
+                                    <li>@Html.ActionLink(Textos.ProveedorExcluidoIntacta_Titulo, "Index", "ProveedorExcluidoIntacta")</li>
+                                }
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Legales</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.EtiquetaAuditoria))
+                                {
+                                    <li>@Html.ActionLink(Textos.EtiquetaAuditoria_Titulo, "Index", "EtiquetaAuditoria")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ExportacionDeArchivos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ExportacionDeArchivos, "Index", "ExportacionDeArchivos")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.GenerarArchivosOncca))
+                                {
+                                    <li>@Html.ActionLink(Textos.GenerarArchivosOncca_Titulo, "Index", "GenerarArchivosOncca")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ExportacionDeArchivosINV))
+                                {
+                                    <li>@Html.ActionLink(Textos.ExportacionDeArchivosINV, "Index", "ExportacionDeArchivosINV")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmLibroMovimientosExistenciaGranos))
+                                {
+                                    <li>@Html.ActionLink(Textos.LibroDeMovimientosYExistenciaDeGranos, "Index", "LibroMovimientosExistenciaGranos")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Mantenimiento</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AjustarCalidad))
+                                {
+                                    <li>@Html.ActionLink(Textos.AjustarCalidad_Titulo, "Index", "AjustarCalidad")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AjusteDeStock))
+                                {
+                                    <li>@Html.ActionLink(Textos.AjusteDeStock_Titulo, "Index", "AjusteDeStock")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmBorradoDeDocumento))
+                                {
+                                    <li>@Html.ActionLink(Textos.BorradoDeDocumento_Titulo, "Index", "BorradoDeDocumento")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmModificarDocumentoDeIngreso))
+                                {
+                                    <li>@Html.ActionLink(Textos.ModificarDocumentoDeIngreso_Titulo, "Index", "ModificarDocumentoDeIngreso")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmCiuAnulado))
+                                {
+                                    <li>@Html.ActionLink(Textos.CiuAnulado_Titulo, "Index", "CiuAnulado")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmReimpresionDeDocumentos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReimpresionDeDocumentos_Titulo, "Index", "ReimpresionDeDocumentos")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Operacion</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.ConsultarDocumentoDeIngreso_Titulo</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.AbmConsultarDocumentoDeIngreso))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ConsultarDocumentoDeIngresoPorNumero_Titulo, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, cargarCookie = false }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmConsultarDocumentoDeIngresoPorTarjeta))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ConsultarDocumentoDeIngresoPorTarjeta_Titulo, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = true, cargarCookie = false }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.CamionesRechazados))
+                                        {
+                                            <li>@Html.ActionLink(Textos.CamionesRechazados, "Index", "CamionesRechazados")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.HistoricoDeCamiones))
+                                        {
+                                            <li>@Html.ActionLink(Textos.HistoricoDeCamiones, "Index", "HistoricoDeFotos")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ControlDeCalado))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ControlDeCalado, "Index", "ControlDeCalado")</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.ActividadControlDeBalanza))
+                                {
+                                    <li>@Html.ActionLink(Textos.ControlDeBalanza, "Index", "ControlDeBalanza")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.MotivoQuiebreBarrera))
+                                {
+                                    <li>@Html.ActionLink(Textos.MotivoQuiebreBarrera_Titulo, "Index", "MotivoQuiebreBarrera")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AsignacionTicketMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.AsignacionTicketMunicipal, "Index", "AsignarTicketMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PagoDeReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.CobroImpuestoMunicipal_Titulo, "Index", "PagoDeReciboMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DevolucionDeReciboMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.DevolucionImpuestoMunicipal_Titulo, "Index", "DevolucionDeReciboMunicipal")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DocumentoExterno))
+                                {
+                                    <li>@Html.ActionLink(Textos.DocumentoExterno, "Index", "DocumentoExterno")</li>
+                                }
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Puerto</a>
+
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.OperacionesPuerto))
+                                {
+                                    <li>@Html.ActionLink(Textos.OperacionesPuerto_Pesada_Titulo, "Index", "OperacionesPuerto")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ScatoPuerto))
+                                {
+                                    <li><a href='@(System.Configuration.ConfigurationManager.AppSettings["UrlExternaOperacionesPuerto"].ToString())'>@Textos.OperacionesPuerto_PaginaExternaAFIP</a></li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.OperacionesPuerto))
+                                {
+                                    <li>@Html.ActionLink(Textos.OperacionesPuerto_ReportePorTurnos_Titulo, "Index", "ReportePesadaSeisHoras")</li>
+                                }
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.OperacionesPuerto_Titulo</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.VaporPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_Buque_Titulo, "Index", "Vapor")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.BodegaPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_Bodega_Titulo, "Index", "Bodega")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.DestinoPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_Destino_Titulo, "Index", "Destino")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ExportadorPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_Exportador_Titulo, "Index", "Exportador")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.MaterialPuertoPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_MaterialPuerto, "Index", "MaterialPuerto")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.BalanzaPuerto))
+                                        {
+                                            <li>@Html.ActionLink(Textos.OperacionesPuerto_BalanzaPuerto, "Index", "BalanzaPuerto")</li>
+                                        }
+
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.EmbarquesPorBuques))
+                                {
+                                    <li>@Html.ActionLink(Textos.EmbarquesPorBuques, "Index", "EmbarquesPorBuques")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.EtiquetaPuerto))
+                                {
+                                    <li>@Html.ActionLink(Textos.EtiquetaPuerto_Titulo, "Index", "EtiquetaPuerto")</li>
+                                }
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_TarjetasDeAcceso</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmTarjetaBloqueada))
+                                {
+                                    <li>@Html.ActionLink(Textos.TarjetaBloqueada_Bloqueadas, "Index", "TarjetaBloqueada")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmTarjetaSupervisor))
+                                {
+                                    <li>@Html.ActionLink(Textos.TarjetaSupervisor_Supervisor, "Index", "TarjetaSupervisor")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmTarjetaRango))
+                                {
+                                    <li>@Html.ActionLink(Textos.TarjetaRango_Rango, "Index", "TarjetaRango")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ImpresionTarjetaDeAcceso))
+                                {
+                                    <li>@Html.ActionLink(Textos.ImpresionTarjetaDeAcceso_Titulo, "Index", "ImprimirTarjetaDeAcceso")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReasignacionDeTarjetas))
+                                {
+                                    <li> @Html.ActionLink(Textos.ReasignacionDeTarjetas_Titulo, "Index", "ReasignacionDeTarjeta") </li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.CargaDeCupo))
+                                {
+                                    <li>@Html.ActionLink(Textos.CargaDeCupo, "Index", "CargaDeCupo")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Usuarios</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.AbmPermiso))
+                                {
+                                    <li>@Html.ActionLink(Textos.Permisos_Titulo, "Index", "Permiso")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmRol))
+                                {
+                                    <li>@Html.ActionLink(Textos.Rol_Titulo, "Index", "Rol")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmSuplencia))
+                                {
+                                    <li>@Html.ActionLink(Textos.Suplencia_Titulo, "Index", "Suplencia")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmUsuario))
+                                {
+                                    <li>@Html.ActionLink(Textos.Usuario_Titulo, "Index", "Usuario")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_PanelServer</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.PanelServerAppPool))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelServerAppPool, "Index", "PanelServerAppPool")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelServerAppPool))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelServiciosWeb, "Index", "PanelServiciosWeb")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PanelWorkflows))
+                                {
+                                    <li>@Html.ActionLink(Textos.PanelWorkflows, "Index", "PanelWorkflows")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.EditordeWorkflow))
+                                {
+                                    <li><a href="~/WfEditor/Molinos.Scato.WfEditorWeb.xbap?@System.Configuration.ConfigurationManager.AppSettings["Ambiente"]">@Textos.EditordeWorkflow</a></li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.GraficoDePlanta))
+                                {
+                                    <li>@Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta")</li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown menu-adminrepo">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_Reportes <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InformesLegales</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.ListadoLoginUsuarios))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoLoginUsuarios, "Index", "Reportes", new { nombreReporte = "Listado Login Usuarios" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoRecibosMunicipales))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoRecibosMunicipales_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Recibos Municipales" }, null)</li>
+                                    <li>@Html.ActionLink(Textos.ListadoRecivosMunicipalesImportados_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Recibos Municipales Importados" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.LogDeAjustesOncca))
+                                {
+                                    <li>@Html.ActionLink(Textos.LogDeAjustesOncca_Titulo, "Index", "Reportes", new { nombreReporte = "Log de Ajustes Oncca" }, null)</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InformesDeControl</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeBajasDeCTGManual))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeBajasDeCTGManual, "Index", "Reportes", new { nombreReporte = "Listado de Bajas de CTG Manual" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeCamionesRechazados))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeCamionesRechazados, "Index", "Reportes", new { nombreReporte = "Listado de Camiones Rechazados" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeCambiosModalidadBalanza))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeCambiosModalidadBalanza, "Index", "Reportes", new { nombreReporte = "Listado de Cambios Modalidad Balanza" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoCambioDeModalidadDePuestoDeTrabajo))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoCambioDeModalidadDePuestoDeTrabajo_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Cambio de Modalidad de Puesto de Trabajo" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeCartaDePorteFason))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeCartaDePorteFason_Titulo, "Index", "Reportes", new { nombreReporte = "Listado Carta de Porte Fason" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeCCPPPorProcedencia))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeCCPPPorProcedencia, "Index", "Reportes", new { nombreReporte = "Listado de CCPP por Procedencia" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteListadoDocumentosAnulados))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteListadoDocumentosAnulados_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Documentos Anulados" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeDiferenciasDePesoEnRedespacho))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeDiferenciasDePesoEnRedespacho, "Index", "Reportes", new { nombreReporte = "Listado de Diferencias de Peso en Redespacho" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeExcepcionesDeControl))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeExcepcionesDeControl, "Index", "Reportes", new { nombreReporte = "Listado de Excepciones de Control" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeInconsistencias))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeInconsistencias, "Index", "Reportes", new { nombreReporte = "Listado de Inconsistencias" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeIngresoDeGranos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeIngresoDeGranos, "Index", "Reportes", new { nombreReporte = "Listado de Ingreso de Granos" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteListadoQuiebreBarrera))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteListadoQuiebreBarrera_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Quiebre de Barreras" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoCamionesInhabilitados))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoCamionesInhabilitados, "Index", "Reportes", new { nombreReporte = "Listado de Camiones Inhabilitados" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoChoferesInhabilitados))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoChoferesInhabilitados, "Index", "Reportes", new { nombreReporte = "Listado de Choferes Inhabilitados" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeReasignacionDeTarjeta))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeReasignacionDeTarjeta, "Index", "Reportes", new { nombreReporte = "Listado De Reasignacion De Tarjeta" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.LogDeImpresiones))
+                                {
+                                    <li>@Html.ActionLink(Textos.LogDeImpresiones, "Index", "Reportes", new { nombreReporte = "Log de Impresiones" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.RegistroUsoTarjetaSupervisor))
+                                {
+                                    <li>@Html.ActionLink(Textos.RegistroUsoTarjetaSupervisor_Titulo, "Index", "Reportes", new { nombreReporte = "Registro de Uso de Tarjeta del Supervisor" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteAnexoINASE))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteAnexoINASE, "Index", "Reportes", new { nombreReporte = "Reporte de Anexo INASE" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteControlBalanza))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteControlBalanza_Titulo, "Index", "ReporteControlDeBalanza")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteDeSeguimientoYControl))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteDeSeguimientoYControl, "Index", "Reportes", new { nombreReporte = "Reporte de Seguimiento y Control" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteMuestrasMonsanto))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteMuestrasMonsanto_Titulo, "Index", "Reportes", new { nombreReporte = "Reporte de Muestras Monsanto" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.LogHumedimetro))
+                                {
+                                    <li>@Html.ActionLink(Textos.LogHumedimetro, "Index", "LogHumedimetro")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteInformacionMonsanto))
+                                {
+                                    <li>@Html.ActionLink(Textos.Reporte_InformacionMonsanto, "Index", "Reportes", new { nombreReporte = "Reporte de Informacion Monsanto" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DetalleMuestraAuditoria))
+                                {
+                                    <li>@Html.ActionLink(Textos.DetalleMuestraAuditoria, "Index", "Reportes", new { nombreReporte = "Detalle Muestra Auditoria" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ExcepcionAlPagoTicketMunicipal))
+                                {
+                                    <li>@Html.ActionLink(Textos.ExcepcionesAlPagoTicketMunicipal, "Index", "Reportes", new { nombreReporte = "Excepciones al Pago del Ticket Municipal" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteDePasoPorCero))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteDePasoPorCero, "Index", "Reportes", new { nombreReporte = "Reporte de Paso por Cero" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReconocimientoDePatentes))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReconocimientoDePatentes, "Index", "Reportes", new { nombreReporte = "Reconocimiento de Patentes" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AutorizacionesExcesoDeTiempo))
+                                {
+                                    <li>@Html.ActionLink(Textos.AutorizacionesExcesoDeTiempo, "Index", "Reportes", new { nombreReporte = "Autorizaciones por Exceso de Tiempo" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteContingencia))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteContingencia, "Index", "Reportes", new { nombreReporte = "Reporte Contingencia" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteMuestrasAuditoria))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteMuestrasAuditoria, "Index", "Reportes", new { nombreReporte = "Reporte Muestras Auditoria" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteCpOtrosPuertos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteCpOtrosPuertos, "Index", "Reportes", new { nombreReporte = "ReporteCpOtrosPuertos" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteCpOtrosPuertosSap))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteCpOtrosPuertosSap, "Index", "Reportes", new { nombreReporte = "ReporteCpOtrosPuertosSap" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteModalidadCalador))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteModalidadCalador, "Index", "Reportes", new { nombreReporte = "Reporte Modalidad Calador" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ComparacionCalidad))
+                                {
+                            <li>@Html.ActionLink(Textos.ComparacionCalidad, "Index", "Reportes", new { nombreReporte = "Comparacion Calidad" }, null)</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InformesOperativos</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.ConsultaDatosDeVehiculos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ConsultaDatosDeVehiculos, "Index", "Reportes", new { nombreReporte = "Consulta Datos de Vehiculos" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.InformeDeGestionActual))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformeDeGestionActual, "Index", "Reportes", new { nombreReporte = "Informe de Gestion Actual" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeArribosAPlanta))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeArribosAPlanta, "Index", "Reportes", new { nombreReporte = "Listado de Arribos a Planta" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.PlanillaF515))
+                                {
+                                    <li>@Html.ActionLink(Textos.PlanillaF515, "PlanillaF515", "Reportes")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadodeRomaneo))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadodeRomaneo, "Index", "Reportes", new { nombreReporte = "Listado de Romaneo" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeCalidades))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeCalidades, "Index", "ListadoDeCalidades")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoPonderadoPorCaracteristica))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoPonderadoPorCaracteristica, "Index", "Reportes", new { nombreReporte = "Listado Ponderado por Caracteristica" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteCalidadYMerma))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteCalidadYMerma, "Index", "Reportes", new { nombreReporte = Textos.ReporteCalidadYMerma }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.InformeDeGestionHistorico))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformeDeGestionHistorico, "Index", "Reportes", new { nombreReporte = "Informe de Gestion Historico" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteStockEPA))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteStockEPA, "Index", "Reportes", new { nombreReporte = "Reporte de Stock EPA" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.InformeDeEficienciaDeHidraulicas))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformeDeEficienciaDeHidraulicas, "Index", "Reportes", new { nombreReporte = "Informe de Eficiencia de Hidraulicas" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.InformeDeEficienciaDeHidraulicasDiario))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformeDeEficienciaDeHidraulicasDiario, "Index", "Reportes", new { nombreReporte = "Informe de Eficiencia de Hidraulicas Diario" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.DetalleDeMovimientoIngreso))
+                                {
+                                    <li>@Html.ActionLink(Textos.DetalleDeMovimientoIngreso, "Index", "Reportes", new { nombreReporte = "DetalleDeMovimientoIngreso" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.InformeTiemposDePesada))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformeTiemposDePesada, "Index", "Reportes", new { nombreReporte = "Informe Tiempos de Pesada" }, null)</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InformesDeRomaneo</a>
+                            <ul class="dropdown-menu">
+                                @if (PermisosHelper.Is(PermisosScato.InformedeDescarga))
+                                {
+                                    <li>@Html.ActionLink(Textos.InformedeDescarga, "Index", "Reportes", new { nombreReporte = "Informe de Descarga" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadodeDiferenciadePeso))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadodeDiferenciadePeso, "Index", "Reportes", new { nombreReporte = "Listado de Diferencia de Peso" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadoDeResumen))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadoDeResumen, "Index", "Reportes", new { nombreReporte = "Listado de Resumen" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ListadodeRechazos))
+                                {
+                                    <li>@Html.ActionLink(Textos.ListadodeRechazos, "Index", "Reportes", new { nombreReporte = "Listado de Rechazos" }, null)</li>
+                                }
+
+                                @if (PermisosHelper.Is(PermisosScato.ReporteResumenDeRecepcion))
+                                {
+                                    <li>@Html.ActionLink(Textos.ResumenDeRecepcion_Titulo, "Index", "ResumenDeRecepcion")</li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_InformesDeBodega</a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_IngresoDeUvas</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteIngresoDeUvasPorVariedad))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteIngresoDeUvasPorVariedad_Titulo, "Index", "Reportes", new { nombreReporte = "Ingreso de Uvas - Por Variedad" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteIngresoDeUvasPorViñatero))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteIngresoDeUvasPorViñatero_Titulo, "Index", "Reportes", new { nombreReporte = "Ingreso de Uvas - Por Vinatero" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteIngresoDeUvasPorViñateroYVariedad))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteIngresoDeUvasPorViñateroYVariedad_Titulo, "Index", "Reportes", new { nombreReporte = "Ingreso de Uvas - Por Vinatero y Variedad" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteIngresoDeUvasPorTipoDeOperacionYVariedad))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteIngresoDeUvasPorTipoDeOperacionYVariedad_Titulo, "Index", "Reportes", new { nombreReporte = "Ingreso de Uvas - Por Tipo de Operacion y Variedad" }, null)</li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Menu_ListadoDeCIU</a>
+                                    <ul class="dropdown-menu">
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteListadoDeCiusPorVariedad))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteListadoDeCiusPorVariedad_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Cius - Por Variedad" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteListadoDeCiusPorViñatero))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteListadoDeCiusPorViñatero_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Cius - Por Vinatero" }, null)</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.ReporteListadoDeCiusPorViñedoyVariedad))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ReporteListadoDeCiusPorViñateroyVariedad_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Cius - Por Vinedo y Variedad" }, null)</li>
+                                        }
+                                    </ul>
+                                </li>
+                                @if (PermisosHelper.Is(PermisosScato.ReporteListadoDeRecepcionesDeBodegas))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteListadoDeRecepcionesDeBodegas_Titulo, "Index", "Reportes", new { nombreReporte = "Listado de Recepciones de Bodegas" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteResumenGeneralPorBodega))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteResumenGeneralPorBodega_Titulo, "Index", "Reportes", new { nombreReporte = "Resumen General por Bodega" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteListadoCuentaCorrienteBins))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteListadoCuentaCorrienteBins, "Index", "Reportes", new { nombreReporte = "Listado Cuenta Corriente Bins" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteStockDetalladoDeBines))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteStockDetalladoDeBines, "Index", "Reportes", new { nombreReporte = "Stock Detallado de Bines" }, null)</li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+
+
+
+            <ul class="nav nav-pills pull-right">
+                <li class="visible-desktop">
+                    <i style="line-height:20px; margin-top:10px" id="serviciosWeb" class="fa fa-wifi"></i>
+                </li>
+                <li class="dropdown" id="NotificacionesDropDown"
+                    data-marcar-leidos-url="@Url.Action("MarcarLeidos", "Menu")"
+                    data-marcar-leidos-todos-url="@Url.Action("MarcarLeidosTodos", "Menu")"
+                    data-obtener-notificaciones-url="@Url.Action("ObtenerNotificaciones", "Menu")"
+                    data-eliminar-notificacion-url="@Url.Action("EliminarNotificacion", "Menu")"
+                    data-eliminar-notificaciones-url="@Url.Action("EliminarNotificaciones", "Menu")">
+
+                    <a href="#" id="NotificacionesDropDownButton" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-envelope"></i><span class="jewelCount" id="unreadbadge">0</span><b class="caret"></b></a>
+                    <ul class="dropdown-menu" id="messages" data-cargando="@Textos.Cargando" data-eliminar="@Textos.EliminarTodas"></ul>
+                </li>
+                @if (PermisosHelper.Is(PermisosScato.IniciarWorkflow))
+                {
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Textos.Workflows <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @foreach (var wf in workflows)
+                            {
+                                <li>@Html.ActionLink(wf.Descripcion, "Index", wf.ActividadInicial, new { workflow = wf.Codigo }, null)</li>
+                            }
+                            @if (PermisosHelper.Is(PermisosScato.WorkflowMovimientoDeBines))
+                            {
+                                <li>@Html.ActionLink(Textos.Workflow + " " + Textos.MovimientoDeBines_Titulo, "CrearWorkflow", "MovimientoDeBines")</li>
+                            }
+                        </ul>
+                    </li>
+
+                }
+                <li class="visible-desktop">
+                    <p style="line-height:20px; margin-top:10px" class="navbar-text">@Textos.Centro <strong>@centroDescripcion</strong></p>
+                </li>
+                <li class="dropdown" id="idiomacentro">
+                    <a href="#" class="dropdown-toggle hidden-desktop" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle visible-desktop" data-toggle="dropdown">@nombrePC<i class="icon-user"></i><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu" id="dropdownCentrosDescripciones">
+                            <a href="#">@Textos.Centro: <span id="centroActualBoton" data-listarcentros="@Url.Action("ListarCentros", "Centro")" data-seleccionarcentro="@Url.Action("SeleccionarCentro", "Centro")" data-mensaje-espera="@Textos.CambioDeCentro_MensajeDesEspera">@centroDescripcion</span></a>
+                            <ul class="dropdown-menu" id="centrosDescripciones"></ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">@Textos.Idioma<span id="idiomaBoton">@ViewBag.Idioma</span></a>
+                            <ul class="dropdown-menu" id="idiomas">
+                                @foreach (var i in idiomas)
+                                {
+                                    if (ViewBag.Idioma == i.Text)
+                                    {
+                                        <li data-idioma="@i.Text"><a href="@Url.Action("ChangeCurrentCulture", null, new { LCID = Convert.ToInt32(i.Value) })">@i.Text <i class="icon-ok"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li data-idioma="@i.Text">@Html.ActionLink(i.Text, "ChangeCurrentCulture", null, new { LCID = Convert.ToInt32(i.Value) }, null)</li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        <li id="dropdownPc">
+                            <a href="#">@Textos.PC <span id="nombrePc">@nombrePC</span></a>
+                        </li>
+                        <li>
+                            <a href="#" id="refrescarCookies">@Textos.Refrescar_Cookies</a>
+                        </li>
+                        <li>
+                            <a href="#" id="panelSugerencia">@Textos.Panel_Sugerencia</a>
+                        </li>
+                        @if (PermisosHelper.Is(PermisosScato.NotificacionAplicacion))
+                        {
+                            <li>@Html.ActionLink(Textos.NotificacionAplicacion, "Index", "NotificacionAplicacion")</li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+@if (@ViewBag.Mantenimiento)
+{
+    <div class="alert alert-info" role="alert">
+        <p class="text-center">
+            <strong>@Textos.Advertencia!</strong> @Textos.MensajeMantenimiento @ViewBag.Hora:00 y @Textos.TieneDuracionDe @ViewBag.Minuto @Textos.Minutos
+        </p>
+    </div>
+}

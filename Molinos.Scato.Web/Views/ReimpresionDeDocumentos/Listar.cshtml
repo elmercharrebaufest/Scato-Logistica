@@ -1,0 +1,32 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+<script>
+    $(document).ready(function() {
+        $.unblockUI();
+        
+        if ($("#PermisoImprimir").val() == "False") {
+            $(".ajax-imprimir-link").prop('disabled', true);
+            $(".ajax-imprimir-link").removeAttr('href');
+        }
+        if ($("#PermisoBorrar").val() == "False") {
+            $(".ajax-borrar-link").prop('disabled', true);
+            $(".ajax-borrar-link").removeAttr('href');
+        }
+
+    });
+</script>
+@{
+    Layout = null;
+    var items = (ListaPaginada<ImpresionDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarImprimir(Html, "ReimpresionDeDocumentos"),
+    grilla.Columna("Patente", Textos.Patente),
+    grilla.Columna("TipoImpresion", Textos.Documento),
+    grilla.Columna("FechaImpresion", Textos.Fecha)
+    ))

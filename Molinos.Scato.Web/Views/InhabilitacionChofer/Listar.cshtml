@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<InhabilitacionChoferDto>) ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaModificarListar(Html, "InhabilitacionChofer"),
+        grilla.Columna("NombreUsuarioResponsable", Textos.Responsable),
+        grilla.Columna("Chofer.Nombre", Textos.Chofer_Nombre, c => c.Nombre),
+        grilla.Columna("Chofer.Apellido", Textos.Chofer_Apellido, c => c.Apellido),
+        grilla.Columna("Chofer.TipoDocumentoIdentidad.DescripcionCorta", Textos.Chofer_TipoDocumentoIdentidad, c => c.DescripcionCorta),
+        grilla.Columna("Chofer.NumeroDeDocumento", Textos.Chofer_NumeroDocumentoIdentidad, c => c.NumeroDeDocumento),
+        grilla.Columna("FechaDesde", Textos.FechaDesde,x => FormattingHtmlHelper.Formatted(x.FechaDesde)),
+        grilla.Columna("FechaHasta", Textos.FechaHasta,x => FormattingHtmlHelper.Formatted(x.FechaHasta)),
+        grilla.Columna("Motivo", Textos.InhabilitacionChofer_Motivo)
+        ))

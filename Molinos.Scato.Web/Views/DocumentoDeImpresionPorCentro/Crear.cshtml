@@ -1,0 +1,16 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.DocumentoDeImpresionPorCentroDto
+
+@{
+    ViewBag.Title = Textos.DocumentoDeImpresionPorCentro_Crear;
+    Layout = null;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/documentoImpresion.js")"></script>
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.DocumentoDeImpresionPorCentro_Crear }))
+{
+    @Html.ValidationSummary(true)
+    @Html.Partial("_CrearModificar", Model)           
+}

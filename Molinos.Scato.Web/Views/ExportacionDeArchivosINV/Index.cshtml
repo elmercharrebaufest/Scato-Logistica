@@ -1,0 +1,60 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ExportacionDeArchivosINVDto
+
+@{
+    ViewBag.Title = Textos.ExportacionDeArchivosINV;
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script src="@Url.Script("~/Scripts/exportacionDeArchivosINV.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/validarFechas.js")"></script>
+}
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<div class ="container">
+    <div class="titSecciones">@Textos.ExportacionDeArchivosINV</div>
+</div>
+
+    <div class="container content grillaPad"> 
+        @using (Html.BeginForm("index", "ExportacionDeArchivosINV", null, FormMethod.Post, new { @class = "form-horizontal", id = "orden-form" }))
+        {
+            if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+            {
+                <div class="alert alert-error">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+            <div class="row-fluid row-fluid-ie7">
+                <div class="span6">
+                    <fieldset class="grupo-carta-porte">
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.FechaDesde, new { @class = "control-label small" })
+                            <div class="FechaDesde">
+                                @Html.TextBoxFor(m => m.FechaDesde, new { @class = "control input-small " })
+                                @Html.ValidationMessageFor(model => model.FechaDesde)
+                            </div>
+                        </div>
+                        <div class="control-group control-group-no-bottom">
+                            @Html.LabelFor(model => model.FechaHasta, new { @class = "control-label small" })
+                            <div class="FechaHasta">
+                                @Html.TextBoxFor(m => m.FechaHasta, new { @class = "control input-small " })
+                                @Html.ValidationMessageFor(model => model.FechaHasta)
+                            </div>
+                        </div>
+                    </fieldset></div></div>
+            <div class="cajaButtons">
+                <div class="centered" >
+                    <button id="botonaceptar" class="btn btn-primary" type="submit">@Textos.Aceptar</button>
+                    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+                </div> </div>
+
+        }
+
+</div>

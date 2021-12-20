@@ -1,0 +1,22 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RecorridoDto
+@{
+    Layout = null;
+    var items = (ListaPaginada<InhabilitacionCamionDto>)ViewBag.InhabilitacionCamion;
+}
+<div class="control-group">
+    <h4>@Textos.InhabilitacionesCamion @Model.Patente - @(Model.Vehiculo != null ? Model.Vehiculo.PatenteAcoplado : "")</h4>
+
+    <div class="controls">
+        @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.Columna("NombreUsuarioResponsable", Textos.Responsable),
+        grilla.Columna("FechaDesde", Textos.FechaDesde, x => FormattingHtmlHelper.Formatted(x.FechaDesde)),
+        grilla.Columna("FechaHasta", Textos.FechaHasta, x => FormattingHtmlHelper.Formatted(x.FechaHasta)),
+        grilla.Columna("Motivo", Textos.InhabilitacionCamion_Motivo)
+        ))
+    </div>
+</div>

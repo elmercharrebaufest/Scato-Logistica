@@ -1,0 +1,12 @@
+﻿@model Molinos.Scato.Dominio.Dto.LogExceptuadosTicketMunicipalDto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    ViewBag.Title = Textos.MotivoDeExcepcion;
+}
+@Html.Hidden("InstanceId", Model.InstanceId)
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.MotivoDeExcepcion}))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

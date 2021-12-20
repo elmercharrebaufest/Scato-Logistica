@@ -1,0 +1,44 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebOperaciones.Helpers
+@model Molinos.Scato.WebOperaciones.ViewModel.PesadaOnlineViewModel
+@{
+    ViewBag.Title = Textos.AFIP_MenuTitulo_PesadasOnline;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="mx-1">
+    <div class="col-12">
+            <h1 class="titulo-center">@ViewBag.Title</h1>
+    </div>
+    <br />
+        <div class="col-12">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+            {
+                <div class="navbar-form navbar-default text-center form-inline">
+                    @Html.Label(@Textos.AFIP_PesadaOnline_FechaInicio)
+                    <div class="input-group date col-12 col-lg-2 disabled" readonly disabled="disabled">
+                        @Html.TextBoxFor(model => model.DateNow, Model != null ? Model.DateNow.FormattedFixed() : string.Empty, new { @class = "form-control valid", @readonly = "readonly" })
+                    </div>
+                    @Html.Label(@Textos.AFIP_PesadaOnline_HoraInicio)
+                    <div class="input-group col-12 col-lg-2">
+                        @Html.EditorFor(model => model.BeginTime)
+                    </div>
+                    @Html.Label(@Textos.AFIP_PesadaOnline_HoraFin)
+                    <div class="input-group col-12 col-lg-2">
+                        @Html.EditorFor(model => model.EndTime)
+                    </div>
+                    <div class="input-group col-12 col-lg">
+                        <input class="btn btn-outline-success col-12 col-lg" value="@Textos.Aceptar" type="submit" />
+                    </div>
+                </div>
+            }
+            <div class="mt-1" id="gridContainer">
+                @Html.Partial("Listar")
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@Url.Script("~/scripts/_timePickerRangeValidator.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/bloquearPantalla.js")"></script>

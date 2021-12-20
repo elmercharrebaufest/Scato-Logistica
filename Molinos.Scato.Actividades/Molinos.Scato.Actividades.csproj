@@ -1,0 +1,1226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{98EC024C-6439-44B1-8B1E-29E457B2201F}</ProjectGuid>
+    <ProjectTypeGuids>{32f31d43-81cc-4c15-9de6-3fc5453562b6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Molinos.Scato.Actividades</RootNamespace>
+    <AssemblyName>Molinos.Scato.Actividades</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\Jenkins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActualizarMuestraEnvioACamara.cs" />
+    <Compile Include="ActualizarCupo.cs" />
+    <Compile Include="EnviarMensajeCircular.cs" />
+    <Compile Include="Internas\InformarEstadoCaladoCircular.cs" />
+    <Compile Include="Internas\VerificarEsPuestoAutomatico.cs" />
+    <Compile Include="ObtenerCalleInterna.cs" />
+    <Compile Include="DesasignarCalle.cs" />
+    <Compile Include="BuscarMotivoRechazo.cs" />
+    <Compile Include="ActualizarVehiculo.cs" />
+    <Compile Include="Behaviour\ServiceProvider.cs" />
+    <Compile Include="Behaviour\WorkflowTrackingBehavior.cs" />
+    <Compile Include="Behaviour\WorkflowTrackingBehaviorElement.cs" />
+    <Compile Include="Behaviour\WorkflowTrackingParticipant.cs" />
+    <Compile Include="ConversionKilosALitros.cs" />
+    <Compile Include="DigitalizarEtiquetaAuditoriaEnCartaDePorteDetalle.cs" />
+    <Compile Include="AsignarCalle.cs" />
+    <Compile Include="EnviarMensajeV2.cs" />
+    <Compile Include="ImpresionAsigRecorrCtrolCalid.cs" />
+    <Compile Include="ImpresionDeclaracionFosfinaV2.cs" />
+    <Compile Include="ImpresionCartaPorteUrenport.cs" />
+    <Compile Include="DigitalizarEtiquetaAuditoriaEnCartaDePorte.cs" />
+    <Compile Include="ImpresionEtiquetaAuditoriaCamara.cs" />
+    <Compile Include="ImpresionGaritaSalida.cs" />
+    <Compile Include="ImpresionReciboMunicipalImportacion.cs" />
+    <Compile Include="ImpresionTicketPesadaAduana.cs" />
+    <Compile Include="ImpresionTicketPesadaBodega.cs" />
+    <Compile Include="ImpresionEtiquetaIntacta.cs" />
+    <Compile Include="ImpresionEtiquetaRubrosAnalizar.cs" />
+    <Compile Include="Interfaces\ILineUpService.cs" />
+    <Compile Include="Interfaces\ICaladoEnPlantaService.cs" />
+    <Compile Include="Interfaces\IIngresarEmbarqueService.cs" />
+    <Compile Include="Interfaces\ICamionDemoradoService.cs" />
+    <Compile Include="Interfaces\IVerificarLimiteDeCreditoVentaEnSAPService.cs" />
+    <Compile Include="Interfaces\IIngresoDeDatosDeExportacionService.cs" />
+    <Compile Include="Interfaces\IServicioSapIngresosBodegaService.cs" />
+    <Compile Include="Interfaces\IControlDeBalanza2Service.cs" />
+    <Compile Include="Interfaces\IServicioSapZE7550Service.cs" />
+    <Compile Include="Interfaces\IVerificarImpresionService.cs" />
+    <Compile Include="Internas\AceptarCamion.cs" />
+    <Compile Include="Internas\CrearLineUp.cs" />
+    <Compile Include="Internas\CrearEmbarque.cs" />
+    <Compile Include="Internas\LiberarResultadoEstablecimiento.cs" />
+    <Compile Include="Internas\BuscarDatosMailEntradaDeHexano.cs" />
+    <Compile Include="Internas\NotificarErrorAutomatica.cs" />
+    <Compile Include="Internas\DemorarBajaCtg.cs" />
+    <Compile Include="Internas\PesadaACeroAutomatico.cs" />
+    <Compile Include="Internas\NotificarInfoUsuario.cs" />
+    <Compile Include="Internas\TomarPesoAutomatico.cs" />
+    <Compile Include="Internas\LiberarLimiteDeCreditoVenta.cs" />
+    <Compile Include="Internas\LimpiarLecturasDeTarjeta.cs" />
+    <Compile Include="Internas\GuardarAutorizacion.cs" />
+    <Compile Include="Internas\BuscarDatosMailDecisionTiempoEnTransito.cs" />
+    <Compile Include="Internas\BuscarDatosMailAutorizarTiempoEnTransito.cs" />
+    <Compile Include="Internas\IngresarCaladoEnPlanta.cs" />
+    <Compile Include="Internas\ObtenerTarjetaAsignadaEngarita.cs" />
+    <Compile Include="Internas\PuestoComandoRechazo.cs" />
+    <Compile Include="Internas\BuscarDatosMailRechazoDeCamion.cs" />
+    <Compile Include="Internas\BalanzaNoEnCero.cs" />
+    <Compile Include="Internas\ConsultarDestinatarioCtg.cs" />
+    <Compile Include="Internas\ConsultarDatosMailStock.cs" />
+    <Compile Include="Internas\ActualizarDescuentosEnKg.cs" />
+    <Compile Include="Internas\ConfirmacionDeCargaExportacion.cs" />
+    <Compile Include="Internas\EnviarMailAsync.cs" />
+    <Compile Include="RegistrarStock.cs" />
+    <Compile Include="Internas\RegistrarEpa.cs" />
+    <Compile Include="Internas\CrearIngresoDeDatosDeExportacion.cs" />
+    <Compile Include="Internas\IngresosBodegaGenerarRequest.cs" />
+    <Compile Include="Internas\IngresosBodegaTransmisionASap.cs" />
+    <Compile Include="Internas\IngresosBodegaTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\RemitoACCPP.cs" />
+    <Compile Include="Internas\InformarCupoGenerarRequest.cs" />
+    <Compile Include="Internas\InformarCupoTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\ReintentarEntregaSap.cs" />
+    <Compile Include="Internas\ValidacionLimiteDeCreditoVentaEnSAP.cs" />
+    <Compile Include="Internas\VerificarCorrespondeCaladoEnPlanta.cs" />
+    <Compile Include="Internas\VerificarCupoTransmitido.cs" />
+    <Compile Include="Internas\VerificarReimpresion.cs" />
+    <Compile Include="Internas\CrearRemitoBodegaVino.cs" />
+    <Compile Include="Internas\VerificarCorrespondeRegistrarMuestreoYPesaje.cs" />
+    <Compile Include="Internas\RegistrarMuestreoYPesajeTransmisionAMonsantoAsincronico.cs" />
+    <Compile Include="Internas\RegistrarMuestreoYPesajeTransmisionAMonsanto.cs" />
+    <Compile Include="Internas\RegistrarMuestreoYPesajeGenerarRequest.cs" />
+    <Compile Include="Internas\RegistrarCartadePorteTransmisionAMonsantoAsincronico.cs" />
+    <Compile Include="Internas\RegistrarCartadePorteGenerarRequest.cs" />
+    <Compile Include="Internas\RegistrarCartadePorteTransmisionAMonsanto.cs" />
+    <Compile Include="Internas\VerificarCorrespondeRegistrarCartadePorte.cs" />
+    <Compile Include="Internas\BalanzaACeroSiEsTren.cs" />
+    <Compile Include="Internas\RefrescarOrdenDeDescargaFason.cs" />
+    <Compile Include="Internas\LiberarStock.cs" />
+    <Compile Include="Internas\ZE7550GenerarRequest.cs" />
+    <Compile Include="Internas\ZE7550TransmisionASap.cs" />
+    <Compile Include="Internas\ZE7550TransmisionASapAsincronico.cs" />
+    <Compile Include="EnviarMensaje.cs" />
+    <Compile Include="RecuperarFotosPorTarjeta.cs" />
+    <Compile Include="ServicioUrenport.cs" />
+    <Compile Include="VerificarProveedorExcluidoIntacta.cs" />
+    <Compile Include="Internas\VerificarPuestoDeCargaDescarga.cs" />
+    <Compile Include="NotificarMensajePorPuesto.cs" />
+    <Compile Include="ImpresionDeclaracionFosfina.cs" />
+    <Compile Include="ImpresionControlDeCarga.cs" />
+    <Compile Include="Interfaces\IAsignarEstablecimientoService.cs" />
+    <Compile Include="Interfaces\ICargarHojaDeRutaService.cs" />
+    <Compile Include="Interfaces\ICargarHojaDeRutaYerbateraService.cs" />
+    <Compile Include="Interfaces\IDistribucionDeAlmacenesService.cs" />
+    <Compile Include="Interfaces\IIngresoBinSalidaService.cs" />
+    <Compile Include="Interfaces\IIngresoCIUService.cs" />
+    <Compile Include="Interfaces\IAutorizarRecepcionUvasService.cs" />
+    <Compile Include="Interfaces\IRemitoBodegaUvaService.cs" />
+    <Compile Include="Interfaces\IRemitoBodegaVinoService.cs" />
+    <Compile Include="Internas\AutorizacionRecepcionUvas.cs" />
+    <Compile Include="Internas\AsignarAutomaticamentePuestoComando.cs" />
+    <Compile Include="Internas\AsignarEstablecimiento.cs" />
+    <Compile Include="Internas\ProveedorEsSustentable.cs" />
+    <Compile Include="Internas\CrearHojaDeRuta.cs" />
+    <Compile Include="Internas\CrearHojaDeRutaYerbatera.cs" />
+    <Compile Include="Internas\CrearRemitoBodegaUva.cs" />
+    <Compile Include="Internas\GuardarPesoNetoTransile.cs" />
+    <Compile Include="Internas\ActualizarAlmacen.cs" />
+    <Compile Include="Internas\IngresarBinSalida.cs" />
+    <Compile Include="Internas\DistribuirAlmacenes.cs" />
+    <Compile Include="Internas\VerificarKilosDeclaradosPorFinca.cs" />
+    <Compile Include="Internas\ImpresionEnvioMuestraAuditoria.cs" />
+    <Compile Include="ImpresionReciboMunicipal.cs" />
+    <Compile Include="Helpers\ExtensionesEnum.cs" />
+    <Compile Include="ImpresionInformeDeRecepcion.cs" />
+    <Compile Include="ImpresionDocumentoEntrada.cs" />
+    <Compile Include="Interfaces\IServicioSapMov291Service.cs" />
+    <Compile Include="Interfaces\IBalanzaACeroService.cs" />
+    <Compile Include="Interfaces\IPuestoComandoService.cs" />
+    <Compile Include="Interfaces\IControlDeBalanzaService.cs" />
+    <Compile Include="Interfaces\IAsignacionTarjetaDeAccesoService.cs" />
+    <Compile Include="Interfaces\ICargarCartaPorteFasonService.cs" />
+    <Compile Include="Interfaces\IAutorizarTiempoEnTransitoService.cs" />
+    <Compile Include="Interfaces\IIngresoRemitoTercerosService.cs" />
+    <Compile Include="Interfaces\ICargarOrdenDeCargaContenedorService.cs" />
+    <Compile Include="Interfaces\IDescargaUnidadService.cs" />
+    <Compile Include="Interfaces\ICargarOrdenEntrePlantasService.cs" />
+    <Compile Include="Interfaces\IIngresoRemitoService.cs" />
+    <Compile Include="Internas\ControlarTiempoEnTransito.cs" />
+    <Compile Include="Internas\AutorizarTiempoEnTransito.cs" />
+    <Compile Include="Internas\IngresarCIU.cs" />
+    <Compile Include="NotificarMensaje.cs" />
+    <Compile Include="Internas\ResetearAnalisisDeCalidad.cs" />
+    <Compile Include="Internas\EgresoSinFleteFasonesGenerarRequest.cs" />
+    <Compile Include="Internas\EgresoSinFleteFasonesTransmisionASap.cs" />
+    <Compile Include="Internas\EgresoSinFleteFasonesTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\VerificarCorrespondeDescarga.cs" />
+    <Compile Include="Internas\GenerarControlDeBalanza.cs" />
+    <Compile Include="Internas\PuestoComando.cs" />
+    <Compile Include="Internas\VerificarPuestoComando.cs" />
+    <Compile Include="Internas\VerificarCorrespondeControlDeBalanza.cs" />
+    <Compile Include="Internas\GuardarControlBalanza.cs" />
+    <Compile Include="Internas\FinDeActividad.cs" />
+    <Compile Include="Internas\VerificarTiempoMaximoActividades.cs" />
+    <Compile Include="Internas\AsignarTarjeta.cs" />
+    <Compile Include="Internas\RefrescarRemito.cs" />
+    <Compile Include="Interfaces\IIngresoNumeroCotService.cs" />
+    <Compile Include="Interfaces\IEmpezarNuevoWorkflowService.cs" />
+    <Compile Include="Interfaces\ICargarCartaPorteRedespachoDesvioService.cs" />
+    <Compile Include="Interfaces\IRedireccionarRedespachoDesvioService.cs" />
+    <Compile Include="Interfaces\IServicioServicioSap_Z4030Service.cs" />
+    <Compile Include="Internas\FletesDobleTramoGenerarRequest.cs" />
+    <Compile Include="Internas\FletesDobleTramoTransmisionASap.cs" />
+    <Compile Include="Internas\FletesDobleTramoTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\GuardarNumeroCot.cs" />
+    <Compile Include="Internas\EliminarRecorrido.cs" />
+    <Compile Include="Internas\CrearRecorrido.cs" />
+    <Compile Include="InvocarNuevoWorkflow.cs" />
+    <Compile Include="Internas\IngresarPesoSimulado.cs" />
+    <Compile Include="Internas\ObtenerValoresSap.cs" />
+    <Compile Include="Internas\GenerarMuestraEnvioACamara.cs" />
+    <Compile Include="Interfaces\IServicioSapPesaNetoService.cs" />
+    <Compile Include="Interfaces\IServicioSapIngresosEgresosFazonesService.cs" />
+    <Compile Include="ImpresionGenerica.cs" />
+    <Compile Include="Interfaces\IBajaCTGDefinitivoService.cs" />
+    <Compile Include="Interfaces\IIngresarOrdenCargaInternaFasonService.cs" />
+    <Compile Include="Interfaces\IControlDeIngresoService.cs" />
+    <Compile Include="Interfaces\IVerificacionSalidaFleteService.cs" />
+    <Compile Include="Internas\ControlarIngreso.cs" />
+    <Compile Include="Internas\CrearOrdenDeCargaContenedor.cs" />
+    <Compile Include="Internas\MarcarWorkflowTerminado.cs" />
+    <Compile Include="Internas\FinalizarDescargaUnidad.cs" />
+    <Compile Include="Internas\RefrescarOrdenDeCargaContenedor.cs" />
+    <Compile Include="Internas\RefrescarOrdenEntrePlantas.cs" />
+    <Compile Include="Internas\ObtenerTipoDeValidacionCtg.cs" />
+    <Compile Include="Internas\LlegadaADestinoEnRedespachosGenerarRequest.cs" />
+    <Compile Include="Internas\CrearOrdenEntrePlantas.cs" />
+    <Compile Include="Internas\CrearRemito.cs" />
+    <Compile Include="Internas\PesaNetoGenerarRequest.cs" />
+    <Compile Include="Internas\PesaNetoTransmisionASap.cs" />
+    <Compile Include="Internas\PesaNetoTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\ExisteExcepcionAlControl.cs" />
+    <Compile Include="Internas\IngresarTransportistaOrdenCargaFas.cs" />
+    <Compile Include="Internas\IngresarTransportistaOrdenCargaInternaFason.cs" />
+    <Compile Include="Internas\IngresarTransportistaOrdenDeDescarga.cs" />
+    <Compile Include="Internas\IngresarTransportistaOrdenDeDescargaFason.cs" />
+    <Compile Include="Internas\IngresosEgresosFazonesTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\IngresosEgresosFazonesTransmisionASap.cs" />
+    <Compile Include="Internas\IngresosEgresosFazonesGenerarRequest.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDefinitivoAutomatica.cs" />
+    <Compile Include="Internas\ObtenerCentro.cs" />
+    <Compile Include="Internas\CrearOrdenCargaInternaFason.cs" />
+    <Compile Include="Internas\ObtenerCaracteristicasDeCalidad.cs" />
+    <Compile Include="Internas\EnviarMail.cs" />
+    <Compile Include="Internas\RefrescarOrdenCargaFas.cs" />
+    <Compile Include="Internas\RefrescarOrdenCargaInternaFason.cs" />
+    <Compile Include="Internas\RefrescarOrdenDeDescarga.cs" />
+    <Compile Include="Internas\RefrescarOrdenCargaInterna.cs" />
+    <Compile Include="Internas\RefrescarCartaDePorte.cs" />
+    <Compile Include="GuardarFechaEgreso.cs" />
+    <Compile Include="Interfaces\ICargarOrdenDeDescargaFasonService.cs" />
+    <Compile Include="Interfaces\IVerificacionCotService.cs" />
+    <Compile Include="Interfaces\IValidarContratoService.cs" />
+    <Compile Include="Interfaces\IServicioSapEgresosNoProductivosService.cs" />
+    <Compile Include="Interfaces\IIngresoDeLoteService.cs" />
+    <Compile Include="Internas\AlmacenarCalado.cs" />
+    <Compile Include="Internas\AlmacenarPrecintos.cs" />
+    <Compile Include="Internas\AutorizarDescuentoEntregador.cs" />
+    <Compile Include="Internas\ControlarDiferenciaDePeso.cs" />
+    <Compile Include="Internas\ControlarPesoMaximo.cs" />
+    <Compile Include="Internas\ControlarPesoOrigen.cs" />
+    <Compile Include="Internas\ControlarPeso.cs" />
+    <Compile Include="Internas\ControlRecorrido.cs" />
+    <Compile Include="Internas\CoordinacionRechazado.cs" />
+    <Compile Include="Internas\CrearOrdenDeDescargaFason.cs" />
+    <Compile Include="Internas\VerificacionCotEnSap.cs" />
+    <Compile Include="Internas\ValidarContratoEnSap.cs" />
+    <Compile Include="Internas\EgresosMaterialNoProductivoTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\EgresosMaterialNoProductivoTransmisionASap.cs" />
+    <Compile Include="Internas\EgresosMaterialNoProductivoGenerarRequest.cs" />
+    <Compile Include="Internas\CrearCartaPorte.cs" />
+    <Compile Include="Internas\CrearOrdenCargaFas.cs" />
+    <Compile Include="Internas\CrearOrdenCargaInterna.cs" />
+    <Compile Include="Internas\CrearOrdenDeDescarga.cs" />
+    <Compile Include="Internas\DarDeAltaCtgAutomatica.cs" />
+    <Compile Include="Internas\DarDeAltaCtgManual.cs" />
+    <Compile Include="Internas\DarDeBajaCtgAutomatica.cs" />
+    <Compile Include="Internas\DarDeBajaCtgManual.cs" />
+    <Compile Include="Internas\FinalizarRomaneo.cs" />
+    <Compile Include="Internas\GuardarDatosProximaActividad.cs" />
+    <Compile Include="Internas\IngresarAnalisisDeCalidad.cs" />
+    <Compile Include="Internas\IngresarEnvioACamara.cs" />
+    <Compile Include="Internas\IngresarObservaciones.cs" />
+    <Compile Include="Internas\IngresarPeso.cs" />
+    <Compile Include="Internas\IngresarTransportista.cs" />
+    <Compile Include="Internas\IngresoDeCartaPorteRedespacho.cs" />
+    <Compile Include="Internas\IngresosPorCompraDeGranosGenerarRequest.cs" />
+    <Compile Include="Internas\IngresosPorCompraDeGranosTransmisionASap.cs" />
+    <Compile Include="Internas\IngresosPorCompraDeGranosTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\InicializarCalado.cs" />
+    <Compile Include="Internas\LeerPesoMaximo.cs" />
+    <Compile Include="Internas\LeerToleranciaRechazo.cs" />
+    <Compile Include="Internas\LlegadaADestinoEnRedespachosTransmisionASap.cs" />
+    <Compile Include="Internas\LlegadaADestinoEnRedespachosTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\LogActividad.cs" />
+    <Compile Include="Internas\MovimientosStockTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\MovimientoStockSapGenerarRequest.cs" />
+    <Compile Include="Internas\MovimientoStockTransmisionSap.cs" />
+    <Compile Include="Internas\NotificarUsuario.cs" />
+    <Compile Include="Internas\ObtenerFecha.cs" />
+    <Compile Include="Internas\ObtenerInstanceId.cs" />
+    <Compile Include="Internas\ObtenerTipoComercial.cs" />
+    <Compile Include="Internas\ObtenerToleranciaOrigen.cs" />
+    <Compile Include="Internas\ObtenerToleranciaRomaneo.cs" />
+    <Compile Include="Internas\PersistirPropiedadesCustom.cs" />
+    <Compile Include="Internas\RechazarCamion.cs" />
+    <Compile Include="Internas\SalidaDeOrigenEnRedespachosGenerarRequest.cs" />
+    <Compile Include="Internas\SalidaDeOrigenEnRedespachosTransmisionASap.cs" />
+    <Compile Include="Internas\SalidaDeOrigenEnRedespachosTransmisionASapAsincronico.cs" />
+    <Compile Include="Internas\TerminarInhabilitacion.cs" />
+    <Compile Include="Internas\TransportistaInhabilitado.cs" />
+    <Compile Include="Internas\VerificarCamionRechazado.cs" />
+    <Compile Include="Internas\VerificarCorrespondeImprimirReciboMunicipal.cs" />
+    <Compile Include="Internas\VerificarCorrespondeLlamadaCompliance.cs" />
+    <Compile Include="Internas\VerificarCorrespondeLlamadaSap.cs" />
+    <Compile Include="Internas\VerificarPedidoDeTrasladoEnSAP.cs" />
+    <Compile Include="Internas\VerificarSalidaFlete.cs" />
+    <Compile Include="Internas\VerificarTransportistaHabilitado.cs" />
+    <Compile Include="Internas\VerificarVisteo.cs" />
+    <Compile Include="Interfaces\IVisteoService.cs" />
+    <Compile Include="ImpresionConstanciaDeEntregaLaser.cs" />
+    <Compile Include="ImpresionCertificacionDeCartaPorte.cs" />
+    <Compile Include="ImpresionLoteACamara.cs" />
+    <Compile Include="ImpresionMuestraCalado.cs" />
+    <Compile Include="ImpresionAsignacionDeRuta.cs" />
+    <Compile Include="ImpresionCertificadoDeAnalisis.cs" />
+    <Compile Include="ImpresionSolicitudDeAnalisis.cs" />
+    <Compile Include="ImpresionTicketPesada.cs" />
+    <Compile Include="Interfaces\ICargarOrdenDeDescargaService.cs" />
+    <Compile Include="Interfaces\IRomaneoService.cs" />
+    <Compile Include="Interfaces\IControlPesoNetoService.cs" />
+    <Compile Include="Interfaces\IIngresarOrdenCargaFasService.cs" />
+    <Compile Include="ImpresionFormulario239.cs" />
+    <Compile Include="Interfaces\IServicioSapFill_Z1000Service.cs" />
+    <Compile Include="Interfaces\IServicioSapMov975Service.cs" />
+    <Compile Include="Interfaces\IServicioSapMov305Service.cs" />
+    <Compile Include="Behaviour\ServiciosScatoBehavior.cs" />
+    <Compile Include="Behaviour\ServiciosScatoBehaviorElement.cs" />
+    <Compile Include="Behaviour\PromotePropertiesBehavior.cs" />
+    <Compile Include="Behaviour\PromotePropertiesBehaviorElement.cs" />
+    <Compile Include="Behaviour\ScatoPersistenceParticipant.cs" />
+    <Compile Include="Interfaces\IExistePedidoDeTrasladoService.cs" />
+    <Compile Include="Interfaces\IServicioSapMovAjusteService.cs" />
+    <Compile Include="Interfaces\IAltaCTGService.cs" />
+    <Compile Include="Interfaces\IBajaCTGService.cs" />
+    <Compile Include="Interfaces\IControlPesoOrigenService.cs" />
+    <Compile Include="Interfaces\IIngresoDeTransportistaService.cs" />
+    <Compile Include="Interfaces\IAutorizarDescuentosEntregadorService.cs" />
+    <Compile Include="Interfaces\ICoordinacionService.cs" />
+    <Compile Include="Interfaces\ICaladoService.cs" />
+    <Compile Include="Interfaces\ICargarCartaPorteService.cs" />
+    <Compile Include="Interfaces\IAnalisisDeCalidadService.cs" />
+    <Compile Include="Interfaces\IPesadaService.cs" />
+    <Compile Include="Interfaces\IEjecutarService.cs" />
+    <Compile Include="Interfaces\IAutorizarTransportistaInhabilitadoService.cs" />
+    <Compile Include="Interfaces\IVerificacionCamionRechazadoService.cs" />
+    <Compile Include="Interfaces\IControlDePesoEsperadoService.cs" />
+    <Compile Include="Interfaces\IControlPesoMaximoService.cs" />
+    <Compile Include="Interfaces\IIngresarOrdenCargaInternaService.cs" />
+    <Compile Include="Interfaces\IIngresoDeObservacionesService.cs" />
+    <Compile Include="Interfaces\ICargarPrecintosService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\IListaDeWorkflows.cs" />
+    <Compile Include="Servicios\IServicioActividadFactory.cs" />
+    <Compile Include="Servicios\ServicioActividadFactory.cs" />
+    <Compile Include="VerificacionTransportistaExiste.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.Dominio\Molinos.Scato.Dominio.csproj">
+      <Project>{9bc79c49-4f39-409f-a3d4-f1dabb8122b4}</Project>
+      <Name>Molinos.Scato.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Servicios\Molinos.Scato.Servicios.csproj">
+      <Project>{15B3E0D2-6217-493A-A690-158C497F5318}</Project>
+      <Name>Molinos.Scato.Servicios</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarPrecintos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionTransportistaHabilitado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeObservaciones.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarOrdenCargaInterna.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlDePesoEsperado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlPesoMaximo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AutorizarTransportistaInhabilitado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SalidaDeCentro.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AutorizarDescuentosEntregador.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Calado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeTransportista.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Coordinacion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AnalisisDeCalidad.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarCartaPorte.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ConfirmacionDeCargaDescarga.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlPesoOrigen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ExistePedidoDeTraslado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarCartaPorteRedespacho.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapMovAjuste.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapMov975.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapMov305.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionCamionRechazado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionSalidaFlete.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AltaCTG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapFill_Z1000.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlPesoNeto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarOrdenDeDescarga.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarOrdenCargaFas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Romaneo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Visteo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeTransportistaOrdenCargaFas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeTransportistaOrdenDeDescarga.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapEgresosNoProductivos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeLote.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionCot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ValidarContrato.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarCartaPorteRedespachoPrestamo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarCartaPortePrestamo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenCargaFas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenCargaInterna.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenDeDescarga.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarOrdenDeDescargaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeTransportistaOrdenDeDescargaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarOrdenCargaInternaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeTransportistaOrdenCargaInternaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTGDefinitivo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Recursos\" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnviarMailDescuentos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlDeIngreso.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapIngresosEgresosFazones.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenCargaInternaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapPesaNeto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarOrdenEntrePlantas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoRemito.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenEntrePlantas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="DescargaUnidad.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarOrdenDeCargaContenedor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnvioACamaraObligatorio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenDeCargaContenedor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarRemito.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoRemitoTerceros.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarCartaPorteFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AutorizarTiempoEnTransito.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AsignacionTarjetaDeAcceso.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ImprimeReciboMunicipal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarCartaDePorte.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PuestoComando.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BalanzaACero.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PesadaBruto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Internas\Pesada.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PesadaTara.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnEsperaAduana.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapMov291.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnEsperaIndianapolis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnPlayaExterna.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnTransito.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ImpresionMuestraAuditoria.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoCIU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificacionKilosDeclaradosPorVinedo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AutorizarRecepcionUvas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Internas\RemitoBodegaUva.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RemitoBodegaUvaPropia.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="DistribucionDeAlmacenes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SimularPesada.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarCartaPorteRedespachoDesvio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="DesviarCartaPorte.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EmpezarNuevoWorkflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="FinalizarWorkflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoNumeroCot.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoBinSalida.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RemitoBodegaUvaTerceros.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarHojaDeRuta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CargarHojaDeRutaYerbatera.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSap_Z4030.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlTransile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AsignacionDeEstablecimiento.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PesadaTaraVagon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PesadaBrutoVagon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioMonsantoRegistrarCartadePorte.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioMonsantoRegistrarMuestreoYPesaje.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RefrescarOrdenDeDescargaFason.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SalidaDeCentroAutomatica.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RemitoBodegaVino.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificarImpresion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapInformarCupo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapFill_Z1000_Remito.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ControlDeBalanza.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapIngresosBodega.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificaDestinatarioCTG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresoDeDatosDeExportacion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnviarMailAMesaEntradaRechazados.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnviarMailStockEstablecimiento.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RegistrarStockEpa.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="LiberarStockSojaEPA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarCartaPorteRedespachoImportaciones.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ServicioSapZE7550.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PuestoComandoV2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnPlayaExternaV2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PasoPorBalanza.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="PesadaCargaExportacion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarCartaPorteRedespachoMercaderia.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="VerificarLimiteDeCreditoVentaEnSAP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CaladoEnPlanta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="LiberarLimiteDeCreditoVenta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AbrirBarrera.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="IngresarEmbarque.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="LineUp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SalidaDeCentroPlaya.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="CamionDemorado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnviarMailPorEntradaDeHexano.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EsperaConfirmacion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

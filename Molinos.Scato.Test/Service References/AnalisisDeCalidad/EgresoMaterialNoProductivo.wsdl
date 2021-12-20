@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://scato.molinos.com/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://scato.molinos.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://scato.molinos.com/Imports">
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd0" namespace="http://scato.molinos.com/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Dto" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd3" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Molinos.Scato.Dominio.Comandos" />
+      <xsd:import schemaLocation="http://localhost/Scato.workflow/EgresoMaterialNoProductivo.xamlx?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAutorizarTransportistaInhabilitadoService_AutorizarTransportistaInhabilitado_InputMessage">
+    <wsdl:part name="parameters" element="tns:AutorizarTransportistaInhabilitado" />
+  </wsdl:message>
+  <wsdl:message name="IAutorizarTransportistaInhabilitadoService_AutorizarTransportistaInhabilitado_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AutorizarTransportistaInhabilitadoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISalidaDeCentroService_SalidaDeCentro_InputMessage">
+    <wsdl:part name="parameters" element="tns:SalidaDeCentro" />
+  </wsdl:message>
+  <wsdl:message name="ISalidaDeCentroService_SalidaDeCentro_OutputMessage" />
+  <wsdl:message name="IIngresarOrdenCargaInternaService_IngresarOrdenCargaInterna_InputMessage">
+    <wsdl:part name="parameters" element="tns:IngresarOrdenCargaInterna" />
+  </wsdl:message>
+  <wsdl:message name="IIngresarOrdenCargaInternaService_IngresarOrdenCargaInterna_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IngresarOrdenCargaInternaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPesadaService_Pesada_InputMessage">
+    <wsdl:part name="parameters" element="tns:Pesada" />
+  </wsdl:message>
+  <wsdl:message name="IPesadaService_Pesada_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PesadaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICargarPrecintosService_CargarPrecintos_InputMessage">
+    <wsdl:part name="parameters" element="tns:CargarPrecintos" />
+  </wsdl:message>
+  <wsdl:message name="ICargarPrecintosService_CargarPrecintos_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CargarPrecintosResponse" />
+  </wsdl:message>
+  <wsdl:message name="IIngresoDeObservacionesService_IngresoDeObservaciones_InputMessage">
+    <wsdl:part name="parameters" element="tns:IngresoDeObservaciones" />
+  </wsdl:message>
+  <wsdl:message name="IIngresoDeObservacionesService_IngresoDeObservaciones_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IngresoDeObservacionesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IControlDePesoEsperadoService_ControlDePesoEsperado_InputMessage">
+    <wsdl:part name="parameters" element="tns:ControlDePesoEsperado" />
+  </wsdl:message>
+  <wsdl:message name="IControlDePesoEsperadoService_ControlDePesoEsperado_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ControlDePesoEsperadoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IVerificacionCamionRechazadoService_VerificacionCamionRechazado_InputMessage">
+    <wsdl:part name="parameters" element="tns:VerificacionCamionRechazado" />
+  </wsdl:message>
+  <wsdl:message name="IVerificacionCamionRechazadoService_VerificacionCamionRechazado_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VerificacionCamionRechazadoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IControlPesoMaximoService_ControlPesoMaximo_InputMessage">
+    <wsdl:part name="parameters" element="tns:ControlPesoMaximo" />
+  </wsdl:message>
+  <wsdl:message name="IControlPesoMaximoService_ControlPesoMaximo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ControlPesoMaximoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAutorizarTransportistaInhabilitadoService">
+    <wsdl:operation name="AutorizarTransportistaInhabilitado">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IAutorizarTransportistaInhabilitadoService/AutorizarTransportistaInhabilitado" message="tns:IAutorizarTransportistaInhabilitadoService_AutorizarTransportistaInhabilitado_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IAutorizarTransportistaInhabilitadoService/AutorizarTransportistaInhabilitadoResponse" message="tns:IAutorizarTransportistaInhabilitadoService_AutorizarTransportistaInhabilitado_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ISalidaDeCentroService">
+    <wsdl:operation name="SalidaDeCentro">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/ISalidaDeCentroService/SalidaDeCentro" message="tns:ISalidaDeCentroService_SalidaDeCentro_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/ISalidaDeCentroService/SalidaDeCentroResponse" message="tns:ISalidaDeCentroService_SalidaDeCentro_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IIngresarOrdenCargaInternaService">
+    <wsdl:operation name="IngresarOrdenCargaInterna">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IIngresarOrdenCargaInternaService/IngresarOrdenCargaInterna" message="tns:IIngresarOrdenCargaInternaService_IngresarOrdenCargaInterna_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IIngresarOrdenCargaInternaService/IngresarOrdenCargaInternaResponse" message="tns:IIngresarOrdenCargaInternaService_IngresarOrdenCargaInterna_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IPesadaService">
+    <wsdl:operation name="Pesada">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IPesadaService/Pesada" message="tns:IPesadaService_Pesada_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IPesadaService/PesadaResponse" message="tns:IPesadaService_Pesada_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ICargarPrecintosService">
+    <wsdl:operation name="CargarPrecintos">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/ICargarPrecintosService/CargarPrecintos" message="tns:ICargarPrecintosService_CargarPrecintos_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/ICargarPrecintosService/CargarPrecintosResponse" message="tns:ICargarPrecintosService_CargarPrecintos_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IIngresoDeObservacionesService">
+    <wsdl:operation name="IngresoDeObservaciones">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IIngresoDeObservacionesService/IngresoDeObservaciones" message="tns:IIngresoDeObservacionesService_IngresoDeObservaciones_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IIngresoDeObservacionesService/IngresoDeObservacionesResponse" message="tns:IIngresoDeObservacionesService_IngresoDeObservaciones_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IControlDePesoEsperadoService">
+    <wsdl:operation name="ControlDePesoEsperado">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IControlDePesoEsperadoService/ControlDePesoEsperado" message="tns:IControlDePesoEsperadoService_ControlDePesoEsperado_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IControlDePesoEsperadoService/ControlDePesoEsperadoResponse" message="tns:IControlDePesoEsperadoService_ControlDePesoEsperado_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IVerificacionCamionRechazadoService">
+    <wsdl:operation name="VerificacionCamionRechazado">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IVerificacionCamionRechazadoService/VerificacionCamionRechazado" message="tns:IVerificacionCamionRechazadoService_VerificacionCamionRechazado_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IVerificacionCamionRechazadoService/VerificacionCamionRechazadoResponse" message="tns:IVerificacionCamionRechazadoService_VerificacionCamionRechazado_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IControlPesoMaximoService">
+    <wsdl:operation name="ControlPesoMaximo">
+      <wsdl:input wsaw:Action="http://scato.molinos.com/IControlPesoMaximoService/ControlPesoMaximo" message="tns:IControlPesoMaximoService_ControlPesoMaximo_InputMessage" />
+      <wsdl:output wsaw:Action="http://scato.molinos.com/IControlPesoMaximoService/ControlPesoMaximoResponse" message="tns:IControlPesoMaximoService_ControlPesoMaximo_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

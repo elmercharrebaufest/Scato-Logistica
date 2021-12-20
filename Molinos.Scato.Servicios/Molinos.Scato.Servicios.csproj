@@ -1,0 +1,1977 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props" Condition="Exists('..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{15B3E0D2-6217-493A-A690-158C497F5318}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Molinos.Scato.Servicios</RootNamespace>
+    <AssemblyName>Molinos.Scato.Servicios</AssemblyName>
+    <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WcfConfigValidationEnabled>False</WcfConfigValidationEnabled>
+    <XsdCodeGenEnabled>False</XsdCodeGenEnabled>
+    <XsdCodeGenSerializerMode>XmlSerializer</XsdCodeGenSerializerMode>
+    <XsdCodeGenReuseTypesFlag>True</XsdCodeGenReuseTypesFlag>
+    <XsdCodeGenReuseTypesMode>All</XsdCodeGenReuseTypesMode>
+    <XsdCodeGenReferences />
+    <XsdCodeGenNamespaceMappings>%2a, Molinos.Scato.Servicios.ContractTypes</XsdCodeGenNamespaceMappings>
+    <XsdCodeGenCollectionTypes>System.Array%3bSystem.Collections.Generic.Dictionary`2</XsdCodeGenCollectionTypes>
+    <XsdCodeGenExcludedTypes />
+    <XsdCodeGenImportXmlTypes>True</XsdCodeGenImportXmlTypes>
+    <XsdCodeGenGenerateSerializableTypes>True</XsdCodeGenGenerateSerializableTypes>
+    <XsdCodeGenGenerateInternalTypes>False</XsdCodeGenGenerateInternalTypes>
+    <XsdCodeGenEnableDataBinding>False</XsdCodeGenEnableDataBinding>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Jenkins|AnyCPU'">
+    <OutputPath>bin\Jenkins\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.23.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.23\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Logging">
+      <HintPath>..\packages\Ninject.Extensions.Logging.3.0.1.0\lib\net45-full\Ninject.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PrintDoc2Pdf">
+      <HintPath>..\Librerias\PrintDoc2Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Tesseract, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tesseract.3.3.0\lib\net45\Tesseract.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.6\lib\net45\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.6\lib\net45\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behavior\BehaviorMonsanto.cs" />
+    <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionAutomatizacionEtapasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaComercialHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CeldaManoDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionMailMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CoordinadorPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CubitacionDeTanquesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DensidadPorTemperaturaDeMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstadoBuqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstadoPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CallePorRecorridoProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ContingenciaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaComercialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LlenadoMilimetroPorTanqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MaterialPuertoCantidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AgenteControlPrivadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstibaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaBalanzasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaElementoGraficoHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaElementoGraficoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaHabilitacionDeTanquesHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaHabilitacionDeTanquesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaLineasDeEmbarqueHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaLineasDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaListadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaMangueraCargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaManosDeEmbarqueDetalleHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaManosDeEmbarqueDetalleMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaManosDeEmbarqueHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaManosDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPeriodoDeCargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPlanillaDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPlanillaDeTurnosMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPlanillaDeTurnosTurnosCortesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPlanillaDeTurnosTurnosDetallesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaPlanillaDeTurnosTurnosMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaRitmosEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaTabiquesDeEmbarqueHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaTabiquesDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ModuloDeCargaUmapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivosDeCorteMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivosFallasBalanzaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivosLimpiezaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MensajeCartelLedMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PlanoDeCargaBodegaHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PlanoDeCargaBodegaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PlanoDeCargaHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PlanoDeCargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LineUpMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaAuditoriaCamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LoteAuditoriaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PagoConMercadoPagoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DatosDeWorkflowMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpResumenHojaDeRutaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpGaritaSalidaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstadoMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AjusteStockBinesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AutorizacionCamionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CupoMobileMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DocumentoExternoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaracteristicasAnalizadasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HistoricoInhabilitacionCamionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AutorizacionChoferMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HistoricoInhabilitacionChoferMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AnalisisObligatorioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BalanzadaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BalanzaPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaladoEnPlantaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaladoEnPlantaPorCaracteristicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CuposOtorgadosMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaDeCupoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CasilleroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaDeBinesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AsignacionDeRecorridoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ActividadConCargaAutomaticaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaPorteVagonFerroviarioRegistroTransmisionAMonsantoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaPorteTransporteAutomotorRegistroTransmisionAMonsantoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaDePorteRegistradaServicioMonsantoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CategoriaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConversionCentroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ArchivoDeMovimientosMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaracteristicaDeCalidadPorWorkflowMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DestinoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EnvioUrenportMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExportadorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AdjuntoMapingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpCartaPorteUrenportMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivoReasignacionDeTarjetaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpAsigRecorrCtrolCalidMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestraDeNirsMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\NirsModificacionModalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\NirsMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpReciboMunicipalImportacionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MaterialPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivoHumedadManualMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RamalFerroviarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RangosDeRedondeoMappinProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BodegaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RegistroBalanzaPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ReglaDeAnalisisObligatorioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SentidoManoDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoDeBuquePuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TurnoPuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\UbicacionDeBuquePuertoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VaporMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VideoCamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CosechaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaRubrosAnalizarMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RegistroStockEPAMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\StockDeEstablecimientoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PesoMaximoPorTipoVehiculoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogActividadHistoricoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\KmPorProveedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExcepcionAlDescuentoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SugerenciaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpTicketPesadaAduanaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\IngresoDeDatosDeExportacionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MovimientoDeTercerosMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LoteDeRedespachoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\GraficoDePlantaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DestinatarioCTGMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpParametrosTicketPesadaBodegaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\FirmaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MovimientoDeBinesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LoteBiotecnologiaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\IngresosBodegaTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\InformarCupoTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ZE7550TransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PinchazosPorCaladaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ZonaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SubZonaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ProveedorExcluidoIntactaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VagonMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestreoPesajeVagonFerroviarioTransmisionAMonsantoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestreoPesajeTransporteAutomotorTransmisionAMonsantoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TecnologiaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EmpresaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaIntactaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstablecimientoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaAuditoriaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HojaDeRutaYerbateraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DistribucionDeAlmacenesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DistribucionDeAlmacenMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CuartelMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DescargaDeBinesMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HojaDeRutaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogTarjetaSupervisorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RemitoBodegaUvaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RemitoBodegaVinoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoVehiculoBodegaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VariedadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VariedadPorVinedoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VinedoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CiuAnuladoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VinedoPropioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMuestraAuditoriaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VinedoTercerosMappingProfile.cs" />
+    <Compile Include="IAdministradorDeCalles.cs" />
+    <Compile Include="IFirmware.cs" />
+    <Compile Include="Impl\AdministradorDeCalles.cs" />
+    <Compile Include="CrearException.cs" />
+    <Compile Include="IFirmwareFactory.cs" />
+    <Compile Include="Impl\ServicioEstadoPuesto.cs" />
+    <Compile Include="Impl\ServicioCircular.cs" />
+    <Compile Include="IServicioEstadoPuesto.cs" />
+    <Compile Include="IServicioCircular.cs" />
+    <Compile Include="MercadoLibreException.cs" />
+    <Compile Include="FormattingHtmlHelper.cs" />
+    <Compile Include="IFirmaProvider.cs" />
+    <Compile Include="Impl\FirmaProvider.cs" />
+    <Compile Include="Impl\ServicioImpresorFactory.cs" />
+    <Compile Include="Impl\ServicioMercadoPago.cs" />
+    <Compile Include="IngresosBodegaAsincronicoDto.cs" />
+    <Compile Include="Impl\ServicioRepositorioFactory.cs" />
+    <Compile Include="IServicioImpresorFactory.cs" />
+    <Compile Include="IServicioMercadoPago.cs" />
+    <Compile Include="IServicioRepositorioFactory.cs" />
+    <Compile Include="Impl\ServicioComandosFactory.cs" />
+    <Compile Include="IServicioComandosFactory.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionDeTablaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ControlDeBalanzaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ControlDeBalanzaPesadaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EgresoSinFleteFazonesTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EstadoConexionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LecturaDeTarjetaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SalidaMappingProfile.cs" />
+    <Compile Include="Encriptador.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ActividadPorDispositivoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AjusteDeCalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AjusteDeDiferenciasEnRedespachosTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AjusteDeStockMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CalleMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CalidadMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AutorizarTiempoEnTransitoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpControlDeCargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivoQuiebreBarreraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ReasignacionDeTarjetaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpReciboMunicipalMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PuestoDeTrabajoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LectorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ControlDeTiempoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ReciboMunicipalMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TarjetaRangoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TarjetaBloqueadaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpInformeDeRecepcionItemMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpInformeDeRecepcionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConversionMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConversionProcedenciaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConversionGrupoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConversionCaracteristicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaracteristicasCalidadValorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CampoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TaraContenedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenDeCargaContenedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DescargaUnidadItemMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DescargaUnidadItemPedidoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DescargaUnidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RemitoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\FletesDobleTramoTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MicroMuestrasPorCasilleroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RecepcionYRedespachoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PesaNetoTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\IngresosEgresosFazonesTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EgresosNoProductivosTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenEntrePlantasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpImpresionGenericaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\FormatoDeCampoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LetraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DocumentoDeImpresionPorCentroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\FormatoDeImpresionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpresoraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\FormatoDePapelMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DocumentoDeImpresionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpresionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpAsignacionDeRutaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpCertificadoDeAnalisisMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpSolicitudDeAnalisisMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpParametrosTicketPesadaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMuestraCaladoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionMicromuestraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpIdentificacionEnvioLoteACamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpFormulario239MappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpDocumentoDeEntradaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpDeclaracionFosfinaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpConstanciaDeEntregaLaserMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpCertificadoDeCartaPorteMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenCargaInternaFasonMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenDeDescargaFasonMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RomaneoItemPedidoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenCargaFasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TarjetaSupervisorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoComprobanteOnccaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\WorkflowDefinicionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RomaneoItemMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RomaneoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogActividadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestraEnvioACamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LoteMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\IngresosPorCompraDeGranosTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MaterialPorCentroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MaterialPorWorkflowMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenDeDescargaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SalidaDeOrigenEnRedespachosTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LlegadaAdestinosEnRedespachosTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TalonarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TaraRomaneoMappingProfile.cs" />
+    <Compile Include="Extensor.cs" />
+    <Compile Include="IConfiguracionProvider.cs" />
+    <Compile Include="Impl\ConfiguracionProvider.cs" />
+    <Compile Include="Impl\ServicioSuscriptor.cs" />
+    <Compile Include="Impl\ServicioWorkflows.cs" />
+    <Compile Include="IServicioSuscriptor.cs" />
+    <Compile Include="IServicioWorkflows.cs" />
+    <Compile Include="IServicioCompliance.cs" />
+    <Compile Include="IAccesoWsCtg.cs" />
+    <Compile Include="Impl\AccesoWsCtg.cs" />
+    <Compile Include="Behavior\InternacionalizacionBehavior.cs" />
+    <Compile Include="Behavior\InternacionalizacionInspector.cs" />
+    <Compile Include="Conversiones\Impl\ConversorAutoMapper.cs" />
+    <Compile Include="Conversiones\IConversor.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AlmacenMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BalanzaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BocaDestinoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CabezalMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaladoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaladoPorCaracteristicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CargaAnalisisCalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaPorteMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CentroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ControlRecorridoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BalanzaModificacionModalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaracteristicaDeCalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AnalisisPorCaracteristicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ClienteMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CaracteristicaMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AltaCTGMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TransaccionSAPMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExcepcionEnvioCamaraMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EntregadorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DescuentoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PaisMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\BajaCTGMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ProveedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TicketAccesoAfipMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PermisoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HumedimetroModificacionModalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HumedimetroMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestraDeHumedadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\NotifiacionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\OrdenCargaInternaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ObservacionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RecorridoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RolMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SuplenciaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\UsuarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VehiculoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\WorkflowMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LocalidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ChoferMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\InhabilitacionCamionMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExcepcionAlControlMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\InhabilitacionChoferMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PrecintoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ProvinciaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TransportistaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoComercialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoDocumentoIdentidadMappingProfile.cs" />
+    <Compile Include="ICalculadoraDescuento.cs" />
+    <Compile Include="Impl\CalculadoraDescuento.cs" />
+    <Compile Include="Impl\ServicioSapAsincronicoPoison.cs" />
+    <Compile Include="Impl\ServicioSapAsincronico.cs" />
+    <Compile Include="IServicioSapAsincronico.cs" />
+    <Compile Include="Impl\ServicioComandos.cs" />
+    <Compile Include="IServicioNotificarUsuario.cs" />
+    <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />
+    <Compile Include="Procesamiento\ProcesadorConfirmacionArriboDefinitiva.cs" />
+    <Compile Include="Procesamiento\ProcesadorConfirmacionArribo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCambiarNotificacionAplicacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCambiarPinchazos.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCPEPorDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCPDigital.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarDestinatarioCPE.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarEstadoCtg.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarImagenCpe.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarMensajeCamioneroCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarEtiquetasPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorInformarCaladoCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorInformarPesadaCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorInformarSalidaCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorMarcarUltimaCallePorRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorDesasignarCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCallePorRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEstadoPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAgenciaControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAgenciaMaritimaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAgenteControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearATAPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCoordinadorPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEstiba.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearContingencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLineUp.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEmbarque.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivosLimpieza.cs" />
+    <Compile Include="Procesamiento\ProcesadorDesactivarContingenciaIngresoPlanta.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarMercadoPago.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteAuditoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorDevolverMercadoPago.cs" />
+    <Compile Include="Procesamiento\ProcesadorActivarContingenciaIngresoPlanta.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAgenciaControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAgenciaMaritimaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAgenteControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarATAPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCoordinadorPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoExterno.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEstiba.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMotivosLimpieza.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarModuloDeCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarPlanillaDeTurnos.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaAuditoriaCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorLeerNumeroCartaPorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarPlanoDeCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAgenciaControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAgenciaMaritimaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAgenteControlPrivado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarATAPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCargadoPlanoDeCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCoordinadorPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEmbarque.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEstadoPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEstiba.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarIngresoDatosExportacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDocumentoExterno.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterialPorCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMotivosLimpieza.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoDemorado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorNotificarLecturaCPE.cs" />
+    <Compile Include="Procesamiento\ProcesadorObtenerTickets.cs" />
+    <Compile Include="Procesamiento\ProcesadorObtenerPesada.cs" />
+    <Compile Include="Procesamiento\ProcesadorPagarMercadoPago.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEstadoMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirGaritaSalida.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirResumenHojaDeRuta.cs" />
+    <Compile Include="Procesamiento\ProcesadorLiberarStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarResultadosCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorSuscribirDispositivos.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoExterno.cs" />
+    <Compile Include="Procesamiento\ProcesadorEtiquetaAuditoriaEnCartaDePorteDetalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarAutorizacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCargaOpuesta.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatente.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoCaladoEnPlanta.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCupoCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarEscalables.cs" />
+    <Compile Include="Procesamiento\ProcesadorAlertarAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCorrespondeAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanzada.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCaladoEnPlanta.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMaterialPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExportador.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBodega.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVapor.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanzaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearModificarEstacionMeteorologica.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBalanzada.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBalanzaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarReciboMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMaterialPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExportador.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBodega.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVapor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarZE7550.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarTicketPesadaUnreport.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarCartaPorteUnreport.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarLecturaBalanzadaTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarMensajeCartelLed.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarfotoMesaDigitalizacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCartaPorteUrenport.cs" />
+    <Compile Include="Procesamiento\ProcesadorEtiquetaAuditoriaEnCartaDePorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCartaPorteMesa.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanzada.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAdjunto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaPorteFoto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCliente.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTarjetaSupervisor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterialPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExportador.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBodega.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVapor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanzaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorObtenerDatosEstacionMeteorologica.cs" />
+    <Compile Include="Procesamiento\ProcesadorRetransmitirTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarBalanzadasOrquestador.cs" />
+    <Compile Include="Procesamiento\ProcesadorValidarConsistenciaBalanzadas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLecturaBalanzada.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeNirs.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearNirsModificarModalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearNirs.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarNirs.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnvioMail.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCuposOtorgados.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarZMPES5170TransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarDetalleCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCaracteristicaDeCalidadPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoDocumentoIdentidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRangosDeRedondeo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCaracteristicaDeCalidadPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarRangosDeRedondeo.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirAsigRecorrCtrolCalid.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirReciboMunicipalImportacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCaracteristicaDeCalidadPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarDescuentosEnKg.cs" />
+    <Compile Include="Procesamiento\ProcesadorLiberarStockSojaEpa.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCategoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCategoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaRubrosAnalizar.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCategoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCosecha.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCosecha.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCosecha.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRegistroStockEpa.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarStockDeEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarNirs.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarStockDeEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearStockDeEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarInhabilitacionCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarInhabilitacionChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPesoMaximoPorTipoVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPesoMaximoPorTipoVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPesoMaximoPorTipoVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRangosDeRedondeo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuarioQuiebreBarreras.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuarioMatricula.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuarioUltimoLogin.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarKmPorProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarKmPorProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearKmPorProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlDescuento.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlDescuento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlDescuento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearSugerencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirPrueba.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearIngresoDeDatosDeExportacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesadaAduana.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteDeRedespacho.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearArchivoDeMovimientos.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesadaBodega.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarDestinatarioCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFirma.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivoForzarCero.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMovimientoDeBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMovimientoDeBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarGraficoDePlanta.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMovimientoDeBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteBiotecnologia.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosBodegaTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarInformarCupoTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarTransmisionSap.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAjusteStockBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearProveedorExcluidoIntacta.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAjusteStockBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarProveedorExcluidoIntacta.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeHumedad.cs" />
+    <Compile Include="Procesamiento\ProcesadorAceptarCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAjusteStockBines.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoBalanzaBruto.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPagaTicketMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRemitoBodegaVino.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemitoBodegaVino.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinDeWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosExcel.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosPdf.cs" />
+    <Compile Include="Procesamiento\ProcesadorLibroMovimientosExistenciaDeGranosImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaDePorteRegistradaServicioMonsanto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarMuestreoPesajeTransporteAutomotorTransmisionAMonsanto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarMuestreoPesajeVagonFerroviarioTransmisionAMonsanto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCartaPorteVagonFerroviarioRegistroTransmisionAMonsanto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCartaPorteTransporteAutomotorRegistroTransmisionAMonsanto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEmpresa.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEmpresa.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEmpresa.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTecnologia.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTecnologia.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTecnologia.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaIntacta.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPrimerLectura.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarNotificaciones.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEstablecimiento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearActividadConCargaAutomatica.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogTarjetaSupervisor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarActividadConCargaAutomatica.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaAuditoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarActividadConCargaAutomatica.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAsignacionDeRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAsignacionDeRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAsignacionDeRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHojaDeRutaYerbatera.cs" />
+    <Compile Include="Procesamiento\ProcesadorCargarBinesSalida.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHojaDeRuta.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVinedoPropio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVinedoTerceros.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVinedoPropio.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVinedoTerceros.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDistribucionDeAlmacenes.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPesoNetoBodegaEnLitros.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemitoBodegaUva.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVariedadPorVinedo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVariedadPorVinedo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCiuAnulado.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCiuAnulado.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarImpresora.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraAuditoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorInstalarImpresora.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPesoNetoTransile.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVariedadPorVinedo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarImpresora.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearImpresora.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEstadoConexion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarModalidadPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoria.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoNumeroCIU.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVinedoPropio.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVinedoTerceros.cs" />
+    <Compile Include="Procesamiento\ProcesadorPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoAnalisisDeCalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEgresoSinFleteFazonesTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarLecturaDeTarjeta.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjeta.cs" />
+    <Compile Include="Procesamiento\ProcesadorControlDeBalanza.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAjusteDeStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAjusteDeStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarConfiguracionDeTabla.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComando.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivoQuiebreBarrera.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirControlDeCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTarjetaDeAcceso.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMotivoQuiebreBarrera.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearReasignacionDeTarjeta.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirReciboMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearActividadPorDispositivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinDeActividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoControlBalanza.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoTarjetaDeAcceso.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAutorizarTiempoEnTransito.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarActividadPorDispositivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarControlDeTiempo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarActividadPorDispositivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarControlDeTiempo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearControlDeTiempo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTarjetaSupervisor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaRango.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaSupervisor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPuestoDeTrabajo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTarjetaRango.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTarjetaRango.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPuestosDeCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPuestosDeCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPuestosDeCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearReciboMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarReciboMunicipal.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTarjetaBloqueada.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTarjetaBloqueada.cs" />
+    <Compile Include="Procesamiento\ProcesadorBloquearTarjeta.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCasilleros.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCasilleros.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCasilleros.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRemito.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCalidadMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCalidadMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirInformeDeRecepcion.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirResumenDeRecepcion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeCargaContenedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTaraContenedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTaraContenedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTaraContenedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeCargaContenedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarDescargaUnidadItem.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDescargaUnidadItem.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarDescargaUnidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenEntrePlantas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenEntrePlantas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRemito.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarFletesDobleTramoTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoAlmacen.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoNumeroCot.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarValoresSap.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPesaNetoTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMicroMuestrasPorCasillero.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMicroMuestrasPorCasillero.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirLibroMovimientosExistenciaGranos.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarFormatoDeCampo.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeImpresionModelo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarFormatoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFormatoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearFormatoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoDeImpresionPorCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumentoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDocumentoDeImpresionPorCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoDeImpresionPorCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosEgresosFazonesTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorBajaCTGDefinitivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAjusteDeStock.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenCargaInternaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenCargaInternaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaFas.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaInternaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeDescargaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenDeDescargaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearDocumentoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDocumentoDeImpresion.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDocumento.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenDeDescargaFason.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPesoVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarEgresosMaterialNoProductivoTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumento.cs" />
+    <Compile Include="Procesamiento\ProcesadorImpresionAsync.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCargaFas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenDeDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorFinalizarRomaneo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoTerminado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVehiculoDocumentoInterno.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarRomaneoItem.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaOrdenCargaFas.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarMateriales.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarClientes.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizar.cs" />
+    <Compile Include="Procesamiento\ProcesadorSincronizarProveedores.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCartaPorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarOrdenCargaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearOrdenDeDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarRomaneo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRomaneoItem.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMicromuestra.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLogActividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTalonario.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTaraRomaneo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionCaracteristica.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionCaracteristica.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionGrupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionGrupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionProcedencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionProcedencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConversionMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConversionMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTalonario.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTaraRomaneo.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCertificadoDeCartaPorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDocumentoDeEntrada.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirFormulario239.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirConstanciaDeEntregaLaser.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirAsignacionDeRuta.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirDeclaracionFosfina.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirSolicitudDeAnalisis.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLote.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirCertificadoDeAnalisis.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEnvioLoteACamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirTicketPesada.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMuestraEnvioACamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMaterialPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterialPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMaterialPorWorkflow.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarIngresosPorCompraDeGranosTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLlegadaADestinoEnRedespachosTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarFechaEgreso.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarSalidaDeOrigenEnRedespachosTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEnvioACamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportistaCartaPorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarAjusteDeDiferenciasEnRedespachosTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAlmacenPorMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAlmacenPorMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarDecisionEntregadorCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAltaCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorAltaCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarTransmisionASap.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransaccionSAP.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarDescuento.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBajaCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorBajaCTG.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCartaPorte.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEntregador.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTransaccionSAP.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEntregador.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEntregador.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionEnvioCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionEnvioCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionEnvioCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBocaDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHumedimetro.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearHumedimetroModificarModalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPermiso.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRol.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearSuplencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearUsuario.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVagones.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBocaDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarHumedimetro.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarPermiso.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarRol.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarSuplencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarUsuario.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBocaDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarHumedimetro.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMotivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMotivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMotivo.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCaracteristicaDeCalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCaracteristicaDeCalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCaracteristicaDeCalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanzaModificarModalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearBalanza.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAnalisisDeCalidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarBalanza.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAlmacen.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAlmacen.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanzaEstaEnCero.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarPermiso.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoDemora.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoDestino.cs" />
+    <Compile Include="Procesamiento\ProcesadorAlmacenarObservacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorAlmacenarPrecintos.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarBalanza.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoPeso.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRecorridoDatosProximaActividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearControlRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarNotificacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarNotificacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearNotificacion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoComercialPorWf.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoComercialPorWf.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTipoComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorIngresarOrdenCargaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCentro.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRol.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarSuplencia.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTalonario.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTaraRomaneo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTipoComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTransportista.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControl.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarTipoDocumentoIdentidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearInhabilitacionCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControl.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearInhabilitacionChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearTransportista.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTransportista.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionChofer.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControl.cs" />
+    <Compile Include="Procesamiento\IProcesadorComando.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminar.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarTipoDocumentoIdentidad.cs" />
+    <Compile Include="Procesamiento\ProcesadorComando.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrear.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarAlmacen.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMaterial.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificar.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarUsuario.cs" />
+    <Compile Include="Procesamiento\ProcesadorRechazarCamion.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarValorCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorSuscribirEventos.cs" />
+    <Compile Include="Procesamiento\Respuesta.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Impl\ServicioRepositorio.cs" />
+    <Compile Include="IServicioComandos.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Seguridad\AuthorizationManager.cs" />
+    <Compile Include="Service References\AfipCPDigitalService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AfipCTGWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AfipWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ComplianceWebServiceV2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ComplianceWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\GestionarCartasDePortePE\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Orquestador\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServicioImpresion\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ServiciosSap\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Urenport\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="TransmisionesCupoEnErrorDto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\Molinos.Scato.Dominio.Comandos.Resultado.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteFerroviariaResumenRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmarArriboCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultaCPEFerroviariaPorNroOperativoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEPorDestinoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEPorDestinoRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEPPendientesDeResolucionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEPPendientesDeResolucionRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarLocalidadesPorProvinciaRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesProductorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarLocalidadesProductorRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarProvinciasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarProvinciasRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposGranoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarTiposGranoRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarUltNroOrdenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUltNroOrdenRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.dummyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DummyRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.rechazoCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\wscpe.wsdl" />
+    <None Include="Service References\AfipCTGWebService\CTGService_v41.wsdl" />
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.anularCTGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.cambiarDestinoDestinatarioCTGRechazadoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarArriboResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroDestinoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroEstablecimientoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.operacionCTGReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.rechazarCTGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.regresarAOrigenCTGRechazadoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGDatoPendienteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGInicialResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGReturnType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipWebService\LoginCms.wsdl" />
+    <None Include="Service References\AfipWebService\Molinos.Scato.Servicios.AfipWebService.loginCmsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ComplianceWebServiceV2\Datos1.wsdl" />
+    <None Include="Service References\ComplianceWebServiceV2\Molinos.Scato.Servicios.ComplianceWebServiceV2.controlarDatosAgroacopiosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ComplianceWebService\Datos.wsdl" />
+    <None Include="Service References\ComplianceWebService\Molinos.Scato.Servicios.ComplianceWebService.controlarDatosGranelesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ComplianceWebServiceV2\Molinos.Scato.Servicios.ComplianceWebServiceV2.Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ComplianceWebService\Molinos.Scato.Servicios.ComplianceWebService.Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\GestionarCartasDePortePE.wsdl" />
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.consultarCartasDePorteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.desvioCartasDePorteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.editarCartasDePorteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.rechazoCartasDePorteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.registrarCartaDePorteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.registrarMuestreoYPesajeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.RespuestaConsulta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.RespuestaDesvio.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.RespuestaEdicion.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.RespuestaRegistro.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\Molinos.Scato.Servicios.GestionarCartasDePortePE.SalidaRechazo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.CamaraDto1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoComando.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador24.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador25.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador610.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador611.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador66.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador67.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador68.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador69.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion.wsdl" />
+    <None Include="Service References\ServicioImpresion\ServicioImpresion.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion1.wsdl" />
+    <None Include="Service References\ServicioImpresion\ServicioImpresion1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServicioImpresion\ServicioImpresion8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiciosSap\document.wsdl" />
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_CREDITOSResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_CREDITOSResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\zsdws_scato.wsdl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Urenport\calpes.wsdl" />
+    <None Include="tessdata\afr.traineddata" />
+    <None Include="tessdata\amh.traineddata" />
+    <None Include="tessdata\ara.cube.bigrams" />
+    <None Include="tessdata\ara.cube.fold" />
+    <None Include="tessdata\ara.cube.lm" />
+    <None Include="tessdata\ara.cube.nn" />
+    <None Include="tessdata\ara.cube.params" />
+    <None Include="tessdata\ara.cube.size" />
+    <None Include="tessdata\ara.cube.word-freq" />
+    <None Include="tessdata\ara.traineddata" />
+    <None Include="tessdata\asm.traineddata" />
+    <None Include="tessdata\aze.traineddata" />
+    <None Include="tessdata\aze_cyrl.traineddata" />
+    <None Include="tessdata\bel.traineddata" />
+    <None Include="tessdata\ben.traineddata" />
+    <None Include="tessdata\bod.traineddata" />
+    <None Include="tessdata\bos.traineddata" />
+    <None Include="tessdata\bul.traineddata" />
+    <None Include="tessdata\cat.traineddata" />
+    <None Include="tessdata\ceb.traineddata" />
+    <None Include="tessdata\ces.traineddata" />
+    <None Include="tessdata\chi_sim.traineddata" />
+    <None Include="tessdata\chi_tra.traineddata" />
+    <None Include="tessdata\chr.traineddata" />
+    <None Include="tessdata\cym.traineddata" />
+    <None Include="tessdata\dan.traineddata" />
+    <None Include="tessdata\dan_frak.traineddata" />
+    <None Include="tessdata\deu.traineddata" />
+    <None Include="tessdata\deu_frak.traineddata" />
+    <None Include="tessdata\dzo.traineddata" />
+    <None Include="tessdata\ell.traineddata" />
+    <None Include="tessdata\eng.cube.bigrams" />
+    <None Include="tessdata\eng.cube.fold" />
+    <None Include="tessdata\eng.cube.lm" />
+    <None Include="tessdata\eng.cube.nn" />
+    <None Include="tessdata\eng.cube.params" />
+    <None Include="tessdata\eng.cube.size" />
+    <None Include="tessdata\eng.cube.word-freq" />
+    <None Include="tessdata\eng.tesseract_cube.nn" />
+    <None Include="tessdata\eng.traineddata" />
+    <None Include="tessdata\enm.traineddata" />
+    <None Include="tessdata\epo.traineddata" />
+    <None Include="tessdata\equ.traineddata" />
+    <None Include="tessdata\est.traineddata" />
+    <None Include="tessdata\eus.traineddata" />
+    <None Include="tessdata\fas.traineddata" />
+    <None Include="tessdata\fin.traineddata" />
+    <None Include="tessdata\fra.cube.bigrams" />
+    <None Include="tessdata\fra.cube.fold" />
+    <None Include="tessdata\fra.cube.lm" />
+    <None Include="tessdata\fra.cube.nn" />
+    <None Include="tessdata\fra.cube.params" />
+    <None Include="tessdata\fra.cube.size" />
+    <None Include="tessdata\fra.cube.word-freq" />
+    <None Include="tessdata\fra.tesseract_cube.nn" />
+    <None Include="tessdata\fra.traineddata" />
+    <None Include="tessdata\frk.traineddata" />
+    <None Include="tessdata\frm.traineddata" />
+    <None Include="tessdata\gle.traineddata" />
+    <None Include="tessdata\glg.traineddata" />
+    <None Include="tessdata\grc.traineddata" />
+    <None Include="tessdata\guj.traineddata" />
+    <None Include="tessdata\hat.traineddata" />
+    <None Include="tessdata\heb.traineddata" />
+    <None Include="tessdata\hin.cube.bigrams" />
+    <None Include="tessdata\hin.cube.fold" />
+    <None Include="tessdata\hin.cube.lm" />
+    <None Include="tessdata\hin.cube.nn" />
+    <None Include="tessdata\hin.cube.params" />
+    <None Include="tessdata\hin.cube.word-freq" />
+    <None Include="tessdata\hin.tesseract_cube.nn" />
+    <None Include="tessdata\hin.traineddata" />
+    <None Include="tessdata\hrv.traineddata" />
+    <None Include="tessdata\hun.traineddata" />
+    <None Include="tessdata\iku.traineddata" />
+    <None Include="tessdata\ind.traineddata" />
+    <None Include="tessdata\isl.traineddata" />
+    <None Include="tessdata\ita.cube.bigrams" />
+    <None Include="tessdata\ita.cube.fold" />
+    <None Include="tessdata\ita.cube.lm" />
+    <None Include="tessdata\ita.cube.nn" />
+    <None Include="tessdata\ita.cube.params" />
+    <None Include="tessdata\ita.cube.size" />
+    <None Include="tessdata\ita.cube.word-freq" />
+    <None Include="tessdata\ita.tesseract_cube.nn" />
+    <None Include="tessdata\ita.traineddata" />
+    <None Include="tessdata\ita_old.traineddata" />
+    <None Include="tessdata\jav.traineddata" />
+    <None Include="tessdata\jpn.traineddata" />
+    <None Include="tessdata\kan.traineddata" />
+    <None Include="tessdata\kat.traineddata" />
+    <None Include="tessdata\kat_old.traineddata" />
+    <None Include="tessdata\kaz.traineddata" />
+    <None Include="tessdata\khm.traineddata" />
+    <None Include="tessdata\kir.traineddata" />
+    <None Include="tessdata\kor.traineddata" />
+    <None Include="tessdata\kur.traineddata" />
+    <None Include="tessdata\lao.traineddata" />
+    <None Include="tessdata\lat.traineddata" />
+    <None Include="tessdata\lav.traineddata" />
+    <None Include="tessdata\lit.traineddata" />
+    <None Include="tessdata\mal.traineddata" />
+    <None Include="tessdata\mar.traineddata" />
+    <None Include="tessdata\mkd.traineddata" />
+    <None Include="tessdata\mlt.traineddata" />
+    <None Include="tessdata\msa.traineddata" />
+    <None Include="tessdata\mya.traineddata" />
+    <None Include="tessdata\nep.traineddata" />
+    <None Include="tessdata\nld.traineddata" />
+    <None Include="tessdata\nor.traineddata" />
+    <None Include="tessdata\ori.traineddata" />
+    <None Include="tessdata\osd.traineddata" />
+    <None Include="tessdata\pan.traineddata" />
+    <None Include="tessdata\pol.traineddata" />
+    <None Include="tessdata\por.traineddata" />
+    <None Include="tessdata\pus.traineddata" />
+    <None Include="tessdata\ron.traineddata" />
+    <None Include="tessdata\rus.cube.fold" />
+    <None Include="tessdata\rus.cube.lm" />
+    <None Include="tessdata\rus.cube.nn" />
+    <None Include="tessdata\rus.cube.params" />
+    <None Include="tessdata\rus.cube.size" />
+    <None Include="tessdata\rus.cube.word-freq" />
+    <None Include="tessdata\rus.traineddata" />
+    <None Include="tessdata\san.traineddata" />
+    <None Include="tessdata\sin.traineddata" />
+    <None Include="tessdata\slk.traineddata" />
+    <None Include="tessdata\slk_frak.traineddata" />
+    <None Include="tessdata\slv.traineddata" />
+    <None Include="tessdata\spa.cube.bigrams" />
+    <None Include="tessdata\spa.cube.fold" />
+    <None Include="tessdata\spa.cube.lm" />
+    <None Include="tessdata\spa.cube.nn" />
+    <None Include="tessdata\spa.cube.params" />
+    <None Include="tessdata\spa.cube.size" />
+    <None Include="tessdata\spa.cube.word-freq" />
+    <None Include="tessdata\spa.traineddata" />
+    <None Include="tessdata\spa_old.traineddata" />
+    <None Include="tessdata\sqi.traineddata" />
+    <None Include="tessdata\srp.traineddata" />
+    <None Include="tessdata\srp_latn.traineddata" />
+    <None Include="tessdata\swa.traineddata" />
+    <None Include="tessdata\swe.traineddata" />
+    <None Include="tessdata\syr.traineddata" />
+    <None Include="tessdata\tam.traineddata" />
+    <None Include="tessdata\tel.traineddata" />
+    <None Include="tessdata\tgk.traineddata" />
+    <None Include="tessdata\tgl.traineddata" />
+    <None Include="tessdata\tha.traineddata" />
+    <None Include="tessdata\tir.traineddata" />
+    <None Include="tessdata\tur.traineddata" />
+    <None Include="tessdata\uig.traineddata" />
+    <None Include="tessdata\ukr.traineddata" />
+    <None Include="tessdata\urd.traineddata" />
+    <None Include="tessdata\uzb.traineddata" />
+    <None Include="tessdata\uzb_cyrl.traineddata" />
+    <None Include="tessdata\vie.traineddata" />
+    <None Include="tessdata\yid.traineddata" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.Dominio\Molinos.Scato.Dominio.csproj">
+      <Project>{9bc79c49-4f39-409f-a3d4-f1dabb8122b4}</Project>
+      <Name>Molinos.Scato.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Molinos.Scato.Repositorio\Molinos.Scato.Repositorio.csproj">
+      <Project>{c26344c6-9829-4673-940a-a3f44cfa945c}</Project>
+      <Name>Molinos.Scato.Repositorio</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AfipCPDigitalService\" />
+    <WCFMetadataStorage Include="Service References\AfipCTGWebService\" />
+    <WCFMetadataStorage Include="Service References\AfipWebService\" />
+    <WCFMetadataStorage Include="Service References\ComplianceWebServiceV2\" />
+    <WCFMetadataStorage Include="Service References\ComplianceWebService\" />
+    <WCFMetadataStorage Include="Service References\GestionarCartasDePortePE\" />
+    <WCFMetadataStorage Include="Service References\Orquestador\" />
+    <WCFMetadataStorage Include="Service References\ServicioImpresion\" />
+    <WCFMetadataStorage Include="Service References\ServiciosSap\" />
+    <WCFMetadataStorage Include="Service References\Urenport\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AfipWebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AfipWebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AfipWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Certificados\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ComplianceWebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ComplianceWebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ComplianceWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="Intacta\GestionarCartasDePortePE.XML" />
+    <None Include="Service References\AfipCPDigitalService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\configuration.svcinfo" />
+    <None Include="Service References\AfipCPDigitalService\configuration91.svcinfo" />
+    <None Include="Service References\Orquestador\ServicioOrquestador11.disco" />
+    <None Include="Service References\Urenport\Molinos.Scato.Servicios.Urenport.ImagenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Urenport\Molinos.Scato.Servicios.Urenport.TestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Urenport\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\Urenport\configuration.svcinfo" />
+    <None Include="Service References\Urenport\configuration91.svcinfo" />
+    <None Include="Service References\Urenport\calpes.disco" />
+    <None Include="Service References\ComplianceWebServiceV2\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ComplianceWebServiceV2\configuration.svcinfo" />
+    <None Include="Service References\ComplianceWebServiceV2\configuration91.svcinfo" />
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.AnulaContabilizacionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.AnulaContabilizacionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaLoteDispYRecepcionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaLoteDispYRecepcionResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaOrdenDeCargaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaOrdenDeCargaResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaPedidoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ConsultaPedidoResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ContabilizarIngresosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ContabilizarIngresosResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosClienteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosClienteResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosMaterialesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosMaterialesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosProveedoresResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.DatosProveedoresResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.EgresoSinFleteFazonesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.EgresoSinFleteFazonesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.EgresosNoProductivosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.EgresosNoProductivosResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Fill_Z1000Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Fill_Z1000Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.FletesDobleTramoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.FletesDobleTramoResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.IngresosBodegaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.IngresosBodegaResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.IngresosEgresosFazonesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.IngresosEgresosFazonesResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Mov305Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Mov305Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Mov975Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Mov975Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.MovAjusteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.MovAjusteResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.PesaBrutoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.PesaBrutoResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.PesaNetoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.PesaNetoResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidacionCOTResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidacionCOTResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidaContratosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidaContratosResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidaStockYLoteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.ValidaStockYLoteResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.VerifPedTrasladoRedespachoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.VerifPedTrasladoRedespachoResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_MOV_311Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_MOV_311Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_MSJ_ENTREGAResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_MSJ_ENTREGAResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_Z2100Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_Z2100Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_Z2100TResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_Z2100TResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_ZE7550Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_RFC_ZE7550Response1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_Z2200NResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Molinos.Scato.Servicios.ServiciosSap.Z_SDMF_Z2200NResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiciosSap\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiciosSap\configuration.svcinfo" />
+    <None Include="Service References\ServiciosSap\configuration91.svcinfo" />
+    <None Include="Service References\GestionarCartasDePortePE\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\GestionarCartasDePortePE\configuration.svcinfo" />
+    <None Include="Service References\GestionarCartasDePortePE\configuration91.svcinfo" />
+    <None Include="Service References\AfipCTGWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AfipCTGWebService\configuration.svcinfo" />
+    <None Include="Service References\AfipCTGWebService\configuration91.svcinfo" />
+    <None Include="Service References\Orquestador\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\Orquestador\configuration.svcinfo" />
+    <None Include="Service References\Orquestador\configuration91.svcinfo" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio</VSToolsPath>
+    <WcfServiceModelTargetPath>$(VSToolsPath)\WCF</WcfServiceModelTargetPath>
+  </PropertyGroup>
+  <Import Project="$(WcfServiceModelTargetPath)\Microsoft.VisualStudio.ServiceModel.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
+        <WcfProjectProperties>
+          <AutoStart>False</AutoStart>
+        </WcfProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props'))" />
+    <Error Condition="!Exists('..\packages\Tesseract.3.3.0\build\Tesseract.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Tesseract.3.3.0\build\Tesseract.targets'))" />
+  </Target>
+  <Import Project="..\packages\Tesseract.3.3.0\build\Tesseract.targets" Condition="Exists('..\packages\Tesseract.3.3.0\build\Tesseract.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

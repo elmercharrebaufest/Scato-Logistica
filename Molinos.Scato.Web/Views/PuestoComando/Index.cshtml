@@ -1,0 +1,270 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.FiltroListaDeWorkflowsDto
+@{
+    ViewBag.Title = Textos.PuestoComando_Titulo;
+    var workflows = (IEnumerable<SelectListItem>)ViewBag.Workflows;
+    var estados = (IEnumerable<SelectListItem>)ViewBag.Estados;
+    var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
+    var calidades = (IEnumerable<SelectListItem>)ViewBag.Calidades;
+    var tipoVehiculo = new List<SelectListItem>();
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Script("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/puestoComando.js")"></script>
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"
+     data-url-caracteristicas="@Url.Action("ListarCaracteristicasConfiguracion", "PuestoComando")"
+     data-url-obtenertiposvehiculo="@Url.Action("ObtenerTiposVehiculo", "Consultas")"></div>
+
+<div class="container-fluid">
+    <div class="span4">
+        <div class="titSecciones">@Textos.PuestoComando_Titulo</div>
+    </div>
+    <div class="pull-right">
+        @Html.ActionLink(Textos.Rechazar, "Rechazar", "PuestoComando", new { Id = "RechazarSeleccionados", @class = "rechazar-boton btn btn-primary topRight disabled" })
+        @Html.ActionLink(Textos.AsignarSeleccionado, "Asignar", "PuestoComando", new { Ids = "" }, new { Id = "AsignarSeleccionados", @class = "ajax-editar-asignacion-link btn btn-primary pull-right topRight", @data_url = Url.Action("Asignar", "PuestoComando") })
+        @Html.ValidationMessage("AsignarSeleccionados", new { @class = "pull-right topRight", Id = "AsignarSeleccionadosValid" })
+        @Html.Hidden("InstanceIds")
+
+    </div>
+</div>
+
+<div class="container-fluid content grillaPad">
+
+
+
+    @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form-comando", @class = "form-search", onsubmit = "CopiarFiltros()" }))
+    {
+        <input type="hidden" name="workflowDefinicionId" value="@ViewBag.WorkflowDefinicionId" />
+        <input type="hidden" id="separarAlmacenSustentable" value="@ViewBag.SepararAlmacenSustentable" />
+
+        <div class="accordion row-fluid">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <div class="checkbox pull-right topRight">
+                        <label>
+                            <input name="checkbox" id="modoDeRefresco" type="checkbox" value="-1" checked="checked" />@Textos.ListaDeCamiones_Refrescar
+                        </label>
+                    </div>
+                    <div id="DropDownColumnas" class="btn-group pull-right topRight">
+                        <a id="DropDownColumnasBoton" class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            @Textos.Columnas
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu columnasdropdown">
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Patente" id="checkPatente" checked="@true" />@Textos.Camion_Patente
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Workflow" id="checkWorkflow" checked="@false" />@Textos.ListaDeCamiones_Workflow
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="MaterialId" id="checkMaterialId" checked="@false" />@Textos.Workflow_MaterialId
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="MaterialDescripcion" id="checkMaterial" checked="@true" />@Textos.Material
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Transportista" id="checkTransportista" checked="@false" />@Textos.Transportista
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Cuit" id="checkCuit" checked="@false" />@Textos.Workflow_Cuit
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TipoDocumentoIngreso" id="checkTipoDocumentoIngreso" checked="@true" />@Textos.TipoDocumentoIngreso
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="NumeroDocumentoIngreso" id="checkNumeroDocumentoIngreso" checked="@true" />@Textos.NumeroDocumentoIngreso
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Calidad" id="checkCalidad" checked="@true" />@Textos.Workflow_Calidad
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="CentroId" id="checkCentroId" checked="@false" />@Textos.Workflow_CentroId
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Centro" id="checkCentro" checked="@false" />@Textos.Workflow_Centro
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="FechaCreacion" id="checkFechaCreacion" checked="@true" />@Textos.Workflow_FechaCalado
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TipoComercial.Descripcion" id="checkTipoComercial" checked="@true" />@Textos.TipoComercial
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Humedad" id="checkHumedad" checked="@true" />@Textos.Workflow_Humedad
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="TipoVehiculo" id="checkTipoVehiculo" checked="@true" />@Textos.Workflow_TipoVehiculo
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Calle" id="checkCalle" checked="@true" />@Textos.Workflow_Fila
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group pull-right topRight">
+                        @Html.ActionLink(Textos.PuestoComando_ConfigTabla, "ConfigurarTabla", "PuestoComando", null, new { @class = "ajax-editar-link btn pull-right" })
+                    </div>
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                        <i class="icon-chevron-down"></i>
+                        @Textos.Filtrar
+                    </a>
+                </div>
+                <div id="collapseOne" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="span4">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoDocumentoDeIngreso, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.TipoDocumentoDeIngreso, Textos.Default_Documento)
+                                    @Html.ValidationMessageFor(model => model.TipoDocumentoDeIngreso)
+                                    @Html.Hidden("filtroTipoDocumentoDeIngreso", Model.TipoDocumentoDeIngreso)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.NumeroDocumentoDeIngreso, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.NumeroDocumentoDeIngreso, new { @class = "" })
+                                    @Html.Hidden("filtroNumeroDocumentoDeIngreso", Model.NumeroDocumentoDeIngreso)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.Patente, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.Patente, new { @class = "patente-internacional uppercase" })
+                                    @Html.Hidden("filtroPatente", Model.Patente)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.NumeroDeTarjeta, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.NumeroDeTarjeta, new { @class = "" })
+                                    @Html.Hidden("filtroNumeroDeTarjeta", Model.NumeroDeTarjeta)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.SoloNoAsignados)
+                                    @Html.LabelFor(model => model.SoloNoAsignados, new { @class = "wsmall", style = "margin-top: 12px;" })
+                                    @Html.Hidden("filtroSoloNoAsignados", Model.SoloNoAsignados)
+                                </label>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.SoloSinDescuentos)
+                                    @Html.LabelFor(model => model.SoloSinDescuentos, new { @class = "wsmall" })
+                                    @Html.Hidden("filtroSoloSinDescuentos", Model.SoloSinDescuentos)
+                                </label>
+                                <!--<button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px">@Textos.Filtrar</button>-->
+                            </div>
+                            @Html.ValidationSummary(true)
+                        </div>
+                        <div class="span4">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.Workflow, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.Workflow, workflows, Textos.Default_Workflow, new { @class = "control" })
+                                    @Html.Hidden("filtroWorkflow", Model.Workflow)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.Label(Textos.Etapa, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.ProximaAccion, estados, Textos.Default_Estado, new { @class = "control" })
+                                    @Html.Hidden("filtroProximaAccion", Model.ProximaAccion)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoComercialId, new { @class = "wsmall" })
+                                <div class="" id="tiposComerciales">
+                                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control" })
+                                    
+                                    @Html.Hidden("filtroTipoComercialId", Model.TipoComercialId)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoMaterial, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.TipoMaterial, new { @class = "control" })
+                                   
+                                    @Html.Hidden("filtroTipoMaterial", Model.TipoMaterial)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.MaterialDesc, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control" })
+                                    @Html.HiddenFor(model => model.MaterialId)
+                                   
+                                    @Html.Hidden("filtroMaterialId", Model.MaterialId)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoVehiculo, new { @class = "wsmall" })
+                                <div class="">
+                                    @Html.Hidden("filtroTipoVehiculo", Model.TipoVehiculo)
+                                    @Html.DropDownListFor(model => model.TipoVehiculo, tipoVehiculo, new { @class = "control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.TipoVehiculo)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.Calidad, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.Calidad, calidades, Textos.Default_Calidad, new { @class = "control" })
+                                    @Html.Hidden("filtroCalidad", Model.Calidad)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoDeSoja, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.TipoDeSoja, new { @class = "control" })
+                                    @Html.Hidden("filtroTipoDeSoja", Model.TipoDeSoja)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoEstado, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.TipoEstado, new { @class = "control" })
+                                    @Html.Hidden("filtroTipoEstado", Model.TipoEstado)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.CantidadDeResultados, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.CantidadDeResultados, new { @class = "control" })
+                                    @Html.Hidden("filtroCantidadDeResultados", Model.CantidadDeResultados)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoDeProteina, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.EnumDropDownListFor(model => model.TipoDeProteina, new { @class = "control" })
+                                    @Html.Hidden("filtroEsProteina", Model.TipoDeProteina)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.CalleId, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.CalleId,(IList<SelectListItem>)ViewBag.Calles, "Calles",new { @class = "control" })
+                                    @Html.Hidden("filtroCalleId", Model.CalleId)
+                                </div>
+                                <button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px;float: right;margin-right: 72px;margin-top: 9px;">@Textos.Filtrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div id="gridContainer" style="clear:both;" data-error-material="@Textos.Error_DiferentesMateriales" data-error-sustentable="@Textos.Error_DiferentesTipos" data-grid-url="@Url.Action("Index", "PuestoComando")">
+    </div>
+    <div id="mensajeRechazar"> </div>
+</div>

@@ -1,0 +1,192 @@
+.brujulaA,
+.brujulaF {
+fill: none;
+}
+
+.brujulaA {
+stroke: #707070;
+stroke-width: 0.5px;
+}
+
+.brujulaB {
+font-size: 14px;
+}
+
+.brujulaB,
+.brujulaC {
+font-family: Roboto-Bold, Roboto;
+font-weight: 700;
+}
+
+.brujulaC {
+font-size: 15px;
+}
+
+.brujulaD {
+fill: #5b5a5d;
+}
+
+.brujulaE {
+fill: #515151;
+}
+
+.brujulaG {
+fill: #7b7b7b;
+}
+
+.brujulaH {
+fill: #74c5d9;
+}
+
+.brujulaI {
+fill: #6a6a6a;
+}
+
+.brujulaJ {
+fill: #fff;
+}
+
+.brujulaK {
+stroke: none;
+}
+
+svg{
+    -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+}
+
+.rect-azul{
+    border-radius: 3px;
+    background-color: #3376A1;
+    padding: 5px 0 !important;
+}
+
+.pbt-15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.h-30{
+    height: 30px;
+}
+
+.ptb-5{
+    padding: 5px 0;
+}
+
+.prl-1{
+    padding: 0 1%;
+}
+
+.prl-3{
+    padding: 0 3%;
+}
+
+.pr-10{
+    padding-right: 10rem;
+}
+
+.maxh-brujula{
+    max-height: 168px;
+}
+
+.tank-control {
+    margin-left: 6px;
+    margin-top: 5px;
+}
+
+.custom-switch.tank-control .custom-control-label::before {
+    width: 5rem !important;
+    height: 1.7rem;
+    border-radius: 4rem;
+    background-color: #D9534F;
+    border:none;
+    content: 'NO';
+    text-align: end;
+    padding-right: 14px;
+    font-size: 1.12rem;
+    font-weight: 500;
+    color: white;
+    padding-top: 1px;
+    cursor: pointer;
+}
+
+.tank-control .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #5CB85C;
+    border: none;
+    content: 'SI';
+    text-align: start;
+    padding-left: 16px;
+}
+
+.custom-switch.tank-control .custom-control-label::after {
+    top: calc(0.25rem + 3px);
+    left: calc(-2.25rem + 3px);
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+}
+
+.tank-control .custom-control-input:checked ~ .custom-control-label::after {
+    transform: translateX(3.35rem);
+}
+
+.second-line-tanks{
+    padding-right: 27.3%;
+    padding-left: 2.3%;
+}
+
+.last-tank {
+    padding-right: 3.1rem;
+}
+
+.tank-liberado{
+    width: 150px;
+    color: #666666;
+    background-color: #EFEFEF;
+    font-weight: 500;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    margin: 0 auto;
+}
+
+.centered {
+    transform: scale(4) translateX(7%);
+}
+
+.two-tanks {
+    padding-left: 4.5%;
+    margin-left: 35.5% !important;
+    display: flex;
+    justify-content: space-between;
+}
+
+.last-tank-container{
+    margin-left: 3% !important;
+}
+
+.mt-lib{
+    margin-top: 6rem;
+}
+
+.hideSentido{
+    display: none;
+}
+
+.colorTitle{
+    color: #4D60A8;
+}
+
+.text-datos-buque{
+    font-size: 19px; 
+    fill: #3376A1;
+}
+.text-buque-bold{
+    stroke-width: 1px; stroke: #3376A1;
+}
+.nombre-buque{
+    stroke: #3376A1; 
+    stroke-width: 1px; 
+    font-size: 29px;
+}

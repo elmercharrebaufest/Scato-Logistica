@@ -1,0 +1,40 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.DocumentoDeImpresionPorCentroDto
+@{
+    var documentosDeImpresion = (IEnumerable<SelectListItem>)ViewBag.DocumentosDeImpresion;
+    var formatosDeImpresion = (IEnumerable<SelectListItem>)ViewBag.FormatosDeImpresion;
+    var impresoras = (IEnumerable<SelectListItem>)ViewBag.Impresoras;
+    var puestos = (IEnumerable<SelectListItem>)ViewBag.Puestos;     
+}
+  @Html.HiddenFor(model => model.CentroId)
+
+<div class="control-group">
+    @Html.LabelFor(m => m.DocumentoDeImpresionId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.DocumentoDeImpresionId, documentosDeImpresion, (Model.Id != 0 && !PermisosHelper.Is(PermisosScato.BorrarImpresionPorCentro)) ? new { @disabled = "" } : null)
+        @Html.ValidationMessageFor(m => m.DocumentoDeImpresionId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.PuestoDeTrabajoId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.PuestoDeTrabajoId,puestos,Textos.Default_PuestoDeTrabajo)
+        @Html.ValidationMessageFor(m => m.PuestoDeTrabajoId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.FormatoDeImpresionId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.FormatoDeImpresionId,formatosDeImpresion, Textos.Default_FormatoDeImpresion )
+        @Html.ValidationMessageFor(m => m.FormatoDeImpresionId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.ImpresoraId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ImpresoraId, impresoras)
+        @Html.ValidationMessageFor(m => m.ImpresoraId)
+    </div>
+</div>

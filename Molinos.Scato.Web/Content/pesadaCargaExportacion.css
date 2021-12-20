@@ -1,0 +1,150 @@
+﻿.tablaDatos {
+    width: 960px;
+    margin-bottom: 0;
+}
+
+    .tablaDatos th {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+.form-horizontal .control-group {
+    margin-bottom: 1px;
+    padding-left: 10px;
+}
+
+#bruto-group {
+    border-top: 1px solid black;
+    padding-top: 24px;
+    margin-right: 10px;
+}
+
+.row {
+    margin: 0;
+}
+
+table, .no-margin, .span6 {
+    margin: 0 !important;
+    margin-left: 0 !important;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.border {
+    border: solid 1px #ddd;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.column-padding {
+    padding-left: 13px;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.inline-display {
+    display: inline;
+}
+
+.boton-margin {
+    margin-top: 41px;
+    padding: 13px;
+    width: 210px;
+}
+
+.tomarpeso-container {
+    margin-top: 17px;
+}
+
+#boton-finalizado-tara, #boton-finalizado-bruto, #boton-finalizado {
+    width: 170px;
+    /*border: 2px solid #c1c1c1;
+    padding: 9px;*/
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
+#boton-parcial {
+    width: 170px;
+}
+.peso-neto-container {
+    margin-top: 26px;
+}
+
+.boton-finalizar-container{
+    margin-top:20px;
+}
+
+.boton-parcial-container {
+    margin-top: 41px;
+}
+.boton-cancelar-container {
+    bottom: 0px;
+    right: 0;
+    position: absolute;
+}
+#pesoNetoBalanza {
+    border: 3px solid white;
+    padding: 6px 17px 6px 17px;
+    font-size: 21px;
+}
+
+.boton-carga-container {
+    margin-top: 5px;
+    margin-bottom: 33px;
+}
+.boton-margin:hover {
+    color: white;
+    background-color: #4BB543;
+    border: none;
+}
+
+.boton-peso {
+    padding: 16px;
+}
+
+.grey-background {
+    background-color: #eeeeee;
+    text-align: center;
+    margin: 15px;
+    border-radius: 20px;
+    border: 2px solid #dddddd;
+}
+
+    .fondito p {
+        margin-top: 14px;
+        color: black;
+    }
+
+#peso-tara, #carga, #peso-bruto {
+    height: 310px;
+    position: relative;
+    min-height: 310px;
+}
+
+.disabled-div {
+    background-color: #f5f5f5;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+#PesoNeto {
+    margin-bottom: 0px;
+}
+
+.labelPeso {
+    padding: 5px 16px 8px 18px;
+    background-color: #eeeeee;
+}
+
+div.input-append {
+    font-size: 14px;
+}

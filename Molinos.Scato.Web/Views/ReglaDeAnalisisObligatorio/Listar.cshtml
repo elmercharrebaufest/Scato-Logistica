@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ReglaDeAnalisisObligatorioDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "ReglaDeAnalisisObligatorio"),
+    grilla.Columna("ProvinciaDescripcion", Textos.AdministracionDistancia_Provincia),
+    grilla.Columna("LocalidadDescripcion", Textos.Procedencia),
+    grilla.Columna("MaterialDescripcion", Textos.Material),
+    grilla.Columna("Cosecha", Textos.Cosecha),
+    grilla.Columna("FechaDeVigenciaHasta", Textos.Hasta),
+    grilla.Columna("CantidadAnalisis", Textos.ReglaDeAnalisisObligatorio_CantidadAnalisis)
+    ))

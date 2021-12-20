@@ -1,0 +1,104 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.ConversionCaracteristicaDto
+@{
+    ViewBag.Title = Textos.TablaConversionCaracteristica;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;    
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="@Url.Script("~/Scripts/conversionCaracteristica.js")" type="text/javascript"></script>
+}
+
+<div class ="container">
+    <ul class="nav nav-tabs">
+        @if (PermisosHelper.Is(PermisosScato.ArmarLote))
+        {
+            <li>
+                @Html.ActionLink(Textos.Lote_Titulo, "Index", "Lote")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.BuscarLote))
+        {
+            <li>
+                @Html.ActionLink(Textos.BuscarLote_Titulo, "BuscarLote", "Lote")
+            </li>
+        }
+        @if (PermisosHelper.Is(PermisosScato.TablaConversionMaterial))
+        {
+            <li class="active">
+                @Html.ActionLink(Textos.TablaConversion, "Index", "ConversionMaterial")
+            </li>
+        }
+    </ul>
+</div>
+
+@*<div class ="container">
+    <div class="titSecciones">@Textos.TablaConversionCaracteristica</div>
+</div>*@
+
+<div class="container content grillaPad"  id ="tabs">
+    <div class="row">
+        <div class="span12search">
+            @using (Html.BeginForm("Crear", "ConversionCaracteristica", null, FormMethod.Post, new { @class = "form-horizontal content container", id = "orden-form", data_mensaje_espera = Textos.TablaConversion_MensajeDeEspera }))
+            {
+                @Html.ValidationSummary(true)
+                <div class="control-group">
+                    @Html.LabelFor(model => model.CamaraDesc, new {@class = "control-label"})
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.CamaraId, camaras,Textos.Default_Camara, new { id = "camarasDropDown" })
+                        @Html.ValidationMessageFor(model => model.CamaraId)
+                        @*@Html.ActionLink(Textos.Filtrar, "Indexa", "ConversionCaracteristica", null, new {@class="btn", @id = "btnFiltrar"})*@
+                    </div>
+                </div>
+                                
+                <div class="span6"></div>
+
+                <ul class="nav nav-tabs" style="font-size: 12px">
+                    @if (PermisosHelper.Is(PermisosScato.TablaConversionMaterial))
+                    {
+                        <li>
+                            @Html.ActionLink(Textos.TablaConversionMaterial, "Index", "ConversionMaterial", new { camaraId =  Model.CamaraId}, new { Id ="Materialhref"})
+                        </li>
+                    }
+                    @if (PermisosHelper.Is(PermisosScato.TablaConversionProcedencia))
+                    {
+                        <li>
+                            @Html.ActionLink(Textos.TablaConversionProcedencia, "Index", "ConversionProcedencia", new { camaraId = Model.CamaraId}, new { Id ="Procedenciahref"})
+                        </li>
+                    }
+                    @if (PermisosHelper.Is(PermisosScato.TablaConversionGrupo))
+                    {
+                        <li>
+                            @Html.ActionLink(Textos.TablaConversionGrupo, "Index", "ConversionGrupo", new { camaraId = Model.CamaraId}, new { Id ="Grupohref"})
+                        </li>
+                    }
+                    @if (PermisosHelper.Is(PermisosScato.TablaConversionCaracteristica))
+                    {
+                        <li class="active">
+                            @Html.ActionLink(Textos.TablaConversionCaracteristica, "Index", "ConversionCaracteristica", new { camaraId = Model.CamaraId}, new { Id ="Caracteristicahref"})
+                        </li>
+                    }
+                    @if (PermisosHelper.Is(PermisosScato.TablaConversionCentro))
+                    {
+                        <li>
+                            @Html.ActionLink(Textos.TablaConversionCentro, "Index", "ConversionCentro", new { camaraId = Model.CamaraId}, new { Id ="Centrohref"})
+                        </li>
+                    }
+                </ul>
+                
+                @Html.Partial("~/Views/ConversionCaracteristica/_Caracteristica.cshtml")
+                <div id="gridContainer" style="margin-top: 10px;">
+                    @Html.Partial("ListarConversionCaracteristicas")
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+
+

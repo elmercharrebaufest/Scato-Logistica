@@ -1,0 +1,14 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.AjusteDeStockDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.AjusteDeStock_Crear;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+@using (Ajax.BeginForm(Textos.Crear, null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.AjusteDeStock_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

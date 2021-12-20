@@ -1,0 +1,149 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Web.Helpers
+@model List<EstadoMaterialDto>
+@{
+    Layout = null;
+}
+
+    <div class="col-sm-6 col-3-5 col-xs-12 panel-padding ">
+        <div class="row panel-margin panel-heading panel-darkgreen">
+            <div class="row">
+                <div class="col-xs-3 col-icon">
+                    <div class="icon">
+                        <i class="fa fa-industry icon-size" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div class="titulo-header">@Textos.GraficoDePlanta_CamionesEnCircuito</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @foreach (var material in Model)
+                    {
+                        <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.CamionesEnPlanta</span> </div>
+                    }
+                    @for (var i = Model.Count; i < 4; i++)
+                    {
+                        <div><br> </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=" col-sm-6 col-3-5 col-unica col-xs-12 panel-padding">
+        <div class="row panel-margin panel-heading panel-flatgreen">
+            <div class="row">
+                <div class="col-xs-3 col-icon">
+                    <div class="icon">
+                        <i class="fas fa-dolly icon-size" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div class="titulo-header">@Textos.GraficoDePlanta_CamionesDescargados</div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var material in Model)
+                {
+                    <div class="col-xs-4 ">
+                        <span class="texto-tabla"> @material.Material</span>
+                    </div>
+                    <div class="col-xs-4 ">
+                        <span class="pull-right numero-tabla">@material.CamionesEnElDia</span>
+                    </div>
+                    <div class="col-xs-4 ">
+                        <span class="pull-right numero-tabla"> @material.Peso.ToStringAbreviado()</span>
+                    </div>
+                }
+                @for (var i = Model.Count; i < 4; i++)
+                {
+                    <div class="col-xs-12"><br> </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-3-5 col-xs-12 panel-padding panel-padding-ultimo">
+        <div class="row panel-margin panel-heading panel-palegreen">
+            <div class="row">
+                <div class="col-xs-3 col-icon">
+                    <div class="icon">
+                        <i class="fa fa-truck icon-size" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div class="titulo-header">@(ViewBag.MostrarIngresos ? Textos.GraficoDePlanta_TotalEnElDia : Textos.CamionesEgreso)</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @foreach (var material in Model)
+                    {
+                        <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.TotalIngresosEnElDia</span> </div>
+                    }
+                    @for (var i = Model.Count; i < 4; i++)
+                    {
+                        <div><br> </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 col-3-5 col-xs-12 panel-padding">
+        <a href="@Url.Action("Index","CamionesRechazados")">
+            <div class="row panel-margin panel-heading panel-lightgreen opacity">
+                <div class="row">
+                    <div class="col-xs-3 col-icon">
+                        <div class="icon">
+                            <i class="fa fa-ban icon-size" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="titulo-header">@Textos.GraficoDePlanta_CamionesRechazados</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        @foreach (var material in Model)
+                        {
+                            <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.Rechazados</span> </div>
+                        }
+                        @for (var i = Model.Count; i < 4; i++)
+                        {
+                            <div><br> </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-4 col-3-5 col-xs-12 panel-padding">
+        <a href="@Url.Action("Index","ListadoCupo")">
+            <div class="row panel-margin panel-heading panel-minigreen">
+                <div class="row">
+                    <div class="col-xs-3 col-icon">
+                        <div class="icon">
+                            <i class="far fa-file-alt icon-size" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="col-xs-9">
+                        <div class="titulo-header">@Textos.Cupos</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div> <span class="texto-tabla">@Textos.Cupos_Del_Día  </span> <span class="pull-right numero-tabla"> @ViewBag.Cupeados</span> </div>
+                        <div> <span class="texto-tabla">@Textos.CuposDelDía_En_SAP </span> <span class="pull-right numero-tabla"> @ViewBag.Arribados</span> </div>
+                        <div> <span class="texto-tabla">@Textos.Cupos_Etapa_Tara </span> <span class="pull-right numero-tabla">@ViewBag.Descargados</span> </div>
+                        <div> <span class="texto-tabla">Cumplimiento </span> <span class="pull-right numero-tabla">@ViewBag.Cumplimiento%</span> </div>
+
+                        @for (var i = 4; i < Model.Count; i++)
+                        {
+                            <div><br> </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>

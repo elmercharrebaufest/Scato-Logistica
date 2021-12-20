@@ -1,0 +1,71 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.VinedoTercerosDto
+@{
+    var zonas = (IEnumerable<SelectListItem>)ViewBag.Zonas;
+    var subzonas = (IEnumerable<SelectListItem>)ViewBag.SubZonas;
+}
+<div id ="links" 
+     data-url-obtener-proveedores-sap ="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor ="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
+    ></div>
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.NumeroINV, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.NumeroINV, new {@class = "input-large", maxlength = 8})
+        @Html.ValidationMessageFor(model => model.NumeroINV)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Proveedor, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Proveedor, new { @class = "control input-medium input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Proveedor)
+        @Html.HiddenFor(model => model.ProveedorId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-large", maxlength = 30})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CUITTitular, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CUITTitular, new {@class = "input-large cuitValido", maxlength = 11, data_error_cuit_invalido = string.Format(Textos.CuitInvalido)})
+        @Html.ValidationMessageFor(model => model.CUITTitular)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.IngresosBrutos, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.IngresosBrutos, new {@class = "input-large", maxlength = 10})
+        @Html.ValidationMessageFor(model => model.IngresosBrutos)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Calidad, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Calidad, new {@class = "input-large"})
+        @Html.ValidationMessageFor(model => model.Calidad)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Zona, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.ZonaId, zonas,Textos.Default_Zona, new { id = "zonasDropDown" })
+        @Html.ValidationMessageFor(model => model.ZonaId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.SubZona, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SubZonaId, subzonas,Textos.Default_SubZona, new { id = "subzonasDropDown" })
+        @Html.ValidationMessageFor(model => model.SubZonaId)
+        @Html.Hidden("CargarSubZonas", Url.Action("CargarSubZonas"))
+        @Html.Hidden("ValorDefault",Textos.Default_SubZona)
+    </div>
+</div>

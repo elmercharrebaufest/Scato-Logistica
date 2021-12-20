@@ -1,0 +1,55 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@*@model Molinos.Scato.Web.Models.ControlDeCaladoModel*@
+@model Molinos.Scato.Dominio.Dto.NotificacionAplicacionDto
+
+@{
+    if(Model.TipoAccion == "Baja" || Model.TipoAccion == " ")
+    {
+        Model.Titulo = string.Empty;
+        Model.Detalle = string.Empty;
+        Model.FechaAccion = DateTime.Now;
+    }
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/columna.css")">
+
+@{
+    Layout = null;
+}
+<script>
+    $(document).ready(function ($) {
+        $.unblockUI();
+    });
+    @*var idMensaje = @Html.Raw(Model.Id);*@
+</script>
+@if (Model.TipoAccion == " " || Model.TipoAccion == "Baja")
+{
+    <div class="alert alert-info" style="margin-top: 15px;">
+        <strong>@Textos.NoHayMensajeActivo</strong>
+    </div>          
+}
+<div id="tablaMensaje" class="col-lg-12 prueba" style="margin-top: 15px;">
+<div>
+    @Html.Label(Textos.NotificacionAplicacion_Activa, new { @class = "letraColorMolinos negrita", @style = "font-size: 15px; margin-top: 22px;" })
+</div>
+
+<div class="row" style="margin-left: 0px;">
+    <div class="col-lg-3">
+        @Html.Label(Textos.NotificacionActiva_Fecha + ":", new { @class = "letraColorMolinos negrita" })
+        @Html.Label(Textos.NotificacionActiva_Titulo + ":", new { @class = "letraColorMolinos negrita" })
+        @Html.Label(Textos.NotificacionActiva_Detalle + ":", new { @class = "letraColorMolinos negrita" })
+        @*@Html.Label(Textos.NotificacionActiva_Usuario + ":", new { @class = "letraColorMolinos negrita" })*@
+    </div>
+    <div id="camposMensaje" class="col-lg-3">
+        <label id="notificacionFecha" disabled="disabled">@Model.FechaAccion.ToString()</label>
+        @Html.TextBoxFor(model => model.Titulo, new { @class = "input-large", id = "notificacionTitulo", disabled = "disabled" })
+        @Html.TextAreaFor(model => model.Detalle, new { @class = "control margin textarea - large", id = "notificacionDetalle", rows = "5", style = "width:350px", disabled = "disabled" })
+        @*<input type="text" name="filtro" class="input-large" disabled="disabled" id="notificacionTitulo" />*@
+        @*<textarea id="notificacionDetalle" rows="5" style="width:350px" disabled ="disabled"></textarea>*@
+        <button type="button" class="btn btn-success" id="mensajeAceptar" , disabled="disabled">Aceptar</button>
+    </div>
+</div>
+</div>

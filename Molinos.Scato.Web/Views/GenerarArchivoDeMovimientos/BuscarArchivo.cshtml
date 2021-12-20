@@ -1,0 +1,73 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.BuscarArchivoDeMovimientoDto
+@{
+    ViewBag.Title = Textos.GenerarArchivoDeMovimientos_BuscarArchivo;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/loteBiotecnologia.js")"></script>
+<div id ="links" 
+     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
+    ></div>
+
+<div class ="container-fluid">
+    <ul class="nav nav-tabs">
+            <li>
+                @Html.ActionLink(Textos.Lote_GenerarArchivo, "Index", "GenerarArchivoDeMovimientos")
+            </li>
+            <li class="active">
+                @Html.ActionLink(Textos.GenerarArchivoDeMovimientos_BuscarArchivo, "BuscarArchivo", "GenerarArchivoDeMovimientos")
+            </li>
+    </ul>
+    
+</div>
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.GenerarArchivoDeMovimientos_BuscarArchivo</div>
+</div>
+
+<div class="container-fluid content grillaPad">
+    <div class="span12search bordeGris" style="margin-left: 0">
+            @using (Ajax.BeginForm("BuscarArchivo", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" }))
+            {
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left;">
+                    <div style="width: 400px; float: left;">
+                        @Html.Label(Textos.FechaDesde)
+                        <div style="margin-top: -25px; margin-left: 100px;">
+                            @Html.EditorFor(model => model.FechaDesde)
+                        </div>
+                        @Html.Label(Textos.FechaHasta)
+                        <div style="margin-top: -25px; margin-left: 100px;">
+                            @Html.EditorFor(model => model.FechaHasta)
+                        </div>
+                        
+                    </div>
+                </fieldset>
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left; margin-left: 5px; margin-bottom: 5px;">
+                    <div style="float: left;">
+                        @Html.Label(Textos.Material)
+                        <div style="margin-top: -25px; margin-left: 100px;">
+                            @Html.TextBoxFor(model => model.Material, new { @class = "control"})
+                            @Html.ValidationMessageFor(model => model.Material)
+                            @Html.HiddenFor(model => model.MaterialId)
+                        </div>
+                        @Html.Label(Textos.NumeroDocumentoIngreso)
+                        <div style="margin-top: -25px; margin-left: 100px;">
+                            @Html.TextBoxFor(model => model.NumeroDocumentoIngreso, new {@class = "input-large"})
+                        </div>
+                    </div>
+                </fieldset>
+                <center>
+                    <button type="submit" class="btn">@Textos.BuscarLote</button>
+                </center>
+            }
+        </div>
+  
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+ </div>

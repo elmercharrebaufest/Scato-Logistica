@@ -1,0 +1,85 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.TipoComercialDto
+
+<div class="control-group">
+    @Html.LabelFor(model => model.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Descripcion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Descripcion)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoSap, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.CodigoSap, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.CodigoSap)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Sentido, new {@class = "control-label"})
+    <div class="controls">
+        <label class="radio inline">
+            @Html.RadioButtonFor(model => model.Sentido, "E") @Textos.Entrada
+        </label>
+        <label class="radio inline">
+            @Html.RadioButtonFor(model => model.Sentido, "S") @Textos.Salida
+        </label>
+        @Html.ValidationMessageFor(model => model.Sentido)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoEsperado, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoEsperado, new {@class = "input-medium"})
+        @Html.ValidationMessageFor(model => model.PesoEsperado)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PesoMaximoDocumentoIngreso, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PesoMaximoDocumentoIngreso, new {@class = "input-medium"})
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ToleranciaDifPesoE, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.ToleranciaDifPesoE, new {@class = "input-medium"})
+        @Html.ValidationMessageFor(model => model.ToleranciaDifPesoE)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.EsParaUva, new {@class = "control-label"})
+    <div class="controls">
+            @Html.EnumDropDownListFor(model => model.EsParaUva, new {@class = "input-medium" })
+            @Html.ValidationMessageFor(model => model.EsParaUva)
+    </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.UsaBinPallet) @Textos.TipoComercial_UsaBinPallet
+        </label>
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.ValidaPatente) @Textos.TipoComercial_ValidaPatente
+        </label>
+    </div>
+</div>
+<div class="control-group">
+    <div class="controls">
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.TransportistaEsProveedor) @Textos.TipoComercial_TransportistaEsProveedor
+        </label>
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.NoRechazaEnCalado) @Textos.TipoComercial_NoRechazaEnCalado
+        </label>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <label class="checkbox">
+            @Html.CheckBoxFor(model => model.ValidaStockEPA) @Textos.TipoComercial_ValidaStockEPA
+        </label>
+    </div>
+</div>

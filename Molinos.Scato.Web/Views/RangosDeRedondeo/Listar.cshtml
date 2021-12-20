@@ -1,0 +1,26 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<RangosDeRedondeoDto>)ViewBag.Items;
+}
+
+<style>
+    .tip {
+        max-width: 500px;
+        white-space: normal;
+    }
+</style>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "RangosDeRedondeo"),
+                grid.Columna("MaterialPorCentroDescripcion", Textos.Material),
+                grid.Columna("ValorDesde", Textos.RangosDeRedondeo_ValorDesde),
+                grid.Columna("ValorHasta", Textos.RangosDeRedondeo_ValorHasta),
+                grid.Columna("ValorRedondeado", Textos.RangosDeRedondeo_ValorRedondeado)
+                )
+            )

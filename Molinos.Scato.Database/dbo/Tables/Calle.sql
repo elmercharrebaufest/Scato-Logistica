@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Calle] (
+    [Id]                        INT            IDENTITY (1, 1) NOT NULL,
+    [Nombre]                    NVARCHAR (35) NOT NULL,
+    [Codigo] NCHAR(5) NOT NULL, 
+    [CentroId] INT NOT NULL,
+    [TipoCalle] INT NOT NULL default 0,
+    [CantidadDeCamiones] INT NOT NULL default 0,
+    [Bloqueada] BIT NOT NULL default 0,
+    [Deshabilitada] BIT NOT NULL default 0,
+    [CalleCalado_Id] INT NULL,
+    [Automatica] BIT NOT NULL default 0,
+    [Material_Id] INT NULL,
+    [FechaLLamada] DateTime2 NULL,
+    [TipoCalidad] INT NOT NULL default 0,
+    [HidraulicaAsignada] INT NULL DEFAULT 1, 
+    [CaracteristicaDeCalidad_Id] INT NULL,
+    [RangoCaracteristicaCalidadMinimo] DECIMAL(18, 2) NULL, 
+    [RangoCaracteristicaCalidadMaximo] DECIMAL(18, 2) NULL,
+
+    CONSTRAINT [PK_dbo.Calle] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_dbo.Calle_dbo.Calle_Centro_Id] FOREIGN KEY ([CentroId]) REFERENCES [dbo].[Centro] ([Id]),
+    CONSTRAINT [FK_dbo.Calle_dbo.Calle_CalleCalado_Id] FOREIGN KEY ([CalleCalado_Id]) REFERENCES [dbo].[Calle] ([Id]),
+    CONSTRAINT [FK_dbo.Calle_dbo.Calle_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
+    CONSTRAINT [FK_dbo.Calle_dbo.Calle_CaracteristicaDeCalidad_Id] FOREIGN KEY ([CaracteristicaDeCalidad_Id]) REFERENCES [dbo].[CaracteristicaDeCalidad] ([Id])
+);

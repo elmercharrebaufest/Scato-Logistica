@@ -1,0 +1,267 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    body,
+    html,
+    #section-to-print {
+        width: 100%;
+    }
+    #section-to-print,
+    #section-to-print * {
+        visibility: visible !important;
+    }
+    #section-to-print {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+.fondo {
+    background-color: #f0f0f0;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+.bg-celeste {
+    background-color: #3376A1;
+}
+
+.fnt-white {
+    color: white !important;
+}
+
+.inline {
+    display: inline;
+}
+
+.block {
+    display: block;
+}
+
+.s21 {
+    font-size: 21px;
+}
+
+.s28 {
+    font-size: 28px;
+}
+
+.h-30 {
+    height: 30%;
+}
+
+.h-70 {
+    height: 70%;
+}
+
+.mh-95 {
+    min-height: 95px;
+}
+
+.linea-sm {
+    line-height: 20px;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.color-muelle-sanbenito {
+    background-color: #3376A1;
+    color: #FFFFFF;
+}
+
+.color-muelle-nouryon {
+    background-color: #FE521A;
+    color: #FFFFFF;
+}
+
+.color-muelle-vicentin {
+    background-color: #FEBE2C;
+    color: #000000;
+}
+
+.color-muelle-otros-muelles {
+    background-color: #666666;
+    color: #FFFFFF;
+}
+
+.bt-circle {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    box-shadow: 0px 2px 4px 0px rgba(115, 112, 112, 0.75);
+    font-size: 21px;
+}
+
+.btn-add-container {
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    margin: 0;
+}
+
+.btn-add-container:hover {
+    cursor: pointer;
+}
+
+.btn-add-container:hover .bt-circle {
+    background-color: #0069D9;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-add-container:hover .txt-action {
+    color: #0069D9;
+    transition: 0.3s ease-in-out;
+}
+
+.txt-primary {
+    color: #007bff;
+}
+
+.txt-center {
+    text-align: center;
+}
+
+.pl-10 {
+    padding-left: 10px;
+}
+.pr-10 {
+    padding-right: 10px;
+}
+
+.pt-10 {
+    padding-top: 10px;
+}
+
+.pt-5 {
+    padding-top: 5px;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.flex-start-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.flex-end{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.max-h70 {
+    max-height: 70%;
+}
+
+.pb-15{
+    padding-bottom: 15px;
+}
+
+.txt-white {
+    color: white;
+}
+
+.fw-500{
+    font-weight: 500;
+}
+
+.bg-white{
+    background-color: white;
+}
+
+.colorTitle{
+    color: #4D60A8;
+}
+
+.modal-corte{
+    z-index: 996 !important;
+}
+
+.window-modal-corte{
+    z-index: 997 !important;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+    appearance: none;
+}

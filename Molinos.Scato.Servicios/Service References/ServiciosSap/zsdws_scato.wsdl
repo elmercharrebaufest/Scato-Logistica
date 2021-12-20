@@ -1,0 +1,3069 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:sap-com:document:sap:rfc:functions" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" targetNamespace="urn:sap-com:document:sap:rfc:functions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+    <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
+  </wsdl:documentation>
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="BN__ZSDWS_SCATO">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken>
+                    <wsp:Policy>
+                      <sp:HttpBasicAuthentication />
+                    </wsp:Policy>
+                  </sp:HttpsToken>
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken>
+                    <wsp:Policy>
+                      <sp:HttpBasicAuthentication />
+                    </wsp:Policy>
+                  </sp:HttpsToken>
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="BN__ZSDWS_SCATO_soap12">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken>
+                    <wsp:Policy>
+                      <sp:HttpBasicAuthentication />
+                    </wsp:Policy>
+                  </sp:HttpsToken>
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+      <wsp:All>
+        <sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+        <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+        <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+          <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+            <wsp:Policy>
+              <sp:TransportToken>
+                <wsp:Policy>
+                  <sp:HttpsToken>
+                    <wsp:Policy>
+                      <sp:HttpBasicAuthentication />
+                    </wsp:Policy>
+                  </sp:HttpsToken>
+                </wsp:Policy>
+              </sp:TransportToken>
+              <sp:AlgorithmSuite>
+                <wsp:Policy>
+                  <sp:Basic128Rsa15 />
+                </wsp:Policy>
+              </sp:AlgorithmSuite>
+              <sp:Layout>
+                <wsp:Policy>
+                  <sp:Strict />
+                </wsp:Policy>
+              </sp:Layout>
+            </wsp:Policy>
+          </sp:TransportBinding>
+        </wsp:All>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="IF__ZSDWS_SCATO">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sapsession:Session xmlns:sapsession="http://www.sap.com/webas/630/soap/features/session/">
+          <sapsession:enableSession>false</sapsession:enableSession>
+        </sapsession:Session>
+        <sapcentraladmin:CentralAdministration xmlns:sapcentraladmin="http://www.sap.com/webas/700/soap/features/CentralAdministration/" wsp:Optional="true">
+          <sapcentraladmin:BusinessApplicationID>00505681C3051EEBB0FF0B54AF97B81E</sapcentraladmin:BusinessApplicationID>
+        </sapcentraladmin:CentralAdministration>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__DatosMateriales">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__IngresosEgresosFazones">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__DatosProveedores">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ValidacionCOT">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_ZE7550">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ContabilizarIngresos">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100T">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__DatosCliente">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ValidaStockYLote">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_Z2200N">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__IngresosBodega">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__AnulaContabilizacion">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_CREDITOS">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ConsultaOrdenDeCarga">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Mov305">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__EgresoSinFleteFazones">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__MovAjuste">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ConsultaLoteDispYRecepcion">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__EgresosNoProductivos">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__PesaNeto">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Mov975">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_MSJ_ENTREGA">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ConsultaPedido">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_MOV_311">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__PesaBruto">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ValidaContratos">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Verif.Ped.TrasladoRedespacho">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Fill_Z1000">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__FletesDobleTramo">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:rfc:functions">
+      <xsd:simpleType name="char1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char11">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="11" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char12">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char13">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="13" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char132">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="132" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char14">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="14" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char149">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="149" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char15">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="15" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char16">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="16" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char18">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="18" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char20">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char200">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="200" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char220">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="220" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char25">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="25" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char255">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="255" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char30">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char31">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="31" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char32">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char35">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="35" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char40">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char50">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char60">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char70">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="70" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char73">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="73" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char75">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="75" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="date10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:pattern value="\d\d\d\d-\d\d-\d\d" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="decimal10.2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="10" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="decimal13.3">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="13" />
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="decimal5.0">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="5" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="decimal7.2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="7" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lang">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numeric7">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="7" />
+          <xsd:pattern value="\d*" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantum13.3">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="13" />
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantum15.3">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:totalDigits value="15" />
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="string">
+        <xsd:restriction base="xsd:string" />
+      </xsd:simpleType>
+      <xsd:simpleType name="time">
+        <xsd:restriction base="xsd:time">
+          <xsd:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unit3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ZSDES5211">
+        <xsd:sequence>
+          <xsd:element name="ID_SAP" type="tns:char18" />
+          <xsd:element name="DESCRIPCION" type="tns:char40" />
+          <xsd:element name="NTGEW" type="tns:quantum13.3" />
+          <xsd:element name="MEINS" type="tns:unit3" />
+          <xsd:element name="WERKS" type="tns:char4" />
+          <xsd:element name="ACTIVO" type="tns:char1" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5580">
+        <xsd:sequence>
+          <xsd:element name="CUIT" type="tns:char16" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="CANTIDAD" type="tns:quantum13.3" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES3133">
+        <xsd:sequence>
+          <xsd:element name="LIFNR" type="tns:char10" />
+          <xsd:element name="ANRED" type="tns:char15" />
+          <xsd:element name="BAHNS" type="tns:char25" />
+          <xsd:element name="BBBNR" type="tns:numeric7" />
+          <xsd:element name="BBSNR" type="tns:numeric5" />
+          <xsd:element name="BEGRU" type="tns:char4" />
+          <xsd:element name="BRSCH" type="tns:char4" />
+          <xsd:element name="BUBKZ" type="tns:numeric1" />
+          <xsd:element name="DATLT" type="tns:char14" />
+          <xsd:element name="DTAMS" type="tns:char1" />
+          <xsd:element name="DTAWS" type="tns:char2" />
+          <xsd:element name="ERDAT" type="tns:date10" />
+          <xsd:element name="ERNAM" type="tns:char12" />
+          <xsd:element name="ESRNR" type="tns:char11" />
+          <xsd:element name="KONZS" type="tns:char10" />
+          <xsd:element name="KTOKK" type="tns:char4" />
+          <xsd:element name="KUNNR" type="tns:char10" />
+          <xsd:element name="LAND1" type="tns:char3" />
+          <xsd:element name="LNRZA" type="tns:char10" />
+          <xsd:element name="LOEVM" type="tns:char1" />
+          <xsd:element name="NAME1" type="tns:char35" />
+          <xsd:element name="NAME2" type="tns:char35" />
+          <xsd:element name="NAME3" type="tns:char35" />
+          <xsd:element name="NAME4" type="tns:char35" />
+          <xsd:element name="ORT01" type="tns:char35" />
+          <xsd:element name="ORT02" type="tns:char35" />
+          <xsd:element name="PFACH" type="tns:char10" />
+          <xsd:element name="PSTL2" type="tns:char10" />
+          <xsd:element name="PSTLZ" type="tns:char10" />
+          <xsd:element name="REGIO" type="tns:char3" />
+          <xsd:element name="SORTL" type="tns:char10" />
+          <xsd:element name="SPERR" type="tns:char1" />
+          <xsd:element name="SPERM" type="tns:char1" />
+          <xsd:element name="SPRAS" type="tns:lang" />
+          <xsd:element name="STCD1" type="tns:char16" />
+          <xsd:element name="STCD2" type="tns:char11" />
+          <xsd:element name="STKZA" type="tns:char1" />
+          <xsd:element name="STKZU" type="tns:char1" />
+          <xsd:element name="STRAS" type="tns:char35" />
+          <xsd:element name="TELBX" type="tns:char15" />
+          <xsd:element name="TELF1" type="tns:char16" />
+          <xsd:element name="TELF2" type="tns:char16" />
+          <xsd:element name="TELFX" type="tns:char31" />
+          <xsd:element name="TELTX" type="tns:char30" />
+          <xsd:element name="TELX1" type="tns:char30" />
+          <xsd:element name="XCPDK" type="tns:char1" />
+          <xsd:element name="XZEMP" type="tns:char1" />
+          <xsd:element name="VBUND" type="tns:char6" />
+          <xsd:element name="FISKN" type="tns:char10" />
+          <xsd:element name="STCEG" type="tns:char20" />
+          <xsd:element name="STKZN" type="tns:char1" />
+          <xsd:element name="SPERQ" type="tns:char2" />
+          <xsd:element name="ADRNR" type="tns:char10" />
+          <xsd:element name="MCOD1" type="tns:char25" />
+          <xsd:element name="MCOD2" type="tns:char25" />
+          <xsd:element name="MCOD3" type="tns:char25" />
+          <xsd:element name="GBORT" type="tns:char25" />
+          <xsd:element name="GBDAT" type="tns:date10" />
+          <xsd:element name="SEXKZ" type="tns:char1" />
+          <xsd:element name="KRAUS" type="tns:char11" />
+          <xsd:element name="REVDB" type="tns:date10" />
+          <xsd:element name="QSSYS" type="tns:char4" />
+          <xsd:element name="KTOCK" type="tns:char4" />
+          <xsd:element name="PFORT" type="tns:char35" />
+          <xsd:element name="WERKS" type="tns:char4" />
+          <xsd:element name="LTSNA" type="tns:char1" />
+          <xsd:element name="WERKR" type="tns:char1" />
+          <xsd:element name="PLKAL" type="tns:char2" />
+          <xsd:element name="DUEFL" type="tns:char1" />
+          <xsd:element name="TXJCD" type="tns:char15" />
+          <xsd:element name="SPERZ" type="tns:char1" />
+          <xsd:element name="SCACD" type="tns:char4" />
+          <xsd:element name="SFRGR" type="tns:char4" />
+          <xsd:element name="LZONE" type="tns:char10" />
+          <xsd:element name="XLFZA" type="tns:char1" />
+          <xsd:element name="DLGRP" type="tns:char4" />
+          <xsd:element name="FITYP" type="tns:char2" />
+          <xsd:element name="STCDT" type="tns:char2" />
+          <xsd:element name="REGSS" type="tns:char1" />
+          <xsd:element name="ACTSS" type="tns:char3" />
+          <xsd:element name="STCD3" type="tns:char18" />
+          <xsd:element name="STCD4" type="tns:char18" />
+          <xsd:element name="IPISP" type="tns:char1" />
+          <xsd:element name="TAXBS" type="tns:numeric1" />
+          <xsd:element name="PROFS" type="tns:char30" />
+          <xsd:element name="STGDL" type="tns:char2" />
+          <xsd:element name="EMNFR" type="tns:char10" />
+          <xsd:element name="LFURL" type="tns:char132" />
+          <xsd:element name="J_1KFREPRE" type="tns:char10" />
+          <xsd:element name="J_1KFTBUS" type="tns:char30" />
+          <xsd:element name="J_1KFTIND" type="tns:char30" />
+          <xsd:element name="CONFS" type="tns:char1" />
+          <xsd:element name="UPDAT" type="tns:date10" />
+          <xsd:element name="UPTIM" type="tns:time" />
+          <xsd:element name="NODEL" type="tns:char1" />
+          <xsd:element name="NATION" type="tns:char1" />
+          <xsd:element name="DATE_FROM" type="tns:date10" />
+          <xsd:element name="SORT1" type="tns:char20" />
+          <xsd:element name="SORT2" type="tns:char20" />
+          <xsd:element name="ACTIVO" type="tns:char1" />
+          <xsd:element name="DESCRIPCION" type="tns:char30" />
+          <xsd:element name="PROV_ONCCA" type="tns:char4" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5170">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:numeric2" />
+          <xsd:element name="PATENTE" type="tns:char10" />
+          <xsd:element name="CENTRO" type="tns:char4" />
+          <xsd:element name="ALMACEN" type="tns:char4" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="PROCEDENCIA" type="tns:char5" />
+          <xsd:element name="PROV_PROC" type="tns:char3" />
+          <xsd:element name="FECHA_INGRESO" type="tns:date10" />
+          <xsd:element name="HORA_INGRESO" type="tns:char6" />
+          <xsd:element name="FECHA_EGRESO" type="tns:date10" />
+          <xsd:element name="HORA_EGRESO" type="tns:char6" />
+          <xsd:element name="TRANSPORTISTA" type="tns:char10" />
+          <xsd:element name="NETO" type="tns:decimal10.2" />
+          <xsd:element name="CHOFER" type="tns:char20" />
+          <xsd:element name="KM_RECOR" type="tns:decimal5.0" />
+          <xsd:element name="CARGADOR" type="tns:char10" />
+          <xsd:element name="ACOPLADO" type="tns:char10" />
+          <xsd:element name="TIP_VEHI" type="tns:char1" />
+          <xsd:element name="DESTINO" type="tns:char4" />
+          <xsd:element name="BRUTO_ORIGEN" type="tns:decimal10.2" />
+          <xsd:element name="TARA_ORIGEN" type="tns:decimal10.2" />
+          <xsd:element name="NETO_ORIGEN" type="tns:decimal10.2" />
+          <xsd:element name="TIPO_COMERCIAL" type="tns:char4" />
+          <xsd:element name="PROVEEDOR" type="tns:char10" />
+          <xsd:element name="CORREDOR" type="tns:char10" />
+          <xsd:element name="FECHA_CALADO" type="tns:date10" />
+          <xsd:element name="HORA_CALADO" type="tns:char6" />
+          <xsd:element name="FECHA_BRUTO" type="tns:date10" />
+          <xsd:element name="HORA_BRUTO" type="tns:char6" />
+          <xsd:element name="FECHA_TARA" type="tns:date10" />
+          <xsd:element name="HORA_TARA" type="tns:char6" />
+          <xsd:element name="FECHA_NETO" type="tns:date10" />
+          <xsd:element name="HORA_NETO" type="tns:char6" />
+          <xsd:element name="BRUTO" type="tns:decimal10.2" />
+          <xsd:element name="TARA" type="tns:decimal10.2" />
+          <xsd:element name="NETO_DESCONTADO" type="tns:decimal10.2" />
+          <xsd:element name="ANALISIS_INT" type="tns:char1" />
+          <xsd:element name="CAMARA_A_PRESENT" type="tns:char10" />
+          <xsd:element name="BALANZA" type="tns:char4" />
+          <xsd:element name="PESADA" type="tns:char1" />
+          <xsd:element name="TIPODOCHOFER" type="tns:char3" />
+          <xsd:element name="NRODOCHOFER" type="tns:char15" />
+          <xsd:element name="CONTRATO" type="tns:char10" />
+          <xsd:element name="CUENTAORDEN" type="tns:char10" />
+          <xsd:element name="CARATULA" type="tns:char10" />
+          <xsd:element name="ESTADO" type="tns:char1" />
+          <xsd:element name="AGENTE_DE_COMPRA" type="tns:char10" />
+          <xsd:element name="FECHA_ALTA" type="tns:date10" />
+          <xsd:element name="MUESTRA_CONJUNTO" type="tns:numeric4" />
+          <xsd:element name="PRESTADOR" type="tns:char10" />
+          <xsd:element name="APARCERIA" type="tns:char1" />
+          <xsd:element name="VARIEDAD" type="tns:char20" />
+          <xsd:element name="REMITENTE_COM" type="tns:char10" />
+          <xsd:element name="CCPP_REF" type="tns:char12" />
+          <xsd:element name="COSECHA" type="tns:char5" />
+          <xsd:element name="ESTABLECIMIENTO" type="tns:char6" />
+          <xsd:element name="CTG" type="tns:char13" />
+          <xsd:element name="FECHA_CTG" type="tns:date10" />
+          <xsd:element name="CUIT_DESTINATARI" type="tns:char16" />
+          <xsd:element name="CLASIFICACION" type="tns:char20" />
+          <xsd:element name="INTER_FLETE" type="tns:char10" />
+          <xsd:element name="CALIDAD_ESPECIAL" type="tns:char1" />
+          <xsd:element name="CUIT_SOLICITANTE" type="tns:char11" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5180">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:char2" />
+          <xsd:element name="TIPO" type="tns:char1" />
+          <xsd:element name="TEXTO" type="tns:char200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5210">
+        <xsd:sequence>
+          <xsd:element name="CENTRO" type="tns:char4" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5230">
+        <xsd:sequence>
+          <xsd:element name="FECHA" type="tns:date10" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5240">
+        <xsd:sequence>
+          <xsd:element name="FECHA" type="tns:date10" />
+          <xsd:element name="CENTRO" type="tns:char4" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="CUPOS" type="tns:numeric4" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES5200">
+        <xsd:sequence>
+          <xsd:element name="DESCRIPCION" type="tns:char35" />
+          <xsd:element name="ID_SAP" type="tns:char10" />
+          <xsd:element name="DATE_FROM" type="tns:date10" />
+          <xsd:element name="NATION" type="tns:char1" />
+          <xsd:element name="ZCALLE" type="tns:char60" />
+          <xsd:element name="ZNUMERO" type="tns:char10" />
+          <xsd:element name="ZNOMBRE" type="tns:char40" />
+          <xsd:element name="ZLOCALIDAD" type="tns:char40" />
+          <xsd:element name="ZPARTIDO" type="tns:char20" />
+          <xsd:element name="ZPROVINCIA" type="tns:char20" />
+          <xsd:element name="ZPAIS" type="tns:char15" />
+          <xsd:element name="ZCUIT" type="tns:char16" />
+          <xsd:element name="ZSITUACION_FISCA" type="tns:char60" />
+          <xsd:element name="REGIO" type="tns:char3" />
+          <xsd:element name="ACTIVO" type="tns:char1" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES4740">
+        <xsd:sequence>
+          <xsd:element name="CODIGO" type="xsd:unsignedByte" />
+          <xsd:element name="MENSAJE" type="tns:char30" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMMBALANZA6">
+        <xsd:sequence>
+          <xsd:element name="MBLNR" type="tns:char10" />
+          <xsd:element name="MSGNR" type="tns:char3" />
+          <xsd:element name="TEXT" type="tns:char200" />
+          <xsd:element name="XBLNR" type="tns:char16" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BAPIRET2">
+        <xsd:sequence>
+          <xsd:element name="TYPE" type="tns:char1" />
+          <xsd:element name="ID" type="tns:char20" />
+          <xsd:element name="NUMBER" type="tns:numeric3" />
+          <xsd:element name="MESSAGE" type="tns:char220" />
+          <xsd:element name="LOG_NO" type="tns:char20" />
+          <xsd:element name="LOG_MSG_NO" type="tns:numeric6" />
+          <xsd:element name="MESSAGE_V1" type="tns:char50" />
+          <xsd:element name="MESSAGE_V2" type="tns:char50" />
+          <xsd:element name="MESSAGE_V3" type="tns:char50" />
+          <xsd:element name="MESSAGE_V4" type="tns:char50" />
+          <xsd:element name="PARAMETER" type="tns:char32" />
+          <xsd:element name="ROW" type="xsd:int" />
+          <xsd:element name="FIELD" type="tns:char30" />
+          <xsd:element name="SYSTEM" type="tns:char10" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES0300">
+        <xsd:sequence>
+          <xsd:element name="VBELN" type="tns:char10" />
+          <xsd:element name="WERKS" type="tns:char4" />
+          <xsd:element name="LSTEL" type="tns:char2" />
+          <xsd:element name="PATEN" type="tns:char8" />
+          <xsd:element name="KGMAX" type="tns:char12" />
+          <xsd:element name="MATNR" type="tns:char18" />
+          <xsd:element name="VGBEL" type="tns:char10" />
+          <xsd:element name="CORRE" type="tns:char30" />
+          <xsd:element name="SOLIC" type="tns:char30" />
+          <xsd:element name="DIREC" type="tns:char50" />
+          <xsd:element name="LOCALI" type="tns:char40" />
+          <xsd:element name="PROVI" type="tns:char20" />
+          <xsd:element name="CUIT" type="tns:char16" />
+          <xsd:element name="IVA" type="tns:char60" />
+          <xsd:element name="DOMDE" type="tns:char50" />
+          <xsd:element name="ACOPL" type="tns:char8" />
+          <xsd:element name="WADAT" type="tns:date10" />
+          <xsd:element name="KUNAG" type="tns:char10" />
+          <xsd:element name="KUNNR" type="tns:char10" />
+          <xsd:element name="PESABRUTO" type="tns:char1" />
+          <xsd:element name="KUNDE" type="tns:char10" />
+          <xsd:element name="NAME1" type="tns:char35" />
+          <xsd:element name="CUIT_TR" type="tns:char16" />
+          <xsd:element name="DOMTR" type="tns:char50" />
+          <xsd:element name="REGION_TR" type="tns:char3" />
+          <xsd:element name="IVA_TR" type="tns:char60" />
+          <xsd:element name="PROVI_TR" type="tns:char20" />
+          <xsd:element name="FLETEPROPIO" type="tns:char1" />
+          <xsd:element name="TIPO_COMERCIAL" type="tns:char4" />
+          <xsd:element name="CHOFER" type="tns:char20" />
+          <xsd:element name="TIPO_DOC_CHOFER" type="tns:char3" />
+          <xsd:element name="NRO_DOC_CHOFER" type="tns:char15" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMMBALANZA5">
+        <xsd:sequence>
+          <xsd:element name="MBLNR" type="tns:char10" />
+          <xsd:element name="MSGNR" type="tns:char3" />
+          <xsd:element name="TEXT" type="tns:char200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES9903">
+        <xsd:sequence>
+          <xsd:element name="DESCRIPCION" type="tns:char40" />
+          <xsd:element name="CENTRO" type="tns:char4" />
+          <xsd:element name="ALMACEN" type="tns:char4" />
+          <xsd:element name="CANTIDAD" type="tns:decimal7.2" />
+          <xsd:element name="UNIDAD" type="tns:char3" />
+          <xsd:element name="PESO" type="tns:decimal7.2" />
+          <xsd:element name="UNIDAD_PESO_ITEM" type="tns:char3" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5200">
+        <xsd:sequence>
+          <xsd:element name="CODIGO" type="tns:char18" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5220">
+        <xsd:sequence>
+          <xsd:element name="CODIGO" type="tns:char18" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="CUIT" type="tns:char16" />
+          <xsd:element name="DESCPROV" type="tns:char35" />
+          <xsd:element name="FECHA" type="tns:date10" />
+          <xsd:element name="MENSAJE" type="tns:char20" />
+          <xsd:element name="CALIDAD" type="tns:char2" />
+          <xsd:element name="PLANTA" type="tns:char4" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES2200">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="CODIGO" type="tns:char18" />
+          <xsd:element name="FECHA_INGRESO" type="tns:char8" />
+          <xsd:element name="HORA_INRGESO" type="tns:char6" />
+          <xsd:element name="SECUENCIA" type="tns:numeric2" />
+          <xsd:element name="PROVEEDOR" type="tns:char10" />
+          <xsd:element name="DESCPROV" type="tns:char35" />
+          <xsd:element name="REMITENTE_COM" type="tns:char10" />
+          <xsd:element name="DESCREMIT" type="tns:char35" />
+          <xsd:element name="CORREDOR" type="tns:char10" />
+          <xsd:element name="DESCCORREDOR" type="tns:char35" />
+          <xsd:element name="AGENTE_DE_COMPRA" type="tns:char10" />
+          <xsd:element name="DESCAGENTE" type="tns:char35" />
+          <xsd:element name="DESTINATARIO" type="tns:char10" />
+          <xsd:element name="DESCDESTINA" type="tns:char35" />
+          <xsd:element name="ESTABLECIMIENTO" type="tns:char6" />
+          <xsd:element name="CENTRO" type="tns:char4" />
+          <xsd:element name="DESCCENTRO" type="tns:char30" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="DESCMAT" type="tns:char40" />
+          <xsd:element name="FECHA_TARA" type="tns:char8" />
+          <xsd:element name="HORA_TARA" type="tns:char6" />
+          <xsd:element name="FECHA_EGRESO" type="tns:char8" />
+          <xsd:element name="HORA_EGRESO" type="tns:char6" />
+          <xsd:element name="FECHA_ACTUALIZA" type="tns:char8" />
+          <xsd:element name="HORA_ACTUALIZA" type="tns:char6" />
+          <xsd:element name="PROCESADO" type="tns:char1" />
+          <xsd:element name="RECHAZADO" type="tns:char1" />
+          <xsd:element name="CUIT_SOLICITANTE" type="tns:char11" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES2210">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="CODIGO" type="tns:char18" />
+          <xsd:element name="FECHA_INGRESO" type="tns:date10" />
+          <xsd:element name="MSGNR" type="tns:char3" />
+          <xsd:element name="TEXT" type="tns:char200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES5250">
+        <xsd:sequence>
+          <xsd:element name="MENSAJE" type="tns:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMMBALANZA2">
+        <xsd:sequence>
+          <xsd:element name="MATNR" type="tns:char18" />
+          <xsd:element name="MAKTX" type="tns:char40" />
+          <xsd:element name="EBELP" type="tns:numeric5" />
+          <xsd:element name="CANT_PEDIDO" type="tns:char15" />
+          <xsd:element name="CANT_RECIBIDA" type="tns:char15" />
+          <xsd:element name="FEC_ENTREGA" type="tns:char8" />
+          <xsd:element name="PORCENTAJE_EXC" type="tns:char5" />
+          <xsd:element name="CHARG" type="tns:char10" />
+          <xsd:element name="WERKS" type="tns:char4" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES4760">
+        <xsd:sequence>
+          <xsd:element name="CODIGO" type="xsd:unsignedByte" />
+          <xsd:element name="MENSAJE" type="tns:char30" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES0180">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:char2" />
+          <xsd:element name="CUENTA_ORDEN" type="tns:char10" />
+          <xsd:element name="MENSAJE" type="tns:char73" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES0020">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:char2" />
+          <xsd:element name="TIPO_MUEST" type="tns:char1" />
+          <xsd:element name="CARACTERISTICA" type="tns:char8" />
+          <xsd:element name="RESULTADO" type="tns:char6" />
+          <xsd:element name="DESCKILOS" type="tns:char10" />
+          <xsd:element name="DESCPORC" type="tns:char6" />
+          <xsd:element name="MENSAJE" type="tns:char73" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES0010">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:char2" />
+          <xsd:element name="PATENTE" type="tns:char10" />
+          <xsd:element name="CENTRO" type="tns:char4" />
+          <xsd:element name="ALMACEN" type="tns:char4" />
+          <xsd:element name="ACOPLADO" type="tns:char10" />
+          <xsd:element name="TIP_VEHI" type="tns:char1" />
+          <xsd:element name="MATERIAL" type="tns:char18" />
+          <xsd:element name="PROCEDENCIA" type="tns:char5" />
+          <xsd:element name="PROV_PROC" type="tns:char3" />
+          <xsd:element name="DESTINO" type="tns:char4" />
+          <xsd:element name="FECHA_INGRESO" type="tns:char8" />
+          <xsd:element name="HORA_INGRESO" type="tns:char6" />
+          <xsd:element name="FECHA_EGRESO" type="tns:char8" />
+          <xsd:element name="HORA_EGRESO" type="tns:char6" />
+          <xsd:element name="BRUTO_ORIGEN" type="tns:char10" />
+          <xsd:element name="TARA_ORIGEN" type="tns:char10" />
+          <xsd:element name="NETO_ORIGEN" type="tns:char10" />
+          <xsd:element name="TIPO_COMERCIAL" type="tns:char3" />
+          <xsd:element name="PROVEEDOR" type="tns:char10" />
+          <xsd:element name="CORREDOR" type="tns:char10" />
+          <xsd:element name="TRANSPORTISTA" type="tns:char11" />
+          <xsd:element name="FECHA_CALADO" type="tns:char8" />
+          <xsd:element name="HORA_CALADO" type="tns:char6" />
+          <xsd:element name="FECHA_BRUTO" type="tns:char8" />
+          <xsd:element name="HORA_BRUTO" type="tns:char6" />
+          <xsd:element name="FECHA_TARA" type="tns:char8" />
+          <xsd:element name="HORA_TARA" type="tns:char6" />
+          <xsd:element name="FECHA_NETO" type="tns:char8" />
+          <xsd:element name="HORA_NETO" type="tns:char6" />
+          <xsd:element name="BRUTO" type="tns:char10" />
+          <xsd:element name="TARA" type="tns:char10" />
+          <xsd:element name="NETO" type="tns:char10" />
+          <xsd:element name="NETO_DESCONTADO" type="tns:char10" />
+          <xsd:element name="BOLSAS" type="tns:char5" />
+          <xsd:element name="ANALISIS_INT" type="tns:char1" />
+          <xsd:element name="CAMARA_A_PRESENT" type="tns:char10" />
+          <xsd:element name="BALANZA" type="tns:char4" />
+          <xsd:element name="PESADA" type="tns:char1" />
+          <xsd:element name="TIPODOCHOFER" type="tns:char3" />
+          <xsd:element name="NRODOCHOFER" type="tns:char15" />
+          <xsd:element name="CHOFER" type="tns:char20" />
+          <xsd:element name="KM_RECOR" type="tns:char5" />
+          <xsd:element name="MRP_PAG_FLETE" type="tns:char1" />
+          <xsd:element name="CONTRATO" type="tns:char10" />
+          <xsd:element name="CUENTAORDEN" type="tns:char10" />
+          <xsd:element name="CARATULA" type="tns:char10" />
+          <xsd:element name="ESTADO" type="tns:char1" />
+          <xsd:element name="CARGADOR" type="tns:char10" />
+          <xsd:element name="AGENTE_DE_COMPRA" type="tns:char10" />
+          <xsd:element name="FECHA_ALTA" type="tns:char8" />
+          <xsd:element name="MUESTRA_CONJUNTO" type="tns:numeric4" />
+          <xsd:element name="PRESTADOR" type="tns:char10" />
+          <xsd:element name="APARCERIA" type="tns:char1" />
+          <xsd:element name="VARIEDAD" type="tns:char20" />
+          <xsd:element name="REMITENTE_COM" type="tns:char10" />
+          <xsd:element name="CCPP_REF" type="tns:char12" />
+          <xsd:element name="MENSAJE" type="tns:char73" />
+          <xsd:element name="COSECHA" type="tns:char5" />
+          <xsd:element name="ESTABLECIMIENTO" type="tns:char6" />
+          <xsd:element name="CTG" type="tns:char12" />
+          <xsd:element name="FECHA_CTG" type="tns:char8" />
+          <xsd:element name="CUIT_DESTINATARI" type="tns:char16" />
+          <xsd:element name="CLASIFICACION" type="tns:char20" />
+          <xsd:element name="INTER_FLETE" type="tns:char10" />
+          <xsd:element name="CALIDAD_ESPECIAL" type="tns:char1" />
+          <xsd:element name="CUIT_SOLICITANTE" type="tns:char11" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPES0510">
+        <xsd:sequence>
+          <xsd:element name="CTG" type="tns:char12" />
+          <xsd:element name="SOLICITANTE" type="tns:char16" />
+          <xsd:element name="CCPP" type="tns:char12" />
+          <xsd:element name="ESTADO" type="tns:char30" />
+          <xsd:element name="CUIT_CANJEADOR" type="tns:char16" />
+          <xsd:element name="CANJEREMITCOM" type="tns:char2" />
+          <xsd:element name="ESPECIE" type="tns:char20" />
+          <xsd:element name="CUIT_DESTINO" type="tns:char16" />
+          <xsd:element name="CUIT_DESTINATARI" type="tns:char16" />
+          <xsd:element name="ESTABLECIMIENTO" type="tns:char10" />
+          <xsd:element name="COSECHA" type="tns:char5" />
+          <xsd:element name="PESO_NETO_CARGA" type="tns:decimal13.3" />
+          <xsd:element name="FE_HR_CONF" type="tns:char20" />
+          <xsd:element name="COD_CUPO" type="tns:char18" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES0040">
+        <xsd:sequence>
+          <xsd:element name="NUMCARPOR" type="tns:char12" />
+          <xsd:element name="ENTRADA_O_SALIDA" type="tns:char1" />
+          <xsd:element name="SECUENCIA" type="tns:char2" />
+          <xsd:element name="MSGNR" type="tns:char3" />
+          <xsd:element name="TEXT" type="tns:char200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDES0320">
+        <xsd:sequence>
+          <xsd:element name="WERKS" type="tns:char4" />
+          <xsd:element name="LGORT" type="tns:char4" />
+          <xsd:element name="ZALTMM" type="tns:quantum13.3" />
+          <xsd:element name="ZCANM3" type="tns:quantum13.3" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT5211">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES5211" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT8000">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5580" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDETT0133">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES3133" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7700">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5170" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7710">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5180" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7730">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5210" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7750">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5230" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7760">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5240" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT5200">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES5200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BAPIRET2TAB">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:BAPIRET2" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT5220">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES0300" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT9903">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES9903" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="BAPIRET2_T">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:BAPIRET2" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7720">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7740">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5220" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT2200">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES2200" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT2210">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES2210" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT0005">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMMBALANZA6" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT7770">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES5250" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT5050">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMMBALANZA2" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT0112">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES0180" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT0111">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES0020" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT0110">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES0010" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZMPTT0510">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZMPES0510" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT0070">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES0040" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ZSDTT5250">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="item" type="tns:ZSDES0320" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="DatosMateriales">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element name="IdSAP" type="tns:char18" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DatosMaterialesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Materiales" type="tns:ZSDTT5211" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="IM_CUIT" type="tns:char16" />
+            <xsd:element name="IM_FECHA" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_MATERIAL" type="tns:char18" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_CANTIDAD" type="tns:ZMPTT8000" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DatosProveedores">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CUIT" type="tns:char16" />
+            <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element name="IdSAP" type="tns:char10" />
+            <xsd:element name="TipoProveedor" type="tns:char2" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DatosProveedoresResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Proveedores" type="tns:ZSDETT0133" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidacionCOT">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="DocInternoSAP" type="tns:char10" />
+            <xsd:element name="NroComprobante" type="tns:char8" />
+            <xsd:element name="PtoVtaRemito" type="tns:char4" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidacionCOTResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ActContingencia" type="tns:char1" />
+            <xsd:element name="COTAprobado" type="tns:char1" />
+            <xsd:element name="CUIT" type="tns:char11" />
+            <xsd:element name="CodPostal" type="tns:char4" />
+            <xsd:element name="Domicilio" type="tns:char75" />
+            <xsd:element name="Error" type="tns:char149" />
+            <xsd:element name="Localidad" type="tns:char40" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_ZE7550">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_ZE7550" type="tns:ZMPTT7700" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_ZE7550Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_RESULTADO" type="tns:ZMPTT7710" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_Z2100T">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="IM_CENTRO" type="tns:ZMPTT7730" />
+            <xsd:element minOccurs="0" name="IM_FECHA" type="tns:ZMPTT7750" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_Z2100TResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_TOTAL_CUPOS" type="tns:ZMPTT7760" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DatosCliente">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CUIT" type="tns:char16" />
+            <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element name="IdSAP" type="tns:char10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DatosClienteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Clientes" type="tns:ZSDTT5200" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidaStockYLote">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Almacen" type="tns:char4" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="Lote" type="tns:char10" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="Stock" type="tns:char14" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidaStockYLoteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMPES4740" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IngresosBodega">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Bins" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Calidad" type="tns:char30" />
+            <xsd:element name="Cantidad" type="tns:quantum13.3" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element minOccurs="0" name="Ciu" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Cosecha" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Cuartel" type="tns:char30" />
+            <xsd:element minOccurs="0" name="FechaContabilizacion" type="tns:date10" />
+            <xsd:element minOccurs="0" name="FechaDocumento" type="tns:date10" />
+            <xsd:element minOccurs="0" name="Finca" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Inv" type="tns:char30" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element minOccurs="0" name="NumDocumento" type="tns:char10" />
+            <xsd:element minOccurs="0" name="NumNota" type="tns:char16" />
+            <xsd:element minOccurs="0" name="PosDocumento" type="tns:numeric5" />
+            <xsd:element minOccurs="0" name="Propio" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Subzona" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Tanque" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Tenor" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Varietal" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Zona" type="tns:char30" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IngresosBodegaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_RESULTADO" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AnulaContabilizacion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="DocMaterial" type="tns:char10" />
+            <xsd:element name="Ejercicio" type="tns:numeric4" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AnulaContabilizacionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="DocMaterial" type="tns:char10" />
+            <xsd:element name="EjercicioDocMaterial" type="tns:numeric4" />
+            <xsd:element name="Return" type="tns:BAPIRET2TAB" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_CREDITOS">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_CUIT" type="tns:char16" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_CREDITOSResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_SALIDA" type="tns:char20" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaOrdenDeCarga">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="Patente" type="tns:char10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaOrdenDeCargaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Salida" type="tns:ZSDTT5220" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Mov305">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="DocLegal" type="tns:char16" />
+            <xsd:element name="Documento" type="tns:char10" />
+            <xsd:element name="Ejercicio" type="tns:numeric4" />
+            <xsd:element name="FechaContab" type="tns:date10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Mov305Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA5" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EgresoSinFleteFazones">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Almacen" type="tns:char4" />
+            <xsd:element name="CUITCliente" type="tns:char16" />
+            <xsd:element name="CUITD" type="tns:char11" />
+            <xsd:element name="Cantidad" type="tns:char13" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element minOccurs="0" name="DocLegal" type="tns:char16" />
+            <xsd:element name="FechaCon" type="tns:date10" />
+            <xsd:element name="FechaDoc" type="tns:date10" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="NomChofer" type="tns:char35" />
+            <xsd:element name="NomTransportista" type="tns:char30" />
+            <xsd:element name="NumDocu" type="tns:char8" />
+            <xsd:element name="Patente" type="tns:char10" />
+            <xsd:element name="PatenteRemolque" type="tns:char10" />
+            <xsd:element name="TipoDocu" type="tns:char2" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EgresoSinFleteFazonesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="MovAjuste">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Almacen" type="tns:char4" />
+            <xsd:element name="Cantidad" type="tns:char13" />
+            <xsd:element minOccurs="0" name="CeCo" type="tns:char10" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element minOccurs="0" name="ClaseExpedicion" type="tns:char2" />
+            <xsd:element name="FechaContab" type="tns:date10" />
+            <xsd:element name="FechaDoc" type="tns:date10" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="NroDocumento" type="tns:char16" />
+            <xsd:element minOccurs="0" name="Patente" type="tns:char10" />
+            <xsd:element name="UniMed" type="tns:unit3" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="MovAjusteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA5" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EgresosNoProductivos">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Cliente" type="tns:char10" />
+            <xsd:element name="DocChofer" type="tns:char8" />
+            <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element name="NomChofer" type="tns:char35" />
+            <xsd:element name="PatCamion" type="tns:char10" />
+            <xsd:element name="PatRemolque" type="tns:char10" />
+            <xsd:element name="PesoTotal" type="tns:decimal7.2" />
+            <xsd:element name="Posiciones" type="tns:ZSDTT9903" />
+            <xsd:element minOccurs="0" name="PuestoExp" type="tns:char4" />
+            <xsd:element name="TipoDocChofer" type="tns:char2" />
+            <xsd:element name="Transportista" type="tns:char16" />
+            <xsd:element name="UnidadPeso" type="tns:char3" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EgresosNoProductivosResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaLoteDispYRecepcion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Almacen" type="tns:char4" />
+            <xsd:element name="Cantidad" type="tns:quantum13.3" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="Lote" type="tns:char10" />
+            <xsd:element name="LoteProveedor" type="tns:char15" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="OrdenDeCompra" type="tns:char10" />
+            <xsd:element name="Posicion" type="tns:numeric5" />
+            <xsd:element name="Remito" type="tns:char16" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaLoteDispYRecepcionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EjercicioDocMaterial" type="tns:numeric4" />
+            <xsd:element name="Mensajes" type="tns:BAPIRET2_T" />
+            <xsd:element name="NroDocMaterial" type="tns:char10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_Z2100">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="IM_CENTRO" type="tns:ZMPTT7730" />
+            <xsd:element minOccurs="0" name="IM_CODIGO" type="tns:ZMPTT7720" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_Z2100Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_CUPOS" type="tns:ZMPTT7740" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_Z2200N">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_Z2200" type="tns:ZMPTT2200" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_Z2200NResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_RESULTADO" type="tns:ZMPTT2210" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ContabilizarIngresos">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Cantidad" type="tns:quantum13.3" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="DocCompras" type="tns:char10" />
+            <xsd:element minOccurs="0" name="FechaContabDoc" type="tns:date10" />
+            <xsd:element minOccurs="0" name="FechaDoc" type="tns:date10" />
+            <xsd:element name="FechaFabricacion" type="tns:date10" />
+            <xsd:element name="LoteProveedor" type="tns:char15" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="NroNotaEntregaExt" type="tns:char16" />
+            <xsd:element name="PosDocCompras" type="tns:numeric5" />
+            <xsd:element name="Usuario" type="tns:char12" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ContabilizarIngresosResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="DocMaterial" type="tns:char10" />
+            <xsd:element name="EjercicioDocMaterial" type="tns:numeric4" />
+            <xsd:element name="Return" type="tns:BAPIRET2TAB" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IngresosEgresosFazones">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Almacen" type="tns:char4" />
+            <xsd:element minOccurs="0" name="Cantidad" type="tns:char13" />
+            <xsd:element minOccurs="0" name="Destino" type="tns:char10" />
+            <xsd:element minOccurs="0" name="DocLegal" type="tns:char16" />
+            <xsd:element minOccurs="0" name="FechaIng" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_NUM_SCATO" type="tns:char12" />
+            <xsd:element minOccurs="0" name="Km" type="tns:decimal5.0" />
+            <xsd:element minOccurs="0" name="LocalidadOrig" type="tns:char5" />
+            <xsd:element minOccurs="0" name="Material" type="tns:char18" />
+            <xsd:element minOccurs="0" name="NombreChofer" type="tns:char35" />
+            <xsd:element minOccurs="0" name="NroDocumento" type="tns:char8" />
+            <xsd:element minOccurs="0" name="Patente" type="tns:char10" />
+            <xsd:element minOccurs="0" name="Patente2" type="tns:char10" />
+            <xsd:element minOccurs="0" name="Procedencia" type="tns:char10" />
+            <xsd:element minOccurs="0" name="ProvinciaOrig" type="tns:char3" />
+            <xsd:element minOccurs="0" name="TipoDoc" type="tns:char2" />
+            <xsd:element minOccurs="0" name="TipoMov" type="tns:char3" />
+            <xsd:element minOccurs="0" name="Transportista" type="tns:char16" />
+            <xsd:element minOccurs="0" name="UniMedCant" type="tns:unit3" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IngresosEgresosFazonesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PesaNeto">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="0" name="Documento" type="tns:char70" />
+            <xsd:element name="Entrega" type="tns:char10" />
+            <xsd:element minOccurs="0" name="PesoBruto" type="tns:quantum15.3" />
+            <xsd:element minOccurs="0" name="PesoNeto" type="tns:quantum15.3" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PesaNetoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Mensajes" type="tns:ZSDTT0005" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Mov975">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="AlmEmisor" type="tns:char4" />
+            <xsd:element name="AlmReceptor" type="tns:char4" />
+            <xsd:element name="CUITTransp" type="tns:char11" />
+            <xsd:element name="Cantidad" type="tns:char13" />
+            <xsd:element name="CentroEmisor" type="tns:char4" />
+            <xsd:element name="CentroReceptor" type="tns:char4" />
+            <xsd:element minOccurs="0" name="ClaseExpedicion" type="tns:char2" />
+            <xsd:element name="DocChofer" type="tns:char8" />
+            <xsd:element name="FechaContab" type="tns:date10" />
+            <xsd:element name="FechaDoc" type="tns:date10" />
+            <xsd:element minOccurs="0" name="Kilometros" type="tns:decimal5.0" />
+            <xsd:element minOccurs="0" name="Lote" type="tns:char10" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="NombreChofer" type="tns:char35" />
+            <xsd:element name="NombreTransportista" type="tns:char35" />
+            <xsd:element minOccurs="0" name="NroDocumento" type="tns:char16" />
+            <xsd:element name="Patente1" type="tns:char10" />
+            <xsd:element minOccurs="0" name="Patente2" type="tns:char10" />
+            <xsd:element minOccurs="0" name="Precinto1" type="tns:char30" />
+            <xsd:element minOccurs="0" name="Precinto2" type="tns:char30" />
+            <xsd:element name="TipoDoc" type="tns:char2" />
+            <xsd:element name="UniMed" type="tns:unit3" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Mov975Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_MSJ_ENTREGA">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_XBLNR" type="tns:char25" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_MSJ_ENTREGAResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_ERROR" type="tns:char1" />
+            <xsd:element name="EX_MENSAJES" type="tns:ZMPTT7770" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaPedido">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Pedido" type="tns:char10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ConsultaPedidoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ClasePedido" type="tns:char4" />
+            <xsd:element name="Detalles" type="tns:ZMPTT5050" />
+            <xsd:element name="ExisteMov101" type="tns:char1" />
+            <xsd:element name="IndicadorBorradoDocCompras" type="tns:char1" />
+            <xsd:element name="IndicadorLiberacioDocCompras" type="tns:char1" />
+            <xsd:element name="Proveedor" type="tns:char10" />
+            <xsd:element name="RazonSocial" type="tns:char35" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_MOV_311">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_BLDAT" type="tns:date10" />
+            <xsd:element name="EX_BUDAT" type="tns:date10" />
+            <xsd:element name="EX_CHARG" type="tns:char10" />
+            <xsd:element name="EX_LGORT_DEST" type="tns:char4" />
+            <xsd:element name="EX_LGORT_ORIG" type="tns:char4" />
+            <xsd:element name="EX_MATNR" type="tns:char18" />
+            <xsd:element minOccurs="0" name="EX_MEINS" type="tns:unit3" />
+            <xsd:element name="EX_MENGE" type="tns:quantum13.3" />
+            <xsd:element minOccurs="0" name="EX_TCODE" type="tns:char20" />
+            <xsd:element name="EX_TESTRUN" type="tns:char1" />
+            <xsd:element name="EX_WERKS" type="tns:char4" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_MOV_311Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_MATDOCUMENTYEAR" type="tns:numeric4" />
+            <xsd:element name="IM_MATERIALDOCUMENT" type="tns:char10" />
+            <xsd:element name="IM_MESSAGE" type="tns:char220" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PesaBruto">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Entrega" type="tns:char10" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PesaBrutoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CodResultado" type="xsd:int" />
+            <xsd:element name="Mensaje" type="tns:char255" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidaContratos">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Contrato" type="tns:char10" />
+            <xsd:element name="Material" type="tns:char18" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ValidaContratosResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMPES4760" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Verif.Ped.TrasladoRedespacho">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CentroDestino" type="tns:char4" />
+            <xsd:element name="CentroEmisor" type="tns:char4" />
+            <xsd:element minOccurs="0" name="Lote" type="tns:char10" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="Transportista" type="tns:char16" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Verif.Ped.TrasladoRedespachoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Planificado" type="tns:char1" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Fill_Z1000">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CTGAfip" type="tns:ZMPTT0510" />
+            <xsd:element name="CuentaYOrden" type="tns:ZMPTT0112" />
+            <xsd:element name="RecepcionesYDespachos" type="tns:ZMPTT0110" />
+            <xsd:element name="RecepcionesYDespachosII" type="tns:ZMPTT0111" />
+            <xsd:element minOccurs="0" name="Remito" type="tns:char1" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Fill_Z1000Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CuentaYOrden" type="tns:ZMPTT0112" />
+            <xsd:element name="RecepcionesYDespachos" type="tns:ZMPTT0110" />
+            <xsd:element name="RecepcionesYDespachosII" type="tns:ZMPTT0111" />
+            <xsd:element name="Resultado" type="tns:ZSDTT0070" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FletesDobleTramo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Almacen" type="tns:char4" />
+            <xsd:element name="Cargador" type="tns:char10" />
+            <xsd:element name="CartaPorte" type="tns:char12" />
+            <xsd:element name="Centro" type="tns:char4" />
+            <xsd:element name="Chofer" type="tns:char20" />
+            <xsd:element name="EntradaOSalida" type="tns:char1" />
+            <xsd:element minOccurs="0" name="FechaEgreso" type="tns:char8" />
+            <xsd:element name="FechaIngreso" type="tns:char8" />
+            <xsd:element minOccurs="0" name="HoraEgreso" type="tns:char6" />
+            <xsd:element minOccurs="0" name="HoraIngreso" type="tns:char6" />
+            <xsd:element name="KmRecorridos" type="tns:char5" />
+            <xsd:element name="Material" type="tns:char18" />
+            <xsd:element name="Neto" type="tns:char10" />
+            <xsd:element name="Patente" type="tns:char10" />
+            <xsd:element name="Procedencia" type="tns:char5" />
+            <xsd:element name="ProvProc" type="tns:char3" />
+            <xsd:element name="Secuencia" type="tns:char2" />
+            <xsd:element name="Transportista" type="tns:char11" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FletesDobleTramoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ZMMBALANZA6" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="IM_ALMACEN" type="tns:char4" />
+            <xsd:element minOccurs="0" name="IM_ALTURA" type="tns:quantum13.3" />
+            <xsd:element name="IM_CENTRO" type="tns:char4" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="EX_SALIDA" type="tns:ZSDTT5250" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="DatosMateriales">
+    <wsdl:part name="parameters" element="tns:DatosMateriales" />
+  </wsdl:message>
+  <wsdl:message name="DatosMaterialesResponse">
+    <wsdl:part name="parameter" element="tns:DatosMaterialesResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_VENTA_TRIGO_MAIZ" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosProveedores">
+    <wsdl:part name="parameters" element="tns:DatosProveedores" />
+  </wsdl:message>
+  <wsdl:message name="DatosProveedoresResponse">
+    <wsdl:part name="parameter" element="tns:DatosProveedoresResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidacionCOT">
+    <wsdl:part name="parameters" element="tns:ValidacionCOT" />
+  </wsdl:message>
+  <wsdl:message name="ValidacionCOTResponse">
+    <wsdl:part name="parameter" element="tns:ValidacionCOTResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_ZE7550">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_ZE7550" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_ZE7550Response">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_ZE7550Response" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_Z2100T">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_Z2100T" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_Z2100TResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_Z2100TResponse" />
+  </wsdl:message>
+  <wsdl:message name="DatosCliente">
+    <wsdl:part name="parameters" element="tns:DatosCliente" />
+  </wsdl:message>
+  <wsdl:message name="DatosClienteResponse">
+    <wsdl:part name="parameter" element="tns:DatosClienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaStockYLote">
+    <wsdl:part name="parameters" element="tns:ValidaStockYLote" />
+  </wsdl:message>
+  <wsdl:message name="ValidaStockYLoteResponse">
+    <wsdl:part name="parameter" element="tns:ValidaStockYLoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IngresosBodega">
+    <wsdl:part name="parameters" element="tns:IngresosBodega" />
+  </wsdl:message>
+  <wsdl:message name="IngresosBodegaResponse">
+    <wsdl:part name="parameter" element="tns:IngresosBodegaResponse" />
+  </wsdl:message>
+  <wsdl:message name="AnulaContabilizacion">
+    <wsdl:part name="parameters" element="tns:AnulaContabilizacion" />
+  </wsdl:message>
+  <wsdl:message name="AnulaContabilizacionResponse">
+    <wsdl:part name="parameter" element="tns:AnulaContabilizacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_CREDITOS">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_CREDITOS" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_CREDITOSResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_CREDITOSResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaOrdenDeCarga">
+    <wsdl:part name="parameters" element="tns:ConsultaOrdenDeCarga" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaOrdenDeCargaResponse">
+    <wsdl:part name="parameter" element="tns:ConsultaOrdenDeCargaResponse" />
+  </wsdl:message>
+  <wsdl:message name="Mov305">
+    <wsdl:part name="parameters" element="tns:Mov305" />
+  </wsdl:message>
+  <wsdl:message name="Mov305Response">
+    <wsdl:part name="parameter" element="tns:Mov305Response" />
+  </wsdl:message>
+  <wsdl:message name="EgresoSinFleteFazones">
+    <wsdl:part name="parameters" element="tns:EgresoSinFleteFazones" />
+  </wsdl:message>
+  <wsdl:message name="EgresoSinFleteFazonesResponse">
+    <wsdl:part name="parameter" element="tns:EgresoSinFleteFazonesResponse" />
+  </wsdl:message>
+  <wsdl:message name="MovAjuste">
+    <wsdl:part name="parameters" element="tns:MovAjuste" />
+  </wsdl:message>
+  <wsdl:message name="MovAjusteResponse">
+    <wsdl:part name="parameter" element="tns:MovAjusteResponse" />
+  </wsdl:message>
+  <wsdl:message name="EgresosNoProductivos">
+    <wsdl:part name="parameters" element="tns:EgresosNoProductivos" />
+  </wsdl:message>
+  <wsdl:message name="EgresosNoProductivosResponse">
+    <wsdl:part name="parameter" element="tns:EgresosNoProductivosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLoteDispYRecepcion">
+    <wsdl:part name="parameters" element="tns:ConsultaLoteDispYRecepcion" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaLoteDispYRecepcionResponse">
+    <wsdl:part name="parameter" element="tns:ConsultaLoteDispYRecepcionResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_Z2100">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_Z2100" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_Z2100Response">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_Z2100Response" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_Z2200N">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_Z2200N" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_Z2200NResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_Z2200NResponse" />
+  </wsdl:message>
+  <wsdl:message name="ContabilizarIngresos">
+    <wsdl:part name="parameters" element="tns:ContabilizarIngresos" />
+  </wsdl:message>
+  <wsdl:message name="ContabilizarIngresosResponse">
+    <wsdl:part name="parameter" element="tns:ContabilizarIngresosResponse" />
+  </wsdl:message>
+  <wsdl:message name="IngresosEgresosFazones">
+    <wsdl:part name="parameters" element="tns:IngresosEgresosFazones" />
+  </wsdl:message>
+  <wsdl:message name="IngresosEgresosFazonesResponse">
+    <wsdl:part name="parameter" element="tns:IngresosEgresosFazonesResponse" />
+  </wsdl:message>
+  <wsdl:message name="PesaNeto">
+    <wsdl:part name="parameters" element="tns:PesaNeto" />
+  </wsdl:message>
+  <wsdl:message name="PesaNetoResponse">
+    <wsdl:part name="parameter" element="tns:PesaNetoResponse" />
+  </wsdl:message>
+  <wsdl:message name="Mov975">
+    <wsdl:part name="parameters" element="tns:Mov975" />
+  </wsdl:message>
+  <wsdl:message name="Mov975Response">
+    <wsdl:part name="parameter" element="tns:Mov975Response" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_MSJ_ENTREGA">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_MSJ_ENTREGA" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_MSJ_ENTREGAResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_MSJ_ENTREGAResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaPedido">
+    <wsdl:part name="parameters" element="tns:ConsultaPedido" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaPedidoResponse">
+    <wsdl:part name="parameter" element="tns:ConsultaPedidoResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_MOV_311">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_MOV_311" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_MOV_311Response">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_MOV_311Response" />
+  </wsdl:message>
+  <wsdl:message name="PesaBruto">
+    <wsdl:part name="parameters" element="tns:PesaBruto" />
+  </wsdl:message>
+  <wsdl:message name="PesaBrutoResponse">
+    <wsdl:part name="parameter" element="tns:PesaBrutoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidaContratos">
+    <wsdl:part name="parameters" element="tns:ValidaContratos" />
+  </wsdl:message>
+  <wsdl:message name="ValidaContratosResponse">
+    <wsdl:part name="parameter" element="tns:ValidaContratosResponse" />
+  </wsdl:message>
+  <wsdl:message name="Verif.Ped.TrasladoRedespacho">
+    <wsdl:part name="parameters" element="tns:Verif.Ped.TrasladoRedespacho" />
+  </wsdl:message>
+  <wsdl:message name="Verif.Ped.TrasladoRedespachoResponse">
+    <wsdl:part name="parameter" element="tns:Verif.Ped.TrasladoRedespachoResponse" />
+  </wsdl:message>
+  <wsdl:message name="Fill_Z1000">
+    <wsdl:part name="parameters" element="tns:Fill_Z1000" />
+  </wsdl:message>
+  <wsdl:message name="Fill_Z1000Response">
+    <wsdl:part name="parameter" element="tns:Fill_Z1000Response" />
+  </wsdl:message>
+  <wsdl:message name="FletesDobleTramo">
+    <wsdl:part name="parameters" element="tns:FletesDobleTramo" />
+  </wsdl:message>
+  <wsdl:message name="FletesDobleTramoResponse">
+    <wsdl:part name="parameter" element="tns:FletesDobleTramoResponse" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+    <wsdl:part name="parameters" element="tns:Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN" />
+  </wsdl:message>
+  <wsdl:message name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse">
+    <wsdl:part name="parameter" element="tns:Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ZSDWS_SCATO">
+    <wsdl:documentation>
+      <sapdoc:sapdoc xmlns:sapdoc="urn:sap:esi:documentation">
+        <sapdoc:docitem docURL="http://gviceccqa.molinosagro.ad:8000/sap/bc/esdt/docu/sd_text?sap-client=400&amp;sd_name=ZSDWS_SCATO" />
+      </sapdoc:sapdoc>
+    </wsdl:documentation>
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#IF__ZSDWS_SCATO" />
+    </wsp:Policy>
+    <wsdl:operation name="DatosMateriales">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__DatosMateriales" />
+      </wsp:Policy>
+      <wsdl:input message="tns:DatosMateriales" />
+      <wsdl:output message="tns:DatosMaterialesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_VENTA_TRIGO_MAIZ" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_VENTA_TRIGO_MAIZ" />
+      <wsdl:output message="tns:Z_SDMF_RFC_VENTA_TRIGO_MAIZResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosProveedores">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__DatosProveedores" />
+      </wsp:Policy>
+      <wsdl:input message="tns:DatosProveedores" />
+      <wsdl:output message="tns:DatosProveedoresResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidacionCOT">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ValidacionCOT" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ValidacionCOT" />
+      <wsdl:output message="tns:ValidacionCOTResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_ZE7550">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_ZE7550" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_ZE7550" />
+      <wsdl:output message="tns:Z_SDMF_RFC_ZE7550Response" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100T">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_Z2100T" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_Z2100T" />
+      <wsdl:output message="tns:Z_SDMF_RFC_Z2100TResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="DatosCliente">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__DatosCliente" />
+      </wsp:Policy>
+      <wsdl:input message="tns:DatosCliente" />
+      <wsdl:output message="tns:DatosClienteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaStockYLote">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ValidaStockYLote" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ValidaStockYLote" />
+      <wsdl:output message="tns:ValidaStockYLoteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="IngresosBodega">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__IngresosBodega" />
+      </wsp:Policy>
+      <wsdl:input message="tns:IngresosBodega" />
+      <wsdl:output message="tns:IngresosBodegaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="AnulaContabilizacion">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__AnulaContabilizacion" />
+      </wsp:Policy>
+      <wsdl:input message="tns:AnulaContabilizacion" />
+      <wsdl:output message="tns:AnulaContabilizacionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CREDITOS">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_CREDITOS" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_CREDITOS" />
+      <wsdl:output message="tns:Z_SDMF_RFC_CREDITOSResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaOrdenDeCarga">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ConsultaOrdenDeCarga" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ConsultaOrdenDeCarga" />
+      <wsdl:output message="tns:ConsultaOrdenDeCargaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Mov305">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Mov305" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Mov305" />
+      <wsdl:output message="tns:Mov305Response" />
+    </wsdl:operation>
+    <wsdl:operation name="EgresoSinFleteFazones">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__EgresoSinFleteFazones" />
+      </wsp:Policy>
+      <wsdl:input message="tns:EgresoSinFleteFazones" />
+      <wsdl:output message="tns:EgresoSinFleteFazonesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="MovAjuste">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__MovAjuste" />
+      </wsp:Policy>
+      <wsdl:input message="tns:MovAjuste" />
+      <wsdl:output message="tns:MovAjusteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="EgresosNoProductivos">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__EgresosNoProductivos" />
+      </wsp:Policy>
+      <wsdl:input message="tns:EgresosNoProductivos" />
+      <wsdl:output message="tns:EgresosNoProductivosResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLoteDispYRecepcion">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ConsultaLoteDispYRecepcion" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ConsultaLoteDispYRecepcion" />
+      <wsdl:output message="tns:ConsultaLoteDispYRecepcionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_Z2100" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_Z2100" />
+      <wsdl:output message="tns:Z_SDMF_RFC_Z2100Response" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_Z2200N">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_Z2200N" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_Z2200N" />
+      <wsdl:output message="tns:Z_SDMF_Z2200NResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ContabilizarIngresos">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ContabilizarIngresos" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ContabilizarIngresos" />
+      <wsdl:output message="tns:ContabilizarIngresosResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="IngresosEgresosFazones">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__IngresosEgresosFazones" />
+      </wsp:Policy>
+      <wsdl:input message="tns:IngresosEgresosFazones" />
+      <wsdl:output message="tns:IngresosEgresosFazonesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PesaNeto">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__PesaNeto" />
+      </wsp:Policy>
+      <wsdl:input message="tns:PesaNeto" />
+      <wsdl:output message="tns:PesaNetoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Mov975">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Mov975" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Mov975" />
+      <wsdl:output message="tns:Mov975Response" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MSJ_ENTREGA">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_MSJ_ENTREGA" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_MSJ_ENTREGA" />
+      <wsdl:output message="tns:Z_SDMF_RFC_MSJ_ENTREGAResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaPedido">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ConsultaPedido" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ConsultaPedido" />
+      <wsdl:output message="tns:ConsultaPedidoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MOV_311">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_MOV_311" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_MOV_311" />
+      <wsdl:output message="tns:Z_SDMF_RFC_MOV_311Response" />
+    </wsdl:operation>
+    <wsdl:operation name="PesaBruto">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__PesaBruto" />
+      </wsp:Policy>
+      <wsdl:input message="tns:PesaBruto" />
+      <wsdl:output message="tns:PesaBrutoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidaContratos">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__ValidaContratos" />
+      </wsp:Policy>
+      <wsdl:input message="tns:ValidaContratos" />
+      <wsdl:output message="tns:ValidaContratosResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Verif.Ped.TrasladoRedespacho">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Verif.Ped.TrasladoRedespacho" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Verif.Ped.TrasladoRedespacho" />
+      <wsdl:output message="tns:Verif.Ped.TrasladoRedespachoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Fill_Z1000">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Fill_Z1000" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Fill_Z1000" />
+      <wsdl:output message="tns:Fill_Z1000Response" />
+    </wsdl:operation>
+    <wsdl:operation name="FletesDobleTramo">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__FletesDobleTramo" />
+      </wsp:Policy>
+      <wsdl:input message="tns:FletesDobleTramo" />
+      <wsdl:output message="tns:FletesDobleTramoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP__Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN" />
+      </wsp:Policy>
+      <wsdl:input message="tns:Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN" />
+      <wsdl:output message="tns:Z_SDMF_RFC_CONS_PP_TAB_CUB_TANResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ZSDWS_SCATO" type="tns:ZSDWS_SCATO">
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#BN__ZSDWS_SCATO" />
+    </wsp:Policy>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DatosMateriales">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosMaterialesRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_VENTA_TRIGO_MAIZRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosProveedores">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosProveedoresRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidacionCOT">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidacionCOTRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_ZE7550">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_ZE7550Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100T">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_Z2100TRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCliente">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosClienteRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaStockYLote">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidaStockYLoteRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IngresosBodega">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:IngresosBodegaRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnulaContabilizacion">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:AnulaContabilizacionRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CREDITOS">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_CREDITOSRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaOrdenDeCarga">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaOrdenDeCargaRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Mov305">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Mov305Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EgresoSinFleteFazones">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:EgresoSinFleteFazonesRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovAjuste">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:MovAjusteRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EgresosNoProductivos">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:EgresosNoProductivosRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLoteDispYRecepcion">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaLoteDispYRecepcionRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_Z2100Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_Z2200N">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_Z2200NRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContabilizarIngresos">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ContabilizarIngresosRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IngresosEgresosFazones">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:IngresosEgresosFazonesRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PesaNeto">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:PesaNetoRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Mov975">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Mov975Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MSJ_ENTREGA">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_MSJ_ENTREGARequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaPedido">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaPedidoRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MOV_311">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_MOV_311Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PesaBruto">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:PesaBrutoRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaContratos">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidaContratosRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Verif.Ped.TrasladoRedespacho">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Verif.Ped.TrasladoRedespachoRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Fill_Z1000">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Fill_Z1000Request" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FletesDobleTramo">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:FletesDobleTramoRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+      <soap:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_CONS_PP_TAB_CUB_TANRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ZSDWS_SCATO_soap12" type="tns:ZSDWS_SCATO">
+    <wsp:Policy>
+      <wsp:PolicyReference URI="#BN__ZSDWS_SCATO_soap12" />
+    </wsp:Policy>
+    <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DatosMateriales">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosMaterialesRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_VENTA_TRIGO_MAIZ">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_VENTA_TRIGO_MAIZRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosProveedores">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosProveedoresRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidacionCOT">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidacionCOTRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_ZE7550">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_ZE7550Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100T">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_Z2100TRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DatosCliente">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:DatosClienteRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaStockYLote">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidaStockYLoteRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IngresosBodega">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:IngresosBodegaRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AnulaContabilizacion">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:AnulaContabilizacionRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CREDITOS">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_CREDITOSRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaOrdenDeCarga">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaOrdenDeCargaRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Mov305">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Mov305Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EgresoSinFleteFazones">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:EgresoSinFleteFazonesRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovAjuste">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:MovAjusteRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EgresosNoProductivos">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:EgresosNoProductivosRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaLoteDispYRecepcion">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaLoteDispYRecepcionRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_Z2100">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_Z2100Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_Z2200N">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_Z2200NRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ContabilizarIngresos">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ContabilizarIngresosRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IngresosEgresosFazones">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:IngresosEgresosFazonesRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PesaNeto">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:PesaNetoRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Mov975">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Mov975Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MSJ_ENTREGA">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_MSJ_ENTREGARequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConsultaPedido">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ConsultaPedidoRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_MOV_311">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_MOV_311Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PesaBruto">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:PesaBrutoRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaContratos">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:ValidaContratosRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Verif.Ped.TrasladoRedespacho">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Verif.Ped.TrasladoRedespachoRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Fill_Z1000">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Fill_Z1000Request" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FletesDobleTramo">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:FletesDobleTramoRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Z_SDMF_RFC_CONS_PP_TAB_CUB_TAN">
+      <wsoap12:operation soapAction="urn:sap-com:document:sap:rfc:functions:ZSDWS_SCATO:Z_SDMF_RFC_CONS_PP_TAB_CUB_TANRequest" style="document" />
+      <wsdl:input>
+        <wsoap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsoap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ZSDWS_SCATO">
+    <wsdl:port name="ZSDWS_SCATO" binding="tns:ZSDWS_SCATO">
+      <soap:address location="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    </wsdl:port>
+    <wsdl:port name="ZSDWS_SCATO_soap12" binding="tns:ZSDWS_SCATO_soap12">
+      <wsoap12:address location="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

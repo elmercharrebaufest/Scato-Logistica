@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<PuestoDeTrabajoDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    PermisosHelper.Is(PermisosScato.AbmPuestoDeTrabajo)
+        ? grilla.ColumnaEliminarModificar(Html, "PuestoDeTrabajo")
+        : grilla.Column("PuestoDeTrabajo", "", m => "", canSort: false),
+    grilla.Columna("NombrePuesto", Textos.PuestoDeTrabajo_NombrePuesto),
+    grilla.Columna("Lector", Textos.PuestoDeTrabajo_Lector),
+    grilla.Columna("Entrada", Textos.PuestoDeTrabajo_Entrada, x => String.Join(" ", (x.Entrada ?? "").Split(','))),
+    grilla.Columna("EntradaSupervisor", Textos.PuestoDeTrabajo_EntradaSupervisor, x => String.Join(" ", (x.EntradaSupervisor ?? "").Split(','))),
+    grilla.Columna("SensorQuiebre", Textos.PuestoDeTrabajo_SensorQuiebre),
+    grilla.Columna("LectorQr", Textos.PuestoDeTrabajo_LectorQr),
+    grilla.Columna("VideoCamarasString", Textos.ActividadPorDispositivo_Camara),
+    grilla.Columna("NombrePc", Textos.PuestoDeTrabajo_NombrePc),
+    grilla.Columna("Automatico", Textos.PuestoDeTrabajo_Automatico,
+        m => Html.Raw("<span style=\"display:inline-block; width:30px\">" + FormattingHtmlHelper.Formatted(m.Automatico) + "</span> " +
+                            Html.BotonLink(Textos.PuestoDeTrabajo_ModificarModalidad, "ModificarModalidad", "PuestoDeTrabajo", new { m.Id }, "ajax-editar-link", "icon-wrench", true)))
+    ))

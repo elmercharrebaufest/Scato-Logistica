@@ -1,0 +1,15 @@
+﻿@using System.Web.Mvc.Html
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoCamionesHoratv.js")"></script>
+<script type="text/javascript">
+    var textoHistorico = "@Textos.CamionesFechaComparacion";
+    var textoActual = "@Textos.CamionesFechaActual";
+    var urlGenerarCamionesHora = '@Url.Action("GenerarGraficoCamionesPorHora","Index")';
+</script>
+
+
+<div class="col-12 borde-grafico">
+    <canvas id="myChartCamiones"></canvas>
+</div>

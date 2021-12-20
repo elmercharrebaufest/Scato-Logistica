@@ -1,0 +1,26 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.NirsDto
+@{
+    ViewBag.Title = Textos.Nirs_Modificar;
+    Layout = null;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/nirs.Index.js")"></script>
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Nirs_Modificar }))
+{
+    @Html.Partial("_CrearModificar", Model)           
+}
+
+<div class="modal hide fade " id="dialogo-editar-modalidad">
+    <div class="modal-header">
+        <h4 id="dialogo-editar-modalidad-title"></h4>
+    </div>
+    <div class="modal-body" id ="dialogo-editar-modalidad-body">
+    </div>
+    <div class="modal-footer">
+        <input id="dialogo-editar-modalidad-guardar" type="button" class="btn btn-primary" value="@Textos.Guardar"/>
+        <input id="dialogo-editar-modalidad-cancelar" type="button" class="btn" value="@Textos.Cancelar"/>
+    </div>
+</div>

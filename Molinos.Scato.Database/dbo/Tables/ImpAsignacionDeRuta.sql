@@ -1,0 +1,20 @@
+﻿CREATE TABLE [dbo].[ImpAsignacionDeRuta] (
+    [Id]                     INT             NOT NULL,
+	[NumeroDeOrden]			NVARCHAR (50)    NULL,
+	[Patente]				NVARCHAR (50)    NULL,
+	[PatenteAcoplado]		NVARCHAR (50)    NULL,
+	[Material]				NVARCHAR (50)    NULL,
+	[MaterialCodigoSap]		NVARCHAR (50)    NULL,
+	[BalanzaBruto]			NVARCHAR (50)    NULL,
+	[Calle]					NVARCHAR (50)    NULL,
+	[Hidraulicas]			NVARCHAR (1000)    NULL,
+	[Almacen]				NVARCHAR (50)    NULL,
+	[BalanzaTara]			NVARCHAR (50)    NULL,
+	[Humedad]				NVARCHAR (50)    NULL,
+	[Calidad]				NVARCHAR (50)    NULL,
+	[FechaCalado]			DATETIME NULL, 
+	[Observacion]			NVARCHAR (50)    NULL,
+	[TipoVehiculo]				NVARCHAR (50)    NULL,
+    CONSTRAINT [PK_dbo.ImpAsignacionDeRuta] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_dbo.ImpAsignacionDeRuta_dbo.ImpId] FOREIGN KEY ([Id]) REFERENCES [dbo].[Impresion] ([Id]) ON DELETE CASCADE
+);

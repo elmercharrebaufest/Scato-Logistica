@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<UsuarioDto>)ViewBag.Items;    
+}
+
+<script src="@Url.Script("~/Scripts/material.listarMateriales.js")" type="text/javascript"></script>
+
+
+<style>
+    .tip {
+        max-width: 500px;
+        white-space: normal;
+    }
+</style>
+<div id="contenedormatriculamodificar">
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaModificar(Html, "Matricula"),
+                grid.Columna("Nombre", Textos.Chofer_Nombre),
+                grid.Columna("Apellido", Textos.Chofer_Apellido),
+                grid.Columna("NombreUsuario", Textos.Usuario_NombreUsuario),
+                grid.Columna("Matricula", Textos.Matricula_Titulo)
+))
+</div> 

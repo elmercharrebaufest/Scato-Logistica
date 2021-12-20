@@ -1,0 +1,32 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.WorkflowCreadoDto
+@{
+    ViewBag.Title = Textos.MovimientoDeBines_Crear;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<style>
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+
+<div class ="container">
+    <div class="titSecciones">@Textos.Workflow-@Textos.MovimientoDeBines_Titulo</div>
+    <br/>
+    <h4>Movimiento Generado: @Model.Numero</h4>
+    <h5>Tipo de Bin: @Model.MaterialDescripcion</h5>
+    <h5>Nuevo Stock @Model.CentroDescripcion: @Model.StockCentro Unidades</h5>
+    @if (Model.TipoAjuste.HasValue && Model.TipoAjuste.Value == TipoStockBines.Productor)
+    {
+        <h5>Nuevo Stock @Model.ProveedorDescripcion: @Model.StockProveedor Unidades</h5>
+    }
+    @if (Model.TipoAjuste.HasValue && Model.TipoAjuste.Value == TipoStockBines.VinedoPropio)
+    {
+        <h5>Nuevo Stock @Model.VinedoPropioDescripcion: @Model.StockVinedoPropio Unidades</h5>
+    }
+        <div class="botones-carta-porte centered">
+            @Html.ActionLink(Textos.Aceptar, "Index", "ListaDeCamiones", null, new {@class="btn btn-primary"})
+        </div>
+</div>
+

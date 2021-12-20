@@ -1,0 +1,220 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.OrdenDeCargaContenedorDto
+@{
+    var tiposComerciales = (IEnumerable<SelectListItem>) ViewBag.TiposComerciales;
+    var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
+    var contenedoresEntrada = (IEnumerable<SelectListItem>)ViewBag.ContenedoresEntrada;
+    var contenedoresSalida = (IEnumerable<SelectListItem>)ViewBag.ContenedoresSalida;
+    var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
+    var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
+
+    if (ViewBag.SoloLectura == null)
+    {
+        ViewBag.SoloLectura = false;
+    }
+    bool soloLectura = ViewBag.SoloLectura;
+}
+<div id ="links" 
+    data-url-obtener-proveedores-sap ="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+    data-url-buscar-proveedor ="@Url.Action("BuscarProveedor", "Consultas")"
+    data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
+    data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+    data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"
+    data-url-buscar-choferes = "@Url.Action("BuscarChoferes", "Consultas")"
+    data-url-buscar-chofer-unico = "@Url.Action("BuscarChoferUnico", "Consultas")"
+    data-url-obtener-clientes-sap ="@Url.Action("ObtenerClientesSap", "Consultas")"
+    data-url-buscar-clientes = "@Url.Action("BuscarClientes", "Consultas")"
+    data-url-buscar-cliente-unico ="@Url.Action("BuscarCliente", "Consultas")"
+    />
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.RecorridoId)
+<div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido"/>
+<div class="row-fluid row-fluid-ie7">
+    <div class="span6">
+        <fieldset>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.OrdenDeCargaContenedor, new { @class = "control-label", @style = "font-size: 11px; width: 170px;"})
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.OrdenDeCargaContenedor, new { @class = "control input-medium numero validar", autocomplete = "off", @readonly="readonly"})
+                        @Html.ValidationMessageFor(model => model.OrdenDeCargaContenedor)
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div class="row-fluid row-fluid-ie7">
+    <div class="span6">
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    <div class="controls-small">
+                    </div>
+                </div>
+            </div>
+        <div class="row row-carta-porte">
+            <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.TipoVehiculo, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.DropDownListFor(model => model.TipoVehiculo, tiposVehiculo, new {@class = "control input-small", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.TipoVehiculo)
+                     </div>
+                </div>
+            <div class="control-group control-group-no-bottom">
+                @Html.LabelFor(model => model.PatenteCamion, new {@class = "control-label small"})
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.PatenteCamion, new {@class = "control input-small patente-internacional uppercase"})
+                    @Html.ValidationMessageFor(model => model.PatenteCamion)
+                </div>
+            </div>
+            <div class="control-group control-group-no-bottom">
+                @Html.LabelFor(model => model.PatenteAcoplado, new {@class = "control-label small"})
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.PatenteAcoplado, new {@class = "control input-small patente-internacional uppercase", data_error_requerido= String.Format(Textos.Error_Requerido,Textos.Transportista) })
+                    @Html.ValidationMessageFor(model => model.PatenteAcoplado)
+                </div>
+            </div>
+        </div>     
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Transportista, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Transportista, new {@class = "control input-xlarge ", data_error_requerido= String.Format(Textos.Error_Requerido,Textos.Transportista) })
+                        @Html.ValidationMessageFor(model => model.Transportista)
+                        @Html.HiddenFor(model => model.TransportistaId)
+                        @Html.HiddenFor(model => model.EsTransportista)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.TipoComercial, new {@class = "control-label small"})
+                    <div class="controls-small" id ="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
+                        @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, new {@class = "control input-large"})
+                        @Html.ValidationMessageFor(model => model.TipoComercialId)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Material, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.DropDownListFor(model => model.MaterialId, materiales, new {@class = "control input-large"})
+                        @Html.ValidationMessageFor(model => model.MaterialId)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Destino, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Destino, new {@class = "control input-xlarge" }) 
+                        @Html.ValidationMessageFor(model => model.Destino)
+                        @Html.HiddenFor(model => model.DestinoId)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.ContenedorEntradaId, new {@class = "control-label small"})
+                    <div class="controls-small" id ="contenedoresEntrada">
+                        @Html.DropDownListFor(model => model.ContenedorEntradaId, contenedoresEntrada, new {@class = "control input-large"})
+                        @Html.ValidationMessageFor(model => model.ContenedorEntradaId)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.ContenedorSalidaId, new {@class = "control-label small"})
+                    <div class="controls-small" id ="contenedoresSalida">
+                        @Html.DropDownListFor(model => model.ContenedorSalidaId, contenedoresSalida, new {@class = "control input-large"})
+                        @Html.ValidationMessageFor(model => model.ContenedorSalidaId)
+                    </div>
+                </div>
+            </div>
+        </div>
+    <fieldset class="grupo-carta-porte" style="margin-top: 20px;">
+        <div class="span6">
+            @Textos.Chofer    
+            <div class="row row-carta-porte">
+                <div id="divSpan6" class="span8 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Chofer.Cuil, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control input-medium cuilValido", data_error_cuil_invalido = string.Format(Textos.CuilInvalido) })
+                        @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control input-medium" })
+
+                        @Html.ValidationMessageFor(model => model.Chofer.Cuil)
+                    </div>
+                </div>
+                <div class="span4 control-group control-group-no-bottom">
+                    <label class="control-label xsmall-label">Extranjero</label>
+                    <div class="controls-small">
+                        @Html.CheckBoxFor(model => model.EsExtranjero, new { @class = "input-small", @id = "esExtranjero", @name = "esExtranjero" })
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model =>  model.Chofer.TipoDocumentoIdentidadId, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.DropDownListFor(model => model.Chofer.TipoDocumentoIdentidadId, tiposDocumentos, new {@class = "control  input-small", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.Chofer.TipoDocumentoIdentidadId)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model =>  model.Chofer.NumeroDeDocumento, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new {@class = "control input-small ", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Documento" })})
+                        @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Chofer.Nombre, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.HiddenFor(model => model.Chofer.Id)
+                        @Html.TextBoxFor(model => model.Chofer.Nombre, new {@class = "control input-large ", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Nombre" })})
+                        @Html.ValidationMessageFor(model => model.Chofer.Nombre)
+                    </div>
+                </div>
+            </div>
+            <div class="row row-carta-porte">
+                <div class="span6 control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.Chofer.Apellido, new {@class = "control-label small"})
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.Chofer.Apellido, new {@class = "control input-large ", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Apellido" })})
+                        @Html.ValidationMessageFor(model => model.Chofer.Apellido)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<br/>
+
+<div class="row-fluid row-fluid-ie7">
+    <div class="span4">
+        <div class="row row-carta-porte">
+        </div>
+    </div>
+    <div class="span4">
+        <div class="row row-carta-porte">
+        </div>
+    </div>
+    @if (!soloLectura)
+    {
+        <div class="span4 right">
+            <div class="row row-carta-porte">
+                <button id="aceptar" class="btn btn-primary" type="submit">@Textos.Aceptar</button>   
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class="btn"})
+            </div>
+        </div>        
+    }
+</div>
+<div id="autocompleteProv"></div>
+<div id="autocompleteTran"></div>

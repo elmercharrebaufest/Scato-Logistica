@@ -1,0 +1,24 @@
+<div fxLayout='row wrap' class='card-ritmo-container pb-5'>
+    <div fxFlex='30' class='card-ritmo-grafico shadow'>
+        <h5 class='colorTitle text-center py-3 w-100 ritmo-title'>Ritmo de carga</h5>
+        <p-knob [(ngModel)]='valorRitmo' class='center-knob' [valueColor]='colorRitmo' [size]='150' [min]='0' [max]='valorRitmo' [strokeWidth]='5' [readonly]='true'></p-knob>
+        <img src='assets/carga/toneladas.png' class='img-toneladas'>
+        <p class='text-knob text-center'>por hora por mano</p>
+        <p class='footer-ritmos-text text-center'>Ultima actualización: {{horaActualizacion}}</p>
+    </div>
+    <div fxFlex='30' class='card-ritmo-grafico shadow'>
+        <h5 class='colorTitle text-center py-3 w-100 ritmo-title'>Llevas cargando</h5>
+        <p-knob [(ngModel)]='valorCargando' class='center-knob'valueColor='#5CB85C' [size]='150' [min]='0' [max]='tnTotales' [strokeWidth]='5' [readonly]='true'></p-knob>
+        <img src='assets/carga/toneladas.png' class='img-toneladas'>
+        <p class='text-knob text-center'>de {{tnTotales}} Tn totales</p>
+        <p class='footer-ritmos-text text-center' *ngIf='liquido'>Ultima actualización: {{horaActualizacion}}</p>
+        <p class='footer-ritmos-text text-center' *ngIf='!liquido'>Balanza 7 + Balanza 8</p>
+    </div>
+    <div fxFlex='30' class='card-ritmo-grafico shadow'>
+        <h5 class='colorTitle text-center py-3 w-100 ritmo-title'>Ritmo Carga NETO</h5>
+        <p-knob [(ngModel)]='valorNeto' class='center-knob' valueColor='#5CB85C' [size]='150' [min]='0' [max]='valorNeto' [strokeWidth]='5' [readonly]='true'></p-knob>
+        <img src='assets/carga/toneladas.png' class='img-toneladas'>
+        <p class='text-knob text-center'>por hora por mano</p>
+        <p class='footer-ritmos-text text-center'>Ultima actualización: {{horaActualizacion}}</p>
+    </div>
+</div>

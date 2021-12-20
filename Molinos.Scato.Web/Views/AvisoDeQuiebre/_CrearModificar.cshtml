@@ -1,0 +1,113 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.UsuarioQuiebreBarrerasDto
+
+<style>      
+    div.modal {width: 600px}    
+    .form-horizontal .control-label {padding-top: 0}
+    #errMatricula {
+        display: none; 
+        color:red;
+        font-size:10px;
+    }
+</style>
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+@if (Model != null && Model.Id != 0)
+{
+    @Html.HiddenFor(m => m.Nombre)
+    @Html.HiddenFor(m => m.Apellido)
+    @Html.HiddenFor(m => m.NombreUsuario)   
+}
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Nombre, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.Nombre, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.Nombre, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.Nombre)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Apellido, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.Apellido, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.Apellido, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.Apellido)
+    </div>
+</div>        
+
+<div class="control-group">
+    @Html.LabelFor(m => m.NombreUsuario, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.NombreUsuario, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.NombreUsuario, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.NombreUsuario)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoQuiebreApertura, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoQuiebreApertura, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoQuiebreCierre, new {@class = "control-label"})
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoQuiebreCierre, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.ReasignacionDeTarjeta, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.ReasignacionDeTarjeta, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoAutorizarTiempoEnTransito, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoAutorizarTiempoEnTransito, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoAutorizarTiempoEnTransitoConfirmado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoAutorizarTiempoEnTransitoConfirmado, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoAutorizarTiempoEnTransitoRechazado, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoAutorizarTiempoEnTransitoRechazado, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoContingencia, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoContingencia, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoEntregaHexano, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoEntregaHexano, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoLineUp, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoLineUp, new { @checked = "checked" })
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.AvisoCambioPinchazosPorCalada, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.AvisoCambioPinchazosPorCalada, new { @checked = "checked" })
+    </div>
+</div>

@@ -1,0 +1,6 @@
+Estimados,<br/>
+Se acaba de ingresar un camión de Hexano y se envía a planta en el horario mencionado.
+{0}
+
+{1}
+

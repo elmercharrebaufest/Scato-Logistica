@@ -1,0 +1,149 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+@Scripts.Render("~/bundles/jqueryval")
+
+<script src="~/Scripts/jquery.colorPicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoDePlanta.js")"></script>
+
+<script type="text/javascript">
+
+
+    var obtenerDatos = "@Url.Action("GenerarGraficoDePlanta")"
+    var modificar = "@Url.Action("Modificar")"
+
+</script>
+
+
+
+
+<style>
+    .tip {
+        max-width: 500px;
+        white-space: normal;
+    }
+
+    .scrollgrid {
+        height: 80px !important;
+    }
+
+    .modal {
+        width: 350px;
+    }
+
+    div.iconoColor {
+        width: 47px !important;
+    }
+
+    .overflow-ellipsis {
+        text-overflow: ellipsis;
+    }
+    .cambiarColor{
+        background-color: #dedede;
+    }
+    .p {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .popover {
+        background: black !important;
+        color: antiquewhite;
+    }
+
+        .popover.bottom .arrow:after {
+            border-bottom-color: black;
+        }
+</style>
+
+<div id="graficoDePlanta">
+    <div class="col-lg-12 bordeGrisCompleto">
+
+        <div class="panel panel-default" style="margin-right: 10px;">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i>&nbsp;@Textos.GraficoDePlanta_CamionesPorActividad
+            </div>
+            <div class="row" style="margin-left: 30px; margin-top:4px;">
+                <div style="font-size:9px; color: black; margin-left:-3px; cursor:pointer; " class="control" data-bind="text: deshabilitar, click: MostrarTodoChecked" id="checkTodos" type="checkbox" checked="checked">
+
+                </div>
+                <div data-bind="foreach: actividades">
+                    <div class="span2" style="display:inline; margin-left:inherit">
+                        <a title="Modificar" style="margin-left:-4px !important; width:18px!important" class="span1" data-bind="click: AbrirModal">
+                            <i class="icon-edit"></i>
+                        </a>
+                        <div>
+                            <div class="span1 iconoColor" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-bind="css : {'cambiarColor' : MostrarColor}, attr: { 'style': BackgroundStyle, 'data-content':NombreActividadDesc }, click: Actualizate">
+
+                                <label data-bind="text: CantidadCamiones()" style="text-align:center; margin-top:-3px; color:white; font-size:12px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-weight:bolder"></label>
+                            </div>
+
+                            <div class="mostrar-lista hidden-xs hidden-phone hidden-tablet overflow-ellipsis p" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-bind="css : {'cambiarColor' : MostrarColor}, text: NombreActividadDesc, click: Actualizate, attr:{ 'data-content':NombreActividadDesc }" style="font-size:9px; color: black;  cursor: pointer;padding-left:5%; margin-right:7px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div style="transform: rotate(-90deg); font-size: 12px; color: #666; top:45%; left:-10px; position: absolute; font-family: Helvetica Neue, Helvetica, Arial, sans-serif">@Textos.Porcentaje</div>
+                <canvas id="myChart" style="margin-left:1%">
+                </canvas>
+                <div class="row" style="text-align: center; position:relative;top:-20px; font-size:12px; color: #666; font-family: Helvetica Neue, Helvetica, Arial, sans-serif">@Textos.Minutos</div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal dialogo-editar" id="modal" role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-bind="click: CancelarModal">&times;</button>
+            <h4 id="dialogo-editar-title">Ajuste Actividad</h4>
+        </div>
+        <div class="modal-body">
+
+            @using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal" }))
+            {
+
+                <div data-bind="foreach: actividades">
+                    <!-- ko if: NombreActividad() == $root.nombreSeleccionado()-->
+                    <div class="row-fluid">
+                        <div class="col-md-12  col-xs-12" style="margin-top:2%">@Textos.Actividad</div>
+                        <div class="col-md-12 centered col-xs-12" style="border: 1px solid #cccccc;margin-top:2%; padding-top:5px; background:#EFEFEF" data-bind="text: NombreActividadDesc"></div>
+                        <div class="col-md-12  col-xs-12" style="margin-top:2%; padding-left:1%">@Textos.GraficoDePlanta_Demorados</div>
+                        <div class="col-md-12 centered col-xs-12" style="text-align: center; margin-top:2%; border: 1px solid #cccccc; padding-top:5px; background:#EFEFEF;" data-bind="text: CantidadCamionesDemorados"></div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="col-md-12  col-xs-12" style="margin-top:2%;">Carga</div>
+                        <div class="col-md-12 col-xs-12" style="margin-top:2%;">
+                            <div class="progress progressCustom progress-striped">
+                                <div class="bar texto-barra" data-bind="text: CantidadCamiones() + '/' + Rango(), attr: { 'style': PorcentajeStyle }, visible: CantidadCamiones() > 0, css: { 'bar-success': Porcentaje() <= 40, 'bar-warning': Porcentaje() <= 65 && Porcentaje() > 40, 'bar-danger': Porcentaje() > 65 }"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-4" style=" margin-top:2%; padding-left:1%">Rango</div>
+                        <div class="col-md-4 col-xs-4" style="margin-top:2%;">
+                            <input id="Rango" name="Rango" class="input-mini Rango" type="number" data-bind="value: RangoNuevo" />
+                        </div>
+                        <div class="col-md-3 col-xs-3" style="margin-top:2%;">
+                            <input id="Color" type="text" name="Color" alt="Cambiar color" data-text="Cambiar Color" data-bind="value: ColorNuevo" style="visibility: hidden; position: absolute;" />
+                        </div>
+                        @Html.ValidationMessage("Rango")
+
+                    </div>
+
+                    <!-- /ko -->
+                </div>
+
+            }
+        </div>
+        <div class="modal-footer">
+            <input class="dialogo-editar-boton hide btn" type="button" value="" />
+            <input class="btn btn-primary" type="button" value="@Textos.Guardar" data-bind="click: Guardar" />
+            <input class="dialogo-editar-cancelar btn" type="button" value="@Textos.Cancelar" data-bind="click: CancelarModal" />
+        </div>
+    </div>
+
+
+</div>
+

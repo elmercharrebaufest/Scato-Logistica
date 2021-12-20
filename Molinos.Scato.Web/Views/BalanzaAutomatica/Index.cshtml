@@ -1,0 +1,425 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+
+@{
+    ViewBag.Title = Textos.BalanzasAutomaticas;
+
+    var balanzas = ((IList<BalanzaAutomaticaDto>)ViewBag.Balanzas).ToList();
+
+    var eventos = (IList<NotificacionDto>)ViewBag.Eventos;
+
+    var mostrarAlertaPaseAutomatico = (bool)(ViewBag.MostrarValidacionEtapaAutomatica ?? false);
+
+    var mensajeAlertaPaseAutomatico = (string)ViewBag.MensajeValidacionEtapaAutomatica;
+}
+<link href="~/Content/fontawesome-all.min.css" rel="stylesheet" />
+@Html.Hidden("ValidarPatente", Url.Action("VerificarPatente"))
+@Html.Hidden("ConfirmarNotificacion", Url.Action("ConfirmarNotificacion"))
+@Html.Hidden("obtenerFoto", Url.Action("ObtenerUltimaFoto", "Foto"))
+@Html.Hidden("home", Url.Action("Index", "ListaDeCamiones"))
+@Html.Hidden("cambiarModalidad", Url.Action("CambiarModalidad"))
+@Html.Hidden("obtenerVagonesEnBalanza", Url.Action("ObtenerVagonesEnBalanza"))
+@Html.Hidden("activarMaestro", Url.Action("ActivarMaestro"))
+@Html.Hidden("confirmarEspera", Url.Action("ConfirmarEspera"))
+@Html.Hidden("accionesEspeciales", Url.Action("AccionesEspeciales"))
+@Html.Hidden("cerearBalanza", Url.Action("CerearBalanza"))
+@Html.Hidden("avanzar", Url.Action("Avanzar"))
+@Html.Hidden("tomarPeso", Url.Action("TomarPeso"))
+@Html.Hidden("pesadaExportacion", Url.Action("PesadaExportacion"))
+@Html.Hidden("cargaExportacion", Url.Action("Carga"))
+@Html.Hidden("validarVagon", Url.Action("ValidarVagon"))
+@Html.Hidden("obtenerDatosExpo", Url.Action("ObtenerEtapaExpo"))
+@Html.Hidden("mensajeAlertPaseAutomatico", mensajeAlertaPaseAutomatico)
+
+<script>
+    var eventos = ('@Html.Raw(Json.Encode(eventos))');
+    eventos = eventos.split('\\').join().split('\"{').join('{').split('}\"').join('}');
+    eventos = JSON.parse(eventos);
+    url = '@Url.Action("RedireccionarPesada")';
+</script>
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/balanzaAutomatica.js")"></script>
+
+@if (mostrarAlertaPaseAutomatico && !string.IsNullOrEmpty(mensajeAlertaPaseAutomatico))
+{
+    <script type="text/javascript">
+        MostrarAlertaInfo($('#mensajeAlertPaseAutomatico').val(), 10000);
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="span4" style="margin-left: 0px">
+        <div class="titSecciones" id="titulo-balanzas" style="padding:0">@Textos.BalanzasAutomaticas</div>
+    </div>
+    <div class="span4" style="display:inline-flex;margin-left: 0px">
+        <div class="tipo-balanzas">Bal. Manual</div>
+        <label class="switch sinMargen">
+            <input type="checkbox" class="cambio-tipo" checked>
+            <span class="slider round"></span>
+        </label>
+        <div class="tipo-balanzas">Bal. Automático</div>
+    </div>
+
+    @Html.ActionLink(Textos.ListaDeCamiones_Titulo, "Index", "ListaDeCamiones", new { venimosDeListaDeTareasAutomatizada = true }, new { @class = "btn pull-right", id = "btnListaDeTareas", tabindex = 4 })
+    @if (ViewBag.PantallaPrincipal)
+    {
+        <a class="btn pull-right" id="btnPantallaPrincipal" tabindex="4" style="margin:0 5px;">@Textos.ListaDeCamiones_VersionBalanza</a>
+    }
+</div>
+<div id="balanzas-camiones">
+    @foreach (var b in balanzas)
+    {
+        <div class="row-fluid">
+            @if (!b.EsVagon && !b.EsExpo)
+            {
+                @Html.Partial("Balanza", b)
+            }
+        </div>
+    }
+</div>
+<div id="balanzas-expo" hidden>
+    @foreach (var b in balanzas)
+    {
+        <div class="row-fluid">
+            @if (b.EsVagon)
+            {
+                @Html.Partial("BalanzaTren", b)
+            }
+            else if (b.EsExpo)
+            {
+                @Html.Partial("BalanzaExpo", b)
+            }
+        </div>
+    }
+</div>
+
+<div id="barreraModal" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Indique motivo:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="control-group">
+            @Html.Label("Motivo", new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
+            </div>
+        </div>
+
+        <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+        <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
+
+        @Html.Hidden("elemento-id")
+        @Html.Hidden("elemento-barrera")
+        @Html.Hidden("url")
+    </div>
+
+    <div class="modal-footer">
+        <a href="#" id="guardar" class="btn btn-primary">Aceptar</a>
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
+    </div>
+</div>
+
+<div id="confirmar-pesada-vagon" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 38%; top: 30%; width: 365px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+
+        <h3>Confirmar?</h3>
+        <div><span>Diferencia peso tomado: </span><span id="peso-modal"></span><span>Kg.</span></div>
+    </div>
+
+    <div class="modal-footer">
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="finalizar-pesaje" class="btn btn-aceptar btn" data-id="">Confirmar</a>
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn btn-warning">Cancelar </a>
+    </div>
+</div>
+
+<div id="actividadesEspecialesDiv">
+</div>
+
+<div class="modal hide fade" id="pesada-vagones-modal"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Pesar Vagones:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="peso-tomado">
+            <span id="peso-vagon">
+                0
+            </span>
+            <span>
+                Kg.
+            </span>
+        </div>
+        <div class="text-center">
+            <div>
+                <a class="btn pesar" id="tomar-peso" data-id="">Tomar Peso</a>
+                <a class="btn pesar-avanzar btn-aceptar" id="pesar-avanzar" data-id="" style="width:auto">Pesar y Avanzar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a data-dismiss="modal" aria-hidden="true" href="#" class="btn close">Cerrar </a>
+    </div>
+</div>
+
+
+<style>
+    .span3 {
+        border: none !important;
+    }
+
+    .row-fluid [class*="span"] {
+        min-height: 0px !important;
+    }
+
+    .card {
+        background: rgba(6, 121, 53, 0.9);
+    }
+
+    .card-head {
+        padding: 7.5px;
+        font-weight: bolder;
+        color: white;
+    }
+
+    .card-body {
+        background: #ffffff;
+        padding: 2.5px;
+        font-size: 13px;
+    }
+
+    hr {
+        margin: 5px;
+        border-top: 1px solid #d1d1d1;
+    }
+
+    .nombre {
+        font-size: 18px;
+    }
+
+    strong {
+        margin-right: 2px;
+    }
+
+    .row-fluid {
+        margin-top: 2.5%;
+    }
+
+    .error {
+        border: 1px solid #d23434 !important;
+        background: #d23434;
+    }
+
+    .alerta {
+        border: 1px solid #beca0c !important;
+        background: #beca0c;
+    }
+
+    .btn-aceptar {
+        margin: 0 5px 0 10px;
+        color: #36634b !important;
+        /*width: 50px;*/
+    }
+
+    .btn.btn-warning {
+        color: #fff !important;
+    }
+
+    .btn.vagones {
+        color: #36634b !important;
+        width: 50px;
+    }
+
+    .aperturaMaestro, .apertura {
+        color: #07c35f !important;
+    }
+
+    .cierreMaestro, .cierre {
+        color: #ea1f1f !important;
+    }
+
+    input[disabled] {
+        background-color: #eee !important;
+    }
+
+    .row-fluid {
+        margin-top: 0;
+    }
+
+    .sinMargen {
+        margin: 0 !important;
+    }
+
+    .row-fluid {
+        width: auto !important;
+    }
+
+        .row-fluid .span12 {
+            border: 1px solid #CCC;
+        }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 18px;
+        margin-top: 5px;
+    }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 4px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: rgba(0, 214, 21, 1);
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(12px);
+        -ms-transform: translateX(12px);
+        transform: translateX(12px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+    .estado-barreras-div {
+        margin-left: 0 !important;
+        width: 17.029915%;
+    }
+
+    .bar-ico {
+        font-size: 100px;
+        margin-top: 20px;
+    }
+
+    .sensor {
+        border: 1px solid #bbbbbb;
+        height: 40px;
+        width: 35px;
+        display: block;
+        margin-top: 10px;
+        margin-bottom: auto;
+    }
+
+    .sensor-ingreso {
+        box-shadow: inset 1px -1px 2px 0px black;
+    }
+
+    .sensor-trompa {
+        box-shadow: inset -1px -1px 2px 0px black;
+    }
+
+    .sensor-disponible {
+        background-color: forestgreen;
+    }
+
+    .sensor-bloqueado {
+        background-color: red;
+    }
+    .peso-tomado {
+        margin: 20px;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .tipo-balanzas {
+        font-size: 16px;
+        margin: 0 5px;
+    }
+
+    .table.encabezado {
+        margin-bottom: 5px;
+    }
+
+        .table.encabezado th, .table.encabezado td {
+            padding: 0 4px;
+            border-top: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+        }
+
+    .table.cuerpo {
+        margin-bottom: 0;
+    }
+
+        .table.cuerpo th, .table.cuerpo td {
+            padding: 0 4px;
+            border-top: none;
+            border-bottom: none;
+        }
+
+    .span4.expo {
+        margin: 0px;
+        height: 100%;
+    }
+
+        .span4.expo.izq {
+            border-right: 1px solid #ddd;
+        }
+
+        .span4.expo.der {
+            width: 35.3%;
+        }
+
+    .expo.titulo {
+        color: #FFF;
+        background-color: #666;
+    }
+</style>

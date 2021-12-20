@@ -1,0 +1,191 @@
+﻿@using System.Diagnostics.Eventing.Reader
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+
+@model FotosDto
+@{ 
+    var noMostrarBoton = (bool?)ViewBag.NoReemplazarCp ?? false;
+}
+<link href="@Url.Css("~/Content/fotos.css")" rel="stylesheet" type="text/css">
+<div id="links"
+     data-url-obtener-foto-mesa="@Url.Action("TomarFotoMesaDigitalizacion", "CargarCartaPorte")"
+     data-url-agregar-foto="@Url.Action("AgregarFotoARecorrido", "Foto")"
+    
+</div>
+<style>
+    #modalFoto {
+        top: 30px;
+        left: 10%;
+        width: 80%;
+        margin: 0 auto;
+    }
+</style>
+<script type="text/javascript">
+    
+   //var fotoSubida;
+
+    $(function () {
+        Test = {
+            UpdatePreview: function (obj) {
+                // if IE < 10 doesn't support FileReader
+                if (!window.FileReader) {
+                    // don't know how to proceed to assign src to image tag
+                } else {
+                    var reader = new FileReader();
+                    var target = null;
+
+                    reader.onload = function (e) {
+                        target = e.target || e.srcElement;
+                        $("#foto").prop("src", target.result);
+                        $('#FotoMesaDigitalizacion').val(target.result.split('base64,')[1]);
+                        $('#PuestoDeTrabajo').val("administracion");
+
+             };
+              reader.readAsDataURL(obj.files[0]);
+          }
+        }
+    };
+});
+
+    $(document).ready(function () {
+        $(document).keydown(function (e) {
+            switch (e.which) {
+                case 37:
+                    $(".carousel-control-prev").click();
+                    break;
+
+                case 39:
+                    $(".carousel-control-next").click();
+                    break;
+                default: return;
+            }
+            e.preventDefault();
+        });
+
+        $('.tomarFoto').click(function () {
+            tomarFotoMesaDigitalizacion();
+        });
+        
+        $('.guardarFoto').click(function () {
+           // var Foto = fotoSubida;
+            var FotoMesaDigitalizacion = $("#FotoMesaDigitalizacion").val();
+            var PuestoDeTrabajo = $("#PuestoDeTrabajo").val();
+            var FotoRecorridoId = $("#FotoRecorridoId").val();
+            var FotoPatente = $("#FotoPatente").val();
+            var FotoNumeroDocumentoIngreso = $("#FotoNumeroDocumentoIngreso").val();
+            if (FotoMesaDigitalizacion != "") {
+                $.post($("#links").data().urlAgregarFoto, {
+                    foto: FotoMesaDigitalizacion,
+                    RecorridoId: FotoRecorridoId,
+                    puestoDeTrabajo: PuestoDeTrabajo,
+                    numeroDocumentoIngreso: FotoNumeroDocumentoIngreso,
+                    Patente: FotoPatente
+                },
+                    function (data) {
+                        if (data.CodigoDeError == 0) {
+                            location.reload();
+                            //$('#modalFoto').modal('hide');
+                            //$('#article-photo-carousel ol').append($('<li class="" data-slide-to="1" data-target="#article-photo-carousel"><img alt="Cargar Imagen" src="data:image/jpeg;base64,' + FotoMesaDigitalizacion + '" /></li>'));
+                            //$('#article-photo-carousel').append($('<div class="carousel-item item"><img class="d-block img-fluid" src="data:image/jpeg;base64,' + FotoMesaDigitalizacion + '"/></div>'));
+
+                            //$('.carousel').carousel();
+                        } else {
+                            alert(data.Error);
+                        }
+                    }, "json");
+            }
+        });
+    });
+    function tomarFotoMesaDigitalizacion() {
+        $.getJSON($("#links").data().urlObtenerFotoMesa, null,
+            function (data) {
+                if (data.CodigoDeError == 0) {
+                    $('#foto').attr("src", 'data:image/jpeg;base64,' + data.Foto);
+                    $('#FotoMesaDigitalizacion').val(data.Foto);
+                    $('#PuestoDeTrabajo').val(data.PuestoDeTrabajo);
+                } else if (data.CodigoDeError == 1 || data.CodigoDeError == 2) {
+                    alert(data.Error.Descripcion);
+                }
+            });
+    }
+</script>
+
+<head>
+    <link rel="shortcut icon" href="@Html.Action("Favicon", "Firma")" type="image/x-icon" />
+    <title>|Patente: @Model.Patente|Doc: @Model.NumeroDocumentoIngreso|Material: @Model.Material</title>
+</head>
+@if (PermisosHelper.Is(PermisosScato.ActualizarFotoCartaPorte) && !noMostrarBoton)
+{
+    <a id="" href="#" class="btn" style="position: absolute;float:right; right:30px;z-index:99;" data-toggle="modal" data-target="#modalFoto">
+        @Textos.Foto_ReemplazarCartaPorte<i class="fa fa-camera"></i>
+    </a>
+}
+
+
+@if (Model.Fotos.Count > 0)
+{
+    <div class="carousel slide article-slide" data-ride="carousel" id="article-photo-carousel" data-interval="false">
+
+        <ol class="carousel-indicators">
+            @for (var index = 0; index < Model.Fotos.Count; index++)
+            {
+                <li class="@(index == 0 ? "active" : "")" data-slide-to="@index" data-target="#article-photo-carousel">
+                    <img alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].FotoChica))" />
+                </li>
+            }
+        </ol>
+        <div class="carousel-inner cont-slider">
+            @for (var index = 0; index < Model.Fotos.Count; index++)
+            {
+                <div class="item @(index == 0 ? "active" : "")">
+                    <h4>@Model.Patente | @Model.Fotos[index].Actividad @Model.Fotos[index].Fecha</h4>
+                    <img alt="Cargar Imagen" src="@String.Format("data:image/jpeg;base64,{0}", Convert.ToBase64String(Model.Fotos[index].Foto))" />
+                </div>
+            }
+        </div>
+        <a class="carousel-control-prev" href="#article-photo-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#article-photo-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+}
+else
+{
+    <h4 style=" background-color: red; text-align: center; font-size: 30px; line-height: 35px;color: white">@Textos.NoHayFotos</h4>
+}
+
+
+
+<div class="modal fade" id="modalFoto" tabindex="-1" role="dialog" aria-hidden="true" style="display:none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Agregar Foto Carta de Porte</h5>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            <div class="modal-body">
+                @Html.Hidden("FotoMesaDigitalizacion")
+                @Html.Hidden("PuestoDeTrabajo")
+                @Html.Hidden("FotoRecorridoId", Model.RecorridoId)
+                @Html.Hidden("FotoPatente", Model.Patente)
+                @Html.Hidden("FotoNumeroDocumentoIngreso", Model.NumeroDocumentoIngreso)
+                <img id="foto" src="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cerrar</button>
+                <button type="button" class="btn btn-warning tomarFoto">@Textos.Foto_TomarFoto</button>             
+                <input  name="browse" onchange="Test.UpdatePreview(this)" type="file" id="adjunto" accept="image/*" class="control input-large" />
+                <button type="button" class="btn btn-primary guardarFoto">@Textos.Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

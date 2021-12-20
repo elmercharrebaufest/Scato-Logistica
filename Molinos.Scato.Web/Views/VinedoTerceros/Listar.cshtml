@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<VinedoTercerosDto>) ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "VinedoTerceros"),
+    grilla.Columna("NumeroINV", Textos.VinedoTerceros_NumeroINV),
+    grilla.Columna("CUITProveedor", Textos.VinedoTerceros_CUITProveedor),
+    grilla.Columna("Proveedor", Textos.VinedoTerceros_Proveedor),
+    grilla.Columna("CUITTitular", Textos.VinedoTerceros_CUITTitular),
+    grilla.Columna("Descripcion", Textos.VinedoTerceros_Titular),
+    grilla.Columna("IngresosBrutos", Textos.VinedoTerceros_IngresosBrutos_Corto)    
+    ))

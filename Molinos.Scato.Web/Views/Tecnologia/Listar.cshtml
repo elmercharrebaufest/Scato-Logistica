@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<TecnologiaDto>) ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "Tecnologia"),
+        grilla.Columna("Nombre", Textos.Chofer_Nombre),
+        grilla.Columna("Codigo", Textos.Codigo),
+        grilla.Columna("Empresa.Nombre", Textos.Empresa, c => c.EmpresaNombre)
+        ))

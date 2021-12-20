@@ -1,0 +1,413 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Enums
+
+@{
+    Layout = null;
+    var garitaPE = (ListaPaginada<PuestoDeTrabajoContingenciaDto>)ViewBag.Items;
+    var centro = (CentroDto)ViewBag.Centro;
+    var nirs = (List<NirsDto>)ViewBag.Nirs;
+    var humedimetro = (List<HumedimetroDto>)ViewBag.Humedimetros;
+    var balanza = (List<BalanzaDto>)ViewBag.Balanzas;
+    var puestoGranos = (PuestoDeTrabajoDto)ViewBag.PuestoGranos;
+    var puestoNoGranos = (PuestoDeTrabajoDto)ViewBag.PuestoNoGranos;
+}
+
+<div id="tabla-contingencia">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#garita-ingreso-pe">
+                Garita Ingreso PE
+            </a>
+        </div>
+        <div id="garita-ingreso-pe" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div id="garita-ingreso-pe-collapse">
+                    <div class="accordion-group">
+                        @foreach (var item in garitaPE)
+                        {
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#garita-ingreso-pe-collapse" href="@("#collapse-" + item.NombrePuesto.Replace(' ','-'))">
+                                    @item.NombrePuesto
+                                </a>
+                            </div>
+                            <div id="@("collapse-" + item.NombrePuesto.Replace(' ','-'))" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>No validar Cupo en SAP</h6>
+                                            <small>No se conecta a SAP para validar cupo.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.SinCupo ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>No obtener datos de AFIP</h6>
+                                            <small>No se conecta al servicio de AFIP para obtener el cupo.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.SinAfip ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="sinAfip" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>No imprimir CP en mesa</h6>
+                                            <small>No toma la foto de la Carta de porte en mesa de Entrada.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.ImprimeCartaPorte ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="imprimeCartaPorte" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>No tomar foto de CP</h6>
+                                            <small>No toma la foto de la Carta de porte, ni es obligatoria.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.SinFotoCartaPorte ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="sinFotoCartaPorte" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>Imprimir etiqueta tarjeta</h6>
+                                            <small>Se imprime la etiqueta una vez aceptada la carga de cupo de la pantalla.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.ImprimeTarjetaDeAcceso ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="imprimeTarjetaDeAcceso" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>Solo imprimir etiqueta</h6>
+                                            <small>El puesto pasa a ser desantendido y sólo imprime la etiqueta de tarjeta de acceso.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.Contingencia ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="contingencia" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>No asignar fila</h6>
+                                            <small>El puesto deja de asignar filas en playa externa.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.NoAsignaCalleEnGaritaEntrada ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="noAsignaCalleEnGaritaEntrada" class="slider round "></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#mesa-de-entrada">
+                Mesa De Entrada
+            </a>
+        </div>
+        <div id="mesa-de-entrada" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>No tomar foto de CP</h6>
+                        <small>No toma la foto de la Carta de porte, ni es obligatoria.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(!centro.TomarFotoEnMesa ? "checked" : "unchecked")>
+                            <span data-contingencia="tomarFotoCartaDePorteEnCentro" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>No obtener datos por CTG</h6>
+                        <small>No se conecta al servicio de AFIP para obtener los datos.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(!centro.DescargaCartaPortePorCtg ? "checked" : "unchecked")>
+                            <span data-contingencia="descargaCartaPortePorCtg" class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Baja CTG manual</h6>
+                        <small>No se conecta con AFIP y avanza a la etapa de CTG manual.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(centro.SolicitaConfirmarCTG ? "checked" : "unchecked")>
+                            <span data-contingencia="solicitaConfirmarCTG" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>No validar Cupo en SAP</h6>
+                        <small>No se conecta a SAP para validar cupo.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(!centro.ValidarCupo ? "checked" : "unchecked")>
+                            <span data-contingencia="validarCupo" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Baja CTG </h6>
+                        <small>Desencolar Baja CTG Automáticamente.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(!centro.EncolaBajaCtgAutomatico ? "checked" : "unchecked")>
+                            <span data-contingencia="encolaBajaCtgAutomatico" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Informar Arribos a Circular </h6>
+                        <small>Se conecta a Circular para informar el estado del camión.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(centro.InformaCircular ? "checked" : "unchecked")>
+                            <span data-contingencia="informarArriboACircular" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Consutar CPE por Base de Datos</h6>
+                        <small>No conecta a AFIP para buscar Cartas de Porte Electronica si existen en la base de datos.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(centro.ContingenciaAfipCpe ? "checked" : "unchecked")>
+                            <span data-contingencia="contingenciaAfipCpe" class="slider round "></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#nirs">
+                NIRS
+            </a>
+        </div>
+        <div id="nirs" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div id="nirs-collapse">
+                    <div class="accordion-group">
+                        @foreach (var item in nirs)
+                        {
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#nirs-collapse" href="@("#collapse-nirs-" + item.Id)">
+                                    @item.Descripcion
+                                </a>
+                            </div>
+                            <div id="@("collapse-nirs-" + item.Id)" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>Nirs @item.DescripcionCorta Manual</h6>
+                                            <small>NIRS en modalidad manual, se debe ingresar el dato a mano en calado.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.Modalidad == Modalidad.Manual ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="nirsManual" class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#humedimetro">
+                Humedimetro
+            </a>
+        </div>
+        <div id="humedimetro" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div id="humedimetro-collapse">
+                    <div class="accordion-group">
+                        @foreach (var item in humedimetro)
+                        {
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#humedimetro-collapse" href="@("#collapse-humedimetro-" + item.Id)">
+                                    @item.Descripcion
+                                </a>
+                            </div>
+                            <div id="@("collapse-humedimetro-" + item.Id)" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>Humedimetro @item.DescripcionCorta Manual</h6>
+                                            <small>Humedimetro en modalidad manual, se debe ingresar el dato a mano en calado.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.Modalidad == Modalidad.Manual ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="humedimetroManual" class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#garita-salida-pe">
+                Garita Salida Playa Externa
+            </a>
+        </div>
+        <div id="garita-salida-pe" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>No imprimir ticket de salida</h6>
+                        <small>No se imprimen los tickets en garita de salida PE.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" @(ViewBag.ImpresionTicketSalida == true ? "checked" : "unchecked")>
+                            <span data-contingencia="impresionTicketDeSalida" class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#garita-de-ingreso-planta">
+                Garita de Ingreso Planta
+            </a>
+        </div>
+        <div id="garita-de-ingreso-planta" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Habilitar calle No granos</h6>
+                        <small>Se habilita la calle NO granos para el ingreso a planta de camiones con granos.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" id="no-granos" @(ViewBag.ContingenciaNoGranos ? "checked" : "unchecked")>
+                            <span data-id="@puestoNoGranos.Id" data-granos="false" data-contingencia="habilitarGranos" class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row-fluid">
+                    <div class="span8">
+                        <h6>Habilitar calle Granos</h6>
+                        <small>Se habilita la calle granos para el ingreso a planta de camiones con NO granos.</small>
+                    </div>
+                    <div class="span4">
+                        <label class="switch">
+                            <input type="checkbox" id="granos" @(ViewBag.ContingenciaGranos ? "checked" : "unchecked")>
+                            <span data-id="@puestoGranos.Id" data-granos="true" data-contingencia="habilitarGranos" class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tabla-contingencia" href="#balanza">
+                Balanza
+            </a>
+        </div>
+        <div id="balanza" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div id="balanza-collapse">
+                    <div class="accordion-group">
+                        @foreach (var item in balanza)
+                        {
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#balanza-collapse" href="@("#collapse-balanza-" + item.Id)">
+                                    @item.Nombre
+                                </a>
+                            </div>
+                            <div id="@("collapse-balanza-" + item.Id)" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <div class="row-fluid">
+                                        <div class="span8">
+                                            <h6>Balanza @item.NombreCorto Manual</h6>
+                                            <small>Balanza en modalidad manual.</small>
+                                        </div>
+                                        <div class="span4">
+                                            <label class="switch">
+                                                <input type="checkbox" @(item.Modalidad == Modalidad.Manual ? "checked" : "unchecked")>
+                                                <span data-id="@item.Id" data-contingencia="balanzaManual" class="slider round"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

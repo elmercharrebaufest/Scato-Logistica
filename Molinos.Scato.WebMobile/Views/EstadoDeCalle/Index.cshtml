@@ -1,0 +1,71 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Helpers
+@using System.Web.Optimization
+@using Molinos.Scato.Dominio.Helpers;
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@model IList<CalleDto>
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+    var pestanias = new[] { TipoCalle.PreCalado, TipoCalle.PostCalado, TipoCalle.NoGranos };
+}
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
+
+<script>
+    urlEstadoDeCalles = '@Url.Action("EstadoDeCalle", "EstadoDeCalle")';
+    callesJson = '@Html.Raw(Model.ToJson())';
+    urlLLamarCalle = '@Url.Action("LlamarCalle", "EstadoDeCalle")';
+    urlCancelarLLamarCalle = '@Url.Action("CancelarLlamarCalle", "EstadoDeCalle")';
+    urlLLamarSiguienteCalle = '@Url.Action("LLamarSiguienteCalle", "EstadoDeCalle")';
+    urlLLamadoAutomaticoCalle = '@Url.Action("LLamadoAutomaticoCalle", "EstadoDeCalle")';
+    loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
+    urlMoverRechazado = '@Url.Action("MoverRechazado", "EstadoDeCalle")';
+    @*urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';*@
+    minutosEsperaCircular = @Html.Raw(ViewBag.MinutosEsperaCircular);
+</script>
+<script type="text/javascript" src="@Url.Script("~/scripts/estadoDeCalle.js")"></script>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    @foreach (var tipo in Enum.GetValues(typeof(TipoCalle)).Cast<TipoCalle>().Where(x => pestanias.Contains(x)))
+    {
+        <li class="nav-item" data-bind="click: Recalcular">
+            <a class="nav-link @(tipo == TipoCalle.PreCalado ? "active" : "" )" id="@tipo-tab" data-calle="@((int)tipo)" data-toggle="tab" href="#@tipo" role="tab" aria-controls="@tipo" aria-selected="false">@tipo.DisplayEnum()</a>
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.EstadoDeCallePlayero))
+    {
+        <li class="nav-item">
+            <a class="nav-link" id="Playero-tab" data-calle="Playero" data-toggle="tab" href="#Playero" role="tab" aria-controls="Playero" aria-selected="false">Playero</a>
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCalador))
+    {
+        <li class="nav-item">
+            <a class="nav-link" id="Calador-tab" data-calle="Calador" data-toggle="tab" href="#Calador" role="tab" aria-controls="Calador" aria-selected="false">Calador</a>
+        </li>
+    }
+</ul>
+<div class="tab-content" id="myTabContent">
+    @foreach (var tipo in Enum.GetValues(typeof(TipoCalle)).Cast<TipoCalle>().Where(x => pestanias.Contains(x)))
+    {
+        <div class="tab-pane fade show @(tipo == TipoCalle.PreCalado ? "active" : "" )" id="@tipo" role="tabpanel" aria-labelledby="@tipo-tab">
+            @Html.Partial("Calles", tipo)
+        </div>
+    }
+    @if (PermisosHelper.Is(PermisosScato.EstadoDeCallePlayero))
+    {
+        <div class="tab-pane fade show" id="Playero" role="tabpanel" aria-labelledby="Playero-tab">
+            @Html.Partial("Playero")
+        </div>
+    }
+    @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleCalador))
+    {
+        <div class="tab-pane fade show" id="Calador" role="tabpanel" aria-labelledby="Calador-tab">
+            @Html.Partial("Calador")
+        </div>
+    }
+</div>
+<div id="div-rechazo-mover"></div>

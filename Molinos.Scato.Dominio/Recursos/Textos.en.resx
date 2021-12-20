@@ -1,0 +1,1104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Chofer_Apellido" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="Buscar" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Chofer_Titulo" xml:space="preserve">
+    <value>Drivers</value>
+  </data>
+  <data name="Crear" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Chofer_Nombre" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Chofer_NumeroDocumentoIdentidad" xml:space="preserve">
+    <value>Document Number</value>
+  </data>
+  <data name="Chofer_TipoDocumentoIdentidad" xml:space="preserve">
+    <value>Document Type</value>
+  </data>
+  <data name="Transportista_Crear" xml:space="preserve">
+    <value>New Transportista</value>
+  </data>
+  <data name="ConfirmacionBorrado" xml:space="preserve">
+    <value>Are you sure you want to delete this?</value>
+  </data>
+  <data name="ConfirmacionGenerica" xml:space="preserve">
+    <value>Are you sure you want to {0} this {1} ?</value>
+  </data>
+  <data name="CampoDeBusqueda" xml:space="preserve">
+    <value>Field of Search</value>
+  </data>
+  <data name="Codigo" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Descripcion" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DescripcionCorta" xml:space="preserve">
+    <value>Short Description</value>
+  </data>
+  <data name="Transportista_Cuit" xml:space="preserve">
+    <value>CUIT</value>
+  </data>
+  <data name="Transportista_Domicilio" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Transportista_Localidad" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Transportista_Provincia" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Transportista_RazonSocial" xml:space="preserve">
+    <value>Corporate Name</value>
+  </data>
+  <data name="Transportista_Titulo" xml:space="preserve">
+    <value>Transporters</value>
+  </data>
+  <data name="Chofer" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="Material_AlmacenOrigen" xml:space="preserve">
+    <value>Alm. Origen</value>
+  </data>
+  <data name="Material_AlmacenPred" xml:space="preserve">
+    <value>Almacén Predeterminado</value>
+  </data>
+  <data name="Material_BinPallet" xml:space="preserve">
+    <value>Es Bin/Pallet</value>
+  </data>
+  <data name="Material_CamaraPred" xml:space="preserve">
+    <value>Cámara Predeterminada</value>
+  </data>
+  <data name="Material_CodigoEspecie" xml:space="preserve">
+    <value>Código Especie</value>
+  </data>
+  <data name="Material_CodigoEstabONCCA" xml:space="preserve">
+    <value>Código Estab. ONCCA</value>
+  </data>
+  <data name="Material_CodigoINV" xml:space="preserve">
+    <value>Código INV</value>
+  </data>
+  <data name="Material_CodigoONCCA" xml:space="preserve">
+    <value>Código ONCCA</value>
+  </data>
+  <data name="Material_Commodity" xml:space="preserve">
+    <value>Es Commodity</value>
+  </data>
+  <data name="Material_Cosecha" xml:space="preserve">
+    <value>Cosecha</value>
+  </data>
+  <data name="Material_EsCosecha" xml:space="preserve">
+    <value>Es Cosecha</value>
+  </data>
+  <data name="Material_EsUva" xml:space="preserve">
+    <value>Es Uva</value>
+  </data>
+  <data name="Material_FactorConversion" xml:space="preserve">
+    <value>Factor Conversión</value>
+  </data>
+  <data name="Material_Peso" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Material_ReqNumeroTropa" xml:space="preserve">
+    <value>Requiere N° Tropa</value>
+  </data>
+  <data name="Material_Tipo" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Material_TipoDeGrano" xml:space="preserve">
+    <value>Tipo De Grano</value>
+  </data>
+  <data name="Material_UnidadDeMedida" xml:space="preserve">
+    <value>Unidad De Medida</value>
+  </data>
+  <data name="Confirmacion" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Cancelar" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Guardar" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="TipoDocumentoIdentidad_Crear" xml:space="preserve">
+    <value>New Document Type</value>
+  </data>
+  <data name="TipoDocumentoIdentidad_Modificar" xml:space="preserve">
+    <value>Edit Type of ID document</value>
+  </data>
+  <data name="TipoDocumentoIdentidad_Nuevo" xml:space="preserve">
+    <value>New Tipo</value>
+  </data>
+  <data name="TipoDocumentoIdentidad_Titulo" xml:space="preserve">
+    <value>Types of ID document</value>
+  </data>
+  <data name="CuitInvalido" xml:space="preserve">
+    <value>Invalid Cuit</value>
+  </data>
+  <data name="Workflow_Centro" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="Workflow_Estado" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Workflow_InstanceId" xml:space="preserve">
+    <value>Instance</value>
+  </data>
+  <data name="Workflow_Nombre" xml:space="preserve">
+    <value>Workflow</value>
+  </data>
+  <data name="Workflow_Patente" xml:space="preserve">
+    <value>Plate</value>
+  </data>
+  <data name="Workflow_ProximaAccion" xml:space="preserve">
+    <value>Next Action</value>
+  </data>
+  <data name="Workflow_FechaCreacion" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Workflow_FechaUltimaModificacion" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="Almacen_EsTanqueVino" xml:space="preserve">
+    <value>Tank</value>
+  </data>
+  <data name="Material_Camara" xml:space="preserve">
+    <value>Cámara</value>
+  </data>
+  <data name="Material_VerAlmacenes" xml:space="preserve">
+    <value>Ver Almacenes</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Almacen_VerMateriales" xml:space="preserve">
+    <value>Ver MaterialDesces</value>
+  </data>
+  <data name="Material_Modificar" xml:space="preserve">
+    <value>Edit MaterialDesc</value>
+  </data>
+  <data name="Cabezal_CaracterCereo" xml:space="preserve">
+    <value>Carácter Cereo</value>
+  </data>
+  <data name="Cabezal_CaracterPeso" xml:space="preserve">
+    <value>Carácter Peso</value>
+  </data>
+  <data name="Cabezal_CodigoExistente" xml:space="preserve">
+    <value>Código existente</value>
+  </data>
+  <data name="Cabezal_Crear" xml:space="preserve">
+    <value>New Cabezal</value>
+  </data>
+  <data name="Cabezal_Delay" xml:space="preserve">
+    <value>Delay (seg.)</value>
+  </data>
+  <data name="Cabezal_DescripcionExistente" xml:space="preserve">
+    <value>Description existente</value>
+  </data>
+  <data name="Cabezal_Modificar" xml:space="preserve">
+    <value>Edit Cabezal</value>
+  </data>
+  <data name="Cabezal_Estabiliza" xml:space="preserve">
+    <value>Estabiliza</value>
+  </data>
+  <data name="Cabezal_Factor" xml:space="preserve">
+    <value>Factor</value>
+  </data>
+  <data name="Cabezal_Identificador" xml:space="preserve">
+    <value>Identificador</value>
+  </data>
+  <data name="Cabezal_Inicializa" xml:space="preserve">
+    <value>Inicializa</value>
+  </data>
+  <data name="Cabezal_LongFrase" xml:space="preserve">
+    <value>Long. Frase</value>
+  </data>
+  <data name="Cabezal_MaxValorCereo" xml:space="preserve">
+    <value>Max. valor cereo</value>
+  </data>
+  <data name="Cabezal_Nuevo" xml:space="preserve">
+    <value>New Cabezal</value>
+  </data>
+  <data name="Cabezal_PosDesde" xml:space="preserve">
+    <value>Pos. Desde</value>
+  </data>
+  <data name="Cabezal_PosHasta" xml:space="preserve">
+    <value>Pos. Hasta</value>
+  </data>
+  <data name="Cabezal_Simple" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="Cabezal_Timeout" xml:space="preserve">
+    <value>Timeout (seg.)</value>
+  </data>
+  <data name="Cabezal_TipoComunic" xml:space="preserve">
+    <value>Tipo Comunic.</value>
+  </data>
+  <data name="Cabezal_VerificaCereo" xml:space="preserve">
+    <value>Verifica Cereo</value>
+  </data>
+  <data name="Cabezal_BitsDeStop" xml:space="preserve">
+    <value>Bits de Stop</value>
+  </data>
+  <data name="TipoComercial_PesoEsperado" xml:space="preserve">
+    <value>Peso esperado</value>
+  </data>
+  <data name="TipoComercial_Sentido" xml:space="preserve">
+    <value>Entrada / Salida</value>
+  </data>
+  <data name="TipoComercial_ToleranciaDifPeso" xml:space="preserve">
+    <value>Tolerancia dif. Peso E.</value>
+  </data>
+  <data name="TipoComercial_UsaBinPallet" xml:space="preserve">
+    <value>Usa Bin / Pallet</value>
+  </data>
+  <data name="TipoComercial_ValidaPatente" xml:space="preserve">
+    <value>Valida Patente</value>
+  </data>
+  <data name="TipoComercial_Titulo" xml:space="preserve">
+    <value>Tipos Comerciales</value>
+  </data>
+  <data name="Entrada" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="Salida" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="TipoComercial_Crear" xml:space="preserve">
+    <value>New Tipo Comercial</value>
+  </data>
+  <data name="TipoComercial_Nuevo" xml:space="preserve">
+    <value>New Tipo</value>
+  </data>
+  <data name="TipoComercial_Modificar" xml:space="preserve">
+    <value>Edit Tipo Comercial</value>
+  </data>
+  <data name="Error_Requerido" xml:space="preserve">
+    <value>'{0}' field is required</value>
+  </data>
+  <data name="Chofer_DocumentoExistente" xml:space="preserve">
+    <value>The Driver Already exists</value>
+  </data>
+  <data name="Error_SoloNumerico" xml:space="preserve">
+    <value>'{0}' field must be numeric</value>
+  </data>
+  <data name="FechaFin" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="FechaInicio" xml:space="preserve">
+    <value>Date Start</value>
+  </data>
+  <data name="InhabilitacionChofer_Crear" xml:space="preserve">
+    <value>New Inhabilitacion Chofer</value>
+  </data>
+  <data name="InhabilitacionChofer_ChoferNoExiste" xml:space="preserve">
+    <value>The Driver does not exist</value>
+  </data>
+  <data name="InhabilitacionChofer_FechaDesde" xml:space="preserve">
+    <value>Date Start</value>
+  </data>
+  <data name="InhabilitacionChofer_FechaHasta" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="InhabilitacionChofer_Motivo" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="InhabilitacionChofer_Titulo" xml:space="preserve">
+    <value>Inhabilitaciones de Choferes</value>
+  </data>
+  <data name="MasGrandeQue" xml:space="preserve">
+    <value>{0} must be bigger than {1}</value>
+  </data>
+  <data name="Transportista_CuitExistente" xml:space="preserve">
+    <value>The Transport Already exists</value>
+  </data>
+  <data name="Centro" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="ExcepcionAlControl_Titulo" xml:space="preserve">
+    <value>Excepciones al Control</value>
+  </data>
+  <data name="FechaDesde" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="FechaHasta" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Material" xml:space="preserve">
+    <value>MaterialDesc</value>
+  </data>
+  <data name="ExcepcionAlControl_Crear" xml:space="preserve">
+    <value>New Excepcion al Control</value>
+  </data>
+  <data name="Almacen_CodigoSAP" xml:space="preserve">
+    <value>SAP Code</value>
+  </data>
+  <data name="Camion_Patente" xml:space="preserve">
+    <value>Plate</value>
+  </data>
+  <data name="InhabilitacionCamion_Crear" xml:space="preserve">
+    <value>New Inhabilitacion de Camion</value>
+  </data>
+  <data name="InhabilitacionCamion_Motivo" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="InhabilitacionCamion_Patente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="InhabilitacionCamion_Titulo" xml:space="preserve">
+    <value>Inhabilitaciones de Camiones</value>
+  </data>
+  <data name="Menu_Administracion" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="Error_Existente" xml:space="preserve">
+    <value>'{0}' field does not exist</value>
+  </data>
+  <data name="Chofer_Nuevo" xml:space="preserve">
+    <value>New Driver</value>
+  </data>
+  <data name="Material_AnalisisInterno" xml:space="preserve">
+    <value>Porcentaje de Análisis Interno</value>
+  </data>
+  <data name="Error_RangoPorcentaje" xml:space="preserve">
+    <value>El Porcentaje debe estar entre 0 y 100</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Si" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Almacen_Titulo" xml:space="preserve">
+    <value>Store</value>
+  </data>
+  <data name="Material_Titulo" xml:space="preserve">
+    <value>MaterialDescs</value>
+  </data>
+  <data name="ExcepcionAlControl_Nuevo" xml:space="preserve">
+    <value>Nueva Excepcion</value>
+  </data>
+  <data name="InhabilitacionCamion_Nuevo" xml:space="preserve">
+    <value>Nueva Inhabilitacion</value>
+  </data>
+  <data name="Transportista_Nuevo" xml:space="preserve">
+    <value>New Transportist</value>
+  </data>
+  <data name="InhabilitacionChofer_Nuevo" xml:space="preserve">
+    <value>Nueva Inhabilitacion</value>
+  </data>
+  <data name="Inhabilitaciones_Titulo" xml:space="preserve">
+    <value>Inhabilitaciones</value>
+  </data>
+  <data name="Transportistas_Titulo" xml:space="preserve">
+    <value>Transporters</value>
+  </data>
+  <data name="Eliminar" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Modificar" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Chofer_Crear" xml:space="preserve">
+    <value>New Driver</value>
+  </data>
+  <data name="Chofer_Modificar" xml:space="preserve">
+    <value>Edit Driver</value>
+  </data>
+  <data name="ExcepcionAlControl_Modificar" xml:space="preserve">
+    <value>Edit Excepcion al Control</value>
+  </data>
+  <data name="Transportista_Modificar" xml:space="preserve">
+    <value>Edit Transport</value>
+  </data>
+  <data name="Transportista" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="Workflow_Calidad" xml:space="preserve">
+    <value>Quality</value>
+  </data>
+  <data name="Workflow_CentroId" xml:space="preserve">
+    <value>Center Id</value>
+  </data>
+  <data name="Workflow_Cuit" xml:space="preserve">
+    <value>Cuit</value>
+  </data>
+  <data name="Workflow_Material" xml:space="preserve">
+    <value>MaterialDesc</value>
+  </data>
+  <data name="Workflow_MaterialId" xml:space="preserve">
+    <value>MaterialDesc Id</value>
+  </data>
+  <data name="Workflow_NumeroDocumentoDeIngreso" xml:space="preserve">
+    <value>Número de Documento de Ingreso</value>
+  </data>
+  <data name="Workflow_TipoDocumentoDeIngreso" xml:space="preserve">
+    <value>Tipo de Documento de Ingreso</value>
+  </data>
+  <data name="Workflow_Transportista" xml:space="preserve">
+    <value>Transport</value>
+  </data>
+  <data name="Centro_Titulo" xml:space="preserve">
+    <value>Centers</value>
+  </data>
+  <data name="Aceptar" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Centro_CasillerosHumedad" xml:space="preserve">
+    <value>Casilleros por Humedad</value>
+  </data>
+  <data name="Centro_Chamico" xml:space="preserve">
+    <value>Código de Chamico</value>
+  </data>
+  <data name="Centro_CodigoDeHumedad" xml:space="preserve">
+    <value>Código de Humedad</value>
+  </data>
+  <data name="Centro_ConfiguracionDescarga" xml:space="preserve">
+    <value>Usa Configuración de Descarga</value>
+  </data>
+  <data name="Centro_ConfirmarCTG" xml:space="preserve">
+    <value>Solicita Confirmar CTG</value>
+  </data>
+  <data name="Centro_Cuit" xml:space="preserve">
+    <value>Cuit</value>
+  </data>
+  <data name="Centro_Insectos" xml:space="preserve">
+    <value>Código de Insectos</value>
+  </data>
+  <data name="Centro_Localidad" xml:space="preserve">
+    <value>Locality</value>
+  </data>
+  <data name="Centro_MailBarreras" xml:space="preserve">
+    <value>E-Mail para envío de Barreras</value>
+  </data>
+  <data name="Centro_Micromuestras" xml:space="preserve">
+    <value>Cantidad de etiquetas para Micromuestras</value>
+  </data>
+  <data name="Centro_MuestraTerceros" xml:space="preserve">
+    <value>Centro usa N° de Muestra de Terceros</value>
+  </data>
+  <data name="Centro_NumeroCAI" xml:space="preserve">
+    <value>N° CAI</value>
+  </data>
+  <data name="Centro_NumeroISCC" xml:space="preserve">
+    <value>N° ISCC</value>
+  </data>
+  <data name="Centro_NumeroLoteInicial" xml:space="preserve">
+    <value>N° Lote Inical</value>
+  </data>
+  <data name="Centro_Provincia" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Centro_ReciboMunicipal" xml:space="preserve">
+    <value>Imprime Recibo Municipal</value>
+  </data>
+  <data name="Centro_ReingresaAlPesar" xml:space="preserve">
+    <value>Reingresa Patente al Pesar</value>
+  </data>
+  <data name="Centro_ReingresaEnCalado" xml:space="preserve">
+    <value>Reingresa Patente en Calado</value>
+  </data>
+  <data name="Centro_Sociedad" xml:space="preserve">
+    <value>Sociedad</value>
+  </data>
+  <data name="Centro_TenorAzucarino" xml:space="preserve">
+    <value>Código de tenor azucarino</value>
+  </data>
+  <data name="Centro_VencimientoCAI" xml:space="preserve">
+    <value>Direccion de Mail Aviso Vencimiento CAI</value>
+  </data>
+  <data name="Autorizantes_Titulo" xml:space="preserve">
+    <value>Autorizantes</value>
+  </data>
+  <data name="Balanza_Titulo" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Calado_Titulo" xml:space="preserve">
+    <value>Calado</value>
+  </data>
+  <data name="Dispositivos_Titulo" xml:space="preserve">
+    <value>Dispositivos</value>
+  </data>
+  <data name="ReciboMunicipal_Titulo" xml:space="preserve">
+    <value>Recibo Municipal</value>
+  </data>
+  <data name="Atencion_PantenteInvalida" xml:space="preserve">
+    <value>Atencion: Formato invalido</value>
+  </data>
+  <data name="SeleccionarCentro_Titulo" xml:space="preserve">
+    <value>Seleccionar Centro</value>
+  </data>
+  <data name="Seleccionar" xml:space="preserve">
+    <value>Seleccionar</value>
+  </data>
+  <data name="Error_EliminarReferenciado" xml:space="preserve">
+    <value>El objeto esta siendo utilizado por otras entidades</value>
+  </data>
+  <data name="Error_Generico" xml:space="preserve">
+    <value>Ha ocurrido un error. Por favor intente nuevamente más tarde.</value>
+  </data>
+  <data name="Exito_Generico" xml:space="preserve">
+    <value>La operación fue exitosa</value>
+  </data>
+  <data name="Default_NoAplica" xml:space="preserve">
+    <value>(no aplica)</value>
+  </data>
+  <data name="TipoComercial" xml:space="preserve">
+    <value>Tipo Comercial</value>
+  </data>
+  <data name="TipoComercialPorWf_Titulo" xml:space="preserve">
+    <value>Tipos Comerciales por Workflow</value>
+  </data>
+  <data name="TipoComercialPorWf_Crear" xml:space="preserve">
+    <value>New Tipo Comercial por Workflow</value>
+  </data>
+  <data name="TipoComercialPorWf_Nuevo" xml:space="preserve">
+    <value>Nueva Asociación</value>
+  </data>
+  <data name="TipoComercialPorWf_ErrorTipoComercial" xml:space="preserve">
+    <value>'Tipo Comercial' field is required</value>
+  </data>
+  <data name="TipoComercialPorWf_Seleccionar" xml:space="preserve">
+    <value>Selección de Tipo Comercial</value>
+  </data>
+  <data name="Error_Invalido" xml:space="preserve">
+    <value>El Valor ingresado no es valido</value>
+  </data>
+  <data name="Precinto" xml:space="preserve">
+    <value>Precinto</value>
+  </data>
+  <data name="Precinto_Detalle" xml:space="preserve">
+    <value>Detalle</value>
+  </data>
+  <data name="Precinto_Patente" xml:space="preserve">
+    <value>Plate</value>
+  </data>
+  <data name="Precinto_Titulo" xml:space="preserve">
+    <value>Precintos</value>
+  </data>
+  <data name="Agregar" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Precinto_PrecintoExistente" xml:space="preserve">
+    <value>Ya existe un precinto con los datos ingresados</value>
+  </data>
+  <data name="Default_Localidad" xml:space="preserve">
+    <value>(localidad)</value>
+  </data>
+  <data name="Default_Provincia" xml:space="preserve">
+    <value>(provincia)</value>
+  </data>
+  <data name="OrdenCargaInterna_CuilChofer" xml:space="preserve">
+    <value>CUIL Chofer</value>
+  </data>
+  <data name="OrdenCargaInterna_Destino" xml:space="preserve">
+    <value>Destino</value>
+  </data>
+  <data name="OrdenCargaInterna_FechaEmision" xml:space="preserve">
+    <value>Fecha Emisión</value>
+  </data>
+  <data name="OrdenCargaInterna_NombreChofer" xml:space="preserve">
+    <value>Nombre Chofer</value>
+  </data>
+  <data name="OrdenCargaInterna_Numero" xml:space="preserve">
+    <value>Nº de Orden de Carga</value>
+  </data>
+  <data name="OrdenCargaInterna_NumeroDoc" xml:space="preserve">
+    <value>Número de Doc.</value>
+  </data>
+  <data name="OrdenCargaInterna_PatenteAcoplado" xml:space="preserve">
+    <value>Patente Acoplado</value>
+  </data>
+  <data name="OrdenCargaInterna_PatenteCamion" xml:space="preserve">
+    <value>Patente Camión</value>
+  </data>
+  <data name="OrdenCargaInterna_TipoComercial" xml:space="preserve">
+    <value>Tipo Comercial</value>
+  </data>
+  <data name="OrdenCargaInterna_TipoDoc" xml:space="preserve">
+    <value>Tipo de Doc.</value>
+  </data>
+  <data name="OrdenCargaInterna_Titulo" xml:space="preserve">
+    <value>Ingreso Orden de Carga Interna</value>
+  </data>
+  <data name="Chofer_Cuil" xml:space="preserve">
+    <value>Cuil</value>
+  </data>
+  <data name="Resetear" xml:space="preserve">
+    <value>Resetear</value>
+  </data>
+  <data name="Atencion" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="Precinto_NumeroPrecintoExistente" xml:space="preserve">
+    <value>Ya existe un precinto con el número de precinto ingresado</value>
+  </data>
+  <data name="Cabezal_Administrar" xml:space="preserve">
+    <value>Cabezales</value>
+  </data>
+  <data name="Chofer_CuilInvalido" xml:space="preserve">
+    <value>Invalid Cuil</value>
+  </data>
+  <data name="Chofer_CuilExistente" xml:space="preserve">
+    <value>Ya existe un chofer con el Cuil asignado</value>
+  </data>
+  <data name="Default_Documento" xml:space="preserve">
+    <value>(documento)</value>
+  </data>
+  <data name="Default_Estado" xml:space="preserve">
+    <value>(estado)</value>
+  </data>
+  <data name="Default_Workflow" xml:space="preserve">
+    <value>(workflow)</value>
+  </data>
+  <data name="ListaDeCamiones_Centro" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="ListaDeCamiones_Estado" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="ListaDeCamiones_FechaCreacion" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="ListaDeCamiones_FechaUltimaModificacion" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="ListaDeCamiones_Patente" xml:space="preserve">
+    <value>Plate</value>
+  </data>
+  <data name="ListaDeCamiones_ProximaAccion" xml:space="preserve">
+    <value>Next Action</value>
+  </data>
+  <data name="ListaDeCamiones_Titulo" xml:space="preserve">
+    <value>List of Trucks</value>
+  </data>
+  <data name="ListaDeCamiones_Workflow" xml:space="preserve">
+    <value>Worflow</value>
+  </data>
+  <data name="OrdenCargaInterna_MensajeDeEspera" xml:space="preserve">
+    <value>Se está ingresando la orden, por favor espere ...</value>
+  </data>
+  <data name="Observacion_Titulo" xml:space="preserve">
+    <value>Ingreso de Observaciones</value>
+  </data>
+  <data name="Observacion_Observaciones" xml:space="preserve">
+    <value>Observaciones</value>
+  </data>
+  <data name="Centro_TiempoMaximo" xml:space="preserve">
+    <value>Tiempo Maximo EntregadorProveedorDesc Actividades</value>
+  </data>
+  <data name="Observacion_ObservacionExistente" xml:space="preserve">
+    <value>Ya existe una Observación para el camion seleccionado</value>
+  </data>
+  <data name="Ejecutar" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="DiferenciaDePeso_PesoBalanza" xml:space="preserve">
+    <value>Peso Neto Balanza</value>
+  </data>
+  <data name="DiferenciaDePeso_Titulo" xml:space="preserve">
+    <value>Diferencia Peso Esperado</value>
+  </data>
+  <data name="DiferenciaDePeso_Diferencia" xml:space="preserve">
+    <value>Diferencia</value>
+  </data>
+  <data name="DiferenciaDePeso_Repesar" xml:space="preserve">
+    <value>Repesar</value>
+  </data>
+  <data name="Bruto" xml:space="preserve">
+    <value>Bruto</value>
+  </data>
+  <data name="Neto" xml:space="preserve">
+    <value>Neto</value>
+  </data>
+  <data name="Pesada" xml:space="preserve">
+    <value>Pesada</value>
+  </data>
+  <data name="Peso" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Tara" xml:space="preserve">
+    <value>Tara</value>
+  </data>
+  <data name="Workflows" xml:space="preserve">
+    <value>Workflows</value>
+  </data>
+  <data name="ExcesoDePeso_Motivo" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="ExcesoDePeso_Rechazar" xml:space="preserve">
+    <value>Rechazar Camión</value>
+  </data>
+  <data name="ExcesoDePeso_Titulo" xml:space="preserve">
+    <value>Excede Peso Máximo</value>
+  </data>
+  <data name="ExcesoDePeso_Detalle" xml:space="preserve">
+    <value>El Camión pesa {0} kg y el Peso Máximo para circular es de {1} kg.</value>
+  </data>
+  <data name="NumeroDocumentoIngreso" xml:space="preserve">
+    <value>Nº Documento</value>
+  </data>
+  <data name="TipoDocumentoIngreso" xml:space="preserve">
+    <value>Tipo Documento</value>
+  </data>
+  <data name="InhabilitacionesCamion" xml:space="preserve">
+    <value>Inhabilitaciones del Camion: </value>
+  </data>
+  <data name="InhabilitacionesChofer" xml:space="preserve">
+    <value>Inhabilitaciones del Chofer: </value>
+  </data>
+  <data name="Transportista_Datos" xml:space="preserve">
+    <value>Datos de Chofer y Camion</value>
+  </data>
+  <data name="Autorizar" xml:space="preserve">
+    <value>Autorizar</value>
+  </data>
+  <data name="Rechazar" xml:space="preserve">
+    <value>Rechazar</value>
+  </data>
+  <data name="TerminarInhabilitaciones" xml:space="preserve">
+    <value>Terminar Inhabilitaciones</value>
+  </data>
+  <data name="Pesada_DocumentoIngreso" xml:space="preserve">
+    <value>Doc. de Ingreso</value>
+  </data>
+  <data name="Pesada_NumeroDocumento" xml:space="preserve">
+    <value>N° Documento</value>
+  </data>
+  <data name="OrdenCargaInterna" xml:space="preserve">
+    <value>Orden de Carga Interna</value>
+  </data>
+  <data name="DatosDelChofer" xml:space="preserve">
+    <value>Datos del Chofer</value>
+  </data>
+  <data name="PesoBruto" xml:space="preserve">
+    <value>Peso Bruto</value>
+  </data>
+  <data name="PesoNeto" xml:space="preserve">
+    <value>Peso Neto</value>
+  </data>
+  <data name="PesoTara" xml:space="preserve">
+    <value>Peso Tara</value>
+  </data>
+  <data name="CartaPorte" xml:space="preserve">
+    <value>Carta de Porte</value>
+  </data>
+  <data name="Responsable" xml:space="preserve">
+    <value>Responsable</value>
+  </data>
+  <data name="Centro_PesoMaximo" xml:space="preserve">
+    <value>Peso Maximo</value>
+  </data>
+  <data name="Motivos_DecisionEntregador" xml:space="preserve">
+    <value>Decisión del Entregador</value>
+  </data>
+  <data name="Motivos_Deficiencias" xml:space="preserve">
+    <value>Deficiencias en la Calidad</value>
+  </data>
+  <data name="Motivos_ExcedePeso" xml:space="preserve">
+    <value>Excede peso máximo de balanza</value>
+  </data>
+  <data name="Actividad_ControlDePesoEsperado" xml:space="preserve">
+    <value>ControlDePesoEsperado</value>
+  </data>
+  <data name="Actividad_ControlPesoMaximo" xml:space="preserve">
+    <value>ControlPesoMaximo</value>
+  </data>
+  <data name="VerificacionCamionRechazado_NoRechazar" xml:space="preserve">
+    <value>No Rechazar</value>
+  </data>
+  <data name="Actividad_VerificacionCamionRechazado" xml:space="preserve">
+    <value>VerificacionCamionRechazado</value>
+  </data>
+  <data name="VerificacionCamionRechazado_VehiculoRechazado" xml:space="preserve">
+    <value>Parece que el vehículo fue rechazado. Confirma el rechazo?</value>
+  </data>
+  <data name="VerificacionCamionRechazado_Comentario" xml:space="preserve">
+    <value>Coment</value>
+  </data>
+  <data name="AutorizarTransportistaInhabilitado_Titulo" xml:space="preserve">
+    <value>Autorizar Transportista Inhabilitado</value>
+  </data>
+  <data name="TomarPeso" xml:space="preserve">
+    <value>Tomar Peso</value>
+  </data>
+  <data name="PesoManual" xml:space="preserve">
+    <value>Peso Manual</value>
+  </data>
+  <data name="Pesada_PatenteInvalida" xml:space="preserve">
+    <value>La patente ingresada no se corresponde con la patente del camión seleccionado</value>
+  </data>
+  <data name="Pesada_Mensaje_Espera" xml:space="preserve">
+    <value>El peso se está ingresando, por favor espere ...</value>
+  </data>
+  <data name="Pesada_Exitosa" xml:space="preserve">
+    <value>Se ha guardado el peso exitosamente</value>
+  </data>
+  <data name="Motivos_MenorQueTolerancia" xml:space="preserve">
+    <value>El Peso es menor que la tolerancia</value>
+  </data>
+  <data name="Actividad_AutorizarTransportistaHabilitado" xml:space="preserve">
+    <value>AutorizarTransportistaHabilitado</value>
+  </data>
+  <data name="Actividad_SalidaDeCentro" xml:space="preserve">
+    <value>SalidaDeCentro</value>
+  </data>
+  <data name="Balanza_Nuevo" xml:space="preserve">
+    <value>Nueva Balanza</value>
+  </data>
+  <data name="Balanza_Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Balanza_Descripcion" xml:space="preserve">
+    <value>Descripcion</value>
+  </data>
+  <data name="Balanza_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Balanza_Modalidad" xml:space="preserve">
+    <value>Modalidad</value>
+  </data>
+  <data name="Balanza_Tipo" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Balanza_Modificar" xml:space="preserve">
+    <value>Edit Balanza</value>
+  </data>
+  <data name="Balanza_CentroEmisor" xml:space="preserve">
+    <value>Centro Emisor</value>
+  </data>
+  <data name="Balanza_CodigoCabezal" xml:space="preserve">
+    <value>Código Cabezal</value>
+  </data>
+  <data name="Balanza_MaximoValorCereo" xml:space="preserve">
+    <value>Máximo Valor Cereo</value>
+  </data>
+  <data name="Balanza_PesoMaximoEgreso" xml:space="preserve">
+    <value>Peso Máximo Egreso</value>
+  </data>
+  <data name="Balanza_PesoMaximoIngreso" xml:space="preserve">
+    <value>Peso Máximo Ingreso</value>
+  </data>
+  <data name="Balanza_TipoAcceso" xml:space="preserve">
+    <value>Tipo de Acceso</value>
+  </data>
+  <data name="Balanza_ToleranciaIndianapolis" xml:space="preserve">
+    <value>Tolerancia Indianápolis</value>
+  </data>
+  <data name="Balanza_ToleranciaOrigen" xml:space="preserve">
+    <value>Tolerancia Origen</value>
+  </data>
+  <data name="Balanza_ToleranciaRechazo" xml:space="preserve">
+    <value>Tolerancia Rechazo</value>
+  </data>
+  <data name="Balanza_ToleranciaxMil" xml:space="preserve">
+    <value>Tolerancia x 1000</value>
+  </data>
+  <data name="Balanza_CambiarModalidad" xml:space="preserve">
+    <value>Modalidad de Balanza</value>
+  </data>
+  <data name="CerearBalanza" xml:space="preserve">
+    <value>Cerear Balanza</value>
+  </data>
+  <data name="ConfirmacionBalanzaManualACero" xml:space="preserve">
+    <value>Por Favor, indique cuando la Balanza vuelva a cero...</value>
+  </data>
+  <data name="ConfirmacionBalanzaManualACero2" xml:space="preserve">
+    <value>Confirma que la Balanza llego a Cero?</value>
+  </data>
+  <data name="DialogoCerear_Titulo" xml:space="preserve">
+    <value>Cerear Cabezal</value>
+  </data>
+  <data name="Error_ActualizarGenerico" xml:space="preserve">
+    <value>Ha ocurrido un error al actualizar los datos</value>
+  </data>
+  <data name="SeleccionarCentro_Error" xml:space="preserve">
+    <value>Debe seleccionar un centro</value>
+  </data>
+  <data name="Calle" xml:space="preserve">
+    <value>Calle</value>
+  </data>
+  <data name="Hidraulica" xml:space="preserve">
+    <value>Hidráulica</value>
+  </data>
+  <data name="Pesada_Almacen" xml:space="preserve">
+    <value>Almacén de Descarga</value>
+  </data>
+  <data name="Pesada_BalanzaNoCero" xml:space="preserve">
+    <value>La balanza seleccionada no está en cero</value>
+  </data>
+  <data name="Recrorrido_ErrorEnLaCarga" xml:space="preserve">
+    <value>Error en la carga de la decisión. La misma no fue almacenada.</value>
+  </data>
+  <data name="Material_CodigoSAP" xml:space="preserve">
+    <value>Codigo SAP</value>
+  </data>
+  <data name="Material_Variedad" xml:space="preserve">
+    <value>Variedad</value>
+  </data>
+  <data name="Almacen_Crear" xml:space="preserve">
+    <value>New Store</value>
+  </data>
+  <data name="Almacen_Modificar" xml:space="preserve">
+    <value>Edit Store</value>
+  </data>
+  <data name="Almacen_Nuevo" xml:space="preserve">
+    <value>New Store</value>
+  </data>
+  <data name="Almacen_DescripcionExistente" xml:space="preserve">
+    <value>Ya existe un Almacén con esta Descripción</value>
+  </data>
+  <data name="BalanzaACero_Titulo" xml:space="preserve">
+    <value>Balance a Cero</value>
+  </data>
+  <data name="ConfirmacionBalanzaAutomaticaACero" xml:space="preserve">
+    <value>Por Favor, espere mientras la Balanza vuelve a cero...</value>
+  </data>
+  <data name="ConfirmacionCerearBalanza" xml:space="preserve">
+    <value>Está seguro de querer cerear esta balanza?</value>
+  </data>
+  <data name="Error_AlCerear" xml:space="preserve">
+    <value>La balanza no pudo ser cereada, los administradores fueron notificados</value>
+  </data>
+  <data name="Notificacion_PendienteCereo" xml:space="preserve">
+    <value>Balance: {0}({1}) pendiente cereo</value>
+  </data>
+  <data name="Balanza_CerearCabezal" xml:space="preserve">
+    <value>Cerear Cabezal</value>
+  </data>
+  <data name="Atencion_CosechaInvalida" xml:space="preserve">
+    <value>Atencion: Formato Invalido, Debe ser AA-AA</value>
+  </data>
+  <data name="Confirmar" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="FechaInvalida" xml:space="preserve">
+    <value>The date is invalid</value>
+  </data>
+  <data name="AnalisisGirasolOleico" xml:space="preserve">
+    <value>The refraction analysis should be performed to determine if it is Oleico</value>
+  </data>
+</root>

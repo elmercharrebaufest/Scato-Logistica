@@ -1,0 +1,65 @@
+﻿@model Molinos.Scato.Dominio.Dto.LogHumedimetroDto
+@using Molinos.Scato.Dominio.Recursos;
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.Log_Humedimetro;
+    var centrosLista = (IEnumerable<SelectListItem>) ViewBag.Centros;
+    var humedimetrosLista = (IEnumerable<SelectListItem>) ViewBag.Humedimetros;
+    
+}
+
+<div id ="links" data-url-obtener-humedimetros ="@Url.Action("ObtenerListaHumedimetrosPorCentro", "LogHumedimetro")"></div>
+@Scripts.Render("~/bundles/jqueryval")
+<script src="@Url.Content("~/scripts/jquery.maskedinput.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/logHumedimetro.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
+<div class ="container" >
+    <div class="titSecciones" id="Titulo">@Textos.LogHumedimetro</div>
+    
+</div>
+
+<div class ="control-group-no-bottom">
+
+    @using (Html.BeginForm("Index", null, FormMethod.Post, new {@class = "form-horizontal", id = "orden-form"}))
+    {
+        @Html.ValidationSummary(true)
+                
+        <div class="control-group">
+            @Html.LabelFor(m => m.CentroId, new {@class = "control-label"})
+            <div class="controls" >
+                @Html.DropDownListFor(m=> m.CentroId, centrosLista, new{@class = "control-small" ,id ="centrosLista"})
+                @Html.ValidationMessageFor(m => m.CentroId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.HumedimetroId, new {@class = "control-label"})
+            <div class="controls" >
+                @Html.DropDownListFor(m => m.HumedimetroId, humedimetrosLista, new {@class = "control-small",id="humedimetrosLista"})
+                @Html.ValidationMessageFor(m => m.HumedimetroId)
+            </div>
+        </div>
+        <div class ="control-group">
+            @Html.LabelFor(m => m.FechaDesde, new {@class = "control-label"})
+            <div class="controls">
+                @Html.TextBoxFor(m => m.FechaDesde, new {@class = "control-input-small"})
+                @Html.ValidationMessageFor(m => m.FechaDesde)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(m => m.FechaHasta, new {@class = "control-label"})
+            <div class ="controls">
+                @Html.TextBoxFor(m => m.FechaHasta, new {@class = "control-input-small"})
+                @Html.ValidationMessageFor(m => m.FechaHasta)
+            </div>
+        </div>
+
+        <div class="control-group control-group-no-bottom">
+            <div class="controls cajaButtons">
+                <button type="submit" class="btn" id="botonaceptar">@Textos.Aceptar</button>
+                @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class = "btn"})
+            </div>
+        </div>
+    }
+</div>
+

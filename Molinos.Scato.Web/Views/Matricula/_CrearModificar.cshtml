@@ -1,0 +1,68 @@
+﻿
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.UsuarioMatriculaDto
+
+<style>      
+    div.modal {width: 600px}    
+    .form-horizontal .control-label {padding-top: 0}
+    #errMatricula {
+        display: none; 
+        color:red;
+        font-size:10px;
+    }
+</style>
+
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.Id)
+
+@if (Model != null && Model.Id != 0)
+{
+    @Html.HiddenFor(m => m.Nombre)
+    @Html.HiddenFor(m => m.Apellido)
+    @Html.HiddenFor(m => m.NombreUsuario)   
+}
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Nombre, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.Nombre, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.Nombre, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.Nombre)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Apellido, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.Apellido, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.Apellido, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.Apellido)
+    </div>
+</div>        
+
+<div class="control-group">
+    @Html.LabelFor(m => m.NombreUsuario, new {@class = "control-label"})
+    <div class="controls">
+        @(Model != null && Model.Id != 0 ? 
+            Html.DisplayFor(m => m.NombreUsuario, new {@class = "input-large"}) : 
+            Html.TextBoxFor(m => m.NombreUsuario, new {@class = "input-large"}))
+        @Html.ValidationMessageFor(m => m.NombreUsuario)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Matricula, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Matricula, new {@class = "input-large"})
+        @Html.ValidationMessageFor(m => m.Matricula)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(m => m.FirmaFile, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.FirmaFile, new {type = "file", id = "firmaBoton", @class = "control input-small"})
+        @Html.ValidationMessageFor(model => model.FirmaFile)
+    </div>
+</div>

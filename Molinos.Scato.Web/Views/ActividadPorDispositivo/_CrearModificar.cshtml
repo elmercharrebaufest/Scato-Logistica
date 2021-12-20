@@ -1,0 +1,120 @@
+﻿@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ActividadPorDispositivoDto
+@{
+    var workflows = ((IEnumerable<SelectListItem>)ViewBag.Workflows) ?? new List<SelectListItem>();
+    var actividades = ((IEnumerable<SelectListItem>)ViewBag.Actividades) ?? new List<SelectListItem>();
+    var barreras = (IEnumerable<SelectListItem>)ViewBag.Barreras;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
+}
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+@Html.HiddenFor(model => model.Id)
+@Html.Hidden("ObtenerActividadesUrl", Url.Action("ObtenerActividades"))
+@Html.Hidden("BuscandoActividadesMensaje", Textos.ControlDeTiempo_BuscandoActividades)
+@Html.Hidden("salidas", "", new { id = "salidasFinales" })
+@Html.Hidden("entradas", "", new { id = "entradasFinales" })
+@Html.Hidden("videoCamarasJson", Model.VideoCamarasJson, new { id = "videoCamarasFinales" })
+
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.WorkflowId, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.WorkflowId, workflows, string.Empty, new { @class = "control input-xlarge" })
+        @Html.ValidationMessageFor(model => model.WorkflowId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.Actividad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.Actividad, actividades, string.Empty, new { @class = "control input-xlarge" })
+        @Html.ValidationMessageFor(model => model.Actividad)
+    </div>
+</div>
+<div id="salidas">
+    <div class="control-group">
+        @Html.Label(Textos.Salida, new { @class = "control-label" })
+        <div class="controls">
+            @Html.DropDownList("Salida", barreras, new { id = "salida", @class = "control input-xlarge" })
+            @Html.ValidationMessageFor(m => m.Salida)
+            <button class="btn btn-primary agregar" type="button" data-bind="click: addSalida">@Textos.Agregar</button>
+
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>@Textos.Descripcion</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: salidas">
+                    <tr>
+                        <td data-bind="text: Descripcion" />
+                        <td><a href="#" data-bind="click: $root.removeSalida"><i class="icon-trash"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="entrada">
+    <div class="control-group">
+        @Html.Label(Textos.Entrada, new { @class = "control-label" })
+        <div class="controls">
+            @Html.DropDownList("Entrada", barreras, new { id = "entrada", @class = "control input-xlarge" })
+            @Html.ValidationMessageFor(m => m.Entrada)
+            <button class="btn btn-primary agregar" type="button" data-bind="click: addEntrada">@Textos.Agregar</button>
+
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>@Textos.Descripcion</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: entradas">
+                    <tr>
+                        <td data-bind="text: Descripcion" />
+                        <td><a href="#" data-bind="click: $root.removeEntrada"><i class="icon-trash"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.VideoCamaras, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownList("VideoCamara", camaras, new { id = "videoCamara", @class = "control input-xlarge" })
+        @Html.TextBox("VideoCamaraDirectorio", null, new { id = "videoCamaraDirectorio", placeholder = Textos.ActividadPorDispositivo_Directorio, @class = "control input-xlarge", style = "width:256px" })
+        @Html.ValidationMessageFor(m => m.VideoCamaras)
+        <button class="btn btn-primary" type="button" data-bind="click: addVideoCamara">@Textos.Agregar</button>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Textos.Descripcion</th>
+                    <th>@Textos.ActividadPorDispositivo_Directorio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: videoCamaras">
+                <tr>
+                    <td data-bind="text: Codigo" />
+                    <td data-bind="text: Directorio" />
+                    <td><a href="#" data-bind="click: $root.removeVideoCamara"><i class="icon-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.PuestoDeTrabajoDescripcion, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PuestoDeTrabajoDescripcion, new { @class = "control input-xlarge", disabled = "disabled" })
+    </div>
+</div>

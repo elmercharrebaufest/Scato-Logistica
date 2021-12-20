@@ -1,0 +1,103 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model dynamic
+
+@{
+    ViewBag.Title = Textos.VerificacionCot_Titulo;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/verificacionCot.js")"></script>
+<style>
+    .field-validation-error {
+        color: #ff0000;
+        font-size: 12px;
+    }
+</style>
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.VerificacionCot_Titulo</div>
+</div>
+
+@using (Html.BeginForm("Index", "VerificacionCot", FormMethod.Post, new {@class = "form-horizontal causaBlock", data_mensaje_espera = Textos.VerificacionCot_Espera}))
+{
+
+    <div id="Automatica">
+        <div class="modal-body">
+            @Html.Hidden("workflowDefinicionId", (int) ViewBag.WorkflowDefinicionId)
+            @Html.Hidden("workflow", (string) ViewBag.Workflow)
+            @Html.Hidden("workflowInstanceId", (Guid) ViewBag.WorkflowInstanceId)
+            @Html.Hidden("esManual", false, new {id = "esManual"})
+        
+            <div class="row-fluid row-fluid-ie7">
+        
+                <div class="span6">    
+                    <div class="control-group">
+                        <div class="control-label"> @(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum()):</div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.NumeroDocumentoIngreso</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">    
+                    <div class="control-group">
+                        <div class="control-label"> @Textos.Camion_Patente:</div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Patente</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @Html.ValidationMessage("workflowId")
+        </div>
+
+        <div class="modal-footer">
+            @if (PermisosHelper.Is(PermisosScato.IngresarCotManual))
+            {
+                <button id="boton-manual" class="btn ">@Textos.CotManual</button>
+            }
+            <button type="submit" class="btn btn-primary">@Textos.Retransmitir</button>
+            @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class = "btn"})
+        </div>        
+    </div>
+    
+    <div id="Manual" >
+        <div class="modal-body">
+            <div class="row-fluid row-fluid-ie7">
+        
+                <div class="span6">    
+                    <div class="control-group">
+                        <div class="control-label"> @(((TipoDocumentoIngreso)ViewBag.TipoDocumentoIngreso).DisplayEnum()):</div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.NumeroDocumentoIngreso</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">    
+                    <div class="control-group">
+                        <div class="control-label"> @Textos.Camion_Patente:</div>
+                        <div class="controls">
+                            <div class="control margin">@ViewBag.Patente</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="modal-body">
+            <div class="control-group">
+                @Html.Label(Textos.NumeroCot)
+                @Html.TextBox("numeroCot", "", new { id = "numeroCot", @class = "numeroCot input-large", maxlength = 30})
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">@Textos.Aceptar</button>
+            <button id="boton-volver" class="btn pull-left">@Textos.Volver</button>
+        </div>        
+    </div>
+    
+}

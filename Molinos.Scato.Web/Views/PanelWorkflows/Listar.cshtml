@@ -1,0 +1,89 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model FiltroListaDeWorkflowsDto
+
+@{
+    Layout = null;
+    ViewBag.Title = "Listar";
+    
+    var items = (ListaPaginada<InstanciaWorkflowDto>)ViewBag.Items;
+    
+    var grid = new WebGrid();
+    var columnas = new List<WebGridColumn>();
+    
+    Model.Columnas = Model.Columnas.Count == 1 ? Model.Columnas.FirstOrDefault().Split('|', ',').ToList() : Model.Columnas;
+
+    columnas.Add(grid.VerLogsWorkflow(Html,"PanelWorkflows","verLogsWF"));
+    
+    columnas.Add(grid.ColumnaResumirWorkflow(Html, "PanelWorkflows", "resumirWorkflow"));
+    
+    if (PermisosHelper.Is(PermisosScato.EliminarWorkflows))
+    {
+        columnas.Add(grid.ColumnaEliminarWorkflow(Html, "PanelWorkflows", "eliminarWorkflow"));
+    }
+
+    if (Model.Columnas.Contains("Patente"))
+    {
+        columnas.Add(grid.Columna("Patente", Textos.Camion_Patente));
+    }
+    if (Model.Columnas.Contains("Workflow"))
+    {
+        columnas.Add(grid.Columna("Workflow", Textos.Workflow));
+    }
+    if (Model.Columnas.Contains("ProximaEtapa"))
+    {
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty))));
+    }
+    if (Model.Columnas.Contains("MaterialId"))
+    {
+        columnas.Add(grid.Columna("MaterialCodigoSap", Textos.Workflow_MaterialId));
+    }
+    if (Model.Columnas.Contains("Material"))
+    {
+        columnas.Add(grid.Columna("Material", Textos.Material));
+    }
+    if (Model.Columnas.Contains("TipoDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("TipoDocumentoDeIngreso", Textos.TipoDocumentoIngreso, t => ((TipoDocumentoIngreso)t.TipoDocumentoDeIngreso).DisplayEnum()));
+    }
+    if (Model.Columnas.Contains("NumeroDocumentoIngreso"))
+    {
+        columnas.Add(grid.Columna("NumeroDocumentoDeIngreso", Textos.NumeroDocumentoIngreso));
+    }
+    if (Model.Columnas.Contains("InstanceCondition"))
+    {
+        columnas.Add(grid.Columna("Condicion", Textos.Workflow_InstanceState, t=> ((EstadoWorkflow)t.Condicion).DisplayEnum()));
+    }
+    if (Model.Columnas.Contains("CentroId"))
+    {
+        columnas.Add(grid.Columna("CentroCodigoSap", Textos.Workflow_CentroId));
+    }
+    if (Model.Columnas.Contains("Centro"))
+    {
+        columnas.Add(grid.Columna("Centro", Textos.Centro));
+    }
+    if (Model.Columnas.Contains("FechaCreacion") || Model.Columnas[0].Contains("FechaCreacion"))
+    {
+        columnas.Add(grid.Columna("FechaCreacion", Textos.Workflow_FechaCreacion, x => FormattingHtmlHelper.FormattedTime(x.FechaCreacion)));
+    }
+    if (Model.Columnas.Contains("FechaUltimaModificacion"))
+    {
+        columnas.Add(grid.Columna("FechaUltimaModificacion", Textos.ListaDeCamiones_FechaUltimaModificacion, x => FormattingHtmlHelper.FormattedTime(x.FechaUltimaModificacion)));
+    }
+    if (Model.Columnas.Contains("TipoComercial"))
+    {
+        columnas.Add(grid.Columna("TipoComercial", Textos.TipoComercial));
+    }
+    Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
+}
+
+<div class="controls">
+    @Html.Grilla(items,columnasFunc)
+</div>
+

@@ -1,0 +1,20 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    Layout = null;
+    var items = (ListaPaginada<BalanzaPuertoDto>)ViewBag.Items;
+}
+
+
+@Html.Grilla(items,
+        grid => grid.Columns(
+            grid.ColumnaEliminarModificar(Html, "BalanzaPuerto"),
+            grid.Columna("CodigoBalanza",  Textos.Balanza_CodigoBalanza),
+            grid.Columna("CodigoDispositivo", Textos.Codigo),
+            grid.Columna("UltimaValidacion", Textos.BalanzaPuerto_UltimaValidacion),
+            grid.Columna("Administrativa", Textos.BalanzaPuerto_Administrativa),
+            grid.Columna("IntentosValidacion", Textos.BalanzaPuerto_CantidadIntentosValidador),
+            grid.Columna("OffSetPlc", Textos.BalanzaPuerto_OffSetPlc),
+            grid.Columna("UltimoIdInsertado", Textos.UltimoUdConsumido)))

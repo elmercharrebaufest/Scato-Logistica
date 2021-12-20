@@ -1,0 +1,48 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.GraficoToneladasRangoDeDiasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/graficoToneladasPorRangoDeDias.js")"></script>
+
+<script type="text/javascript">
+    var textoHistorico = "@Textos.ToneladasPorRangoDia"
+</script>
+<div id="graficotoneladasporrangodedias">
+    <div class="row">
+        <div class="col-lg-12 bordeGris">
+            <div class="form-inline col-lg-offset-1" style="padding: 5px">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.MaterialDescripcion)
+                    @Html.TextBoxFor(model => model.MaterialDescripcion, new { @class = "input-medium", @id = "materialDescripcionTnDia" })
+                    @Html.ValidationMessageFor(model => model.MaterialDescripcion)
+                    @Html.HiddenFor(model => model.MaterialId, new { @id = "materialIdTnDia" })
+
+                </div>
+
+                <div class="FechaDesde col-md-3">
+                    @Html.LabelFor(model => model.FechaDesde)
+                    @Html.EditorFor(model => model.FechaDesde, Model != null ? Model.FechaDesde.FormattedFixed() : string.Empty)
+                    @Html.ValidationMessageFor(model => model.FechaDesde)
+                </div>
+                <div class="FechaHasta col-md-3">
+                    @Html.LabelFor(model => model.FechaHasta)
+                    @Html.EditorFor(model => model.FechaHasta, Model != null ? Model.FechaHasta.FormattedFixed() : string.Empty)
+                    @Html.ValidationMessageFor(model => model.FechaHasta)
+                </div>
+                <div class="col-md-2">
+                    <button class="btn" data-bind="click: generarGraficoToneladasPorRangoDeDias">@Textos.Generar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="partialContainerToneladasPorRangoDeDias">
+        @Html.Partial("_GraficoToneladasPorRangoDeDias", Model)
+    </div>
+</div>
+<div id="autocompleteCorr"></div>
+
+<script type="text/javascript" src="@Url.Script("~/scripts/validarFechasConRango.js")"></script>

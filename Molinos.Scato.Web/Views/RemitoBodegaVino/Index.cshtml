@@ -1,0 +1,39 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.RemitoBodegaVinoDto
+
+@{
+    ViewBag.Title = Textos.RemitoBodegaVino_Titulo;
+    var workflow = (string) ViewBag.Workflow;
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")   
+    <script type="text/javascript" src="@Url.Script("~/scripts/jquery.maskedinput.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script src="@Url.Script("~/Scripts/remitoBodegaVino.index.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+}
+<style>
+ .content { padding-top: 20px;}
+
+</style>
+<div class ="container">
+    <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.RemitoBodegaVino_Titulo</div>
+</div>
+
+@using (Html.BeginForm("Index", "RemitoBodegaVino", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", data_mensaje_espera = Textos.ActIngresarRemitoBodega }))
+{
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+     {
+         <div class="alert alert-error">
+             @Html.ValidationSummary(true)
+         </div>
+     }
+    @Html.Partial("_Orden", Model)
+
+    <div class="control-group paddingRight cajaButtons">
+        <button class="btn btn-primary aceptar" type="submit">@Textos.Aceptar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones",null, new {@class="btn"})
+    </div>
+}
