@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>Scato</TargetDatabaseName>
+    <DeployScriptFileName>Molinos.Scato.Database.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=BFNB12285\SQLEXPRESS;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="EsAmbienteBF">
+      <Value>False</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="WorkflowsDir">
+      <Value>C:\Molinos - SCT200\Molinos.Scato-DEV\Molinos.Scato.Workflow\</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>
