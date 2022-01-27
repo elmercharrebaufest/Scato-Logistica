@@ -22,11 +22,19 @@
                 <div class="col-xs-12">
                     @foreach (var material in Model)
                     {
-                        <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.CamionesEnPlanta</span> </div>
+                        <div class="col-xs-4 ">
+                            <span class="texto-tabla"> @material.Material</span>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span class="pull-right numero-tabla">@material.CamionesEnPlanta</span>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span class="pull-right numero-tabla">@material.VagonesEnPlanta</span>
+                        </div>
                     }
                     @for (var i = Model.Count; i < 4; i++)
                     {
-                        <div><br> </div>
+                        <div class="col-xs-12"><br> </div>
                     }
                 </div>
             </div>
@@ -47,13 +55,16 @@
             <div class="row">
                 @foreach (var material in Model)
                 {
-                    <div class="col-xs-4 ">
+                    <div class="col-xs-3 ">
                         <span class="texto-tabla"> @material.Material</span>
                     </div>
-                    <div class="col-xs-4 ">
+                    <div class="col-xs-3 ">
                         <span class="pull-right numero-tabla">@material.CamionesEnElDia</span>
                     </div>
-                    <div class="col-xs-4 ">
+                    <div class="col-xs-3 ">
+                        <span class="pull-right numero-tabla">@material.VagonesEnElDia</span>
+                    </div>
+                    <div class="col-xs-3 ">
                         <span class="pull-right numero-tabla"> @material.Peso.ToStringAbreviado()</span>
                     </div>
                 }
@@ -80,11 +91,19 @@
                 <div class="col-xs-12">
                     @foreach (var material in Model)
                     {
-                        <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.TotalIngresosEnElDia</span> </div>
+                        <div class="col-xs-4 ">
+                            <span class="texto-tabla"> @material.Material</span>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span class="pull-right numero-tabla">@material.TotalIngresosEnElDia</span>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <span class="pull-right numero-tabla">@material.TotalIngresosVagonesEnElDia</span>
+                        </div>
                     }
                     @for (var i = Model.Count; i < 4; i++)
                     {
-                        <div><br> </div>
+                        <div class="col-xs-12"><br> </div>
                     }
                 </div>
             </div>
@@ -107,11 +126,20 @@
                     <div class="col-xs-12">
                         @foreach (var material in Model)
                         {
-                            <div> <span class="texto-tabla"> @material.Material</span> <span class="pull-right numero-tabla"> @material.Rechazados</span> </div>
+                            <div class="col-xs-4 ">
+                                <span class="texto-tabla"> @material.Material</span>
+                            </div>
+                            <div class="col-xs-4 ">
+                                <span class="pull-right numero-tabla">@material.Rechazados</span>
+                            </div>
+                            <div class="col-xs-4 ">
+                                <span class="pull-right numero-tabla">@material.VagonesRechazados</span>
+                            </div>
+
                         }
                         @for (var i = Model.Count; i < 4; i++)
                         {
-                            <div><br> </div>
+                            <div class="col-xs-12"><br> </div>
                         }
                     </div>
                 </div>

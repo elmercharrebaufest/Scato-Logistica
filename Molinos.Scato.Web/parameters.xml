@@ -221,5 +221,15 @@
 	    <parameterEntry kind="XmlFile" scope="Web.config"
 					    match="/configuration/appSettings/add[@key='ArchivosPath']
                             /@value" />
-    </parameter>	
+    </parameter>
+	<parameter name="ICWebServerUrl Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='ICWebServerUrl']
+                            /@value" />
+	</parameter>
+	<parameter name="ICWSServerUrl Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='ICWSServerUrl']
+                            /@value" />
+	</parameter>
 </parameters>

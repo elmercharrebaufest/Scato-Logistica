@@ -79,5 +79,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public int? Sucursal { get; set; }
         public int? Planta { get; set; }
         public bool ContingenciaAfipCpe { get; set; }
+        public int? MinutosInactividadCalado { get; set; }
     }
 }

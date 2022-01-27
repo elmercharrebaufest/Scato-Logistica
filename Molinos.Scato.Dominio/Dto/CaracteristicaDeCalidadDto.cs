@@ -60,10 +60,15 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string CodigoSAP { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "EsProteina")]
+        [Display(ResourceType = typeof(Textos), Name = "EsProteinaAlta")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public decimal? ValorProteina { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "EsProteinaMedia")]
+        [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
+        public decimal? ValorProteinaMedia { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_TipoDeAnalisis")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]

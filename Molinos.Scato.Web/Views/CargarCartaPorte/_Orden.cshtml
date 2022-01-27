@@ -117,7 +117,8 @@
      data-url-obtener-carta-porte-electronica="@Url.Action("ObtenerCartaPorteElectronica", "CargarCartaPorte")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
      data-url-obtener-carta-porte-ctg-compragranos="@Url.Action("ObtenerCartaPorteCtgCompraGranos", "CargarCartaPorte")"
-     data-url-obtener-imagen-cpe="@Url.Action("ObtenerImagenCpe", "CargarCartaPorte")">
+     data-url-obtener-imagen-cpe="@Url.Action("ObtenerImagenCpe", "CargarCartaPorte")"
+     data-url-obtener-tipo-vehiculo="@Url.Action("ObtenerTipoVehiculo", "CargarCartaPorte")">
 </div>
 @Html.HiddenFor(m => m.TipoDeWorkflow)
 @Html.HiddenFor(model => model.Id)
@@ -369,6 +370,14 @@
                     </div>
                 </div>
                 <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.RepresentanteRecibidor, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.RepresentanteRecibidor, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.RepresentanteRecibidor)
+                        @Html.HiddenFor(model => model.RepresentanteRecibidorId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
                     @Html.LabelFor(model => model.Destinatario, new { @class = "control-label small" })
                     <div class="controls-small">
                         @Html.TextBoxFor(model => model.Destinatario, new { @class = "control input-xlarge" })
@@ -393,6 +402,14 @@
                     </div>
                 </div>
                 <div class="control-group control-group-no-bottom">
+                    @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control input-xlarge" })
+                        @Html.ValidationMessageFor(model => model.PagadorFlete)
+                        @Html.HiddenFor(model => model.PagadorFleteId)
+                    </div>
+                </div>
+                <div class="control-group control-group-no-bottom">
                     @Html.LabelFor(model => model.Transportista, new { @class = "control-label small" })
                     <div class="controls-small">
                         @Html.TextBoxFor(model => model.Transportista, new { @class = "control input-xlarge ", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Transportista) })
@@ -410,6 +427,7 @@
                         @Html.HiddenFor(model => model.EsTransportistaTramo2)
                     </div>
                 </div>
+
                 @Textos.CartaPorte_DatosChofer
 
                 <div class="row row-carta-porte">

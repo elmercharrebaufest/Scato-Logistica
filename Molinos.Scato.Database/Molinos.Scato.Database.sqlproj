@@ -498,6 +498,13 @@
     <Build Include="dbo\Tables\ImpEtiquetaPuerto.sql" />
     <Build Include="dbo\Tables\RamalFerroviario.sql" />
     <Build Include="dbo\Tables\LogCambioDeModalidadCalle.sql" />
+    <Build Include="dbo\Tables\CategoriaVehiculo.sql" />
+    <Build Include="dbo\Tables\Entidad.sql" />
+    <Build Include="dbo\Tables\TipoDeActividad.sql" />
+    <Build Include="dbo\Tables\EntidadTipoDeActividad.sql" />
+    <Build Include="dbo\Tables\MotivoInactividad.sql" />
+    <Build Include="dbo\Tables\RegistroInactividad.sql" />
+    <Build Include="dbo\Tables\RegistroStockOtrosPuertos.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

@@ -8018,5 +8018,17 @@ namespace Molinos.Scato.Test.Servicios
             Assert.IsNotNull(resultado);
 
         }
+
+        [Test]
+        public void ObtenerRegistroInactividad()
+        {
+            repositorioMock.Setup(s => s.Obtener<RegistroInactividad>(It.IsAny<int>())).Returns(new RegistroInactividad { Id = 3, Usuario = "baufest", FechaInicio = DateTime.Now, FechaFinal = DateTime.Now });
+
+            var result = target.ObtenerRegistroInactividad(3);
+
+            repositorioMock.Verify(s => s.Obtener<RegistroInactividad>(It.IsAny<int>()), Times.Exactly(1));
+            Assert.NotNull(result);
+            Assert.AreEqual(result.Id, 3);
+        }
     }
 }

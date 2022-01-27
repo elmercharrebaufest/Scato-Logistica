@@ -139,6 +139,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 96) BEGIN INSERT INTO [Permi
 IF NOT EXISTS (select 1 from Permiso where Codigo = 97) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Cliente', 0, 97, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 98) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Transmision A Sap Manual', 0, 98, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 99) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('CP Otros Puertos', 0, 99, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 604) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Categoria Camiones',0,604, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 100) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Descuentos Entregador', 1, 100, 'AutorizarDescuentosEntregador'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 101) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Transportista Inhabilitado', 1, 101, 'AutorizarTransportistaInhabilitado'); END
@@ -239,6 +240,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 195) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 196) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanza Automatica',1,196,null); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 197) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Salida de centro Playa',1,197,'SalidaDeCentroPlaya'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 198) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Camion Demorado',1,198,'CamionDemorado'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 199) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('En Espera HB4',1,199,'EnEsperaHB4'); END
 
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 200) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('IniciarWorkflow', 1, 200, NULL); END
@@ -383,11 +385,15 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 467) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 468) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Informe De Eficiencia De Hidraulicas Diario',3,468,'Informe De Eficiencia De Hidraulicas Diario'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 469) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reporte Modalidad Calador',3,469,'Reporte Modalidad Calador'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 470) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Comparacion Calidad',3,470,'ComparacionCalidad'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 471) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reporte Inactividad Calado',3,471,'ReporteInactividadCalado'); END
+
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 600) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pre line up',4,600, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 601) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Line up',4,601, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 602) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Line up lectura',4,602, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 603) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Line up exportar',4,603, NULL); END
+
+IF NOT EXISTS (select 1 from Permiso where Codigo = 605) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Puesto Pausado',1,605, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
@@ -1325,4 +1331,40 @@ IF NOT EXISTS (SELECT 1 FROM RamalFerroviario rf WHERE rf.CodigoAfip = 4) BEGIN 
 IF NOT EXISTS (SELECT 1 FROM RamalFerroviario rf WHERE rf.CodigoAfip = 5) BEGIN INSERT INTO RamalFerroviario (CodigoAfip, Descripcion, FechaCreacion, Deshabilitada) VALUES(5, 'Belgrano', '2021-11-01 19:30:00.000', 0) END
 IF NOT EXISTS (SELECT 1 FROM RamalFerroviario rf WHERE rf.CodigoAfip = 6) BEGIN INSERT INTO RamalFerroviario (CodigoAfip, Descripcion, FechaCreacion, Deshabilitada) VALUES(6, 'San Martín', '2021-11-01 19:30:00.000', 0) END
 IF NOT EXISTS (SELECT 1 FROM RamalFerroviario rf WHERE rf.CodigoAfip = 99) BEGIN INSERT INTO RamalFerroviario (CodigoAfip, Descripcion, FechaCreacion, Deshabilitada) VALUES(99, 'Otro', '2021-11-01 19:30:00.000', 0) END
+GO
+
+-- Motivos inactividad
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Almuerzo') BEGIN insert into MotivoInactividad (Descripcion) values ('Almuerzo'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Cena') BEGIN insert into MotivoInactividad (Descripcion) values ('Cena'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Desayuno – Merienda') BEGIN insert into MotivoInactividad (Descripcion) values ('Desayuno – Merienda'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Cambio de turno') BEGIN insert into MotivoInactividad (Descripcion) values ('Cambio de turno'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Rotación perito') BEGIN insert into MotivoInactividad (Descripcion) values ('Rotación perito'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Rotación caladores') BEGIN insert into MotivoInactividad (Descripcion) values ('Rotación caladores'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Presencia de Carga No Homogénea') BEGIN insert into MotivoInactividad (Descripcion) values ('Presencia de Carga No Homogénea'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Intervención Mecánico J1') BEGIN insert into MotivoInactividad (Descripcion) values ('Intervención Mecánico J1'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Falta camiones Pre Calado') BEGIN insert into MotivoInactividad (Descripcion) values ('Falta camiones Pre Calado'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Post calado lleno por gestión de filas') BEGIN insert into MotivoInactividad (Descripcion) values ('Post calado lleno por gestión de filas'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Intervención eléctrica J1') BEGIN insert into MotivoInactividad (Descripcion) values ('Intervención eléctrica J1'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Intervención Mecánica J2') BEGIN insert into MotivoInactividad (Descripcion) values ('Intervención Mecánica J2'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Intervención eléctrica J2') BEGIN insert into MotivoInactividad (Descripcion) values ('Intervención eléctrica J2'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Mantenimiento Jorgensen J1') BEGIN insert into MotivoInactividad (Descripcion) values ('Mantenimiento Jorgensen J1'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Mantenimiento Jorgensen J2') BEGIN insert into MotivoInactividad (Descripcion) values ('Mantenimiento Jorgensen J2'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Limpieza filtros') BEGIN insert into MotivoInactividad (Descripcion) values ('Limpieza filtros'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Sonda tapada') BEGIN insert into MotivoInactividad (Descripcion) values ('Sonda tapada'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Limpieza calles') BEGIN insert into MotivoInactividad (Descripcion) values ('Limpieza calles'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Sanitarios') BEGIN insert into MotivoInactividad (Descripcion) values ('Sanitarios'); END
+IF NOT EXISTS (select 1 from MotivoInactividad where Descripcion = 'Camión roto') BEGIN insert into MotivoInactividad (Descripcion) values ('Camión roto'); END
+
+GO
+
+--Entidades
+IF NOT EXISTS (SELECT 1 FROM Entidad WHERE Codigo = 'EVIST') BEGIN INSERT INTO Entidad VALUES('EVIST', 'Visteo') END
+GO
+
+--Tipos De Actividad
+IF NOT EXISTS (SELECT 1 FROM TipoDeActividad WHERE Codigo = 'TRECH') BEGIN INSERT INTO TipoDeActividad VALUES('TRECH', 'Rechazar') END
+GO
+
+--Entidades con Tipos De Actividad
+IF NOT EXISTS (SELECT 1 FROM EntidadTipoDeActividad WHERE Entidad_Id = (SELECT Id FROM Entidad WHERE Codigo = 'EVIST') AND TipoDeActividad_Id = (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) BEGIN INSERT INTO EntidadTipoDeActividad VALUES((SELECT Id FROM Entidad WHERE Codigo = 'EVIST'), (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) END
 GO

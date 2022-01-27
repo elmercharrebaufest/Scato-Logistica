@@ -112,6 +112,15 @@
                             <li>
                                 <input name="Columnas" type="checkbox" value="Entregador" id="checkEntregador" checked="@(Model.Columnas.Contains("Entregador") || Model.Columnas[0].Contains("Entregador"))" />@Textos.CartaPorte_Entregador
                             </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="Proteina" id="checkProteina" checked="@(Model.Columnas.Contains("Proteina") || Model.Columnas[0].Contains("Proteina"))" />@Textos.CartaPorte_Proteina
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="AlmacenDestino" id="checkAlmacenDestino" checked="@(Model.Columnas.Contains("AlmacenDestino") || Model.Columnas[0].Contains("AlmacenDestino"))" />Almacen Destino
+                            </li>
+                            <li>
+                                <input name="Columnas" type="checkbox" value="DifPeso" id="checkDifPeso" checked="@(Model.Columnas.Contains("DiferenciaPesoNeto") || Model.Columnas[0].Contains("DiferenciaPesoNeto"))" /> Dif. Peso
+                            </li>
                         </ul>
                     </div>
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">

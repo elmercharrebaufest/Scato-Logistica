@@ -248,10 +248,17 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         ListaPaginada<ChoferDto> ListarChoferes(string filtro, Paginacion paginacion);
         [OperationContract]
+        ListaPaginada<CategoriaVehiculoDto> ListarCategoriaCamiones(string filtro, Paginacion paginacion);
+        [OperationContract]
+        CategoriaVehiculoDto BuscarCategoriaVehiculo(string patente, string acoplado, string acoplado2);
+        [OperationContract]
         ListaPaginada<DocumentoExternoDto> ListarDocumentos(string filtro, Paginacion paginacion);
 
         [OperationContract]
         ChoferDto ObtenerChofer(int id);
+
+        [OperationContract]
+        CategoriaVehiculoDto ObtenerCategoriaVehiculo(int id);
 
         [OperationContract]
         KmPorProveedorDto ObtenerKmPorProveedor(int id);
@@ -581,6 +588,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<RecorridoDto> ListarRecorridosPorDocumento(string tipoDoc, string numeroDoc);
+
+        [OperationContract]
+        DatosRecorridoDto RecorridoPorTarjetaDeAcceso(string tarjetaDeAcceso);
 
         [OperationContract]
         RecorridoDto RecorridoSinPesosPorNumeroDeDocumento(TipoDocumentoIngreso tipo, string numeroDoc);
@@ -2453,6 +2463,22 @@ namespace Molinos.Scato.Servicios
         bool ValidarCPERedespacho(string numero, int centroId, string workflowCodigo, int tipoVehiculo, bool consultactg = false);
 
         [OperationContract]
-        IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoBalanzaVagonesPorSensorQuiebre(string codigoDispositivo);
+        IList<MotivoInactividadDto> ListarMotivosInactividad();
+
+        [OperationContract]
+        RegistroInactividadDto ObtenerRegistroInactividad(int id);
+
+        [OperationContract]
+        RegistroInactividadDto ObtenerUltimoRegistroInactividadPorUsuario(string usuario);
+
+        [OperationContract]
+        ControlRecorridoDto ObtenerUltimoCaladoPorPuestoDeTrabajo(int id);
+
+        [OperationContract]
+        EntidadTipoDeActividadDto ObtenerEntidadActividadPorCodigos(string codigoEntidad, string codigoTipoActividad);
+
+        [OperationContract]
+        IList<EntidadTipoDeActividadDto> ListarActividadesPorEntidad(string codigoEntidad);
+
     }
 }

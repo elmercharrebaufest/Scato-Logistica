@@ -25,16 +25,22 @@
           <QueryParameter Name="@Actividad">
             <Value>=join(Parameters!Etapa.Value,",")</Value>
           </QueryParameter>
+          <QueryParameter Name="@Vehiculos">
+            <Value>=join(Parameters!TipoVehiculo.Value,",")</Value>
+            <rd:UserDefined>true</rd:UserDefined>
+          </QueryParameter>
         </QueryParameters>
         <CommandText>DECLARE @CentroIdp int
 DECLARE @Materialp table(Value nvarchar(max))
 DECLARE @TipoComercialp table(Value nvarchar(max))
 DECLARE @Actividadp table(Value nvarchar(max))
+DECLARE @Vehiculosp table(Value nvarchar(max))
 
 SET @CentroIdp = @CentroId
 
 INSERT INTO @TipoComercialp select Value from [dbo].[FnSplit](@TipoComercial,',')
 INSERT INTO @Actividadp select Value from [dbo].[FnSplit](@Actividad,',')
+INSERT INTO @Vehiculosp select Value from [dbo].[FnSplit](@Vehiculos,',')
 
 IF EXISTS (SELECT value FROM  [dbo].[FnSplit](@Material,',') WHERE Value = '-1') BEGIN Insert into @Materialp Select Id From [material] Where Esgrano = 1 END
 IF EXISTS (SELECT value FROM [dbo].[FnSplit](@Material,',') WHERE  Value = '-2') BEGIN Insert into @Materialp Select Id From [material] Where EsGrano = 0 and EsInsumo = 0 END
@@ -52,7 +58,8 @@ SELECT
        material.descripcion       AS Material, 
 	   material.CodigoSAP       AS MaterialCodigoSAP, 
        material.Id       AS MaterialId, 
-       R.patente, 
+       R.patente,
+	   R.TipoVehiculo,
        COALESCE(R.PesoBruto,0) AS 'Kilos Brutos', 
        COALESCE((R.PesoBruto - R.PesoTara),0) AS 'Kilos Neto', 
        COALESCE(( CASE 
@@ -105,7 +112,8 @@ WHERE  R.[Terminado] &lt;&gt; 1 AND R.Rechazado &lt;&gt; 1
 	AND ((SELECT TOP 1 actividad 
         FROM   logactividad WITH (NOLOCK)
         WHERE  logactividad.workflowinstanceid = R.instanciaworkflow 
-        ORDER  BY id DESC) in (select value from @Actividadp))</CommandText>
+        ORDER  BY id DESC) in (select value from @Actividadp))
+	AND (R.TipoVehiculo in (select value from @Vehiculosp))</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -136,6 +144,10 @@ WHERE  R.[Terminado] &lt;&gt; 1 AND R.Rechazado &lt;&gt; 1
         <Field Name="patente">
           <DataField>patente</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TipoVehiculo">
+          <DataField>TipoVehiculo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="Kilos_Brutos">
           <DataField>Kilos Brutos</DataField>
@@ -361,6 +373,22 @@ SELECT COUNT(*) as PendientesDeIngresar
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="TipoVehiculo">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <CommandText>SELECT Id, Descripcion as TipoVehiculo FROM TipoVehiculo</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="TipoVehiculo">
+          <DataField>TipoVehiculo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -371,6 +399,9 @@ SELECT COUNT(*) as PendientesDeIngresar
               <TablixColumns>
                 <TablixColumn>
                   <Width>0.75in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -398,7 +429,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -409,6 +440,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -592,7 +656,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -602,6 +666,37 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -752,7 +847,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -763,6 +858,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox107</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -917,7 +1044,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -928,6 +1055,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox7">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox7</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1082,7 +1241,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1093,6 +1252,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox134">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox134</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1239,6 +1430,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -1745,7 +1937,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>1.05903in</Top>
             <Left>0.17891cm</Left>
             <Height>1.1175in</Height>
-            <Width>9.49999in</Width>
+            <Width>10.49999in</Width>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 1</Hidden>
             </Visibility>
@@ -1754,6 +1946,9 @@ SELECT COUNT(*) as PendientesDeIngresar
           <Tablix Name="table2">
             <TablixBody>
               <TablixColumns>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
@@ -1783,7 +1978,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1794,6 +1989,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox192">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox192</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -1977,7 +2205,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -1987,6 +2215,37 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox204">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox204</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -2137,7 +2396,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -2148,6 +2407,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox205">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox205</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -2302,7 +2593,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -2313,6 +2604,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox206">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox206</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -2459,6 +2782,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -2759,7 +3083,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>2.37271in</Top>
             <Left>0.17891cm</Left>
             <Height>0.91959in</Height>
-            <Width>9.16666in</Width>
+            <Width>10.16666in</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 0</Hidden>
@@ -2769,6 +3093,9 @@ SELECT COUNT(*) as PendientesDeIngresar
           <Tablix Name="table3">
             <TablixBody>
               <TablixColumns>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
@@ -2798,7 +3125,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -2809,6 +3136,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox146">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox146</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -2992,7 +3352,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -3002,6 +3362,37 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox148">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox148</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -3152,7 +3543,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -3163,6 +3554,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox170</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox168">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox168</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -3317,7 +3740,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -3328,6 +3751,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox177</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox190">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox190</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -3474,6 +3929,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -3783,7 +4239,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>0.01389in</Top>
             <Left>0.17891cm</Left>
             <Height>0.8675in</Height>
-            <Width>9.16666in</Width>
+            <Width>10.16666in</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 2</Hidden>
@@ -3795,6 +4251,9 @@ SELECT COUNT(*) as PendientesDeIngresar
               <TablixColumns>
                 <TablixColumn>
                   <Width>0.79167in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.95833in</Width>
@@ -3822,7 +4281,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -3833,6 +4292,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox229">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox229</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -4016,7 +4508,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -4026,6 +4518,37 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox230">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox230</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -4176,7 +4699,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -4187,6 +4710,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox231">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox231</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -4341,7 +4896,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -4352,6 +4907,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox232">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox232</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -4506,7 +5093,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -4517,6 +5104,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox233">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox233</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -4663,6 +5282,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -5155,7 +5775,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>3.49646in</Top>
             <Left>0.09954cm</Left>
             <Height>1.08572in</Height>
-            <Width>9.68748in</Width>
+            <Width>10.68748in</Width>
             <ZIndex>3</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 3</Hidden>
@@ -5167,6 +5787,9 @@ SELECT COUNT(*) as PendientesDeIngresar
               <TablixColumns>
                 <TablixColumn>
                   <Width>0.72917in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -5194,7 +5817,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -5205,6 +5828,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox207">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox207</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -5388,7 +6044,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5399,6 +6055,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox223">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox223</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -5553,7 +6241,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -5564,6 +6252,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox107</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox224">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox224</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -5718,7 +6438,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -5729,6 +6449,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox225">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox225</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -5883,7 +6635,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -5894,6 +6646,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox226">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox226</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -6048,7 +6832,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -6059,6 +6843,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox227">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox227</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -6205,6 +7021,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -6945,7 +7762,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>4.87385in</Top>
             <Left>0.07307cm</Left>
             <Height>1.29459in</Height>
-            <Width>10.36951in</Width>
+            <Width>11.36951in</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 4</Hidden>
@@ -6957,6 +7774,9 @@ SELECT COUNT(*) as PendientesDeIngresar
               <TablixColumns>
                 <TablixColumn>
                   <Width>0.79167in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.95833in</Width>
@@ -6984,7 +7804,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -6995,6 +7815,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox234">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox234</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -7178,7 +8031,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -7188,6 +8041,37 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox235">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox235</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -7338,7 +8222,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -7349,6 +8233,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox236">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox236</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -7503,7 +8419,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -7514,6 +8430,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox198</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox237">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox237</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -7668,7 +8616,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -7679,6 +8627,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox238">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox238</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -7825,6 +8805,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -8314,7 +9295,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>6.32782in</Top>
             <Left>0.10583cm</Left>
             <Height>1.14822in</Height>
-            <Width>9.71874in</Width>
+            <Width>10.71874in</Width>
             <ZIndex>5</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 5</Hidden>
@@ -8326,6 +9307,9 @@ SELECT COUNT(*) as PendientesDeIngresar
               <TablixColumns>
                 <TablixColumn>
                   <Width>0.72917in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -8353,7 +9337,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Cantidad</Value>
+                                  <Value>Cantidad Camiones</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -8364,6 +9348,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>LightGrey</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox239">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Cantidad Vagones</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox239</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -8547,7 +9564,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -8558,6 +9575,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox240">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox240</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -8712,7 +9761,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -8723,6 +9772,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox241">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox241</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -8877,7 +9958,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -8888,6 +9969,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox267</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox242">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox242</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -9042,7 +10155,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -9053,6 +10166,38 @@ SELECT COUNT(*) as PendientesDeIngresar
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox243">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox243</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -9207,7 +10352,7 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CountRows()</Value>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value &lt;&gt; 1, 1, 0))</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -9228,6 +10373,39 @@ SELECT COUNT(*) as PendientesDeIngresar
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox244">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Sum(IIf(Fields!TipoVehiculo.Value = 1, 1, 0))</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox244</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -9364,6 +10542,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -10104,7 +11283,7 @@ SELECT COUNT(*) as PendientesDeIngresar
             <Top>7.61156in</Top>
             <Left>0.10268cm</Left>
             <Height>1.34667in</Height>
-            <Width>10.36951in</Width>
+            <Width>11.36951in</Width>
             <ZIndex>6</ZIndex>
             <Visibility>
               <Hidden>=Parameters!TipoReporte.Value &lt;&gt; 6</Hidden>
@@ -10369,7 +11548,7 @@ SELECT COUNT(*) as PendientesDeIngresar
         <Height>10.10405in</Height>
         <Style />
       </Body>
-      <Width>26.51745cm</Width>
+      <Width>28.98124cm</Width>
       <Page>
         <PageHeader>
           <Height>0.63999in</Height>
@@ -10599,6 +11778,24 @@ SELECT COUNT(*) as PendientesDeIngresar
       </ValidValues>
       <MultiValue>true</MultiValue>
     </ReportParameter>
+    <ReportParameter Name="TipoVehiculo">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>TipoVehiculo</DataSetName>
+          <ValueField>Id</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>TipoVehiculo</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>TipoVehiculo</DataSetName>
+          <ValueField>Id</ValueField>
+          <LabelField>TipoVehiculo</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
+    </ReportParameter>
     <ReportParameter Name="Material">
       <DataType>Integer</DataType>
       <DefaultValue>
@@ -10666,7 +11863,7 @@ SELECT COUNT(*) as PendientesDeIngresar
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
-      <NumberOfColumns>3</NumberOfColumns>
+      <NumberOfColumns>4</NumberOfColumns>
       <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
@@ -10698,6 +11895,11 @@ SELECT COUNT(*) as PendientesDeIngresar
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>TipoReporte</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>TipoVehiculo</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -49,7 +49,7 @@ namespace Molinos.Scato.Web.Controllers
                 filtro.ProximaAccion = "PuestoComando";
                 filtro.CantidadDeResultados = CantidadDeResultados.Veinticinco;
             }
-            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden);
+            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden,true);
 
             ViewBag.SepararAlmacenSustentable = ConfigurationManager.AppSettings["SepararAlmacenSustentable"];
 
@@ -59,12 +59,12 @@ namespace Molinos.Scato.Web.Controllers
         [AjaxOnly]
         [ActionName("Index")]
         public ActionResult Listar(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaInicio", DirOrden dirOrden = DirOrden.Desc)
-       {
+        {
             if (filtro.Patente != null)
             {
                 filtro.Patente = filtro.Patente.ToUpper();
             }
-            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden);
+            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden,false);
             return View("Listar", filtro);
         }
 
@@ -134,7 +134,7 @@ namespace Molinos.Scato.Web.Controllers
         private void AvanzarWorkflow(ResultadoPuestoComando resultado, DatosUsuario datosUsuario)
         {
             var camionesAceptados = new List<DatosDeWorkflowDto>();
-                log.Debug("Inicio Asignacion Puesto Comando sin errores");
+            log.Debug("Inicio Asignacion Puesto Comando sin errores");
             foreach (
                 var workflow in
                     resultado.Workflows.Where(
@@ -189,7 +189,8 @@ namespace Molinos.Scato.Web.Controllers
                 return;
             }
 
-            var resultadoImpresion = servicioComandos.Ejecutar(new ImprimirResumenHojaDeRuta {
+            var resultadoImpresion = servicioComandos.Ejecutar(new ImprimirResumenHojaDeRuta
+            {
                 Dto = new ImpResumenHojaDeRutaDto
                 {
                     DatosDeWorkflows = camionesAceptados.Where(x => !x.EsSoja || (x.EsSoja && x.TieneDescuentos)).ToList(),
@@ -204,7 +205,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void ListQuery(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina, string ordenarPor, DirOrden dirOrden)
+        private void ListQuery(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina, string ordenarPor, DirOrden dirOrden, bool EsPrimeraCarga)
         {
             var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, (int)filtro.CantidadDeResultados);
             filtro.CentroId = datosUsuario.CentroId;
@@ -218,20 +219,25 @@ namespace Molinos.Scato.Web.Controllers
                     instancia.EsSemillaSoja = true;
                 }
             }
+
+
             ViewBag.Caracteristicas = servicio.ListarCaracteristicaConfiguracionDeTabla(datosUsuario.CentroId, filtro.MaterialId ?? 0, datosUsuario.NombreUsuario);
-
             ViewBag.Items = datosWorkflow.Workflows;
-            ViewBag.Workflows = datosWorkflow.WorkflowsCentro.OrderBy(x => x.Descripcion).ToSelectList(x => x.Codigo, x => x.Descripcion);
 
-            var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-            if (actividades.All(x => x != "PuestoComando"))
+            if (EsPrimeraCarga == true)
             {
-                actividades.Add("PuestoComando");
+                ViewBag.Workflows = datosWorkflow.WorkflowsCentro.OrderBy(x => x.Descripcion).ToSelectList(x => x.Codigo, x => x.Descripcion);
+
+                var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario, datosUsuario.CentroId);
+                if (actividades.All(x => x != "PuestoComando"))
+                {
+                    actividades.Add("PuestoComando");
+                }
+                ViewBag.Estados = actividades.ToSelectList(x => x, x => Textos.ResourceManager.GetString("Act" + x));
+                ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
+                ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
+                ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
             }
-            ViewBag.Estados = actividades.ToSelectList(x => x, x => Textos.ResourceManager.GetString("Act" + x));
-            ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
-            ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-            ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
         }
 
         private void SetearVista(DatosUsuario datosUsuario, int? materialId, bool esSustentable, bool sustentableMixto)
@@ -311,7 +317,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         var accion = workflows.ObtenerWorkflowProximaAccion(camion).ProximaAccion;
                         var vehiculo = servicio.ObtenerVehiculoPorGuid(camion);
-                        if(accion == "PesadaBruto" && (vehiculo.TipoVehiculo == TipoVehiculo.Tren|| vehiculo.TipoVehiculo == TipoVehiculo.Bitren))
+                        if (accion == "PesadaBruto" && (vehiculo.TipoVehiculo == TipoVehiculo.Tren || vehiculo.TipoVehiculo == TipoVehiculo.Bitren))
                         {
                             var workflow = servicio.ObtenerDatosDeInstanciaPorGuid(camion);
                             var servicioWf = factoryPesada.CrearServicio(workflow.WorkflowDefinicionId);

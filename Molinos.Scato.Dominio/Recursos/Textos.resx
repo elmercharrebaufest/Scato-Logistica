@@ -4669,6 +4669,9 @@
   <data name="PuestoDeTrabajo_Automatico" xml:space="preserve">
     <value>Automático</value>
   </data>
+	<data name="PuestoDeTrabajo_ValidarInactividadCalado" xml:space="preserve">
+    <value>Validar Inactividad Calado</value>
+  </data>
   <data name="PuestoDeTrabajo_NombrePc" xml:space="preserve">
     <value>Nombre PC</value>
   </data>
@@ -5800,6 +5803,9 @@
   <data name="RemitoBodegaVino_Titulo" xml:space="preserve">
     <value>Remito Bodega Terceros (Vino)</value>
   </data>
+  <data name="ReporteInactividadCalado" xml:space="preserve">
+    <value>Inactividad Calado</value>
+  </data>
   <data name="ReporteIngresoDeUvasPorTipoDeOperacionYVariedad_Titulo" xml:space="preserve">
     <value>Por Tipo de Operación y Variedad</value>
   </data>
@@ -6658,6 +6664,9 @@
   <data name="PuestoDeTrabajo_FotoAlMarcarTarjeta" xml:space="preserve">
     <value>Tomar foto al marcar tarjeta</value>
   </data>
+  <data name="PuestoDeTrabajo_ActivarRegistroInactividad" xml:space="preserve">
+    <value>Activar Registro Inactividad</value>
+  </data>
   <data name="Material_PesoTeorico" xml:space="preserve">
     <value>Peso Teórico</value>
   </data>
@@ -7229,7 +7238,7 @@
     <value>Camiones por actividad</value>
   </data>
   <data name="GraficoDePlanta_CamionesRechazados" xml:space="preserve">
-    <value>Camiones Rechazados</value>
+    <value>Camiones/Vagones Rechazados</value>
   </data>
   <data name="GraficoDePlanta_Carga" xml:space="preserve">
     <value>Carga</value>
@@ -7787,16 +7796,16 @@
     <value>No hay fotos del camion</value>
   </data>
   <data name="GraficoDePlanta_CamionesDescargados" xml:space="preserve">
-    <value>Camiones/TN descargadas</value>
+    <value>Camiones/Vagones/TN descargadas</value>
   </data>
   <data name="GraficoDePlanta_CamionesEnCircuito" xml:space="preserve">
-    <value>Camiones en circuito</value>
+    <value>Camiones/Vagones en circuito</value>
   </data>
   <data name="CartaPorte_CargarPorCtg" xml:space="preserve">
     <value>Cargar por CTG</value>
   </data>
   <data name="GraficoDePlanta_TotalEnElDia" xml:space="preserve">
-    <value>Ingresos en el día</value>
+    <value>Camiones/Vagones Ingresos en el día</value>
   </data>
   <data name="VerEventos" xml:space="preserve">
     <value>Ver Eventos</value>
@@ -8993,7 +9002,7 @@
     <value>EGRESOS EN EL DÍA</value>
   </data>
   <data name="CamionesEgreso" xml:space="preserve">
-    <value>Egresos en el día</value>
+    <value>Camiones/Vagones Egresos en el día</value>
   </data>
   <data name="CaracteristicaDeCalidad_ToleranciaSinMensaje" xml:space="preserve">
     <value>Tolerancia con Advertencia</value>
@@ -9610,10 +9619,94 @@
   <data name="ReporteModalidadCalador" xml:space="preserve">
     <value>Reporte Modalidad Calador</value>
   </data>
+  <data name="EsProteinaAlta" xml:space="preserve">
+    <value>Es Proteina Alta</value>
+  </data>
+  <data name="EsProteinaMedia" xml:space="preserve">
+    <value>Proteina Media</value>
+  </data>
+  <data name="Proteina_Media" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="ActEnEsperaHB4" xml:space="preserve">
+    <value>En Espera HB4</value>
+  </data>
   <data name="CartaPorte_PatenteAcoplado2" xml:space="preserve">
     <value>Patente Acoplado 2</value>
   </data>
   <data name="ComparacionCalidad" xml:space="preserve">
     <value>Comparacion Calidad</value>
+  </data>
+  <data name="CartaPorte_Proteina" xml:space="preserve">
+    <value>Proteina</value>
+  </data>
+  <data name="PinchazosPorCalada" xml:space="preserve">
+    <value>Pinchazos por Camiones Calados</value>
+  </data>
+  <data name="Consultar" xml:space="preserve">
+    <value>Consultar</value>
+  </data>
+  <data name="Administracion_CategoriaCamiones" xml:space="preserve">
+    <value>Administración de Categoría de Camiones</value>
+  </data>
+  <data name="CategoriaCamiones_Patente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="CategoriaCamiones_PatenteAcoplado" xml:space="preserve">
+    <value>Patente Acoplado</value>
+  </data>
+  <data name="CategoriaCamiones_PatenteAcoplado2" xml:space="preserve">
+    <value>Patente Acoplado 2</value>
+  </data>
+  <data name="CategoriaCamiones_TipoVehiculo" xml:space="preserve">
+    <value>Tipo de Vehículo</value>
+  </data>
+  <data name="CategoriaCamiones_Titulo" xml:space="preserve">
+    <value>Categoría Camiones</value>
+  </data>
+  <data name="Filtrar_CategoriaCamiones" xml:space="preserve">
+    <value>Filtrar por Patente:</value>
+  </data>
+  <data name="CategoriaCamiones_Modificar" xml:space="preserve">
+    <value>Modificar Camión</value>
+  </data>
+  <data name="CategoriaCamiones_Nuevo" xml:space="preserve">
+    <value>Nuevo Camión</value>
+  </data>
+  <data name="CategoriaCamiones_Crear" xml:space="preserve">
+    <value>Crear Camión</value>
+  </data>
+  <data name="CategoriaCamiones_Acoplado2Existente" xml:space="preserve">
+    <value>Ya existe un vehículo con la patente acoplado 2 ingresada</value>
+  </data>
+  <data name="CategoriaCamiones_AcopladoExistente" xml:space="preserve">
+    <value>Ya existe un vehículo con la patente acoplado ingresada</value>
+  </data>
+  <data name="CategoriaCamiones_PatenteExistente" xml:space="preserve">
+    <value>Ya existe un vehículo con la patente ingresada</value>
+  </data>
+  <data name="PuestoDeTrabajo_Intercomunicador" xml:space="preserve">
+    <value>Intercomunicador</value>
+  </data>
+  <data name="CartaPorte_Transportista_Pagador_Flete" xml:space="preserve">
+    <value>Flete pagador</value>
+  </data>
+  <data name="CartaPorte_Representante_Recibidor" xml:space="preserve">
+    <value>Representt. Recibidor</value>
+  </data>
+  <data name="MotivoInactividad_Titulo" xml:space="preserve">
+    <value>Bloqueo por inactividad</value>
+  </data>
+  <data name="MotivoInactividad_Descripcion" xml:space="preserve">
+    <value>La pantalla se ha bloqueado debido a la inactividad.</value>
+  </data>
+  <data name="MotivoInactividad_Motivo" xml:space="preserve">
+    <value>Seleccione motivo:</value>
+  </data>
+  <data name="Default_MotivoInactividad" xml:space="preserve">
+    <value>Seleccione motivo</value>
+  </data>
+ <data name="MotivoInactividad_Requerido" xml:space="preserve">
+    <value>Debe seleccionar un motivo</value>
   </data>
 </root>

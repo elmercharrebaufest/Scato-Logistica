@@ -1,5 +1,5 @@
 ﻿@model Molinos.Scato.Dominio.Dto.BalanzaAutomaticaDto
-
+@using dto = Molinos.Scato.Dominio.Dto
 <div class="span12 card form-search" id="@Model.PuestoId">
     @Html.Hidden("notificacionId" + Model.PuestoId)
     @Html.Hidden("tarjeta" + Model.PuestoId)
@@ -13,9 +13,12 @@
         <div class="span3" style="border:none">
             <a class="btn btn-acciones-especiales" data-id="@Model.PuestoId">Opciones</a>
         </div>
-        <div class="span3" style="border:none; margin-left:0">
-            
-        </div>
+        @if (Model.IntercomunicadorCodigo != null)
+        {
+            <div class="span3" style="border:none; margin-left:0">
+                @Html.Partial("~/Views/Shared/Intercomunicador/_IntercomunicadorDispositivo.cshtml", Model.IntercomunicadorDispositivo)
+            </div>
+        }
     </div>
     <div class="row-fluid card-body">
         <div class="span4">
@@ -106,7 +109,7 @@
             </div>
         </div>
         <div class="span1">
-            <img src="@(!string.IsNullOrEmpty(Model.CamaraUrl)?Model.CamaraUrl.Replace("http://","https://"):"")"/>
+            <img src="@(!string.IsNullOrEmpty(Model.CamaraUrl)?Model.CamaraUrl.Replace("http://","https://"):"")" />
         </div>
     </div>
 </div>

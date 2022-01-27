@@ -13,6 +13,7 @@
         AlertaAutomatica = 7,
         NotificacionEstadoWeb = 8,
         CartaPorte = 9,
-        CambioEstadoBalanzas = 10
+        CambioEstadoBalanzas = 10,
+        CambioEstadoSemaforo = 11
     }
 }

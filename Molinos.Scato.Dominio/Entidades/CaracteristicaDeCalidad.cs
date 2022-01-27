@@ -46,6 +46,8 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual bool EsInsectosVivos { get; set; }
         public virtual decimal? ValorProteina { get; set; }
+        public virtual decimal? ValorProteinaMedia { get; set; }
+
         public virtual decimal? ValorEspecialMinimo { get; set; }
         public virtual decimal? ValorEspecialMaximo { get; set; }
         public virtual bool EsAutomatizable { get; set; }

@@ -67,7 +67,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 RemitenteRazonSocial = dto.RemitenteRazonSocial,
                                 ProductoCodigo = dto.ProductoCodigo,
                                 ProductoDescripcion = dto.ProductoDescripcion,
-                                ProductoCosecha = dto.ProductoCosecha,
+                                ProductoCosecha = ValidarFormatoCosecha(dto.ProductoCosecha),
                                 Material_Id = material != null ? material.Id : (int?)null,
                                 ProcedenciaCodigo = dto.ProcedenciaCodigo,
                                 ProcedenciaLocalidad = dto.ProcedenciaLocalidad,
@@ -130,7 +130,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 RazonSocialRemitenteComercialVentaSecundaria2 = dto.RazonSocialRemitenteComercialVentaSecundaria2,
                                 RamalFerroviario = dto.RamalFerroviario,
                                 NumeroPrecinto = dto.NumeroPrecinto,
-                                Pdf = dto.Pdf
+                                Pdf = dto.Pdf,
+                                EsSustentable = dto.EsSustentable,
+                                CodigoEstablecimientoSustentable = dto.CodigoEstablecimientoSustentable
                             };
 
                            
@@ -149,6 +151,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             }
 
                             Repositorio.Agregar(cartaPorteOtroPuertos);
+
+                            if (dto.EsSustentable)
+                            {
+                                //registrar en tabla sustentable
+                                if (ValidarGrabarStock(dto))
+                                {
+                                    RegistroStockOtrosPuertos registroStockOtrosPuertos = new RegistroStockOtrosPuertos
+                                    {
+                                        CodigoEstablecimiento = cartaPorteOtroPuertos.CodigoEstablecimientoSustentable,
+                                        Cosecha = cartaPorteOtroPuertos.ProductoCosecha,
+                                        PesoNeto = decimal.Parse(cartaPorteOtroPuertos.DestinoPN),
+                                        CartaPorteOtrosPuertos = cartaPorteOtroPuertos
+                                    };
+                                    Repositorio.Agregar(registroStockOtrosPuertos);
+                                }
+                            }
                         }
                         else
                         {
@@ -208,7 +226,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             GuardarImagen(dto, cartaPorteOtroPuertos, comando.Usuario);
                         }
-                      
+
                         Repositorio.GuardarCambios();
                     }
 
@@ -283,5 +301,53 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
+        private bool ValidarGrabarStock (CartaPorteOtrosPuertosDto dto) 
+        {
+            bool resultado = true;
+            bool establecimiento = string.IsNullOrEmpty(dto?.CodigoEstablecimientoSustentable);
+            bool cosecha = string.IsNullOrEmpty(dto?.ProductoCosecha);
+            bool pesoNeto = !decimal.TryParse(dto?.DestinoPN, out decimal p);
+
+            if (establecimiento || cosecha || pesoNeto || (decimal.TryParse(dto?.DestinoPN, out decimal pn) && pn == 0))
+            {
+                Log.Debug("No se guardo en la bd tabla RegistroStockOtrosPuertos, la cpe : {0} es sustentable pero no registra los siguientes parametros : {1}", 
+                    dto?.NumeroCartaPorte, 
+                    string.Join(establecimiento ? "CodigoEstablecimiento, " : string.Empty, cosecha ? "Cosecha, " : string.Empty, pesoNeto ? "PesoNeto, " : string.Empty));
+
+                resultado = false;
+            }
+
+            return resultado;
+        }
+
+        private string ValidarFormatoCosecha(string input)
+        {
+            var resultado = input;
+            string[] array;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(input))
+                {
+                    if (input.Contains("-"))
+                    {
+                        array = input.Split('-');
+                        if (array.Length >= 2)
+                        {
+                            if (DateTime.TryParseExact(array[0], "yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFrom) && DateTime.TryParseExact(array[1], "yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTo))
+                            {
+                                resultado = string.Format("{0}/{1}", dateFrom.ToString("yyyy"), dateTo.ToString("yy"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Ocurrió un error al ValidarFormatoCosecha");
+            }
+
+            return resultado;
+        }
     }
 }

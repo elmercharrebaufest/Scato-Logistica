@@ -7,5 +7,8 @@
         public bool SensorIngresoActiva { get; set; }
         public bool SensorTrompaActiva { get; set; }
         public int PuestoId{ get; set; }
+        public bool SensorVagones { get; set; }
+        public int SensorDireccionId { get; set; }
+        public bool SensorVagonStatus { get; set; }
     }
 }

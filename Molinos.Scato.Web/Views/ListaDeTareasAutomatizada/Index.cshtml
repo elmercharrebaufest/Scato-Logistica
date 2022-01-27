@@ -35,6 +35,7 @@
 @Html.Hidden("obtenerFoto", Url.Action("ObtenerUltimaFoto", "Foto"))
 @Html.Hidden("home", Url.Action("Index", "ListaDeCamiones"))
 @Html.Hidden("mensajeAlertPaseAutomatico", mensajeAlertaPaseAutomatico)
+@Html.Hidden("DocumentoOrigenConsultaUrl", Url.Action("DocumentoOrigenConsulta", "ListaDeTareasAutomatizada"))
 
 @if (mostrarAlertaPaseAutomatico && !string.IsNullOrEmpty(mensajeAlertaPaseAutomatico))
 {
@@ -113,15 +114,18 @@
                                 {
                                     <input type="hidden" name="puestosDeTrabajo" data-bind="value: ko.toJSON($data)" />
                                     <div>
-                                        <div class="span2 offset2">
+                                        <div class="span2 offset1">
                                             @Html.Label(Textos.Patente, new { @class = "", style = "width:50px;" })
                                         </div>
                                         <div class="span4">
                                             @Html.TextBox("Patente", null, new { @class = "PatenteRequerida patente-internacional uppercase", tabindex = 2, style = "width:100%;margin:0", data_bind = "value: Patente, valueUpdate: 'afterkeydown', attr: { 'id': IndicePantente, 'name': IndicePantente }" })
                                             @Html.ValidationMessage("Patente", new { data_bind = "attr: { 'data-valmsg-for': IndicePantente }" })
                                         </div>
-                                        <div class="span4 text-center">
+                                        <div class="span2 text-center">
                                             <button tabindex="3" class="btn" style="margin-left: 5px">@Textos.Aceptar</button>
+                                        </div>
+                                        <div class="span2 text-center">
+                                            <button tabindex="3" class="btn" style="margin-left: 5px" id="consultar-vehiculo" data-bind="click: consultarPatenteVehiculo">@Textos.Consultar</button>
                                         </div>
                                     </div>
                                 }

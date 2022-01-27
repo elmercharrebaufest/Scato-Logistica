@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Report Include="Autorizaciones por Exceso de Tiempo.rdl" />
-    <Report Include="Comparacion Calidades.rdl" />
+    <Report Include="Comparacion Calidad.rdl" />
     <Report Include="Consulta Datos de Vehiculos.rdl" />
     <Report Include="Detalle Muestra Auditoria.rdl" />
     <Report Include="DetalleDeMovimientoIngreso.rdl" />
@@ -123,6 +123,7 @@
     <Report Include="ReporteCpOtrosPuertos.rdl" />
     <Report Include="ReporteCpOtrosPuertosSap.rdl" />
     <Report Include="ReporteCupo.rdl" />
+    <Report Include="ReporteInactividadCalado.rdl" />
     <Report Include="Resumen General por Bodega.rdl" />
     <Report Include="Stock Detallado de Bines.rdl" />
   </ItemGroup>

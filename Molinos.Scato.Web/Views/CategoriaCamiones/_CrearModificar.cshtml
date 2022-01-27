@@ -1,0 +1,34 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.CategoriaVehiculoDto
+@{
+    var tiposDeVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposDeVehiculos;
+}
+@Html.ValidationSummary(true)
+<div class="control-group">
+    @Html.LabelFor(model => model.Patente, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.Patente, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.Patente)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PatenteAcoplado, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PatenteAcoplado, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.PatenteAcoplado)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.PatenteAcoplado2, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(model => model.PatenteAcoplado2, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(model => model.PatenteAcoplado2)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.TipoVehiculo, new {@class = "control-label"})
+    <div class="controls">
+        @Html.DropDownListFor(model => model.TipoVehiculo, tiposDeVehiculo)
+        @Html.ValidationMessageFor(model => model.TipoVehiculo)
+    </div>
+</div>

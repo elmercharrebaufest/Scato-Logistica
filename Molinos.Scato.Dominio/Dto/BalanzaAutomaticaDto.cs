@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Recursos;
-
-namespace Molinos.Scato.Dominio.Dto
+﻿namespace Molinos.Scato.Dominio.Dto
 {
     public sealed class BalanzaAutomaticaDto
     {
@@ -16,6 +11,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Camara { get; set; }
         public int BalanzaId { get; set; }
         public int? Orden { get; set; }
+        public string IntercomunicadorCodigo { get; set; }
+        public IntercomunicadorDispositivoDto IntercomunicadorDispositivo { get; set; }
     }
 }
- 

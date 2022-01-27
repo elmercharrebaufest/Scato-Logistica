@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Helpers;
@@ -14,6 +10,10 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -26,8 +26,8 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IFirmwareFactory firmwareFactory;
         private readonly IServicioEstadoPuesto estado;
 
-        public PuestoDeTrabajoController(ILogger log, 
-            IServicioRepositorio servicio, 
+        public PuestoDeTrabajoController(ILogger log,
+            IServicioRepositorio servicio,
             IServicioComandos servicioComandos,
             IServicioOrquestador servicioOrquestador,
             IFirmwareFactory firmwareFactory,
@@ -80,7 +80,7 @@ namespace Molinos.Scato.Web.Controllers
             model.CierreEntrada = string.IsNullOrEmpty(barrerasSalida) ? "" : string.Join(",", barrerasSalida.FromJson<SalidaDto[]>().Select(x => x.Codigo.Trim()));
             model.EntradaSupervisor = string.IsNullOrEmpty(barrerasEntradaSupervisor) ? "" : string.Join(",", barrerasEntradaSupervisor.FromJson<SalidaDto[]>().Select(x => x.Codigo.Trim()));
             model.CierreSupervisor = string.IsNullOrEmpty(barrerasCierreSupervisor) ? "" : string.Join(",", barrerasCierreSupervisor.FromJson<SalidaDto[]>().Select(x => x.Codigo.Trim()));
-           
+
             if (!string.IsNullOrEmpty(videoCamarasJson))
             {
                 model.VideoCamaras = videoCamarasJson.FromJson<VideoCamaraDto[]>().ToList();
@@ -118,7 +118,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Modificar(int id, DatosUsuario datosUsuario)
         {
             var aModificar = servicio.ObtenerPuestoDeTrabajo(id);
-            SetearVista(datosUsuario.CentroId,aModificar);
+            SetearVista(datosUsuario.CentroId, aModificar);
             return View(aModificar);
         }
 
@@ -160,7 +160,7 @@ namespace Molinos.Scato.Web.Controllers
 
                     return new AjaxEditSuccessResult();
                 }
-                
+
                 ModelState.AgregarErrores(resultado);
             }
 
@@ -209,11 +209,12 @@ namespace Molinos.Scato.Web.Controllers
             var resultado = servicioComandos.Ejecutar(new EliminarPuestoDeTrabajo { Id = id });
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
         }
+
         [DatosUsuario]
         public void SetearVista(int centroId, PuestoDeTrabajoDto model = null)
         {
             var barreras = servicioOrquestador.ListarBarrerasSemaforos();
-            
+
             ViewBag.Entrada = (model != null && model.Entrada != null ? barreras.Where(d => model.Entrada.Split(',').Contains(d.Codigo)) : new List<DispositivoDto>()).Select(d => new DispositivoPuestoTrabajoDto { Codigo = d.Codigo, Descripcion = d.Descripcion }).ToJson();
             ViewBag.Salida = (model != null && model.CierreEntrada != null ? barreras.Where(d => model.CierreEntrada.Split(',').Contains(d.Codigo)) : new List<DispositivoDto>()).Select(d => new DispositivoPuestoTrabajoDto { Codigo = d.Codigo, Descripcion = d.Descripcion }).ToJson();
             ViewBag.EntradaSupervisor = (model != null && model.EntradaSupervisor != null ? barreras.Where(d => model.EntradaSupervisor.Split(',').Contains(d.Codigo)) : new List<DispositivoDto>()).Select(d => new DispositivoPuestoTrabajoDto { Codigo = d.Codigo, Descripcion = d.Descripcion }).ToJson();
@@ -224,7 +225,9 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Sensores = servicioOrquestador.ListarSensores().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.LectoresQr = servicioOrquestador.ListarLectoresQr().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.CartelesLed = servicioOrquestador.ListarCartelesLed().ToSelectList(x => x.Codigo, x => x.Descripcion);
+            ViewBag.Intercomunicadores = servicioOrquestador.ListarIntercomunicadores().ToSelectList(x => x.Codigo, x => x.Descripcion +" ("+x.Codigo+")");
             ViewBag.Balanzas = servicio.ListarTodasLasBalanzas(centroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
+
             ViewBag.Firmwares = firmwareFactory.FirmwareDisponibles().Select(x => new SelectListItem { Text = Regex.Replace(x.Key, "([a-z])([A-Z])", "$1 $2"), Value = x.Value, Selected = model != null ? model.Firmware == x.Value : false }).ToList();
             ViewBag.Concentradores = servicioOrquestador.ListarConcentradores().ToSelectList(x => x.Codigo, x => x.Descripcion);
         }

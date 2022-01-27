@@ -57,6 +57,11 @@ namespace Molinos.Scato.Actividades.Internas
                 
                 try
                 {
+                    if(pesaje.Peso < 1000)
+                    {
+                        pesaje.Error("", "Peso en balanza por debajo del mínimo, por favor revisar balanza");
+                        Error.Set(context, pesaje);
+                    }
                     var notificacion = new NotificacionPesadaAutomaticaDto
                     {
                         Id = recorrido.PuestoDeTrabajoId,

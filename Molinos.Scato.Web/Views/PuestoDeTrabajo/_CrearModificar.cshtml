@@ -11,6 +11,7 @@
     var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
     var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
     var concentradores = (IEnumerable<SelectListItem>)ViewBag.Concentradores;
+    var intercomunicadores = (IEnumerable<SelectListItem>)ViewBag.Intercomunicadores;
 }
 <style>
     .validation-summary-errors {
@@ -153,7 +154,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.Concentrador, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.Concentrador, concentradores , "")
+        @Html.DropDownListFor(model => model.Concentrador, concentradores, "")
         @Html.ValidationMessageFor(model => model.Concentrador)
     </div>
 </div>
@@ -223,6 +224,14 @@
 </div>
 
 <div class="control-group">
+    @Html.LabelFor(model => model.IntercomunicadorCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.IntercomunicadorCodigo, intercomunicadores, "")
+        @Html.ValidationMessageFor(model => model.IntercomunicadorCodigo)
+    </div>
+</div>
+
+<div class="control-group">
     @Html.LabelFor(model => model.NombrePc, new { @class = "control-label" })
     <div class="controls">
         @Html.TextBoxFor(model => model.NombrePc, new { @class = "input-large" })
@@ -281,5 +290,12 @@
     <div class="controls">
         @Html.DropDownListFor(x => x.Firmware, firmwares, "Seleccione un firmware")
         @Html.ValidationMessageFor(model => model.Firmware)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.ActivarRegistroInactividad, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.ActivarRegistroInactividad, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.ActivarRegistroInactividad)
     </div>
 </div>

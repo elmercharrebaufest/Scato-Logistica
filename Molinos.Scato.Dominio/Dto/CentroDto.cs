@@ -250,5 +250,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int? Planta { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "ContingenciaAfipCpe")]
         public bool ContingenciaAfipCpe { get; set; }
+        public int? MinutosInactividadCalado { get; set; }
     }
 }

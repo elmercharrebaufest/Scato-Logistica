@@ -207,7 +207,8 @@ namespace Molinos.Scato.Servicios.Impl
                 estado.EsGranosVerdes = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsGranosVerdes && x.DescuentoEnPorcentaje.HasValue && x.DescuentoEnPorcentaje > 0);
                 estado.EsGranosDañados = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsGranosDañados && x.DescuentoEnPorcentaje.HasValue && x.DescuentoEnPorcentaje > 0);
                 estado.EsCuerposExtranos = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsCuerposExtranos && x.DescuentoEnPorcentaje.HasValue && x.DescuentoEnPorcentaje > 0);
-                estado.EsProteinaBaja = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsProteina && x.ValorCalado.HasValue && x.ValorCalado < x.CaracteristicaDeCalidad.ValorProteina);
+                estado.EsProteinaBaja = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsProteina && x.ValorCalado.HasValue && x.ValorCalado < x.CaracteristicaDeCalidad.ValorProteinaMedia);
+                estado.EsProteinaMedia = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsProteina && x.ValorCalado.HasValue && x.ValorCalado >= x.CaracteristicaDeCalidad.ValorProteinaMedia && x.ValorCalado < x.CaracteristicaDeCalidad.ValorProteina);
                 estado.EsProteinaAlta = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsProteina && x.ValorCalado.HasValue && x.ValorCalado >= x.CaracteristicaDeCalidad.ValorProteina);
                 estado.TieneDescuentos = calado.CaladosPorCaracteristica.Any(x => x.DescuentoEnPorcentaje.HasValue && x.DescuentoEnPorcentaje > 0);
                 estado.TieneInsectosVivos = calado.CaladosPorCaracteristica.Any(x => x.CaracteristicaDeCalidad.EsInsectosVivos && x.ValorCalado.HasValue && x.ValorCalado > 0);
@@ -230,7 +231,9 @@ namespace Molinos.Scato.Servicios.Impl
                 estado.EsGranosVerdes = granosVerdes != null ? granosVerdes.DescuentoEnPorcentaje.HasValue && granosVerdes.DescuentoEnPorcentaje > 0 : estado.EsGranosVerdes;
                 estado.EsGranosDañados = granosDañados != null ? granosDañados.DescuentoEnPorcentaje.HasValue && granosDañados.DescuentoEnPorcentaje > 0 : estado.EsGranosDañados;
                 estado.EsCuerposExtranos = cuerposExtraños != null ? cuerposExtraños.DescuentoEnPorcentaje.HasValue && cuerposExtraños.DescuentoEnPorcentaje > 0 : estado.EsCuerposExtranos;
-                estado.EsProteinaBaja = proteina != null ? proteina.ValorAnalisis < proteina.CaracteristicaDeCalidad.ValorProteina : estado.EsProteinaBaja;
+                estado.EsProteinaBaja = proteina != null ? proteina.ValorAnalisis < proteina.CaracteristicaDeCalidad.ValorProteinaMedia : estado.EsProteinaBaja;
+                estado.EsProteinaMedia = proteina != null ? (proteina.ValorAnalisis >= proteina.CaracteristicaDeCalidad.ValorProteinaMedia && proteina.ValorAnalisis < proteina.CaracteristicaDeCalidad.ValorProteina) : estado.EsProteinaMedia;
+
                 estado.EsProteinaAlta = proteina != null ? proteina.ValorAnalisis >= proteina.CaracteristicaDeCalidad.ValorProteina : estado.EsProteinaAlta;
                 estado.TieneDescuentos = analisis.CaracteristicasAnalizadas.Any(x => x.DescuentoEnPorcentaje.HasValue && x.DescuentoEnPorcentaje > 0);
                 estado.TieneInsectosVivos = insectos != null ? insectos.ValorAnalisis >= 0 : estado.TieneInsectosVivos;

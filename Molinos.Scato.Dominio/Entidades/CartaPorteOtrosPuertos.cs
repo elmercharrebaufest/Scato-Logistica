@@ -103,5 +103,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual int? RamalFerroviario { get; set; }
         public virtual string NumeroPrecinto { get; set; }
         public virtual byte[] Pdf { get; set; }
+        public virtual bool EsSustentable { get; set; }
+        public virtual string CodigoEstablecimientoSustentable { get; set; }
     }
 }

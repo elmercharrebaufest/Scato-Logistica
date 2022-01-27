@@ -232,7 +232,7 @@ function ValidarPatenteCnrt() {
         var patente = $("#Patente").val();
         var acoplado = $("#PatenteAcoplado").val();
         var acoplado2 = $("#PatenteAcoplado2").val();
-        if (patente != '' && acoplado != '' && acoplado2 != '') {
+        if (patente != '' || acoplado != '' || acoplado2 != '') {
             flag = true;
             ActualizarTipoVehiculo(patente, acoplado, acoplado2, function () { BlockUI(" consulta de tipo de vehiculo por patente"); }, function () { $.unblockUI(); });
         }
@@ -300,28 +300,15 @@ function CamionViewModel() {
     };
 }
 
-
 function ActualizarTipoVehiculo(patente, acoplado, acoplado2, before, callback) {
     if (($('#Cpe').is(':checked') ? true : CorrespondeNotificarPorNetoMaximo()) && (patente != "" || acoplado != "")) {
         if (before != null) before();
-        $.getJSON($("#links").data().urlObtenerTipovehiculoPorPatente, { patente: patente, acoplado: acoplado, workflow: $('#workflow').val() }, function (data) {
-            flag = false;
+        $.getJSON($("#links").data().urlObtenerTipoVehiculo, { patente: patente, acoplado: acoplado, acoplado2: acoplado2 }, function (data) {
             if (data.CodigoDeError == 0) {
-                if (data.Categoria != null) {
-                    if ($('#tipoVehiculoDropdown option[value=' + data.Categoria + ']').length == 0) {
-                        if (($('#Cpe').is(':checked') ? true : CorrespondeNotificarPorNetoMaximo())) MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
-                    } else {
-                        $('#tipoVehiculoDropdown').val(data.Categoria);
-                        ValidarObjeto($("form"), $("#PesoBrutoOrigen"));
-                        ValidarObjeto($("form"), $("#PesoNetoOrigen"));
-                    }
-                } else {
-                    if (($('#Cpe').is(':checked') ? true : CorrespondeNotificarPorNetoMaximo())) MostrarAlertaError("El servicio CNRT no devolvió información sobre la categoría del vehículo, debe ingresarla manualmente.");
-                }
-            } else if (data.CodigoDeError == 1) {
-                $('.btn').removeAttr('disabled');
+                flag = false;
+                $('#tipoVehiculoDropdown').val(data.vehiculo.TipoVehiculo);
             } else {
-                MostrarAlertaAdvertencia(data.Error);
+                ValidarTipoVehiculoPorCnrt(patente, acoplado, acoplado2, before, callback);
             }
         }).complete(function () {
             if (callback != null) callback();
@@ -347,4 +334,30 @@ function CorrespondeNotificarPorNetoMinimo() {
     var pesoNeto = $('#PesoNetoOrigen').val();
     var netoMin = $('#tipoVehiculoDropdown option[value=0]').data('netominimo');
     return !(pesoNeto > 0 && $('#PesoBrutoOrigen').val() > 0 && $('#PesoTaraOrigen').val() > 0 && (netoMin == null || pesoNeto >= netoMin) && (brutoMax == null || pesoBruto >= brutoMax));
+}
+
+function ValidarTipoVehiculoPorCnrt(patente, acoplado, acoplado2, before, callback) {
+    $.getJSON($("#links").data().urlObtenerTipovehiculoPorPatente, { patente: patente, acoplado: acoplado, acoplado2: acoplado2, workflow: $('#workflow').val() }, function (data) {
+        flag = false;
+
+        if (data.CodigoDeError == 0) {
+            if (data.Categoria != null) {
+                if ($('#tipoVehiculoDropdown option[value=' + data.Categoria + ']').length == 0) {
+                    if (($('#Cpe').is(':checked') ? true : CorrespondeNotificarPorNetoMaximo())) MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
+                } else {
+                    $('#tipoVehiculoDropdown').val(data.Categoria);
+                    ValidarObjeto($("form"), $("#PesoBrutoOrigen"));
+                    ValidarObjeto($("form"), $("#PesoNetoOrigen"));
+                }
+            } else {
+                if (($('#Cpe').is(':checked') ? true : CorrespondeNotificarPorNetoMaximo())) MostrarAlertaError("El servicio CNRT no devolvió información sobre la categoría del vehículo, debe ingresarla manualmente.");
+            }
+        } else if (data.CodigoDeError == 1) {
+            $('.btn').removeAttr('disabled');
+        } else {
+            MostrarAlertaAdvertencia(data.Error);
+        }
+    }).complete(function () {
+        if (callback != null) callback();
+    });
 }

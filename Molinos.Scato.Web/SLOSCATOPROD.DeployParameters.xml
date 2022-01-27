@@ -35,4 +35,6 @@
   <setParameter name="UrlExternaOperacionesPuerto Config" value="https://scatopuerto.molinosagro.com.ar/" />
   <setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
   <setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
+	<setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
+	<setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPP03.molinosagro.ad:8889/rtc" />
 </parameters>

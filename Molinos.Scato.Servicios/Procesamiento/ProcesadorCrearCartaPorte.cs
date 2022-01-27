@@ -53,6 +53,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var corredorVendedorSecundario = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorVendedorSecundarioId);
                     var rtteComercialVentaSecundaria2 = Repositorio.Obtener<Proveedor>(comando.Orden.RtteComercialVentaSecundario2Id);
                     var ramalFerroviario = Repositorio.Obtener<RamalFerroviario>(comando.Orden.CodigoRamalId);
+                    var pagadorFlete = Repositorio.Obtener<Proveedor>(comando.Orden.PagadorFleteId ?? 0);
+                    var representanteRecibidor = Repositorio.Obtener<Proveedor>(comando.Orden.RepresentanteRecibidorId ?? 0);
                     Centro destino = null;
                     Proveedor destinatario = null;
                     Cliente destinatarioCliente = null;
@@ -150,7 +152,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 NumeroOperativo = comando.Orden.NumeroOperativo,
                                 RamalFerroviario = ramalFerroviario,
                                 NumeroPrecinto = cartaPorteFerroviario is null ? comando?.Orden?.NumeroPrecinto : cartaPorteFerroviario?.NumeroPrecinto,
-                                TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null
+                                TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null,
+                                PagadorFlete = pagadorFlete,
+                                RepresentanteRecibidor = representanteRecibidor
                         };
                         foreach (var vehiculo in vehiculos)
                         {
@@ -208,6 +212,28 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         recorrido.VehiculoDemorado = comando.Orden.VehiculoDemorado;
                         recorrido.MotivoDemora = comando.Orden.MotivoDemora;
                     }
+
+                    var vehiculoEntity = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente);
+                    var categoriaVehiculo = Repositorio.Obtener<CategoriaVehiculo>(
+                        f => f.Patente == vehiculoEntity.Patente 
+                        && (f.PatenteAcoplado == vehiculoEntity.PatenteAcoplado 
+                        || comando.Vehiculo.PatenteAcoplado == null)
+                        && (f.PatenteAcoplado2 == comando.Vehiculo.PatenteAcoplado2
+                        || vehiculoEntity.PatenteAcoplado2 == null)
+                    );
+                    if (categoriaVehiculo == null)
+                    {
+                        categoriaVehiculo = new CategoriaVehiculo
+                        {
+                            Id = -1,
+                            Patente = vehiculoEntity.Patente,
+                            PatenteAcoplado = vehiculoEntity.PatenteAcoplado,
+                            PatenteAcoplado2 = vehiculoEntity.PatenteAcoplado2,
+                            TipoVehiculo = (int)vehiculoEntity.TipoVehiculo
+                        };
+                        Repositorio.Agregar(categoriaVehiculo);
+                    }
+
                     Log.Info("Se procederá a crear el recorrido para el workflow {0}", comando.NombreWorkflow);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);
                     if (comando.Vehiculo.Primero || comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren)

@@ -95,7 +95,7 @@ namespace Molinos.Scato.Servicios.Impl
                 log.Error($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
-            }
+            }            
             var estados = StringToByteArray(mensaje.Replace("-", ""));
             if(estados == null)
             {
@@ -111,24 +111,13 @@ namespace Molinos.Scato.Servicios.Impl
                 SensorIngresoActiva = !byteEstado.BitAt(1),
                 SensorTrompaActiva = !byteEstado.BitAt(0)
             };
-            var puestosBalanzaVagonesSensorQuiebre = repositorio.ListarPuestosDeTrabajoBalanzaVagonesPorSensorQuiebre(sensor);
-            if (puestosBalanzaVagonesSensorQuiebre.Any())
+            notificar.Notificar(new NotificacionDto
             {
-                foreach (var puestoTrabajo in puestosBalanzaVagonesSensorQuiebre)
-                {
-                    ValidarSemaforoVagones(estadoBalanza, puestoTrabajo);
-                }
-            }
-            else
-            {
-                notificar.Notificar(new NotificacionDto
-                {
-                    Grupo = "Automaticas",
-                    Mensaje = estadoBalanza.ToJson(),
-                    TipoAlerta = TipoAlerta.CambioEstadoBalanzas
-                });
-                puesto.EstadoSensoresBalanzaDto = estadoBalanza;
-            }
+                Grupo = "Automaticas",
+                Mensaje = estadoBalanza.ToJson(),
+                TipoAlerta = TipoAlerta.CambioEstadoBalanzas
+            });
+            puesto.EstadoSensoresBalanzaDto = estadoBalanza;
 
             //var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
 
@@ -192,45 +181,6 @@ namespace Molinos.Scato.Servicios.Impl
                 });
             });
             return valido;
-        }
-
-        private void ValidarSemaforoVagones(EstadoSensoresBalanzaDto estadoBalanza, PuestoDeTrabajoDto  puestoTrabajo)
-        {
-            try
-            {
-                ResultadoEjecutar resultado;
-                bool semaforoColorVerde = (estadoBalanza.BarreraEntradaActiva == false && estadoBalanza.BarreraSalidaActiva == false && estadoBalanza.SensorIngresoActiva == false && estadoBalanza.SensorTrompaActiva == false) ? true : false;
-                var semaforos = puestoTrabajo?.CierreEntrada?.Split(',');
-                PuestoDeTrabajoDto del = new PuestoDeTrabajoDto();
-
-                if (semaforos.Any())
-                {
-                    foreach (var semaforo in semaforos)
-                    {
-                        try
-                        {
-                            if (semaforoColorVerde)
-                            {
-                                resultado = orquestador.Ejecutar(new EjecutarAperturaBarrera { CodigoDispositivo = semaforo });
-                                log.Info("Valanza vagones activar semaforo codigo {0} | respuesta orquestador codigo: {1} | descipcion: {2}", semaforo, resultado?.Mensaje?.Codigo, resultado?.Mensaje?.Descripcion);
-                            }
-                            else
-                            {
-                                resultado = orquestador.Ejecutar(new EjecutarCierreBarrera { CodigoDispositivo = semaforo });
-                                log.Info("Valanza vagones desactivar semaforo codigo {0} | respuesta orquestador: {1} | descipcion: {2}", semaforo, resultado?.Mensaje?.Codigo, resultado?.Mensaje?.Descripcion);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            log.Error("Valanza vagones error al cambiar el estado del vagon codigo: {0}, detalle del error : {1}", semaforo, e);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                log.Error("Ocurrio un error metodo ValidarSemaforoVagones {0}", e);
-            }
         }
     }
 }

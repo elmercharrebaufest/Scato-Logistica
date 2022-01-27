@@ -57,6 +57,36 @@
                     <th>Peso</th>
                     <td><span id="@("peso-vagon"+Model.PuestoId)">0</span> <span>Kg.</span> </td>
                     <td><a class="btn tomarPeso btn-balanza @("btn"+ Model.PuestoId)" data-tipo="vagon" data-id="@Model.PuestoId" data-balanza-id="@Model.BalanzaId">Pesar</a></td>
+                    <td rowspan="3" width="10px">
+                        <div class="span2 estado-barreras-div">
+                            <div class="span4" style="display: -webkit-inline-box; margin-left: 0 !important;">
+                                <span id="@("sensor-este-"+Model.PuestoId)" class="sensor sensor-ingreso sensor-disponible"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td rowspan="3" width="10px" style="display: none;">
+                        <div class="span2 estado-barreras-div">
+                            <div class="span4" style="display: -webkit-inline-box; margin-left: 0 !important;">
+                                <span id="@("sensor-diagonal-"+Model.PuestoId)" class="sensor sensor-ingreso sensor-disponible"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td rowspan="3">
+                        <div class="span2 estado-barreras-div">
+                            <div class="span4" style="display: -webkit-inline-box; margin-left: 0 !important;">
+                                <span id="@("sensor-oeste-"+Model.PuestoId)" " class="sensor sensor-trompa sensor-disponible"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td rowspan="3">
+                        <div class="traffic-light">
+                            <div class="circle" id="@("semaforo-led-rojo-"+Model.PuestoId)"></div>
+                            <br>
+                            <div class="circle" id="@("semaforo-led-amarillo-"+Model.PuestoId)"></div>
+                            <br>
+                            <div class="circle" id="@("semaforo-led-verde-"+Model.PuestoId)"></div>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th>Peso Tara</th>

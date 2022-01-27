@@ -101,24 +101,45 @@
                 }
                 else
                 {
-                    <div class="control-group">
+            <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                <legend class="reset-this redo-legend">Información</legend>
+                <div class="row">
+                    <div class="control-group col-3">
                         @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
                         <div id="div-patente" class="controls">
                             @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
                         </div>
                     </div>
-                    <div id="div-nomchofer" class="control-group">
+                    <div id="div-nomchofer" class="control-group col-5">
                         @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
                         <div class="controls">
                             @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
                         </div>
                     </div>
-                    <div id="div-cartaporte" class="control-group">
+                    <div id="div-cartaporte" class="control-group col-4">
                         @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
                         <div class="controls">
                             @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
                         </div>
                     </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="control-group col-6">
+                        @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
+                        <div id="div-patente" class="controls">
+                            @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                        </div>
+                    </div>
+                    <div id="div-nomchofer" class="control-group col-6">
+                        @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
                 }
             </div>
             @Html.HiddenFor(model => model.RecorridoId)

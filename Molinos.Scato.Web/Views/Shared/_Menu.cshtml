@@ -402,6 +402,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.Cliente_Titulo, "Index", "Cliente")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmChofer))
+                                {
+                                    <li>@Html.ActionLink(Textos.CategoriaCamiones_Titulo, "Index", "CategoriaCamiones")</li>
+                                }
 
                             </ul>
                         </li>
@@ -871,11 +875,15 @@
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.ReporteModalidadCalador))
                                 {
-                                    <li>@Html.ActionLink(Textos.ReporteModalidadCalador, "Index", "Reportes", new { nombreReporte = "Reporte Modalidad Calador" }, null)</li>
+                                    <li>@Html.ActionLink(Textos.ReporteModalidadCalador, "Index", "Reportes", new { nombreReporte = "ReporteModalidadCalador" }, null)</li>
                                 }
                                 @if (PermisosHelper.Is(PermisosScato.ComparacionCalidad))
                                 {
-                            <li>@Html.ActionLink(Textos.ComparacionCalidad, "Index", "Reportes", new { nombreReporte = "Comparacion Calidad" }, null)</li>
+                                    <li>@Html.ActionLink(Textos.ComparacionCalidad, "Index", "Reportes", new { nombreReporte = "Comparacion Calidad" }, null)</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.ReporteInactividadCalado))
+                                {
+                                    <li>@Html.ActionLink(Textos.ReporteInactividadCalado, "Index", "Reportes", new { nombreReporte = "ReporteInactividadCalado" }, null)</li>
                                 }
                             </ul>
                         </li>

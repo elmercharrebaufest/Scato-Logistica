@@ -523,7 +523,7 @@ function DisabledControlers(status) {
 
 function DisableControlersCPE(status, clearinpunts) {    
     $('#Patente').prop('readonly', true);    
-    $('#circuitoNoGranos').prop('disabled', status);
+    //$('#circuitoNoGranos').prop('disabled', status);
     $('#circuitoNoGranos').prop('checked', false);
     $('#NumeroCartaPorte').attr('disabled', status);
     $("#NumeroCartaPorte").val("");    
@@ -608,6 +608,7 @@ function ConfiguracionCPEInactiva(clear) {
 function ConfiguracionNoGranosActiva() {
     crearOpcionesCaracteristicasDeCalidad(false);
     $('#NumeroCartaPorte').attr('disabled', true);
+    $('#CTG').attr('disabled', true);
     $('#checkSinCupo').attr('checked', true);
     $("#Cupo").val("MOL1111/11111111");
     $('#divSpan6').removeClass('error');
@@ -623,7 +624,8 @@ function ConfiguracionNoGranosActiva() {
 
 function ConfiguracionNoGranosInactiva() {
     crearOpcionesCaracteristicasDeCalidad(true);
-    $('#NumeroCartaPorte').attr('disabled', false);
+    //$('#NumeroCartaPorte').attr('disabled', false);
+    $('#CTG').attr('disabled', false);
     $('#checkSinCupo').attr('checked', false)
     $("#Cupo").val("");
     $("label[for*='Patente']").text("Patente AFIP");

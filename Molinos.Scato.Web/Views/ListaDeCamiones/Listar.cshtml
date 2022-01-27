@@ -101,6 +101,19 @@
     {
         columnas.Add(grid.Columna("Entregador", Textos.CartaPorte_Entregador));
     }
+
+    if (Model.Columnas.Contains("Proteina"))
+    {
+        columnas.Add(grid.Columna("Proteina", Textos.CartaPorte_Proteina));
+    }
+    if (Model.Columnas.Contains("AlmacenDestino"))
+    {
+        columnas.Add(grid.Columna("AlmacenDestino", "Almacen"));
+    }
+    if (Model.Columnas.Contains("DiferenciaPesoNeto"))
+    {
+        columnas.Add(grid.Columna("DiferenciaPesoNeto", "Dif. Peso"));
+    }
     Func<WebGrid, WebGridColumn[]> columnasFunc = grilla => grilla.Columns(columnas.ToArray());
 }
 <script>

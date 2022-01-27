@@ -37,6 +37,27 @@ function PuestoDeTrabajo(id) {
     self.Patente = ko.observable();
     self.PatenteCorrecta = ko.observable(null);
 
+    self.consultarPatenteVehiculo = function () {        
+        var data = { tarjetaDeAcceso: self.Lectura() };
+        $.ajax({
+            url: $("#DocumentoOrigenConsultaUrl").val(),
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            success: function (result) {
+                if (result.status == "success") {
+                    window.open(result.redirectTo, '_blank').focus();
+                } else if (result.status == "error") {
+                    MostrarAlertaError(result.message);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });        
+};
+
     self.Foto = ko.observable('');
     self.EsAutomatizado = ko.observable(false);
     function cargarCanvas() {
@@ -407,6 +428,8 @@ $(document).ready(function () {
         $.cookie('RedireccionarAListaAutomatizada', false);
         window.location = $("#home").val();
     });
+
+    
 
 });
 var formSubmit = null;

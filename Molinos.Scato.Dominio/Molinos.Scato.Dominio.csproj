@@ -86,6 +86,7 @@
     <Compile Include="Comandos\CambiarPinchazosComando.cs" />
     <Compile Include="Comandos\AutorizarCpe.cs" />
     <Compile Include="Comandos\ConfirmarArriboDefinitivo.cs" />
+    <Compile Include="Comandos\ConsultarCPEDummy.cs" />
     <Compile Include="Comandos\ConsultarCPEPorDestino.cs" />
     <Compile Include="Comandos\ConsultarCPDigital.cs" />
     <Compile Include="Comandos\ConsultarDestinatarioCPE.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Comandos\CrearAgenteControlPrivado.cs" />
     <Compile Include="Comandos\CrearATAPuerto.cs" />
     <Compile Include="Comandos\CrearCargaDeCupoNoGrano.cs" />
+    <Compile Include="Comandos\CrearCategoriaVehiculo.cs" />
     <Compile Include="Comandos\CrearCoordinadorPuerto.cs" />
     <Compile Include="Comandos\CrearCpOtrosPuertos.cs" />
     <Compile Include="Comandos\CrearEstiba.cs" />
@@ -102,9 +104,13 @@
     <Compile Include="Comandos\ConfirmarArribo.cs" />
     <Compile Include="Comandos\CrearMotivosLimpieza.cs" />
     <Compile Include="Comandos\CrearLogCambioDeModalidadCalle.cs" />
+    <Compile Include="Comandos\EliminarCategoriaVehiculo.cs" />
+    <Compile Include="Comandos\CrearRegistroInactividad.cs" />
     <Compile Include="Comandos\EliminarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\EliminarMotivosLimpieza.cs" />
+    <Compile Include="Comandos\EnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Comandos\EnviarMensajeCamioneroCircular.cs" />
+    <Compile Include="Comandos\EnviarMensajesAsincronoCartelLed.cs" />
     <Compile Include="Comandos\GuardarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\GuardarModuloDeCarga.cs" />
     <Compile Include="Comandos\GuardarPlanillaDeTurnos.cs" />
@@ -138,6 +144,7 @@
     <Compile Include="Comandos\GuardarPlanoDeCarga.cs" />
     <Compile Include="Comandos\ModificarATAPuerto.cs" />
     <Compile Include="Comandos\ModificarCargadoPlanoDeCarga.cs" />
+    <Compile Include="Comandos\ModificarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\ModificarCoordinadorPuerto.cs" />
     <Compile Include="Comandos\ModificarEmbarque.cs" />
     <Compile Include="Comandos\CrearEstadoPuerto.cs" />
@@ -147,8 +154,10 @@
     <Compile Include="Comandos\ModificarMaterialPorCentro.cs" />
     <Compile Include="Comandos\ModificarMotivosLimpieza.cs" />
     <Compile Include="Comandos\ModificarRecorridoDemora.cs" />
+    <Compile Include="Comandos\AgregarMarcaSustentable.cs" />
     <Compile Include="Comandos\ModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Comandos\ModificarRecorridoMuestraAuditoriaCamara.cs" />
+    <Compile Include="Comandos\ModificarRegistroInactividad.cs" />
     <Compile Include="Comandos\NotificarLecturaCPE.cs" />
     <Compile Include="Comandos\ObtenerTickets.cs" />
     <Compile Include="Comandos\ObtenerPesada.cs" />
@@ -655,12 +664,17 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Constantes.cs" />
     <Compile Include="ConsultarImagenCpe.cs" />
     <Compile Include="Consultas\Expresiones.cs" />
     <Compile Include="Consultas\Paginacion.cs" />
+    <Compile Include="Dto\RegistroInactividadDto.cs" />
+    <Compile Include="Dto\MotivoInactividadDto.cs" />
     <Compile Include="Dto\ArriboCircularResponseDto.cs" />
+    <Compile Include="Dto\CategoriaVehiculoDto.cs" />
     <Compile Include="Dto\ConfiguracionAutomatizacionEtapasDto.cs" />
     <Compile Include="Dto\ConfiguracionMailDto.cs" />
+    <Compile Include="Dto\ControlDto.cs" />
     <Compile Include="Dto\CubitacionDeTanquesDto.cs" />
     <Compile Include="Dto\DensidadPorTemperaturaDeMaterialDto.cs" />
     <Compile Include="Dto\DSEgresoDto.cs" />
@@ -672,6 +686,8 @@
     <Compile Include="Dto\ConcentradorDto.cs" />
     <Compile Include="Dto\ClaveMaterialValoresDto.cs" />
     <Compile Include="Dto\ClaveStringValorMaterialDto.cs" />
+    <Compile Include="Dto\EntidadDto.cs" />
+    <Compile Include="Dto\EntidadTipoDeActividadDto.cs" />
     <Compile Include="Dto\EquivalenciasCaracteristicasCPOtrosPuertosDto.cs" />
     <Compile Include="Dto\EstadoBuqueDto.cs" />
     <Compile Include="Dto\EstadoSensoresBalanzaDto.cs" />
@@ -681,6 +697,7 @@
     <Compile Include="Dto\CargaComercialHistoricoDto.cs" />
     <Compile Include="Dto\CeldaManoDeEmbarqueDto.cs" />
     <Compile Include="Dto\EmbarqueNavDto.cs" />
+    <Compile Include="Dto\IntercomunicadorDispositivoDto.cs" />
     <Compile Include="Dto\LlenadoMilimetroPorTanqueDto.cs" />
     <Compile Include="Dto\LogCambioDeModalidadCalleDto.cs" />
     <Compile Include="Dto\MensajeCartelLedDto.cs" />
@@ -710,6 +727,7 @@
     <Compile Include="Dto\MotivosLimpiezaDto.cs" />
     <Compile Include="Dto\NotificacionAplicacionDto.cs" />
     <Compile Include="Dto\NotificacionCpeDto.cs" />
+    <Compile Include="Dto\NotificacionSemaforoVagonesAutomaticaDto.cs" />
     <Compile Include="Dto\PinchazosPorCaladaDto.cs" />
     <Compile Include="Dto\ModuloDeCargaDto.cs" />
     <Compile Include="Dto\ModuloDeCargaElementoGraficoDto.cs" />
@@ -778,6 +796,7 @@
     <Compile Include="Dto\EntradaDto.cs" />
     <Compile Include="Dto\SectorCantidadCamionesDto.cs" />
     <Compile Include="Dto\SentidoManoDeEmbarqueDto.cs" />
+    <Compile Include="Dto\TipoDeActividadDto.cs" />
     <Compile Include="Dto\TipoDeBuquePuertoDto.cs" />
     <Compile Include="Dto\TransmisionASapManualDto.cs" />
     <Compile Include="Dto\AnalisisObligatorioDto.cs" />
@@ -894,11 +913,14 @@
     <Compile Include="Entidades\CargaComercialHistorico.cs" />
     <Compile Include="Entidades\CartaPorteElectronica.cs" />
     <Compile Include="Entidades\CartaPorteOtrosPuertos.cs" />
+    <Compile Include="Entidades\CategoriaVehiculo.cs" />
     <Compile Include="Entidades\CeldaManoDeEmbarque.cs" />
     <Compile Include="Entidades\ConfiguracionAutomatizacionEtapas.cs" />
     <Compile Include="Entidades\ConfiguracionMail.cs" />
     <Compile Include="Entidades\CubitacionDeTanques.cs" />
     <Compile Include="Entidades\DensidadPorTemperaturaDeMaterial.cs" />
+    <Compile Include="Entidades\Entidad.cs" />
+    <Compile Include="Entidades\EntidadTipoDeActividad.cs" />
     <Compile Include="Entidades\EquivalenciasCaracteristicasCpOtrosPuertos.cs" />
     <Compile Include="Entidades\EstadoBuque.cs" />
     <Compile Include="Entidades\ImpEtiquetaPuerto.cs" />
@@ -930,6 +952,8 @@
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarque.cs" />
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarqueHistorico.cs" />
     <Compile Include="Entidades\ModuloDeCargaUmap.cs" />
+    <Compile Include="Entidades\RegistroInactividad.cs" />
+    <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />
     <Compile Include="Entidades\MotivosFallasBalanza.cs" />
     <Compile Include="Entidades\MotivosLimpieza.cs" />
@@ -962,6 +986,7 @@
     <Compile Include="Entidades\PlanoDeCargaBodegaHistorico.cs" />
     <Compile Include="Entidades\PlanoDeCargaHistorico.cs" />
     <Compile Include="Entidades\RamalFerroviario.cs" />
+    <Compile Include="Entidades\RegistroStockOtrosPuertos.cs" />
     <Compile Include="Entidades\SentidoManoDeEmbarque.cs" />
     <Compile Include="Entidades\Stock.cs" />
     <Compile Include="Entidades\AnalisisObligatorio.cs" />
@@ -987,6 +1012,7 @@
     <Compile Include="Entidades\Bodega.cs" />
     <Compile Include="Entidades\Adjunto.cs" />
     <Compile Include="Entidades\ReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Entidades\TipoDeActividad.cs" />
     <Compile Include="Entidades\TipoDeBuquePuerto.cs" />
     <Compile Include="Entidades\TurnoPuerto.cs" />
     <Compile Include="Entidades\UbicacionDeBuquePuerto.cs" />

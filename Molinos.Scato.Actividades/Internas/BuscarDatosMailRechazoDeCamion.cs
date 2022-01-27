@@ -22,8 +22,8 @@ namespace Molinos.Scato.Actividades.Internas
                 var chofer = recorrido.Chofer;
                 var usuarioRechazo = servicioRepositorio.ObtenerUsuarioRechazoPorWorkflowInstance(context.WorkflowInstanceId);
                 var controlRecorridoRechazo = servicioRepositorio.ObtenerControlRecorrido(context.WorkflowInstanceId, Textos.Actividad_VerificacionCamionRechazado);
-                var motivoRechazo = controlRecorridoRechazo.Mensaje;
-                var observaciones = controlRecorridoRechazo.Comentario;
+                var motivoRechazo = controlRecorridoRechazo?.Mensaje ?? string.Empty;
+                var observaciones = controlRecorridoRechazo?.Comentario ?? string.Empty;
 
                 //genero tabla de caracteristicas
                 StringBuilder tablaCalidades = new StringBuilder();

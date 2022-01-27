@@ -78,7 +78,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private string FormatearParametrosConsulta(ConsultarEscalables comando)
         {
-            return string.IsNullOrEmpty(comando.Acoplado) ? comando.Patente : comando.Patente + "," + comando.Acoplado;
+            var listaPatentes = new List<string>
+            {
+                comando.Patente
+            };
+            if (!string.IsNullOrEmpty(comando.Acoplado))
+                listaPatentes.Add(comando.Acoplado);
+            if (!string.IsNullOrEmpty(comando.Acoplado2))
+                listaPatentes.Add(comando.Acoplado2);
+            return string.Join(",", listaPatentes);
         }
 
     }

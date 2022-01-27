@@ -278,7 +278,7 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
 
     //Imagen CPE
     if ($('#esIngreso').val() == "True" && $('#cartaPorteId').val() == 0) {
-        //obtenerFotoCartaPorteElectronica(cartaPorte.NroCartaPorte);
+        obtenerFotoCartaPorteElectronica(cartaPorte.NroCartaPorte);
     }
 
     //Numero Operativo
@@ -292,6 +292,20 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
         $('#TransportistaTramo2').val(cartaPorte.TransportistaTramo2);
         $('#TransportistaTramo2').addClass("italic");
         $('#EsTransportistaTramo2').val(true);
+    }
+
+    //Flete Pagador
+    if (cartaPorte.PagadorFleteId != 0) {
+        $('#PagadorFleteId').val(cartaPorte.PagadorFleteId);
+        $('#PagadorFlete').val(cartaPorte.PagadorFlete);
+        $('#PagadorFlete').addClass("italic");
+    }
+
+    //Representate Recibidor
+    if (cartaPorte.RepresentanteRecibidorId != 0) {
+        $('#RepresentanteRecibidorId').val(cartaPorte.RepresentanteRecibidorId);
+        $('#RepresentanteRecibidor').val(cartaPorte.RepresentanteRecibidor);
+        $('#RepresentanteRecibidor').addClass("italic");
     }
 }
 

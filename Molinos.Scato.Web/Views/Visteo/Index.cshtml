@@ -13,12 +13,13 @@
 }
 
 <script src="@Url.Script("~/Scripts/verificacionCamionRechazado.js")" type="text/javascript"></script>
+<script src="@Url.Script("~/Scripts/area/visteo/index.js")" type="text/javascript"></script>
 
 <div class="container-fluid">
     <div class="titSecciones">@Textos.Visteo</div>
 </div>
 <br />
-@using (Html.BeginForm("Index", "Visteo", FormMethod.Post, new {@class = "form-horizontal container causaBlock"}))
+@using (Html.BeginForm("Index", "Visteo", FormMethod.Post, new { @class = "form-horizontal container causaBlock" }))
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.WorkflowInstanceId)
@@ -28,10 +29,10 @@
     @Html.HiddenFor(model => model.PuestoDeTrabajoId)
     @Html.Hidden("workflow", workflow)
     @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
-    @Html.HiddenFor(model => model.Decision, new {@class = "valorDecision"})
+    @Html.HiddenFor(model => model.Decision, new { @class = "valorDecision" })
     <div class="row-fluid row-fluid-ie7">
-        
-        <div class="span6">    
+
+        <div class="span6">
             <div class="control-group">
                 <div class="control-label">@Textos.Camion_Patente:</div>
                 <div class="controls">
@@ -45,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="span6">    
+        <div class="span6">
             <div class="control-group">
                 <div class="control-label"> @Textos.Material:</div>
                 <div class="controls">
@@ -53,10 +54,10 @@
                 </div>
             </div>
         </div>
-        
+
         @if (ViewBag.Cliente != null && ViewBag.ClienteCodigoSap != null)
         {
-            <div class="span6">    
+            <div class="span6">
                 <div class="control-group">
                     <div class="control-label"> @Textos.Cliente:</div>
                     <div class="controls">
@@ -70,9 +71,9 @@
                     </div>
                 </div>
             </div>
-        }    
+        }
     </div>
-   
+
     <div class="centered">
         <div class="">
 
@@ -86,15 +87,26 @@
     </div>
     <div class="centered">
         <button type="submit" class="btn btn-primary rechazar">@Textos.Si</button>
-        <button type="submit" class="btn no-rechazar">@Textos.No</button>
+        @if (!ViewBag.EsGrano)
+        {
+            @Html.ActionLink(@Textos.No, "Rechazar", "Visteo", new { workflowDefinicionId = (int)ViewBag.WorkflowDefinicionId, instanceId = Model.WorkflowInstanceId }, new { @class = "btn rechazar-boton no-rechazar" })
+        }
+        else
+        {
+            <button type="submit" class="btn no-rechazar">@Textos.No</button>
+        }
     </div>
-    <br/>
-    if(ViewBag.Estado != null)
+
+    <br />
+    if (ViewBag.Estado != null)
     {
         <div class="alert alert-error" id="validation-patente-alert">
             <div id="validation-patente">
                 @ViewBag.Estado
             </div>
         </div>
-     }
+    }
 }
+
+<div id="mensajeRechazar">
+</div>

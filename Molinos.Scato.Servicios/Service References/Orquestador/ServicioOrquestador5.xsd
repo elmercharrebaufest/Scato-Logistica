@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://orquestador.molinos.com.ar" elementFormDefault="qualified" targetNamespace="http://orquestador.molinos.com.ar" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
-  <xs:import schemaLocation="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
-  <xs:import schemaLocation="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
-  <xs:import schemaLocation="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="Ejecutar">
     <xs:complexType>
       <xs:sequence>
@@ -344,6 +344,31 @@
       <xs:sequence>
         <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerCamarasResult" nillable="true" type="q29:ArrayOfCamaraDto" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarIntercomunicadores">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarIntercomunicadoresResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarIntercomunicadoresResult" nillable="true" type="q30:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PrenderApagarDispositivo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoDispositivo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="activar" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PrenderApagarDispositivoResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

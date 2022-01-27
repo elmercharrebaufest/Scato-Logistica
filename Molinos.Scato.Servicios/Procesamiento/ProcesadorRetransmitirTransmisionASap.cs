@@ -49,6 +49,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.AjusteDeDiferencias + " id: " + comando.Id);
                         var respuestaMovAjuste = servicioSap.MovAjuste(request);
+                        LogRequestResponseSAP(FuncionSAP.AjusteDeDiferencias, comando.Id, request, respuestaMovAjuste);
                         if (respuestaMovAjuste.MovAjusteResponse != null && respuestaMovAjuste.MovAjusteResponse.Resultado.MSGNR == "000")
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -77,6 +78,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.LlegadaADestinosEnRedespachos + " id: " + comando.Id);
                         var respuestaMov305 = servicioSap.Mov305(requestMov305);
+                        LogRequestResponseSAP(FuncionSAP.LlegadaADestinosEnRedespachos, comando.Id, requestMov305, respuestaMov305);
                         if (respuestaMov305.Mov305Response != null && !string.IsNullOrEmpty(respuestaMov305.Mov305Response.Resultado.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -105,6 +107,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.SalidaDeOrigenEnRedespachos + " id: " + comando.Id);
                         var respuestaMov975 = servicioSap.Mov975(requestMov975);
+                        LogRequestResponseSAP(FuncionSAP.SalidaDeOrigenEnRedespachos, comando.Id, requestMov975, respuestaMov975);
                         if (respuestaMov975.Mov975Response != null && !string.IsNullOrEmpty(respuestaMov975.Mov975Response.Resultado.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -139,7 +142,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.IngresosPorCompraDeGranos + " id: " + comando.Id);
                         var respuestaZ1000 = servicioSap.Fill_Z1000(requestFill_Z1000);
-
+                        LogRequestResponseSAP(FuncionSAP.IngresosPorCompraDeGranos, comando.Id, requestFill_Z1000, respuestaZ1000);
                         if (respuestaZ1000.Fill_Z1000Response != null && respuestaZ1000.Fill_Z1000Response.Resultado.All(res => res.MSGNR == "000"))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -169,6 +172,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.EgresosMaterialNoProductivo + " id: " + comando.Id);
                         var respuestaEgresos = servicioSap.EgresosNoProductivos(requestEgresos);
+                        LogRequestResponseSAP(FuncionSAP.EgresosMaterialNoProductivo, comando.Id, requestEgresos, respuestaEgresos);
                         if (respuestaEgresos.EgresosNoProductivosResponse != null && !string.IsNullOrEmpty(respuestaEgresos.EgresosNoProductivosResponse.Resultado.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -203,6 +207,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.IngresosEgresosFazones + " id: " + comando.Id);
                         var respuestaEgresos = servicioSap.IngresosEgresosFazones(fazonesRequest);
+                        LogRequestResponseSAP(FuncionSAP.IngresosEgresosFazones, comando.Id, fazonesRequest, respuestaEgresos);
                         if (respuestaEgresos.IngresosEgresosFazonesResponse != null && !string.IsNullOrEmpty(respuestaEgresos.IngresosEgresosFazonesResponse.Resultado.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -237,7 +242,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.PesaNeto + " id: " + comando.Id);
                         var respuesta = servicioSap.PesaNeto(request);
-
+                        LogRequestResponseSAP(FuncionSAP.PesaNeto, comando.Id, request, respuesta);
                         if (respuesta.PesaNetoResponse != null && respuesta.PesaNetoResponse.Mensajes.Any() && respuesta.PesaNetoResponse.Mensajes.All(x => x.MBLNR == "000"))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -272,7 +277,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.FletesDobleTramo + " id: " + comando.Id);
                         var respuesta = servicioSap.FletesDobleTramo(request);
-
+                        LogRequestResponseSAP(FuncionSAP.FletesDobleTramo, comando.Id, request, respuesta);
                         if (respuesta.FletesDobleTramoResponse != null && respuesta.FletesDobleTramoResponse.Resultado.MSGNR == "0")
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -307,6 +312,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.EgresoSinFleteFazones + " id: " + comando.Id);
                         var respuestaEgresos = servicioSap.EgresoSinFleteFazones(fazonesRequest);
+                        LogRequestResponseSAP(FuncionSAP.EgresoSinFleteFazones, comando.Id, fazonesRequest, respuestaEgresos);
                         if (respuestaEgresos.EgresoSinFleteFazonesResponse != null && !string.IsNullOrEmpty(respuestaEgresos.EgresoSinFleteFazonesResponse.Resultado.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -341,6 +347,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.CartaPorteTransporteAutomotorRegistro + " id: " + comando.Id);
                         var respuestaEgresos = servicioMonsanto.registrarCartaDePorte(new registrarCartaDePorte(fazonesRequest));
+                        LogRequestResponseSAP(FuncionSAP.CartaPorteTransporteAutomotorRegistro, comando.Id, fazonesRequest, respuestaEgresos);
                         transmision.Estado = EstadoTransmisionASap.Correcto;
                         transmision.MensajeError = "";
                         var muestra = respuestaEgresos.respuesta.Item as MuestraRequerida;
@@ -377,6 +384,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.CartaPorteVagonFerroviarioRegistro + " id: " + comando.Id);
                         var respuestaEgresos = servicioMonsanto.registrarCartaDePorte(new registrarCartaDePorte(fazonesRequest));
+                        LogRequestResponseSAP(FuncionSAP.CartaPorteVagonFerroviarioRegistro, comando.Id, fazonesRequest, respuestaEgresos);
                         transmision.Estado = EstadoTransmisionASap.Correcto;
                         transmision.MensajeError = "";
                         var muestra = respuestaEgresos.respuesta.Item as MuestraRequerida;
@@ -413,6 +421,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.MuestreoPesajeTransporteAutomotorRegistro + " id: " + comando.Id);
                         var respuestaEgresos = servicioMonsanto.registrarMuestreoYPesaje(new registrarMuestreoYPesaje(fazonesRequest));
+                        LogRequestResponseSAP(FuncionSAP.MuestreoPesajeTransporteAutomotorRegistro, comando.Id, fazonesRequest, respuestaEgresos);
                         transmision.Estado = EstadoTransmisionASap.Correcto;
                         transmision.MensajeError = "";
                         Log.Debug("Correcto " + FuncionSAP.MuestreoPesajeTransporteAutomotorRegistro + " id: " + comando.Id);
@@ -438,6 +447,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.MuestreoPesajeVagonFerroviarioRegistro + " id: " + comando.Id);
                         var respuestaEgresos = servicioMonsanto.registrarMuestreoYPesaje(new registrarMuestreoYPesaje(fazonesRequest));
+                        LogRequestResponseSAP(FuncionSAP.MuestreoPesajeVagonFerroviarioRegistro, comando.Id, fazonesRequest, respuestaEgresos);
                         transmision.Estado = EstadoTransmisionASap.Correcto;
                         transmision.MensajeError = "";
                         Log.Debug("Correcto " + FuncionSAP.MuestreoPesajeVagonFerroviarioRegistro + " id: " + comando.Id);
@@ -463,6 +473,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.InformarCupo + " id: " + comando.Id);
                         var respuesta = servicioSap.Z_SDMF_Z2200N(cuposRequest);
+                        LogRequestResponseSAP(FuncionSAP.InformarCupo, comando.Id, cuposRequest, respuesta);
                         if (respuesta.Z_SDMF_Z2200NResponse != null &&
                             respuesta.Z_SDMF_Z2200NResponse.EX_RESULTADO != null &&
                             respuesta.Z_SDMF_Z2200NResponse.EX_RESULTADO.Any() &&
@@ -498,6 +509,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.IngresosBodega + " id: " + comando.Id);
                         var respuesta = servicioSap.IngresosBodega(request);
+                        LogRequestResponseSAP(FuncionSAP.IngresosBodega, comando.Id, request, respuesta);
                         if (respuesta.IngresosBodegaResponse != null && !string.IsNullOrEmpty(respuesta.IngresosBodegaResponse.EX_RESULTADO.MBLNR))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto;
@@ -536,7 +548,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         };
                         Log.Debug("Enviando " + FuncionSAP.ZE7550 + " id: " + comando.Id);
                         var respuestaZ1000 = servicioSap.Z_SDMF_RFC_ZE7550(request);
-
+                        LogRequestResponseSAP(FuncionSAP.ZE7550, comando.Id, request, respuestaZ1000);
                         if (respuestaZ1000.Z_SDMF_RFC_ZE7550Response != null && respuestaZ1000.Z_SDMF_RFC_ZE7550Response.EX_RESULTADO.All(res => res.TIPO != "E"))
                         {
                             transmision.Estado = EstadoTransmisionASap.Correcto; //LLAMADA A SAP EXISTOSA
@@ -563,6 +575,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             Repositorio.GuardarCambios();
             return resultado;
+        }
+
+        private void LogRequestResponseSAP<T, R>(FuncionSAP rfc, int Id, T request, R response)
+        {
+            try
+            {
+                Log.Debug("RFC: {0} Id: {1}, Request : {2}", rfc, Id, request != null ? request.ToXml() : string.Empty);
+                Log.Debug("RFC: {0} Id: {1}, Response : {2}", rfc, Id, response != null ? response.ToXml() : string.Empty);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Ocurrio un error al crear log Retransmision RFC: {0}, Id: {1}", rfc, Id);
+            }            
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     {
                                         Fecha = controlRecorrido.Fecha,
                                         Actividad = controlRecorrido.Actividad,
-                                        Comentario = controlRecorrido.Comentario,
+                                        Comentario = (controlRecorrido.Decision == true ? "Fue rechazado. " : "Fue aceptado. ") + controlRecorrido.Comentario,
                                         Tabla = "ControlRecorrido",
                                         Usuario = controlRecorrido.NombreUsuario
                                     })
@@ -77,7 +77,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 {
                                     Fecha = controlRecorrido.Fecha,
                                     Actividad = controlRecorrido.Actividad,
-                                    Comentario = controlRecorrido.Comentario,
+                                    Comentario = (controlRecorrido.Decision == true ? "Fue rechazado. " : "Fue aceptado. ") + controlRecorrido.Comentario,
                                     Tabla = "ControlRecorrido",
                                     Usuario = controlRecorrido.NombreUsuario
                                 })

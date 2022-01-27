@@ -20,7 +20,6 @@
     $(document).on('click', '.noAsignaCalleEnGaritaEntrada', function () {
         habilitarContingencia(urlNoAsignaCalleEnGaritaEntrada);
     });
-
     $(document).on('click', '.tomarFotoCartaDePorteEnCentro', function () {
         habilitarContingencia(urlTomarFotoCartaDePorteEnCentro);
     });
@@ -113,6 +112,8 @@
         $("#elemento-id").val($(this)[0].getAttribute('data-id'));
         $("#elemento-grano").val($(this)[0].getAttribute('data-granos'));
         $("#elemento-contingencia").val($(this)[0].getAttribute('data-contingencia'));
+        $("#guardar").removeClass();
+        $("#guardar").addClass('btn btn-primary');
         $("#guardar").addClass($(this)[0].getAttribute('data-contingencia'));
         $("#motivo").val("");
         $("#error-requerido").hide(); 

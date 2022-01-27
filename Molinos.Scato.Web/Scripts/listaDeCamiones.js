@@ -107,9 +107,12 @@ function CargarGrilla(callback) {
     var checkProcedencia = $("#checkProcedencia").is(':checked') ? "Procedencia|" : "";
     var checkFoto = $("#checkFoto").is(':checked') ? "Foto|" : "";
     var checkEntregador = $("#checkEntregador").is(':checked') ? "Entregador|" : "";
+    var checkProteina = $("#checkProteina").is(':checked') ? "Proteina|" : "";
+    var checkAlmacenDestino = $("#checkAlmacenDestino").is(':checked') ? "AlmacenDestino|" : "";
+    var checkDifPeso = $("#checkDifPeso").is(':checked') ? "DiferenciaPesoNeto|" : "";
 
     var columnas = checkCalidad + checkCentroId + checkCuit + checkMaterial + checkTipoDocumentoIngreso + checkNumeroDocumentoIngreso
-        + checkPatente + checkProximaEtapa + checkTransportista + checkWorkflow + checkfechaCreacion + checkFechaUltimaModificacion + checkCentro + checkMaterialId + checkTipoVehiculo + checkNumeroDeTarjeta + checkChoferDNI + checkChoferNombre + checkProcedencia + checkFoto + checkEntregador;
+        + checkPatente + checkProximaEtapa + checkTransportista + checkWorkflow + checkfechaCreacion + checkFechaUltimaModificacion + checkCentro + checkMaterialId + checkTipoVehiculo + checkNumeroDeTarjeta + checkChoferDNI + checkChoferNombre + checkProcedencia + checkFoto + checkEntregador + checkProteina + checkAlmacenDestino + checkDifPeso;
     if (columnas[columnas.length - 1] === "|")
         columnas = columnas.slice(0, -1);
     

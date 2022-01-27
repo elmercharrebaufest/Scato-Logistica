@@ -16,15 +16,18 @@
     </div>
 
     <div class="modal-body form-horizontal">
-        <div class="control-group">
-            @Html.Label("Fuera de Servicio", new { @class = "control-label" })
-            <div class="controls">
-                <label class="switch sinMargen">
-                    <input type="checkbox" @(ViewBag.PuestoPausado ? "checked" : "unchecked")>
-                    <span data-puesto="@ViewBag.PuestoId" class="slider round pausa"></span>
-                </label>
+        @if (PermisosHelper.Is(PermisosScato.PuestoPausado))
+        {
+            <div class="control-group">
+                @Html.Label("Fuera de Servicio", new { @class = "control-label" })
+                <div class="controls">
+                    <label class="switch sinMargen">
+                        <input type="checkbox" @(ViewBag.PuestoPausado ? "checked" : "unchecked")>
+                        <span data-puesto="@ViewBag.PuestoId" class="slider round pausa"></span>
+                    </label>
+                </div>
             </div>
-        </div>
+        }
         <div class="control-group">
             @Html.Label("Entrada", new { @class = "control-label" })
             <div class="controls">

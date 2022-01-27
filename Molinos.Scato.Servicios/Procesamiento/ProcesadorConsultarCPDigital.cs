@@ -407,7 +407,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             IntermediarioFlete = ObtenerProveedor(cartaPorte.CuitIntermediarioFlete.ToString(), resultado, Textos.CartaPorte_Intermediario, false, false, true),
                             Sucursal = cartaPorte.Sucursal,
                             Cosecha = cartaPorteRequest.Cosecha.HasValue ? cartaPorteRequest.Cosecha.Value.ToString() : string.Empty,
-                            Observacion = cartaPorte.Observacion
+                            Observacion = cartaPorte.Observacion,
+                            PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
+                            RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
                         };
 
                         resultado.Cpe = Conversor.Convertir<Dominio.Entidades.CartaPorte, CartaPorteDto>(entidad);
@@ -618,7 +620,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 IntermediarioFlete = ObtenerProveedor(cartaPorte.CuitIntermediarioFlete.ToString(), resultado, Textos.CartaPorte_Intermediario, false, false, true),
                 Sucursal = cartaPorte.Sucursal,
                 Cosecha = cartaPorte.Cosecha.HasValue ? cartaPorte.Cosecha.Value.ToString() : string.Empty,
-                Observacion = cartaPorte.Observacion
+                Observacion = cartaPorte.Observacion,
+                PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
+                RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
 
             };
 
@@ -912,10 +916,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         TarifaTonelada = (decimal)cartaPorte.Tarifa,
                         Chofer = Repositorio.Obtener<Chofer>(x => x.Cuil.Replace("-", "") == cuitchofer),
 
-                        IntermediarioFlete = ObtenerProveedor(cartaPorte.CuitIntermediarioFlete.ToString(), resultado, Textos.CartaPorte_Intermediario, false, false, true),
                         Sucursal = cartaPorte.Sucursal,
                         Cosecha = cartaPorteRequest.Cosecha.HasValue ? cartaPorteRequest.Cosecha.Value.ToString() : string.Empty,
                         TransportistaTramo2 = Convert.ToUInt64(cartaPorte.CuitTransportistaTramo2) == 0 ? null : ObtenerTransportista(cartaPorte.CuitTransportistaTramo2.ToString(), resultado),
+                        PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
+                        RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
 
                     };
 

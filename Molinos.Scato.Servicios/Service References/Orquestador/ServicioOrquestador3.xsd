@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://bfnb14462:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="ComandoEjecutar">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:Comando">
@@ -66,6 +67,17 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EjecutarAperturaBarreraMaestro" nillable="true" type="tns:EjecutarAperturaBarreraMaestro" />
+  <xs:complexType name="EjecutarComunicador">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ComandoEjecutar">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Activar" type="xs:boolean" />
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" minOccurs="0" name="Tipo" type="q1:TipoComunicador" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EjecutarComunicador" nillable="true" type="tns:EjecutarComunicador" />
   <xs:complexType name="EjecutarCierreBarrera">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ComandoEjecutar">
@@ -82,6 +94,16 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EjecutarAperturaCortinaAgua" nillable="true" type="tns:EjecutarAperturaCortinaAgua" />
+  <xs:complexType name="EjecutarEjecutarQuery">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ComandoEjecutar">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomQuery" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EjecutarEjecutarQuery" nillable="true" type="tns:EjecutarEjecutarQuery" />
   <xs:complexType name="EjecutarObtenerDireccionViento">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ComandoEjecutar">
@@ -148,7 +170,7 @@
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ComandoEjecutar">
         <xs:sequence>
-          <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Ticket" nillable="true" type="q1:ArrayOfstring" />
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Ticket" nillable="true" type="q2:ArrayOfstring" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

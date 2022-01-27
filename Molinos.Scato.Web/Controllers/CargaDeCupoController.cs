@@ -646,34 +646,24 @@ namespace Molinos.Scato.Web.Controllers
 
         private void MostrarPorCartel(string nombrePc, string mensaje, int centroId, string patente)
         {
-            var comentario = "ok";
             var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(nombrePc, centroId);
             var mensajesCartel = servicio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.GaritaIngresoAsignarCalle);
 
             try
             {
-                mensajesCartel?.ToList().ForEach(x =>
-                {
-                    var mensajeCartel = string.Format(x.Mensaje, mensaje, patente);
-
-                    log.Debug($"Mostrando {mensajeCartel} en cartel led de puestoId: {puestoDeTrabajo.Id}");
-
-                    var resultado = servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                var mensajes = mensajesCartel.Select(s =>
+                    new EnviarMensajeCarteLed
                     {
-                        Mensaje = mensajeCartel,
+                        Mensaje = string.Format(s.Mensaje, mensaje, patente),
                         PuestoDeTrabajoId = puestoDeTrabajo.Id,
-                        NumeroPrograma = x.Programa,
-                        NumeroTrama = x.Trama,
-                        NumeroVariable = x.Variable,
-                        SegundosDeEspera = x.SegundosDeEspera
-                    });
-
-                    if (resultado.HayErrores)
-                    {
-                        comentario = resultado.Errores.Values.First();
+                        NumeroPrograma = s.Programa,
+                        NumeroTrama = s.Trama,
+                        NumeroVariable = s.Variable,
+                        SegundosDeEspera = s.SegundosDeEspera
                     }
-                    log.Error(comentario);
-                });
+                ).ToList();
+
+                servicioComandos.Ejecutar(new EnviarMensajesAsincronoCartelLed { Mensajes = mensajes });
             }
             catch (Exception e)
             {

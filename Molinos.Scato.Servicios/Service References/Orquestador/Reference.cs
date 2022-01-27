@@ -24,8 +24,10 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarActivarDisplay))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaBarreraMaestro))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarComunicador))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCierreBarrera))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaCortinaAgua))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaBalanzadaPorRango))]
@@ -285,8 +287,10 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarActivarDisplay))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaBarreraMaestro))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarComunicador))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCierreBarrera))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaCortinaAgua))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaBalanzadaPorRango))]
@@ -325,6 +329,61 @@ namespace Molinos.Scato.Servicios.Orquestador
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarComunicador", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarComunicador : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool ActivarField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ServerComunicadorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Molinos.Scato.Servicios.Orquestador.TipoComunicador TipoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Activar {
+            get {
+                return this.ActivarField;
+            }
+            set {
+                if ((this.ActivarField.Equals(value) != true)) {
+                    this.ActivarField = value;
+                    this.RaisePropertyChanged("Activar");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ServerComunicador {
+            get {
+                return this.ServerComunicadorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ServerComunicadorField, value) != true)) {
+                    this.ServerComunicadorField = value;
+                    this.RaisePropertyChanged("ServerComunicador");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Molinos.Scato.Servicios.Orquestador.TipoComunicador Tipo {
+            get {
+                return this.TipoField;
+            }
+            set {
+                if ((this.TipoField.Equals(value) != true)) {
+                    this.TipoField = value;
+                    this.RaisePropertyChanged("Tipo");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarCierreBarrera", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     public partial class EjecutarCierreBarrera : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
@@ -335,6 +394,29 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarAperturaCortinaAgua", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     public partial class EjecutarAperturaCortinaAgua : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEjecutarQuery", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarEjecutarQuery : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CustomQueryField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CustomQuery {
+            get {
+                return this.CustomQueryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CustomQueryField, value) != true)) {
+                    this.CustomQueryField = value;
+                    this.RaisePropertyChanged("CustomQuery");
+                }
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -862,7 +944,21 @@ namespace Molinos.Scato.Servicios.Orquestador
     public partial class EjecutarPesaje : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
     {
     }
-
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TipoComunicador", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums")]
+    public enum TipoComunicador : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Speaker = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Mic = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Both = 2,
+    }
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoComando", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
@@ -874,6 +970,7 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzadaPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoBorrarBalanzada))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
@@ -1005,7 +1102,7 @@ namespace Molinos.Scato.Servicios.Orquestador
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoCancelarSuscripcion", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoCancelarSuscripcion", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
     public partial class ResultadoCancelarSuscripcion : Molinos.Scato.Servicios.Orquestador.ResultadoComando
     {
@@ -1047,6 +1144,7 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzadaPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoBorrarBalanzada))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
@@ -1168,7 +1266,30 @@ namespace Molinos.Scato.Servicios.Orquestador
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoMeteorologica", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoEjecutarQuery", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.SerializableAttribute()]
+    public partial class ResultadoEjecutarQuery : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string[] queryResultField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string[] queryResult {
+            get {
+                return this.queryResultField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.queryResultField, value) != true)) {
+                    this.queryResultField = value;
+                    this.RaisePropertyChanged("queryResult");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoMeteorologica", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
     public partial class ResultadoMeteorologica : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
     {
@@ -1801,6 +1922,22 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamaras", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerCamarasResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasAsync(string[] codigo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadoresRe" +
+            "sponse")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarIntercomunicadores();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarIntercomunicadoresRe" +
+            "sponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarIntercomunicadoresAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivoRe" +
+            "sponse")]
+        void PrenderApagarDispositivo(string codigoDispositivo, bool activar, string server);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivoRe" +
+            "sponse")]
+        System.Threading.Tasks.Task PrenderApagarDispositivoAsync(string codigoDispositivo, bool activar, string server);
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2077,6 +2214,22 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.CamaraDto[]> ObtenerCamarasAsync(string[] codigo) {
             return base.Channel.ObtenerCamarasAsync(codigo);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarIntercomunicadores() {
+            return base.Channel.ListarIntercomunicadores();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarIntercomunicadoresAsync() {
+            return base.Channel.ListarIntercomunicadoresAsync();
+        }
+        
+        public void PrenderApagarDispositivo(string codigoDispositivo, bool activar, string server) {
+            base.Channel.PrenderApagarDispositivo(codigoDispositivo, activar, server);
+        }
+        
+        public System.Threading.Tasks.Task PrenderApagarDispositivoAsync(string codigoDispositivo, bool activar, string server) {
+            return base.Channel.PrenderApagarDispositivoAsync(codigoDispositivo, activar, server);
         }
     }
 }

@@ -128,6 +128,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsCuerposExtranos { get; set; }
         public bool EsSemillaSoja { get; set; }
         public bool EsProteinaBaja { get; set; }
+        public bool EsProteinaMedia { get; set; }
         public bool EsProteinaAlta { get; set; }
         public bool TieneInsectosVivos { get; set; }
         public string TieneEntregador { get; set; }
@@ -147,5 +148,8 @@ namespace Molinos.Scato.Dominio.Dto
         public bool NoGranos { get; set; }
         public bool CPE { get; set; }
         public string CTG { get; set; }
+        public string Proteina { get; set; }
+         public string AlmacenDestino { get; set; }
+        public string DiferenciaPesoNeto { get; set; }
     }
 }

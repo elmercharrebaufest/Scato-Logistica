@@ -274,6 +274,13 @@
             </div>
         </div>
         <div class="control-group">
+            @Html.LabelFor(m => m.ValorProteinaMedia, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.ValorProteinaMedia)
+                @Html.ValidationMessageFor(m => m.ValorProteinaMedia)
+            </div>
+        </div>
+        <div class="control-group">
             @Html.LabelFor(m => m.IntervaloDeAnalisis, new { @class = "control-label" })
             <div class="controls">
                 @Html.CheckBoxFor(m => m.IntervaloDeAnalisis)
@@ -341,13 +348,19 @@
 </div>
 <script>
     $(document).ready(function () {
-        $("#ValorProteina").prop("disabled", true);
+        $("#ValorProteina").prop("readonly", true);
+        $("#ValorProteinaMedia").prop("readonly", true);
+        
         $("#TipoCaracteristica").change(function () {
             if ($("#TipoCaracteristica").val() == "EsProteina") {
                 $("#ValorProteina").css({
                     'background-color': '#fff'
                 });
-                $("#ValorProteina").prop("disabled", false);
+                $("#ValorProteinaMedia").css({
+                    'background-color': '#fff'
+                });
+                $("#ValorProteina").prop("readonly", false);
+                $("#ValorProteinaMedia").prop("readonly", false);
             } else {
                 $($($($('#ValorProteina').parent()).children()[1]).children()[0]).remove();
                 $("#ValorProteina").css({
@@ -355,11 +368,22 @@
                     'background-color': '#eee',
                     'border': '1px solid #cccccc',
                 });
+                $($($($('#ValorProteinaMedia').parent()).children()[1]).children()[0]).remove();
+                $("#ValorProteinaMedia").css({
+                    'width': '206px',
+                    'background-color': '#eee',
+                    'border': '1px solid #cccccc',
+                });
                 $("label[for=ValorProteina]").css({
                     'color': '#333'
                 });
+                $("label[for=ValorProteinaMedia]").css({
+                    'color': '#333'
+                });
                 $("#ValorProteina").val("");
-                $("#ValorProteina").prop("disabled", true);
+                $("#ValorProteina").prop("readonly", true);
+                $("#ValorProteinaMedia").val("");
+                $("#ValorProteinaMedia").prop("readonly", true);
             }
         });
     });

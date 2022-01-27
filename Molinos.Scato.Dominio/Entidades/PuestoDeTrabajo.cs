@@ -57,6 +57,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string Firmware { get; set; }
 
         public virtual string Concentrador { get; set; }
+        public virtual string IntercomunicadorCodigo { get; set; }
         public IEnumerable<string> EntradasSupervisor()
         {
             return string.IsNullOrEmpty(EntradaSupervisor) ? new string[0] : EntradaSupervisor.Split(',');
@@ -76,7 +77,7 @@ namespace Molinos.Scato.Dominio.Entidades
             return string.IsNullOrEmpty(CierreSupervisor) ? new string[0] : CierreSupervisor.Split(',');
         }
         public virtual int? OrdenBalanza { get; set; }
-
+        public virtual bool ActivarRegistroInactividad { get; set; }
 
     }
 }

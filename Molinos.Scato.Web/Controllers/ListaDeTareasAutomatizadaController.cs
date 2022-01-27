@@ -99,6 +99,22 @@ namespace Molinos.Scato.Web.Controllers
             return Json(new { mensaje = resultado.MensajeError, valida = false });
         }
 
+        public ActionResult DocumentoOrigenConsulta(string tarjetaDeAcceso)
+        {
+            var recorridoDto = servicio.RecorridoPorTarjetaDeAcceso(tarjetaDeAcceso);
+            if (recorridoDto != null)
+            {
+                return Json(
+                   new
+                   {
+                       status = "success",
+                       redirectTo = Url.Action("DocumentoOrigen", "ModificarDocumentoDeIngreso", new { recorridoId = recorridoDto.Id, tipoDoc = recorridoDto.TipoDocumento, soloLectura = true })
+                   });
+            }
+
+            return Json(new { status = "error", message = "No se encontro ningun vehiculo vinculado en este momento a la tarjeta de acceso." });
+        }
+
         private void EjecutarDispositivosDeEntrada(ValidarProximaAccionPorPuestoDto lecturaPuestoDeTrabajo)
         {
             log.Debug("Ejecutando dispositivos de entrada para el puesto: {0}", lecturaPuestoDeTrabajo.PuestoDeTrabajoId);

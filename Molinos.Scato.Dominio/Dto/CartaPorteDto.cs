@@ -528,5 +528,13 @@ namespace Molinos.Scato.Dominio.Dto
         public int? TransportistaTramo2Id { get; set; }
         public string TransportistaTramo2CUIT { get; set; }
         public bool EsTransportistaTramo2 { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista_Pagador_Flete")]
+        public string PagadorFlete { get; set; }
+        public int? PagadorFleteId { get; set; }
+        public string PagadorFleteCuil { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Representante_Recibidor")]
+        public string RepresentanteRecibidor { get; set; }
+        public int? RepresentanteRecibidorId { get; set; }
+        public string RepresentanteRecibidorCuil { get; set; }
     }
 }

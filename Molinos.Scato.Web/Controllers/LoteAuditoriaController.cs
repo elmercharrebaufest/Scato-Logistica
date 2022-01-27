@@ -442,8 +442,8 @@ namespace Molinos.Scato.Web.Controllers
                             ServicioLacrado = "S",
                             Patente = muestra.Patente,
                             RtteComercial = muestra.TitularCartaPorte ?? "",
-                            CartaDePorte = muestra.CPE ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : Convert.ToInt64(muestra.NroCartaPorte),
-                            NumeroCTG = muestra.CPE? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
+                            CartaDePorte = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : Convert.ToInt64(muestra.NroCartaPorte),
+                            NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
                             CuitTitularCartaPorte = 0,
                             TitularCartaPorte = muestra.TitularCartaPorte ?? "",
                             TecnologiaDeclarada = muestra.CodigoTecnologia ?? "00",
@@ -460,7 +460,9 @@ namespace Molinos.Scato.Web.Controllers
                             RazonSocialIntermediario = muestra.Intermediario ?? string.Empty,
                             CuitRepresentante = 0,
                             RazonSocialRepresentante = muestra.RtteComercial ?? string.Empty,
-                            Cosecha = Convert.ToInt64((muestra.Cosecha ?? "0").Replace("-", string.Empty))
+                            Cosecha = Convert.ToInt64((muestra.Cosecha ?? "0").Replace("-", string.Empty)),
+                            CodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaCodigoPostal ?? 0),
+                            SubCodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaSubcodigoPostal ?? 0)
                         }, typeof(Rosario01).GetProperties()));
 
 
@@ -831,9 +833,9 @@ namespace Molinos.Scato.Web.Controllers
                             TipoTrans = muestra.TipoVehiculo.ToString().Substring(0, 1),
                             NumeroMuestra = Convert.ToInt64(muestra.NroMuestra),
                             NroVagon = muestra.TipoVehiculo == TipoVehiculo.Tren ? muestra.NumeroVehiculo : 0,
-                            NumeroCTG = muestra.CPE ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
-                            CPE = muestra.CPE ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : 0,
-                            CartaDePorte = muestra.CPE ? 0 : Convert.ToInt64(muestra.NroCartaPorte),
+                            NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
+                            CPE = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : 0,
+                            CartaDePorte = muestra.CPE ?? false ? 0 : Convert.ToInt64(muestra.NroCartaPorte),
                         }, typeof(BahiaBlanca).GetProperties()));
             }
 

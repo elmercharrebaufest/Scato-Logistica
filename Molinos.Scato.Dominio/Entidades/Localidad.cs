@@ -12,5 +12,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string Descripcion { get; set; }
         [Required]
         public virtual Provincia Provincia { get; set; }
+        public int? CodigoPostal { get; set; }
+        public int? SubcodigoPostal { get; set; }
     }
 }

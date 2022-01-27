@@ -7,6 +7,7 @@
 	EsCuerposExtranos BIT NOT NULL DEFAULT 0, 
     EsSemillaSoja BIT NOT NULL DEFAULT 0, 
 	EsProteinaBaja BIT NOT NULL DEFAULT 0,
+	EsProteinaMedia BIT NOT NULL DEFAULT 0,
 	EsProteinaAlta BIT NOT NULL DEFAULT 0,
 	TieneDescuentos BIT NOT NULL DEFAULT 0,
 	TieneInsectosVivos BIT NOT NULL DEFAULT 0,

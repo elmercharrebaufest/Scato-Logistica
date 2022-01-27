@@ -8,6 +8,10 @@
 	[Material]      nvarchar(100)  NOT NULL,
 	[CentroId]      INT  NOT NULL,
 	[EsGrano]      bit  NOT NULL,
-	[EsIngreso]      bit  NOT NULL
+	[EsIngreso]      bit  NOT NULL,
+	[VagonesEnElDia] INT NULL,
+	[VagonesEnPlanta] INT NULL,
+	[TotalIngresosVagonesEnElDia] INT NULL,
+	[VagonesRechazados] INT NULL,
 	    CONSTRAINT [PK_dbo.EstadoMaterial] PRIMARY KEY CLUSTERED ([Id] ASC), 
 );

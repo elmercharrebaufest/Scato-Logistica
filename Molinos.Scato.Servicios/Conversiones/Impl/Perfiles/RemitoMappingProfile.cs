@@ -37,7 +37,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(t => t.ProcedenciaCodigoSap, f => f.MapFrom(r => r.Procedencia.CodigoAfip))
                   .ForMember(t => t.ProcedenciaId, f => f.MapFrom(r => r.Procedencia.Id))
                   .ForMember(t => t.ProvinciaCodigoSap, f => f.MapFrom(r => r.Procedencia.Provincia.CodigoAfip))
-                  .ForMember(t => t.TipoVehiculo, f => f.MapFrom(r => r.Recorrido.TipoVehiculo));
+                  .ForMember(t => t.TipoVehiculo, f => f.MapFrom(r => r.Recorrido.TipoVehiculo))
+                  .ForMember(t => t.Almacen_Id, f => f.MapFrom(r => r.Recorrido.Almacen.Id))
+                  .ForMember(t => t.Calle_Id, f => f.MapFrom(r => r.Recorrido.Calle.Id));
             Mapper.CreateMap<RemitoDto, Remito>();
 
         }

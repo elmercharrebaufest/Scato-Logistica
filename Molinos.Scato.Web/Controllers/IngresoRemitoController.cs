@@ -140,6 +140,8 @@ namespace Molinos.Scato.Web.Controllers
             controller.ViewBag.EsIngreso = workflow.TipoDeWorkflow == TipoDeWorkflow.Ingreso;
             var almacenes = servicio.ListarAlmacenesPorCentro(workflow.CentroId);
             controller.ViewBag.Almacenes = almacenes.GroupBy(x => x.Descripcion).Select(x => new AlmacenDto { Id = x.Select(y => y.Id).FirstOrDefault(), Descripcion = x.Key }).ToSelectList(f => f.Id.ToString(), f => f.Descripcion);
+            var calles = servicio.ListarCalles(workflow.CentroId);
+            controller.ViewBag.Calles = calles.GroupBy(x => x.Nombre).Select(x => new CalleDto { Id = x.Select(y => y.Id).FirstOrDefault(), Nombre = x.Key }).ToSelectList(f => f.Id.ToString(), f => f.Nombre);
 
             var materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, workflow.CentroId);
             controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(CultureInfo.InvariantCulture), f => f.MaterialDesc);

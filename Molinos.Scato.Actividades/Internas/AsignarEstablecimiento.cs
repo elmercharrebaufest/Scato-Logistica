@@ -33,6 +33,19 @@ namespace Molinos.Scato.Actividades.Internas
                                 InstanceId = instanceId,
                                 EstablecimientoId = establecimientoId.Value
                             });
+
+                        var cartaPorte = context.GetExtension<IServicioRepositorio>().ObtenerCartaPortePorInstanceId(instanceId);
+                        var centroId = context.GetExtension<IServicioRepositorio>().ObtenerCentroIdPorInstanceId(instanceId);
+                        var centroSap = context.GetExtension<IServicioRepositorio>().ObtenerCentroCodigoSap(centroId);
+
+                        servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                        {
+                            RutaFotoCP = cartaPorte.FotoRutaDestino,
+                            CodigoCentroSap = centroSap,
+                            NroDocumento = cartaPorte.NroCartaPorte,
+                            Patente = cartaPorte.Patente
+                        });
+
                         if (resultado.HayErrores)
                         {
                             resultado.Errores.Add("", Textos.Error_ActualizarGenerico);

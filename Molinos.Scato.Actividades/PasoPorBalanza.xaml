@@ -148,6 +148,14 @@
         </OutArgument>
       </local:ControlRecorrido.NombreUsuario>
     </local:ControlRecorrido>
+    <local:PasoPorBlanazaNoEnCero>
+      <local:PasoPorBlanazaNoEnCero.PuestoId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">controlRecorridoDto.PuestoDeTrabajoId</mca:CSharpValue>
+        </InArgument>
+      </local:PasoPorBlanazaNoEnCero.PuestoId>
+      <sap2010:WorkflowViewState.IdRef>PasoPorBlanazaNoEnCero_1</sap2010:WorkflowViewState.IdRef>
+    </local:PasoPorBlanazaNoEnCero>
     <p:SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
       <p:SendParametersContent>
         <InArgument x:TypeArguments="msdc:Resultado" x:Key="resultado" />
@@ -170,7 +178,7 @@
         </OutArgument>
       </local:FinDeActividad.PuestoDeTrabajoId>
     </local:FinDeActividad>
-    <sads:DebugSymbol.Symbol>d15DOlxVc2Vyc1xjcGFsYWNpb3NcRG9jdW1lbnRzXFNjYXRvXE1vbGlub3MuU2NhdG9cTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xQYXNvUG9yQmFsYW56YS54YW1sE1oDrgEOAgEBXgVkGgIBWGUFdR4CAT52BYoBEQIBLYsBBZYBHgIBHJcBBZsBEwIBG5wBBawBHAIBAmELYcwBAgFZbQtthgECAVBoC2hQAgFIZSNlLwIBR3ILclYCAT+BAQuBAV8CATaHAQuHAXQCAS6OAQuOAWwCASWTAQuTAV4CAR2fAQufAWwCAROkAQukAV4CAQupAQupAWECAQM=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0pDOlxNb2xpbm9zXE1vbGlub3MuU2NhdG8tREVWXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcUGFzb1BvckJhbGFuemEueGFtbBVaA7YBDgIBAV4FZBoCAWFlBXUeAgFHdgWKARECATaLAQWWAR4CASWXAQWeASQCARyfAQWjARMCARukAQW0ARwCAQJhC2HMAQIBYm0LbYYBAgFZaAtoUAIBUWUjZS8CAVByC3JWAgFIgQELgQFfAgE/hwELhwF0AgE3jgELjgFsAgEukwELkwFeAgEmmgELmgFtAgEdpwELpwFsAgETrAELrAFeAgELsQELsQFhAgED</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -178,16 +186,17 @@
       <sap2010:ViewStateData Id="NotificarUsuario_1" sap:VirtualizedContainerService.HintSize="255,22" />
       <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="255,86" />
       <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="255,22" />
+      <sap2010:ViewStateData Id="PasoPorBlanazaNoEnCero_1" sap:VirtualizedContainerService.HintSize="255,22" />
       <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255,86" />
       <sap2010:ViewStateData Id="FinDeActividad_1" sap:VirtualizedContainerService.HintSize="255,22" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="277,584">
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="277,646">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.PasoPorBalanza_1" sap:VirtualizedContainerService.HintSize="317,664">
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.PasoPorBalanza_1" sap:VirtualizedContainerService.HintSize="317,726">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>

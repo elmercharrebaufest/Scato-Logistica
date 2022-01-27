@@ -43,7 +43,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     x.Cosecha == stockEstablecimeinto.Cosecha).Any() ? contexto.Set<RegistroStockEPA>()
                                 .Where(x => x.CodigoEstablecimiento == stockEstablecimeinto.CodigoEstablecimiento &&
                                     x.Cosecha == stockEstablecimeinto.Cosecha)
-                                .Sum(x => x.PesoNeto) : 0,
+                                .Sum(x => x.PesoNeto) : 0 + (contexto.Set<RegistroStockOtrosPuertos>()
+                                .Where(r => r.CodigoEstablecimiento == stockEstablecimeinto.CodigoEstablecimiento && 
+                                    r.Cosecha == stockEstablecimeinto.Cosecha).Any() ? contexto.Set<RegistroStockOtrosPuertos>()
+                                .Where(r => r.CodigoEstablecimiento == stockEstablecimeinto.CodigoEstablecimiento &&  r.Cosecha == stockEstablecimeinto.Cosecha).Sum(r => r.PesoNeto) : 0),
                                 StockReservado = stockEstablecimeinto.StockReservado,
                                 NombreEstablecimiento = estab.NombreDeEstablecimiento
                             }                               

@@ -255,7 +255,8 @@ namespace Molinos.Scato.Servicios.Impl
                 EsVagon = x.Balanza.TipoVehiculo == TipoVehiculo.Tren || x.Balanza.TipoVehiculo == TipoVehiculo.Bitren,
                 EsExpo = x.Balanza.EsExportacion,
                 Camara = x.VideoCamaras.FirstOrDefault().Codigo,
-                Orden = x.OrdenBalanza
+                Orden = x.OrdenBalanza,
+                IntercomunicadorCodigo = x.IntercomunicadorCodigo,
             }, x => x.AutomatizadoFull && x.Balanza != null && x.Centro.Id == centroId);
             foreach (var b in balanzas)
             {
@@ -889,6 +890,26 @@ namespace Molinos.Scato.Servicios.Impl
 
             return Listar<Chofer, ChoferDto>(expresionFiltro, paginacion);
         }
+        public ListaPaginada<CategoriaVehiculoDto> ListarCategoriaCamiones(string filtro, Paginacion paginacion)
+        {
+            Expression<Func<CategoriaVehiculo, bool>> expresionFiltro = null;
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                filtro = filtro.Trim();
+                expresionFiltro =
+                    x =>
+                    x.Patente.Contains(filtro) || 
+                    x.PatenteAcoplado.Contains(filtro) ||
+                    x.PatenteAcoplado2.Contains(filtro);
+            }
+
+            return Listar<CategoriaVehiculo, CategoriaVehiculoDto>(expresionFiltro, paginacion);
+        }
+        public CategoriaVehiculoDto BuscarCategoriaVehiculo(string patente, string acoplado, string acoplado2)
+        {
+            return repositorio.ObtenerConsultaEscalar(new ObtenerVehiculo(patente, acoplado, acoplado2));
+            
+        }
         public ListaPaginada<DocumentoExternoDto> ListarDocumentos(string filtro, Paginacion paginacion)
         {
             Expression<Func<DocumentoExterno, bool>> expresionFiltro = null;
@@ -1008,6 +1029,11 @@ namespace Molinos.Scato.Servicios.Impl
         public ChoferDto ObtenerChofer(int id)
         {
             return Obtener<Chofer, ChoferDto>(id);
+        }
+
+        public CategoriaVehiculoDto ObtenerCategoriaVehiculo(int id)
+        {
+            return Obtener<CategoriaVehiculo, CategoriaVehiculoDto>(id);
         }
 
         public KmPorProveedorDto ObtenerKmPorProveedor(int id)
@@ -2100,6 +2126,38 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Recorrido, RecorridoDto>(expresionFiltro);
         }
 
+        public DatosRecorridoDto RecorridoPorTarjetaDeAcceso(string tarjetaDeAcceso)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, DatosRecorridoDto>(
+                x =>
+                x.TarjetaDeAcceso == tarjetaDeAcceso && !x.Terminado,
+                x => new DatosRecorridoDto
+                {
+                    InstanciaWorkflow = x.InstanciaWorkflow,
+                    NumeroDocumentoIngreso = x.NumeroDocumentoIngreso,
+                    Patente = x.Patente,
+                    TarjetaDeAcceso = x.TarjetaDeAcceso,
+                    WorkflowDefinicionId = x.WorkflowDefinicion.Id,
+                    CentroCodigoSap = x.Centro.CodigoSAP,
+                    WorkflowId = x.Workflow.Id,
+                    AdvertirCaladoEnPlanta = x.CorrespondeCaladoEnPlanta && x.CaladoEnPlanta == null,
+                    Id = x.Id,
+                    TipoVehiculo = x.TipoVehiculo,
+                    CartaDePorte = x.NumeroDocumentoIngreso,
+                    Entregador = x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte &&
+                    x.Vehiculo.CartaPorte.Entregador != null && x.Vehiculo.CartaPorte.Entregador.RazonSocial.ToUpper() != "SIN ENTREGA",
+                    Material = x.Material.Descripcion,
+                    PesoBrutoOrigen = x.PesoBrutoOrigen,
+                    PesoTaraOrigen = x.PesoTaraOrigen,
+                    PesoNetoOrigen = x.PesoBrutoOrigen - x.PesoTaraOrigen,
+                    PesoBruto = x.PesoBruto,
+                    PesoTara = x.PesoTara,
+                    Calle = x.Calle.Nombre,
+                    TipoDocumento = x.TipoDocumentoIngreso,
+                    TipoComercial = x.TipoComercial.Descripcion
+                });
+        }
+
         public RecorridoDto RecorridoSinPesosPorNumeroDeDocumento(TipoDocumentoIngreso tipo, string numeroDoc)
         {
             Expression<Func<Recorrido, bool>> expresionFiltro =
@@ -2782,7 +2840,6 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return conversor.ConvertirListaPaginada<TEntidad, TDto>(repositorio.Listar(expresionFiltro, paginacion));
         }
-
         private IList<TDto> Listar<TEntidad, TDto>() where TEntidad : class
         {
             return conversor.ConvertirList<TEntidad, TDto>(repositorio.Listar<TEntidad>());
@@ -4087,9 +4144,17 @@ namespace Molinos.Scato.Servicios.Impl
                                                              string patente, TipoImpresion? tipoImpresion,
                                                              Paginacion paginacion)
         {
-            return
+            try
+            {
+                return
                 repositorio.ListarConsultaPaginada(new ListarImpresiones(tipo, numeroDocumentoIngreso, patente, tipoImpresion,
                                                                          paginacion));
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "Error ListarImpresiones DocumentoConsultado : {0}", numeroDocumentoIngreso);
+                throw e;
+            }
         }
 
         public VehiculoDto ObtenerVehiculoPorGuid(Guid instanceId)
@@ -5952,7 +6017,9 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<DatosInstanciaWorkflowDto> ListarDatosDeWorkflows(List<Guid> instanceIds)
         {
-            var datosAnalisis = repositorio.Listar(x => new { x.CaracteristicasNoCorrenspodenEspecial, x.Recorrido.InstanciaWorkflow }, (CaracteristicasAnalizadas x) => instanceIds.Contains(x.Recorrido.InstanciaWorkflow));
+            var datosAnalisis = repositorio.Listar(x => new { x.CaracteristicasNoCorrenspodenEspecial, x.Recorrido.InstanciaWorkflow}, (CaracteristicasAnalizadas x) => instanceIds.Contains(x.Recorrido.InstanciaWorkflow));
+            var caladoPorCaracteristica = repositorio.Listar<CaladoPorCaracteristica>(y => instanceIds.Contains(y.Calado.WorkflowInstanceId));
+            var caladosPorCaracteristicaConProteina = caladoPorCaracteristica.Where(x => x.CaracteristicaDeCalidad.DescripcionCorta.ToUpper() == "PROTEINA");
             var datos = repositorio.Listar<Recorrido, DatosInstanciaWorkflowDto>(
                     x =>
                     new DatosInstanciaWorkflowDto
@@ -5979,8 +6046,15 @@ namespace Molinos.Scato.Servicios.Impl
                         ProvinciaId = x.Vehiculo != null ? x.Vehiculo.CartaPorte.Procedencia.Provincia.Id : 0,
                         VehiculoDemorado = x.VehiculoDemorado || x.EstablecimientoDemorado,
                         LlegoEnHorario = x.LlegoEnHorario,
+                        Proteina = "",
+                        AlmacenDestino = x.Almacen.DescripcionCorta != null ? x.Almacen.DescripcionCorta : "",
+                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen): null
                     }, x => instanceIds.Contains(x.InstanciaWorkflow),
-                    instanceIds.Count);
+                    instanceIds.Count) ;
+            foreach (var dato in datos)
+            {
+                dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
+            }
 
 
             foreach (var datoAnalisis in datosAnalisis)
@@ -7051,6 +7125,7 @@ namespace Molinos.Scato.Servicios.Impl
         public decimal StockEPAutilizado(string codigoEstablecimiento, string cosecha)
         {
             var pesosNeto = repositorio.Sumar<RegistroStockEPA>(x => x.PesoNeto, x => x.CodigoEstablecimiento == codigoEstablecimiento && x.Cosecha == cosecha);
+                pesosNeto += repositorio.Sumar<RegistroStockOtrosPuertos>(x => x.PesoNeto, x => x.CodigoEstablecimiento == codigoEstablecimiento && x.Cosecha == cosecha);
             return pesosNeto;
         }
 
@@ -9406,11 +9481,40 @@ namespace Molinos.Scato.Servicios.Impl
             return resultado;
         }
 
-        public IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoBalanzaVagonesPorSensorQuiebre(string codigoDispositivo)
+        public IList<MotivoInactividadDto> ListarMotivosInactividad()
         {
-            var puestosTrabajo = Listar<PuestoDeTrabajo, PuestoDeTrabajoDto>(x => x.SensorQuiebre == codigoDispositivo && x.Balanza != null);
-            var balanzas = Listar<Balanza, BalanzaDto>(x => x.TipoVehiculo == TipoVehiculo.Tren);
-            return puestosTrabajo.Where(x => balanzas.Any(a => x.BalanzaId == a.Id)).ToList();
+            return Listar<MotivoInactividad, MotivoInactividadDto>();
+        }
+
+        public RegistroInactividadDto ObtenerRegistroInactividad(int id)
+        {
+            var registroInactividad = Obtener<RegistroInactividad, RegistroInactividadDto>(id);
+            
+            return registroInactividad;
+        }
+
+        public RegistroInactividadDto ObtenerUltimoRegistroInactividadPorUsuario(string usuario)
+        {
+            var registroInactividad = new RegistroInactividad();
+            registroInactividad = repositorio.ObtenerMayor<RegistroInactividad, int>(x => x.Usuario == usuario, x => x.Id);
+            return conversor.Convertir<RegistroInactividad, RegistroInactividadDto>(registroInactividad);
+        }
+
+        public ControlRecorridoDto ObtenerUltimoCaladoPorPuestoDeTrabajo(int idPuesto)
+        {
+            var controlRecorrido = repositorio.ObtenerMayor<ControlRecorrido, int>(x => x.PuestoDeTrabajo.Id == idPuesto && x.ActividadXaml == "Calado", x => x.Id);
+            
+            return conversor.Convertir<ControlRecorrido, ControlRecorridoDto>(controlRecorrido);
+        }
+
+        public EntidadTipoDeActividadDto ObtenerEntidadActividadPorCodigos(string codigoEntidad, string codigoTipoActividad)
+        {
+            return Obtener<EntidadTipoDeActividad, EntidadTipoDeActividadDto>(x => x.Entidad.Codigo == codigoEntidad && x.TipoDeActividad.Codigo == codigoTipoActividad);
+        }
+
+        public IList<EntidadTipoDeActividadDto> ListarActividadesPorEntidad(string codigoEntidad)
+        {
+            return Listar<EntidadTipoDeActividad, EntidadTipoDeActividadDto>(x => x.Entidad.Codigo == codigoEntidad);
         }
     }
 }

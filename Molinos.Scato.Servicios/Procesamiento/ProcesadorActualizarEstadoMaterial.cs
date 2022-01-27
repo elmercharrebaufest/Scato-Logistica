@@ -41,6 +41,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     var camionesDescargados = ObtenerCantidadDeCamionesDescargados(materialPorCentro.CentroId, materialPorCentro.MaterialId, mostrarIngresos);
                     var camionesEnPlanta = ObtenerCantidadDeCamionesEnPlanta(materialPorCentro.CentroId, materialPorCentro.MaterialId, mostrarIngresos);
+                    var vagonesDescargados = ObtenerCantidadDeVagonesDescargados(materialPorCentro.CentroId, materialPorCentro.MaterialId, mostrarIngresos);
+                    var vagonesEnPlanta = ObtenerCantidadDeVagonesEnPlanta(materialPorCentro.CentroId, materialPorCentro.MaterialId, mostrarIngresos);
+
                     Repositorio.Agregar(new EstadoMaterial
                     {
                         CamionesEnElDia = camionesDescargados,
@@ -51,7 +54,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Material = !string.IsNullOrEmpty(materialPorCentro.DescripcionWebMobile) ? materialPorCentro.DescripcionWebMobile : materialPorCentro.Descripcion,
                         CentroId = materialPorCentro.CentroId,
                         EsGrano = materialPorCentro.EsGrano,
-                        EsIngreso = mostrarIngresos
+                        EsIngreso = mostrarIngresos,
+                        VagonesEnElDia = vagonesDescargados,
+                        VagonesEnPlanta = vagonesEnPlanta,
+                        TotalIngresosVagonesEnElDia = vagonesDescargados + vagonesEnPlanta,
+                        VagonesRechazados = ObtenerCantidadDeVagonesRechazadosPorMaterial(materialPorCentro.CentroId, materialPorCentro.MaterialId)
                     });
                 }
             }
@@ -60,7 +67,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public int ObtenerCantiddadDeCamionesRechazadosPorMaterial(int centroId, int Id)
         {
             var date = DateTime.Now.Date;
-            return Repositorio.Contar<Recorrido>(x => x.Centro.Id == centroId && x.Material.Id == Id && x.Rechazado && (!x.Terminado || (x.FechaEgreso.HasValue && x.FechaEgreso > date)));
+            return Repositorio.Contar<Recorrido>(x => x.Centro.Id == centroId && x.Material.Id == Id && x.Rechazado && (!x.Terminado || (x.FechaEgreso.HasValue && x.FechaEgreso > date)) && (x.TipoVehiculo != TipoVehiculo.Tren));
         }
 
         public int ObtenerTotalIngreso(int centroId, int Id, bool mostrarIngresos)
@@ -72,12 +79,29 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public int ObtenerCantidadDeCamionesDescargados(int centroId, int Id, bool mostrarIngresos)
         {
             var date = DateTime.Now.Date;
-            return Repositorio.Contar<Recorrido>(x => x.Terminado && x.PesoTaraFecha.HasValue && x.PesoTaraFecha >= date && x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso) && x.Material.Id == Id && !x.Rechazado);
+            return Repositorio.Contar<Recorrido>(x => x.Terminado && x.PesoTaraFecha.HasValue && x.PesoTaraFecha >= date && x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso) && x.Material.Id == Id && !x.Rechazado && (x.TipoVehiculo != TipoVehiculo.Tren));
         }
 
         public int ObtenerCantidadDeCamionesEnPlanta(int centroId, int Id, bool mostrarIngresos)
         {
-            return Repositorio.Contar<Recorrido>(x => !x.Terminado && x.Centro.Id == centroId && x.Material.Id == Id && !x.Rechazado && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso));
+            return Repositorio.Contar<Recorrido>(x => !x.Terminado && x.Centro.Id == centroId && x.Material.Id == Id && !x.Rechazado && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso) && (x.TipoVehiculo != TipoVehiculo.Tren));
+        }
+
+        public int ObtenerCantidadDeVagonesRechazadosPorMaterial(int centroId, int Id)
+        {
+            var date = DateTime.Now.Date;
+            return Repositorio.Contar<Recorrido>(x => x.Centro.Id == centroId && x.Material.Id == Id && x.Rechazado && (!x.Terminado || (x.FechaEgreso.HasValue && x.FechaEgreso > date)) && (x.TipoVehiculo == TipoVehiculo.Tren));
+        }
+
+        public int ObtenerCantidadDeVagonesDescargados(int centroId, int Id, bool mostrarIngresos)
+        {
+            var date = DateTime.Now.Date;
+            return Repositorio.Contar<Recorrido>(x => x.Terminado && x.PesoTaraFecha.HasValue && x.PesoTaraFecha >= date && x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso) && x.Material.Id == Id && !x.Rechazado && (x.TipoVehiculo == TipoVehiculo.Tren));
+        }
+
+        public int ObtenerCantidadDeVagonesEnPlanta(int centroId, int Id, bool mostrarIngresos)
+        {
+            return Repositorio.Contar<Recorrido>(x => !x.Terminado && x.Centro.Id == centroId && x.Material.Id == Id && !x.Rechazado && x.Workflow.TipoDeWorkflow == (mostrarIngresos == true ? TipoDeWorkflow.Ingreso : TipoDeWorkflow.Egreso) && (x.TipoVehiculo == TipoVehiculo.Tren));
         }
     }
 }

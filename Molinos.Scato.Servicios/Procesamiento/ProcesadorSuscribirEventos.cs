@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
@@ -42,8 +43,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             urlNotificacionesWeb, resultadoComando);
                 if (!string.IsNullOrEmpty(puestoDeTrabajo.Concentrador))
                 {
-                    Suscribir(puestoDeTrabajo.Id, puestoDeTrabajo.Concentrador, "CambioEstadoSensor",
+                    if (puestoDeTrabajo.Concentrador.ToUpper().Trim().Contains("SEMAFOROVAGONES"))
+                    {
+                        SuscribirSemaforoVagones(puestoDeTrabajo.Id, puestoDeTrabajo.Concentrador, "EntradaActivada",
+                                urlNotificacionesWeb, resultadoComando);
+                        SuscribirSemaforoVagones(puestoDeTrabajo.Id, puestoDeTrabajo.Concentrador, "EntradaDesactivada",
+                                urlNotificacionesWeb, resultadoComando);
+                    } 
+                    else
+                    {
+                        Suscribir(puestoDeTrabajo.Id, puestoDeTrabajo.Concentrador, "CambioEstadoSensor",
                                 urlNotificaciones, resultadoComando);
+                    }                    
                 }
                 Suscribir(puestoDeTrabajo.Id, puestoDeTrabajo.LectorQr, "LecturaQr",
                             urlNotificacionesWeb, resultadoComando);
@@ -84,6 +95,45 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception e)
             {
                 Log.Error(e, "No se pudo crear la suscripción para el evento {0} del dispositivo {1}.", codigoEvento, codigoDispositivo);
+                resultadoComando.Errores.Add(codigoEvento + puestoDeTrabajoId, e.Message);
+            }
+        }
+
+        private void SuscribirSemaforoVagones(int puestoDeTrabajoId, string codigoDispositivo, string codigoEvento, string rutaAcceso, Resultado resultadoComando)
+        {
+            try
+            {
+                var sensoreSemaforo = orquestador.ListarSensoresPorConcentrador(codigoDispositivo).Select(x => new Dominio.Dto.DispositivoGenericoDto { Codigo = x.Codigo, Descripcion = x.Descripcion }).ToList();
+
+                foreach (var semaforo in sensoreSemaforo)
+                {
+                    try
+                    {
+                        Log.Debug("Creando suscripción: Dispositivo={0} Evento={1}", semaforo.Codigo, codigoEvento);
+                        var resultado = orquestador.Suscribir(new ComandoSuscribir
+                        {
+                            CodigoDispositivo = semaforo.Codigo,
+                            CodigoEvento = codigoEvento,
+                            RutaAccesoSuscriptor = rutaAcceso,
+                            Persistente = true
+                        });
+
+                        if (resultado.Mensaje.Codigo != 0)
+                        {
+                            Log.Error("No se pudo crear la suscripción para el evento {0} del dispositivo {1}. Mensaje: {2}-{3}", codigoEvento, codigoDispositivo, resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                            resultadoComando.Errores.Add(codigoEvento + puestoDeTrabajoId + semaforo.Codigo, resultado.Mensaje.Descripcion);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "No se pudo crear la suscripción para el evento {0} del dispositivo {1}.", codigoEvento, codigoDispositivo);
+                        resultadoComando.Errores.Add(codigoEvento + puestoDeTrabajoId + semaforo.Codigo, e.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "No se pudo crear la suscripción de sensores vagones para el evento {0} del dispositivo {1}.", codigoEvento, codigoDispositivo);
                 resultadoComando.Errores.Add(codigoEvento + puestoDeTrabajoId, e.Message);
             }
         }

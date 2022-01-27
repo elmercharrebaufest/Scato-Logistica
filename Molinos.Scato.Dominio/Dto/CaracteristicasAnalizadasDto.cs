@@ -11,6 +11,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsGranosDañados { get; set; }
         public bool EsCuerposExtranos { get; set; }
         public bool EsProteinaBaja { get; set; }
+        public bool EsProteinaMedia { get; set; }
         public bool EsProteinaAlta { get; set; }
         public bool TieneDescuentos { get; set; }
         public bool TieneInsectosVivos { get; set; }

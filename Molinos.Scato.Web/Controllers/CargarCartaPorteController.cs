@@ -10,6 +10,7 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -396,6 +397,12 @@ namespace Molinos.Scato.Web.Controllers
                         var cartaPorteResponseDB = servicio.ObtenerCartaPorteAReutilizarPorNumero(numeroCtg.ToString(), datosUsuario.CentroId, workflow);
                         if (cartaPorteResponseDB.CodigoDeError != 1)
                         {
+                            var vehiculo = cartaPorteResponseDB.CartaPorte.Vehiculos.FirstOrDefault();
+                            var categoriaVehiculo = servicio.BuscarCategoriaVehiculo(vehiculo.Patente, vehiculo.PatenteAcoplado, vehiculo.PatenteAcoplado2);
+                            if(categoriaVehiculo != null)
+                            {
+                                cartaPorteResponseDB.CartaPorte.TipoVehiculo = (Dominio.Enums.TipoVehiculo)categoriaVehiculo.TipoVehiculo;
+                            }
                             return Json(new { Cpe = cartaPorteResponseDB.CartaPorte, cartaPorteResponseDB.CodigoDeError, cartaPorteResponseDB.Error }, JsonRequestBehavior.AllowGet);
                         }
                     }
@@ -704,12 +711,12 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerTipoVehiculoPorPatente(string patente, string acoplado, string workflow, DatosUsuario datosUsuario)
+        public JsonResult ObtenerTipoVehiculoPorPatente(string patente, string acoplado, string workflow, DatosUsuario datosUsuario, string acoplado2 = "")
         {
             try
             {
                 log.Debug("Obteniendo Tipo de vehiculo por patente {0} workflow {1}", patente, workflow);
-                var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
+                var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = acoplado2, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
 
                 log.Debug(resultadoEscalables.HayErrores ? "Error al obtener el tipo de vehiculo por patente{0}: " + resultadoEscalables.Errores.Values.First() : "Devolviendo el tipo de vehiculo por patente {0}", patente);
 
@@ -767,6 +774,21 @@ namespace Molinos.Scato.Web.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 MaxJsonLength = Int32.MaxValue
             };
+        }
+
+        [DatosUsuario]
+        public JsonResult ObtenerTipoVehiculo(string numero, string patente, string acoplado, string acoplado2, string workflow, DatosUsuario datosUsuario)
+        {
+            try
+            {
+                var vehiculo = servicio.BuscarCategoriaVehiculo(patente, acoplado, acoplado2);
+                return vehiculo == null ? Json(new { CodigoDeError = 1, vehiculo }, JsonRequestBehavior.AllowGet) : Json(new { CodigoDeError = 0, vehiculo }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo obtener el tipo de vehiculo por patente {0}", patente);
+                throw;
+            }
         }
     }
 }

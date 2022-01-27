@@ -567,4 +567,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PendienteNoGranos" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e0ba184a-811b-436b-8dbf-1f42b342693a" ChangeDateTime="01/07/2022 15:49:38">
+    <Property Name="ElementName" Value="[dbo].[PuestoDeTrabajo].[IntercomunidacorCodigo]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PuestoDeTrabajo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Intercomunidacor" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="27a2b281-d7e2-4472-aca7-a2ec2b1367ea" ChangeDateTime="01/07/2022 15:58:12">
+    <Property Name="ElementName" Value="[dbo].[PuestoDeTrabajo].[Intercomunidacor]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PuestoDeTrabajo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Intercomunicador" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="89a50122-0df7-4c22-af0b-1c687f71c343" ChangeDateTime="01/07/2022 18:24:20">
+    <Property Name="ElementName" Value="[dbo].[PuestoDeTrabajo].[Intercomunicador]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PuestoDeTrabajo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IntercomunicadorCodigo" />
+  </Operation>
 </Operations>

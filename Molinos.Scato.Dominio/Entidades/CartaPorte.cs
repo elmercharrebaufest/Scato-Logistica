@@ -78,5 +78,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual RamalFerroviario RamalFerroviario { get; set; }
         public virtual string NumeroPrecinto { get; set; }
         public virtual Transportista TransportistaTramo2 { get; set; }
+        public virtual Proveedor PagadorFlete { get; set; }
+        public virtual Proveedor RepresentanteRecibidor { get; set; }        
     }
 }

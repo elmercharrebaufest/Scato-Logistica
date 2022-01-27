@@ -140,7 +140,14 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(t => t.CodigoRamal, f => f.MapFrom(r => r.RamalFerroviario.Descripcion))
                   .ForMember(t => t.TransportistaTramo2, f => f.MapFrom(r => r.TransportistaTramo2.RazonSocial))
                   .ForMember(t => t.TransportistaTramo2Id, f => f.MapFrom(r => r.TransportistaTramo2.Id))
-                  .ForMember(t => t.TransportistaTramo2CUIT, f => f.MapFrom(r => r.TransportistaTramo2.Cuit));
+                  .ForMember(t => t.TransportistaTramo2CUIT, f => f.MapFrom(r => r.TransportistaTramo2.Cuit))
+                  .ForMember(t => t.PagadorFlete, f => f.MapFrom(r => r.PagadorFlete.RazonSocial))
+                  .ForMember(t => t.PagadorFleteId, f => f.MapFrom(r => r.PagadorFlete.Id))
+                  .ForMember(t => t.PagadorFleteCuil, f => f.MapFrom(r => r.PagadorFlete.Cuil))
+                  .ForMember(t => t.TransportistaTramo2CUIT, f => f.MapFrom(r => r.TransportistaTramo2.Cuit))
+                  .ForMember(t => t.RepresentanteRecibidor, f => f.MapFrom(r => r.RepresentanteRecibidor.RazonSocial))
+                  .ForMember(t => t.RepresentanteRecibidorId, f => f.MapFrom(r => r.RepresentanteRecibidor.Id))
+                  .ForMember(t => t.RepresentanteRecibidorCuil, f => f.MapFrom(r => r.RepresentanteRecibidor.Cuil));
             Mapper.CreateMap<CartaPorteDto, CartaPorte>();
 
             Mapper.CreateMap<CartaPorte, InfoCaladoDto>()

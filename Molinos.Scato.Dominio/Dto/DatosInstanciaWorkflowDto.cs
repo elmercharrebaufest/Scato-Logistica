@@ -37,5 +37,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int RecorridoId { get; set; }
         public bool VehiculoDemorado { get; set; }
         public bool LlegoEnHorario { get; set; }
+        public string Proteina { get; set; }
+        public string AlmacenDestino { get; set; }
+        public int? DiferenciaPesoNeto { get; set; }
     }
 }

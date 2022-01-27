@@ -194,6 +194,9 @@ namespace Molinos.Scato.Workflow
                     instanciaWorkflowDto.AnalisisObligatorio = dato.AnalisisObligatorio && instanciaWorkflowDto.ProximaAccion == "Calado";
                     instanciaWorkflowDto.VehiculoDemorado = dato.VehiculoDemorado;
                     instanciaWorkflowDto.LlegoEnHorario = dato.LlegoEnHorario;
+                    instanciaWorkflowDto.Proteina = dato.Proteina;
+                    instanciaWorkflowDto.AlmacenDestino = dato.AlmacenDestino;
+                    instanciaWorkflowDto.DiferenciaPesoNeto = dato.DiferenciaPesoNeto.HasValue? dato.DiferenciaPesoNeto.ToString():"";
                 }
                 instanciaWorkflowDto.NumeroDocumentoDeIngreso = instanciaWorkflowDto.NumeroDocumentoDeIngreso is null ? instanciaWorkflowDto.CTG : instanciaWorkflowDto.NumeroDocumentoDeIngreso;
             }

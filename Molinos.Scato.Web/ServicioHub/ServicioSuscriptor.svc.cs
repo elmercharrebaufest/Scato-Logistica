@@ -216,6 +216,10 @@ namespace Molinos.Scato.Web.ServicioHub
             {
                 NotificarQRSignalR(notificacion);
             }
+            else if (notificacion.CodigoEvento == "EntradaActivada" || notificacion.CodigoEvento == "EntradaDesactivada")
+            {
+                NotificarSensorVagonesSinalR(notificacion);
+            }
         }
 
         private void NotificarUsuarioErrorPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, TipoAlerta tipo = TipoAlerta.Error)
@@ -678,6 +682,93 @@ namespace Molinos.Scato.Web.ServicioHub
             catch (Exception e)
             {
                 log.Error(e, "Fallo la Notificacion via SignalR para: {0}", notificacion.CodigoDispositivo);
+            }
+        }
+
+        private void NotificarSensorVagonesSinalR(NotificacionEvento notificacion)
+        {
+            log.Debug($"Procesando notificaciones para {notificacion?.CodigoDispositivo} CodigoEvento {notificacion?.CodigoEvento}");
+
+            var sensor = notificacion?.CodigoDispositivo ?? string.Empty;
+            var listaDePuestos = servicio.ListarPuestosDeBalanzasAutomaticas().Where(x => !string.IsNullOrEmpty(x.Concentrador)).ToList();
+            var puestos = new List<ConcentradorDto>();
+            
+
+            foreach (var p in listaDePuestos)
+            {
+                var puesto = new ConcentradorDto()
+                {
+                    PuestoId = p.Id,
+                    Concentrador = p.Concentrador
+                };
+                puesto.Sensores = servicioOrquestador.ListarSensoresPorConcentrador(p.Concentrador).Select(x => new Dominio.Dto.DispositivoGenericoDto { Codigo = x.Codigo, Descripcion = x.Descripcion }).ToList();
+                puestos.Add(puesto);
+            }
+
+            var puestoTrabajo = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
+
+            if (puestoTrabajo == null)
+            {
+                log.Error($"No hay puesto con contrador para el sensor: {sensor}");
+                return;
+            }
+
+            try
+            {
+                var dato    = notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty;
+                var entrada = notificacion.Datos.ContainsKey("Entrada") ? notificacion.Datos["Entrada"] : string.Empty;
+
+                if(!string.IsNullOrEmpty(dato) && !string.IsNullOrEmpty(entrada))
+                {
+                    if (bool.TryParse(dato, out bool j))
+                    {
+                        var estadoBalanzaVagones = new EstadoSensoresBalanzaDto
+                        {
+                            PuestoId = puestoTrabajo.PuestoId,
+                            SensorVagones = true,
+                            SensorDireccionId = Int32.TryParse(entrada, out int q) ? Int32.Parse(entrada) : 0,
+                            SensorVagonStatus = bool.Parse(dato)
+                        };
+
+                        #region NotificarEvento
+                        var notificacionDto = new NotificacionDto
+                        {
+                            Grupo = "Automaticas",
+                            Mensaje = estadoBalanzaVagones.ToJson(),
+                            TipoAlerta = TipoAlerta.CambioEstadoBalanzas
+                        };
+                        try
+                        {
+                            log.Debug("Iniciando conexion signalR");
+
+                            var resultado = comandos.Ejecutar(new CrearNotificacion { Dto = notificacionDto }) as ResultadoCrear;
+                            if (resultado != null)
+                            {
+                                notificacionDto.Id = resultado.Id;
+                            }
+                            hubClientNotificar.Invoke("Notificar", notificacionDto);
+
+                            log.Debug("Fin- Mensaje enviado a usuario: {0} exitosamente", notificacionDto.Grupo);
+
+                        }
+                        catch (Exception e)
+                        {
+                            log.Error(e, "Error al enviar notificación: {0}", notificacionDto.Mensaje);
+                        }
+                        #endregion
+                    }
+                    else
+                    {
+                        log.Debug($"El comando del sensor vagones : {sensor} es invalido.");
+                    }
+                } else
+                {
+                    log.Debug($"Notificacion sensor vagones incompleta Dato : {dato}, entrada : {entrada}");
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
             }
         }
     }

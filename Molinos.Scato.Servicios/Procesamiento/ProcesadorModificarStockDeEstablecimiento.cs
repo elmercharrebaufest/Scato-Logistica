@@ -35,6 +35,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Error("FechaHasta", string.Format(Textos.Error_FechaMayorIgualA, fechaHastaEntidad.ToString("dd/MM/yyyy")));
             }
             var stockUtilizado = Repositorio.Sumar<RegistroStockEPA>(x => x.PesoNeto, x => x.CodigoEstablecimiento == comando.Dto.CodigoEstablecimiento && x.Cosecha == comando.Dto.Cosecha);
+                stockUtilizado += Repositorio.Sumar<RegistroStockOtrosPuertos>(x => x.PesoNeto, x => x.CodigoEstablecimiento == comando.Dto.CodigoEstablecimiento && x.Cosecha == comando.Dto.Cosecha);
             if (comando.Dto.StockDeclarado < stockUtilizado)
             {
                 resultado.Error("StockDeclarado", Textos.Error_StockDeclaradoMenorAUtilizado);

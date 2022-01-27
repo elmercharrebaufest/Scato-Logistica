@@ -1101,4 +1101,7 @@
   <data name="AnalisisGirasolOleico" xml:space="preserve">
     <value>The refraction analysis should be performed to determine if it is Oleico</value>
   </data>
+  <data name="PuestoDeTrabajo_Intercomunicador" xml:space="preserve">
+    <value>Intercomunicador</value>
+  </data>
 </root>

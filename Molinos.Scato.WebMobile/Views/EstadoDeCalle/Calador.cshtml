@@ -37,7 +37,7 @@
                                         @if (PermisosHelper.Is(PermisosScato.LlamadoDeFilasAutomatico))
                                         {
                                             <label class="switch">
-                                                <input type="checkbox" data-bind="checked: Automatica, click: LLamadoAutomatico, enable: MaterialId() && MaterialId() != '0'">
+                                                <input type="checkbox" data-bind="checked: Automatica, click: LLamadoAutomatico@*, enable: MaterialId() && MaterialId() != '0'*@">
                                                 <span data-id="a" class="slider round "></span>
                                             </label>
                                         }

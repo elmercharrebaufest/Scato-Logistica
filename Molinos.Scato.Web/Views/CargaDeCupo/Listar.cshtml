@@ -43,7 +43,7 @@
                 claseFila = "noGranos";
             }
             <tr class=@claseFila>
-                @if (i.PuestoDeTrabajo.Contains("2"))
+                @if (!string.IsNullOrEmpty(i.PuestoDeTrabajo) && i.PuestoDeTrabajo.Contains("2"))
                 {
                     <td>2</td>
                 }

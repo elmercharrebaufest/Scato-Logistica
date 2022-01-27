@@ -74,7 +74,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string CTG { get; set; }
 
-        public bool CPE { get; set; }
+        public bool? CPE { get; set; }
 
         public string CodEstab { get; set; }
 
@@ -131,5 +131,7 @@ namespace Molinos.Scato.Dominio.Dto
         public decimal? ValorCalado { get; set; }
         public string Perito { get; set; }
         public int? Sucursal { get; set; }
+        public int? ProcedenciaCodigoPostal { get; set; }
+        public int? ProcedenciaSubcodigoPostal { get; set; }
     }
 }

@@ -15,7 +15,7 @@
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44301</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -330,11 +330,14 @@
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
+    <Compile Include="Controllers\CategoriaCamionesController.cs" />
+    <Compile Include="Controllers\EnEsperaHB4Controller.cs" />
     <Compile Include="Controllers\NotificacionAplicacionController.cs" />
     <Compile Include="Controllers\DevolucionDeReciboMunicipalController.cs" />
     <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
     <Compile Include="Controllers\EtiquetaPuertoController.cs" />
     <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
+    <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
     <Compile Include="Controllers\CamionDemoradoController.cs" />
     <Compile Include="Controllers\VideoCamaraBalanzaController.cs" />
@@ -790,6 +793,8 @@
     </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Scripts\area\shared\intercomunicadorDispositivo.js" />
+    <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\camionDemorado.js" />
@@ -809,6 +814,7 @@
     <Content Include="Scripts\Chart.bundle.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\popUpMotivoInactividad.js" />
     <Content Include="Scripts\reglaDeAnalisisObligatorio.js" />
     <Content Include="Scripts\graficoToneladasPorDia.js" />
     <Content Include="Scripts\planillaf515.js" />
@@ -993,6 +999,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Styles\area\shared\intercomunicadorDispositivo.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2267,6 +2274,16 @@
     <Content Include="Views\CamionesPendientesNoGranos\Index.cshtml" />
     <Content Include="Views\CamionDemorado\OrdenCargaFas.cshtml" />
     <Content Include="Views\CamionDemorado\_OrdenFas.cshtml" />
+    <Content Include="Views\RegistroInactividad\_Index.cshtml" />
+    <Content Include="Views\CategoriaCamiones\_CrearModificar.cshtml" />
+    <Content Include="Views\CategoriaCamiones\Crear.cshtml" />
+    <Content Include="Views\CategoriaCamiones\Index.cshtml" />
+    <Content Include="Views\CategoriaCamiones\Listar.cshtml" />
+    <Content Include="Views\CategoriaCamiones\Modificar.cshtml" />
+    <Content Include="Views\EnEsperaHB4\Index.cshtml" />
+    <Content Include="Views\Shared\Intercomunicador\_Intercomunicador.cshtml" />
+    <Content Include="Views\Shared\Intercomunicador\_IntercomunicadorDispositivo.cshtml" />
+    <Content Include="Views\Visteo\_VehiculoRechazado.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2369,18 +2386,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56683</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost/Scato.Web</IISUrl>
-          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>https://localhost/Scato.Web</IISAppRootUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

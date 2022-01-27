@@ -176,8 +176,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             cuitRemitenteComercialVentaSecundariaSpecified = !string.IsNullOrEmpty(comando?.Dto?.RtteComercialVentaSecundarioCuil),
                             cuitRepresentanteEntregador = Convert.ToInt64(comando?.Dto?.EntregadorCuit?.Replace("-", "")),
                             cuitRepresentanteEntregadorSpecified = comando?.Dto?.Entregador?.ToUpper().Trim() == "SIN ENTREGA" ? false : !string.IsNullOrEmpty(comando?.Dto?.EntregadorCuit),
-                            cuitRepresentanteRecibidor = Convert.ToInt64(comando?.Dto?.DestinatarioCuil?.Replace("-", "")),
-                            cuitRepresentanteRecibidorSpecified = !string.IsNullOrEmpty(comando?.Dto?.DestinatarioCuil),
+                            cuitRepresentanteRecibidor = Convert.ToInt64(comando?.Dto?.RepresentanteRecibidorCuil?.Replace("-", "")),
+                            cuitRepresentanteRecibidorSpecified = !string.IsNullOrEmpty(comando?.Dto?.RepresentanteRecibidorCuil),
                             cuitRemitenteComercialVentaSecundaria2 = Convert.ToInt64(comando?.Dto?.RtteComercialVentaSecundario2Cuil?.Replace("-", "")),
                             cuitRemitenteComercialVentaSecundaria2Specified = !string.IsNullOrEmpty(comando?.Dto?.RtteComercialVentaSecundario2Cuil)
                         },
@@ -211,7 +211,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             cuitChofer = !string.IsNullOrEmpty(comando?.Dto?.Chofer?.Cuil) ? long.Parse(comando?.Dto?.Chofer?.Cuil?.Replace("-", string.Empty)) : default(long),
                             tarifa = Convert.ToDecimal(comando?.Dto?.TarifaTonelada),
                             mercaderiaFumigada = true,
-                            tarifaSpecified = !(comando?.Dto?.TarifaTonelada is null)
+                            tarifaSpecified = !(comando?.Dto?.TarifaTonelada is null),
+                            cuitIntermediarioFlete = Convert.ToInt64(comando?.Dto?.IntermediarioFleteCuil?.Replace("-", "")),
+                            cuitIntermediarioFleteSpecified = !string.IsNullOrEmpty(comando?.Dto?.IntermediarioFleteCuil),
+                            cuitPagadorFlete = Convert.ToInt64(comando?.Dto?.PagadorFleteCuil?.Replace("-", "")),
+                            cuitPagadorFleteSpecified = !string.IsNullOrEmpty(comando?.Dto?.PagadorFleteCuil)
                         },
                         observaciones = comando?.Dto?.Observacion
                     }
@@ -388,9 +392,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             cuitRemitenteComercialVentaSecundaria = cuitRemitenteComercialVentaSecundaria,
                             cuitRemitenteComercialVentaSecundariaSpecified = !string.IsNullOrEmpty(comando?.Dto?.RtteComercialVentaSecundarioCuil),
                             cuitRepresentanteEntregador = cuitRepresentanteEntregador,
-                            cuitRepresentanteEntregadorSpecified = comando?.Dto?.Entregador?.ToUpper().Trim() == "SIN ENTREGA" ? false : !string.IsNullOrEmpty(comando?.Dto?.EntregadorCuit),
-                            cuitRepresentanteRecibidor = cuitRepresentanteRecibidor,
-                            cuitRepresentanteRecibidorSpecified = !string.IsNullOrEmpty(comando?.Dto?.DestinatarioCuil),
+                            cuitRepresentanteEntregadorSpecified = comando?.Dto?.Entregador?.ToUpper().Trim() == "SIN ENTREGA" ? false : !string.IsNullOrEmpty(comando?.Dto?.EntregadorCuit),                            
+                            cuitRepresentanteRecibidor = Convert.ToInt64(comando?.Dto?.RepresentanteRecibidorCuil?.Replace("-", "")),
+                            cuitRepresentanteRecibidorSpecified = !string.IsNullOrEmpty(comando?.Dto?.RepresentanteRecibidorCuil),
                             cuitRemitenteComercialVentaSecundaria2 = cuitRemitenteComercialVentaSecundaria2,
                             cuitRemitenteComercialVentaSecundaria2Specified = !string.IsNullOrEmpty(comando?.Dto?.RtteComercialVentaSecundario2Cuil)
                         },
@@ -428,7 +432,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = transportekmRecorrer,
                             mercaderiaFumigada = true,
                             cuitTransportistaTramo2 = transportecuitTransportistaTramo2,
-                            cuitTransportistaTramo2Specified = !string.IsNullOrEmpty(comando?.Dto?.TransportistaTramo2CUIT)
+                            cuitTransportistaTramo2Specified = !string.IsNullOrEmpty(comando?.Dto?.TransportistaTramo2CUIT),
+                            cuitPagadorFlete = Convert.ToInt64(comando?.Dto?.PagadorFleteCuil?.Replace("-", "")),
+                            cuitPagadorFleteSpecified = !string.IsNullOrEmpty(comando?.Dto?.PagadorFleteCuil)
                         },
                         observaciones = comando?.Dto?.Observacion
                     }

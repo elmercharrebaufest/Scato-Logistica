@@ -39,6 +39,11 @@ $(document).ready(function () {
             ModificarEstados(estadoSensores);
 
         }
+
+        if (notificacion !== null && notificacion.TipoAlerta == 11) {
+            var estadoSemaforos = JSON.parse(notificacion.Mensaje);
+            ModificarEstadosSemaforo(estadoSemaforos);
+        }
     };
 
     // Start the connection
@@ -241,6 +246,15 @@ function CargarbalanzadaAutomatica(b) {
     $("#tipo-comercial" + b.Id).html(b.TipoComercial);
     $("#doc-ing" + b.Id).html(b.DocumentoIngreso);
     $("#instanceId" + b.Id).val(b.WorkflowInstanceId);
+    if (b.PesoNetoFinal) {
+        $("#peso-neto" + b.Id).val(b.PesoNetoFinal);
+    }
+    //if (!b.Actividad.startsWith("Pesada")) {
+    //    $(".btn" + b.Id).attr("disabled",true)
+    //}
+    if (!(StartWitch(b.Actividad, "Pesada"))) {
+        $(".btn" + b.Id).attr("disabled", true)
+    }
 }
 
 function RecetearbalanzadaAutomatica(id) {
@@ -268,6 +282,7 @@ function RecetearbalanzadaAutomatica(id) {
             DocumentoIngreso: "Documento Ingreso",
             TipoComercial: "Tipo Comercial",
             Patente: "Patente",
+            PesoNetoFinal:"0"
         });
         $("#peso-vagon"+id).html("0")
         $("#peso-neto-tren" + id).html("0")
@@ -275,6 +290,7 @@ function RecetearbalanzadaAutomatica(id) {
             $("#peso-neto-tren" + id).data().bruto = 0;
         }
         $("#peso-neto-tren" + id).html("0");
+        $(".btn-finalizar-pesaje" + id).attr("disabled",true)
     } else {
         CargarbalanzadaAutomatica({
             Id: id,
@@ -354,7 +370,9 @@ function PatenteNoReconocida(b, id) {
 }
 
 function VerificarPatente(boton) {
+    
     var puesto = $(boton).data().id;
+    $(".btn" + puesto).attr("disabled", true);
     $.cookie('PuestoDeTrabajoId', puesto);
     $("#aceptar" + puesto).prop('disabled', true);
     $.ajax({
@@ -403,7 +421,7 @@ function VerificarVagon(tren) {
             if (data.Error == null) {
                 CargarbalanzadaAutomatica(data);
                 //$("#balanza" + puesto).attr('disabled', true);
-                $(".btn" + puesto).attr('disabled', false);
+                $(".btn" + puesto + ".tomarPeso").attr('disabled', false);
             } else {
                 $('#' + data.Id).tooltip({ 'title': data.Error, 'trigger': 'manual' });
                 ActivarInterval(data.Id);
@@ -696,42 +714,77 @@ function MostrarEspera(b, notificacionId) {
 
 }
 function ModificarEstados(estadoSensores) {
-    if (estadoSensores.BarreraEntradaActiva == true) {
-        $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-        $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-    } else {
-        $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-        $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+    if (estadoSensores.SensorVagones == true) {
+        if (estadoSensores.SensorDireccionId == 70) {
+            //Sensor Oeste
+            if (estadoSensores.SensorVagonStatus == true) {
+                $("#sensor-oeste-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-oeste-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            } else {
+                $("#sensor-oeste-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-oeste-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            }
+        }
+        else if (estadoSensores.SensorDireccionId == 71) {
+            //Sensor Este
+            if (estadoSensores.SensorVagonStatus == true) {
+                $("#sensor-este-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-este-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            } else {
+                $("#sensor-este-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-este-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            }
+        }
+        else if (estadoSensores.SensorDireccionId == 72) {
+            //Sensor Diganoal
+            if (estadoSensores.SensorVagonStatus == true) {
+                $("#sensor-diagonal-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-diagonal-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            } else {
+                $("#sensor-diagonal-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-diagonal-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            }
+        }
     }
+    else {
+        if (estadoSensores.BarreraEntradaActiva == true) {
+            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+        } else {
+            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        }
 
-    if (estadoSensores.BarreraSalidaActiva == true) {
-        $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-        $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-    } else {
-        $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-        $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
-    }
+        if (estadoSensores.BarreraSalidaActiva == true) {
+            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+        } else {
+            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        }
 
-    if (estadoSensores.SensorIngresoActiva == true) {
-        $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-        $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-    } else {
-        $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-        $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
-    }
+        if (estadoSensores.SensorIngresoActiva == true) {
+            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+        } else {
+            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        }
 
-    if (estadoSensores.SensorTrompaActiva == true) {
-        $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-        $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-    } else {
-        $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-        $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        if (estadoSensores.SensorTrompaActiva == true) {
+            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+        } else {
+            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        }
     }
 }
 
 function TomarPeso() {
     self = this;
-
+    if ($(self).is('[disabled=disabled]'))
+        return false;
 
     //Toma el peso desde el orquestador
     var label = $(self).html();
@@ -740,6 +793,7 @@ function TomarPeso() {
     var id = $(self).data().id;
     $.getJSON($("#tomarPeso").val(), { balanzaId: $(self).data().balanzaId, instanceId: $("#instanceId" + id).val(), actividad: $("#etapa" + id).html() }, function (data) {
         if ($.isNumeric(data)) {
+            $(".btn" + $(self).data().id).attr("disabled",false);
             $("#peso-" + tipo).val(data);
             $("#peso" + $(self).data().id).val(data);
             $("#peso-" + tipo.toLowerCase() + $(self).data().id).html(data);
@@ -758,10 +812,19 @@ function TomarPeso() {
                 }
             }
             if ($(self).data().tipo == "bruto") {
+                $(".btn" + $(self).data().id).attr("disabled", true);
+
                 var neto = data - Number($("#peso-tara" + id).html()) ;
                 $("#peso-neto" + id).html(neto);
-
+                $(".btn" + $(self).data().id +".expo-bruto.expo-finalizar").attr("disabled", false);
             }
+            if ($(self).data().tipo == "tara") {
+                $(".btn" + $(self).data().id).attr("disabled", true);
+
+                $(".btn" + $(self).data().id + ".expo-tara.expo-finalizar").attr("disabled", false);
+            }
+            
+
         } else { //Devolvió error
             MostrarAlertaError(data);
         }
@@ -791,13 +854,15 @@ function CargarDatosExpo(b) {
 
             if (data.Actividad == "Pesada Tara Exportacion") {
                 $("#" + b.Id + " .expo-tara").attr("disabled", false);
+                $(".expo-finalizar").attr("disabled", true);
 
             } else if (data.Actividad == "Confirmacion de Carga/Descarga") {
                 $("#" + b.Id + " .expo-carga").attr("disabled", false);
 
             } else if (data.Actividad == "Pesada Bruto Exportacion") {
-                $("#" + b.Id + " .expo-bruto").attr("disabled", false);
                 $("#dato-tipoPesada" + b.Id).val("Bruto");
+                $("#" + b.Id + " .expo-bruto").attr("disabled", false);
+                $(".expo-finalizar").attr("disabled", true);
             }
 
             $("#orgNeto" + b.Id).html(data.PesoNeto);            
@@ -806,8 +871,9 @@ function CargarDatosExpo(b) {
 }
 
 function PesadaExportacion() {
-
     var self = this;
+    if ($(self).is('[disabled=disabled]'))
+        return false;
     var puestoId = $(self).data().puesto
     $.cookie('PuestoDeTrabajoId', puestoId);
 
@@ -849,8 +915,10 @@ function PesadaExportacion() {
 }
 
 function CargaExportacion() {
-
     var self = this;
+    if ($(self).is('[disabled=disabled]'))
+        return false;
+
     var puestoId = $(self).data().puesto
     $.cookie('PuestoDeTrabajoId', puestoId);
     $.ajax({
@@ -869,7 +937,7 @@ function CargaExportacion() {
                 }
                 else {
                     $("#" + puestoId + " .expo-carga").attr("disabled", true)
-                    $("#" + puestoId + " .expo-bruto").attr("disabled", false)
+                    $("#" + puestoId + " .expo-bruto.tomarPeso").attr("disabled", false)
                     $("#dato-tipoPesada" + puestoId).val("Bruto");
                 }
             }
@@ -890,9 +958,60 @@ function LimpiarDatosExpo(puestoId) {
 }
 
 function AbrirModalFinalizarPesaje() {
+    if ($(this).is('[disabled=disabled]'))
+        return false;
+
     var id = $(this).data().id;
+
     $("#finalizar-pesaje").data().id = id;
     var peso = Number($("#peso-bruto" + id).html()) == 0 ? $("#difPeso" + id).html() : $("#difNeto" + id).html();
     $("#peso-modal").html(peso);
     $("#confirmar-pesada-vagon").modal("show");
+}
+
+function ModificarEstadosSemaforo(estadoSemaforos) {
+    LimpiarLedSemaforo(estadoSemaforos);
+
+    if (estadoSemaforos.Color == "ROJO") { //Color Rojo  
+        $("#semaforo-led-rojo-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-default");
+        $("#semaforo-led-rojo-" + estadoSemaforos.PuestoId).addClass("semaforo-color-rojo");
+    }
+
+    if (estadoSemaforos.Color == "AMARILLO") { //Color Verde
+        $("#semaforo-led-amarillo-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-default");
+        $("#semaforo-led-amarillo-" + estadoSemaforos.PuestoId).addClass("semaforo-color-amarillo");
+    }
+
+    if (estadoSemaforos.Color == "VERDE") { //Color Amarillo
+        $("#semaforo-led-verde-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-default");
+        $("#semaforo-led-verde-" + estadoSemaforos.PuestoId).addClass("semaforo-color-verde");
+    }
+}
+
+function LimpiarLedSemaforo(estadoSemaforos) {
+    $("#semaforo-led-rojo-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-rojo");
+    $("#semaforo-led-rojo-" + estadoSemaforos.PuestoId).addClass("semaforo-color-default");
+
+    $("#semaforo-led-amarillo-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-amarillo");
+    $("#semaforo-led-amarillo-" + estadoSemaforos.PuestoId).addClass("semaforo-color-default");
+
+    $("#semaforo-led-verde-" + estadoSemaforos.PuestoId).removeClass("semaforo-color-verde");
+    $("#semaforo-led-verde-" + estadoSemaforos.PuestoId).addClass("semaforo-color-default");
+}
+
+function StartWitch(input, validation) {
+    try {
+        if (input != '' || input != null) {
+            if (input.indexOf(validation) == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
 }

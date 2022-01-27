@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var stock = Repositorio.Obtener<StockDeEstablecimiento>(comando.Id);
             var stockUtilizado = Repositorio.Sumar<RegistroStockEPA>(x => x.PesoNeto, x => x.CodigoEstablecimiento == stock.CodigoEstablecimiento && x.Cosecha == stock.Cosecha);
+                stockUtilizado += Repositorio.Sumar<RegistroStockOtrosPuertos>(x => x.PesoNeto, x => x.CodigoEstablecimiento == stock.CodigoEstablecimiento && x.Cosecha == stock.Cosecha);
             if (stockUtilizado > 0)
             {
                 resultado.Error("", Textos.Error_EliminarStockEstablecimientoUsado);

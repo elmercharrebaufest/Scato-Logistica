@@ -208,6 +208,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         TransmisionASapManual = 98,
         [Display(ResourceType = typeof(Textos), Name = "DocumentoExterno")]
         DocumentoExterno = 99,
+        [Display(ResourceType = typeof(Textos), Name = "AbmCategoriaCamiones")]
+        AbmCategoriaCamiones = 604,
 
         //Permisos Actividades
         [Display(ResourceType = typeof(Textos), Name = "ActAutorizarDescuentosEntregador")]
@@ -408,6 +410,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ActividadSalidaDeCentroPlaya = 197,
         [Display(ResourceType = typeof(Textos), Name = "CamionDemorado")]
         CamionDemorado = 198,
+        [Display(ResourceType = typeof(Textos), Name = "ActEnEsperaHB4")]
+        EnEsperaHB4= 199,
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]
@@ -690,6 +694,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ReporteModalidadCalador = 469,
         [Display(ResourceType = typeof(Textos), Name = "ComparacionCalidad")]
         ComparacionCalidad = 470,
+        [Display(ResourceType = typeof(Textos), Name = "ReporteInactividadCalado")]
+        ReporteInactividadCalado = 471,
 
         //Permisos Puerto
         [Display(ResourceType = typeof(Textos), Name = "PreLineUp")]
@@ -699,6 +705,9 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "LineUpLectura")]
         LineUpLectura = 602,
         [Display(ResourceType = typeof(Textos), Name = "LineUpExportar")]
-        LineUpExportar = 603
+        LineUpExportar = 603,
+
+        [Display(ResourceType = typeof(Textos), Name = "PuestoPausado")]
+        PuestoPausado = 605
     }
 }

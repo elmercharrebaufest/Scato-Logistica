@@ -15,5 +15,9 @@ namespace Molinos.Scato.Dominio.Entidades
         public int CentroId { get; set; }
         public bool EsGrano { get; set; }
         public bool EsIngreso { get; set; }
+        public int? VagonesEnElDia { get; set; }
+        public int? VagonesEnPlanta { get; set; }
+        public int? TotalIngresosVagonesEnElDia { get; set; }
+        public int? VagonesRechazados { get; set; }
     }
 }

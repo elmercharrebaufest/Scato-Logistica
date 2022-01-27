@@ -85,7 +85,11 @@
     [NumeroPrecinto] VARCHAR(20) NULL,
     CONSTRAINT [FK_dbo.CartaPorte_dbo.RamalFerroviario_Id] FOREIGN KEY ([RamalFerroviario_Id]) REFERENCES [dbo].[RamalFerroviario] ([Id]),
     [TransportistaTramo2_Id] INT NULL,
-	CONSTRAINT [FK_dbo.CartaPorte_dbo.Transportista_TransportistaTramo2_Id] FOREIGN KEY ([TransportistaTramo2_Id]) REFERENCES [dbo].[Transportista] ([Id])
+	CONSTRAINT [FK_dbo.CartaPorte_dbo.Transportista_TransportistaTramo2_Id] FOREIGN KEY ([TransportistaTramo2_Id]) REFERENCES [dbo].[Transportista] ([Id]),
+    [PagadorFlete_Id] INT NULL,
+    CONSTRAINT [FK_CartaPorte_Proveedor_PagadorFlete] FOREIGN KEY([PagadorFlete_Id]) REFERENCES [dbo].[Proveedor] ([Id]),
+    [RepresentanteRecibidor_Id] INT NULL,
+    CONSTRAINT [FK_CartaPorte_Proveedor_RepresentanteRecibidor] FOREIGN KEY(RepresentanteRecibidor_Id) REFERENCES [dbo].[Proveedor] ([Id])
 )
 
 GO

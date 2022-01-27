@@ -127,14 +127,14 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                     <div class="titSecciones">@Textos.CargaDeCupo</div>
                 </div>
                 <br />
-                <div class="control-group sinMargen  check-cpe" style="display:none">
+                <div class="control-group sinMargen" >
                     <div style="width: 260px; display: inline-flex;">
                         @*Esto es de no granos. Se comenta por el momento*@
-                        @*<div style="width: 160px;">
-                    @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
-                    @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
-                </div>*@
-                        <div style="width: 100px;">
+                        <div style="width: 160px;">
+                            @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
+                            @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
+                        </div>
+                        <div style="width: 100px; display: none">
                             @Html.Label(@Textos.CPE, new { @class = "control-label inline" })
                             @Html.CheckBoxFor(x => x.CPE, new { id = "cpe" })
                         </div>

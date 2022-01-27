@@ -70,17 +70,31 @@ function Camion(item, calle) {
     //
     self.TiempoEnCola = null;
     if (item.FechaIngeso) {
-        var diffMs = Date.now() - new Date(parseInt(item.FechaIngeso.substr(6)));
- 
-        var diffMins = (Math.floor(diffMs / 60000)) % 60; // minutes
-        var diffHrs = (Math.floor(diffMs / 3600000)) % 24; // hours
+
+        var fechaActual = Date.now();
+        var fechaInicioDeCola = new Date(parseInt(item.FechaIngeso.substr(6)));
+
+        let diffMilli = fechaActual - fechaInicioDeCola;
+        let secondsInMilli = 1000;
+        let minutesInMilli = secondsInMilli * 60;
+        let hoursInMilli = minutesInMilli * 60;
+        //let daysInMilli = hoursInMilli * 24;
+
+        //let diffDays = Math.floor(different / daysInMilli);
+        //diffMilli = diffMilli % daysInMilli;
+
+        let diffHrs = Math.floor(diffMilli / hoursInMilli);
+        diffMilli = diffMilli % hoursInMilli;
+
+        let diffMins = Math.floor(diffMilli / minutesInMilli);
+        diffMilli = diffMilli % minutesInMilli;
 
         diffHrs = (diffHrs < 10) ? "0" + diffHrs : diffHrs;
         diffMins = (diffMins < 10) ? "0" + diffMins : diffMins;
 
         self.TiempoEnCola = diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
     }
-    //
+
     self.Icon = item.Rechazado ? "fas fa-times-circle" : (item.Calidad == 2 ? "fas fa-tint" : item.Calidad == 3 ? "fas fa-vial" : item.Calidad == 1 ? "fas fa-clipboard-check" : "");
     self.Color = item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
 }

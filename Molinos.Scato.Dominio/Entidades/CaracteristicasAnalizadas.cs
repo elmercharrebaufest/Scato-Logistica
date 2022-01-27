@@ -14,6 +14,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsGranosDañados { get; set; }
         public virtual bool EsCuerposExtranos { get; set; }
         public virtual bool EsProteinaBaja { get; set; }
+        public virtual bool EsProteinaMedia { get; set; }
         public virtual bool EsProteinaAlta { get; set; }
         public virtual bool TieneDescuentos { get; set; }
         public virtual bool TieneInsectosVivos { get; set; }

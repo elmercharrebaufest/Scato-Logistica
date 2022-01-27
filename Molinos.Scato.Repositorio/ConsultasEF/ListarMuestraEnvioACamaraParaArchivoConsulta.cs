@@ -111,7 +111,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Intermediario = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Descripcion : null : null,
                                      IntermediarioCuit = muestra.CartaPorte != null ? muestra.CartaPorte.Intermediario != null ? muestra.CartaPorte.Intermediario.Cuil : null : null,
                                      Cosecha = muestra.CartaPorte != null ? muestra.CartaPorte.Cosecha : remito.Cosecha,
-                                     Caracteristicas =
+                                     ProcedenciaCodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0 ,
+                                     ProcedenciaSubcodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
+                                 Caracteristicas =
                                          muestra.CaracteristicasDeCalidad.Select(
                                              x =>
                                              new CaracteristicaDeCalidadDto

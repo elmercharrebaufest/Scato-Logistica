@@ -36,4 +36,6 @@
   <setParameter name="FondoAmbiente Config" value="body-background-QA" />
   <setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
   <setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
+	<setParameter name="ICWebServerUrl Config" value="https://GSLOSCATOAPQ01.molinosagro.ad:8889/rtc" />
+	<setParameter name="ICWSServerUrl Config" value="wss://GSLOSCATOAPQ01.molinosagro.ad:8889/rtc" />
 </parameters>

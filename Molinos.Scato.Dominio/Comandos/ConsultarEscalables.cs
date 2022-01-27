@@ -7,5 +7,6 @@ namespace Molinos.Scato.Dominio.Comandos
     {
         public string Patente { get; set; }
         public string Acoplado { get; set; }
+        public string Acoplado2 { get; set; }
     }
 }

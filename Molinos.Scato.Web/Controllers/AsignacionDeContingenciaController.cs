@@ -98,11 +98,12 @@ namespace Molinos.Scato.Web.Controllers
                 var aModificar = servicio.ObtenerPuestoDeTrabajo(id);
                 aModificar.SinAfip = !aModificar.SinAfip;
 
-                if (aModificar.SinAfip == true)
-                {
-                    var aCentroModificar = servicio.ObtenerCentro(datosUsuario.CentroId);
-                    CambiarInformarCircular(datosUsuario, aCentroModificar, false, motivo);
-                }
+                //REMOVIDO POR REQUERIMINETO DEL TICKET SCT310-1607
+                //if (aModificar.SinAfip == true) 
+                //{
+                //    var aCentroModificar = servicio.ObtenerCentro(datosUsuario.CentroId);
+                //    CambiarInformarCircular(datosUsuario, aCentroModificar, false, motivo);
+                //}
 
                 var comando = new ModificarPuestoDeTrabajo { Dto = aModificar, Usuario = datosUsuario.NombreUsuario };
 

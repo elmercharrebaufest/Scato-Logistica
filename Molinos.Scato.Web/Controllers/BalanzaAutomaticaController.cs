@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -20,6 +13,14 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -34,6 +35,7 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IListaDeWorkflows workflows;
         private readonly IServicioEstadoPuesto estadoPuesto;
         private readonly IServicioNotificarUsuario notificador;
+
         public BalanzaAutomaticaController(ILogger log, IServicioNotificarUsuario notificador, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IServicioOrquestador orquestador, IServicioActividadFactory<IPesadaService> pesadaFactory, IServicioActividadFactory<IEjecutarService> ejecutarFactory,
             IListaDeWorkflows workflows, IServicioEstadoPuesto estadoPuesto)
@@ -48,6 +50,7 @@ namespace Molinos.Scato.Web.Controllers
             this.ejecutarFactory = ejecutarFactory;
             this.notificador = notificador;
         }
+
         [DatosUsuario]
         public ActionResult Index(DatosUsuario datosUsuario)
         {
@@ -56,9 +59,16 @@ namespace Molinos.Scato.Web.Controllers
             ListarConsulta(datosUsuario);
             return View();
         }
+
         private void ListarConsulta(DatosUsuario datosUsuario)
         {
             var balanzas = servicio.ListarPuestosAutomaticosporCentro(datosUsuario.CentroId);
+            foreach (var balanza in balanzas)
+            {
+                var intercomunicador =  GetIntercomunicadorDispositivoConfig(balanza.IntercomunicadorCodigo);
+                intercomunicador.UniqueId = balanza.BalanzaId.ToString();
+                balanza.IntercomunicadorDispositivo = intercomunicador;
+            }
             ViewBag.Balanzas = balanzas.Where(x=>x.Orden.HasValue).OrderBy(x=>x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();
             ViewBag.Eventos = servicio.ListarErrorBalanzas(balanzas.Select(x => x.PuestoId).ToList()).ToList();
             ViewBag.PantallaPrincipal = servicio.RedireccionarAListaAutomatizada(datosUsuario.NombrePc, datosUsuario.CentroId);
@@ -106,6 +116,7 @@ namespace Molinos.Scato.Web.Controllers
                 throw;
             }
         }
+
         public ActionResult RedireccionarPesada(Guid id, string proxima, int notificacionId)
         {
             EliminarNotificacion(notificacionId);
@@ -115,14 +126,15 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult VerificarPatente(string patente, int puestoId, string tarjeta, int? peso, DatosUsuario datosUsuario)
         {
-            tarjeta = string.IsNullOrEmpty(tarjeta)|| string.IsNullOrWhiteSpace(tarjeta) ? null : tarjeta;
+            tarjeta = string.IsNullOrEmpty(tarjeta) || string.IsNullOrWhiteSpace(tarjeta) ? null : tarjeta;
             patente = !string.IsNullOrEmpty(patente) ? patente : null;
-            var recorrido = servicio.ObtenerDatosRecorridoActivoSinTarjeta(patente, tarjeta );
+            var recorrido = servicio.ObtenerDatosRecorridoActivoSinTarjeta(patente, tarjeta);
             var proximaActividad = new ProximaAccionDto();
+            var color = string.Empty;
+
             if (recorrido == null)
             {
                 return Json("Tarjeta no asociada a un camión", JsonRequestBehavior.AllowGet);
-
             }
             if (patente.ToLower() != recorrido.Patente.ToLower())
             {
@@ -134,8 +146,9 @@ namespace Molinos.Scato.Web.Controllers
                         new PuestoDeTrabajoDto {Lectura = tarjeta, Id = puestoId }
                     };
 
-
             proximaActividad = workflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow);
+            color = proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO" ? "AMARILLO" :
+                    proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADATARA" ? "VERDE" : string.Empty;
 
             if (!String.IsNullOrEmpty(proximaActividad.Mensaje))
             {
@@ -156,12 +169,13 @@ namespace Molinos.Scato.Web.Controllers
             //        Thread.Sleep(5000);
             //    }
             //}
+
             if (resultado.Valida)
             {
                 var balanzaId = servicio.ObtenerBalanzaAsociadaAPuestoAutomatico(resultado.PuestoDeTrabajoId);
                 var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                 var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
-                     peso ?? 0 , 0, null, null, balanzaId.Id, null,
+                     peso ?? 0, 0, null, null, balanzaId.Id, null,
                      false, DateTime.Now, new ControlRecorridoDto
                      {
                          WorkflowInstanceId = resultado.InstanceId,
@@ -171,7 +185,7 @@ namespace Molinos.Scato.Web.Controllers
                          Decision = false,
                          PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
                          Automatizado = peso == null || peso == 0,
-                        
+
                          CartaDePorte = recorrido.CartaDePorte,
                          Entregador = recorrido.Entregador,
                          Material = recorrido.Material,
@@ -185,9 +199,12 @@ namespace Molinos.Scato.Web.Controllers
                          PesoOrigenNeto = recorrido.PesoNetoOrigen,
                          Calle = recorrido.Calle
                      });
+
+                EncenderSemaforoVagon(color, puestoId);
             }
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
+
         public void EliminarNotificacion(int notificacionId)
         {
             servicioComandos.Ejecutar(new ModificarNotificacion { Id = notificacionId });
@@ -198,12 +215,13 @@ namespace Molinos.Scato.Web.Controllers
             EliminarNotificacion(notificacionId);
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult Pesar(int puestoId)
         {
             var balanza = servicio.ObtenerBalanzaPorPuestoDeTrabajoSinTipoVehiculo(puestoId);
             var resultado = orquestador.Ejecutar(new EjecutarPesaje { CodigoDispositivo = balanza.CodigoCabezal });
             var peso = (int)resultado.Valores["Pesaje"];
-            return Json(peso, JsonRequestBehavior.AllowGet); 
+            return Json(peso, JsonRequestBehavior.AllowGet);
         }
 
         [DatosUsuario]
@@ -214,12 +232,13 @@ namespace Molinos.Scato.Web.Controllers
             servicioComandos.Ejecutar(new ModificarPuestoDeTrabajo { Dto = puesto, Usuario = datosUsuario.NombreUsuario });
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
+
         [DatosUsuario]
         public ActionResult ObtenerVagonesEnBalanza(DatosUsuario datosUsuario)
         {
-            var vagones = servicio.ListarVagonesEnPesada(datosUsuario.CentroId).OrderBy(x=>x.NumeroPatente);
+            var vagones = servicio.ListarVagonesEnPesada(datosUsuario.CentroId).OrderBy(x => x.NumeroPatente);
             var lista = vagones.ToSelectList(f => f.NumeroPatente, f => f.NumeroPatente);
-            
+
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
 
@@ -250,6 +269,7 @@ namespace Molinos.Scato.Web.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
+
         [DatosUsuario]
         public ActionResult AccionesEspeciales(int puestoId, DatosUsuario datosUsuario)
         {
@@ -278,6 +298,7 @@ namespace Molinos.Scato.Web.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
+
         [DatosUsuario]
         public ActionResult CerearBalanza(int balanzaId, DatosUsuario datosUsuario)
         {
@@ -291,7 +312,6 @@ namespace Molinos.Scato.Web.Controllers
 
             if (balanza.Modalidad != Modalidad.Manual)
             {
-
                 log.Info("Se iniciará el cereo para la balanza con Id {0}", balanza.Id);
                 var resultado =
                     orquestador.Ejecutar(new EjecutarCereoCabezal { CodigoDispositivo = balanza.CodigoCabezal });
@@ -308,7 +328,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Info("Cereo Exitoso para la balanza con Id {0}", balanza.Id);
             var resultadoRepositorio = ActualizarEstadoBalanzaCereada(balanzaId);
             log.Info("Estado Actualizado para la balanza con Id {0} de forma {0}", resultadoRepositorio.HayErrores);
-            
+
             return Json(!resultadoRepositorio.HayErrores ? "ok" : resultadoRepositorio.Errores.Values.FirstOrDefault(), JsonRequestBehavior.AllowGet);
         }
 
@@ -332,6 +352,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return true;
         }
+
         private void NotificarCereoFallido(BalanzaDto balanza, DatosUsuario datosUsuario)
         {
             var htmlIconoColor = new StringBuilder();
@@ -346,6 +367,7 @@ namespace Molinos.Scato.Web.Controllers
                 TipoAlerta = TipoAlerta.Sobre
             });
         }
+
         private Resultado ActualizarEstadoBalanzaCereada(int balanzaId)
         {
             var resultado = servicioComandos.Ejecutar(new ModificarBalanzaEstaEnCero
@@ -362,6 +384,7 @@ namespace Molinos.Scato.Web.Controllers
 
             return resultado;
         }
+
         [DatosUsuario]
         [Autorizacion(PermisosScato.ForzarCereo)]
         public ActionResult Avanzar(int balanzaId, string motivo, DatosUsuario datosUsuario)
@@ -377,7 +400,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult TomarPeso(int balanzaId,Guid instanceId,string actividad, DatosUsuario datosUsuario)
+        public ActionResult TomarPeso(int balanzaId, Guid instanceId, string actividad, DatosUsuario datosUsuario)
         {
             try
             {
@@ -396,13 +419,17 @@ namespace Molinos.Scato.Web.Controllers
                             "(" + Textos.Codigo + ":" + resultado.Mensaje.Codigo + ") " + Textos.Pesada_AutomaticaError +
                             "\r\n" + resultado.Mensaje.Descripcion, JsonRequestBehavior.AllowGet);
                 }
-                servicioComandos.Ejecutar(new CrearLogActividad() { 
-                    Dto = new LogActividadDto { Actividad = $"Peso Tomado: {resultado.Valores["Pesaje"]}",
-                        Fecha = DateTime.Now, 
+                servicioComandos.Ejecutar(new CrearLogActividad()
+                {
+                    Dto = new LogActividadDto
+                    {
+                        Actividad = $"Peso Tomado: {resultado.Valores["Pesaje"]}",
+                        Fecha = DateTime.Now,
                         WorkflowInstanceId = instanceId,
-                        ActividadXaml= actividad
+                        ActividadXaml = actividad
                     },
-                    Usuario = datosUsuario.NombreUsuario });
+                    Usuario = datosUsuario.NombreUsuario
+                });
                 return Json(resultado.Valores["Pesaje"], JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -410,7 +437,6 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(ex, "Error en tomar peso para la balanza con Id {0}", balanzaId);
                 return Json(Textos.Pesada_AutomaticaError, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         private ResultadoEjecutar EjecutarPesaje(string codigoCabezal)
@@ -437,10 +463,10 @@ namespace Molinos.Scato.Web.Controllers
                     log.Error(ex, "Error en tomar peso para la balanza con cabezal {0}", codigoCabezal);
                     resultado = null;
                 }
-
             }
             return resultado;
         }
+
         [HttpPost]
         [DatosUsuario]
         public ActionResult PesadaExportacion(int balanzaId, TipoPesada tipoPesada, bool rechazado, string actividadXaml, Guid workflowInstanceId, int workflowDefinicionId, int? peso, string patente, DatosUsuario datosUsuario)
@@ -526,14 +552,20 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult ValidarVagon(string vagon, int puestoId, DatosUsuario datosUsuario)
         {
-            var tren = servicio.ObtenerDatosRecorridoActivoSinTarjeta(vagon,null);
+            var tren = servicio.ObtenerDatosRecorridoActivoSinTarjeta(vagon, null);
             var proximaActividad = workflows.ObtenerWorkflowProximaAccion(tren.InstanciaWorkflow);
-           
+            var color = "ROJO";
+
+            if(proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO")
+            {
+                EncenderSemaforoVagon(color, puestoId);
+            }            
+
             return new JsonResult()
             {
                 Data = new NotificacionPesadaAutomaticaDto
                 {
-                    Id =puestoId,
+                    Id = puestoId,
                     Patente = vagon,
                     CartaPorte = tren.CartaDePorte,
                     Material = tren.Material,
@@ -541,12 +573,12 @@ namespace Molinos.Scato.Web.Controllers
                     Peso = "0",
                     Diferencia = "0",
                     Actividad = proximaActividad.Mensaje == null ? proximaActividad.ProximaAccion : null,
-                    DifPeso = tren.PesoBruto.HasValue ? (tren.PesoBrutoOrigen - tren.PesoBruto).ToString(): "0",
+                    DifPeso = tren.PesoBruto.HasValue ? (tren.PesoBrutoOrigen - tren.PesoBruto).ToString() : "0",
                     TipoVehiculo = tren.TipoVehiculo.ToString(),
                     TipoComercial = tren.TipoComercial,
-                    DifNeto = tren.PesoTara.HasValue? (tren.PesoNetoOrigen -(tren.PesoTara - tren.PesoBruto)).ToString():"0",
-                    TipoPeso = proximaActividad.Mensaje == null ? proximaActividad.ProximaAccion.Contains("Bruto") ? "Bruto:" : 
-                    proximaActividad.ProximaAccion.Contains("Tara") ? "Tara:" : "Peso:": null,
+                    DifNeto = tren.PesoTara.HasValue ? (tren.PesoNetoOrigen - (tren.PesoTara - tren.PesoBruto)).ToString() : "0",
+                    TipoPeso = proximaActividad.Mensaje == null ? proximaActividad.ProximaAccion.Contains("Bruto") ? "Bruto:" :
+                    proximaActividad.ProximaAccion.Contains("Tara") ? "Tara:" : "Peso:" : null,
                     PesoBrutoOrigen = tren.PesoBrutoOrigen.ToString(),
                     PesoNetoOrigen = tren.PesoNetoOrigen.ToString(),
                     Error = proximaActividad.Mensaje,
@@ -558,13 +590,79 @@ namespace Molinos.Scato.Web.Controllers
             };
         }
 
-        
         public ActionResult ObtenerEtapaExpo(Guid recorrido)
         {
             var ultimoLog = servicio.ObtenerUltimoLog(recorrido);
             var actividad = ultimoLog.Actividad != "Pesada Bruto Exportacion" && ultimoLog.Actividad != "Pesada Tara Exportacion" && ultimoLog.Actividad != "Confirmacion de Carga/Descarga" ? "Error" : ultimoLog.Actividad;
             var peso = servicio.ObtenerPesoNetoExportacion(recorrido);
             return Json(new { Actividad = actividad, PesoNeto = peso }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult PrenderApagarDispositivo(string codigoDispositivo, bool activar)
+        {
+            var urlServer = new Uri(ConfigurationManager.AppSettings["ICWebServerUrl"]);
+
+            orquestador.PrenderApagarDispositivo(codigoDispositivo, activar, urlServer.Host);
+            return Json(true);
+        }
+
+        private void EncenderSemaforoVagon(string color, int puestoId)
+        {
+            string semaforo = string.Empty;
+            try
+            {
+                if (!string.IsNullOrEmpty(color))
+                {
+                    var puestoTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
+                    var barreras = (!string.IsNullOrEmpty(puestoTrabajo?.Entrada) ? puestoTrabajo?.Entrada?.Split(',').ToList() : new List<string>()).Where(w => w.ToUpper().Trim().Contains("SEMAFORO"));
+
+                    if (barreras.Any())
+                    {
+                        semaforo = barreras.FirstOrDefault(f => f.ToUpper().Trim().Contains(color));
+                        if (!string.IsNullOrEmpty(semaforo))
+                        {
+                            log.Info("Se envia cambio de estado al semaforo : {0}, color : {1}", semaforo, color);
+                            var resultadoSemaforo = orquestador.Ejecutar(new EjecutarAperturaBarrera { CodigoDispositivo = semaforo });
+                            if (resultadoSemaforo.Mensaje.Codigo == 0)
+                            {
+                                log.Info("Se envio cambio de estado al semaforo : {0}, color : {1} correctamente.", semaforo, color);
+                                notificador.Notificar(new NotificacionDto
+                                {
+                                    Grupo = "Automaticas",
+                                    Mensaje = new NotificacionSemaforoVagonesAutomaticaDto { PuestoId = puestoId, Color = color }.ToJson(),
+                                    TipoAlerta = TipoAlerta.CambioEstadoSemaforo,
+                                    PuestoId = puestoId
+                                });
+                            }
+                            else
+                            {
+                                log.Info("Mensaje de error Semaforo vagones codigo: {0}, descripcion : {1}", resultadoSemaforo.Mensaje.Codigo, resultadoSemaforo.Mensaje.Descripcion);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Ocurrio un error al establecer el semafo : {0} al color {1} , Error : {2}", semaforo, color, e);
+            }
+        }
+
+        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string codigoIntercomunicador)
+        {
+            var intercomunicadorDispositivo = new IntercomunicadorDispositivoDto
+            {
+                Codigo = codigoIntercomunicador,
+                ICPCConfig = ConfigurationManager.AppSettings["ICPCConfig"],
+                ICWebServerUrl = ConfigurationManager.AppSettings["ICWebServerUrl"],
+                ICWSServerUrl = ConfigurationManager.AppSettings["ICWSServerUrl"],
+                DeviceActivationUrl = Url.Action("PrenderApagarDispositivo", "BalanzaAutomatica"),
+                PublishingPathListen = codigoIntercomunicador + Constantes.IntercomunicadorDireccion.HaciaLaWeb,
+                PublishingPathSpeak = Constantes.IntercomunicadorDireccion.DesdeLaWeb + codigoIntercomunicador,
+            };
+
+            return intercomunicadorDispositivo;
         }
     }
 }

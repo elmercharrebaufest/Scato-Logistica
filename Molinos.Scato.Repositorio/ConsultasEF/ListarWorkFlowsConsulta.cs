@@ -46,8 +46,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     && ((filtro.TipoComercialId.HasValue && x.TipoComercial.Id == filtro.TipoComercialId) || filtro.TipoComercialId == null || filtro.TipoComercialId == 0)
                     && ((filtro.SoloNoAsignados && x.Almacen == null) || !filtro.SoloNoAsignados)
                     && ((filtro.SoloSinDescuentos && caracteristicasAnalizadas != null && caracteristicasAnalizadas.TieneDescuentos) || !filtro.SoloSinDescuentos)
-                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Baja || (filtro.TipoDeProteina == TipoDeProteina.Alta && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaAlta))
-                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Alta || (filtro.TipoDeProteina == TipoDeProteina.Baja && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaBaja))  
+                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Baja || filtro.TipoDeProteina == TipoDeProteina.Media || (filtro.TipoDeProteina == TipoDeProteina.Alta && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaAlta))
+                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Baja || filtro.TipoDeProteina == TipoDeProteina.Alta || (filtro.TipoDeProteina == TipoDeProteina.Media && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaMedia))
+
+                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Alta || filtro.TipoDeProteina == TipoDeProteina.Media || (filtro.TipoDeProteina == TipoDeProteina.Baja && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaBaja))  
                     && ((filtro.TipoVehiculo != null && (filtro.TipoVehiculo == TipoVehiculo.Camiones && x.TipoVehiculo!= TipoVehiculo.Bitren && x.TipoVehiculo != TipoVehiculo.Tren && x.TipoVehiculo != TipoVehiculo.Vapor) ||
                     x.TipoVehiculo == filtro.TipoVehiculo) || filtro.TipoVehiculo  == null)
                     && (filtro.TipoMaterial == TipoMaterial.Todos || (filtro.TipoMaterial == TipoMaterial.Granos && x.Material.EsGrano) || (filtro.TipoMaterial == TipoMaterial.NoGranos && !x.Material.EsGrano))
@@ -123,6 +125,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 EsGranosDañados = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsGranosDañados,
                 EsCuerposExtranos = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsCuerposExtranos,
                 EsProteinaBaja = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaBaja,
+                EsProteinaMedia = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaMedia,
                 EsProteinaAlta = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaAlta,
                 TieneInsectosVivos = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.TieneInsectosVivos,
                 TipoVehiculo = x.TipoVehiculo,

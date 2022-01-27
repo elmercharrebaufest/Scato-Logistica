@@ -51,10 +51,18 @@ namespace Molinos.Scato.Web.Controllers
             
             if (ModelState.IsValid)
             {
-                documentos = servicio.ListarImpresiones(model.TipoDocumentoIngreso, model.NumeroDocumentoIngreso,model.Patente, model.Tipo, paginacion);
-                if (!documentos.Any())
+                try
                 {
-                    ModelState.AddModelError("NumeroDocumentoIngreso", Textos.Reimpresion_DocumentosNoEncontrados);
+                    documentos = servicio.ListarImpresiones(model.TipoDocumentoIngreso, model.NumeroDocumentoIngreso, model.Patente, model.Tipo, paginacion);
+                    if (!documentos.Any())
+                    {
+                        ModelState.AddModelError("NumeroDocumentoIngreso", Textos.Reimpresion_DocumentosNoEncontrados);
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "Error ListarImpresiones");
+                    ModelState.AddModelError("NumeroDocumentoIngreso", "Ocurrio un error al realizar la consulta.");
                 }
             }
 

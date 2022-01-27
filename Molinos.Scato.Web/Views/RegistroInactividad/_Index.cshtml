@@ -1,0 +1,46 @@
+﻿@model Molinos.Scato.Dominio.Dto.RegistroInactividadDto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    var motivosInactividad = (IEnumerable<SelectListItem>)ViewBag.MotivosInactividad;
+    Layout = null;
+}
+<style>
+    .field-validation-error {
+        color: #b94a48;
+        font-size: 10px;
+    }
+
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+
+<div id="popup-inactividad">
+    <div id="popup-inactividad-div-interno" class="modal" hidden>
+        <div class="modal-header alert-error">
+            <h5><strong>@Textos.MotivoInactividad_Titulo</strong></h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                @Textos.MotivoInactividad_Descripcion
+
+                <br />
+                <br />
+
+                @Textos.MotivoInactividad_Motivo
+                @Html.DropDownListFor(model => model.MotivoId, motivosInactividad, Textos.Default_MotivoInactividad, new { id = "ValorComboMotivoInactividad" })
+                @Html.Hidden("fechaInicio")
+                @Html.Hidden("RegistroInactividadId", Model.Id)
+                <br />
+                <div id="errorMotivoInactividadVacio" class="validation-summary-errors" hidden>
+                    <p>@Textos.MotivoInactividad_Requerido</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="riAceptarMotivo" class="btn dialogo-rechazar-boton" data-url-registrar-inactividad-usuario="@Url.Action("RegistrarInactividadUsuario", "RegistroInactividad")">@Textos.Aceptar</button>
+        </div>
+    </div>
+</div>

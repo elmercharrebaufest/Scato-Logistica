@@ -265,7 +265,7 @@ SELECT r.Centro_Id
 	left join Proveedor cov WITH(NOLOCK) ON cov.Id = cp.CorredorVendedor_Id
 	left join Transportista trs WITH(NOLOCK) ON trs.Id = cp.Transportista_Id 
 	left join Chofer ch WITH(NOLOCK) ON ch.Id = cp.Chofer_Id
-	inner join Establecimiento es WITH(NOLOCK) ON es.Id = r.Establecimiento_Id
+	left join Establecimiento es WITH(NOLOCK) ON es.Id = r.Establecimiento_Id
 	
 	INNER JOIN MaterialPorCentro Mpc WITH(NOLOCK) on Mpc.Material_Id = r.material_Id and Mpc.centro_id = r.centro_id 
 	LEFT JOIN CaracteristicaDeCalidad CarDeCal WITH(NOLOCK) on CarDeCal.MaterialPorCentro_id = Mpc.id and (r.calado_id is not null or r.AnalisisdeCalidad_id is not null)
@@ -8875,7 +8875,7 @@ ORDER BY ord
             <DataSetName>DataSet1</DataSetName>
             <Top>0.06944in</Top>
             <Height>0.68in</Height>
-            <Width>92.97448in</Width>
+            <Width>92.9745in</Width>
             <Style />
           </Tablix>
         </ReportItems>

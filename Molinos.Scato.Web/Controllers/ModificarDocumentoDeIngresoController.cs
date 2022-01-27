@@ -226,7 +226,7 @@ namespace Molinos.Scato.Web.Controllers
             else if ((tipoDoc == TipoDocumentoIngreso.Remito))
             {
                 documentoDeIngreso = servicio.ObtenerRemitoPorOrdenDeDescarga(recorrido.NumeroDocumentoIngreso);
-                (documentoDeIngreso as RemitoDto).Almacen_Id = servicio.ObtenerAlmacenPorRecorrido((documentoDeIngreso as RemitoDto).RecorridoId); 
+                //(documentoDeIngreso as RemitoDto).Almacen_Id = servicio.ObtenerAlmacenPorRecorrido((documentoDeIngreso as RemitoDto).RecorridoId); 
                 IngresoRemitoController.SetearVista(recorrido.Workflow, servicio, this);
             }
             else if ((tipoDoc == TipoDocumentoIngreso.RemitoBodegaUvaPropia) && soloLectura)

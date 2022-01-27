@@ -99,7 +99,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         Entregador = muestra.Recorrido.Vehiculo.CartaPorte.Entregador.RazonSocial,
                         Procedencia = muestra.Recorrido.Vehiculo != null ? muestra.Recorrido.Vehiculo.CartaPorte.Procedencia.Descripcion : remito.Procedencia.Descripcion,
                         CodigoTecnologia = muestra.Recorrido.Vehiculo.CartaPorte.Tecnologia != null ? muestra.Recorrido.Vehiculo.CartaPorte.Tecnologia.Codigo : "00",
-                        CamaraFormatoDeArchivo = muestra.LoteBiotecnologia.Camara.FormatoDeArchivo != null ? muestra.LoteBiotecnologia.Camara.FormatoDeArchivo.Value : CamaraFormatoDeArchivo.NoEspecificado
+                        CamaraFormatoDeArchivo = muestra.LoteBiotecnologia.Camara.FormatoDeArchivo != null ? muestra.LoteBiotecnologia.Camara.FormatoDeArchivo.Value : CamaraFormatoDeArchivo.NoEspecificado,
+                        ProcedenciaCodigoPostal = muestra.Recorrido.Vehiculo.CartaPorte != null ? muestra.Recorrido.Vehiculo.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0,
+                        ProcedenciaSubcodigoPostal = muestra.Recorrido.Vehiculo.CartaPorte != null ? muestra.Recorrido.Vehiculo.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
                     }).ToList();
 
         }

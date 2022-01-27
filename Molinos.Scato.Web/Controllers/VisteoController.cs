@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -42,6 +43,7 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             ViewBag.Material = recorrido.Material.Descripcion;
+            ViewBag.EsGrano = recorrido.Material.EsGrano;
             ViewBag.TipoComercial = recorrido.TipoComercial.Descripcion;
             ViewBag.Workflow = recorrido.Workflow.Codigo;
             ViewBag.Patente = recorrido.Patente;
@@ -70,6 +72,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(ControlRecorridoDto controlRecorrido, string workflow, int workflowDefinicionId)
         {
             var service = factory.CrearServicio(workflowDefinicionId);
+
             var resultado = service.Visteo(controlRecorrido, controlRecorrido.WorkflowInstanceId);
             if (!resultado.HayErrores)
             {
@@ -78,5 +81,25 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.AgregarErrores(resultado);
             return RedirectToAction("Index", new { id = controlRecorrido.WorkflowInstanceId });
         }
+
+        [DatosUsuario]
+        public ActionResult Rechazar(string codigoWf, int workflowDefinicionId, Guid instanceId, DatosUsuario datosUsuario)
+        {
+            log.Info("{0} - Visteo Rechazar", instanceId);
+            ViewBag.Motivos = servicio.ListarMotivos().ToSelectList(x => x.Descripcion, x => x.Descripcion);
+            var actividad = servicio.ObtenerEntidadActividadPorCodigos(Constantes.Entidad.Visteo, Constantes.TipoDeActividad.Rechazar);
+            ViewBag.Workflow = codigoWf;
+            ViewBag.WorkflowDefinicionId = workflowDefinicionId;
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                WorkflowInstanceId = instanceId,
+                NombreUsuario = datosUsuario.NombreUsuario,
+                Actividad = actividad.Entidad.Descripcion + "/" + actividad.TipoDeActividad.Descripcion,
+                ActividadXaml = actividad.Entidad.Descripcion,
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId
+            };
+            return View("_VehiculoRechazado", controlRecorrido);
+        }
+
     }
 }

@@ -23,6 +23,7 @@ namespace Molinos.Scato.ModuloImpresor.Impresion
             DefaultPageSettings.PaperSize = new PaperSize("PaperA4", 826, 1169);
             int xMargin = DefaultPageSettings.Margins.Left;  //X
             int yMargin = DefaultPageSettings.Margins.Top;  //Y
+            
 
             var font = new Font("Arial", 13, FontStyle.Regular);
             var fontBold = new Font("Arial", 13, FontStyle.Bold);
@@ -126,16 +127,20 @@ namespace Molinos.Scato.ModuloImpresor.Impresion
             var altoLineaLetraGrande = font.Height + (font.Height / 3);
             var altoLineaLetraNegrita = fontBold.Height + (fontBold.Height / 3);
             posY += (4 * altoLineaLetraGrande);
-            Text = "Ahora podrás consultar: \n \u2022 Ticket pesada \n \u2022 Carta porte \n \u2022 Ticket Tasa Municipal \n \t \t Págalo con Mercado Pago \n \n  Ingresá a:"; 
-            ImprimirTexto(Text, xMargin, yMargin + posY, font, e);
+            Text = "Ahora podrás consultar: \n \u2022 Ticket pesada \n \u2022 Carta porte \n \u2022 Ticket Tasa Municipal \n \t \t Págalo con Mercado Pago \n \n Ingresá a:"; 
+            ImprimirTexto(Text, center, yMargin + posY, font, e);
 
             posY += Convert.ToInt16(5.5 * altoLineaLetraGrande);
             Text = "www.moaoperaciones.com.ar";
-            ImprimirTexto(Text, xMargin, yMargin + posY, fontBold, e);
+            ImprimirTexto(Text, center, yMargin + posY, fontBold, e);
 
             posY += altoLineaLetraGrande;
             Text = "y seleccioná 'Comprobante del transporte''";
-            ImprimirTexto(Text, xMargin, yMargin + posY, font, e);
+            ImprimirTexto(Text, center, yMargin + posY, font, e);
+
+            posY += altoLineaLetraGrande;
+            Text = "ATENCIÓN: a partir de Febrero 2022 \n no se entregará esta información impresa, \n para visualizarla también se deberá \n ingresar a la web.";
+            ImprimirTexto(Text, center, yMargin + posY, font, e);
 
         }
 

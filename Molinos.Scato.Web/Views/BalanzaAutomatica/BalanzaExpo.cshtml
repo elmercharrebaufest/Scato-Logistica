@@ -66,7 +66,7 @@
                     <div class="span6"><span id="@("peso-tara" + Model.PuestoId)">0</span><span>Kg.</span></div>
                 </div>
                 <div class="row-fluid ">
-                    <span class="btn expo-btn expo-finalizar expo-tara" data-puesto="@Model.PuestoId">Finalizar Pesaje</span>
+                    <span class="btn expo-btn expo-finalizar expo-tara @("btn"+ Model.PuestoId)" data-puesto="@Model.PuestoId">Finalizar Pesaje</span>
                 </div>
             </div>
             <div class="span4 expo izq" id="@("expo-carga"+Model.PuestoId)">
@@ -82,7 +82,7 @@
                         <span class="btn expo-btn expo-carga carga-parcial" data-puesto="@Model.PuestoId">Carga Parcial</span>
                     </div>
                     <div class="span6">
-                        <span class="btn expo-btn expo-carga" data-puesto="@Model.PuestoId">Carga Finalizada</span>
+                        <span class="btn expo-btn expo-carga @("btn"+ Model.PuestoId)" data-puesto="@Model.PuestoId">Carga Finalizada</span>
                     </div>
                 </div>
             </div>
@@ -91,14 +91,14 @@
                     <div class="expo titulo"><strong>Peso Bruto</strong></div>
                 </div>
                 <div class="row-fluid ">
-                    <div class="span6"><span class="btn tomarPeso expo-btn expo-bruto" data-tipo="bruto" data-balanza-id="@Model.BalanzaId" data-id="@Model.PuestoId">Pesar</span></div>
+                    <div class="span6"><span class="btn tomarPeso expo-btn expo-bruto @("btn"+ Model.PuestoId)" data-tipo="bruto" data-balanza-id="@Model.BalanzaId" data-id="@Model.PuestoId">Pesar</span></div>
                     <div class="span6"><span id="@("peso-bruto" +Model.PuestoId)">0</span><span>Kg.</span></div>
                 </div>
                 <hr />
                 <div class="row-fluid ">
                     <div class="span4"><span>Peso Neto</span></div>
                     <div class="span4"><div class="border:1px solid #ddd"><span id="@("peso-neto" +Model.PuestoId)">0</span><span>Kg.</span></div></div>
-                    <div class="span4"><span class="btn expo-btn expo-bruto expo-finalizar" data-puesto="@Model.PuestoId">Finalizar Pesaje</span></div>
+                    <div class="span4"><span class="btn expo-btn expo-bruto expo-finalizar @("btn"+ Model.PuestoId)" data-puesto="@Model.PuestoId">Finalizar Pesaje</span></div>
                 </div>
             </div>
         </div>

@@ -3,6 +3,8 @@
 	[CodigoAfip] NVARCHAR(10)            NOT NULL,
     [Descripcion]  NVARCHAR (50) NOT NULL,
     [Provincia_Id] INT	NOT NULL,
+    [CodigoPostal] INT NULL,
+    [SubcodigoPostal] INT NULL,
     CONSTRAINT [PK_dbo.Localidad] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Localidad_dbo.Provincia_Provincia_Id] FOREIGN KEY ([Provincia_Id]) REFERENCES [dbo].[Provincia] ([Id])
 );

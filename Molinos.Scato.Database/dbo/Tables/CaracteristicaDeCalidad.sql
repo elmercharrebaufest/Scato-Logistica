@@ -33,6 +33,7 @@
 	[EsMermaVolatil] BIT NOT NULL DEFAULT 0,
 	[EsProteina] BIT NOT NULL DEFAULT 0,
 	[ValorProteina] DECIMAL(18, 2) NULL,
+    [ValorProteinaMedia] DECIMAL(18, 2) NULL,
     [ValorEspecialMinimo] DECIMAL(18, 2) NULL, 
     [ValorEspecialMaximo] DECIMAL(18, 2) NULL,
     [EsAutomatizable] BIT NOT NULL DEFAULT 0, 

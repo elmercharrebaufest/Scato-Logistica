@@ -100,5 +100,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int? RamalFerroviario { get; set; }
         public string NumeroPrecinto { get; set; }
         public byte[] Pdf { get; set; }
+
+        public bool EsSustentable { get; set; }
+        public string CodigoEstablecimientoSustentable { get; set; }
     }
 }

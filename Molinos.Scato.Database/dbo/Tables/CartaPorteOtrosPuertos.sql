@@ -87,6 +87,7 @@
     [RamalFerroviario] INT NULL, 
     [NumeroPrecinto] NVARCHAR(50) NULL, 
     [Pdf] VARBINARY(MAX) NULL,
-
+    [EsSustentable] BIT NULL,
+    [CodigoEstablecimientoSustentable] NVARCHAR(100) NULL, 
 
 )

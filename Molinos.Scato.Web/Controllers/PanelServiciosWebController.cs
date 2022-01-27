@@ -212,6 +212,11 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ping.Add(new ServicioDto { Nombre = "CNRT Service", Estado = false });
             }
+            var resultadoCPe = servicioComandos.Ejecutar(new ConsultarCPEDummy());
+            if (resultadoCPe.HayErrores)
+            {
+                ping.Add(new ServicioDto { Nombre = "CPE Service", Estado = false });
+            }
             var centros = servicio.ListarCentros();
             foreach (var c in centros)
             {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="TipoComunicador">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Speaker" />
+      <xs:enumeration value="Mic" />
+      <xs:enumeration value="Both" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TipoComunicador" nillable="true" type="tns:TipoComunicador" />
+</xs:schema>

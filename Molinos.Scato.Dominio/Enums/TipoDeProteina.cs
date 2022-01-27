@@ -12,5 +12,7 @@ namespace Molinos.Scato.Dominio.Enums
         Alta = 1,
         [Display(ResourceType = typeof(Textos), Name = "Proteina_Baja")]
         Baja = 2,
+        [Display(ResourceType = typeof(Textos), Name = "Proteina_Media")]
+        Media = 3,
     }
 }

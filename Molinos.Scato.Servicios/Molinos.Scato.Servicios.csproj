@@ -149,7 +149,12 @@
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CategoriaVehiculoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionAutomatizacionEtapasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EntidadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\EntidadTipoDeActividadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MotivoInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CargaComercialHistoricoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CeldaManoDeEmbarqueMappingProfile.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\RegistroBalanzaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ReglaDeAnalisisObligatorioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\SentidoManoDeEmbarqueMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoDeActividadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoDeBuquePuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TurnoPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\UbicacionDeBuquePuertoMappingProfile.cs" />
@@ -501,16 +507,22 @@
     <Compile Include="Procesamiento\ProcesadorConfirmacionArribo.cs" />
     <Compile Include="Procesamiento\ProcesadorCambiarNotificacionAplicacion.cs" />
     <Compile Include="Procesamiento\ProcesadorCambiarPinchazos.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCPEDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCPEPorDestino.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarCPDigital.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarDestinatarioCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEstadoCtg.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarImagenCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeCamioneroCircular.cs" />
+    <Compile Include="Procesamiento\ProcesadorEnviarMensajesAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorGuardarEtiquetasPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
@@ -554,6 +566,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarAgenteControlPrivado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarATAPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargadoPlanoDeCarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCoordinadorPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEmbarque.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearEstadoPuerto.cs" />
@@ -563,8 +576,10 @@
     <Compile Include="Procesamiento\ProcesadorModificarMaterialPorCentro.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMotivosLimpieza.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoCalado.cs" />
+    <Compile Include="Procesamiento\ProcesadorAgregarMarcaSustentable.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarRegistroInactividad.cs" />
     <Compile Include="Procesamiento\ProcesadorNotificarLecturaCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerTickets.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerPesada.cs" />
@@ -1431,6 +1446,8 @@
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador22.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador23.wsdl" />
     <None Include="Service References\Orquestador\ServicioOrquestador24.wsdl" />
     <None Include="Service References\Orquestador\ServicioOrquestador25.wsdl" />
     <None Include="Service References\Orquestador\ServicioOrquestador610.xsd">
@@ -1449,6 +1466,27 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Orquestador\ServicioOrquestador69.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador71.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador72.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador73.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador74.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador75.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador76.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServicioImpresion\ServicioImpresion.wsdl" />
@@ -1717,6 +1755,7 @@
   <ItemGroup>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Intacta\GestionarCartasDePortePE.XML" />
+    <None Include="Service References\Orquestador\ServicioOrquestador1.disco" />
     <None Include="Service References\AfipCPDigitalService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

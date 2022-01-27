@@ -33,12 +33,12 @@ namespace Molinos.Scato.Actividades.Internas
 
                 var resultado = servicioComandos.Ejecutar(new CrearAltaCTG { Dto = new AltaCTGDto {
                         CartaPorteId = orden.Id,
-                        CodigoCTG = codigoCTG,
+                        CodigoCTG = codigoCTG.Trim(),
                         TarifaReferencia = tarifaReferencia,
                         Fecha = DateTime.UtcNow,
                         WorkflowId = workflowId,
-                        Sucursal = sucursal,
-                        NroOrden = nroOrden,
+                        Sucursal = sucursal.Trim(),
+                        NroOrden = nroOrden.Trim(),
                         Cpe = orden.Cpe,
                         RecorridoId = recorridoId
                     } });

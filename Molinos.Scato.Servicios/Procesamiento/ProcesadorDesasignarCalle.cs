@@ -63,14 +63,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         calle.Bloqueada = true;
                         calle.FechaLLamada = DateTime.Now;
                     }
-                    else
-                    {
-                        foreach(var puesto in puestosCalados)
-                        {
-                            //puesto.Automatica = false;
-                            puesto.Material = null;
-                        }
-                    }
+                    //else
+                    //{
+                    //    foreach(var puesto in puestosCalados)
+                    //    {
+                    //        puesto.Automatica = false;
+                    //        puesto.Material = null;
+                    //    }
+                    //}
                 }                
             }            
         }

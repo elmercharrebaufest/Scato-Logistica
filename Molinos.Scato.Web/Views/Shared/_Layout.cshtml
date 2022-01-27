@@ -38,7 +38,7 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/site.css")">
     <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/fontawesome-all.min.css")">
-    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/icomoon.css")"/>
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/icomoon.css")" />
 
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/css")
@@ -67,6 +67,7 @@
     <script src="@Url.Script("~/Scripts/scatocommon.js")" type="text/javascript"></script>
     <script src="@Url.Script("~/Scripts/jquery.showCredits.js")" type="text/javascript"></script>
     <script src="@Url.Script("~/Scripts/jquery.mousetrap.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/popUpMotivoInactividad.js")" type="text/javascript"></script>
     <style>
         .field-validation-error {
             color: #b94a48;
@@ -76,7 +77,8 @@
         .validation-summary-errors {
             color: #ff0000;
         }
-        #alertaFija{
+
+        #alertaFija {
             border: solid;
             cursor: pointer;
         }
@@ -87,44 +89,45 @@
 <body>
     <div class="@System.Configuration.ConfigurationManager.AppSettings["FondoAmbiente"]"></div>
     @Html.Action("Menu", "Menu")
-<div class="container-fluid">
-    <div id="alertaError" data-mensaje="@Textos.Error_Generico" class="alert alert-error fade hide centro-pantalla alerta-box">
-        <a class="close" data-hide="alert">×</a>
-        <span></span>
-    </div>
-    <div id="alertaAdvertencia" data-mensaje="@Textos.Error_Generico" class="alert fade hide centro-pantalla alerta-box">
-        <a class="close" data-hide="alert">×</a>
-        <span></span>
-    </div>
-    <div id="alertaExitosa" class="alert alert-success fade hide centro-pantalla alerta-box">
-        <span>@Textos.Exito_Generico</span>
-    </div>
-    <div id="alertaInfo" class="alert alert-info fade hide centro-pantalla alerta-box">
-        <span>@Textos.Exito_Generico</span>
-    </div>
-    <div id="alertaCancelada" class="alert alert-success fade hide" style="width: 50%; margin: 0 auto;position: absolute;left: 25%; text-align: center; font-weight: bold; top:14%">
-        <span>@Textos.CanceladoExitoso_Generico</span>
-    </div>
+    <div class="container-fluid">
+        <div id="alertaError" data-mensaje="@Textos.Error_Generico" class="alert alert-error fade hide centro-pantalla alerta-box">
+            <a class="close" data-hide="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaAdvertencia" data-mensaje="@Textos.Error_Generico" class="alert fade hide centro-pantalla alerta-box">
+            <a class="close" data-hide="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaExitosa" class="alert alert-success fade hide centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaInfo" class="alert alert-info fade hide centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaCancelada" class="alert alert-success fade hide" style="width: 50%; margin: 0 auto;position: absolute;left: 25%; text-align: center; font-weight: bold; top:14%">
+            <span>@Textos.CanceladoExitoso_Generico</span>
+        </div>
 
-    <div class="alert alert-warning hide" id="alertaFija" role="alert">
-        <i class="icon-warning-sign"></i>
-        <span id="alertaFija-span">@mensajeAplicacion</span>
+        <div class="alert alert-warning hide" id="alertaFija" role="alert">
+            <i class="icon-warning-sign"></i>
+            <span id="alertaFija-span">@mensajeAplicacion</span>
+        </div>
+
+
+        @Html.Hidden("ValorSi", Textos.Si)
+        @Html.Hidden("ValorNo", Textos.No)
+        @Html.Hidden("ObtenerPuestoDeTrabajoUrl", Url.Action("ObtenerPuestoDeTrabajo", "Consultas"))
+        @Html.Hidden("ObtenerNombrePcUrl", Url.Action("ObtenerNombrePc", "Consultas"))
+        @Html.Hidden("RedireccionarAListaAutomatizadaUrl", Url.Action("RedireccionarAListaAutomatizada", "Consultas"))
+        @Html.Hidden("RedireccionarABalanzaAutomatizadaUrl", Url.Action("RedireccionarABalanzaAutomatizada", "Consultas"))
+        @Html.Hidden("MensajeBuscandoDatos", Textos.Buscando)
+        @Html.Hidden("PuestoDeTrabajoErrorMensaje", Textos.Pesada_ErrorPuestoDeTrabajo)
+        @Html.Hidden("PuestoDeTrabajoSinBalanzasErrorMensaje", Textos.Pesada_ErrorNoHayBalanzas)
+        @Html.Hidden("PuestoDeTrabajoPcBalanzaErrorMensaje", Textos.Pesada_ErrorBalanzaPuestoDeTrabajo)
+        @Html.Hidden("ObtenerMensajeFijoUrl", Url.Action("ObtenerMensajeFijo", "Consultas"))
+        @Html.Hidden("RegistroInactividadModalUrl", Url.Action("Index", "RegistroInactividad"))
+        @RenderBody()
     </div>
-
-
-    @Html.Hidden("ValorSi", Textos.Si)
-    @Html.Hidden("ValorNo", Textos.No)
-    @Html.Hidden("ObtenerPuestoDeTrabajoUrl", Url.Action("ObtenerPuestoDeTrabajo", "Consultas"))
-    @Html.Hidden("ObtenerNombrePcUrl", Url.Action("ObtenerNombrePc", "Consultas"))
-    @Html.Hidden("RedireccionarAListaAutomatizadaUrl", Url.Action("RedireccionarAListaAutomatizada", "Consultas"))
-    @Html.Hidden("RedireccionarABalanzaAutomatizadaUrl", Url.Action("RedireccionarABalanzaAutomatizada", "Consultas"))
-    @Html.Hidden("MensajeBuscandoDatos", Textos.Buscando)
-    @Html.Hidden("PuestoDeTrabajoErrorMensaje", Textos.Pesada_ErrorPuestoDeTrabajo)
-    @Html.Hidden("PuestoDeTrabajoSinBalanzasErrorMensaje", Textos.Pesada_ErrorNoHayBalanzas)
-    @Html.Hidden("PuestoDeTrabajoPcBalanzaErrorMensaje", Textos.Pesada_ErrorBalanzaPuestoDeTrabajo)
-    @Html.Hidden("ObtenerMensajeFijoUrl", Url.Action("ObtenerMensajeFijo", "Consultas"))
-    @RenderBody()
-</div>
     <div class="alerta-box centro-pantalla @clase" id="alerta">
         @if (clase != "alert alert-success")
         {
@@ -132,7 +135,7 @@
         }
         <div>@mensaje</div>
     </div>
-    
+
 
     <div class="modal hide fade" id="dialogo-borrar">
         <div class="modal-header">
@@ -188,7 +191,13 @@
             </div>
         </div>
     </div>
+    <div id="riModal" data-url-registro-inactividad-modal="@Url.Action("Index", "RegistroInactividad")">
 
+    </div>
+    <div id="linksRegistrarInactividad"
+         data-url-consultar-ultimo-camion-calado="@Url.Action("ConsultarUltimoCamionCalado", "RegistroInactividad")"
+        data-url-valida-inactividad="@Url.Action("ValidaInactividad", "RegistroInactividad")">
+    </div>
 
     @Html.Hidden("Procesando", Textos.Procesando)
     @Html.Hidden("PorFavorEspere", Textos.PorFavorEspere)
