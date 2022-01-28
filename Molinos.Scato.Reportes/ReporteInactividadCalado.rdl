@@ -28,9 +28,10 @@
 set @FechaDesdep = @FechaInicio
 set @FechaHastap = @FechaFinal
 
-SELECT ri.Usuario, COALESCE(mi.Descripcion,'Sin registro del motivo'), ri.FechaInicio, ri.FechaFinal
+SELECT ri.Usuario, COALESCE(mi.Descripcion,'Sin registro del motivo') AS Descripcion, ri.FechaInicio, ri.FechaFinal
 FROM RegistroInactividad ri LEFT JOIN MotivoInactividad mi ON ri.MotivoId = mi.Id
-WHERE CAST(ri.FechaInicio AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(ri.FechaFinal AS date) &lt;= CAST(@FechaHastap AS DATE)</CommandText>
+WHERE CAST(ri.FechaInicio AS date) &gt;= CAST(@FechaDesdep AS DATE) AND
+(ri.FechaFinal IS NULL OR CAST(ri.FechaFinal AS date) &lt;= CAST(@FechaHastap AS DATE))</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -38,8 +39,8 @@ WHERE CAST(ri.FechaInicio AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(ri.
           <DataField>Usuario</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ID">
-          <DataField />
+        <Field Name="Descripcion">
+          <DataField>Descripcion</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="FechaInicio">
@@ -296,6 +297,7 @@ WHERE CAST(ri.FechaInicio AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(ri.
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>

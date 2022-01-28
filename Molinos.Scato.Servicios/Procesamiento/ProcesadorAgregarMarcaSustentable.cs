@@ -30,10 +30,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroDocumento, comando.Patente) + "-sustentable.png";
                     var imagenCp = new Bitmap(comando.RutaFotoCP);
-                    //imagenCp.Save(comando.RutaFotoCP + ".bkp", ImageFormat.Png);
 
                     var imagenCpSustentable = DibujarSustentable(imagenCp);
-                    //File.Delete(comando.RutaFotoCP);
                     imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Png);
                 }
             }

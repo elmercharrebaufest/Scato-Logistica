@@ -129,7 +129,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult ValidaInactividad(DatosUsuario datosUsuario)
         {
             var valida = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
-            return Json(new { validar = valida.ActivarRegistroInactividad }, JsonRequestBehavior.AllowGet);
+            return Json(new { validar = valida != null ? valida.ActivarRegistroInactividad : false }, JsonRequestBehavior.AllowGet);
         }
 
     }
