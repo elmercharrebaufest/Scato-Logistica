@@ -133,7 +133,7 @@ namespace Molinos.Scato.Test.Controllers
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>())).Returns(resultado);
             orquestadorMock.Setup(s => s.ListarLectores()).Returns(new[]{ new DispositivoDto()});
             orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
 
             var datosUsuario = new DatosUsuario { CentroId = 1 };
             var result = target.Crear(datosUsuario, "[{\"Codigo\":\"Barem01\",\"Descripcion\":\"Bar1\"}]", "[{\"Codigo\":\"Barem01\",\"Descripcion\":\"Bar1\"}]", "[]", "[]", puestos[0],"[]") as ViewResult;
@@ -150,7 +150,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearPuestoDeTrabajo>()))
                 .Returns(new Resultado());
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
             var datosUsuario = new DatosUsuario { CentroId = 1 };
             var result = target.Crear(datosUsuario, "", "", "","", puestos[0],"") as ContentResult;
             
@@ -166,7 +166,7 @@ namespace Molinos.Scato.Test.Controllers
                 .Returns(puestos[0]);
             orquestadorMock.Setup(s => s.ListarLectores()).Returns(new[] { new DispositivoDto() });
             orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
 
             var result = target.Modificar(1,new DatosUsuario()) as ViewResult;
 
@@ -197,7 +197,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ModificarPuestoDeTrabajo>()))
                 .Returns(new Resultado());
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
 
             var camaraDto = new PuestoDeTrabajoDto
             {
@@ -219,7 +219,7 @@ namespace Molinos.Scato.Test.Controllers
                 .Returns(new Resultado());
             orquestadorMock.Setup(s => s.ListarLectores()).Returns(new DispositivoDto[] { new DispositivoDto() });
             orquestadorMock.Setup(s => s.ListarBarrerasSemaforos()).Returns(new DispositivoDto[] { new DispositivoDto() });
-            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(x => x.ListarTodasLasBalanzasActivas(It.IsAny<int>())).Returns(new List<BalanzaDto>());
 
             var camaraDto = new PuestoDeTrabajoDto
             {

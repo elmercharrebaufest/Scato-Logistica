@@ -43,7 +43,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             else
             {
-                balanza = servicio.ListarBalanzasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, recorrido.TipoVehiculo).FirstOrDefault();
+                balanza = servicio.ListarBalanzasActivasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, recorrido.TipoVehiculo).FirstOrDefault();
             }
 
 

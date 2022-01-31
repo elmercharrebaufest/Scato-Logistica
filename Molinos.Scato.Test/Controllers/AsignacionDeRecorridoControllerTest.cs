@@ -75,7 +75,7 @@ namespace Molinos.Scato.Test.Controllers
                                            new CalleDto {Id = 22, Nombre = "Calle2"}
                                        });
             servRepositorioMock.Setup(
-                s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión))
+                s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión))
                                .Returns(
                                    new List<BalanzaDto>
                                        {

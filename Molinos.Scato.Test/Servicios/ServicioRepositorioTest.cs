@@ -3821,6 +3821,34 @@ namespace Molinos.Scato.Test.Servicios
         }
 
         [Test]
+        public void ListarTodasLasBalanzas()
+        {
+            var centro = new Centro
+            {
+                Id = 1,
+                Descripcion = "cent1"
+            };
+            var blz1 = new Balanza
+            {
+                Id = 5,
+                Nombre = "blnza1",
+                Centro = centro
+            };
+            var blz2 = new Balanza
+            {
+                Id = 6,
+                Nombre = "blnza2",
+                Centro = centro
+            };
+
+            repositorioMock.Setup(s => s.Listar<Balanza>(It.IsAny<Expression<Func<Balanza, bool>>>(), It.IsAny<int>())).Returns(new List<Balanza> { blz1, blz2 });
+            var resultado = target.ListarTodasLasBalanzas(1);
+            Assert.AreEqual(resultado.Count, 2);
+            Assert.AreEqual(resultado[0].Nombre, blz1.Nombre);
+            Assert.AreEqual(resultado[1].Id, blz2.Id);
+        }
+
+        [Test]
         public void ListarBalanzas()
         {
             var blz1 = new Balanza
@@ -3835,7 +3863,7 @@ namespace Molinos.Scato.Test.Servicios
             };
 
             repositorioMock.Setup(s => s.Listar<Balanza>(It.IsAny<Expression<Func<Balanza, bool>>>(), It.IsAny<int>())).Returns(new List<Balanza> { blz1, blz2 });
-            var resultado = target.ListarBalanzas(5, TipoVehiculo.Camión);
+            var resultado = target.ListarBalanzasActivas(5, TipoVehiculo.Camión);
             Assert.AreEqual(resultado.Count, 2);
             Assert.AreEqual(resultado[0].Nombre, blz1.Nombre);
             Assert.AreEqual(resultado[1].Id, blz2.Id);
@@ -3851,7 +3879,7 @@ namespace Molinos.Scato.Test.Servicios
             };
 
             repositorioMock.Setup(s => s.Listar<Balanza>(It.IsAny<Expression<Func<Balanza, bool>>>())).Returns(new List<Balanza> { blz1 });
-            var resultado = target.ListarBalanzasPorNombrePc(5, "PC1", TipoVehiculo.Camión);
+            var resultado = target.ListarBalanzasActivasPorNombrePc(5, "PC1", TipoVehiculo.Camión);
             Assert.AreEqual(resultado.Count, 1);
             Assert.AreEqual(resultado[0].Nombre, blz1.Nombre);
         }

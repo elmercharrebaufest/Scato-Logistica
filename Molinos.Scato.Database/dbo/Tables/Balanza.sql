@@ -26,7 +26,9 @@
 	[VencimientoDeCertificado]              DATETIME       NULL,
 	[CodigoLot] NVARCHAR(30) NULL, 
 	[TipoVehiculo] INT NOT NULL default 0,
-    [EsExportacion] BIT NOT NULL DEFAULT 0
+    [EsExportacion] BIT NOT NULL DEFAULT 0,
+    [Desactivado] BIT NOT NULL DEFAULT 0, 
+
     CONSTRAINT [PK_dbo.Balanza] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_dbo.Balanza_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
 	CONSTRAINT [FK_dbo.Balanza_dbo.TipoPesada_TipoPesada_Id] FOREIGN KEY ([Modalidad]) REFERENCES [dbo].[TipoPesada] ([Id])

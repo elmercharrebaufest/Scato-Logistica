@@ -192,7 +192,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ListarCamaras())
                 .Returns(new List<CamaraDto> { new CamaraDto { Id = 1 }, new CamaraDto { Id = 2 } });
 
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión))
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión))
                 .Returns(new List<BalanzaDto> { new BalanzaDto { Id = 1 }, new BalanzaDto { Id = 2 } });
 
             HttpContext.Current = new HttpContext(
@@ -267,7 +267,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock.Setup(s => s.ObtenerCentro(It.IsAny<int>()))
                 .Returns(centros[0]);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión))
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión))
                 .Returns(new List<BalanzaDto> { new BalanzaDto { Id = 1, CodigoCabezal = "1", CentroId = 1, Modalidad = Modalidad.Automática, Nombre = "balanza", PuestoDeTrabajo = "1" } });
 
             var request = new Mock<HttpRequestBase>();

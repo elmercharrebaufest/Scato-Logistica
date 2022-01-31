@@ -1938,6 +1938,16 @@ namespace Molinos.Scato.Servicios.Orquestador
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivoRe" +
             "sponse")]
         System.Threading.Tasks.Task PrenderApagarDispositivoAsync(string codigoDispositivo, bool activar, string server);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
+            "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
+            "rtoDeAudioResponse")]
+        System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
+            "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
+            "rtoDeAudioResponse")]
+        System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2230,6 +2240,14 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         public System.Threading.Tasks.Task PrenderApagarDispositivoAsync(string codigoDispositivo, bool activar, string server) {
             return base.Channel.PrenderApagarDispositivoAsync(codigoDispositivo, activar, server);
+        }
+        
+        public System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo) {
+            return base.Channel.ObtenerIntercomunicadorPuertoDeAudio(codigoDispositivo);
+        }
+        
+        public System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo) {
+            return base.Channel.ObtenerIntercomunicadorPuertoDeAudioAsync(codigoDispositivo);
         }
     }
 }

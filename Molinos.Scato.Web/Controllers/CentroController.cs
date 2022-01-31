@@ -155,7 +155,7 @@ namespace Molinos.Scato.Web.Controllers
             if (centroId > 0)
             {
                 var centro = servicio.ObtenerCentro(centroId.Value);
-                var balanzas = servicio.ListarBalanzas(centroId.Value, Dominio.Enums.TipoVehiculo.Camión);
+                var balanzas = servicio.ListarBalanzasActivas(centroId.Value, Dominio.Enums.TipoVehiculo.Camión);
                 var cookie = new CookieUsuario();
                 var balanzaDto = balanzas.FirstOrDefault();
                 var balanzaId = balanzaDto != null ? balanzaDto.Id: 0;

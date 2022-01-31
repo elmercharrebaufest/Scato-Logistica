@@ -53,7 +53,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (centros != null && centros.Count >= 1)
                 {
                     var centro = centros[0];
-                    var balanzas = servicio.ListarBalanzas(centro.Id, TipoVehiculo.Camión);
+                    var balanzas = servicio.ListarBalanzasActivas(centro.Id, TipoVehiculo.Camión);
                     cookie.ActualizarValor("CentroId", centro.Id.ToString(CultureInfo.InvariantCulture));
                     cookie.ActualizarValor("CentroDescripcion", centro.Descripcion);
                     cookie.ActualizarValor("CentroCodigoSap", centro.CodigoSAP);

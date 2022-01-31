@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="ComandoEjecutar">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:Comando">

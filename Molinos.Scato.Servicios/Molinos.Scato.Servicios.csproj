@@ -1446,10 +1446,22 @@
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador22.wsdl" />
-    <None Include="Service References\Orquestador\ServicioOrquestador23.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Orquestador\ServicioOrquestador13.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\Orquestador\ServicioOrquestador24.wsdl" />
     <None Include="Service References\Orquestador\ServicioOrquestador25.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador3.wsdl" />
+    <None Include="Service References\Orquestador\ServicioOrquestador4.wsdl" />
     <None Include="Service References\Orquestador\ServicioOrquestador610.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1471,22 +1483,10 @@
     <None Include="Service References\Orquestador\ServicioOrquestador7.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador71.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador8.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador72.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador73.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador74.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador75.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Orquestador\ServicioOrquestador76.xsd">
+    <None Include="Service References\Orquestador\ServicioOrquestador9.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServicioImpresion\ServicioImpresion.wsdl" />

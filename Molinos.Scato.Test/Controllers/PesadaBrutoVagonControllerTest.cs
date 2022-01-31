@@ -110,8 +110,8 @@ namespace Molinos.Scato.Test.Controllers
         public void TestIndex()
         {
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarCalles(1)).Returns(new List<CalleDto>());
             servRepositorioMock.Setup(s => s.ListarHidraulicas(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<PuestosDeCargaDescargaDto>());
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);

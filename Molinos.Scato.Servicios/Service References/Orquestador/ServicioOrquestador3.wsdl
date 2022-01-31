@@ -36,7 +36,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://nbar15037:8080/ServicioOrquestador?wsdl=wsdl0" />
+  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://valhalla:8080/ServicioOrquestador?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="BasicHttpBinding_IServicioOrquestador" type="i0:IServicioOrquestador">
     <wsp:PolicyReference URI="#BasicHttpBinding_IServicioOrquestador_policy" />
@@ -295,6 +295,15 @@
     </wsdl:operation>
     <wsdl:operation name="PrenderApagarDispositivo">
       <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/PrenderApagarDispositivo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerIntercomunicadorPuertoDeAudio">
+      <soap:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudio" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -567,17 +576,26 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ObtenerIntercomunicadorPuertoDeAudio">
+      <soap12:operation soapAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPuertoDeAudio" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ServicioOrquestador">
     <wsdl:port name="BasicHttpBinding_IServicioOrquestador" binding="tns:BasicHttpBinding_IServicioOrquestador">
-      <soap:address location="http://nbar15037:8080/ServicioOrquestador" />
+      <soap:address location="http://valhalla:8080/ServicioOrquestador" />
     </wsdl:port>
     <wsdl:port name="NetTcpBinding_IServicioOrquestador" binding="tns:NetTcpBinding_IServicioOrquestador">
-      <soap12:address location="net.tcp://nbar15037:8081/ServicioOrquestador" />
+      <soap12:address location="net.tcp://valhalla:8081/ServicioOrquestador" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://nbar15037:8081/ServicioOrquestador</wsa10:Address>
+        <wsa10:Address>net.tcp://valhalla:8081/ServicioOrquestador</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>BAUNET\bportilla</Upn>
+          <Upn>Valhalla\AlexArdela</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

@@ -55,7 +55,7 @@ namespace Molinos.Scato.Test.Controllers
                 .Returns(new List<NirsDto>());
             servRepositorioMock.Setup(s => s.ListarHumedimetrosPorCentro(It.IsAny<int>()))
                .Returns(new List<HumedimetroDto>());
-            servRepositorioMock.Setup(s => s.ListarTodasLasBalanzas(It.IsAny<int>()))
+            servRepositorioMock.Setup(s => s.ListarTodasLasBalanzasActivas(It.IsAny<int>()))
                .Returns(new List<BalanzaDto>());
             servRepositorioMock.Setup(s => s.ObtenerCentro(It.IsAny<int>()))
                .Returns(new CentroDto());

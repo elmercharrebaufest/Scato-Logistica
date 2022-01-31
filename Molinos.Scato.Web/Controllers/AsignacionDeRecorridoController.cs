@@ -141,7 +141,7 @@ namespace Molinos.Scato.Web.Controllers
                 servicio.ListarCalles(centroId)
                         .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre,
                                       model.CalleId.ToString(CultureInfo.InvariantCulture));
-            var balanzas = servicio.ListarBalanzas(centroId, Dominio.Enums.TipoVehiculo.Camión);
+            var balanzas = servicio.ListarBalanzasActivas(centroId, Dominio.Enums.TipoVehiculo.Camión);
             ViewBag.BalanzasBruto = balanzas.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre,
                                       (model.BalanzaBrutoId ?? 0).ToString(CultureInfo.InvariantCulture));
             ViewBag.BalanzasTara = balanzas.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre,

@@ -34,7 +34,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                Log.Debug("Iniciando impresión de ResumenDeRecepcion en la impresora: " + impresion.Impresora.Direccion);
+                Log.Debug("Iniciando impresión de ResumenDeRecepcion en la impresora: " + impresion.Impresora.Direccion + " OrigenImpresion: "+ comando?.OrigenImpresion + " NumeroTarjeta: " + comando?.Dto?.Numero + " PuestroTrabajoId: " + comando?.Dto?.PuestoDeTrabajoId);
                 comando.Dto.Impresora = impresion.Impresora.Direccion;
                 ServicioImpresion.Ejecutar(comando);
             }

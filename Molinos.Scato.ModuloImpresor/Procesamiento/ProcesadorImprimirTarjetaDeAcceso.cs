@@ -18,7 +18,7 @@ namespace Molinos.Scato.ModuloImpresor.Procesamiento
             var resultado = new Resultado();
             try
             {
-                Log.Debug("Iniciando impresión de ResumenDeRecepcion en la impresora: " + comando.Dto.Impresora);
+                Log.Debug("Iniciando impresión de ResumenDeRecepcion en la impresora: " + comando.Dto.Impresora + " OrigenImpresion: " + comando?.OrigenImpresion + " NumeroTarjeta: " + comando?.Dto?.Numero + " PuestroTrabajoId: " + comando?.Dto?.PuestoDeTrabajoId);
 
                 var impresora = new TarjetaDeAcceso(comando.Dto, comando.Dto.Impresora);
                 impresora.Print();

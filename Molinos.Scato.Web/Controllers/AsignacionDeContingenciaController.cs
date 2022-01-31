@@ -46,7 +46,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Nirs = servicio.ListarNirsPorCentro(centroId).ToList();
             ViewBag.Centro = servicio.ObtenerCentro(centroId);
             ViewBag.Humedimetros = servicio.ListarHumedimetrosPorCentro(centroId).ToList();
-            ViewBag.Balanzas = servicio.ListarTodasLasBalanzas(centroId).ToList();
+            ViewBag.Balanzas = servicio.ListarTodasLasBalanzasActivas(centroId).ToList();
 
             ViewBag.ImpresionTicketSalida = !servicio.ImprimeTicketSalida(centroId);
 

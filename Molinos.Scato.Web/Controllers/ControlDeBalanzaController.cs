@@ -43,7 +43,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var controlBalanza = new ControlDeBalanzaDto();
             var datos = servicio.ObtenerDatosDeInstanciaPorGuid(id);
-            var balanzas = servicio.ListarBalanzasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, datos.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
+            var balanzas = servicio.ListarBalanzasActivasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, datos.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
             if (datosUsuario.NombrePc == "NoTienePuesto")
             {
                 controlBalanza.Error = Textos.Pesada_ErrorPuestoDeTrabajo;

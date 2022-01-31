@@ -98,13 +98,16 @@ namespace Molinos.Scato.Servicios
         string ObtenerBalanzaNombre(int id);
 
         [OperationContract]
+        IList<BalanzaDto> ListarTodasLasBalanzasActivas(int centroId);
+
+        [OperationContract]
         IList<BalanzaDto> ListarTodasLasBalanzas(int centroId);
 
         [OperationContract]
-        IList<BalanzaDto> ListarBalanzas(int centroId, TipoVehiculo tipoVehiculo);
+        IList<BalanzaDto> ListarBalanzasActivas(int centroId, TipoVehiculo tipoVehiculo);
 
         [OperationContract]
-        IList<BalanzaDto> ListarBalanzasPorNombrePc(int centroId, string nombrePc, TipoVehiculo tipoVehiculo);
+        IList<BalanzaDto> ListarBalanzasActivasPorNombrePc(int centroId, string nombrePc, TipoVehiculo tipoVehiculo);
         [OperationContract]
         IList<BalanzaAutomaticaDto> ListarPuestosAutomaticosporCentro(int centroId);
         [OperationContract]

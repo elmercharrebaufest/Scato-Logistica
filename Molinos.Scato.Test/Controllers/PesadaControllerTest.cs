@@ -176,8 +176,8 @@ namespace Molinos.Scato.Test.Controllers
         public void TestIndex()
         {
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarCalles(1)).Returns(new List<CalleDto>());
             servRepositorioMock.Setup(s => s.ListarHidraulicas(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<PuestosDeCargaDescargaDto>());
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
@@ -210,9 +210,9 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ListarCalles(1)).Returns(new List<CalleDto>());
             servRepositorioMock.Setup(s => s.ListarHidraulicas(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<PuestosDeCargaDescargaDto>());
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarMotivos()).Returns(motivos);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorMaterialYCentro(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
             var result = target.Index(It.IsAny<Guid>(), datosUsuario) as ViewResult;
@@ -226,8 +226,8 @@ namespace Molinos.Scato.Test.Controllers
         {
             var model = new Pesada { WorkflowInstanceId = instancia, Patente = "BBB222", PatenteOriginal = recorrido.Patente, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "U1" };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
             var result = target.Index(model, "TestWorkflowTestWorkflow", 1, new DatosUsuario { PuestoDeTrabajoId = 1, NombrePc = "U1" }) as RedirectToRouteResult;
             Assert.AreEqual("Index", result.RouteValues["action"]);
@@ -242,8 +242,8 @@ namespace Molinos.Scato.Test.Controllers
         {
             var model = new Pesada { WorkflowInstanceId = instancia, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "U1" };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
             target.ModelState.AddModelError("", "");
             var result = target.Index(model, "TestWorkflow", 1, new DatosUsuario { PuestoDeTrabajoId = 1, NombrePc = "U1" }) as ContentResult;
@@ -256,8 +256,8 @@ namespace Molinos.Scato.Test.Controllers
         {
             var model = new Pesada { WorkflowInstanceId = instancia, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "XXXX", Peso = 222, ProximaBalanzaId = 2, Patente = "AAA111", AlmacenId = 3, PatenteOriginal = "AAA111" };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
             balanzas[0].PuestoDeTrabajo = "ZZZ";
             servRepositorioMock.Setup(s => s.ObtenerBalanza(It.IsAny<int>())).Returns(balanzas[0]);
@@ -274,8 +274,8 @@ namespace Molinos.Scato.Test.Controllers
 
             var model = new Pesada { WorkflowInstanceId = instancia, Patente = recorrido.Patente, PatenteOriginal = recorrido.Patente, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "U1", Peso = 1000 };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             balanzas[0].EstaEnCero = false;
             servRepositorioMock.Setup(s => s.ObtenerBalanza(It.IsAny<int>())).Returns(balanzas[0]);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
@@ -295,8 +295,8 @@ namespace Molinos.Scato.Test.Controllers
 
             var model = new Pesada { WorkflowInstanceId = instancia, Patente = recorrido.Patente, PatenteOriginal = recorrido.Patente, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "U1", Peso = 1000 };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             balanzas[0].EstaEnCero = false;
             servRepositorioMock.Setup(s => s.ObtenerBalanza(It.IsAny<int>())).Returns(balanzas[0]);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);
@@ -316,8 +316,8 @@ namespace Molinos.Scato.Test.Controllers
 
             var model = new Pesada { WorkflowInstanceId = instancia, Patente = recorrido.Patente, PatenteOriginal = recorrido.Patente, TipoPesada = TipoPesada.Tara, BalanzaPuestoDeTrabajo = "U1", Peso = 1000 };
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             balanzas[0].EstaEnCero = false;
             servRepositorioMock.Setup(s => s.ObtenerBalanza(It.IsAny<int>())).Returns(balanzas[0]);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorCentroYesSustentable(It.IsAny<int>(), It.IsAny<bool>())).Returns(almacenes);

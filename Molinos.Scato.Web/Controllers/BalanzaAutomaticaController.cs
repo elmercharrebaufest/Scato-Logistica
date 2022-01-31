@@ -65,8 +65,8 @@ namespace Molinos.Scato.Web.Controllers
             var balanzas = servicio.ListarPuestosAutomaticosporCentro(datosUsuario.CentroId);
             foreach (var balanza in balanzas)
             {
-                var intercomunicador =  GetIntercomunicadorDispositivoConfig(balanza.IntercomunicadorCodigo);
-                intercomunicador.UniqueId = balanza.BalanzaId.ToString();
+                var puertoDeAudio = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
+                var intercomunicador =  GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, puertoDeAudio);
                 balanza.IntercomunicadorDispositivo = intercomunicador;
             }
             ViewBag.Balanzas = balanzas.Where(x=>x.Orden.HasValue).OrderBy(x=>x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();
@@ -649,11 +649,13 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string codigoIntercomunicador)
+        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string uniqueId,string codigoIntercomunicador,int? puertoAudio)
         {
             var intercomunicadorDispositivo = new IntercomunicadorDispositivoDto
             {
+                UniqueId = uniqueId,
                 Codigo = codigoIntercomunicador,
+                AudioPort = (puertoAudio.HasValue) ? puertoAudio.Value.ToString() : string.Empty,
                 ICPCConfig = ConfigurationManager.AppSettings["ICPCConfig"],
                 ICWebServerUrl = ConfigurationManager.AppSettings["ICWebServerUrl"],
                 ICWSServerUrl = ConfigurationManager.AppSettings["ICWSServerUrl"],

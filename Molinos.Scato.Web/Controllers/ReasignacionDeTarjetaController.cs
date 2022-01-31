@@ -148,7 +148,8 @@ namespace Molinos.Scato.Web.Controllers
                     Numero = numero,
                     Fecha = DateTime.Now.Formatted(),
                     CentroId = datosUsuario.CentroId
-                }
+                },
+                OrigenImpresion = "ReasignacionDeTarjetaController"
             });
             return !resultado.HayErrores ? Json(new {mensaje = Textos.ImpresionEnviada}, JsonRequestBehavior.AllowGet) : 
                                            Json(new { error = resultado.Errores.First().Value }, JsonRequestBehavior.AllowGet);

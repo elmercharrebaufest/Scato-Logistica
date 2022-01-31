@@ -117,7 +117,8 @@ namespace Molinos.Scato.Web.ServicioHub
                                         Fecha = DateTime.Now.Formatted(),
                                         CentroId = lecturaPuestoDeTrabajo.CentroId,
                                         PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId
-                                    }
+                                    },
+                                    OrigenImpresion = "ServicioSuscriptor"
                                 });
                                 if (resultadoImpresion.HayErrores)
                                 {

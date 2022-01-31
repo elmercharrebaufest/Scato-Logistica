@@ -56,13 +56,16 @@ namespace Molinos.Scato.Web.Controllers
                     ModelState.AddModelError("Numero", Textos.ImpresionTarjetaDeAcceso_EnUso);
                     return View(impresionTarjetaDeAccesoModel);
                 }
-                var resultado = servicioComandos.Ejecutar(new ImprimirTarjetaDeAcceso { Dto = new ImpTarjetaDeAccesoDto
+                var resultado = servicioComandos.Ejecutar(new ImprimirTarjetaDeAcceso { 
+                    Dto = new ImpTarjetaDeAccesoDto
                     {
                         Codigo = "ImpresionTarjetaDeAcceso",
                         Numero = impresionTarjetaDeAccesoModel.Numero,
                         Fecha = DateTime.Now.Formatted(),
                         CentroId = datosUsuario.CentroId
-                    }});
+                    },
+                    OrigenImpresion = "ImprimirTarjetaDeAccesoController"
+                });
                 if (!resultado.HayErrores)
                 {
                     TempData["Alerta"] = Textos.ImpresionEnviada;

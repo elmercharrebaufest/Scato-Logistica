@@ -78,6 +78,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         public TipoVehiculo TipoVehiculo { get; set; }
 
+        public bool Desactivado { get; set; }
+
     }
 }
  

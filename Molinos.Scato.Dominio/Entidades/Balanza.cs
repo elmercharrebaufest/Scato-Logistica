@@ -45,6 +45,8 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual TipoVehiculo TipoVehiculo { get; set; }
         public virtual bool EsExportacion { get; set; }
+
+        public virtual bool Desactivado { get; set; }
     }
 }
 

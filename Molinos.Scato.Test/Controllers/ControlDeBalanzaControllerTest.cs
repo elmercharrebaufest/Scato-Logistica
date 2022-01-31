@@ -112,7 +112,7 @@ namespace Molinos.Scato.Test.Controllers
         public void TestPesar()
         {
             servRepositorioMock.Setup(x => x.ObtenerDatosDeInstanciaPorGuid(It.IsAny<Guid>())).Returns(new DatosDeInstanciaDto { });
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(balanzas);
             var result = target.Index(new Guid(), datosUsuario) as ViewResult;
             Assert.That(result.ViewName, Is.Null.Or.Empty);
             Assert.That(((List<SelectListItem>)target.ViewBag.Balanzas).Select(s => s.Text), Is.EquivalentTo(balanzas.Select(s => s.Nombre)));
@@ -123,7 +123,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock.Setup(x => x.ObtenerDatosDeInstanciaPorGuid(It.IsAny<Guid>())).Returns(new DatosDeInstanciaDto { });
 
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(new List<BalanzaDto>());
             var result = target.Index(new Guid(), datosUsuario) as ViewResult;
             var model = (ControlDeBalanzaDto) result.Model;
             Assert.That(result.ViewName, Is.Null.Or.Empty);
@@ -135,7 +135,7 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock.Setup(x => x.ObtenerDatosDeInstanciaPorGuid(It.IsAny<Guid>())).Returns(new DatosDeInstanciaDto { });
 
-            servRepositorioMock.Setup(s => s.ListarBalanzasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(new List<BalanzaDto>());
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivasPorNombrePc(It.IsAny<int>(), It.IsAny<string>(), TipoVehiculo.Camión)).Returns(new List<BalanzaDto>());
             datosUsuario.NombrePc = "NoTienePuesto";
             var result = target.Index(new Guid(), datosUsuario) as ViewResult;
             var model = (ControlDeBalanzaDto) result.Model;

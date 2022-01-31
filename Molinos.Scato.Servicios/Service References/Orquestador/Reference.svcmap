@@ -22,16 +22,16 @@
     <MetadataSource Address="http://localhost:8080/ServicioOrquestador" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="919b4727-f2c8-46f5-ae41-5b4d7190247e" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd5" />
-    <MetadataFile FileName="ServicioOrquestador71.xsd" MetadataType="Schema" ID="8eec2150-2f6f-4066-80ac-fcaf0a9e1667" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd1" />
-    <MetadataFile FileName="ServicioOrquestador22.wsdl" MetadataType="Wsdl" ID="ea4de751-8819-4bb9-b9bb-8d3bcb4dd033" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?wsdl=wsdl0" />
-    <MetadataFile FileName="ServicioOrquestador72.xsd" MetadataType="Schema" ID="614b1817-be19-4eda-adde-6daf0ed64da0" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd2" />
-    <MetadataFile FileName="ServicioOrquestador73.xsd" MetadataType="Schema" ID="9de7e151-9d56-4f68-9c28-bcaba3763e74" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd0" />
-    <MetadataFile FileName="ServicioOrquestador74.xsd" MetadataType="Schema" ID="368a332a-54db-41d0-8f89-dd6f0ceca260" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd6" />
-    <MetadataFile FileName="ServicioOrquestador75.xsd" MetadataType="Schema" ID="4ecdc004-d7cc-4a11-9828-4f760272cbb5" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd3" />
-    <MetadataFile FileName="ServicioOrquestador23.wsdl" MetadataType="Wsdl" ID="6b44d01c-f0ed-4396-9eed-c06c4204d324" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?wsdl" />
-    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="f8ba1029-6e28-437c-8563-8f5d7382185f" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?disco" />
-    <MetadataFile FileName="ServicioOrquestador76.xsd" MetadataType="Schema" ID="304f7750-b396-48b6-9381-21645e018453" SourceId="1" SourceUrl="http://nbar15037:8080/ServicioOrquestador?xsd=xsd4" />
+    <MetadataFile FileName="ServicioOrquestador3.wsdl" MetadataType="Wsdl" ID="c0c5bc22-7951-4889-8ff6-5c3cb100bb07" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?wsdl" />
+    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="83c89437-0286-4025-a79d-1ec2a751fc75" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd6" />
+    <MetadataFile FileName="ServicioOrquestador8.xsd" MetadataType="Schema" ID="4ea87f21-5ac9-4285-96bd-6e0dbd5cad25" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd5" />
+    <MetadataFile FileName="ServicioOrquestador4.wsdl" MetadataType="Wsdl" ID="69f32357-0c5a-4708-9a15-22203a8a5e53" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?wsdl=wsdl0" />
+    <MetadataFile FileName="ServicioOrquestador9.xsd" MetadataType="Schema" ID="2c8ac9f9-30f6-42fa-ae49-3c41a3f13263" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd3" />
+    <MetadataFile FileName="ServicioOrquestador10.xsd" MetadataType="Schema" ID="2a9ae6a3-90af-45d1-a924-06beb85b819a" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd2" />
+    <MetadataFile FileName="ServicioOrquestador11.xsd" MetadataType="Schema" ID="78aa2e4f-c5e5-40b9-a3ca-0653f1ca4367" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd1" />
+    <MetadataFile FileName="ServicioOrquestador12.xsd" MetadataType="Schema" ID="f8fe2e74-7135-4150-b16c-67464b037012" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd0" />
+    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="6409017f-714d-44ed-b4fd-57db03fd9eb1" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?disco" />
+    <MetadataFile FileName="ServicioOrquestador13.xsd" MetadataType="Schema" ID="3c2321f9-41e5-4deb-a67d-7c33ea34f79f" SourceId="1" SourceUrl="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

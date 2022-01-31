@@ -186,7 +186,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.CentroId = datosUsuario.CentroId;
             ViewBag.TaraRomaneosPesos = taraRomaneos.Select(x => x.Id.ToString(CultureInfo.InvariantCulture) + "," + x.CargaPesoManual + "," + x.Peso).ToList();
             ViewBag.TaraRomaneos = taraRomaneos.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Codigo + " - " + x.Descripcion);
-            ViewBag.Balanzas = servicio.ListarBalanzas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
+            ViewBag.Balanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
             ViewBag.Materiales = romaneo.RomaneoItemsPedidos.ToSelectList(x => x.MaterialId.ToString(CultureInfo.InvariantCulture),x => x.MaterialDescripcion);
             ViewBag.Almacenes = servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId,false).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
 
@@ -226,7 +226,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.CentroId = centroId;
             ViewBag.TaraRomaneosPesos = taraRomaneos.Select(x => x.Id.ToString(CultureInfo.InvariantCulture) + "," + x.CargaPesoManual + "," + x.Peso).ToList();
             ViewBag.TaraRomaneos = taraRomaneos.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture),x => x.Codigo + " - " + x.Descripcion);
-            ViewBag.Balanzas = servicio.ListarBalanzas(centroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
+            ViewBag.Balanzas = servicio.ListarBalanzasActivas(centroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
             ViewBag.Materiales = romaneo.RomaneoItemsPedidos.ToSelectList(x => x.MaterialId.ToString(CultureInfo.InvariantCulture),x => x.MaterialDescripcion);
             ViewBag.Almacenes = servicio.ListarAlmacenesPorCentroYesSustentable(centroId,false).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
             return View(item);

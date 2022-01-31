@@ -43,7 +43,8 @@ namespace Molinos.Scato.Web.Firmware
                         Fecha = DateTime.Now.Formatted(),
                         CentroId = lecturaPuestoDeTrabajo.CentroId,
                         PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId
-                    }
+                    },
+                    OrigenImpresion = "FirmwareImprimeTarjetaDeAcceso"
                 });
                 if (resultadoImpresion.HayErrores)
                 {

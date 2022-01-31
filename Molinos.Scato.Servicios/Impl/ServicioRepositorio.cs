@@ -228,21 +228,27 @@ namespace Molinos.Scato.Servicios.Impl
             return balanza != null ? balanza.Nombre : "";
         }
 
+        public IList<BalanzaDto> ListarTodasLasBalanzasActivas(int centroId)
+        {
+            return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId && x.Desactivado == false, 20);
+        }
+
         public IList<BalanzaDto> ListarTodasLasBalanzas(int centroId)
         {
             return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId, 20);
         }
 
-        public IList<BalanzaDto> ListarBalanzas(int centroId, TipoVehiculo tipoVehiculo)
+        public IList<BalanzaDto> ListarBalanzasActivas(int centroId, TipoVehiculo tipoVehiculo)
         {
             var tipo = tipoVehiculo == TipoVehiculo.Tren ? tipoVehiculo : TipoVehiculo.Camión;
-            return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId && x.TipoVehiculo == tipo, 20);
+            return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId && x.TipoVehiculo == tipo && x.Desactivado == false, 20);
         }
 
-        public IList<BalanzaDto> ListarBalanzasPorNombrePc(int centroId, string nombrePc, TipoVehiculo tipoVehiculo)
+        public IList<BalanzaDto> ListarBalanzasActivasPorNombrePc(int centroId, string nombrePc, TipoVehiculo tipoVehiculo)
         {
             var tipo = tipoVehiculo == TipoVehiculo.Tren ? tipoVehiculo : TipoVehiculo.Camión;
-            return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId && x.PuestoDeTrabajo == nombrePc && x.TipoVehiculo == tipo);
+            return Listar<Balanza, BalanzaDto>(x => x.Centro.Id == centroId && x.PuestoDeTrabajo == nombrePc && x.TipoVehiculo == tipo
+                && x.Desactivado == false);
         }
         public IList<BalanzaAutomaticaDto> ListarPuestosAutomaticosporCentro(int centroId)
         {

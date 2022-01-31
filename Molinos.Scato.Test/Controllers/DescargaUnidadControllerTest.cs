@@ -88,7 +88,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.ObtenerDescargaUnidadProveedor(It.IsAny<int>())).Returns(new DescargaUnidadDto() { DescargaUnidadItems = new List<DescargaUnidadItemDto>() });
             servRepositorioMock.Setup(s => s.ListarTaraRomaneosPorCentro(It.IsAny<int>()))
                                .Returns(new List<TaraRomaneoDto>(){ new TaraRomaneoDto()});
-            servRepositorioMock.Setup(s => s.ListarBalanzas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns( new List<BalanzaDto>());
+            servRepositorioMock.Setup(s => s.ListarBalanzasActivas(It.IsAny<int>(), TipoVehiculo.Camión)).Returns( new List<BalanzaDto>());
         }
         [Test]
         public void TestIndex()

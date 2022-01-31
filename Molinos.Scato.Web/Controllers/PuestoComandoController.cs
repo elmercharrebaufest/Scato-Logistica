@@ -245,7 +245,7 @@ namespace Molinos.Scato.Web.Controllers
             esSustentable = ConfigurationManager.AppSettings["SepararAlmacenSustentable"] == "false" ? false : esSustentable;
             ViewBag.BalanzasObligatorias = servicio.BalanzasObligatoriasEnPuestoComando(datosUsuario.CentroId);
             ViewBag.Calles = servicio.ListarCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
-            ViewBag.Balanzas = servicio.ListarBalanzas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
+            ViewBag.Balanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             ViewBag.Almacenes = materialId.HasValue ?
                                 sustentableMixto ? servicio.ListarAlmacenesPorMaterialYCentroSustentableMixto(datosUsuario.CentroId, materialId.Value)
                                     .ToSelectList(x => x.Id.ToString(), x => x.Descripcion) :

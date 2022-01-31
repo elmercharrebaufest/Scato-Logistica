@@ -515,7 +515,8 @@ namespace Molinos.Scato.Web.Controllers
                     Fecha = DateTime.Now.Formatted(),
                     CentroId = datosUsuario.CentroId,
                     PuestoDeTrabajoId = model.PuestoDeTrabajoId
-                }
+                },
+                OrigenImpresion = "CargaDeCupoController"
             });
             if (resultadoImpresion.HayErrores)
             {

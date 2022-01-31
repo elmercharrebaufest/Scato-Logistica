@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://orquestador.molinos.com.ar" elementFormDefault="qualified" targetNamespace="http://orquestador.molinos.com.ar" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
-  <xs:import schemaLocation="http://nbar15037:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+  <xs:import schemaLocation="http://valhalla:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="Ejecutar">
     <xs:complexType>
       <xs:sequence>
@@ -370,6 +370,20 @@
   <xs:element name="PrenderApagarDispositivoResponse">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerIntercomunicadorPuertoDeAudio">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoDispositivo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerIntercomunicadorPuertoDeAudioResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ObtenerIntercomunicadorPuertoDeAudioResult" nillable="true" type="xs:int" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>
