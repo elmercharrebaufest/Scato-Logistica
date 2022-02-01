@@ -8,15 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Molinos.Scato.Servicios.Orquestador
-{
+namespace Molinos.Scato.Servicios.Orquestador {
     using System.Runtime.Serialization;
     using System;
-
-
+    
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "Comando", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Comando", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ComandoDepurarSuscripciones))]
@@ -46,244 +45,199 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarVerificacionDispositivo))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCereoCabezal))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarPesaje))]
-    public partial class Comando : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-    {
-
+    public partial class Comando : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodigoDispositivoField;
-
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
                 return this.extensionDataField;
             }
-            set
-            {
+            set {
                 this.extensionDataField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CodigoDispositivo
-        {
-            get
-            {
+        public string CodigoDispositivo {
+            get {
                 return this.CodigoDispositivoField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.CodigoDispositivoField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.CodigoDispositivoField, value) != true)) {
                     this.CodigoDispositivoField = value;
                     this.RaisePropertyChanged("CodigoDispositivo");
                 }
             }
         }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
+        
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null))
-            {
+            if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ComandoCancelarSuscripcion", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ComandoCancelarSuscripcion", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class ComandoCancelarSuscripcion : Molinos.Scato.Servicios.Orquestador.Comando
-    {
-
+    public partial class ComandoCancelarSuscripcion : Molinos.Scato.Servicios.Orquestador.Comando {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool CancelarTodasField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdSuscripcionField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string RutaAccesoSuscriptorField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool CancelarTodas
-        {
-            get
-            {
+        public bool CancelarTodas {
+            get {
                 return this.CancelarTodasField;
             }
-            set
-            {
-                if ((this.CancelarTodasField.Equals(value) != true))
-                {
+            set {
+                if ((this.CancelarTodasField.Equals(value) != true)) {
                     this.CancelarTodasField = value;
                     this.RaisePropertyChanged("CancelarTodas");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdSuscripcion
-        {
-            get
-            {
+        public int IdSuscripcion {
+            get {
                 return this.IdSuscripcionField;
             }
-            set
-            {
-                if ((this.IdSuscripcionField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdSuscripcionField.Equals(value) != true)) {
                     this.IdSuscripcionField = value;
                     this.RaisePropertyChanged("IdSuscripcion");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RutaAccesoSuscriptor
-        {
-            get
-            {
+        public string RutaAccesoSuscriptor {
+            get {
                 return this.RutaAccesoSuscriptorField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.RutaAccesoSuscriptorField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.RutaAccesoSuscriptorField, value) != true)) {
                     this.RutaAccesoSuscriptorField = value;
                     this.RaisePropertyChanged("RutaAccesoSuscriptor");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ComandoDepurarSuscripciones", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ComandoDepurarSuscripciones", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class ComandoDepurarSuscripciones : Molinos.Scato.Servicios.Orquestador.Comando
-    {
-
+    public partial class ComandoDepurarSuscripciones : Molinos.Scato.Servicios.Orquestador.Comando {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool DepurarPersistentesField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime VencimientoField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool DepurarPersistentes
-        {
-            get
-            {
+        public bool DepurarPersistentes {
+            get {
                 return this.DepurarPersistentesField;
             }
-            set
-            {
-                if ((this.DepurarPersistentesField.Equals(value) != true))
-                {
+            set {
+                if ((this.DepurarPersistentesField.Equals(value) != true)) {
                     this.DepurarPersistentesField = value;
                     this.RaisePropertyChanged("DepurarPersistentes");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime Vencimiento
-        {
-            get
-            {
+        public System.DateTime Vencimiento {
+            get {
                 return this.VencimientoField;
             }
-            set
-            {
-                if ((this.VencimientoField.Equals(value) != true))
-                {
+            set {
+                if ((this.VencimientoField.Equals(value) != true)) {
                     this.VencimientoField = value;
                     this.RaisePropertyChanged("Vencimiento");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ComandoSuscribir", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ComandoSuscribir", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class ComandoSuscribir : Molinos.Scato.Servicios.Orquestador.Comando
-    {
-
+    public partial class ComandoSuscribir : Molinos.Scato.Servicios.Orquestador.Comando {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodigoEventoField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool PersistenteField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string RutaAccesoSuscriptorField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CodigoEvento
-        {
-            get
-            {
+        public string CodigoEvento {
+            get {
                 return this.CodigoEventoField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.CodigoEventoField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.CodigoEventoField, value) != true)) {
                     this.CodigoEventoField = value;
                     this.RaisePropertyChanged("CodigoEvento");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Persistente
-        {
-            get
-            {
+        public bool Persistente {
+            get {
                 return this.PersistenteField;
             }
-            set
-            {
-                if ((this.PersistenteField.Equals(value) != true))
-                {
+            set {
+                if ((this.PersistenteField.Equals(value) != true)) {
                     this.PersistenteField = value;
                     this.RaisePropertyChanged("Persistente");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RutaAccesoSuscriptor
-        {
-            get
-            {
+        public string RutaAccesoSuscriptor {
+            get {
                 return this.RutaAccesoSuscriptorField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.RutaAccesoSuscriptorField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.RutaAccesoSuscriptorField, value) != true)) {
                     this.RutaAccesoSuscriptorField = value;
                     this.RaisePropertyChanged("RutaAccesoSuscriptor");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ComandoEjecutar", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ComandoEjecutar", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarActivarDisplay))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaBarreraMaestro))]
@@ -309,10 +263,9 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarVerificacionDispositivo))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCereoCabezal))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarPesaje))]
-    public partial class ComandoEjecutar : Molinos.Scato.Servicios.Orquestador.Comando
-    {
+    public partial class ComandoEjecutar : Molinos.Scato.Servicios.Orquestador.Comando {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarActivarDisplay", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
@@ -430,147 +383,119 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarBorrarBalanzadasPorRango", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarBorrarBalanzadasPorRango : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarBorrarBalanzadasPorRango : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBalanzadaFinField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBalanzadaInicioField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBalanzadaFin
-        {
-            get
-            {
+        public int IdBalanzadaFin {
+            get {
                 return this.IdBalanzadaFinField;
             }
-            set
-            {
-                if ((this.IdBalanzadaFinField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaFinField.Equals(value) != true)) {
                     this.IdBalanzadaFinField = value;
                     this.RaisePropertyChanged("IdBalanzadaFin");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBalanzadaInicio
-        {
-            get
-            {
+        public int IdBalanzadaInicio {
+            get {
                 return this.IdBalanzadaInicioField;
             }
-            set
-            {
-                if ((this.IdBalanzadaInicioField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaInicioField.Equals(value) != true)) {
                     this.IdBalanzadaInicioField = value;
                     this.RaisePropertyChanged("IdBalanzadaInicio");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarConsultaBalanzadaPorRango", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarConsultaBalanzadaPorRango", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarConsultaBalanzadaPorRango : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarConsultaBalanzadaPorRango : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBalanzadaFinField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBalanzadaInicioField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBalanzadaFin
-        {
-            get
-            {
+        public int IdBalanzadaFin {
+            get {
                 return this.IdBalanzadaFinField;
             }
-            set
-            {
-                if ((this.IdBalanzadaFinField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaFinField.Equals(value) != true)) {
                     this.IdBalanzadaFinField = value;
                     this.RaisePropertyChanged("IdBalanzadaFin");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBalanzadaInicio
-        {
-            get
-            {
+        public int IdBalanzadaInicio {
+            get {
                 return this.IdBalanzadaInicioField;
             }
-            set
-            {
-                if ((this.IdBalanzadaInicioField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaInicioField.Equals(value) != true)) {
                     this.IdBalanzadaInicioField = value;
                     this.RaisePropertyChanged("IdBalanzadaInicio");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarConsultaBalanzada", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarConsultaBalanzada", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarConsultaBalanzada : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarConsultaBalanzada : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> IdBalanzadaField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> IdBalanzada
-        {
-            get
-            {
+        public System.Nullable<int> IdBalanzada {
+            get {
                 return this.IdBalanzadaField;
             }
-            set
-            {
-                if ((this.IdBalanzadaField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaField.Equals(value) != true)) {
                     this.IdBalanzadaField = value;
                     this.RaisePropertyChanged("IdBalanzada");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarBorrarBalanzada", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarBorrarBalanzada", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarBorrarBalanzada : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarBorrarBalanzada : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBorradoField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBorrado
-        {
-            get
-            {
+        public int IdBorrado {
+            get {
                 return this.IdBorradoField;
             }
-            set
-            {
-                if ((this.IdBorradoField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBorradoField.Equals(value) != true)) {
                     this.IdBorradoField = value;
                     this.RaisePropertyChanged("IdBorrado");
                 }
@@ -681,75 +606,63 @@ namespace Molinos.Scato.Servicios.Orquestador
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarEstacionMeteorologica", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEstacionMeteorologica", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarEstacionMeteorologica : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarEstacionMeteorologica : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarAnalisis", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarAnalisis", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarAnalisis : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarAnalisis : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string IdentificadorDeMuestraField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MaterialField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string IdentificadorDeMuestra
-        {
-            get
-            {
+        public string IdentificadorDeMuestra {
+            get {
                 return this.IdentificadorDeMuestraField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.IdentificadorDeMuestraField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.IdentificadorDeMuestraField, value) != true)) {
                     this.IdentificadorDeMuestraField = value;
                     this.RaisePropertyChanged("IdentificadorDeMuestra");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Material
-        {
-            get
-            {
+        public string Material {
+            get {
                 return this.MaterialField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.MaterialField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.MaterialField, value) != true)) {
                     this.MaterialField = value;
                     this.RaisePropertyChanged("Material");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarObtenerUltimaFoto", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarObtenerUltimaFoto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarObtenerUltimaFoto : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarObtenerUltimaFoto : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarEnviarMensaje", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEnviarMensaje", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarEnviarMensaje : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarEnviarMensaje : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NumeroProgramaField;
         
@@ -761,7 +674,7 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextoField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string NumeroPrograma {
             get {
@@ -806,143 +719,119 @@ namespace Molinos.Scato.Servicios.Orquestador
             get {
                 return this.TextoField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.TextoField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.TextoField, value) != true)) {
                     this.TextoField = value;
                     this.RaisePropertyChanged("Texto");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarTomarFoto", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarTomarFoto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarTomarFoto : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarTomarFoto : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FileNameField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FilePathField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SubPathField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string FileName
-        {
-            get
-            {
+        public string FileName {
+            get {
                 return this.FileNameField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.FileNameField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.FileNameField, value) != true)) {
                     this.FileNameField = value;
                     this.RaisePropertyChanged("FileName");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string FilePath
-        {
-            get
-            {
+        public string FilePath {
+            get {
                 return this.FilePathField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.FilePathField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.FilePathField, value) != true)) {
                     this.FilePathField = value;
                     this.RaisePropertyChanged("FilePath");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SubPath
-        {
-            get
-            {
+        public string SubPath {
+            get {
                 return this.SubPathField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.SubPathField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.SubPathField, value) != true)) {
                     this.SubPathField = value;
                     this.RaisePropertyChanged("SubPath");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarAnalisisHumedad", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarAnalisisHumedad", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarAnalisisHumedad : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
-
+    public partial class EjecutarAnalisisHumedad : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime FechaDeInicioField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime FechaDeInicio
-        {
-            get
-            {
+        public System.DateTime FechaDeInicio {
+            get {
                 return this.FechaDeInicioField;
             }
-            set
-            {
-                if ((this.FechaDeInicioField.Equals(value) != true))
-                {
+            set {
+                if ((this.FechaDeInicioField.Equals(value) != true)) {
                     this.FechaDeInicioField = value;
                     this.RaisePropertyChanged("FechaDeInicio");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarAperturaBarrera", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarAperturaBarrera", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarAperturaBarrera : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarAperturaBarrera : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarVerificacionDispositivo", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarVerificacionDispositivo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarVerificacionDispositivo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarVerificacionDispositivo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarCereoCabezal", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarCereoCabezal", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarCereoCabezal : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarCereoCabezal : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "EjecutarPesaje", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarPesaje", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
-    public partial class EjecutarPesaje : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar
-    {
+    public partial class EjecutarPesaje : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
@@ -961,7 +850,7 @@ namespace Molinos.Scato.Servicios.Orquestador
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoComando", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoComando", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir))]
@@ -974,171 +863,141 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
-    public partial class ResultadoComando : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-    {
-
+    public partial class ResultadoComando : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Molinos.Scato.Servicios.Orquestador.Mensaje MensajeField;
-
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
                 return this.extensionDataField;
             }
-            set
-            {
+            set {
                 this.extensionDataField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.Mensaje Mensaje
-        {
-            get
-            {
+        public Molinos.Scato.Servicios.Orquestador.Mensaje Mensaje {
+            get {
                 return this.MensajeField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.MensajeField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.MensajeField, value) != true)) {
                     this.MensajeField = value;
                     this.RaisePropertyChanged("Mensaje");
                 }
             }
         }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
+        
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null))
-            {
+            if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "Mensaje", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Mensaje", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class Mensaje : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-    {
-
+    public partial class Mensaje : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int CodigoField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescripcionField;
-
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
                 return this.extensionDataField;
             }
-            set
-            {
+            set {
                 this.extensionDataField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Codigo
-        {
-            get
-            {
+        public int Codigo {
+            get {
                 return this.CodigoField;
             }
-            set
-            {
-                if ((this.CodigoField.Equals(value) != true))
-                {
+            set {
+                if ((this.CodigoField.Equals(value) != true)) {
                     this.CodigoField = value;
                     this.RaisePropertyChanged("Codigo");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Descripcion
-        {
-            get
-            {
+        public string Descripcion {
+            get {
                 return this.DescripcionField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.DescripcionField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.DescripcionField, value) != true)) {
                     this.DescripcionField = value;
                     this.RaisePropertyChanged("Descripcion");
                 }
             }
         }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
+        
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null))
-            {
+            if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoCancelarSuscripcion", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoCancelarSuscripcion : Molinos.Scato.Servicios.Orquestador.ResultadoComando
-    {
+    public partial class ResultadoCancelarSuscripcion : Molinos.Scato.Servicios.Orquestador.ResultadoComando {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoSuscribir", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoSuscribir", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoSuscribir : Molinos.Scato.Servicios.Orquestador.ResultadoComando
-    {
-
+    public partial class ResultadoSuscribir : Molinos.Scato.Servicios.Orquestador.ResultadoComando {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdSuscripcionField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdSuscripcion
-        {
-            get
-            {
+        public int IdSuscripcion {
+            get {
                 return this.IdSuscripcionField;
             }
-            set
-            {
-                if ((this.IdSuscripcionField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdSuscripcionField.Equals(value) != true)) {
                     this.IdSuscripcionField = value;
                     this.RaisePropertyChanged("IdSuscripcion");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoEjecutar", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoEjecutar", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoBorrarBalanzadasPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzadaPorRango))]
@@ -1148,122 +1007,101 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
-    public partial class ResultadoEjecutar : Molinos.Scato.Servicios.Orquestador.ResultadoComando
-    {
-
+    public partial class ResultadoEjecutar : Molinos.Scato.Servicios.Orquestador.ResultadoComando {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<string, decimal> ValoresField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.Dictionary<string, decimal> Valores
-        {
-            get
-            {
+        public System.Collections.Generic.Dictionary<string, decimal> Valores {
+            get {
                 return this.ValoresField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ValoresField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ValoresField, value) != true)) {
                     this.ValoresField = value;
                     this.RaisePropertyChanged("Valores");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoBorrarBalanzadasPorRango", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoBorrarBalanzadasPorRango", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoBorrarBalanzadasPorRango : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoBorrarBalanzadasPorRango : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdBalanzadaInicioField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdBalanzadaInicio
-        {
-            get
-            {
+        public int IdBalanzadaInicio {
+            get {
                 return this.IdBalanzadaInicioField;
             }
-            set
-            {
-                if ((this.IdBalanzadaInicioField.Equals(value) != true))
-                {
+            set {
+                if ((this.IdBalanzadaInicioField.Equals(value) != true)) {
                     this.IdBalanzadaInicioField = value;
                     this.RaisePropertyChanged("IdBalanzadaInicio");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoConsultaBalanzadaPorRango", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoConsultaBalanzadaPorRango", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoConsultaBalanzadaPorRango : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoConsultaBalanzadaPorRango : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada[] BalanzadasField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada[] Balanzadas
-        {
-            get
-            {
+        public Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada[] Balanzadas {
+            get {
                 return this.BalanzadasField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.BalanzadasField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.BalanzadasField, value) != true)) {
                     this.BalanzadasField = value;
                     this.RaisePropertyChanged("Balanzadas");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoConsultaBalanzada", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoConsultaBalanzada", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoConsultaBalanzada : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoConsultaBalanzada : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<string, string> ValoresBalanzadaField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.Dictionary<string, string> ValoresBalanzada
-        {
-            get
-            {
+        public System.Collections.Generic.Dictionary<string, string> ValoresBalanzada {
+            get {
                 return this.ValoresBalanzadaField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ValoresBalanzadaField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ValoresBalanzadaField, value) != true)) {
                     this.ValoresBalanzadaField = value;
                     this.RaisePropertyChanged("ValoresBalanzada");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoBorrarBalanzada", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoBorrarBalanzada", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoBorrarBalanzada : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
+    public partial class ResultadoBorrarBalanzada : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoEjecutarQuery", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
@@ -1291,231 +1129,189 @@ namespace Molinos.Scato.Servicios.Orquestador
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoMeteorologica", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoMeteorologica : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoMeteorologica : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Molinos.Scato.Servicios.Orquestador.MeteorologicaDto[] ImagenesField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.MeteorologicaDto[] Imagenes
-        {
-            get
-            {
+        public Molinos.Scato.Servicios.Orquestador.MeteorologicaDto[] Imagenes {
+            get {
                 return this.ImagenesField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ImagenesField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ImagenesField, value) != true)) {
                     this.ImagenesField = value;
                     this.RaisePropertyChanged("Imagenes");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoObtenerPatente", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoObtenerPatente", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoObtenerPatente : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoObtenerPatente : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private float ConfianzaField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] ImagenField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PatenteField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public float Confianza
-        {
-            get
-            {
+        public float Confianza {
+            get {
                 return this.ConfianzaField;
             }
-            set
-            {
-                if ((this.ConfianzaField.Equals(value) != true))
-                {
+            set {
+                if ((this.ConfianzaField.Equals(value) != true)) {
                     this.ConfianzaField = value;
                     this.RaisePropertyChanged("Confianza");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Imagen
-        {
-            get
-            {
+        public byte[] Imagen {
+            get {
                 return this.ImagenField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ImagenField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ImagenField, value) != true)) {
                     this.ImagenField = value;
                     this.RaisePropertyChanged("Imagen");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Patente
-        {
-            get
-            {
+        public string Patente {
+            get {
                 return this.PatenteField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.PatenteField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.PatenteField, value) != true)) {
                     this.PatenteField = value;
                     this.RaisePropertyChanged("Patente");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "ResultadoTomarFoto", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoTomarFoto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
     [System.SerializableAttribute()]
-    public partial class ResultadoTomarFoto : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar
-    {
-
+    public partial class ResultadoTomarFoto : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] ImagenField;
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Imagen
-        {
-            get
-            {
+        public byte[] Imagen {
+            get {
                 return this.ImagenField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ImagenField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ImagenField, value) != true)) {
                     this.ImagenField = value;
                     this.RaisePropertyChanged("Imagen");
                 }
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "MeteorologicaDto", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MeteorologicaDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
     [System.SerializableAttribute()]
-    public partial class MeteorologicaDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-    {
-
+    public partial class MeteorologicaDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescripcionField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string[] DetalleField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[][] ImagenesField;
-
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
                 return this.extensionDataField;
             }
-            set
-            {
+            set {
                 this.extensionDataField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Descripcion
-        {
-            get
-            {
+        public string Descripcion {
+            get {
                 return this.DescripcionField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.DescripcionField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.DescripcionField, value) != true)) {
                     this.DescripcionField = value;
                     this.RaisePropertyChanged("Descripcion");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string[] Detalle
-        {
-            get
-            {
+        public string[] Detalle {
+            get {
                 return this.DetalleField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.DetalleField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.DetalleField, value) != true)) {
                     this.DetalleField = value;
                     this.RaisePropertyChanged("Detalle");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[][] Imagenes
-        {
-            get
-            {
+        public byte[][] Imagenes {
+            get {
                 return this.ImagenesField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.ImagenesField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.ImagenesField, value) != true)) {
                     this.ImagenesField = value;
                     this.RaisePropertyChanged("Imagenes");
                 }
             }
         }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
+        
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null))
-            {
+            if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "DispositivoDto", Namespace = "http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DispositivoDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
     [System.SerializableAttribute()]
-    public partial class DispositivoDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-    {
-
+    public partial class DispositivoDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool ActivoField;
         
@@ -1524,7 +1320,7 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodigoField;
-
+        
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescripcionField;
         
@@ -1538,18 +1334,15 @@ namespace Molinos.Scato.Servicios.Orquestador
         private string SectorField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
-        {
-            get
-            {
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
                 return this.extensionDataField;
             }
-            set
-            {
+            set {
                 this.extensionDataField = value;
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool Activo {
             get {
@@ -1581,27 +1374,21 @@ namespace Molinos.Scato.Servicios.Orquestador
             get {
                 return this.CodigoField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.CodigoField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
                     this.CodigoField = value;
                     this.RaisePropertyChanged("Codigo");
                 }
             }
         }
-
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Descripcion
-        {
-            get
-            {
+        public string Descripcion {
+            get {
                 return this.DescripcionField;
             }
-            set
-            {
-                if ((object.ReferenceEquals(this.DescripcionField, value) != true))
-                {
+            set {
+                if ((object.ReferenceEquals(this.DescripcionField, value) != true)) {
                     this.DescripcionField = value;
                     this.RaisePropertyChanged("Descripcion");
                 }
@@ -1648,12 +1435,10 @@ namespace Molinos.Scato.Servicios.Orquestador
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
+        
+        protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null))
-            {
+            if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
@@ -1721,42 +1506,41 @@ namespace Molinos.Scato.Servicios.Orquestador
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace = "http://orquestador.molinos.com.ar", ConfigurationName = "Orquestador.IServicioOrquestador")]
-    public interface IServicioOrquestador
-    {
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/EjecutarResponse")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://orquestador.molinos.com.ar", ConfigurationName="Orquestador.IServicioOrquestador")]
+    public interface IServicioOrquestador {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/EjecutarResponse")]
         Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar Ejecutar(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/EjecutarResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/EjecutarResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar> EjecutarAsync(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/Suscribir", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Suscribir", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirResponse")]
         Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir Suscribir(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/Suscribir", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Suscribir", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/SuscribirResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir> SuscribirAsync(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcion", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionRespons" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcion", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionRespons" +
             "e")]
         Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion CancelarSuscripcion(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcion", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionRespons" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcion", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/CancelarSuscripcionRespons" +
             "e")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion> CancelarSuscripcionAsync(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracion", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracionRespo" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracion", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracionRespo" +
             "nse")]
         Molinos.Scato.Servicios.Orquestador.ResultadoComando RecargarConfiguracion(string codigoDispositivo);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracion", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracionRespo" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracion", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/RecargarConfiguracionRespo" +
             "nse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfiguracionAsync(string codigoDispositivo);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectores", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectoresResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectoresResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarLectores();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectores", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectoresResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectores", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarLectoresResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarLectoresAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarPuestoDeViandas", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarPuestoDeViandasRespo" +
@@ -1777,23 +1561,23 @@ namespace Molinos.Scato.Servicios.Orquestador
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzas", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBalanzas();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzas", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzas", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasAsync();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuerto", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuertoResp" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuerto", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuertoResp" +
             "onse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBalanzasDePuerto();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuerto", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuertoResp" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuerto", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBalanzasDePuertoResp" +
             "onse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasDePuertoAsync();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforos", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforosRes" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforos", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforosRes" +
             "ponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBarrerasSemaforos();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforos", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforosRes" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforos", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarBarrerasSemaforosRes" +
             "ponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBarrerasSemaforosAsync();
         
@@ -1806,31 +1590,31 @@ namespace Molinos.Scato.Servicios.Orquestador
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" +
             "")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarHumedimetros();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetros", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarHumedimetrosResponse" +
             "")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarHumedimetrosAsync();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamaras", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamarasResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamaras", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamarasResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarCamaras();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamaras", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamarasResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamaras", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarCamarasResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarCamarasAsync();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
-            "a", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
+            "a", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
             "aResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarEstacionMeteorologica();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
-            "a", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
+            "a", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarEstacionMeteorologic" +
             "aResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarEstacionMeteorologicaAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirs", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirsResponse")]
         Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarNirs();
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirs", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirsResponse")]
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirs", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarNirsResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarNirsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarImpresorasHasar", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarImpresorasHasarRespo" +
@@ -1886,26 +1670,26 @@ namespace Molinos.Scato.Servicios.Orquestador
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestadorR" +
             "esponse")]
         void DetenerServiceOrquestador(string server);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestador", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestadorR" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/DetenerServiceOrquestadorR" +
             "esponse")]
         System.Threading.Tasks.Task DetenerServiceOrquestadorAsync(string server);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
-            "tador", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
+            "tador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
             "tadorResponse")]
         string ObtenerEstadoServiceOrquestador(string server);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
-            "tador", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
+            "tador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerEstadoServiceOrques" +
             "tadorResponse")]
         System.Threading.Tasks.Task<string> ObtenerEstadoServiceOrquestadorAsync(string server);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestador", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestadorR" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestadorR" +
             "esponse")]
         void IniciarServiceOrquestador(string server);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestador", ReplyAction = "http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestadorR" +
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestador", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/IniciarServiceOrquestadorR" +
             "esponse")]
         System.Threading.Tasks.Task IniciarServiceOrquestadorAsync(string server);
         
@@ -1949,88 +1733,71 @@ namespace Molinos.Scato.Servicios.Orquestador
             "rtoDeAudioResponse")]
         System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServicioOrquestadorChannel : Molinos.Scato.Servicios.Orquestador.IServicioOrquestador, System.ServiceModel.IClientChannel
-    {
+    public interface IServicioOrquestadorChannel : Molinos.Scato.Servicios.Orquestador.IServicioOrquestador, System.ServiceModel.IClientChannel {
     }
-
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServicioOrquestadorClient : System.ServiceModel.ClientBase<Molinos.Scato.Servicios.Orquestador.IServicioOrquestador>, Molinos.Scato.Servicios.Orquestador.IServicioOrquestador
-    {
-
-        public ServicioOrquestadorClient()
-        {
+    public partial class ServicioOrquestadorClient : System.ServiceModel.ClientBase<Molinos.Scato.Servicios.Orquestador.IServicioOrquestador>, Molinos.Scato.Servicios.Orquestador.IServicioOrquestador {
+        
+        public ServicioOrquestadorClient() {
         }
-
-        public ServicioOrquestadorClient(string endpointConfigurationName) :
-                base(endpointConfigurationName)
-        {
+        
+        public ServicioOrquestadorClient(string endpointConfigurationName) : 
+                base(endpointConfigurationName) {
         }
-
-        public ServicioOrquestadorClient(string endpointConfigurationName, string remoteAddress) :
-                base(endpointConfigurationName, remoteAddress)
-        {
+        
+        public ServicioOrquestadorClient(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
         }
-
-        public ServicioOrquestadorClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
-                base(endpointConfigurationName, remoteAddress)
-        {
+        
+        public ServicioOrquestadorClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
         }
-
-        public ServicioOrquestadorClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
-                base(binding, remoteAddress)
-        {
+        
+        public ServicioOrquestadorClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress) {
         }
-
-        public Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar Ejecutar(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando)
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar Ejecutar(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando) {
             return base.Channel.Ejecutar(comando);
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar> EjecutarAsync(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando)
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar> EjecutarAsync(Molinos.Scato.Servicios.Orquestador.ComandoEjecutar comando) {
             return base.Channel.EjecutarAsync(comando);
         }
-
-        public Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir Suscribir(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando)
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir Suscribir(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando) {
             return base.Channel.Suscribir(comando);
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir> SuscribirAsync(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando)
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoSuscribir> SuscribirAsync(Molinos.Scato.Servicios.Orquestador.ComandoSuscribir comando) {
             return base.Channel.SuscribirAsync(comando);
         }
-
-        public Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion CancelarSuscripcion(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando)
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion CancelarSuscripcion(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando) {
             return base.Channel.CancelarSuscripcion(comando);
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion> CancelarSuscripcionAsync(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando)
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion> CancelarSuscripcionAsync(Molinos.Scato.Servicios.Orquestador.ComandoCancelarSuscripcion comando) {
             return base.Channel.CancelarSuscripcionAsync(comando);
         }
-
-        public Molinos.Scato.Servicios.Orquestador.ResultadoComando RecargarConfiguracion(string codigoDispositivo)
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.ResultadoComando RecargarConfiguracion(string codigoDispositivo) {
             return base.Channel.RecargarConfiguracion(codigoDispositivo);
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfiguracionAsync(string codigoDispositivo)
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.ResultadoComando> RecargarConfiguracionAsync(string codigoDispositivo) {
             return base.Channel.RecargarConfiguracionAsync(codigoDispositivo);
         }
-
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarLectores()
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarLectores() {
             return base.Channel.ListarLectores();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarLectoresAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarLectoresAsync() {
             return base.Channel.ListarLectoresAsync();
         }
         
@@ -2053,29 +1820,24 @@ namespace Molinos.Scato.Servicios.Orquestador
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBalanzas() {
             return base.Channel.ListarBalanzas();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasAsync() {
             return base.Channel.ListarBalanzasAsync();
         }
-
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBalanzasDePuerto()
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBalanzasDePuerto() {
             return base.Channel.ListarBalanzasDePuerto();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasDePuertoAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBalanzasDePuertoAsync() {
             return base.Channel.ListarBalanzasDePuertoAsync();
         }
-
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBarrerasSemaforos()
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarBarrerasSemaforos() {
             return base.Channel.ListarBarrerasSemaforos();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBarrerasSemaforosAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarBarrerasSemaforosAsync() {
             return base.Channel.ListarBarrerasSemaforosAsync();
         }
         
@@ -2090,38 +1852,32 @@ namespace Molinos.Scato.Servicios.Orquestador
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarHumedimetros() {
             return base.Channel.ListarHumedimetros();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarHumedimetrosAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarHumedimetrosAsync() {
             return base.Channel.ListarHumedimetrosAsync();
         }
-
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarCamaras()
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarCamaras() {
             return base.Channel.ListarCamaras();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarCamarasAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarCamarasAsync() {
             return base.Channel.ListarCamarasAsync();
         }
-
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarEstacionMeteorologica()
-        {
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarEstacionMeteorologica() {
             return base.Channel.ListarEstacionMeteorologica();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarEstacionMeteorologicaAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarEstacionMeteorologicaAsync() {
             return base.Channel.ListarEstacionMeteorologicaAsync();
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarNirs() {
             return base.Channel.ListarNirs();
         }
-
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarNirsAsync()
-        {
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarNirsAsync() {
             return base.Channel.ListarNirsAsync();
         }
         
@@ -2184,29 +1940,24 @@ namespace Molinos.Scato.Servicios.Orquestador
         public void DetenerServiceOrquestador(string server) {
             base.Channel.DetenerServiceOrquestador(server);
         }
-
-        public System.Threading.Tasks.Task DetenerServiceOrquestadorAsync(string server)
-        {
+        
+        public System.Threading.Tasks.Task DetenerServiceOrquestadorAsync(string server) {
             return base.Channel.DetenerServiceOrquestadorAsync(server);
         }
-
-        public string ObtenerEstadoServiceOrquestador(string server)
-        {
+        
+        public string ObtenerEstadoServiceOrquestador(string server) {
             return base.Channel.ObtenerEstadoServiceOrquestador(server);
         }
-
-        public System.Threading.Tasks.Task<string> ObtenerEstadoServiceOrquestadorAsync(string server)
-        {
+        
+        public System.Threading.Tasks.Task<string> ObtenerEstadoServiceOrquestadorAsync(string server) {
             return base.Channel.ObtenerEstadoServiceOrquestadorAsync(server);
         }
-
-        public void IniciarServiceOrquestador(string server)
-        {
+        
+        public void IniciarServiceOrquestador(string server) {
             base.Channel.IniciarServiceOrquestador(server);
         }
-
-        public System.Threading.Tasks.Task IniciarServiceOrquestadorAsync(string server)
-        {
+        
+        public System.Threading.Tasks.Task IniciarServiceOrquestadorAsync(string server) {
             return base.Channel.IniciarServiceOrquestadorAsync(server);
         }
         

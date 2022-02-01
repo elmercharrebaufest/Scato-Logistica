@@ -36,7 +36,7 @@ export class GraficoCargaComponent implements AfterViewInit {
       res => this.removerManoDeEmbarque(res.celda, res.sentido)
     );
     this._manosEmbarqueService.removerResaltadoSilos.subscribe(
-      res => this.removerResaltadoSilos()
+      res => this.removerResaltadoSilos(res.posicion, res.esPrevious, res.cantidadEnSilo)
     );
     this._manosEmbarqueService.resaltarSilo.subscribe(
       res => this.resaltarSilo(res)
@@ -51,6 +51,7 @@ export class GraficoCargaComponent implements AfterViewInit {
       res => this.removerTabique(res)
     );
   }
+  
 
   makeDraggable(evt) {
     var svg: any = evt;
@@ -423,14 +424,23 @@ export class GraficoCargaComponent implements AfterViewInit {
 
   resaltarSilo(id){
     let silo = document.querySelector('#siloId'+id);
-    silo.classList.add('siloResaltado');
+    if(silo) silo.classList.add('siloResaltado');
   }
 
-  removerResaltadoSilos(){
-    let silos = document.querySelectorAll('.silo');
-    for (var i = 0; i < silos.length; ++i) {
-      (<HTMLElement>silos[i]).classList.remove('siloResaltado');
-    }
+  
+  removerResaltadoSilos(id, esPrevious?, cantidadEnSilo?){
+    let silos = document.querySelectorAll('#siloId'+id);
+
+    if(silos.length == 0) return;
+    
+    let silo = document.querySelector('#siloId'+id);
+    console.log('Se remueve resaltado Silo ', id);
+    if(silo) silo.classList.remove('siloResaltado');
+    
+    // let silos = document.querySelectorAll('.silo');
+    // for (var i = 0; i < silos.length; ++i) {
+    //   (<HTMLElement>silos[i]).classList.remove('siloResaltado');
+    // }
   }
 
   toggleElementoGrafico(){

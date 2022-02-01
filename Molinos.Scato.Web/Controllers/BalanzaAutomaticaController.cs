@@ -65,11 +65,14 @@ namespace Molinos.Scato.Web.Controllers
             var balanzas = servicio.ListarPuestosAutomaticosporCentro(datosUsuario.CentroId);
             foreach (var balanza in balanzas)
             {
-                var puertoDeAudio = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
-                var intercomunicador =  GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, puertoDeAudio);
-                balanza.IntercomunicadorDispositivo = intercomunicador;
+                if (!string.IsNullOrEmpty(balanza.IntercomunicadorCodigo))
+                {
+                    var puertoDeAudio = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
+                    var intercomunicador = GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, puertoDeAudio);
+                    balanza.IntercomunicadorDispositivo = intercomunicador;
+                }
             }
-            ViewBag.Balanzas = balanzas.Where(x=>x.Orden.HasValue).OrderBy(x=>x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();
+            ViewBag.Balanzas = balanzas.Where(x => x.Orden.HasValue).OrderBy(x => x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();
             ViewBag.Eventos = servicio.ListarErrorBalanzas(balanzas.Select(x => x.PuestoId).ToList()).ToList();
             ViewBag.PantallaPrincipal = servicio.RedireccionarAListaAutomatizada(datosUsuario.NombrePc, datosUsuario.CentroId);
             var vagones = servicio.ListarVagonesEnPesada(datosUsuario.CentroId).OrderBy(x => x.NumeroPatente);
@@ -556,10 +559,10 @@ namespace Molinos.Scato.Web.Controllers
             var proximaActividad = workflows.ObtenerWorkflowProximaAccion(tren.InstanciaWorkflow);
             var color = "ROJO";
 
-            if(proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO")
+            if (proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO")
             {
                 EncenderSemaforoVagon(color, puestoId);
-            }            
+            }
 
             return new JsonResult()
             {
@@ -649,7 +652,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string uniqueId,string codigoIntercomunicador,int? puertoAudio)
+        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string uniqueId, string codigoIntercomunicador, int? puertoAudio)
         {
             var intercomunicadorDispositivo = new IntercomunicadorDispositivoDto
             {

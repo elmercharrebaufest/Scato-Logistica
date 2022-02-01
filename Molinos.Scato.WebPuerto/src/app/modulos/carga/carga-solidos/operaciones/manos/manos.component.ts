@@ -7,6 +7,7 @@ import { ManosEmbarqueService } from '@ScatoServicios/manosEmbarque.service';
 import { DatosEmbarquesProcesoService } from '@ScatoServicios/datosEmbarqueProceso.service';
 import { MaterialPuerto } from '@ScatoModels/material-puerto';
 
+
 @Component({
   selector: 'app-manos',
   templateUrl: './manos.component.html',

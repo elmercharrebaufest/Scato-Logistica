@@ -17,6 +17,8 @@
                     <th scope="col" colspan="6">Observaciones</th>
                 </tr>
             </thead>
+            
+            
             <tbody formArrayName="manosDeEmbarque">
                 <ng-container *ngFor="let mano of manosYTabiquesForm.get('manosDeEmbarque')['controls']; let i=index"
                     [formGroupName]="i">
