@@ -89,7 +89,7 @@
     [PagadorFlete_Id] INT NULL,
     CONSTRAINT [FK_CartaPorte_Proveedor_PagadorFlete] FOREIGN KEY([PagadorFlete_Id]) REFERENCES [dbo].[Proveedor] ([Id]),
     [RepresentanteRecibidor_Id] INT NULL,
-    CONSTRAINT [FK_CartaPorte_Proveedor_RepresentanteRecibidor] FOREIGN KEY(RepresentanteRecibidor_Id) REFERENCES [dbo].[Proveedor] ([Id])
+    CONSTRAINT [FK_CartaPorte_Entregador_RepresentanteRecibidor] FOREIGN KEY(RepresentanteRecibidor_Id) REFERENCES [dbo].[Entregador] ([Id])
 )
 
 GO

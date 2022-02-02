@@ -350,6 +350,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
 
                         var cuitRepresentanteEntregador = cartaPorte.CuitRepresentanteEntregador.ToString();
+                        var cuitRepresentanteRecibidor = cartaPorte.CuitRepresentanteRecibidor.ToString();
                         var cuitchofer = cartaPorte.CuitChofer.ToString();
                         var cuitOrigen = responseCp.respuesta.origen.cuit.ToString() ?? string.Empty;
                         var titularCartaPorte = ObtenerProveedor(cuitOrigen, resultado, Textos.CartaPorte_TitularCartaPorte, false, false, true);
@@ -357,6 +358,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         var categoria = Repositorio.Obtener<Categoria>(x => x.Clasificacion == categoriaStr);
                         var entregador = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteEntregador && x.Activo).LastOrDefault();
                         var patentes = cartaPorte?.Dominio?.Split(',');
+                        var representanteRecibidor = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteRecibidor && x.Activo).LastOrDefault();
 
                         var entidad = new Dominio.Entidades.CartaPorte
                         {
@@ -409,7 +411,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Cosecha = cartaPorteRequest.Cosecha.HasValue ? cartaPorteRequest.Cosecha.Value.ToString() : string.Empty,
                             Observacion = cartaPorte.Observacion,
                             PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
-                            RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
+                            RepresentanteRecibidor = representanteRecibidor,
                         };
 
                         resultado.Cpe = Conversor.Convertir<Dominio.Entidades.CartaPorte, CartaPorteDto>(entidad);
@@ -565,12 +567,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             var cuitRepresentanteEntregador = cartaPorte.CuitRepresentanteEntregador.ToString();
+            var cuitRepresentanteRecibidor = cartaPorte.CuitRepresentanteRecibidor.ToString();
             var cuitchofer = cartaPorte.CuitChofer.ToString();
             var cuitOrigen = cartaPorte.CuitOrigen.ToString() ?? string.Empty;
             var titularCartaPorte = Repositorio.Obtener<Proveedor>(x => x.Cuil.Replace("-", "") == cuitOrigen && x.PR);
             var categoriaStr = cartaPorte.NroCTG.ToString().Substring(0, 3).EndsWith("01") ? "PRODUCTOR" : "OPERADOR";
             var categoria = Repositorio.Obtener<Categoria>(x => x.Clasificacion == categoriaStr);
             var entregador = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteEntregador && x.Activo).LastOrDefault();
+            var representanteRecibidor = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteRecibidor && x.Activo).LastOrDefault();
 
             var entidad = new Dominio.Entidades.CartaPorte
             {
@@ -622,7 +626,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Cosecha = cartaPorte.Cosecha.HasValue ? cartaPorte.Cosecha.Value.ToString() : string.Empty,
                 Observacion = cartaPorte.Observacion,
                 PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
-                RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
+                RepresentanteRecibidor = representanteRecibidor,
 
             };
 
@@ -863,6 +867,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
 
                     var cuitRepresentanteEntregador = cartaPorte.CuitRepresentanteEntregador.ToString();
+                    var cuitRepresentanteRecibidor = cartaPorte.CuitRepresentanteRecibidor.ToString();
                     var cuitchofer = cartaPorte.CuitChofer.ToString();
                     var cuitOrigen = responseCp.respuesta.origen.cuit.ToString() ?? string.Empty;
                     var titularCartaPorte = Repositorio.Obtener<Proveedor>(x => x.Cuil.Replace("-", "") == cuitOrigen && x.PR);
@@ -871,6 +876,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var categoria = Repositorio.Obtener<Categoria>(x => x.Clasificacion == categoriaStr);
                     var entregador = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteEntregador && x.Activo).LastOrDefault();
                     var ramalFerroviario = Repositorio.Obtener<RamalFerroviario>(x => x.CodigoAfip == ramalFerroviarioAfip);
+                    var representanteRecibidor = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteRecibidor && x.Activo).LastOrDefault();
 
                     var entidad = new Dominio.Entidades.CartaPorte
                     {
@@ -920,7 +926,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Cosecha = cartaPorteRequest.Cosecha.HasValue ? cartaPorteRequest.Cosecha.Value.ToString() : string.Empty,
                         TransportistaTramo2 = Convert.ToUInt64(cartaPorte.CuitTransportistaTramo2) == 0 ? null : ObtenerTransportista(cartaPorte.CuitTransportistaTramo2.ToString(), resultado),
                         PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
-                        RepresentanteRecibidor = ObtenerProveedor(cartaPorte.CuitRepresentanteRecibidor.ToString(), resultado, Textos.CartaPorte_Representante_Recibidor, false, false, true),
+                        RepresentanteRecibidor = representanteRecibidor,
 
                     };
 

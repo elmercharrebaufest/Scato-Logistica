@@ -894,8 +894,6 @@ ORDER BY ord</CommandText>
         <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoDestino, '0' AS ord
 UNION
 SELECT        '1' AS Id, 'Vicentin' AS TipoDestino, '1' AS ord
-UNION
-SELECT        '2' AS Id, 'Chivilcoy' AS TipoDestino, '2' AS ord
 ORDER BY ord</CommandText>
       </Query>
       <Fields>

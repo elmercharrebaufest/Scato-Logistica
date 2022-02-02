@@ -54,7 +54,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var rtteComercialVentaSecundaria2 = Repositorio.Obtener<Proveedor>(comando.Orden.RtteComercialVentaSecundario2Id);
                     var ramalFerroviario = Repositorio.Obtener<RamalFerroviario>(comando.Orden.CodigoRamalId);
                     var pagadorFlete = Repositorio.Obtener<Proveedor>(comando.Orden.PagadorFleteId ?? 0);
-                    var representanteRecibidor = Repositorio.Obtener<Proveedor>(comando.Orden.RepresentanteRecibidorId ?? 0);
+                    var representanteRecibidor = Repositorio.Obtener<Entregador>(comando.Orden.RepresentanteRecibidorId ?? 0);
                     Centro destino = null;
                     Proveedor destinatario = null;
                     Cliente destinatarioCliente = null;

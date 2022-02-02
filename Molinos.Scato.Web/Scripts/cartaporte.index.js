@@ -511,7 +511,7 @@ jQuery(document).ready(function ($) {
         DefinirAutocompletarTransportistaCartaPorte('#TransportistaTramo2', '#TransportistaTramo2Id', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedorTramo2, onSelectTransportistaTramo2, true, false, false);
     });
     DefinirAutocompletarConSAP('#PagadorFlete', '#PagadorFleteId', '#autocompleteCorr', listarProveedores, obtenerProveedor, obtenerProveedorSap, null, null, true, false, false);
-    DefinirAutocompletarConSAP('#RepresentanteRecibidor', '#RepresentanteRecibidorId', '#autocompleteCorr', listarProveedores, obtenerProveedor, obtenerProveedorSap, null, null, true, false, false);
+    DefinirAutocompletar('#RepresentanteRecibidor', '#RepresentanteRecibidorId', $('#links').data().urlBuscarEntregadores, $('#links').data().urlBuscarEntregador, null, null, null, 7);
 
     if ($('#DescargaCartaPortePorCtg').is(':checked')) {
         $('#CTG').focus();
