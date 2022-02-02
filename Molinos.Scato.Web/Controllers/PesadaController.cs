@@ -185,12 +185,17 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
-            ViewBag.Balanzas = automatizadoFull ?
-                (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
-                PermisosHelper.Is(PermisosScato.BalanzaAutomatica) ?
-                servicio.ListarBalanzasActivas(datosUsuario.CentroId, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
+            if(PermisosHelper.Is(PermisosScato.Administradores))
+            {
+                ViewBag.Balanzas = automatizadoFull ?
+                    (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
+                    PermisosHelper.Is(PermisosScato.BalanzaAutomatica) ?
+                    servicio.ListarBalanzasActivas(datosUsuario.CentroId, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
                 servicio.ListarBalanzasActivasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
-
+            } else
+            {
+                ViewBag.Balanzas = null;
+            }
             ViewBag.ProximasBalanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
             ViewBag.BalanzasObligatorias = servicio.BalanzasObligatoriasEnPuestoComando(datosUsuario.CentroId);
 
