@@ -66,14 +66,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     await Task.Run(() =>
                     {
-                        Thread.Sleep(TimeSpan.FromSeconds(mensaje.SegundosDeEspera));
-                        CrearLogActividad(mensaje.WorkflowInstanceId);
+                        Thread.Sleep(TimeSpan.FromSeconds(mensaje.SegundosDeEspera));                        
                         EnviarMensaje(mensaje);
                     });
                 }
                 else
                 {
-                    CrearLogActividad(mensaje.WorkflowInstanceId);
                     EnviarMensaje(mensaje);
                 }
             }

@@ -24,6 +24,21 @@ namespace Molinos.Scato.Actividades
         {
             var servicio = context.GetExtension<IServicioComandos>();
 
+            var logActividad = new LogActividadDto
+            {
+                Actividad = "EnviarMensaje",
+                ActividadXaml = "EnviarMensaje",
+                WorkflowInstanceId = context.WorkflowInstanceId,
+                Fecha = DateTime.Now
+            };
+            try
+            {
+                servicio.Ejecutar(new CrearLogActividad { Dto = logActividad });
+            }
+            catch (Exception)
+            {
+            }
+
             try
             {
                 var mensaje = Mensaje.Get<string>(context);
