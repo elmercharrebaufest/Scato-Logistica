@@ -165,6 +165,16 @@ namespace Molinos.Scato.Web.Controllers
                     var resultadoActividad = servicioWf.Pesada(pesada.WorkflowInstanceId, pesada.Peso.Value, pesada.AlmacenId, pesada.HidraulicaId, pesada.CalleId, pesada.BalanzaId, pesada.ProximaBalanzaId, pesada.ControlPesada, DateTime.Now, controlRecorrido);
                     if (!resultadoActividad.HayErrores) //Peso tomado correctamente
                     {
+                        comando.Ejecutar(new CrearBalanzaModificarModalidad { Dto = 
+                            new BalanzaModificacionModalidadDto {
+                                Modalidad = balanza.Modalidad,
+                                BalanzaId = balanza.Id,
+                                BalanzaNombre = balanza.Nombre,
+                                Fecha = DateTime.Now,
+                                Motivo = "Cambio modalidad balanza",
+                                NombreUsuarioResponsable = datosUsuario.NombreUsuario
+                            }
+                        });
                         comando.Ejecutar(new ModificarBalanzaEstaEnCero
                         {
                             BalanzaId = pesada.BalanzaId,
