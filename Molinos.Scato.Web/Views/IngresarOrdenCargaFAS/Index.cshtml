@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = Textos.OrdenCargaFAS_Titulo;
     var workflow = (string)ViewBag.Workflow;
-    var aceptaPendiente = false;//(bool)(ViewBag.AceptaPendiente ?? false);
+    var aceptaPendiente = (bool)(ViewBag.AceptaPendiente ?? false);
     var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
 }
 @section scripts
