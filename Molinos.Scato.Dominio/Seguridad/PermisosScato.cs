@@ -542,6 +542,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         LlamadoDeFilasAutomatico = 260,
         [Display(ResourceType = typeof(Textos), Name = "Cambio_De_Material_En_Filas")]
         CambioDeMaterialEnFilas = 261,
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasExportacion")]
+        VisualizarVideoCamarasExportacion = 263,
 
         //Permisos Notificaciones
         Balanceros = 300,

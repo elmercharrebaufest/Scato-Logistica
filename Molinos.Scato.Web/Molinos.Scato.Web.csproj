@@ -340,7 +340,6 @@
     <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
     <Compile Include="Controllers\CamionDemoradoController.cs" />
-    <Compile Include="Controllers\VideoCamaraBalanzaController.cs" />
     <Compile Include="Controllers\VideoCamaraController.cs" />
     <Compile Include="Controllers\LoteAuditoriaController.cs" />
     <Compile Include="Controllers\PagoDeReciboMunicipalController.cs" />
@@ -2261,8 +2260,6 @@
     <Content Include="Views\AsignacionDeEstablecimiento\_VehiculoDemorado.cshtml" />
     <Content Include="Views\ControlDeCalado\_PinchazosPorCalada.cshtml" />
     <Content Include="Views\BalanzaAutomatica\AccionesEspeciales.cshtml" />
-    <Content Include="Views\VideoCamaraBalanza\Camaras.cshtml" />
-    <Content Include="Views\VideoCamaraBalanza\Index.cshtml" />
     <Content Include="Views\DocumentoExterno\Index.cshtml" />
     <Content Include="Views\EtiquetaPuerto\Index.cshtml" />
     <Content Include="Views\BalanzaAutomatica\BalanzaExpo.cshtml" />

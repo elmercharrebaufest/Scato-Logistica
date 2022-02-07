@@ -9445,6 +9445,9 @@
   <data name="VisualizarVideoCamarasBalanza" xml:space="preserve">
     <value>Visualizar Video Camaras Balanza</value>
   </data>
+  <data name="VisualizarVideoCamarasExportacion" xml:space="preserve">
+    <value>Visualizar Video Camaras Exportación</value>
+  </data>   
   <data name="Error_CpExistente" xml:space="preserve">
     <value>La Carta de porte {0} ya se cargó previamente</value>
   </data>
