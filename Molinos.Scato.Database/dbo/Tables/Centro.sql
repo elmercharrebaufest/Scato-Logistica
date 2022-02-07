@@ -62,6 +62,7 @@
     [Planta]  INT NULL,
 	[ContingenciaAfipCpe]          BIT            NOT NULL default 0,
     [MinutosInactividadCalado] INT NULL,
+    [LimiteCamionesCalado] INT NULL DEFAULT 8, 
     CONSTRAINT [PK_dbo.Centro] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Centro_dbo.Camara_Camara_Id] FOREIGN KEY ([CamaraDefault_Id]) REFERENCES [dbo].[Camara] ([Id]),
     CONSTRAINT [FK_dbo.Centro_dbo.Localidad_Localidad_Id] FOREIGN KEY ([Localidad_Id]) REFERENCES [dbo].[Localidad] ([Id]),
