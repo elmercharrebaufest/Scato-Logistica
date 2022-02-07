@@ -84,7 +84,7 @@
     <local:LogActividad sap2010:WorkflowViewState.IdRef="LogActividad_1">
       <local:LogActividad.LogActividadDto>
         <InArgument x:TypeArguments="msdd:LogActividadDto">
-          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = "Control De Peso Esperado", WorkflowInstanceId = workflowId, ActividadXaml = "AbrirBarrera" }</mca:CSharpValue>
+          <mca:CSharpValue x:TypeArguments="msdd:LogActividadDto">new LogActividadDto { Actividad = "Abrir Barrera", WorkflowInstanceId = workflowId, ActividadXaml = "AbrirBarrera" }</mca:CSharpValue>
         </InArgument>
       </local:LogActividad.LogActividadDto>
     </local:LogActividad>
@@ -95,7 +95,7 @@
         </InArgument>
       </local:FinDeActividad.ControlRecorridoDto>
     </local:FinDeActividad>
-    <sads:DebugSymbol.Symbol>d1VDOlxURlNcTW9saW5vcyAtIFNDVDIwMFxNb2xpbm9zLlNjYXRvLURFVlxNb2xpbm9zLlNjYXRvLkFjdGl2aWRhZGVzXEFicmlyQmFycmVyYS54YW1sBUsDYw4CAQFUBVoaAgENWwVhHAIBAlcLV9QBAgEOXgte9wECAQM=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1RDOlxVc2Vyc1xkc2FuY2hlelxNb2xpbm9zXFNjYXRvTG9naXN0aWNhXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcQWJyaXJCYXJyZXJhLnhhbWwFSwNjDgIBAVQFWhoCAQ1bBWEcAgECVwtXyQECAQ5eC173AQIBAw==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

@@ -409,7 +409,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Info("Se tomará el peso en modalidad para la balanza con Id {0}", balanzaId);
                 var balanza = servicio.ObtenerBalanza(balanzaId);
-                log.Info("Se tomará el peso en modalidad para la balanza con Id {0}", balanzaId);
+                
 
                 var resultado = EjecutarPesaje(balanza.CodigoCabezal);
 
@@ -433,6 +433,7 @@ namespace Molinos.Scato.Web.Controllers
                     },
                     Usuario = datosUsuario.NombreUsuario
                 });
+                log.Info("Se tomo el peso {0} la balanza con Id {1}, por el usuario {2}", resultado.Valores["Pesaje"], balanza.Id, datosUsuario.NombreUsuario);
                 return Json(resultado.Valores["Pesaje"], JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
