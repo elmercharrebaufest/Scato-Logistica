@@ -4669,7 +4669,7 @@
   <data name="PuestoDeTrabajo_Automatico" xml:space="preserve">
     <value>Automático</value>
   </data>
-	<data name="PuestoDeTrabajo_ValidarInactividadCalado" xml:space="preserve">
+  <data name="PuestoDeTrabajo_ValidarInactividadCalado" xml:space="preserve">
     <value>Validar Inactividad Calado</value>
   </data>
   <data name="PuestoDeTrabajo_NombrePc" xml:space="preserve">
@@ -9706,7 +9706,13 @@
   <data name="Default_MotivoInactividad" xml:space="preserve">
     <value>Seleccione motivo</value>
   </data>
- <data name="MotivoInactividad_Requerido" xml:space="preserve">
+  <data name="MotivoInactividad_Requerido" xml:space="preserve">
     <value>Debe seleccionar un motivo</value>
+  </data>
+  <data name="AbmCategoriaCamiones" xml:space="preserve">
+    <value>ABM Categoria Camiones</value>
+  </data>
+  <data name="HidraulicasEspeciales" xml:space="preserve">
+    <value>Hidraúlicas Especiales</value>
   </data>
 </root>

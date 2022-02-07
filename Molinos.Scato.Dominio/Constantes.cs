@@ -23,5 +23,11 @@ namespace Molinos.Scato.Dominio
         {
             public const string Rechazar = "TRECH";
         }
+
+        public struct TiposDeHidraulicas
+        {
+            public const string NoDescarga = "NODES";
+            public const string NoDeEpa = "NODEE";
+        }
     }
 }

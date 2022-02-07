@@ -232,6 +232,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ABM Categoria Camiones.
+        /// </summary>
+        public static string AbmCategoriaCamiones {
+            get {
+                return ResourceManager.GetString("AbmCategoriaCamiones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ABM Centros.
         /// </summary>
         public static string AbmCentro {
@@ -15901,6 +15910,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Hidraulicas {
             get {
                 return ResourceManager.GetString("Hidraulicas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidraúlicas Especiales.
+        /// </summary>
+        public static string HidraulicasEspeciales {
+            get {
+                return ResourceManager.GetString("HidraulicasEspeciales", resourceCulture);
             }
         }
         

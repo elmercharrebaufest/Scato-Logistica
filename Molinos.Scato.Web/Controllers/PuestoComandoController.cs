@@ -17,6 +17,7 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using Molinos.Scato.Web.Seguridad;
+using Molinos.Scato.Dominio;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -253,7 +254,14 @@ namespace Molinos.Scato.Web.Controllers
                                     .ToSelectList(x => x.Id.ToString(), x => x.Descripcion)
                         : servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId, esSustentable)
                                     .ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-            ViewBag.Hidraulicas = new MultiSelectList(servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto), "Id", "Nombre");
+            
+            var hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto);
+            if (!PermisosHelper.Is(PermisosScato.HidraulicasEspeciales))
+            {
+                var hidraulicasEspeciales = new List<string>() { Constantes.TiposDeHidraulicas.NoDescarga, Constantes.TiposDeHidraulicas.NoDeEpa };
+                hidraulicas = hidraulicas.Where(x => !hidraulicasEspeciales.Contains(x.Codigo)).ToList();
+            }
+            ViewBag.Hidraulicas = new MultiSelectList(hidraulicas, "Id", "Nombre");
         }
 
         public ActionResult ConfigurarTabla()

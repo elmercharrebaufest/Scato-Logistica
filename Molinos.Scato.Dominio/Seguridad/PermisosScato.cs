@@ -708,6 +708,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         LineUpExportar = 603,
 
         [Display(ResourceType = typeof(Textos), Name = "PuestoPausado")]
-        PuestoPausado = 605
+        PuestoPausado = 605,
+        [Display(ResourceType = typeof(Textos), Name = "HidraulicasEspeciales")]
+        HidraulicasEspeciales = 606,
     }
 }
