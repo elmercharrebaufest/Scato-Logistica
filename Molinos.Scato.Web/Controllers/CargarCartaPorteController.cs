@@ -790,5 +790,22 @@ namespace Molinos.Scato.Web.Controllers
                 throw;
             }
         }
+
+        public ActionResult DescargarPDFCartaPorte(string id)
+        {
+            try
+            {
+                var cartaPorte = servicioComandos.Ejecutar(new ConsultarPDFCpe { NroCtg = Convert.ToInt64(id) }) as ResultadoConsultarPDFCpe;
+                if(cartaPorte != null && !cartaPorte.HayErrores)
+                    return File(cartaPorte.Pdf, "application/octet-stream", $"{id}.pdf");
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo descargar el PDF del CTG: {0}", id);
+                throw;
+            }
+        }
     }
 }

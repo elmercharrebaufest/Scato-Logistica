@@ -930,4 +930,22 @@ a {
         padding-right: 10px;
         white-space: nowrap;
     }
+
+    .editar-pdf-columna {
+        width: 100%;
+    }
+}
+
+.editar-pdf-columna {
+    width: 1em;
+    text-align: center !important;
+}
+
+.editar-pdf-columna span {
+    white-space: nowrap;
+}
+
+.editar-pdf-columna a {
+    margin-left: 4px;
+    margin-right: 4px;
 }

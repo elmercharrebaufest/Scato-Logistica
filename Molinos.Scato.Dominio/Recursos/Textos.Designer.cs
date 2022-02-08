@@ -11095,6 +11095,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Descargar CPE Electrónica.
+        /// </summary>
+        public static string Descargar_PDF_CPE {
+            get {
+                return ResourceManager.GetString("Descargar_PDF_CPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Peso en Planta.
         /// </summary>
         public static string Descargar_PesoEnPlanta {

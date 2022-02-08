@@ -285,8 +285,9 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("verFotos"
                                 , "[FotoHeader]"
                                 , f => f.tieneFotoIngreso ?
-                                    html.Raw(html.BotonLink(Textos.Previsualizar, action, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-camera", true).ToHtmlString() +
-                                    html.BotonLink(Textos.Previsualizar, action2, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-previsualizar-link", "icon-download-alt", true).ToHtmlString())
+                                    html.Raw(
+                                        html.BotonLink(Textos.Previsualizar, action, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-camera", true).ToHtmlString() +
+                                        html.BotonLink(Textos.Previsualizar, action2, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-previsualizar-link", "icon-download-alt", true).ToHtmlString())
                                     : null
                                 , "editar-borrar-columna"
                                 , false
@@ -302,6 +303,19 @@ namespace Molinos.Scato.Web.Helpers
                 "</span>"
                 )
                 , "editar-borrar-columna", false);
+        }
+
+        public static WebGridColumn ColumnaDescargarPDFCartaPorte(this WebGrid grid, HtmlHelper html, string action, string action2, string controller, string style = "")
+        {
+            return grid.Column("descargarCPE"
+                                , "PDF"
+                                , f => f.tipoWorkFlowEgreso && f.tipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte ?
+                                    html.Raw(
+                                        html.BotonLink(Textos.Descargar_PDF_CPE, action, controller, new { id = f.numeroDocumentoIngreso, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-download-alt", true).ToHtmlString())
+                                    : null
+                                , "editar-pdf-columna"
+                                , false
+                                );
         }
 
     }

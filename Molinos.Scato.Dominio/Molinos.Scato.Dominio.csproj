@@ -90,6 +90,7 @@
     <Compile Include="Comandos\ConsultarCPEPorDestino.cs" />
     <Compile Include="Comandos\ConsultarCPDigital.cs" />
     <Compile Include="Comandos\ConsultarDestinatarioCPE.cs" />
+    <Compile Include="Comandos\ConsultarPDFCpe.cs" />
     <Compile Include="Comandos\CrearAgenciaControlPrivado.cs" />
     <Compile Include="Comandos\CrearAgenciaMaritimaPuerto.cs" />
     <Compile Include="Comandos\CrearAgenteControlPrivado.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Comandos\ResultadoConsultaCpePorDestino.cs" />
     <Compile Include="Comandos\ResultadoCircular.cs" />
     <Compile Include="Comandos\ResultadoConsultarImagenCpe.cs" />
+    <Compile Include="Comandos\ResultadoConsultarPDFCpe.cs" />
     <Compile Include="Comandos\ResultadoCrearCalle.cs" />
     <Compile Include="Comandos\ResultadoCartaPorteElectronica.cs" />
     <Compile Include="Comandos\ResultadoFas.cs" />

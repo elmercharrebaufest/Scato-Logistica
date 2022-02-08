@@ -529,6 +529,7 @@
     <Compile Include="Mock\FakeHttpMessageHandler.cs" />
     <Compile Include="Mock\NullLogger.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLecturaDeTarjetaPatenteTest.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarPDFCpeTest.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarClienteTest.cs" />
     <Compile Include="Procesamiento\ProcesadorPagarMercadoPagoTest.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcaladoTest.cs" />

@@ -9718,4 +9718,7 @@
   <data name="HidraulicasEspeciales" xml:space="preserve">
     <value>Hidraúlicas Especiales</value>
   </data>
+  <data name="Descargar_PDF_CPE" xml:space="preserve">
+    <value>Descargar CPE Electrónica</value>
+  </data>
 </root>
