@@ -121,6 +121,8 @@ namespace Molinos.Scato.Web.Firmware
 
                 if (resultado.Valida)
                 {
+                    log.Debug("Ejecutando puesto sin patente. Tarjeta: {0} Puesto: {1} Puesto: {2} Actividad: {3}",
+                         lecturaPuestoDeTrabajo.NumeroDeTarjeta, resultado.PuestoDeTrabajoId, resultado.ProximaActividad);
                     var serviciowf = factory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Ejecutar(resultado.InstanceId, new ControlRecorridoDto
                     {
