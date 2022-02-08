@@ -11,6 +11,7 @@ namespace Molinos.Scato.Web.Atributos
             const string key = "datosUsuario";
             var cookie = new CookieUsuario();
             var datosUsuario = new DatosUsuario();
+            var NombrePc = HttpContext.Current.Request.Cookies["NombrePc"] != null ?HttpContext.Current.Request.Cookies["NombrePc"].Value : "NoTienePuesto";
             datosUsuario.NombreUsuario = System.Security.Claims.ClaimsPrincipal.Current.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
             datosUsuario.Grupo = cookie.Valor("Grupo").Split('|');
             datosUsuario.CentroId = int.Parse(cookie.Valor("CentroId"));
@@ -19,7 +20,7 @@ namespace Molinos.Scato.Web.Atributos
             datosUsuario.BalanzaId = int.Parse(cookie.Valor("BalanzaId"));
             var puestoId = HttpContext.Current.Request.Cookies["PuestoDeTrabajoId"] != null ? HttpContext.Current.Request.Cookies["PuestoDeTrabajoId"].Value : "0";
             datosUsuario.PuestoDeTrabajoId = int.Parse(puestoId);
-            datosUsuario.NombrePc = HttpContext.Current.Request.Cookies["NombrePc"] != null ? HttpContext.Current.Request.Cookies["NombrePc"].Value : "NoTienePuesto";
+            datosUsuario.NombrePc =System.Security.Claims.ClaimsPrincipal.Current.FindFirst(x => x.Type == "UserComputerName")?.Value ?? NombrePc;         
             filterContext.ActionParameters[key] = datosUsuario;
             base.OnActionExecuting(filterContext);
             var redireccionar = HttpContext.Current.Request.Cookies["RedireccionarAListaAutomatizada"] != null ? HttpContext.Current.Request.Cookies["RedireccionarAListaAutomatizada"].Value : "false";

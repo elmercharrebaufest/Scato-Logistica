@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -483,7 +484,9 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerNombrePc(DatosUsuario datosUsuario)
         {
-            var nombrePc = System.Security.Claims.ClaimsPrincipal.Current.FindFirst(x => x.Type == "UserComputerName")?.Value;
+           
+            var nombrePc = System.Security.Claims.ClaimsPrincipal.
+                Current.FindFirst(x => x.Type == "UserComputerName")?.Value;
             return Json(nombrePc, JsonRequestBehavior.AllowGet);
         }
     }
