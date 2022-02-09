@@ -20,7 +20,7 @@ export class GraficoCargaComponent implements AfterViewInit {
   rotacionCheckbox: boolean = false;
   
   constructor(private _procesoService: DatosEmbarquesProcesoService,
-    private _manosEmbarqueService: ManosEmbarqueService) { 
+              private _manosEmbarqueService: ManosEmbarqueService) { 
     this.makeDraggable.bind(this);
     this.datosEmbarque = this._procesoService.getDatosGrafico();
     console.log(this.datosEmbarque);
@@ -36,7 +36,7 @@ export class GraficoCargaComponent implements AfterViewInit {
       res => this.removerManoDeEmbarque(res.celda, res.sentido)
     );
     this._manosEmbarqueService.removerResaltadoSilos.subscribe(
-      res => this.removerResaltadoSilos(res.posicion, res.esPrevious, res.cantidadEnSilo)
+      res => this.removerResaltadoSilos()
     );
     this._manosEmbarqueService.resaltarSilo.subscribe(
       res => this.resaltarSilo(res)

@@ -7,7 +7,6 @@ import { ManosEmbarqueService } from '@ScatoServicios/manosEmbarque.service';
 import { DatosEmbarquesProcesoService } from '@ScatoServicios/datosEmbarqueProceso.service';
 import { MaterialPuerto } from '@ScatoModels/material-puerto';
 
-
 @Component({
   selector: 'app-manos',
   templateUrl: './manos.component.html',
@@ -41,8 +40,31 @@ export class ManosComponent implements OnInit {
               this.manosEmbarqueService.removerManoDeEmbarque.emit({celda: previous.nombre, sentido: datoCelda.controls['sentidoManoDeEmbarque'].value.posicion});
             }
             if (current) {
-              datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
-              datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+              // VERIFICAR SI EXISTE SILO 31 O 32. SI EXISTE NO PERMITIR MODIFICACION
+              if(current.posicion==5 || current.posicion==6){
+                let cantidadSiloCurrent = this.buscarSilosRestantes(current.posicion);
+                if(cantidadSiloCurrent>1){
+
+                  let texto = "Ya existe el Silo seleccionado";
+                  this.confirmationDialogService.confirm('¡Atención!', texto, 'Aceptar', '', null, null, Tipoalerta.Success)
+                    .then((confirmed) => {
+                      if (confirmed) { } else return;
+                    }).catch(() => window.location.reload());
+
+                  // console.log(`Ya existe el Silo${current.posicion} - Ocurrencias: ${cantidadSiloCurrent}`);
+                  
+                  datoCelda.controls['celdaManoDeEmbarque'].setValue(null, { emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].disable({ emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+                }else{
+                  datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+                }
+              } else {
+                datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
+                datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+              }
+              // this.manosEmbarqueService.resaltarSilo.emit(datoCelda.controls['celdaManoDeEmbarque'].value.posicion);
             } else {
               datoCelda.controls['sentidoManoDeEmbarque'].disable({ emitEvent: false });
             }
