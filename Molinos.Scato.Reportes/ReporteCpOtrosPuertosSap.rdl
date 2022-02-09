@@ -6324,7 +6324,7 @@ ORDER BY ord</CommandText>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>MPSOJREV</Value>
+                                <Value>MPSOJRTI</Value>
                                 <Style>
                                   <FontSize>8pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
