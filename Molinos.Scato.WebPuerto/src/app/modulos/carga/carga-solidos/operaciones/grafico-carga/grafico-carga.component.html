@@ -1,895 +1,1011 @@
-<div id="section-to-print" class="mt-4 shadow" style="background-color: white; min-height: 5rem;"> 
-    <div class="bg-white">
-        <app-collapse-button collapseSelectorId="collapseGrafico"></app-collapse-button>
-        <h4 class="colorTitle px-4 pt-4 pb-3 m-0">Gráfico de Celdas</h4>
-    </div> 
-    <div id="collapseGrafico" class="collapse show bg-white pb-2">
-        <div id='colorMateriales' class="float-left text-center">
-            <div *ngFor="let p of datosEmbarque.listaMateriales" class="colorMaterial">
-                <div>{{p.descripcionCorta}}</div>
-                <div style="width: 100%; height: 50%;" [ngStyle]="{'background-color': p.color ? p.color : 'white' }"></div>
-            </div>
-        </div>
-        <select id="selectMateriales" class="form-control" [(ngModel)]="materialSeleccionado" style="padding: 0.1rem;">
-            <option [ngValue]="null">Seleccione producto:</option>
-            <ng-container *ngIf="datosEmbarque"><option *ngFor="let p of datosEmbarque.listaMateriales" [ngValue]="p">{{ p.descripcionCorta }}</option></ng-container>
-        </select>
-        <div id='colorLabel'>Color</div>
-        <div class='custom-control tank-control custom-switch' id='toggleColorContainer'>
-            <input type='checkbox' class='custom-control-input' id='toggleColor'
-                [(ngModel)]="toggleColor">
-            <label class='custom-control-label' for='toggleColor'></label>
-        </div>
-        <div id='prodLabel'>Prod</div>
-
-        <div id='circuloLabel'>Circulo</div>
-        <div class='custom-control tank-control custom-switch' id='toggleFormaContainer'>
-            <input type='checkbox' class='custom-control-input' id='toggleForma'
-                (change)="toggleFormaElementoGrafico()">
-            <label class='custom-control-label' for='toggleForma'></label>
-        </div>
-        <div id='rectLabel'>Rectangulo</div>
-        <div id='rotarLabel'>Rotación</div>
-        <div class='custom-control tank-control custom-switch' id='toggleRotarContainer'>
-            <input type='checkbox' class='custom-control-input' id='toggleRotar' [(ngModel)]="rotacionCheckbox"
-                (change)="rotacionLastSelected()">
-            <label class='custom-control-label' for='toggleRotar'></label>
-        </div>
-
-        <svg id="grafico-carga" class="section-to-print" xmlns="http://www.w3.org/2000/svg" 
-        viewBox="0 0 1300 700">
-            <defs>
-                <path id="myArrow" class="fillFlecha" xmlns="http://www.w3.org/2000/svg" d="M19.733,32.353H64.176a1.766,1.766,0,0,0,1.766-1.766V22.344a1.766,1.766,0,0,0-1.766-1.766H19.733V13.8A3.533,3.533,0,0,0,13.7,11.3L1.035,23.967a3.533,3.533,0,0,0,0,5L13.7,41.63a3.533,3.533,0,0,0,6.031-2.5Z" fill="#4d60a8" transform="translate(0 -10.258)"/>
-            </defs>
-        
-            <g id="datosBuque">
-                <text x="25" y="50" class="nombre-buque">{{datosEmbarque ? datosEmbarque.nombreBuque : "" }}</text>
-                <text x="25" y="75" class="text-datos-buque"><tspan class="text-buque-bold">Tn Aprox:</tspan> {{datosEmbarque ? datosEmbarque.tnAprox : "" }}</text>
-                <text x="25" y="100" class="text-datos-buque"><tspan class="text-buque-bold">Fecha:</tspan> {{hoy | date: 'dd/MM/yyyy'}}</text>
-                <text x="25" y="125" class="text-datos-buque"><tspan class="text-buque-bold">Productos a cargar:</tspan> {{datosEmbarque ? datosEmbarque.productosACargar : "" }}</text>
-            </g>
-            <g id="brujula" transform="translate(100 200)">
-                <g class="brujulaA" transform="translate(49 64)">
-                    <circle class="brujulaK" cx="21" cy="21" r="21" />
-                    <circle class="brujulaF" cx="21" cy="21" r="20.75" />
-                </g><text class="brujulaB" transform="translate(130.047 87.128)">
-                    <tspan x="0" y="0">N</tspan>
-                </text><text class="brujulaB" transform="translate(65.104 15)">
-                    <tspan x="0" y="0">O</tspan>
-                </text><text class="brujulaB" transform="translate(66.557 156.51)">
-                    <tspan x="0" y="0">E</tspan>
-                </text><text class="brujulaC" transform="translate(0 87.867)">
-                    <tspan x="0" y="0">S</tspan>
-                </text>
-                <path class="brujulaD" d="M531.522,342.33h0Z" transform="translate(-405.617 -257.649)" />
-                <path class="brujulaE" d="M531.522,342.33h0Z" transform="translate(-405.617 -257.649)" />
-                <path class="brujulaE" d="M72.792,342.33Z" transform="translate(-58.533 -257.649)" />
-                <path class="brujulaD" d="M72.792,342.3Z" transform="translate(-58.533 -257.626)" />
-                <path class="brujulaF" d="M221.92,304.556l9.852-.718-6.328-7.788A19.682,19.682,0,0,0,221.92,304.556Z"
-                    transform="translate(-171.443 -222.633)" />
-                <path class="brujulaF" d="M220.379,291.73a20.962,20.962,0,0,0-4,9.66l1.141-.083a19.845,19.845,0,0,1,3.587-8.681Z"
-                    transform="translate(-167.252 -219.364)" />
-                <path class="brujulaF" d="M255.313,258.05a21.06,21.06,0,0,0-10.563,5.04l.9.694a19.942,19.942,0,0,1,9.55-4.58Z"
-                    transform="translate(-188.717 -193.881)" />
-                <path class="brujulaF" d="M339.14,301.1c.054.117.1.243.148.353l10.441.75a19.677,19.677,0,0,0-4.116-9.331Z"
-                    transform="translate(-260.134 -220.227)" />
-                <path class="brujulaF" d="M366.27,289.4a19.881,19.881,0,0,1,4.193,9.511l1.139.08a21.006,21.006,0,0,0-4.624-10.49Z"
-                    transform="translate(-280.661 -216.92)" />
-                <path class="brujulaF" d="M314.33,263.23l.8,10.283c.146.063.292.129.436.2l8.032-6.479A19.714,19.714,0,0,0,314.33,263.23Z"
-                    transform="translate(-241.363 -197.801)" />
-                <path class="brujulaF" d="M249.14,268.148l8,6.145c.124-.068.243-.134.38-.2l.974-10.443A19.765,19.765,0,0,0,249.14,268.148Z"
-                    transform="translate(-192.038 -198.118)" />
-                <path class="brujulaF" d="M226.182,366.83l6.046-7.713-10-1.027A19.713,19.713,0,0,0,226.182,366.83Z"
-                    transform="translate(-171.678 -269.574)" />
-                <path class="brujulaF" d="M216.63,357.55A20.986,20.986,0,0,0,221.1,367.5l.706-.9a19.872,19.872,0,0,1-4.021-8.934Z"
-                    transform="translate(-167.441 -269.165)" />
-                <path class="brujulaF" d="M365.049,366.8a21.013,21.013,0,0,0,5.111-11.042l-1.144.1A19.9,19.9,0,0,1,364.36,365.9Z"
-                    transform="translate(-279.216 -267.811)" />
-                <path class="brujulaF" d="M312.06,414.93a20.988,20.988,0,0,0,10.246-4.069l-.893-.73a19.853,19.853,0,0,1-9.27,3.668Z"
-                    transform="translate(-239.645 -308.948)" />
-                <path class="brujulaF" d="M344,366.122a19.7,19.7,0,0,0,4.576-9.852l-10.65.974c-.092.2-.192.4-.3.6Z"
-                    transform="translate(-258.992 -268.197)" />
-                <path class="brujulaF" d="M260.688,392.742l-.974-9.932-7.635,6.041A19.674,19.674,0,0,0,260.688,392.742Z"
-                    transform="translate(-194.263 -288.277)" />
-                <path class="brujulaF" d="M247.75,408.878a20.994,20.994,0,0,0,9.8,4.417l-.112-1.154a19.9,19.9,0,0,1-8.783-3.972Z"
-                    transform="translate(-190.987 -307.465)" />
-                <path class="brujulaF" d="M321.558,388.48l-8.333-6.79-.754,10.383A19.662,19.662,0,0,0,321.558,388.48Z"
-                    transform="translate(-239.955 -287.43)" />
-                <path class="brujulaF" d="M324.326,262.185a21.006,21.006,0,0,0-10.426-4.5l.09,1.141a19.881,19.881,0,0,1,9.445,4.081Z"
-                    transform="translate(-241.037 -193.602)" />
-                <path class="brujulaG" d="M465.352,354.522l-2.329-.19-.044,0-.049.608.041,0,2.332.19,2.332.19.019,0,.049-.608-.019,0Z"
-                    transform="translate(-353.797 -266.729)" />
-                <path class="brujulaG"
-                    d="M460.881,381.079l-2.268-.572-.032-.007-.151.591.034.01,2.268.57,2.268.569.027.007.148-.591-.024-.007Z"
-                    transform="translate(-350.392 -286.529)" />
-                <path class="brujulaG" d="M462.971,326.625l-.041,0,.049.606.044,0,2.329-.19,2.332-.19.019,0-.049-.608-.019,0-2.332.19Z"
-                    transform="translate(-353.797 -245.475)" />
-                <path class="brujulaG"
-                    d="M458.464,298.116l-.034.01.148.591.034-.007,2.268-.572,2.271-.57.024-.007-.148-.591-.027.007-2.268.57Z"
-                    transform="translate(-350.392 -223.329)" />
-                <path class="brujulaG"
-                    d="M452.072,406.572l-2.142-.937-.034-.015-.246.557.037.015,2.142.94,2.142.937.022.01.246-.56-.024-.01Z"
-                    transform="translate(-343.749 -305.536)" />
-                <path class="brujulaG"
-                    d="M439.209,430.32l-1.959-1.278-.037-.022-.333.511.037.024,1.959,1.273,1.959,1.278.017.01.333-.511-.017-.01Z"
-                    transform="translate(-334.086 -323.241)" />
-                <path class="brujulaG"
-                    d="M449.65,270.831l.246.557.034-.015,2.142-.937,2.142-.937.024-.01-.246-.56-.022.01-2.142.937-2.144.939Z"
-                    transform="translate(-343.749 -202.113)" />
-                <path class="brujulaG"
-                    d="M437.248,245.976l1.962-1.278,1.957-1.275.019-.012-.333-.511-.019.012-1.959,1.275-1.959,1.278-.034.022.333.511Z"
-                    transform="translate(-334.086 -182.418)" />
-                <path class="brujulaG"
-                    d="M422.691,451.729l-1.726-1.577-.024-.022-.411.45.027.024,1.723,1.575,1.726,1.577.024.022.411-.453-.022-.022Z"
-                    transform="translate(-321.716 -339.213)" />
-                <path class="brujulaG"
-                    d="M420.956,223.154l1.726-1.575L424.409,220l.022-.022-.411-.453-.024.022-1.726,1.577-1.723,1.575-.027.024.411.45Z"
-                    transform="translate(-321.708 -164.736)" />
-                <path class="brujulaG"
-                    d="M402.9,470.169l-1.446-1.835-.027-.034-.479.377.027.034,1.446,1.835,1.448,1.838.012.017.479-.377-.015-.017Z"
-                    transform="translate(-306.901 -352.961)" />
-                <path class="brujulaG"
-                    d="M401.446,203.574l1.448-1.835,1.446-1.835.015-.017-.479-.377-.015.017-1.446,1.835-1.448,1.835-.027.034.479.377Z"
-                    transform="translate(-306.894 -149.589)" />
-                <path class="brujulaG"
-                    d="M380.449,485.221l-1.127-2.047-.019-.034-.533.294.017.032,1.129,2.049,1.127,2.047.015.024.533-.294-.012-.024Z"
-                    transform="translate(-290.119 -364.189)" />
-                <path class="brujulaG"
-                    d="M379.313,187.655l1.127-2.047,1.127-2.049.015-.024-.533-.294-.015.024-1.127,2.049-1.129,2.047-.017.032.535.294Z"
-                    transform="translate(-290.112 -137.278)" />
-                <path class="brujulaG"
-                    d="M355.875,496.384l-.776-2.205-.015-.039-.574.2.012.036.776,2.205.776,2.205.007.022.577-.2-.007-.022Z"
-                    transform="translate(-271.764 -372.512)" />
-                <path class="brujulaG"
-                    d="M355.087,175.946l.779-2.207.776-2.205.007-.022-.577-.2-.007.022-.776,2.207-.776,2.205-.012.036.574.2Z"
-                    transform="translate(-271.756 -128.252)" />
-                <path class="brujulaG" d="M329.84,503.374l-.4-2.3-.007-.041-.6.1.007.041.4,2.3.4,2.3,0,.019.6-.1,0-.022Z"
-                    transform="translate(-252.334 -377.725)" />
-                <path class="brujulaG" d="M329.428,168.744l.4-2.3.4-2.3,0-.017-.6-.107,0,.019-.4,2.3-.4,2.3-.007.044.6.1Z"
-                    transform="translate(-252.326 -122.729)" />
-                <path class="brujulaH"
-                    d="M165.44,216.739V182.875a9.936,9.936,0,0,0,3.363-.584l.2-.075,8.3,6.766.165.134.888.73.65.528,6.3,5.13,6.157,5.016-.039-.051-5.376-5.632-5.508-5.778-.562-.587-.772-.808-.141-.148-6.917-7.245a9.979,9.979,0,0,0,1.966-2.482c.019-.034.039-.063.056-.1.107-.195.207-.4.3-.6.032-.071.066-.141.095-.212l10.587-.959.2-.019,1.144-.1.83-.075,8.294-.75.657-.061h.027l8.328-.754.2-.017,2.344-.212,2.346-.214.2-.017,10.443-.947h-.063l-10.37.061h-.195l-2.339.015-2.339.012h-.2l-8.275.046h-1.363l-7.528.044H185.37l-9.979.058v-.068a9.923,9.923,0,0,0-.655-3.548c-.015-.034-.029-.068-.041-.1-.049-.119-.095-.243-.148-.353l-.092-.209,6.437-8.182.129-.163.7-.9.516-.655,5.286-6.72,4.687-5.958-4.756,4.9-.475.487-.475.487-5.41,5.588-.567.587-.779.8-.141.146-6.858,7.073a9.955,9.955,0,0,0-2.921-2.19l-.1-.049c-.144-.068-.29-.134-.436-.2l-.212-.083-.791-10.222-.017-.209-.088-1.139-.063-.825-.616-7.941-.054-.691-.051-.679-.645-8.316-.015-.2-.183-2.344-.18-2.344-.017-.2-.8-10.383v44.813h-.124a9.9,9.9,0,0,0-4.318.973l-.107.054c-.129.066-.256.131-.38.2l-.19.11-7.971-6.109-.163-.127-.9-.694-.655-.5-6.226-4.778-.071-.056-.472-.363-5.717-4.381,5.184,4.95,6.1,5.826.587.56.808.771.148.141,6.99,6.678a9.93,9.93,0,0,0-1.876,3c-.029.071-.056.141-.083.212h-.112l-10.037.73-.207.015-1.141.083-.827.061-7.642.557-.691.051-.679.049-8.311.606-.2.015-2.341.173-14.131.937c0,.255,16.457.112,16.465.095h.2l8.275.046h1.363l7.53.044h2.147l9.735.056a9.91,9.91,0,0,0,1.141,4.566l.056.1-.375-.039-6.177,7.873-.129.165-.706.9-.511.652-5,6.386-4.809,6.136.051-.041,5.469-5.364,5.693-5.6.579-.57.8-.781.146-.146,7.024-6.907a10.032,10.032,0,0,0,2.149,1.485c.073.037.144.075.217.11l.029.3.012.119v.119l.973,10.122.022.209.112,1.151.08.835.781,8.031.9,9.005.022.2.226,2.346.229,2.346.019.2.91,9.373v-9.538ZM165.4,182.23a9.338,9.338,0,1,1,9.346-9.334,9.338,9.338,0,0,1-9.346,9.334Z"
-                    transform="translate(-95.531 -88.053)" />
-                <path class="brujulaG" d="M270.706,501.071l-.4,2.3-.4,2.3,0,.022.6.1,0-.019.4-2.3.4-2.3.007-.041-.6-.1Z"
-                    transform="translate(-207.746 -377.725)" />
-                <path class="brujulaG" d="M270.294,166.449l.4,2.3.007.041.6-.1-.007-.041-.4-2.3-.4-2.3,0-.017-.6.1,0,.019Z"
-                    transform="translate(-207.738 -122.736)" />
-                <path class="brujulaG"
-                    d="M242.768,494.179l-.774,2.205-.776,2.2-.007.022.574.2.007-.022.776-2.207.779-2.205.012-.036-.577-.2Z"
-                    transform="translate(-186.038 -372.512)" />
-                <path class="brujulaG"
-                    d="M241.984,173.741l.776,2.205.012.039.577-.2-.012-.036-.776-2.205-.779-2.207-.007-.022-.574.2.007.019Z"
-                    transform="translate(-186.031 -128.252)" />
-                <path class="brujulaG"
-                    d="M216.451,483.182l-1.129,2.047-1.129,2.049-.012.022.533.294.012-.024,1.129-2.047,1.129-2.047.017-.032-.533-.294Z"
-                    transform="translate(-165.587 -364.197)" />
-                <path class="brujulaG"
-                    d="M215.311,185.616l1.129,2.047.017.032.533-.292-.017-.032-1.129-2.049-1.129-2.047-.012-.024-.533.294.012.024Z"
-                    transform="translate(-165.579 -137.286)" />
-                <path class="brujulaG"
-                    d="M192.476,468.334l-1.446,1.837-1.448,1.835-.012.017.479.377.012-.017,1.446-1.835,1.446-1.835.029-.036-.479-.377Z"
-                    transform="translate(-146.967 -352.961)" />
-                <path class="brujulaG"
-                    d="M191.02,201.739l1.448,1.837.027.034.477-.377-.027-.034-1.446-1.835-1.448-1.837-.012-.017-.479.377.015.017Z"
-                    transform="translate(-146.959 -149.589)" />
-                <path class="brujulaG"
-                    d="M171.423,450.164l-1.726,1.575-1.726,1.577-.022.019.411.45.022-.019,1.726-1.577,1.723-1.575.027-.024-.411-.45Z"
-                    transform="translate(-130.608 -339.221)" />
-                <path class="brujulaG"
-                    d="M169.687,221.589l1.726,1.577.024.022.411-.45-.027-.024-1.723-1.577-1.726-1.577-.022-.019-.411.45.022.022Z"
-                    transform="translate(-130.601 -164.744)" />
-                <path class="brujulaG"
-                    d="M153.9,429.052l-1.959,1.275-1.962,1.275-.017.012.333.511.017-.012,1.962-1.275,1.959-1.275.034-.022-.333-.511Z"
-                    transform="translate(-116.997 -323.249)" />
-                <path class="brujulaG"
-                    d="M151.936,244.709l1.959,1.278.036.022.333-.514-.034-.022L152.27,244.2l-1.959-1.275-.017-.012-.333.511.017.012Z"
-                    transform="translate(-116.997 -182.426)" />
-                <path class="brujulaG"
-                    d="M140.625,406.18l-.243-.56-.036.017-2.142.937-2.142.937-.022.01.243.557.022-.01,2.142-.937,2.144-.937Z"
-                    transform="translate(-106.465 -305.536)" />
-                <path class="brujulaG" d="M128.9,298.138l2.268.572.034.01.148-.591-.034-.01-2.268-.57-2.268-.572-.027-.007-.148.591.024.007Z"
-                    transform="translate(-99.322 -223.329)" />
-                <path class="brujulaG"
-                    d="M131.312,381.1l.034-.01-.148-.591-.034.01-2.268.569-2.271.572-.024.007.148.591.027-.007,2.268-.572Z"
-                    transform="translate(-99.322 -286.529)" />
-                <path class="brujulaG"
-                    d="M138.194,270.447l2.144.937.034.015.246-.557-.036-.015-2.142-.939-2.142-.937-.022-.01-.246.56.022.01Z"
-                    transform="translate(-106.457 -202.121)" />
-                <path class="brujulaG" d="M124.341,327.048l2.329.192.044,0,.049-.608-.041,0-2.332-.19-2.332-.19-.019,0-.049.606.019,0Z"
-                    transform="translate(-95.834 -245.483)" />
-                <path class="brujulaG" d="M126.721,354.941l.041,0-.049-.608-.044,0-2.329.192-2.332.19-.019,0,.049.608.019,0,2.332-.19Z"
-                    transform="translate(-95.834 -266.729)" />
-                <path class="brujulaI"
-                    d="M274.2,306.73a8.864,8.864,0,1,0,8.864,8.863A8.864,8.864,0,0,0,274.2,306.73Zm0,17a8.134,8.134,0,1,1,8.134-8.134A8.134,8.134,0,0,1,274.2,323.725Z"
-                    transform="translate(-204.296 -230.713)" />
-                <path class="brujulaJ" d="M301.76,330.34Z" transform="translate(-231.852 -248.578)" />
-                <path class="brujulaJ" d="M301.612,330.33h0l0,0Z" transform="translate(-231.738 -248.57)" />
-                <path class="brujulaI"
-                    d="M297.8,337.9a1.275,1.275,0,1,0,1.275,1.275A1.275,1.275,0,0,0,297.8,337.9Zm0,1.82a.545.545,0,1,1,.545-.545A.545.545,0,0,1,297.8,339.72Z"
-                    transform="translate(-227.887 -254.297)" />
-                <path class="brujulaE"
-                    d="M288.515,112.75v.1l-1.1,11.6-.017.2-.221,2.349-.221,2.346-.019.2-.852,9.022-.818,8.684-.08.835-.107,1.154-.019.207-.974,10.409a9.9,9.9,0,0,1,4.318-.974h.124V112.75Z"
-                    transform="translate(-218.482 -83.945)" />
-                <path class="brujulaE"
-                    d="M84.911,343.577l2.349.243,2.349.243.2.022,9.034.93,8.333.854.832.088,1.156.119.207.02,10.093,1.044.117.012.122.015.243.027a9.91,9.91,0,0,1-1.141-4.566l-9.735-.056h-2.134l-7.52-.056H98.056l-8.275-.046h-.2l-2.339-.012-2.339-.015h-.2l-10.407-.083H73.1l11.607,1.193Z"
-                    transform="translate(-58.842 -257.672)" />
-                <path class="brujulaE"
-                    d="M374.726,331.057l-2.344-.168-2.341-.168-.2-.015-8.314-.6-.679-.049-.691-.051-7.642-.548-.83-.058-1.139-.083-.207-.015-10.414-.747a9.923,9.923,0,0,1,.655,3.548v.068l9.979-.058h2.134l7.528-.044h1.363l8.275-.046h.2l2.339-.012,2.339-.015h.2l10.37-.061h1.217l-11.6-.832Z"
-                    transform="translate(-260.725 -247.23)" />
-                <path class="brujulaE"
-                    d="M336.164,235.562l-6.673,5.376-.647.521-.891.73-.161.129-8.031,6.462a9.954,9.954,0,0,1,2.921,2.19l6.873-7.087.141-.146.779-.8.567-.587,5.4-5.569.475-.487.475-.487,4.756-4.9.684-.706Z"
-                    transform="translate(-245.471 -172.809)" />
-                <path class="brujulaE"
-                    d="M329.32,365.557l6.917,7.245.141.148.772.808.562.589,5.508,5.771,5.376,5.632.652.684-4.933-6.418-.421-.545-.416-.545-4.5-5.858-.506-.657-.691-.9-.127-.165-6.362-8.275A9.979,9.979,0,0,1,329.32,365.557Z"
-                    transform="translate(-252.703 -273.342)" />
-                <path class="brujulaE"
-                    d="M197.2,388.291l.256-.2.543-.428,5.812-4.6.652-.516.9-.708.165-.131,7.705-6.084.456-.419-.524-.265a10.03,10.03,0,0,1-2.149-1.485l-7.024,6.907-.146.146-.8.781-.579.57-5.693,5.6-5.469,5.379-.66.65Z"
-                    transform="translate(-147.783 -281.195)" />
-                <path class="brujulaE"
-                    d="M192.5,241.582l5.422,6.661.528.647.73.893.131.163,6.4,7.854h.229a9.93,9.93,0,0,1,1.876-3l-6.99-6.678-.148-.141-.808-.772-.587-.56-6.1-5.826L188,235.877l-.686-.657Z"
-                    transform="translate(-145.256 -176.607)" />
-                <path class="brujulaE"
-                    d="M288.515,112.75v.1l-1.1,11.6-.017.2-.221,2.349-.221,2.346-.019.2-.852,9.022-.818,8.684-.08.835-.107,1.154-.019.207-.974,10.409a9.9,9.9,0,0,1,4.318-.974h.124V112.75Z"
-                    transform="translate(358.41 253.625) rotate(180)" />
-            </g>
-            <text x="920" y="200" stroke="#3376A1" stroke-width="1px"> 
-                Celda 7
-            </text>
-            <g xmlns="http://www.w3.org/2000/svg" transform="translate(1105 30) rotate(30)">
-                <line id="celda7-T1-2" class="celda7A" y2="179.357" transform="translate(0.823 345.859) rotate(-90)" />
-                <line class="celda7A" y2="179.357" transform="translate(0.823 375.274) rotate(-90)" />
-                <line id="celda7-T2-3" class="celda7A" y2="179.357" transform="translate(0.823 316.444) rotate(-90)" />
-                <line id="celda7-T3-4" class="celda7A" y2="179.357" transform="translate(0.823 287.029) rotate(-90)" />
-                <line id="celda7-T4-5" class="celda7A" y2="179.357" transform="translate(0.823 257.614) rotate(-90)" />
-                <line id="celda7-T5-6" class="celda7A" y2="179.357" transform="translate(0.823 228.199) rotate(-90)" />
-                <line id="celda7-T6-7" class="celda7A" y2="179.357" transform="translate(0.823 198.784) rotate(-90)" />
-                <line id="celda7-T7-8" class="celda7A" y2="179.357" transform="translate(0.823 169.369) rotate(-90)" />
-                <line id="celda7-T9-10" class="celda7A" x1="0.317" y2="179.787" transform="translate(0.392 102.833) rotate(-90)" />
-                <line id="celda7-T8-9" class="celda7A" x1="0.317" y2="179.787" transform="translate(0.392 133.139) rotate(-90)" />
-                <line id="celda7-T10-11" class="celda7A" x1="0.538" y2="179.716" transform="translate(0.462 73.639) rotate(-90)" />
-                <line id="celda7-T11-12" class="celda7A" x2="0.384" y2="180.179" transform="translate(0 43.179) rotate(-90)" /><text class="celda7b"
-                    transform="translate(78.334 6)">
-                    <tspan x="-71.89" y="0">JIHGFEDCBA</tspan>
-                </text><text class="celda7c" transform="translate(192.059 156.444) rotate(-90)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="celda7c" transform="translate(192.059 273.213) rotate(-90)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="celda7c" transform="translate(192.059 97.614) rotate(-90)">
-                    <tspan x="0" y="0">10</tspan>
-                </text><text class="celda7c" transform="translate(192.059 215.274) rotate(-90)">
-                    <tspan x="0" y="0">6</tspan>
-                </text><text class="celda7c" transform="translate(192.059 332.043) rotate(-90)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="celda7c" transform="translate(192.059 64.633) rotate(-90)">
-                    <tspan x="0" y="0">11</tspan>
-                </text><text class="celda7c" transform="translate(192.059 185.859) rotate(-90)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="celda7c" transform="translate(192.059 302.628) rotate(-90)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="celda7c" transform="translate(192.059 127.029) rotate(-90)">
-                    <tspan x="0" y="0">9</tspan>
-                </text><text class="celda7c" transform="translate(192.059 32.544) rotate(-90)">
-                    <tspan x="0" y="0">12</tspan>
-                </text><text class="celda7c" transform="translate(192.059 244.689) rotate(-90)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="celda7c" transform="translate(192.059 361.458) rotate(-90)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="celda7c" transform="translate(79.009 354.477)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="celda7c" transform="translate(150.319 221.222)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="celda7c" transform="translate(25.528 250.503)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="celda7c" transform="translate(25.528 142.225)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="celda7c" transform="translate(78.837 38.815)">
-                    <tspan x="0" y="0">4</tspan>
-                </text>
-                <g transform="translate(171.266 221.144) rotate(-90)">
-                    <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0 0)" />
-                    <path class="celda7d"
-                        d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
-                        transform="translate(8.914 0)" />
-                </g>
-                <g transform="translate(9.037 240.754) rotate(90)">
-                    <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0 0)" />
-                    <path class="celda7d"
-                        d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
-                        transform="translate(8.914 0)" />
-                </g>
-                <g transform="translate(9.037 132.898) rotate(90)">
-                    <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0 0)" />
-                    <path class="celda7d"
-                        d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
-                        transform="translate(8.914 0)" />
-                </g>
-                <g transform="translate(72.906 13.734)">
-                    <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914 0)" />
-                </g>
-                <g transform="translate(89.706 375.218) rotate(180)">
-                    <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914 0)" />
-                </g>
-                <line class="celda7A" y2="138.162" transform="translate(72.324 236.611)" />
-                <line class="celda7A" y2="138.162" transform="translate(125.806 236.611)" />
-                <line class="celda7A" x1="360.484" transform="translate(36.67 374.773) rotate(-90)" />
-                <line class="celda7A" x1="360.484" transform="translate(0.573 374.631) rotate(-90)" />
-                <line class="celda7A" x1="360.663" transform="translate(90.151 374.773) rotate(-90)" />
-                <line class="celda7A" x1="361.251" transform="translate(54.497 374.773) rotate(-90)" />
-                <line class="celda7A" x1="361.251" transform="translate(18.4 374.631) rotate(-90)" />
-                <line class="celda7A" x1="360.734" transform="translate(107.98 374.773) rotate(-90)" />
-                <line class="celda7A" y2="360.501" transform="translate(143.633 14.271)" />
-                <line class="celda7A" x1="361.038" transform="translate(72.325 374.773) rotate(-90)" />
-                <line class="celda7A" x1="360.663" transform="translate(125.806 374.773) rotate(-90)" />
-                <line class="celda7A" x1="361.359" transform="translate(161.461 374.773) rotate(-90)" />
-                <g class="celda7e" transform="translate(0.124 375.664) rotate(-90)">
-                    <rect class="celda7f" width="362.233" height="180.056" />
-                    <rect class="celda7g" x="0.5" y="0.5" width="361.233" height="179.056" />
-                </g>
-                <line class="celda7A" x2="17.827" transform="translate(143.719 213.438)" />
-                <line class="celda7A" x2="17.827" transform="translate(72.409 31.759)" />
-                <line class="celda7A" x2="18.719" transform="translate(18.036 240.641)" />
-                <line class="celda7A" x2="18.719" transform="translate(72.409 361.867)" />
-                <line class="celda7A" x2="18.719" transform="translate(18.036 147.444)" />
-            </g>
-            <text x="50" y="450" stroke="#3376A1" stroke-width="1px"> 
-                Celda 30
-            </text>
-            <g xmlns="http://www.w3.org/2000/svg" transform="translate(40 440)">
-                <line class="a" y2="161.783" transform="translate(30.752 45.014)" />
-                <line class="a" y2="161.783" transform="translate(48.579 45.014)" />
-                <line class="a" y2="161.783" transform="translate(66.407 45.014)" />
-                <line class="a" y2="161.783" transform="translate(84.234 45.014)" />
-                <line class="a" y2="161.783" transform="translate(102.061 45.014)" />
-                <line class="a" y2="161.783" transform="translate(119.889 45.014)" />
-                <line class="a" y2="161.783" transform="translate(137.716 45.014)" />
-                <line class="a" y2="161.783" transform="translate(155.543 45.014)" />
-                <line class="a" y2="161.783" transform="translate(173.37 45.014)" />
-                <line class="a" y2="161.783" transform="translate(191.198 45.014)" />
-                <line class="a" y2="161.783" transform="translate(209.025 45.014)" />
-                <line class="a" y2="161.783" transform="translate(226.852 45.014)" />
-                <line class="a" y2="161.783" transform="translate(244.68 45.014)" />
-                <line class="a" y2="161.783" transform="translate(262.507 45.014)" />
-                <line class="a" y2="161.783" transform="translate(280.334 45.014)" />
-                <line class="a" y2="161.783" transform="translate(298.162 45.014)" />
-                <line class="a" y2="161.783" transform="translate(315.989 45.014)" />
-                <line class="a" y2="161.783" transform="translate(333.816 45.014)" /><text class="b"
-                    transform="translate(16.563 38.365)">
-                    <tspan x="0" y="0">19</tspan>
-                </text><text class="c" transform="translate(1.563 56.365)">
-                    <tspan x="-0.875" y="0">I</tspan>
-                    <tspan x="-2.12" y="15">H</tspan>
-                    <tspan x="-2.043" y="30">G</tspan>
-                    <tspan x="-1.644" y="45">F</tspan>
-                    <tspan x="-1.688" y="60">E</tspan>
-                    <tspan x="-1.95" y="75">D</tspan>
-                    <tspan x="-1.963" y="90">C</tspan>
-                    <tspan x="-1.915" y="105">B</tspan>
-                    <tspan x="-2.019" y="120">A</tspan>
-                </text><text class="b" transform="translate(88.563 38.365)">
-                    <tspan x="0" y="0">15</tspan>
-                </text><text class="b" transform="translate(216.563 38.365)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(286.563 38.365)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(52.563 38.365)">
-                    <tspan x="0" y="0">17</tspan>
-                </text><text class="b" transform="translate(177.563 38.365)">
-                    <tspan x="0" y="0">10</tspan>
-                </text><text class="b" transform="translate(124.563 38.365)">
-                    <tspan x="0" y="0">13</tspan>
-                </text><text class="b" transform="translate(251.563 38.365)">
-                    <tspan x="0" y="0">6</tspan>
-                </text><text class="b" transform="translate(322.563 38.365)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(34.563 38.365)">
-                    <tspan x="0" y="0">18</tspan>
-                </text><text class="b" transform="translate(159.563 38.365)">
-                    <tspan x="0" y="0">11</tspan>
-                </text><text class="b" transform="translate(107.563 38.365)">
-                    <tspan x="0" y="0">14</tspan>
-                </text><text class="b" transform="translate(233.563 38.365)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(304.563 38.365)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(70.563 38.365)">
-                    <tspan x="0" y="0">16</tspan>
-                </text><text class="b" transform="translate(198.563 38.365)">
-                    <tspan x="0" y="0">9</tspan>
-                </text><text class="b" transform="translate(141.563 38.365)">
-                    <tspan x="0" y="0">12</tspan>
-                </text><text class="b" transform="translate(268.563 38.365)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="b" transform="translate(338.563 38.365)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="b" transform="translate(270.563 74.365)">
-                    <tspan x="0" y="0">9</tspan>
-                </text><text class="b" transform="translate(179.563 73.365)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(91.563 74.365)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(37.563 128.365)">
-                    <tspan x="0" y="0">6</tspan>
-                </text><text class="b" transform="translate(73.563 180.365)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="b" transform="translate(144.563 180.365)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(215.563 180.365)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(286.563 180.365)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(322.563 128.365)">
-                    <tspan x="0" y="0">1</tspan>
-                </text>
-                <g transform="translate(209.471 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.092 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(9.092 0.482)" />
-                </g>
-                <g transform="translate(173.816 45.46)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.253 -0.095)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.747 -0.095)" />
-                </g>
-                <g transform="translate(280.78 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.217 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(8.783 0.482)" />
-                </g>
-                <g transform="translate(262.953 45.46)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.39 -0.095)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.61 -0.095)" />
-                </g>
-                <g transform="translate(138.162 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.401 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(9.401 0.482)" />
-                </g>
-                <g transform="translate(84.68 44.568)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.117 -0.203)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.883 -0.203)" />
-                </g>
-                <g transform="translate(66.852 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.29 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(8.71 0.482)" />
-                </g>
-                <g transform="translate(351.643 117.214) rotate(90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914)" />
-                </g>
-                <g transform="translate(12.925 134.15) rotate(-90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914)" />
-                </g>
-                <line class="a" y2="138.162" transform="translate(151.532 98.942) rotate(90)" />
-                <line class="a" y2="138.162" transform="translate(151.532 152.423) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 63.287) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 116.769) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 170.251) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 81.114) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 134.596) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 170.251) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 98.942) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 152.423) rotate(90)" />
-                <line class="a" y2="338.719" transform="translate(352.089 188.078) rotate(90)" />
-                <g class="e" transform="translate(12.563 44.365)">
-                    <rect class="f" width="340" height="163" />
-                    <rect class="g" x="0.5" y="0.5" width="339" height="162" />
-                </g>
-            </g>
-
-            <text x="450" y="450" stroke="#3376A1" stroke-width="1px"> 
-                Celda 23
-            </text>
-            <g xmlns="http://www.w3.org/2000/svg" transform="translate(440 440)">
-                <line class="a" y2="161.783" transform="translate(30.752 45.014)" />
-                <line class="a" y2="161.783" transform="translate(48.579 45.014)" />
-                <line class="a" y2="161.783" transform="translate(66.407 45.014)" />
-                <line class="a" y2="161.783" transform="translate(84.234 45.014)" />
-                <line class="a" y2="161.783" transform="translate(102.061 45.014)" />
-                <line class="a" y2="161.783" transform="translate(119.889 45.014)" />
-                <line class="a" y2="161.783" transform="translate(137.716 45.014)" />
-                <line class="a" y2="161.783" transform="translate(155.543 45.014)" />
-                <line class="a" y2="161.783" transform="translate(173.37 45.014)" />
-                <line class="a" y2="161.783" transform="translate(191.198 45.014)" />
-                <line class="a" y2="161.783" transform="translate(387.298 45.014)" />
-                <line class="a" y2="161.783" transform="translate(209.025 45.014)" />
-                <line class="a" y2="161.783" transform="translate(405.125 45.014)" />
-                <line class="a" y2="161.783" transform="translate(226.852 45.014)" />
-                <line class="a" y2="161.783" transform="translate(422.953 45.014)" />
-                <line class="a" y2="161.783" transform="translate(244.68 45.014)" />
-                <line class="a" y2="161.783" transform="translate(262.507 45.014)" />
-                <line class="a" y2="161.783" transform="translate(280.334 45.014)" />
-                <line class="a" y2="161.783" transform="translate(333.816 45.014)" />
-                <line class="a" y2="161.783" transform="translate(298.162 45.014)" />
-                <line class="a" y2="161.783" transform="translate(351.643 45.014)" />
-                <line class="a" y2="161.783" transform="translate(315.989 45.014)" />
-                <line class="a" y2="161.783" transform="translate(369.471 45.014)" />
-                <line class="a" y2="161.783" transform="translate(333.816 45.014)" />
-                <line class="a" y2="161.783" transform="translate(387.298 45.014)" />
-                <line class="a" y2="138.162" transform="translate(351.643 45.014)" /><text class="b"
-                    transform="translate(339.036 38.365)">
-                    <tspan x="0" y="0">19</tspan>
-                </text><text class="b" transform="translate(392.036 38.365)">
-                    <tspan x="0" y="0">22</tspan>
-                </text><text class="c" transform="translate(2.036 56.365)">
-                    <tspan x="-0.875" y="0">I</tspan>
-                    <tspan x="-2.12" y="15">H</tspan>
-                    <tspan x="-2.043" y="30">G</tspan>
-                    <tspan x="-1.644" y="45">F</tspan>
-                    <tspan x="-1.688" y="60">E</tspan>
-                    <tspan x="-1.95" y="75">D</tspan>
-                    <tspan x="-1.963" y="90">C</tspan>
-                    <tspan x="-1.915" y="105">B</tspan>
-                    <tspan x="-2.019" y="120">A</tspan>
-                </text><text class="b" transform="translate(267.036 38.365)">
-                    <tspan x="0" y="0">15</tspan>
-                </text><text class="b" transform="translate(145.036 38.365)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(73.036 38.365)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(303.036 38.365)">
-                    <tspan x="0" y="0">17</tspan>
-                </text><text class="b" transform="translate(356.036 38.365)">
-                    <tspan x="0" y="0">20</tspan>
-                </text><text class="b" transform="translate(178.036 38.365)">
-                    <tspan x="0" y="0">10</tspan>
-                </text><text class="b" transform="translate(232.036 38.365)">
-                    <tspan x="0" y="0">13</tspan>
-                </text><text class="b" transform="translate(428.036 38.365)">
-                    <tspan x="0" y="0">24</tspan>
-                </text><text class="b" transform="translate(111.036 38.365)">
-                    <tspan x="0" y="0">6</tspan>
-                </text><text class="b" transform="translate(39.036 38.365)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(321.036 38.365)">
-                    <tspan x="0" y="0">18</tspan>
-                </text><text class="b" transform="translate(375.036 38.365)">
-                    <tspan x="0" y="0">21</tspan>
-                </text><text class="b" transform="translate(196.036 38.365)">
-                    <tspan x="0" y="0">11</tspan>
-                </text><text class="b" transform="translate(249.036 38.365)">
-                    <tspan x="0" y="0">14</tspan>
-                </text><text class="b" transform="translate(127.036 38.365)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(56.036 38.365)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(286.036 38.365)">
-                    <tspan x="0" y="0">16</tspan>
-                </text><text class="b" transform="translate(162.036 37.365)">
-                    <tspan x="0" y="0">9</tspan>
-                </text><text class="b" transform="translate(214.036 38.365)">
-                    <tspan x="0" y="0">12</tspan>
-                </text><text class="b" transform="translate(411.036 38.365)">
-                    <tspan x="0" y="0">23</tspan>
-                </text><text class="b" transform="translate(92.036 38.365)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="b" transform="translate(20.036 38.365)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="b" transform="translate(306.036 74.365)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(377.036 74.365)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="b" transform="translate(197.036 73.365)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(74.036 73.365)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(37.036 128.365)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="b" transform="translate(109.036 180.365)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(251.036 180.365)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(412.036 128.365)">
-                    <tspan x="0" y="0">6</tspan>
-                </text>
-                <g transform="translate(191.643 45.46)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.393 -0.095)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(9.393 -0.095)" />
-                </g>
-                <g transform="translate(245.125 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.089 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(8.911 0.482)" />
-                </g>
-                <g transform="translate(298.607 45.46)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.429 -0.095)" />
-                    <path class="d" d="M0,0H9A0,0,0,0,1,9,0V9A0,0,0,0,1,9,9H9A9,9,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.429 -0.095)" />
-                </g>
-                <g transform="translate(369.916 45.46)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.12 -0.095)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(9.12 -0.095)" />
-                </g>
-                <g transform="translate(102.507 197.883)">
-                    <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
-                        transform="translate(-0.471 0.482)" />
-                    <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
-                        transform="translate(8.529 0.482)" />
-                </g>
-                <g transform="translate(66.852 44.568)">
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                        transform="translate(0.184 -0.203)" />
-                    <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
-                        transform="translate(9.184 -0.203)" />
-                </g>
-                <g transform="translate(440.78 117.214) rotate(90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914)" />
-                </g>
-                <g transform="translate(12.925 134.15) rotate(-90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
-                        transform="translate(8.914)" />
-                </g>
-                <line class="a" y2="138.162" transform="translate(151.532 98.942) rotate(90)" />
-                <line class="a" y2="138.162" transform="translate(151.532 152.423) rotate(90)" />
-                <line class="a" x1="426.877" transform="translate(13.903 63.287)" />
-                <line class="a" x1="426.877" transform="translate(13.903 116.77)" />
-                <line class="a" y2="427.409" transform="translate(440.78 170.251) rotate(90)" />
-                <line class="a" y2="426.877" transform="translate(440.78 81.114) rotate(90)" />
-                <line class="a" y2="427.409" transform="translate(440.78 134.596) rotate(90)" />
-                <line class="a" y2="427.409" transform="translate(440.78 170.251) rotate(90)" />
-                <line class="a" y2="426.877" transform="translate(440.78 98.942) rotate(90)" />
-                <line class="a" y2="427.409" transform="translate(440.78 152.423) rotate(90)" />
-                <line class="a" y2="427.409" transform="translate(440.78 188.078) rotate(90)" />
-                <g class="e" transform="translate(13.036 44.365)">
-                    <rect class="f" width="429" height="162" />
-                    <rect class="g" x="0.5" y="0.5" width="428" height="161" />
-                </g>
-            </g>
-
-            <text x="450" y="200" stroke="#3376A1" stroke-width="1px"> 
-                Celda 20
-            </text>
-            <g xmlns="http://www.w3.org/2000/svg" transform="translate(-31 -256)">
-                
-                <line id="celda20-T1-2" class="a" y2="161.783" transform="translate(497.709 491.657)" />
-                <line id="celda20-T2-3" class="a" y2="161.783" transform="translate(512.463 491.657)" />
-                <line id="celda20-T3-4" class="a" y2="161.783" transform="translate(527.215 491.657)" />
-                <line id="celda20-T4-5" class="a" y2="161.783" transform="translate(541.969 491.657)" />
-                <line id="celda20-T5-6" class="a" y2="161.783" transform="translate(556.721 491.657)" />
-                <line id="celda20-T6-7" class="a" y2="161.783" transform="translate(571.473 491.657)" />
-                <line id="celda20-T7-8" class="a" y2="161.783" transform="translate(586.227 491.657)" />
-                <line id="celda20-T8-9" class="a" y2="161.783" transform="translate(600.979 491.657)" />
-                <line id="celda20-T9-10" class="a" y2="161.783" transform="translate(615.732 491.657)" />
-                <line id="celda20-T10-11" class="a" y2="161.783" transform="translate(630.484 491.657)" />
-                <line id="celda20-T21-22" class="a" y2="161.783" transform="translate(792.764 491.657)" />
-                <line id="celda20-T11-12" class="a" y2="161.783" transform="translate(645.236 491.657)" />
-                <line id="celda20-T22-23" class="a" y2="161.783" transform="translate(807.516 491.657)" />
-                <line id="celda20-T28-29" class="a" y2="161.783" transform="translate(896.033 491.657)" />
-                <line id="celda20-T12-13" class="a" y2="161.783" transform="translate(659.99 491.657)" />
-                <line id="celda20-T23-24" class="a" y2="161.783" transform="translate(822.27 491.657)" />
-                <line class="a" y2="161.783" transform="translate(910.785 491.657)" />
-                <line id="celda20-T13-14" class="a" y2="161.783" transform="translate(674.742 491.657)" />
-                <line id="celda20-T14-15" class="a" y2="161.783" transform="translate(689.494 491.657)" />
-                <line id="celda20-T15-16" class="a" y2="161.783" transform="translate(704.248 491.657)" />
-                <line id="celda20-T16-17" class="a" y2="161.783" transform="translate(719 491.657)" />
-                <line id="celda20-T17-18" class="a" y2="161.783" transform="translate(733.754 491.657)" />
-                <line id="celda20-T18-19" class="a" y2="161.783" transform="translate(748.506 491.657)" /> 
-                <line id="celda20-T19-20" class="a" y2="161.783" transform="translate(763.258 491.657)" />
-                <line id="celda20-T20-21" class="a" y2="161.783" transform="translate(778.012 491.657)" />
-                <line id="celda20-T21-22" class="a" y2="161.783" transform="translate(792.764 491.657)" />
-                <line id="celda20-T22-23" class="a" y2="161.783" transform="translate(822.27 491.657)" />
-                <line id="celda20-T24-25" class="a" y2="161.783" transform="translate(837.021 491.657)" />
-                <line id="celda20-T25-26" class="a" y2="161.337" transform="translate(851.773 491.657)" />
-                <line id="celda20-T26-27" class="a" y2="161.783" transform="translate(866.527 491.657)" />
-                <line id="celda20-T27-28" class="a" y2="161.783" transform="translate(881.279 491.657)" /><text class="b"
-                    transform="translate(750 483.067)">
-                    <tspan x="0" y="0">19</tspan>
-                </text><text class="b" transform="translate(839 483.067)">
-                    <tspan x="0" y="0">25</tspan>
-                </text><text class="b" transform="translate(795 483.067)">
-                    <tspan x="0" y="0">22</tspan>
-                </text><text class="b" transform="translate(884 483.067)">
-                    <tspan x="0" y="0">28</tspan>
-                </text><text class="c" transform="translate(474 502.067)">
-                    <tspan x="-0.875" y="0">I</tspan>
-                    <tspan x="-2.12" y="15">H</tspan>
-                    <tspan x="-2.043" y="30">G</tspan>
-                    <tspan x="-1.644" y="45">F</tspan>
-                    <tspan x="-1.688" y="60">E</tspan>
-                    <tspan x="-1.95" y="75">D</tspan>
-                    <tspan x="-1.963" y="90">C</tspan>
-                    <tspan x="-1.915" y="105">B</tspan>
-                    <tspan x="-2.019" y="120">A</tspan>
-                </text><text class="b" transform="translate(693 483.067)">
-                    <tspan x="0" y="0">15</tspan>
-                </text><text class="b" transform="translate(591 483.067)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(532 483.067)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(721 483.067)">
-                    <tspan x="0" y="0">17</tspan>
-                </text><text class="b" transform="translate(765 483.067)">
-                    <tspan x="0" y="0">20</tspan>
-                </text><text class="b" transform="translate(854 483.067)">
-                    <tspan x="0" y="0">26</tspan>
-                </text><text class="b" transform="translate(618 483.067)">
-                    <tspan x="0" y="0">10</tspan>
-                </text><text class="b" transform="translate(661 483.067)">
-                    <tspan x="0" y="0">13</tspan>
-                </text><text class="b" transform="translate(824 483.067)">
-                    <tspan x="0" y="0">24</tspan>
-                </text><text class="b" transform="translate(562 483.067)">
-                    <tspan x="0" y="0">6</tspan>
-                </text><text class="b" transform="translate(502 483.067)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(736 483.067)">
-                    <tspan x="0" y="0">18</tspan>
-                </text><text class="b" transform="translate(781 483.067)">
-                    <tspan x="0" y="0">21</tspan>
-                </text><text class="b" transform="translate(869 483.067)">
-                    <tspan x="0" y="0">27</tspan>
-                </text><text class="b" transform="translate(634 483.067)">
-                    <tspan x="0" y="0">11</tspan>
-                </text><text class="b" transform="translate(678 483.067)">
-                    <tspan x="0" y="0">14</tspan>
-                </text><text class="b" transform="translate(577 483.067)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(517 483.067)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(706 483.067)">
-                    <tspan x="0" y="0">16</tspan>
-                </text><text class="b" transform="translate(605 483.067)">
-                    <tspan x="0" y="0">9</tspan>
-                </text><text class="b" transform="translate(647 483.067)">
-                    <tspan x="0" y="0">12</tspan>
-                </text><text class="b" transform="translate(810 483.067)">
-                    <tspan x="0" y="0">23</tspan>
-                </text><text class="b" transform="translate(900 483.067)">
-                    <tspan x="0" y="0">29</tspan>
-                </text><text class="b" transform="translate(547 483.067)">
-                    <tspan x="0" y="0">5</tspan>
-                </text><text class="c" transform="translate(488 482.067)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="b" transform="translate(799 520.067)">
-                    <tspan x="0" y="0">4</tspan>
-                </text><text class="b" transform="translate(695 520.067)">
-                    <tspan x="0" y="0">3</tspan>
-                </text><text class="b" transform="translate(593 520.067)">
-                    <tspan x="0" y="0">2</tspan>
-                </text><text class="b" transform="translate(503 574.067)">
-                    <tspan x="0" y="0">1</tspan>
-                </text><text class="b" transform="translate(637 627.067)">
-                    <tspan x="0" y="0">8</tspan>
-                </text><text class="b" transform="translate(754 627.067)">
-                    <tspan x="0" y="0">7</tspan>
-                </text><text class="b" transform="translate(887 574.067)">
-                    <tspan x="0" y="0">6</tspan>
-                </text>
-                <g transform="translate(690.131 492.103)">
-                    <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                    transform="translate(-0.131 -0.036)" />
-                    <path class="d" d="M0,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H7A7,7,0,0,1,0,2V0A0,0,0,0,1,0,0Z"
-                    transform="translate(6.869 -0.036)" />
-                </g>
-                <g transform="translate(748.961 644.526)">
-                    <path class="d" d="M0,0H0A6,6,0,0,1,6,6V9A0,0,0,0,1,6,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                    transform="translate(0.039 -0.459)" />
-                    <path class="d" d="M6,0H6A0,0,0,0,1,6,0V9A0,0,0,0,1,6,9H0A0,0,0,0,1,0,9V6A6,6,0,0,1,6,0Z"
-                    transform="translate(7.039 -0.459)" />
-                </g>
-                <g transform="translate(793.529 492.103)">
-                    <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                    transform="translate(0.471 -0.036)" />
-                    <path class="d" d="M0,0H6A0,0,0,0,1,6,0V9A0,0,0,0,1,6,9H6A6,6,0,0,1,0,3V0A0,0,0,0,1,0,0Z"
-                    transform="translate(7.471 -0.036)" />
-                </g>
-                <g transform="translate(631.301 644.526)">
-                    <path class="d" d="M0,0H0A7,7,0,0,1,7,7V9A0,0,0,0,1,7,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                    transform="translate(-0.301 -0.459)" />
-                    <path class="d" d="M7,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H0A0,0,0,0,1,0,9V7A7,7,0,0,1,7,0Z"
-                    transform="translate(6.699 -0.459)" />
-                </g>
-                <g transform="translate(586.732 491.211)">
-                    <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
-                    transform="translate(0.268 -0.145)" />
-                    <path class="d" d="M0,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H7A7,7,0,0,1,0,2V0A0,0,0,0,1,0,0Z"
-                    transform="translate(7.268 -0.145)" />
-                </g>
-                <g transform="translate(910.785 563.858) rotate(90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V0A7.376,7.376,0,0,1,.646,7.376H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V7.376a0,0,0,0,1,0,0H7.376A7.376,7.376,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                    transform="translate(8.914)" />
-                </g>
-                <g transform="translate(482.957 580.794) rotate(-90)">
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V0A7.376,7.376,0,0,1,.646,7.376H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
-                    <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V7.376a0,0,0,0,1,0,0H7.376A7.376,7.376,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
-                    transform="translate(8.914)" />
-                </g>
-                <line class="a" y2="114.333" transform="translate(597.66 545.585) rotate(90)" />
-                <line class="a" y2="114.333" transform="translate(597.66 599.067) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 509.93) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 563.412) rotate(90)" />
-                <line class="a" y2="353.696" transform="translate(837.021 616.894) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 527.758) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 581.24) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 616.894) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 545.585) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 599.067) rotate(90)" />
-                <line class="a" y2="427.828" transform="translate(911.154 634.721) rotate(90)" />
-                <g class="e" transform="translate(482 491.067)">
-                    <rect class="f" width="429" height="162" />
-                    <rect class="g" x="0.5" y="0.5" width="428" height="161" />
-                </g>
-            </g>
-            <g class="static">
-                <circle id='siloId6' class='silo' cx="1000" cy="500" r="40" fill='#656565'/>
-                <text x="1000" y="500" 
-                text-anchor="middle"
-                fill="white"
-                alignment-baseline="middle"
-                > Silo 32
-                </text>
-            </g>
-            <g class="static">
-                <circle id='siloId5' class='silo' cx="1000" cy="600" r="40" fill='#656565'/>
-                <text x="1000" y="600" 
-                text-anchor="middle"
-                fill="white"
-                alignment-baseline="middle"
-                > Silo 31
-                </text>
-            </g>
-            
-            
-            <!-- <g id="toggleColorProd">
-                <rect [ngClass]="toggleColor ? 'elementoColor' : 'elementoProd'" 
-                x="1070" y="565" width="75" height="75" rx="15" ry="15" (click)="toggleElementoGrafico()"/>
-                <text x="1107.5" y="602.5" 
-                text-anchor="middle"
-                fill="white"
-                alignment-baseline="middle"
-                (click)="toggleElementoGrafico()"
-                style="cursor: pointer;"
-                > {{toggleColor ? 'Color' : 'Prod.'}}
-                </text>
-            </g>
-            <g id="toggleForma">
-                <rect class="toggleForma"
-                x="1070" y="465" width="75" height="75" rx="15" ry="15" (click)="toggleFormaElementoGrafico()"/>
-                <text x="1107.5" y="502.5" 
-                text-anchor="middle"
-                fill="white"
-                alignment-baseline="middle"
-                (click)="toggleFormaElementoGrafico()"
-                style="cursor: pointer;"
-                > {{toggleForma == 'rect' ? 'Rectángulo' : 'Circulo'}}
-                </text>
-            </g> -->
-            <g id='elementosGraficos'></g>
-            <g id='elementosGraficosProd'></g>
-            <g id="gc7" xmlns="http://www.w3.org/2000/svg" transform="translate(1105 30) rotate(30)"></g>
-            <g id="gc30" xmlns="http://www.w3.org/2000/svg" transform="translate(40 440)"></g>
-            <g id="gc23" xmlns="http://www.w3.org/2000/svg" transform="translate(440 440)"></g>
-            <g id="gc20" xmlns="http://www.w3.org/2000/svg" transform="translate(-31 -256)"></g>
-        </svg>
-        <p class="text-center"><b>Para agregar</b>: click derecho sobre el gráfico. <b>Para eliminar</b>: doble click sobre la figura que desea eliminar.</p>
+<div id="section-to-print" class="mt-4 shadow" style="background-color: white; min-height: 5rem;">
+  <div class="bg-white">
+    <app-collapse-button collapseSelectorId="collapseGrafico"></app-collapse-button>
+    <h4 class="colorTitle px-4 pt-4 pb-3 m-0">Gráfico de Celdas</h4>
+  </div>
+  <div id="collapseGrafico" class="collapse show bg-white pb-2">
+    <div id='colorMateriales' class="float-left text-center">
+      <div *ngFor="let p of datosEmbarque.listaMateriales" class="colorMaterial">
+        <div class="descripcionMaterial">{{p.descripcionCorta}}</div>
+        <div style="width: 100%; height: 50%;" [ngStyle]="{'background-color': p.color ? p.color : 'white' }"></div>
+      </div>
     </div>
+    <select id="selectMateriales" class="form-control" [(ngModel)]="materialSeleccionado" style="padding: 0.1rem;">
+      <option [ngValue]="null">Seleccione producto:</option>
+      <ng-container *ngIf="datosEmbarque"><option *ngFor="let p of datosEmbarque.listaMateriales" [ngValue]="p">{{ p.descripcionCorta }}</option></ng-container>
+    </select>
+    <div id='colorLabel'>Color</div>
+    <div class='custom-control tank-control custom-switch' id='toggleColorContainer'>
+      <input type='checkbox' class='custom-control-input' id='toggleColor'
+             [(ngModel)]="toggleColor">
+      <label class='custom-control-label' for='toggleColor'></label>
+    </div>
+    <div id='prodLabel'>Prod</div>
+
+    <div id='circuloLabel'>Circulo</div>
+    <div class='custom-control tank-control custom-switch' id='toggleFormaContainer'>
+      <input type='checkbox' class='custom-control-input' id='toggleForma'
+             (change)="toggleFormaElementoGrafico()">
+      <label class='custom-control-label' for='toggleForma'></label>
+    </div>
+    <div id='rectLabel'>Rectangulo</div>
+    <div id='rotarLabel'>Rotación</div>
+    <div class='custom-control tank-control custom-switch' id='toggleRotarContainer'>
+      <input type='checkbox' class='custom-control-input' id='toggleRotar' [(ngModel)]="rotacionCheckbox"
+             (change)="rotacionLastSelected()">
+      <label class='custom-control-label' for='toggleRotar'></label>
+    </div>
+
+    <svg id="grafico-carga" class="section-to-print" xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1300 700">
+      <defs>
+        <path id="myArrow" class="fillFlecha" xmlns="http://www.w3.org/2000/svg" d="M19.733,32.353H64.176a1.766,1.766,0,0,0,1.766-1.766V22.344a1.766,1.766,0,0,0-1.766-1.766H19.733V13.8A3.533,3.533,0,0,0,13.7,11.3L1.035,23.967a3.533,3.533,0,0,0,0,5L13.7,41.63a3.533,3.533,0,0,0,6.031-2.5Z" fill="#4d60a8" transform="translate(0 -10.258)" />
+      </defs>
+
+      <g id="datosBuque">
+        <text x="25" y="50" class="nombre-buque">{{datosEmbarque ? datosEmbarque.nombreBuque : "" }}</text>
+        <text x="25" y="75" class="text-datos-buque"><tspan class="text-buque-bold">Tn Aprox:</tspan> {{datosEmbarque ? datosEmbarque.tnAprox : "" }}</text>
+        <text x="25" y="100" class="text-datos-buque"><tspan class="text-buque-bold">Fecha:</tspan> {{hoy | date: 'dd/MM/yyyy'}}</text>
+        <text x="25" y="125" class="text-datos-buque"><tspan class="text-buque-bold">Productos a cargar:</tspan> {{datosEmbarque ? datosEmbarque.productosACargar : "" }}</text>
+      </g>
+      <g id="brujula" transform="translate(100 200)">
+        <g class="brujulaA" transform="translate(49 64)">
+          <circle class="brujulaK" cx="21" cy="21" r="21" />
+          <circle class="brujulaF" cx="21" cy="21" r="20.75" />
+        </g>
+        <text class="brujulaB" transform="translate(130.047 87.128)">
+          <tspan x="0" y="0">N</tspan>
+        </text>
+        <text class="brujulaB" transform="translate(65.104 15)">
+          <tspan x="0" y="0">O</tspan>
+        </text>
+        <text class="brujulaB" transform="translate(66.557 156.51)">
+          <tspan x="0" y="0">E</tspan>
+        </text>
+        <text class="brujulaC" transform="translate(0 87.867)">
+          <tspan x="0" y="0">S</tspan>
+        </text>
+        <path class="brujulaD" d="M531.522,342.33h0Z" transform="translate(-405.617 -257.649)" />
+        <path class="brujulaE" d="M531.522,342.33h0Z" transform="translate(-405.617 -257.649)" />
+        <path class="brujulaE" d="M72.792,342.33Z" transform="translate(-58.533 -257.649)" />
+        <path class="brujulaD" d="M72.792,342.3Z" transform="translate(-58.533 -257.626)" />
+        <path class="brujulaF" d="M221.92,304.556l9.852-.718-6.328-7.788A19.682,19.682,0,0,0,221.92,304.556Z"
+              transform="translate(-171.443 -222.633)" />
+        <path class="brujulaF" d="M220.379,291.73a20.962,20.962,0,0,0-4,9.66l1.141-.083a19.845,19.845,0,0,1,3.587-8.681Z"
+              transform="translate(-167.252 -219.364)" />
+        <path class="brujulaF" d="M255.313,258.05a21.06,21.06,0,0,0-10.563,5.04l.9.694a19.942,19.942,0,0,1,9.55-4.58Z"
+              transform="translate(-188.717 -193.881)" />
+        <path class="brujulaF" d="M339.14,301.1c.054.117.1.243.148.353l10.441.75a19.677,19.677,0,0,0-4.116-9.331Z"
+              transform="translate(-260.134 -220.227)" />
+        <path class="brujulaF" d="M366.27,289.4a19.881,19.881,0,0,1,4.193,9.511l1.139.08a21.006,21.006,0,0,0-4.624-10.49Z"
+              transform="translate(-280.661 -216.92)" />
+        <path class="brujulaF" d="M314.33,263.23l.8,10.283c.146.063.292.129.436.2l8.032-6.479A19.714,19.714,0,0,0,314.33,263.23Z"
+              transform="translate(-241.363 -197.801)" />
+        <path class="brujulaF" d="M249.14,268.148l8,6.145c.124-.068.243-.134.38-.2l.974-10.443A19.765,19.765,0,0,0,249.14,268.148Z"
+              transform="translate(-192.038 -198.118)" />
+        <path class="brujulaF" d="M226.182,366.83l6.046-7.713-10-1.027A19.713,19.713,0,0,0,226.182,366.83Z"
+              transform="translate(-171.678 -269.574)" />
+        <path class="brujulaF" d="M216.63,357.55A20.986,20.986,0,0,0,221.1,367.5l.706-.9a19.872,19.872,0,0,1-4.021-8.934Z"
+              transform="translate(-167.441 -269.165)" />
+        <path class="brujulaF" d="M365.049,366.8a21.013,21.013,0,0,0,5.111-11.042l-1.144.1A19.9,19.9,0,0,1,364.36,365.9Z"
+              transform="translate(-279.216 -267.811)" />
+        <path class="brujulaF" d="M312.06,414.93a20.988,20.988,0,0,0,10.246-4.069l-.893-.73a19.853,19.853,0,0,1-9.27,3.668Z"
+              transform="translate(-239.645 -308.948)" />
+        <path class="brujulaF" d="M344,366.122a19.7,19.7,0,0,0,4.576-9.852l-10.65.974c-.092.2-.192.4-.3.6Z"
+              transform="translate(-258.992 -268.197)" />
+        <path class="brujulaF" d="M260.688,392.742l-.974-9.932-7.635,6.041A19.674,19.674,0,0,0,260.688,392.742Z"
+              transform="translate(-194.263 -288.277)" />
+        <path class="brujulaF" d="M247.75,408.878a20.994,20.994,0,0,0,9.8,4.417l-.112-1.154a19.9,19.9,0,0,1-8.783-3.972Z"
+              transform="translate(-190.987 -307.465)" />
+        <path class="brujulaF" d="M321.558,388.48l-8.333-6.79-.754,10.383A19.662,19.662,0,0,0,321.558,388.48Z"
+              transform="translate(-239.955 -287.43)" />
+        <path class="brujulaF" d="M324.326,262.185a21.006,21.006,0,0,0-10.426-4.5l.09,1.141a19.881,19.881,0,0,1,9.445,4.081Z"
+              transform="translate(-241.037 -193.602)" />
+        <path class="brujulaG" d="M465.352,354.522l-2.329-.19-.044,0-.049.608.041,0,2.332.19,2.332.19.019,0,.049-.608-.019,0Z"
+              transform="translate(-353.797 -266.729)" />
+        <path class="brujulaG"
+              d="M460.881,381.079l-2.268-.572-.032-.007-.151.591.034.01,2.268.57,2.268.569.027.007.148-.591-.024-.007Z"
+              transform="translate(-350.392 -286.529)" />
+        <path class="brujulaG" d="M462.971,326.625l-.041,0,.049.606.044,0,2.329-.19,2.332-.19.019,0-.049-.608-.019,0-2.332.19Z"
+              transform="translate(-353.797 -245.475)" />
+        <path class="brujulaG"
+              d="M458.464,298.116l-.034.01.148.591.034-.007,2.268-.572,2.271-.57.024-.007-.148-.591-.027.007-2.268.57Z"
+              transform="translate(-350.392 -223.329)" />
+        <path class="brujulaG"
+              d="M452.072,406.572l-2.142-.937-.034-.015-.246.557.037.015,2.142.94,2.142.937.022.01.246-.56-.024-.01Z"
+              transform="translate(-343.749 -305.536)" />
+        <path class="brujulaG"
+              d="M439.209,430.32l-1.959-1.278-.037-.022-.333.511.037.024,1.959,1.273,1.959,1.278.017.01.333-.511-.017-.01Z"
+              transform="translate(-334.086 -323.241)" />
+        <path class="brujulaG"
+              d="M449.65,270.831l.246.557.034-.015,2.142-.937,2.142-.937.024-.01-.246-.56-.022.01-2.142.937-2.144.939Z"
+              transform="translate(-343.749 -202.113)" />
+        <path class="brujulaG"
+              d="M437.248,245.976l1.962-1.278,1.957-1.275.019-.012-.333-.511-.019.012-1.959,1.275-1.959,1.278-.034.022.333.511Z"
+              transform="translate(-334.086 -182.418)" />
+        <path class="brujulaG"
+              d="M422.691,451.729l-1.726-1.577-.024-.022-.411.45.027.024,1.723,1.575,1.726,1.577.024.022.411-.453-.022-.022Z"
+              transform="translate(-321.716 -339.213)" />
+        <path class="brujulaG"
+              d="M420.956,223.154l1.726-1.575L424.409,220l.022-.022-.411-.453-.024.022-1.726,1.577-1.723,1.575-.027.024.411.45Z"
+              transform="translate(-321.708 -164.736)" />
+        <path class="brujulaG"
+              d="M402.9,470.169l-1.446-1.835-.027-.034-.479.377.027.034,1.446,1.835,1.448,1.838.012.017.479-.377-.015-.017Z"
+              transform="translate(-306.901 -352.961)" />
+        <path class="brujulaG"
+              d="M401.446,203.574l1.448-1.835,1.446-1.835.015-.017-.479-.377-.015.017-1.446,1.835-1.448,1.835-.027.034.479.377Z"
+              transform="translate(-306.894 -149.589)" />
+        <path class="brujulaG"
+              d="M380.449,485.221l-1.127-2.047-.019-.034-.533.294.017.032,1.129,2.049,1.127,2.047.015.024.533-.294-.012-.024Z"
+              transform="translate(-290.119 -364.189)" />
+        <path class="brujulaG"
+              d="M379.313,187.655l1.127-2.047,1.127-2.049.015-.024-.533-.294-.015.024-1.127,2.049-1.129,2.047-.017.032.535.294Z"
+              transform="translate(-290.112 -137.278)" />
+        <path class="brujulaG"
+              d="M355.875,496.384l-.776-2.205-.015-.039-.574.2.012.036.776,2.205.776,2.205.007.022.577-.2-.007-.022Z"
+              transform="translate(-271.764 -372.512)" />
+        <path class="brujulaG"
+              d="M355.087,175.946l.779-2.207.776-2.205.007-.022-.577-.2-.007.022-.776,2.207-.776,2.205-.012.036.574.2Z"
+              transform="translate(-271.756 -128.252)" />
+        <path class="brujulaG" d="M329.84,503.374l-.4-2.3-.007-.041-.6.1.007.041.4,2.3.4,2.3,0,.019.6-.1,0-.022Z"
+              transform="translate(-252.334 -377.725)" />
+        <path class="brujulaG" d="M329.428,168.744l.4-2.3.4-2.3,0-.017-.6-.107,0,.019-.4,2.3-.4,2.3-.007.044.6.1Z"
+              transform="translate(-252.326 -122.729)" />
+        <path class="brujulaH"
+              d="M165.44,216.739V182.875a9.936,9.936,0,0,0,3.363-.584l.2-.075,8.3,6.766.165.134.888.73.65.528,6.3,5.13,6.157,5.016-.039-.051-5.376-5.632-5.508-5.778-.562-.587-.772-.808-.141-.148-6.917-7.245a9.979,9.979,0,0,0,1.966-2.482c.019-.034.039-.063.056-.1.107-.195.207-.4.3-.6.032-.071.066-.141.095-.212l10.587-.959.2-.019,1.144-.1.83-.075,8.294-.75.657-.061h.027l8.328-.754.2-.017,2.344-.212,2.346-.214.2-.017,10.443-.947h-.063l-10.37.061h-.195l-2.339.015-2.339.012h-.2l-8.275.046h-1.363l-7.528.044H185.37l-9.979.058v-.068a9.923,9.923,0,0,0-.655-3.548c-.015-.034-.029-.068-.041-.1-.049-.119-.095-.243-.148-.353l-.092-.209,6.437-8.182.129-.163.7-.9.516-.655,5.286-6.72,4.687-5.958-4.756,4.9-.475.487-.475.487-5.41,5.588-.567.587-.779.8-.141.146-6.858,7.073a9.955,9.955,0,0,0-2.921-2.19l-.1-.049c-.144-.068-.29-.134-.436-.2l-.212-.083-.791-10.222-.017-.209-.088-1.139-.063-.825-.616-7.941-.054-.691-.051-.679-.645-8.316-.015-.2-.183-2.344-.18-2.344-.017-.2-.8-10.383v44.813h-.124a9.9,9.9,0,0,0-4.318.973l-.107.054c-.129.066-.256.131-.38.2l-.19.11-7.971-6.109-.163-.127-.9-.694-.655-.5-6.226-4.778-.071-.056-.472-.363-5.717-4.381,5.184,4.95,6.1,5.826.587.56.808.771.148.141,6.99,6.678a9.93,9.93,0,0,0-1.876,3c-.029.071-.056.141-.083.212h-.112l-10.037.73-.207.015-1.141.083-.827.061-7.642.557-.691.051-.679.049-8.311.606-.2.015-2.341.173-14.131.937c0,.255,16.457.112,16.465.095h.2l8.275.046h1.363l7.53.044h2.147l9.735.056a9.91,9.91,0,0,0,1.141,4.566l.056.1-.375-.039-6.177,7.873-.129.165-.706.9-.511.652-5,6.386-4.809,6.136.051-.041,5.469-5.364,5.693-5.6.579-.57.8-.781.146-.146,7.024-6.907a10.032,10.032,0,0,0,2.149,1.485c.073.037.144.075.217.11l.029.3.012.119v.119l.973,10.122.022.209.112,1.151.08.835.781,8.031.9,9.005.022.2.226,2.346.229,2.346.019.2.91,9.373v-9.538ZM165.4,182.23a9.338,9.338,0,1,1,9.346-9.334,9.338,9.338,0,0,1-9.346,9.334Z"
+              transform="translate(-95.531 -88.053)" />
+        <path class="brujulaG" d="M270.706,501.071l-.4,2.3-.4,2.3,0,.022.6.1,0-.019.4-2.3.4-2.3.007-.041-.6-.1Z"
+              transform="translate(-207.746 -377.725)" />
+        <path class="brujulaG" d="M270.294,166.449l.4,2.3.007.041.6-.1-.007-.041-.4-2.3-.4-2.3,0-.017-.6.1,0,.019Z"
+              transform="translate(-207.738 -122.736)" />
+        <path class="brujulaG"
+              d="M242.768,494.179l-.774,2.205-.776,2.2-.007.022.574.2.007-.022.776-2.207.779-2.205.012-.036-.577-.2Z"
+              transform="translate(-186.038 -372.512)" />
+        <path class="brujulaG"
+              d="M241.984,173.741l.776,2.205.012.039.577-.2-.012-.036-.776-2.205-.779-2.207-.007-.022-.574.2.007.019Z"
+              transform="translate(-186.031 -128.252)" />
+        <path class="brujulaG"
+              d="M216.451,483.182l-1.129,2.047-1.129,2.049-.012.022.533.294.012-.024,1.129-2.047,1.129-2.047.017-.032-.533-.294Z"
+              transform="translate(-165.587 -364.197)" />
+        <path class="brujulaG"
+              d="M215.311,185.616l1.129,2.047.017.032.533-.292-.017-.032-1.129-2.049-1.129-2.047-.012-.024-.533.294.012.024Z"
+              transform="translate(-165.579 -137.286)" />
+        <path class="brujulaG"
+              d="M192.476,468.334l-1.446,1.837-1.448,1.835-.012.017.479.377.012-.017,1.446-1.835,1.446-1.835.029-.036-.479-.377Z"
+              transform="translate(-146.967 -352.961)" />
+        <path class="brujulaG"
+              d="M191.02,201.739l1.448,1.837.027.034.477-.377-.027-.034-1.446-1.835-1.448-1.837-.012-.017-.479.377.015.017Z"
+              transform="translate(-146.959 -149.589)" />
+        <path class="brujulaG"
+              d="M171.423,450.164l-1.726,1.575-1.726,1.577-.022.019.411.45.022-.019,1.726-1.577,1.723-1.575.027-.024-.411-.45Z"
+              transform="translate(-130.608 -339.221)" />
+        <path class="brujulaG"
+              d="M169.687,221.589l1.726,1.577.024.022.411-.45-.027-.024-1.723-1.577-1.726-1.577-.022-.019-.411.45.022.022Z"
+              transform="translate(-130.601 -164.744)" />
+        <path class="brujulaG"
+              d="M153.9,429.052l-1.959,1.275-1.962,1.275-.017.012.333.511.017-.012,1.962-1.275,1.959-1.275.034-.022-.333-.511Z"
+              transform="translate(-116.997 -323.249)" />
+        <path class="brujulaG"
+              d="M151.936,244.709l1.959,1.278.036.022.333-.514-.034-.022L152.27,244.2l-1.959-1.275-.017-.012-.333.511.017.012Z"
+              transform="translate(-116.997 -182.426)" />
+        <path class="brujulaG"
+              d="M140.625,406.18l-.243-.56-.036.017-2.142.937-2.142.937-.022.01.243.557.022-.01,2.142-.937,2.144-.937Z"
+              transform="translate(-106.465 -305.536)" />
+        <path class="brujulaG" d="M128.9,298.138l2.268.572.034.01.148-.591-.034-.01-2.268-.57-2.268-.572-.027-.007-.148.591.024.007Z"
+              transform="translate(-99.322 -223.329)" />
+        <path class="brujulaG"
+              d="M131.312,381.1l.034-.01-.148-.591-.034.01-2.268.569-2.271.572-.024.007.148.591.027-.007,2.268-.572Z"
+              transform="translate(-99.322 -286.529)" />
+        <path class="brujulaG"
+              d="M138.194,270.447l2.144.937.034.015.246-.557-.036-.015-2.142-.939-2.142-.937-.022-.01-.246.56.022.01Z"
+              transform="translate(-106.457 -202.121)" />
+        <path class="brujulaG" d="M124.341,327.048l2.329.192.044,0,.049-.608-.041,0-2.332-.19-2.332-.19-.019,0-.049.606.019,0Z"
+              transform="translate(-95.834 -245.483)" />
+        <path class="brujulaG" d="M126.721,354.941l.041,0-.049-.608-.044,0-2.329.192-2.332.19-.019,0,.049.608.019,0,2.332-.19Z"
+              transform="translate(-95.834 -266.729)" />
+        <path class="brujulaI"
+              d="M274.2,306.73a8.864,8.864,0,1,0,8.864,8.863A8.864,8.864,0,0,0,274.2,306.73Zm0,17a8.134,8.134,0,1,1,8.134-8.134A8.134,8.134,0,0,1,274.2,323.725Z"
+              transform="translate(-204.296 -230.713)" />
+        <path class="brujulaJ" d="M301.76,330.34Z" transform="translate(-231.852 -248.578)" />
+        <path class="brujulaJ" d="M301.612,330.33h0l0,0Z" transform="translate(-231.738 -248.57)" />
+        <path class="brujulaI"
+              d="M297.8,337.9a1.275,1.275,0,1,0,1.275,1.275A1.275,1.275,0,0,0,297.8,337.9Zm0,1.82a.545.545,0,1,1,.545-.545A.545.545,0,0,1,297.8,339.72Z"
+              transform="translate(-227.887 -254.297)" />
+        <path class="brujulaE"
+              d="M288.515,112.75v.1l-1.1,11.6-.017.2-.221,2.349-.221,2.346-.019.2-.852,9.022-.818,8.684-.08.835-.107,1.154-.019.207-.974,10.409a9.9,9.9,0,0,1,4.318-.974h.124V112.75Z"
+              transform="translate(-218.482 -83.945)" />
+        <path class="brujulaE"
+              d="M84.911,343.577l2.349.243,2.349.243.2.022,9.034.93,8.333.854.832.088,1.156.119.207.02,10.093,1.044.117.012.122.015.243.027a9.91,9.91,0,0,1-1.141-4.566l-9.735-.056h-2.134l-7.52-.056H98.056l-8.275-.046h-.2l-2.339-.012-2.339-.015h-.2l-10.407-.083H73.1l11.607,1.193Z"
+              transform="translate(-58.842 -257.672)" />
+        <path class="brujulaE"
+              d="M374.726,331.057l-2.344-.168-2.341-.168-.2-.015-8.314-.6-.679-.049-.691-.051-7.642-.548-.83-.058-1.139-.083-.207-.015-10.414-.747a9.923,9.923,0,0,1,.655,3.548v.068l9.979-.058h2.134l7.528-.044h1.363l8.275-.046h.2l2.339-.012,2.339-.015h.2l10.37-.061h1.217l-11.6-.832Z"
+              transform="translate(-260.725 -247.23)" />
+        <path class="brujulaE"
+              d="M336.164,235.562l-6.673,5.376-.647.521-.891.73-.161.129-8.031,6.462a9.954,9.954,0,0,1,2.921,2.19l6.873-7.087.141-.146.779-.8.567-.587,5.4-5.569.475-.487.475-.487,4.756-4.9.684-.706Z"
+              transform="translate(-245.471 -172.809)" />
+        <path class="brujulaE"
+              d="M329.32,365.557l6.917,7.245.141.148.772.808.562.589,5.508,5.771,5.376,5.632.652.684-4.933-6.418-.421-.545-.416-.545-4.5-5.858-.506-.657-.691-.9-.127-.165-6.362-8.275A9.979,9.979,0,0,1,329.32,365.557Z"
+              transform="translate(-252.703 -273.342)" />
+        <path class="brujulaE"
+              d="M197.2,388.291l.256-.2.543-.428,5.812-4.6.652-.516.9-.708.165-.131,7.705-6.084.456-.419-.524-.265a10.03,10.03,0,0,1-2.149-1.485l-7.024,6.907-.146.146-.8.781-.579.57-5.693,5.6-5.469,5.379-.66.65Z"
+              transform="translate(-147.783 -281.195)" />
+        <path class="brujulaE"
+              d="M192.5,241.582l5.422,6.661.528.647.73.893.131.163,6.4,7.854h.229a9.93,9.93,0,0,1,1.876-3l-6.99-6.678-.148-.141-.808-.772-.587-.56-6.1-5.826L188,235.877l-.686-.657Z"
+              transform="translate(-145.256 -176.607)" />
+        <path class="brujulaE"
+              d="M288.515,112.75v.1l-1.1,11.6-.017.2-.221,2.349-.221,2.346-.019.2-.852,9.022-.818,8.684-.08.835-.107,1.154-.019.207-.974,10.409a9.9,9.9,0,0,1,4.318-.974h.124V112.75Z"
+              transform="translate(358.41 253.625) rotate(180)" />
+      </g>
+      <text x="920" y="200" stroke="#3376A1" stroke-width="1px">
+        Celda 7
+      </text>
+      <g xmlns="http://www.w3.org/2000/svg" transform="translate(1105 30) rotate(30)">
+        <line id="celda7-T1-2" class="celda7A" y2="179.357" transform="translate(0.823 345.859) rotate(-90)" />
+        <line class="celda7A" y2="179.357" transform="translate(0.823 375.274) rotate(-90)" />
+        <line id="celda7-T2-3" class="celda7A" y2="179.357" transform="translate(0.823 316.444) rotate(-90)" />
+        <line id="celda7-T3-4" class="celda7A" y2="179.357" transform="translate(0.823 287.029) rotate(-90)" />
+        <line id="celda7-T4-5" class="celda7A" y2="179.357" transform="translate(0.823 257.614) rotate(-90)" />
+        <line id="celda7-T5-6" class="celda7A" y2="179.357" transform="translate(0.823 228.199) rotate(-90)" />
+        <line id="celda7-T6-7" class="celda7A" y2="179.357" transform="translate(0.823 198.784) rotate(-90)" />
+        <line id="celda7-T7-8" class="celda7A" y2="179.357" transform="translate(0.823 169.369) rotate(-90)" />
+        <line id="celda7-T9-10" class="celda7A" x1="0.317" y2="179.787" transform="translate(0.392 102.833) rotate(-90)" />
+        <line id="celda7-T8-9" class="celda7A" x1="0.317" y2="179.787" transform="translate(0.392 133.139) rotate(-90)" />
+        <line id="celda7-T10-11" class="celda7A" x1="0.538" y2="179.716" transform="translate(0.462 73.639) rotate(-90)" />
+        <line id="celda7-T11-12" class="celda7A" x2="0.384" y2="180.179" transform="translate(0 43.179) rotate(-90)" />
+        <text class="celda7b"
+              transform="translate(78.334 6)">
+          <tspan x="-71.89" y="0">JIHGFEDCBA</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 156.444) rotate(-90)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 273.213) rotate(-90)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 97.614) rotate(-90)">
+          <tspan x="0" y="0">10</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 215.274) rotate(-90)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 332.043) rotate(-90)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 64.633) rotate(-90)">
+          <tspan x="0" y="0">11</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 185.859) rotate(-90)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 302.628) rotate(-90)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 127.029) rotate(-90)">
+          <tspan x="0" y="0">9</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 32.544) rotate(-90)">
+          <tspan x="0" y="0">12</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 244.689) rotate(-90)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="celda7c" transform="translate(192.059 361.458) rotate(-90)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="celda7c" transform="translate(79.009 354.477)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="celda7c" transform="translate(150.319 221.222)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="celda7c" transform="translate(25.528 250.503)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="celda7c" transform="translate(25.528 142.225)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="celda7c" transform="translate(78.837 38.815)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <g transform="translate(171.266 221.144) rotate(-90)">
+          <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(0 0)" />
+          <path class="celda7d"
+                d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
+                transform="translate(8.914 0)" />
+        </g>
+        <g transform="translate(9.037 240.754) rotate(90)">
+          <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(0 0)" />
+          <path class="celda7d"
+                d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
+                transform="translate(8.914 0)" />
+        </g>
+        <g transform="translate(9.037 132.898) rotate(90)">
+          <path class="celda7d" d="M0,0H0A8.022,8.022,0,0,1,8.022,8.022v.891a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(0 0)" />
+          <path class="celda7d"
+                d="M8.022,0h0a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0H0a0,0,0,0,1,0,0V8.022A8.022,8.022,0,0,1,8.022,0Z"
+                transform="translate(8.914 0)" />
+        </g>
+        <g transform="translate(72.906 13.734)">
+          <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914 0)" />
+        </g>
+        <g transform="translate(89.706 375.218) rotate(180)">
+          <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="celda7d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914 0)" />
+        </g>
+        <line class="celda7A" y2="138.162" transform="translate(72.324 236.611)" />
+        <line class="celda7A" y2="138.162" transform="translate(125.806 236.611)" />
+        <line class="celda7A" x1="360.484" transform="translate(36.67 374.773) rotate(-90)" />
+        <line class="celda7A" x1="360.484" transform="translate(0.573 374.631) rotate(-90)" />
+        <line class="celda7A" x1="360.663" transform="translate(90.151 374.773) rotate(-90)" />
+        <line class="celda7A" x1="361.251" transform="translate(54.497 374.773) rotate(-90)" />
+        <line class="celda7A" x1="361.251" transform="translate(18.4 374.631) rotate(-90)" />
+        <line class="celda7A" x1="360.734" transform="translate(107.98 374.773) rotate(-90)" />
+        <line class="celda7A" y2="360.501" transform="translate(143.633 14.271)" />
+        <line class="celda7A" x1="361.038" transform="translate(72.325 374.773) rotate(-90)" />
+        <line class="celda7A" x1="360.663" transform="translate(125.806 374.773) rotate(-90)" />
+        <line class="celda7A" x1="361.359" transform="translate(161.461 374.773) rotate(-90)" />
+        <g class="celda7e" transform="translate(0.124 375.664) rotate(-90)">
+          <rect class="celda7f" width="362.233" height="180.056" />
+          <rect class="celda7g" x="0.5" y="0.5" width="361.233" height="179.056" />
+        </g>
+        <line class="celda7A" x2="17.827" transform="translate(143.719 213.438)" />
+        <line class="celda7A" x2="17.827" transform="translate(72.409 31.759)" />
+        <line class="celda7A" x2="18.719" transform="translate(18.036 240.641)" />
+        <line class="celda7A" x2="18.719" transform="translate(72.409 361.867)" />
+        <line class="celda7A" x2="18.719" transform="translate(18.036 147.444)" />
+      </g>
+      <text x="50" y="450" stroke="#3376A1" stroke-width="1px">
+        Celda 30
+      </text>
+      <g xmlns="http://www.w3.org/2000/svg" transform="translate(40 440)">
+        <line class="a" y2="161.783" transform="translate(30.752 45.014)" />
+        <line class="a" y2="161.783" transform="translate(48.579 45.014)" />
+        <line class="a" y2="161.783" transform="translate(66.407 45.014)" />
+        <line class="a" y2="161.783" transform="translate(84.234 45.014)" />
+        <line class="a" y2="161.783" transform="translate(102.061 45.014)" />
+        <line class="a" y2="161.783" transform="translate(119.889 45.014)" />
+        <line class="a" y2="161.783" transform="translate(137.716 45.014)" />
+        <line class="a" y2="161.783" transform="translate(155.543 45.014)" />
+        <line class="a" y2="161.783" transform="translate(173.37 45.014)" />
+        <line class="a" y2="161.783" transform="translate(191.198 45.014)" />
+        <line class="a" y2="161.783" transform="translate(209.025 45.014)" />
+        <line class="a" y2="161.783" transform="translate(226.852 45.014)" />
+        <line class="a" y2="161.783" transform="translate(244.68 45.014)" />
+        <line class="a" y2="161.783" transform="translate(262.507 45.014)" />
+        <line class="a" y2="161.783" transform="translate(280.334 45.014)" />
+        <line class="a" y2="161.783" transform="translate(298.162 45.014)" />
+        <line class="a" y2="161.783" transform="translate(315.989 45.014)" />
+        <line class="a" y2="161.783" transform="translate(333.816 45.014)" />
+        <text class="b"
+              transform="translate(16.563 38.365)">
+          <tspan x="0" y="0">19</tspan>
+        </text>
+        <text class="c" transform="translate(1.563 56.365)">
+          <tspan x="-0.875" y="0">I</tspan>
+          <tspan x="-2.12" y="15">H</tspan>
+          <tspan x="-2.043" y="30">G</tspan>
+          <tspan x="-1.644" y="45">F</tspan>
+          <tspan x="-1.688" y="60">E</tspan>
+          <tspan x="-1.95" y="75">D</tspan>
+          <tspan x="-1.963" y="90">C</tspan>
+          <tspan x="-1.915" y="105">B</tspan>
+          <tspan x="-2.019" y="120">A</tspan>
+        </text>
+        <text class="b" transform="translate(88.563 38.365)">
+          <tspan x="0" y="0">15</tspan>
+        </text>
+        <text class="b" transform="translate(216.563 38.365)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(286.563 38.365)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(52.563 38.365)">
+          <tspan x="0" y="0">17</tspan>
+        </text>
+        <text class="b" transform="translate(177.563 38.365)">
+          <tspan x="0" y="0">10</tspan>
+        </text>
+        <text class="b" transform="translate(124.563 38.365)">
+          <tspan x="0" y="0">13</tspan>
+        </text>
+        <text class="b" transform="translate(251.563 38.365)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <text class="b" transform="translate(322.563 38.365)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(34.563 38.365)">
+          <tspan x="0" y="0">18</tspan>
+        </text>
+        <text class="b" transform="translate(159.563 38.365)">
+          <tspan x="0" y="0">11</tspan>
+        </text>
+        <text class="b" transform="translate(107.563 38.365)">
+          <tspan x="0" y="0">14</tspan>
+        </text>
+        <text class="b" transform="translate(233.563 38.365)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(304.563 38.365)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(70.563 38.365)">
+          <tspan x="0" y="0">16</tspan>
+        </text>
+        <text class="b" transform="translate(198.563 38.365)">
+          <tspan x="0" y="0">9</tspan>
+        </text>
+        <text class="b" transform="translate(141.563 38.365)">
+          <tspan x="0" y="0">12</tspan>
+        </text>
+        <text class="b" transform="translate(268.563 38.365)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="b" transform="translate(338.563 38.365)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="b" transform="translate(270.563 74.365)">
+          <tspan x="0" y="0">9</tspan>
+        </text>
+        <text class="b" transform="translate(179.563 73.365)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(91.563 74.365)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(37.563 128.365)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <text class="b" transform="translate(73.563 180.365)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="b" transform="translate(144.563 180.365)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(215.563 180.365)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(286.563 180.365)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(322.563 128.365)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <g transform="translate(209.471 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.092 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(9.092 0.482)" />
+        </g>
+        <g transform="translate(173.816 45.46)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.253 -0.095)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.747 -0.095)" />
+        </g>
+        <g transform="translate(280.78 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.217 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(8.783 0.482)" />
+        </g>
+        <g transform="translate(262.953 45.46)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.39 -0.095)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.61 -0.095)" />
+        </g>
+        <g transform="translate(138.162 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.401 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(9.401 0.482)" />
+        </g>
+        <g transform="translate(84.68 44.568)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.117 -0.203)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.883 -0.203)" />
+        </g>
+        <g transform="translate(66.852 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.29 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(8.71 0.482)" />
+        </g>
+        <g transform="translate(351.643 117.214) rotate(90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <g transform="translate(12.925 134.15) rotate(-90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <line class="a" y2="138.162" transform="translate(151.532 98.942) rotate(90)" />
+        <line class="a" y2="138.162" transform="translate(151.532 152.423) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 63.287) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 116.769) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 170.251) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 81.114) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 134.596) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 170.251) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 98.942) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 152.423) rotate(90)" />
+        <line class="a" y2="338.719" transform="translate(352.089 188.078) rotate(90)" />
+        <g class="e" transform="translate(12.563 44.365)">
+          <rect class="f" width="340" height="163" />
+          <rect class="g" x="0.5" y="0.5" width="339" height="162" />
+        </g>
+      </g>
+
+      <text x="450" y="450" stroke="#3376A1" stroke-width="1px">
+        Celda 23
+      </text>
+      <g xmlns="http://www.w3.org/2000/svg" transform="translate(440 440)">
+        <line class="a" y2="161.783" transform="translate(30.752 45.014)" />
+        <line class="a" y2="161.783" transform="translate(48.579 45.014)" />
+        <line class="a" y2="161.783" transform="translate(66.407 45.014)" />
+        <line class="a" y2="161.783" transform="translate(84.234 45.014)" />
+        <line class="a" y2="161.783" transform="translate(102.061 45.014)" />
+        <line class="a" y2="161.783" transform="translate(119.889 45.014)" />
+        <line class="a" y2="161.783" transform="translate(137.716 45.014)" />
+        <line class="a" y2="161.783" transform="translate(155.543 45.014)" />
+        <line class="a" y2="161.783" transform="translate(173.37 45.014)" />
+        <line class="a" y2="161.783" transform="translate(191.198 45.014)" />
+        <line class="a" y2="161.783" transform="translate(387.298 45.014)" />
+        <line class="a" y2="161.783" transform="translate(209.025 45.014)" />
+        <line class="a" y2="161.783" transform="translate(405.125 45.014)" />
+        <line class="a" y2="161.783" transform="translate(226.852 45.014)" />
+        <line class="a" y2="161.783" transform="translate(422.953 45.014)" />
+        <line class="a" y2="161.783" transform="translate(244.68 45.014)" />
+        <line class="a" y2="161.783" transform="translate(262.507 45.014)" />
+        <line class="a" y2="161.783" transform="translate(280.334 45.014)" />
+        <line class="a" y2="161.783" transform="translate(333.816 45.014)" />
+        <line class="a" y2="161.783" transform="translate(298.162 45.014)" />
+        <line class="a" y2="161.783" transform="translate(351.643 45.014)" />
+        <line class="a" y2="161.783" transform="translate(315.989 45.014)" />
+        <line class="a" y2="161.783" transform="translate(369.471 45.014)" />
+        <line class="a" y2="161.783" transform="translate(333.816 45.014)" />
+        <line class="a" y2="161.783" transform="translate(387.298 45.014)" />
+        <line class="a" y2="138.162" transform="translate(351.643 45.014)" />
+        <text class="b"
+              transform="translate(339.036 38.365)">
+          <tspan x="0" y="0">19</tspan>
+        </text>
+        <text class="b" transform="translate(392.036 38.365)">
+          <tspan x="0" y="0">22</tspan>
+        </text>
+        <text class="c" transform="translate(2.036 56.365)">
+          <tspan x="-0.875" y="0">I</tspan>
+          <tspan x="-2.12" y="15">H</tspan>
+          <tspan x="-2.043" y="30">G</tspan>
+          <tspan x="-1.644" y="45">F</tspan>
+          <tspan x="-1.688" y="60">E</tspan>
+          <tspan x="-1.95" y="75">D</tspan>
+          <tspan x="-1.963" y="90">C</tspan>
+          <tspan x="-1.915" y="105">B</tspan>
+          <tspan x="-2.019" y="120">A</tspan>
+        </text>
+        <text class="b" transform="translate(267.036 38.365)">
+          <tspan x="0" y="0">15</tspan>
+        </text>
+        <text class="b" transform="translate(145.036 38.365)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(73.036 38.365)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(303.036 38.365)">
+          <tspan x="0" y="0">17</tspan>
+        </text>
+        <text class="b" transform="translate(356.036 38.365)">
+          <tspan x="0" y="0">20</tspan>
+        </text>
+        <text class="b" transform="translate(178.036 38.365)">
+          <tspan x="0" y="0">10</tspan>
+        </text>
+        <text class="b" transform="translate(232.036 38.365)">
+          <tspan x="0" y="0">13</tspan>
+        </text>
+        <text class="b" transform="translate(428.036 38.365)">
+          <tspan x="0" y="0">24</tspan>
+        </text>
+        <text class="b" transform="translate(111.036 38.365)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <text class="b" transform="translate(39.036 38.365)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(321.036 38.365)">
+          <tspan x="0" y="0">18</tspan>
+        </text>
+        <text class="b" transform="translate(375.036 38.365)">
+          <tspan x="0" y="0">21</tspan>
+        </text>
+        <text class="b" transform="translate(196.036 38.365)">
+          <tspan x="0" y="0">11</tspan>
+        </text>
+        <text class="b" transform="translate(249.036 38.365)">
+          <tspan x="0" y="0">14</tspan>
+        </text>
+        <text class="b" transform="translate(127.036 38.365)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(56.036 38.365)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(286.036 38.365)">
+          <tspan x="0" y="0">16</tspan>
+        </text>
+        <text class="b" transform="translate(162.036 37.365)">
+          <tspan x="0" y="0">9</tspan>
+        </text>
+        <text class="b" transform="translate(214.036 38.365)">
+          <tspan x="0" y="0">12</tspan>
+        </text>
+        <text class="b" transform="translate(411.036 38.365)">
+          <tspan x="0" y="0">23</tspan>
+        </text>
+        <text class="b" transform="translate(92.036 38.365)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="b" transform="translate(20.036 38.365)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="b" transform="translate(306.036 74.365)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(377.036 74.365)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="b" transform="translate(197.036 73.365)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(74.036 73.365)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(37.036 128.365)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="b" transform="translate(109.036 180.365)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(251.036 180.365)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(412.036 128.365)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <g transform="translate(191.643 45.46)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.393 -0.095)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(9.393 -0.095)" />
+        </g>
+        <g transform="translate(245.125 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.089 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(8.911 0.482)" />
+        </g>
+        <g transform="translate(298.607 45.46)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.429 -0.095)" />
+          <path class="d" d="M0,0H9A0,0,0,0,1,9,0V9A0,0,0,0,1,9,9H9A9,9,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.429 -0.095)" />
+        </g>
+        <g transform="translate(369.916 45.46)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.12 -0.095)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(9.12 -0.095)" />
+        </g>
+        <g transform="translate(102.507 197.883)">
+          <path class="d" d="M0,0H0A8,8,0,0,1,8,8V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.471 0.482)" />
+          <path class="d" d="M8,0H8A0,0,0,0,1,8,0V8A0,0,0,0,1,8,8H0A0,0,0,0,1,0,8V8A8,8,0,0,1,8,0Z"
+                transform="translate(8.529 0.482)" />
+        </g>
+        <g transform="translate(66.852 44.568)">
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V1A8,8,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.184 -0.203)" />
+          <path class="d" d="M0,0H8A0,0,0,0,1,8,0V9A0,0,0,0,1,8,9H8A8,8,0,0,1,0,1V0A0,0,0,0,1,0,0Z"
+                transform="translate(9.184 -0.203)" />
+        </g>
+        <g transform="translate(440.78 117.214) rotate(90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <g transform="translate(12.925 134.15) rotate(-90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V.891A8.022,8.022,0,0,1,0,8.914H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V8.914a0,0,0,0,1,0,0h0A8.022,8.022,0,0,1,0,.891V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <line class="a" y2="138.162" transform="translate(151.532 98.942) rotate(90)" />
+        <line class="a" y2="138.162" transform="translate(151.532 152.423) rotate(90)" />
+        <line class="a" x1="426.877" transform="translate(13.903 63.287)" />
+        <line class="a" x1="426.877" transform="translate(13.903 116.77)" />
+        <line class="a" y2="427.409" transform="translate(440.78 170.251) rotate(90)" />
+        <line class="a" y2="426.877" transform="translate(440.78 81.114) rotate(90)" />
+        <line class="a" y2="427.409" transform="translate(440.78 134.596) rotate(90)" />
+        <line class="a" y2="427.409" transform="translate(440.78 170.251) rotate(90)" />
+        <line class="a" y2="426.877" transform="translate(440.78 98.942) rotate(90)" />
+        <line class="a" y2="427.409" transform="translate(440.78 152.423) rotate(90)" />
+        <line class="a" y2="427.409" transform="translate(440.78 188.078) rotate(90)" />
+        <g class="e" transform="translate(13.036 44.365)">
+          <rect class="f" width="429" height="162" />
+          <rect class="g" x="0.5" y="0.5" width="428" height="161" />
+        </g>
+      </g>
+
+      <text x="450" y="200" stroke="#3376A1" stroke-width="1px">
+        Celda 20
+      </text>
+      <g xmlns="http://www.w3.org/2000/svg" transform="translate(-31 -256)">
+
+        <line id="celda20-T1-2" class="a" y2="161.783" transform="translate(497.709 491.657)" />
+        <line id="celda20-T2-3" class="a" y2="161.783" transform="translate(512.463 491.657)" />
+        <line id="celda20-T3-4" class="a" y2="161.783" transform="translate(527.215 491.657)" />
+        <line id="celda20-T4-5" class="a" y2="161.783" transform="translate(541.969 491.657)" />
+        <line id="celda20-T5-6" class="a" y2="161.783" transform="translate(556.721 491.657)" />
+        <line id="celda20-T6-7" class="a" y2="161.783" transform="translate(571.473 491.657)" />
+        <line id="celda20-T7-8" class="a" y2="161.783" transform="translate(586.227 491.657)" />
+        <line id="celda20-T8-9" class="a" y2="161.783" transform="translate(600.979 491.657)" />
+        <line id="celda20-T9-10" class="a" y2="161.783" transform="translate(615.732 491.657)" />
+        <line id="celda20-T10-11" class="a" y2="161.783" transform="translate(630.484 491.657)" />
+        <line id="celda20-T21-22" class="a" y2="161.783" transform="translate(792.764 491.657)" />
+        <line id="celda20-T11-12" class="a" y2="161.783" transform="translate(645.236 491.657)" />
+        <line id="celda20-T22-23" class="a" y2="161.783" transform="translate(807.516 491.657)" />
+        <line id="celda20-T28-29" class="a" y2="161.783" transform="translate(896.033 491.657)" />
+        <line id="celda20-T12-13" class="a" y2="161.783" transform="translate(659.99 491.657)" />
+        <line id="celda20-T23-24" class="a" y2="161.783" transform="translate(822.27 491.657)" />
+        <line class="a" y2="161.783" transform="translate(910.785 491.657)" />
+        <line id="celda20-T13-14" class="a" y2="161.783" transform="translate(674.742 491.657)" />
+        <line id="celda20-T14-15" class="a" y2="161.783" transform="translate(689.494 491.657)" />
+        <line id="celda20-T15-16" class="a" y2="161.783" transform="translate(704.248 491.657)" />
+        <line id="celda20-T16-17" class="a" y2="161.783" transform="translate(719 491.657)" />
+        <line id="celda20-T17-18" class="a" y2="161.783" transform="translate(733.754 491.657)" />
+        <line id="celda20-T18-19" class="a" y2="161.783" transform="translate(748.506 491.657)" />
+        <line id="celda20-T19-20" class="a" y2="161.783" transform="translate(763.258 491.657)" />
+        <line id="celda20-T20-21" class="a" y2="161.783" transform="translate(778.012 491.657)" />
+        <line id="celda20-T21-22" class="a" y2="161.783" transform="translate(792.764 491.657)" />
+        <line id="celda20-T22-23" class="a" y2="161.783" transform="translate(822.27 491.657)" />
+        <line id="celda20-T24-25" class="a" y2="161.783" transform="translate(837.021 491.657)" />
+        <line id="celda20-T25-26" class="a" y2="161.337" transform="translate(851.773 491.657)" />
+        <line id="celda20-T26-27" class="a" y2="161.783" transform="translate(866.527 491.657)" />
+        <line id="celda20-T27-28" class="a" y2="161.783" transform="translate(881.279 491.657)" />
+        <text class="b"
+              transform="translate(750 483.067)">
+          <tspan x="0" y="0">19</tspan>
+        </text>
+        <text class="b" transform="translate(839 483.067)">
+          <tspan x="0" y="0">25</tspan>
+        </text>
+        <text class="b" transform="translate(795 483.067)">
+          <tspan x="0" y="0">22</tspan>
+        </text>
+        <text class="b" transform="translate(884 483.067)">
+          <tspan x="0" y="0">28</tspan>
+        </text>
+        <text class="c" transform="translate(474 502.067)">
+          <tspan x="-0.875" y="0">I</tspan>
+          <tspan x="-2.12" y="15">H</tspan>
+          <tspan x="-2.043" y="30">G</tspan>
+          <tspan x="-1.644" y="45">F</tspan>
+          <tspan x="-1.688" y="60">E</tspan>
+          <tspan x="-1.95" y="75">D</tspan>
+          <tspan x="-1.963" y="90">C</tspan>
+          <tspan x="-1.915" y="105">B</tspan>
+          <tspan x="-2.019" y="120">A</tspan>
+        </text>
+        <text class="b" transform="translate(693 483.067)">
+          <tspan x="0" y="0">15</tspan>
+        </text>
+        <text class="b" transform="translate(591 483.067)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(532 483.067)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(721 483.067)">
+          <tspan x="0" y="0">17</tspan>
+        </text>
+        <text class="b" transform="translate(765 483.067)">
+          <tspan x="0" y="0">20</tspan>
+        </text>
+        <text class="b" transform="translate(854 483.067)">
+          <tspan x="0" y="0">26</tspan>
+        </text>
+        <text class="b" transform="translate(618 483.067)">
+          <tspan x="0" y="0">10</tspan>
+        </text>
+        <text class="b" transform="translate(661 483.067)">
+          <tspan x="0" y="0">13</tspan>
+        </text>
+        <text class="b" transform="translate(824 483.067)">
+          <tspan x="0" y="0">24</tspan>
+        </text>
+        <text class="b" transform="translate(562 483.067)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <text class="b" transform="translate(502 483.067)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(736 483.067)">
+          <tspan x="0" y="0">18</tspan>
+        </text>
+        <text class="b" transform="translate(781 483.067)">
+          <tspan x="0" y="0">21</tspan>
+        </text>
+        <text class="b" transform="translate(869 483.067)">
+          <tspan x="0" y="0">27</tspan>
+        </text>
+        <text class="b" transform="translate(634 483.067)">
+          <tspan x="0" y="0">11</tspan>
+        </text>
+        <text class="b" transform="translate(678 483.067)">
+          <tspan x="0" y="0">14</tspan>
+        </text>
+        <text class="b" transform="translate(577 483.067)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(517 483.067)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(706 483.067)">
+          <tspan x="0" y="0">16</tspan>
+        </text>
+        <text class="b" transform="translate(605 483.067)">
+          <tspan x="0" y="0">9</tspan>
+        </text>
+        <text class="b" transform="translate(647 483.067)">
+          <tspan x="0" y="0">12</tspan>
+        </text>
+        <text class="b" transform="translate(810 483.067)">
+          <tspan x="0" y="0">23</tspan>
+        </text>
+        <text class="b" transform="translate(900 483.067)">
+          <tspan x="0" y="0">29</tspan>
+        </text>
+        <text class="b" transform="translate(547 483.067)">
+          <tspan x="0" y="0">5</tspan>
+        </text>
+        <text class="c" transform="translate(488 482.067)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="b" transform="translate(799 520.067)">
+          <tspan x="0" y="0">4</tspan>
+        </text>
+        <text class="b" transform="translate(695 520.067)">
+          <tspan x="0" y="0">3</tspan>
+        </text>
+        <text class="b" transform="translate(593 520.067)">
+          <tspan x="0" y="0">2</tspan>
+        </text>
+        <text class="b" transform="translate(503 574.067)">
+          <tspan x="0" y="0">1</tspan>
+        </text>
+        <text class="b" transform="translate(637 627.067)">
+          <tspan x="0" y="0">8</tspan>
+        </text>
+        <text class="b" transform="translate(754 627.067)">
+          <tspan x="0" y="0">7</tspan>
+        </text>
+        <text class="b" transform="translate(887 574.067)">
+          <tspan x="0" y="0">6</tspan>
+        </text>
+        <g transform="translate(690.131 492.103)">
+          <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.131 -0.036)" />
+          <path class="d" d="M0,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H7A7,7,0,0,1,0,2V0A0,0,0,0,1,0,0Z"
+                transform="translate(6.869 -0.036)" />
+        </g>
+        <g transform="translate(748.961 644.526)">
+          <path class="d" d="M0,0H0A6,6,0,0,1,6,6V9A0,0,0,0,1,6,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.039 -0.459)" />
+          <path class="d" d="M6,0H6A0,0,0,0,1,6,0V9A0,0,0,0,1,6,9H0A0,0,0,0,1,0,9V6A6,6,0,0,1,6,0Z"
+                transform="translate(7.039 -0.459)" />
+        </g>
+        <g transform="translate(793.529 492.103)">
+          <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.471 -0.036)" />
+          <path class="d" d="M0,0H6A0,0,0,0,1,6,0V9A0,0,0,0,1,6,9H6A6,6,0,0,1,0,3V0A0,0,0,0,1,0,0Z"
+                transform="translate(7.471 -0.036)" />
+        </g>
+        <g transform="translate(631.301 644.526)">
+          <path class="d" d="M0,0H0A7,7,0,0,1,7,7V9A0,0,0,0,1,7,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(-0.301 -0.459)" />
+          <path class="d" d="M7,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H0A0,0,0,0,1,0,9V7A7,7,0,0,1,7,0Z"
+                transform="translate(6.699 -0.459)" />
+        </g>
+        <g transform="translate(586.732 491.211)">
+          <path class="d" d="M0,0H6A0,0,0,0,1,6,0V3A6,6,0,0,1,0,9H0A0,0,0,0,1,0,9V0A0,0,0,0,1,0,0Z"
+                transform="translate(0.268 -0.145)" />
+          <path class="d" d="M0,0H7A0,0,0,0,1,7,0V9A0,0,0,0,1,7,9H7A7,7,0,0,1,0,2V0A0,0,0,0,1,0,0Z"
+                transform="translate(7.268 -0.145)" />
+        </g>
+        <g transform="translate(910.785 563.858) rotate(90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V0A7.376,7.376,0,0,1,.646,7.376H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V7.376a0,0,0,0,1,0,0H7.376A7.376,7.376,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <g transform="translate(482.957 580.794) rotate(-90)">
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V0A7.376,7.376,0,0,1,.646,7.376H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" />
+          <path class="d" d="M0,0H8.022a0,0,0,0,1,0,0V7.376a0,0,0,0,1,0,0H7.376A7.376,7.376,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                transform="translate(8.914)" />
+        </g>
+        <line class="a" y2="114.333" transform="translate(597.66 545.585) rotate(90)" />
+        <line class="a" y2="114.333" transform="translate(597.66 599.067) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 509.93) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 563.412) rotate(90)" />
+        <line class="a" y2="353.696" transform="translate(837.021 616.894) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 527.758) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 581.24) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 616.894) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 545.585) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 599.067) rotate(90)" />
+        <line class="a" y2="427.828" transform="translate(911.154 634.721) rotate(90)" />
+        <g class="e" transform="translate(482 491.067)">
+          <rect class="f" width="429" height="162" />
+          <rect class="g" x="0.5" y="0.5" width="428" height="161" />
+        </g>
+      </g>
+      <g class="static">
+        <circle id='siloId6' class='silo' cx="1000" cy="500" r="40" fill='#8b8b8b' />
+        <text x="1000" y="500"
+              text-anchor="middle"
+              fill="white"
+              alignment-baseline="middle"> Silo 32 </text>
+      </g>
+      <g class="static">
+        <circle id='siloId5' class='silo' cx="1000" cy="600" r="40" fill='#8b8b8b' />
+        <text x="1000" y="600"
+              text-anchor="middle"
+              fill="white"
+              alignment-baseline="middle"> Silo 31 </text>
+      </g>
+
+      <!-- <g id="toggleColorProd">
+          <rect [ngClass]="toggleColor ? 'elementoColor' : 'elementoProd'"
+          x="1070" y="565" width="75" height="75" rx="15" ry="15" (click)="toggleElementoGrafico()"/>
+          <text x="1107.5" y="602.5"
+          text-anchor="middle"
+          fill="white"
+          alignment-baseline="middle"
+          (click)="toggleElementoGrafico()"
+          style="cursor: pointer;"
+          > {{toggleColor ? 'Color' : 'Prod.'}}
+          </text>
+      </g>
+      <g id="toggleForma">
+          <rect class="toggleForma"
+          x="1070" y="465" width="75" height="75" rx="15" ry="15" (click)="toggleFormaElementoGrafico()"/>
+          <text x="1107.5" y="502.5"
+          text-anchor="middle"
+          fill="white"
+          alignment-baseline="middle"
+          (click)="toggleFormaElementoGrafico()"
+          style="cursor: pointer;"
+          > {{toggleForma == 'rect' ? 'Rectángulo' : 'Circulo'}}
+          </text>
+      </g> -->
+      <g id='elementosGraficos'></g>
+      <g id='elementosGraficosProd'></g>
+      <g id="gc7" xmlns="http://www.w3.org/2000/svg" transform="translate(1105 30) rotate(30)"></g>
+      <g id="gc30" xmlns="http://www.w3.org/2000/svg" transform="translate(40 440)"></g>
+      <g id="gc23" xmlns="http://www.w3.org/2000/svg" transform="translate(440 440)"></g>
+      <g id="gc20" xmlns="http://www.w3.org/2000/svg" transform="translate(-31 -256)"></g>
+    </svg>
+    <p class="text-center"><b>Para agregar</b>: click derecho sobre el gráfico. <b>Para eliminar</b>: doble click sobre la figura que desea eliminar.</p>
+  </div>
 </div>

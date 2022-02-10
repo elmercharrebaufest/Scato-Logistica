@@ -6,7 +6,8 @@ import { CeldaManoDeEmbarque } from '@ScatoModels/celda-mano-embarque';
 import { ManosEmbarqueService } from '@ScatoServicios/manosEmbarque.service';
 import { DatosEmbarquesProcesoService } from '@ScatoServicios/datosEmbarqueProceso.service';
 import { MaterialPuerto } from '@ScatoModels/material-puerto';
-
+import { ConfirmationDialogService } from '@ScatoServicios/confirmation-dialog.service';
+import { Tipoalerta } from '@ScatoEnums/tipo-alerta';
 
 @Component({
   selector: 'app-manos',
@@ -16,19 +17,21 @@ import { MaterialPuerto } from '@ScatoModels/material-puerto';
 export class ManosComponent implements OnInit {
   @Input() sentidosManoDeEmbarque: SentidoManoDeEmbarque[];
   @Input() celdasManoDeEmbarque: CeldaManoDeEmbarque[];
+  confirmationDialogService: any;
   manosYTabiquesForm: FormGroup;
   formInitialValues: any;
 
   datosEmbarque: any;
   productos: MaterialPuerto[] = [];
 
-  constructor(private formBuilder: FormBuilder, 
+  constructor(private formBuilder: FormBuilder,
     private manosEmbarqueService: ManosEmbarqueService,
-    private _procesoService: DatosEmbarquesProcesoService) { 
-
-      this.datosEmbarque = this._procesoService.getDatosGrafico();
-      this.productos = this.datosEmbarque.listaMateriales      
-    }
+    private _procesoService: DatosEmbarquesProcesoService,
+    confirmationDialogService: ConfirmationDialogService) {
+    this.confirmationDialogService = confirmationDialogService;
+    this.datosEmbarque = this._procesoService.getDatosGrafico();
+    this.productos = this.datosEmbarque.listaMateriales
+  }
 
   ngOnInit(): void {
     this.initFormulario();
@@ -37,14 +40,47 @@ export class ManosComponent implements OnInit {
       mano.controls.moduloDeCargaManosDeEmbarqueDetalle.controls.forEach((datoCelda, currentIndexDatoCelda) => {
         datoCelda.controls['celdaManoDeEmbarque'].valueChanges.pipe(startWith(null as object), pairwise())
           .subscribe(([previous, current]) => {
+            // console.log(`mano ${mano} - currentIndexMano ${currentIndexMano}`);
+            // console.log(`datoCelda ${datoCelda} - currentIndexDatoCelda ${currentIndexDatoCelda}`);
             if (previous && datoCelda.controls['sentidoManoDeEmbarque'].value) {
-              this.manosEmbarqueService.removerManoDeEmbarque.emit({celda: previous.nombre, sentido: datoCelda.controls['sentidoManoDeEmbarque'].value.posicion});
+              this.manosEmbarqueService.removerManoDeEmbarque.emit({ celda: previous.nombre, sentido: datoCelda.controls['sentidoManoDeEmbarque'].value.posicion });
+            }
+            if (previous) {
+              if (previous.posicion == 5 || previous.posicion == 6) {
+                let cantidadSiloPrevious = this.buscarSilosRestantes(previous.posicion);
+                if (cantidadSiloPrevious == 0) {
+                  this.manosEmbarqueService.removerResaltadoSilos.emit({ posicion: previous.posicion });
+                }
+              }
             }
             if (current) {
-              datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
-              datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+              // VERIFICAR SI EXISTE SILO 31 O 32. SI EXISTE NO PERMITIR MODIFICACION
+              if (current.posicion == 5 || current.posicion == 6) {
+                let cantidadSiloCurrent = this.buscarSilosRestantes(current.posicion);
+                if (cantidadSiloCurrent > 1) {
+
+                  let texto = "Ya existe el Silo seleccionado";
+                  this.confirmationDialogService.confirm('¡Atención!', texto, 'Aceptar', '', null, null, Tipoalerta.Success)
+                    .then((confirmed) => {
+                      if (confirmed) { } else return;
+                    }).catch(() => window.location.reload());
+
+                  // console.log(`Ya existe el Silo${current.posicion} - Ocurrencias: ${cantidadSiloCurrent}`);
+                  datoCelda.controls['celdaManoDeEmbarque'].setValue(null, { emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].disable({ emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+                } else {
+                  datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
+                  datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+                }
+              } else {
+                datoCelda.controls['sentidoManoDeEmbarque'].enable({ emitEvent: false });
+                datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
+              }
+              // this.manosEmbarqueService.resaltarSilo.emit(datoCelda.controls['celdaManoDeEmbarque'].value.posicion);
             } else {
               datoCelda.controls['sentidoManoDeEmbarque'].disable({ emitEvent: false });
+              datoCelda.controls['sentidoManoDeEmbarque'].setValue(null, { emitEvent: false });
             }
             if (current?.posicion) {
               this.validarSentidos(currentIndexMano, currentIndexDatoCelda, current?.posicion);
@@ -65,16 +101,19 @@ export class ManosComponent implements OnInit {
           .subscribe(([previous, current]) => {
             if (datoCelda.controls['celdaManoDeEmbarque'].value) {
               if (previous) {
-                this.manosEmbarqueService.removerManoDeEmbarque.emit({celda: datoCelda.controls['celdaManoDeEmbarque'].value.nombre, sentido: previous.posicion});
+                this.manosEmbarqueService.removerManoDeEmbarque.emit({ celda: datoCelda.controls['celdaManoDeEmbarque'].value.nombre, sentido: previous.posicion });
+                this.manosEmbarqueService.removerResaltadoSilos.emit({ posicion: datoCelda.controls['celdaManoDeEmbarque'].value.posicion });
               }
-              this.manosEmbarqueService.removerResaltadoSilos.emit();
-              // this.manosEmbarqueService.removerManoDeEmbarque.emit(datoCelda.controls['celdaManoDeEmbarque'].value.nombre);
-              if (current){
-                if(datoCelda.controls['celdaManoDeEmbarque'].value.nombre.includes('Silo')){
+              // this.manosEmbarqueService.removerResaltadoSilos.emit();
+              // // this.manosEmbarqueService.removerManoDeEmbarque.emit(datoCelda.controls['celdaManoDeEmbarque'].value.nombre);
+              if (current) {
+                if (datoCelda.controls['celdaManoDeEmbarque'].value.nombre.includes('Silo')) {
                   this.manosEmbarqueService.resaltarSilo.emit(datoCelda.controls['celdaManoDeEmbarque'].value.posicion);
                 }
-                this.manosEmbarqueService.agregarManoDeEmbarque.emit({celda: datoCelda.controls['celdaManoDeEmbarque'].value.nombre, sentido: current.posicion });
-              } 
+                this.manosEmbarqueService.agregarManoDeEmbarque.emit({ celda: datoCelda.controls['celdaManoDeEmbarque'].value.nombre, sentido: current.posicion });
+              } else {
+                this.manosEmbarqueService.removerResaltadoSilos.emit({ posicion: datoCelda.controls['celdaManoDeEmbarque'].value.posicion });
+              }
             }
           });
       });
@@ -84,14 +123,18 @@ export class ManosComponent implements OnInit {
       tabique.controls['entreColumna'].valueChanges
         .subscribe((current) => {
           let tabiqueVal = tabique.controls['tabique'].value;
+          let columnaTemp
 
-          if (current || current == 0) {
-            if(Number(current)  > 28 && index == 0){
+          if (current < 0 || current > 0) {
+            if (Number(current) > 28 && index == 0) {
               tabique.patchValue({ entreColumna: 28, yColumna: 29 });
-            } else if(Number(current)  > 11 && index == 1){
+              columnaTemp = 28;
+            } else if (Number(current) > 11 && index == 1) {
               tabique.patchValue({ entreColumna: 11, yColumna: 12 });
-            }else if(Number(current)  < 1 && current !== null && current !== undefined){
+              columnaTemp = 11;
+            } else if (Number(current) < 1 && current !== null && current !== undefined) {
               tabique.patchValue({ entreColumna: 1, yColumna: 2 });
+              columnaTemp = 1;
             } else {
               tabique.patchValue({ yColumna: Number(current) + 1 });
             }
@@ -102,10 +145,26 @@ export class ManosComponent implements OnInit {
 
           let yColumna = tabique.controls['yColumna'].value;
           if (current && tabique && yColumna) {
-            this.manosEmbarqueService.agregarTabique.emit({celda: tabiqueVal, tabiqueDesde: current, tabiqueHasta: yColumna });
+            this.manosEmbarqueService.agregarTabique.emit({ celda: tabiqueVal, tabiqueDesde: columnaTemp ?? current, tabiqueHasta: yColumna });
           }
         });
     });
+  }
+
+  buscarSilosRestantes(posicion: number): number {
+    let cantSilosRestantes = 0;
+    for (let mano in this.manosYTabiquesForm.get('manosDeEmbarque')['controls']) {
+      let manoForm = this.manosYTabiquesForm.get('manosDeEmbarque')['controls'][mano];
+      for (let detalleMano in manoForm['controls']['moduloDeCargaManosDeEmbarqueDetalle']['controls']) {
+        let detalleManoForm = manoForm['controls']['moduloDeCargaManosDeEmbarqueDetalle']['controls'][detalleMano];
+        if (detalleManoForm['controls']['celdaManoDeEmbarque']['value']) {
+          if (detalleManoForm['controls']['celdaManoDeEmbarque']['value'].posicion == posicion) {
+            cantSilosRestantes += 1;
+          }
+        }
+      }
+    }
+    return cantSilosRestantes;
   }
 
   initFormulario() {
@@ -183,24 +242,24 @@ export class ManosComponent implements OnInit {
   compareSentidos(c1: SentidoManoDeEmbarque, c2: SentidoManoDeEmbarque) {
     return c1 && c2 ? c1.posicion === c2.posicion : c1 === c2;
   }
-  
-  resetForm(){
+
+  resetForm() {
     this.manosYTabiquesForm.reset(this.formInitialValues);
   }
 
-  obtenerManosDeEmbarque(){
+  obtenerManosDeEmbarque() {
     return this.manosYTabiquesForm.getRawValue().manosDeEmbarque;
   }
 
-  obtenerTabiques(){
+  obtenerTabiques() {
     return this.manosYTabiquesForm.getRawValue().tabiques;
   }
 
-  patchManosDeEmbarque(manos){
+  patchManosDeEmbarque(manos) {
     this.manosYTabiquesForm.get('manosDeEmbarque').patchValue(manos);
   }
 
-  patchTabiques(tabiques){
+  patchTabiques(tabiques) {
     this.manosYTabiquesForm.get('tabiques').patchValue(tabiques);
   }
 }

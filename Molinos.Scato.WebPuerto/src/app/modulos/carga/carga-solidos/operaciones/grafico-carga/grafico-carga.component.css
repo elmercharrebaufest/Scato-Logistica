@@ -1,293 +1,328 @@
 .static {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 /*Estilos del grafico*/
 .brujulaA,
 .brujulaF {
-fill: none;
+  fill: none;
 }
 
 .brujulaA {
-stroke: #707070;
-stroke-width: 0.5px;
+  stroke: #707070;
+  stroke-width: 0.5px;
 }
 
 .brujulaB {
-font-size: 14px;
+  font-size: 14px;
 }
 
 .brujulaB,
 .brujulaC {
-font-family: Roboto-Bold, Roboto;
-font-weight: 700;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: 700;
 }
 
 .brujulaC {
-font-size: 15px;
+  font-size: 15px;
 }
 
 .brujulaD {
-fill: #5b5a5d;
+  fill: #5b5a5d;
 }
 
 .brujulaE {
-fill: #515151;
+  fill: #515151;
 }
 
 .brujulaG {
-fill: #7b7b7b;
+  fill: #7b7b7b;
 }
 
 .brujulaH {
-fill: #74c5d9;
+  fill: #74c5d9;
 }
 
 .brujulaI {
-fill: #6a6a6a;
+  fill: #6a6a6a;
 }
 
 .brujulaJ {
-fill: #fff;
+  fill: #fff;
 }
 
 .brujulaK {
-stroke: none;
+  stroke: none;
 }
 
 .celda7A,
 .celda7e,
 .celda7g {
-fill: none;
+  fill: none;
 }
+
 .celda7A {
-stroke: #707070;
+  stroke: #707070;
 }
+
 .celda7b,
 .celda7c {
-fill: #1a1a1a;
-font-size: 6px;
-font-family: Roboto-Bold, Roboto;
-font-weight: 700;
+  fill: #1a1a1a;
+  font-size: 6px;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: 700;
 }
+
 .celda7b {
-letter-spacing: 2em;
+  letter-spacing: 2em;
 }
+
 .celda7d {
-fill: #707070;
+  fill: #707070;
 }
+
 .celda7e {
-stroke: #000;
+  stroke: #000;
 }
+
 .celda7f {
-stroke: none;
+  stroke: none;
 }
+
 .a,
 .e,
 .g {
-fill: none;
+  fill: none;
 }
+
 .a {
-stroke: #707070;
+  stroke: #707070;
 }
+
 .b,
 .c {
-fill: #1a1a1a;
-font-family: Roboto-Bold, Roboto;
-font-weight: 700;
+  fill: #1a1a1a;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: 700;
 }
+
 .b {
-font-size: 7px;
+  font-size: 7px;
 }
+
 .c {
-font-size: 6px;
+  font-size: 6px;
 }
+
 .d {
-fill: #707070;
+  fill: #707070;
 }
+
 .e {
-stroke: #000;
+  stroke: #000;
 }
+
 .f {
-stroke: none;
+  stroke: none;
 }
+
 .tabique {
-    stroke-width: 5;
+  stroke-width: 5;
 }
 /*Estilos del grafico*/
-.text-datos-buque{
-    font-size: 19px; 
-    fill: #3376A1;
-}
-.text-buque-bold{
-    stroke-width: 1px; stroke: #3376A1;
-}
-.nombre-buque{
-    stroke: #3376A1; 
-    stroke-width: 1px; 
-    font-size: 29px;
+.text-datos-buque {
+  font-size: 19px;
+  fill: #3376A1;
 }
 
-.fillFlecha{
-    fill: #4d60a8;
-    fill-opacity: 1;
+.text-buque-bold {
+  stroke-width: 1px;
+  stroke: #3376A1;
 }
 
-svg{
-    -webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+.nombre-buque {
+  stroke: #3376A1;
+  stroke-width: 1px;
+  font-size: 29px;
 }
 
-.elementoColor{
-    fill: #D87621;
-    cursor: pointer;
+.fillFlecha {
+  fill: #4d60a8;
+  fill-opacity: 1;
 }
 
-.elementoProd{
-    fill: #FF9880;
-    cursor: pointer;
+svg {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.toggleForma{
-    fill: #D87621;
-    cursor: pointer;
+.elementoColor {
+  fill: #D87621;
+  cursor: pointer;
 }
 
-.opacidad{
-    opacity: 0.85;
+.elementoProd {
+  fill: #FF9880;
+  cursor: pointer;
 }
 
-.colorTitle{
-    color: #4D60A8;
+.toggleForma {
+  fill: #D87621;
+  cursor: pointer;
 }
 
-.hideResize{
-    visibility: hidden;
+.opacidad {
+  opacity: 0.85;
 }
 
-:host ::ng-deep g:focus{
-    outline: none;
+.colorTitle {
+  color: #4D60A8;
 }
 
-#selectMateriales{
-    position: absolute;
-    width: 11rem;
-    right: 4%;
-    margin-top: 36.5%;
+.hideResize {
+  visibility: hidden;
 }
 
-#toggleColorContainer{
-    position: absolute;
-    width: 6rem;
-    right: 6.5%;
-    margin-top: 44%;
-}
-#colorLabel{
-    position: absolute;
-    width: 6rem;
-    right: 0%;
-    margin-top: 44.5%;
-    font-weight: bold;
-}
-#prodLabel{
-    position: absolute;
-    width: 6rem;
-    right: 10%;
-    margin-top: 44.5%;
-    font-weight: bold;
+:host ::ng-deep g:focus {
+  outline: none;
 }
 
-#toggleFormaContainer{
-    position: absolute;
-    width: 6rem;
-    right: 6.5%;
-    margin-top: 40%;
-}
-#toggleRotarContainer{
-    position: absolute;
-    width: 6rem;
-    right: 6.5%;
-    margin-top: 48%;
-}
-#circuloLabel{
-    position: absolute;
-    width: 6rem;
-    right: 0%;
-    margin-top: 40.5%;
-    font-weight: bold;
-}
-#rectLabel{
-    position: absolute;
-    width: 6rem;
-    right: 13%;
-    margin-top: 40.5%;
-    font-weight: bold;
+#selectMateriales {
+  position: absolute;
+  width: 11rem;
+  right: 4%;
+  margin-top: 36.5%;
 }
 
-#rotarLabel{
-    position: absolute;
-    width: 6rem;
-    right: 12%;
-    margin-top: 48.5%;
-    font-weight: bold;
+#toggleColorContainer {
+  position: absolute;
+  width: 6rem;
+  right: 6.5%;
+  margin-top: 44%;
 }
 
-.siloResaltado{
-    stroke: green;
-    stroke-width: 2;
+#colorLabel {
+  position: absolute;
+  width: 6rem;
+  right: 0%;
+  margin-top: 44.5%;
+  font-weight: bold;
+}
+
+#prodLabel {
+  position: absolute;
+  width: 6rem;
+  right: 10%;
+  margin-top: 44.5%;
+  font-weight: bold;
+}
+
+#toggleFormaContainer {
+  position: absolute;
+  width: 6rem;
+  right: 6.5%;
+  margin-top: 40%;
+}
+
+#toggleRotarContainer {
+  position: absolute;
+  width: 6rem;
+  right: 6.5%;
+  margin-top: 48%;
+}
+
+#circuloLabel {
+  position: absolute;
+  width: 6rem;
+  right: 0%;
+  margin-top: 40.5%;
+  font-weight: bold;
+}
+
+#rectLabel {
+  position: absolute;
+  width: 6rem;
+  right: 13%;
+  margin-top: 40.5%;
+  font-weight: bold;
+}
+
+#rotarLabel {
+  position: absolute;
+  width: 6rem;
+  right: 12%;
+  margin-top: 48.5%;
+  font-weight: bold;
+}
+
+.siloResaltado {
+  stroke: #3cd73c;
+  stroke-width: 4;
 }
 
 .tank-control {
-    margin-left: 6px;
-    margin-top: 5px;
+  margin-left: 6px;
+  margin-top: 5px;
 }
 
 .custom-switch.tank-control .custom-control-label::before {
-    width: 5rem !important;
-    height: 1.7rem;
-    border-radius: 4rem;
-    background-color: #4D60A8;
-    border:none;
-    text-align: end;
-    padding-right: 14px;
-    font-size: 1.12rem;
-    font-weight: 500;
-    color: white;
-    padding-top: 1px;
-    cursor: pointer;
+  width: 5rem !important;
+  height: 1.7rem;
+  border-radius: 4rem;
+  background-color: #4D60A8;
+  border: none;
+  text-align: end;
+  padding-right: 14px;
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: white;
+  padding-top: 1px;
+  cursor: pointer;
 }
 
 .tank-control .custom-control-input:checked ~ .custom-control-label::before {
-    background-color: #4D60A8;
-    border: none;
-    text-align: start;
-    padding-left: 16px;
+  background-color: #4D60A8;
+  border: none;
+  text-align: start;
+  padding-left: 16px;
 }
 
 .custom-switch.tank-control .custom-control-label::after {
-    top: calc(0.25rem + 3px);
-    left: calc(-2.25rem + 3px);
-    width: 1.3rem;
-    height: 1.3rem;
-    border-radius: 50%;
-    background-color: white;
-    cursor: pointer;
+  top: calc(0.25rem + 3px);
+  left: calc(-2.25rem + 3px);
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
 }
 
 .tank-control .custom-control-input:checked ~ .custom-control-label::after {
-    transform: translateX(3.35rem);
+  transform: translateX(3.35rem);
 }
 
-#colorMateriales{
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    left: 50%;
-    width: 40%;
-    margin-left: -20%;
-    margin-top: 1%;
+#colorMateriales {
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  left: 50%;
+  width: 40%;
+  margin-left: -20%;
+  margin-top: 1%;
 }
 
-.colorMaterial{
-    flex: 0 0 21%;
-    margin: 2%;
+.colorMaterial {
+  flex: 0 0 21%;
+  max-width: 21%;
+  margin: 2%;
+}
+
+.descripcionMaterial {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
