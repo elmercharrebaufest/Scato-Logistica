@@ -99,6 +99,7 @@ $(document).ready(function () {
 
 
     $(".btn-acciones-especiales").click(function () {
+        event.stopPropagation();
         $.ajax({
             url: $("#accionesEspeciales").val(),
             data: {
@@ -328,7 +329,10 @@ function ErrorBalanza(b, id) {
 
     ActivarInterval(b.Id);
     $('#' + b.Id).tooltip('show');
-    $("#" + b.Id).click(function () {
+    $("#" + b.Id).click(function (e) {
+        if ($(e.target).hasClass("intercomunicador"))
+            return true
+
         //document.cookie = "PuestoDeTrabajoId=" + b.Id;
         if (b.NoRedirecciona == false) {
             $.cookie('PuestoDeTrabajoId', b.Id);
