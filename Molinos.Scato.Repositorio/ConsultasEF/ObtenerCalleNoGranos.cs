@@ -46,7 +46,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private CallePorRecorrido UltimoCamionAsignado(DbContext contexto)
         {
             return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == tipoCalle &&
-            x.FechaEgreso == null && (x.CargaDeCupo.Material.Id == materialId || x.Recorrido.Material.Id == materialId) && x.CargaDeCupo.Material.EsAsignableCalle || x.Recorrido.Material.EsAsignableCalle)
+            x.FechaEgreso == null && (x.CargaDeCupo.Material.Id == materialId || x.Recorrido.Material.Id == materialId) && (x.CargaDeCupo.Material.EsAsignableCalle || x.Recorrido.Material.EsAsignableCalle))
                                               .OrderByDescending(x => x.Id)
                                               .FirstOrDefault();
         }
