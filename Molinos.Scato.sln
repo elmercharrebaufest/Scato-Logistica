@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30517.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C814E341-55E7-4D98-8A72-27692347AF96}"
 	ProjectSection(SolutionItems) = preProject
@@ -427,75 +427,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_NeutralResourcesLanguage = es-AR
 		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 22
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs-ms.baufest.com:8080/tfs/00tfs%20upgraded%20projects%20from%202005
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Molinos.Scato.Test\\Molinos.Scato.Test.csproj
-		SccProjectName1 = Molinos.Scato.Test
-		SccLocalPath1 = Molinos.Scato.Test
-		SccProjectUniqueName2 = Molinos.Scato.Build\\Molinos.Scato.Build.csproj
-		SccProjectName2 = Molinos.Scato.Build
-		SccLocalPath2 = Molinos.Scato.Build
-		SccProjectUniqueName3 = Molinos.Scato.Database\\Molinos.Scato.Database.sqlproj
-		SccProjectName3 = Molinos.Scato.Database
-		SccLocalPath3 = Molinos.Scato.Database
-		SccProjectUniqueName4 = Molinos.Scato.Dependencias\\Molinos.Scato.Dependencias.csproj
-		SccProjectName4 = Molinos.Scato.Dependencias
-		SccLocalPath4 = Molinos.Scato.Dependencias
-		SccProjectUniqueName5 = Molinos.Scato.Dominio\\Molinos.Scato.Dominio.csproj
-		SccProjectName5 = Molinos.Scato.Dominio
-		SccLocalPath5 = Molinos.Scato.Dominio
-		SccProjectUniqueName6 = Molinos.Scato.Repositorio\\Molinos.Scato.Repositorio.csproj
-		SccProjectName6 = Molinos.Scato.Repositorio
-		SccLocalPath6 = Molinos.Scato.Repositorio
-		SccProjectUniqueName7 = Molinos.Scato.ServiciosWeb\\Molinos.Scato.ServiciosWeb.csproj
-		SccProjectName7 = Molinos.Scato.ServiciosWeb
-		SccLocalPath7 = Molinos.Scato.ServiciosWeb
-		SccProjectUniqueName8 = Molinos.Scato.Servicios\\Molinos.Scato.Servicios.csproj
-		SccProjectName8 = Molinos.Scato.Servicios
-		SccLocalPath8 = Molinos.Scato.Servicios
-		SccProjectUniqueName9 = Molinos.Scato.Reportes\\Molinos.Scato.Reportes.rptproj
-		SccProjectName9 = Molinos.Scato.Reportes
-		SccLocalPath9 = Molinos.Scato.Reportes
-		SccProjectUniqueName10 = Molinos.Scato.WfEditor\\Molinos.Scato.WfEditor.csproj
-		SccProjectName10 = Molinos.Scato.WfEditor
-		SccLocalPath10 = Molinos.Scato.WfEditor
-		SccProjectUniqueName11 = TransmisionASapManual\\TransmisionASapManual.csproj
-		SccProjectName11 = TransmisionASapManual
-		SccLocalPath11 = TransmisionASapManual
-		SccProjectUniqueName12 = BuscadorDeInconcistencias\\BuscadorDeInconcistencias.csproj
-		SccProjectName12 = BuscadorDeInconcistencias
-		SccLocalPath12 = BuscadorDeInconcistencias
-		SccProjectUniqueName13 = Molinos.Scato.Actividades\\Molinos.Scato.Actividades.csproj
-		SccProjectName13 = Molinos.Scato.Actividades
-		SccLocalPath13 = Molinos.Scato.Actividades
-		SccProjectUniqueName14 = Molinos.Scato.Workflow\\Molinos.Scato.Workflow.csproj
-		SccProjectName14 = Molinos.Scato.Workflow
-		SccLocalPath14 = Molinos.Scato.Workflow
-		SccProjectUniqueName15 = Molinos.Scato.Web\\Molinos.Scato.Web.csproj
-		SccProjectName15 = Molinos.Scato.Web
-		SccLocalPath15 = Molinos.Scato.Web
-		SccProjectUniqueName16 = Molinos.Scato.WebMobile\\Molinos.Scato.WebMobile.csproj
-		SccProjectName16 = Molinos.Scato.WebMobile
-		SccLocalPath16 = Molinos.Scato.WebMobile
-		SccProjectUniqueName17 = Molinos.Scato.WebOperaciones\\Molinos.Scato.WebOperaciones.csproj
-		SccProjectName17 = Molinos.Scato.WebOperaciones
-		SccLocalPath17 = Molinos.Scato.WebOperaciones
-		SccProjectUniqueName18 = Molinos.Scato.WfEditorWeb\\Molinos.Scato.WfEditorWeb.csproj
-		SccProjectName18 = Molinos.Scato.WfEditorWeb
-		SccLocalPath18 = Molinos.Scato.WfEditorWeb
-		SccProjectUniqueName19 = Molinos.Scato.ModuloImpresor\\Molinos.Scato.ModuloImpresor.csproj
-		SccProjectName19 = Molinos.Scato.ModuloImpresor
-		SccLocalPath19 = Molinos.Scato.ModuloImpresor
-		SccProjectUniqueName20 = Molinos.Scato.WebPuertoApi\\Molinos.Scato.WebPuertoApi.csproj
-		SccProjectName20 = Molinos.Scato.WebPuertoApi
-		SccLocalPath20 = Molinos.Scato.WebPuertoApi
-		SccProjectUniqueName21 = Molinos.Scato.WebPuerto\\Molinos.Scato.WebPuerto.csproj
-		SccProjectName21 = Molinos.Scato.WebPuerto
-		SccLocalPath21 = Molinos.Scato.WebPuerto
 	EndGlobalSection
 EndGlobal

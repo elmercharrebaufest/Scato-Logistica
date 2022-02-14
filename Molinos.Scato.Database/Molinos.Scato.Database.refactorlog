@@ -588,4 +588,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="IntercomunicadorCodigo" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="466a3ae7-27d7-41ed-a2a6-f910f3ff72e1" ChangeDateTime="02/11/2022 16:23:25">
+    <Property Name="ElementName" Value="[dbo].[Centro].[EstadoCacheoCPE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Centro]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CacheoCorrectoCPE" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ac261072-a2c9-40e0-8e3f-19cc89575705" ChangeDateTime="02/11/2022 21:50:12">
+    <Property Name="ElementName" Value="[dbo].[Centro].[CacheoCorrectoCPE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Centro]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MensajeErrorCacheoCPE" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="afd2cbfd-b506-4c1b-aa56-613f70775b5c" ChangeDateTime="02/11/2022 21:50:41">
+    <Property Name="ElementName" Value="[dbo].[Centro].[MensajeErrorCacheoCPE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Centro]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ErrorCacheoAfipCPE" />
+  </Operation>
 </Operations>

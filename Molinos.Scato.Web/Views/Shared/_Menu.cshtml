@@ -721,6 +721,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.MonitorCPECacheada))
+                                {
+                                    <li>@Html.ActionLink(Textos.MonitorCPECacheada, "Index", "MonitorCPECacheada")</li>
+                                }
                             </ul>
                         </li>
                     </ul>

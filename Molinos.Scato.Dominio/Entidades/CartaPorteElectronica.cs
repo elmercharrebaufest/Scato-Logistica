@@ -53,7 +53,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual long? CuitIntermediarioFlete { get; set; }
         public virtual bool? MercaderiaFumigada { get; set; }
         public virtual long? CuitRepresentanteRecibidor { get; set; }
-        public virtual long CuitOrigen { get; set; }
+        public virtual long? CuitOrigen { get; set; }
         public virtual string Observacion { get; set; }
         public virtual DateTime? FechaUltimaActualizacion { get; set; }
         public virtual long? NroOperativo { get; set; }
@@ -63,5 +63,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual byte[] Pdf { get; set; }
         public virtual long? CuitTransportistaTramo2 { get; set; }        
         public virtual double TarifaReferencia { get; set; }
+        public virtual DateTime? FechaCacheado { get; set; }
     }
 }

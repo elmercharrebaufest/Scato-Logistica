@@ -670,6 +670,9 @@
     <Compile Include="ConsultarImagenCpe.cs" />
     <Compile Include="Consultas\Expresiones.cs" />
     <Compile Include="Consultas\Paginacion.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
     <Compile Include="Dto\RegistroInactividadDto.cs" />
     <Compile Include="Dto\MotivoInactividadDto.cs" />
     <Compile Include="Dto\ArriboCircularResponseDto.cs" />

@@ -544,6 +544,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         CambioDeMaterialEnFilas = 261,
         [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasExportacion")]
         VisualizarVideoCamarasExportacion = 263,
+        [Display(ResourceType = typeof(Textos), Name = "MonitorCPECacheada")]
+        MonitorCPECacheada = 264,
 
         //Permisos Notificaciones
         Balanceros = 300,
@@ -708,10 +710,10 @@ namespace Molinos.Scato.Dominio.Seguridad
         LineUpLectura = 602,
         [Display(ResourceType = typeof(Textos), Name = "LineUpExportar")]
         LineUpExportar = 603,
-
         [Display(ResourceType = typeof(Textos), Name = "PuestoPausado")]
         PuestoPausado = 605,
         [Display(ResourceType = typeof(Textos), Name = "HidraulicasEspeciales")]
         HidraulicasEspeciales = 606,
+
     }
 }

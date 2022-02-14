@@ -328,6 +328,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
     <Compile Include="Controllers\CategoriaCamionesController.cs" />
@@ -635,6 +636,7 @@
     <Compile Include="Models\ImpresionTarjetaDeAccesoModel.cs" />
     <Compile Include="Models\IngresoCIUModel.cs" />
     <Compile Include="Models\CambioModalidadPuestoModel.cs" />
+    <Compile Include="Models\MonitorCPECacheadaViewModel.cs" />
     <Compile Include="Models\PesadaCargaExportacion.cs" />
     <Compile Include="Models\PlanillaF515ViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
@@ -792,6 +794,7 @@
     </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Scripts\area\monitorCPECacheada\index.js" />
     <Content Include="Scripts\area\shared\intercomunicadorDispositivo.js" />
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
@@ -2281,6 +2284,10 @@
     <Content Include="Views\Shared\Intercomunicador\_Intercomunicador.cshtml" />
     <Content Include="Views\Shared\Intercomunicador\_IntercomunicadorDispositivo.cshtml" />
     <Content Include="Views\Visteo\_VehiculoRechazado.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\Index.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\_Listado.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\_Filtro.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\CPE.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

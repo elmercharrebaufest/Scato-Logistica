@@ -1,0 +1,67 @@
+﻿@model Molinos.Scato.Web.Models.MonitorCPECacheadaViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.MonitorCPECacheada_Titulo;
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/area/monitorCPECacheada/index.js")"></script>
+
+<div class="container-fluid">
+    <div class="titSecciones">@Textos.MonitorCPECacheada_Titulo</div>
+</div>
+<div class="container-fluid content grillaPad" id="mainContainer">
+    <div class="accordion row-fluid">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <div class="checkbox pull-right topRight">
+                    <label>
+                        <input name="checkbox" id="monitorCacheRefrescar" type="checkbox" onchange="monitorCPECacheadaVM.vm.mainModule.events.activarRecargaAutomatica(this)" />@Textos.RefrescarGrillaAutomaticamante
+                    </label>
+                </div>
+                <a class="accordion-toggle" data-toggle="collapse" href="#collapseContent">
+                    <i class="icon-chevron-down"></i>
+                    @Textos.Filtro
+                </a>
+            </div>
+            <div id="collapseContent" class="accordion-body collapse">
+                @using (Ajax.BeginForm("Listar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "filterContainer", @class = "form-search" }))
+                {
+                    @Html.Partial("_Filtro")
+                }
+            </div>
+        </div>
+    </div>
+    <div id="gridContainer" style="margin-top: 10px" data-grid-url="@Url.Action("Listar")">
+        @Html.Partial("_Listado")
+    </div>
+</div>
+
+<script>
+    var monitorCPECacheadaConfig = {
+        containerId: "mainContainer",
+        generalIds: {
+            filterContainer: "filterContainer",
+            gridContainer: "gridContainer",
+            procesarBtnGridClass: "procesarBtnGridClass",
+        },
+        vmData: null,
+        labels: {},
+        messages: {
+            confirmarEjecucion: '@Textos.ConfirmarEjecucion'
+        },
+        models: {},
+        aucDataSourceUrls: {},
+        generalUrls: {
+            procesarCacheadoUrl: '@Url.Action("ProcesarCacheado")',
+            procesarCacheadoJobUrl: '@Url.Action("CachearCpeAfip", "SincronizarMaestros")',
+        },
+    };
+
+    var monitorCPECacheadaVM = new MonitorCPECacheadaVM(monitorCPECacheadaConfig);
+
+    $(function () {
+        monitorCPECacheadaVM.onReady();
+    });
+</script>

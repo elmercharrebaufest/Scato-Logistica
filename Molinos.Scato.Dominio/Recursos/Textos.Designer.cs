@@ -9520,6 +9520,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ¿Esta Seguro de Ejecutar la acción seleccionada?.
+        /// </summary>
+        public static string ConfirmarEjecucion {
+            get {
+                return ResourceManager.GetString("ConfirmarEjecucion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conforme.
         /// </summary>
         public static string Conforme {
@@ -19922,6 +19931,132 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Monitor CPEs Cacheadas.
+        /// </summary>
+        public static string MonitorCPECacheada {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CTG.
+        /// </summary>
+        public static string MonitorCPECacheada_CTG {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_CTG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ejecutar Job.
+        /// </summary>
+        public static string MonitorCPECacheada_EjecutarJob {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_EjecutarJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha Cacheado.
+        /// </summary>
+        public static string MonitorCPECacheada_FechaCacheado {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_FechaCacheado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha CPE.
+        /// </summary>
+        public static string MonitorCPECacheada_FechaCPE {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_FechaCPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha CPE Desde.
+        /// </summary>
+        public static string MonitorCPECacheada_FechaCPEDesde {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_FechaCPEDesde", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha CPE Hasta.
+        /// </summary>
+        public static string MonitorCPECacheada_FechaCPEHasta {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_FechaCPEHasta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha ultima ejecución job.
+        /// </summary>
+        public static string MonitorCPECacheada_FechaEjecucionJob {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_FechaEjecucionJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material.
+        /// </summary>
+        public static string MonitorCPECacheada_Material {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_Material", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patente.
+        /// </summary>
+        public static string MonitorCPECacheada_Patente {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_Patente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Camiones cacheados pendientes de ingresar.
+        /// </summary>
+        public static string MonitorCPECacheada_PendientesIngresar {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_PendientesIngresar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monitor CPEs Cacheadas.
+        /// </summary>
+        public static string MonitorCPECacheada_Titulo {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ver camiones que aun no llegaron.
+        /// </summary>
+        public static string MonitorCPECacheada_VerCamionesNoLlegada {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_VerCamionesNoLlegada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ver CPE.
+        /// </summary>
+        public static string MonitorCPECacheada_VerCPE {
+            get {
+                return ResourceManager.GetString("MonitorCPECacheada_VerCPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error en el procedimiento del servicio Monsanto.
         /// </summary>
         public static string Monsanto_ErrorEnLaCarga {
@@ -24303,6 +24438,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Refrescar_Cookies {
             get {
                 return ResourceManager.GetString("Refrescar_Cookies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refrescar Grilla Automáticamente.
+        /// </summary>
+        public static string RefrescarGrillaAutomaticamante {
+            get {
+                return ResourceManager.GetString("RefrescarGrillaAutomaticamante", resourceCulture);
             }
         }
         

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Servicios;
+using Molinos.Scato.Web.Atributos;
+using Molinos.Scato.Web.Helpers;
+using Molinos.Scato.Web.Models;
+using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Recursos;
-using Molinos.Scato.Servicios;
-using Molinos.Scato.Web.Helpers;
-using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Proveedores(bool mostrarResultados = true)
         {
             log.Info("Ejecutando sincronización de Proveedores. Mostrar resultados: {0}", mostrarResultados);
-            var resultado = servicioComandos.Ejecutar(new SincronizarProveedores { RetornarResultado = mostrarResultados, CargaMasiva = true}) as ResultadoSincronizarProveedores;
+            var resultado = servicioComandos.Ejecutar(new SincronizarProveedores { RetornarResultado = mostrarResultados, CargaMasiva = true }) as ResultadoSincronizarProveedores;
             ModelState.AgregarErrores(resultado);
             if (mostrarResultados)
             {
@@ -42,7 +43,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Clientes(bool mostrarResultados = true)
         {
             log.Info("Ejecutando sincronización de Clientes. Mostrar resultados: {0}", mostrarResultados);
-            var resultado = servicioComandos.Ejecutar(new SincronizarClientes { RetornarResultado = mostrarResultados, CargaMasiva = true}) as ResultadoSincronizarClientes;
+            var resultado = servicioComandos.Ejecutar(new SincronizarClientes { RetornarResultado = mostrarResultados, CargaMasiva = true }) as ResultadoSincronizarClientes;
             ModelState.AgregarErrores(resultado);
             if (mostrarResultados)
             {
@@ -55,7 +56,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Materiales(bool mostrarResultados = true)
         {
             log.Info("Ejecutando sincronización de Materiales. Mostrar resultados: {0}", mostrarResultados);
-            var resultado = servicioComandos.Ejecutar(new SincronizarMateriales { RetornarResultado = mostrarResultados, CargaMasiva = true}) as ResultadoSincronizarMateriales;
+            var resultado = servicioComandos.Ejecutar(new SincronizarMateriales { RetornarResultado = mostrarResultados, CargaMasiva = true }) as ResultadoSincronizarMateriales;
             if (mostrarResultados)
             {
                 ModelState.AgregarErrores(resultado);
@@ -63,7 +64,15 @@ namespace Molinos.Scato.Web.Controllers
             }
             return Content(string.Empty);
         }
-        
+
+        [DatosUsuario]
+        [HttpPost]
+        public ActionResult CachearCpeAfip(DatosUsuario datosUsuario)
+        {
+            CachearCpeAfip(datosUsuario.CentroId, 3, 5, "AMBOS");
+            return Json(true);
+        }
+
         public void ActualizarCuposOtorgados()
         {
             var centros = servicioRepositorio.ListarCentros().Select(centro => (centro.CodigoSAP + ',' + centro.CodigoSAPEspecial).Split(',').Where(x => !string.IsNullOrEmpty(x)));
@@ -115,7 +124,7 @@ namespace Molinos.Scato.Web.Controllers
                                         CentroId = item.CentroId,
                                         WorkflowId = item.WorkflowId
                                     }));
-                                } 
+                                }
                                 else
                                 {
                                     log.Info($"Dar de baja CTG, Dto: {item.Dto.NroCartaPorte}, workflowId: {item.WorkflowId}");
@@ -184,20 +193,18 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     log.Info($"No se obtuvieron registros, cantidad de bajas: {bajaCTGconError.Count()}");
                 }
-
             }
             catch (Exception e)
             {
                 log.Error("Ocurrio un problema al realizar el proceso: {}", e.Message);
-                
             }
-
         }
 
-        public void CachearCpeAfip(int centro=5, int reintentos=3, int consultasParalelo=5, string tipoCpe="AMBOS")
+        public void CachearCpeAfip(int centro = 5, int reintentos = 3, int consultasParalelo = 5, string tipoCpe = "AMBOS")
         {
             var cpesPendientes = (ResultadoConsultaCpePorDestino)servicioComandos.Ejecutar(
-                new ConsultarCPEPorDestino() { 
+                new ConsultarCPEPorDestino()
+                {
                     CentroId = centro,
                     TipoCpe = tipoCpe == "CAMION" ? TipoCpeConsulta.Camion : (tipoCpe == "TREN" ? TipoCpeConsulta.Tren : TipoCpeConsulta.Ambos),
                     FechaPartidaDesde = DateTime.Today,
@@ -206,6 +213,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!cpesPendientes.HayErrores)
             {
+                servicioRepositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, null);
                 var cpesNoCacheadas = servicioRepositorio.ObtenerCpesNoCacheadas(cpesPendientes.Cpes);
 
                 log.Debug("Se inicia el proceso de cacheo");
@@ -245,9 +253,9 @@ namespace Molinos.Scato.Web.Controllers
             }
             else
             {
+                servicioRepositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, cpesPendientes.Errores.FirstOrDefault().Value);
                 log.Error("Ocurrio un problema al realizar ConsultarCPEPorDestino: {0}", cpesPendientes.Errores.FirstOrDefault().Value);
             }
-
         }
     }
 }

@@ -9447,7 +9447,7 @@
   </data>
   <data name="VisualizarVideoCamarasExportacion" xml:space="preserve">
     <value>Visualizar Video Camaras Exportación</value>
-  </data>   
+  </data>
   <data name="Error_CpExistente" xml:space="preserve">
     <value>La Carta de porte {0} ya se cargó previamente</value>
   </data>
@@ -9718,7 +9718,55 @@
   <data name="HidraulicasEspeciales" xml:space="preserve">
     <value>Hidraúlicas Especiales</value>
   </data>
+  <data name="MonitorCPECacheada_Titulo" xml:space="preserve">
+    <value>Monitor CPEs Cacheadas</value>
+  </data>
+  <data name="MonitorCPECacheada_PendientesIngresar" xml:space="preserve">
+    <value>Camiones cacheados pendientes de ingresar</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaEjecucionJob" xml:space="preserve">
+    <value>Fecha ultima ejecución job</value>
+  </data>
+  <data name="MonitorCPECacheada_Patente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="MonitorCPECacheada_CTG" xml:space="preserve">
+    <value>CTG</value>
+  </data>
+  <data name="MonitorCPECacheada_Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCacheado" xml:space="preserve">
+    <value>Fecha Cacheado</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPE" xml:space="preserve">
+    <value>Fecha CPE</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPEDesde" xml:space="preserve">
+    <value>Fecha CPE Desde</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPEHasta" xml:space="preserve">
+    <value>Fecha CPE Hasta</value>
+  </data>
+  <data name="MonitorCPECacheada_VerCamionesNoLlegada" xml:space="preserve">
+    <value>Ver camiones que aun no llegaron</value>
+  </data>
+  <data name="RefrescarGrillaAutomaticamante" xml:space="preserve">
+    <value>Refrescar Grilla Automáticamente</value>
+  </data>
   <data name="Descargar_PDF_CPE" xml:space="preserve">
     <value>Descargar CPE Electrónica</value>
+  </data>
+  <data name="MonitorCPECacheada_VerCPE" xml:space="preserve">
+    <value>Ver CPE</value>
+  </data>
+  <data name="MonitorCPECacheada" xml:space="preserve">
+    <value>Monitor CPEs Cacheadas</value>
+  </data>
+  <data name="ConfirmarEjecucion" xml:space="preserve">
+    <value>¿Esta Seguro de Ejecutar la acción seleccionada?</value>
+  </data>
+  <data name="MonitorCPECacheada_EjecutarJob" xml:space="preserve">
+    <value>Ejecutar Job</value>
   </data>
 </root>
