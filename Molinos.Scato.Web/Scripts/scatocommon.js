@@ -156,7 +156,6 @@ $(document).ready(function () {
     });
 
     $(document).on('submit', '#search-form', function (data) {
-        debugger;
         var container = $('#gridContainer');
         if (container.attr('data-grid-url')) {
             container.data().gridUrl = RemoverParametrosDeUrl(container.data().gridUrl) + "?filtro=" + $('#search-form input[name="filtro"]').val();
