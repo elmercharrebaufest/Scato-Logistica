@@ -255,12 +255,13 @@ namespace Molinos.Scato.Web.Controllers
                         : servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId, esSustentable)
                                     .ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             
-            var hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto);
+            var hidraulicas = new List<PuestosDeCargaDescargaDto>();
             if (!PermisosHelper.Is(PermisosScato.HidraulicasEspeciales))
             {
-                var hidraulicasEspeciales = new List<string>() { Constantes.TiposDeHidraulicas.NoDescarga, Constantes.TiposDeHidraulicas.NoDeEpa };
-                hidraulicas = hidraulicas.Where(x => !hidraulicasEspeciales.Contains(x.Codigo)).ToList();
-            }
+                hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto, true).ToList();
+            } else
+                hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto).ToList();
+
             ViewBag.Hidraulicas = new MultiSelectList(hidraulicas, "Id", "Nombre");
         }
 

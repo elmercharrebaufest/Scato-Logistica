@@ -26,6 +26,9 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "EsSojaSustentable")]
         public bool EsSojaSustentable { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "EsEspecial")]
+        public bool EsEspecial { get; set; }
+
         public int CentroId { get; set; }
     }
 }

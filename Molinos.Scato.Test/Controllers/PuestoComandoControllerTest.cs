@@ -139,7 +139,7 @@ namespace Molinos.Scato.Test.Controllers
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ActualizarPuestocomando>())).Returns(resultado);
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ActualizarPuestoComandoCaladoEnPlanta>())).Returns(resultado);
             servRepositorioMock.Setup(s => s.ListarAlmacenesPorMaterialYCentroSustentableMixto(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<AlmacenDto> { new AlmacenDto { Id = 1 } });
-            servRepositorioMock.Setup(s => s.ListarHidraulicasPorCriterioSustentable(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<PuestosDeCargaDescargaDto> { new PuestosDeCargaDescargaDto { Id = 1 } });
+            servRepositorioMock.Setup(s => s.ListarHidraulicasPorCriterioSustentable(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(new List<PuestosDeCargaDescargaDto> { new PuestosDeCargaDescargaDto { Id = 1 } });
 
             var asignacion = new AsignacionDto
             {

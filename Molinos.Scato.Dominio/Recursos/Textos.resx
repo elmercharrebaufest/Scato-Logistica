@@ -9769,4 +9769,7 @@
   <data name="MonitorCPECacheada_EjecutarJob" xml:space="preserve">
     <value>Ejecutar Job</value>
   </data>
+  <data name="EsEspecial" xml:space="preserve">
+    <value>Es hidraúlica especial</value>
+  </data>
 </root>

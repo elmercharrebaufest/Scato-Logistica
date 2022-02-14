@@ -2261,8 +2261,7 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroSustentableMixto(int centroId, int materialId);
 
         [OperationContract]
-        IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta);
-
+        IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false);
         [OperationContract]
         IList<MaterialDto> ListarMaterialesFiltroF515(int centroId);
 

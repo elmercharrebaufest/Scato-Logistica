@@ -8523,10 +8523,12 @@ namespace Molinos.Scato.Servicios.Impl
                     f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId));
         }
 
-        public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta)
+        public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false)
         {
-            return
-                Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
+            return (excluirEspeciales) 
+                ? Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
+                    x => x.Centro.Id == centroId && (x.EsSojaSustentable == esSustentable || sustentableMixta) && (x.EsEspecial != excluirEspeciales || x.EsEspecial == null))
+                : Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
                     x => x.Centro.Id == centroId && (x.EsSojaSustentable == esSustentable || sustentableMixta));
         }
 

@@ -26,6 +26,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 hidraulica.Nombre = comando.Dto.Nombre;
             }
             hidraulica.EsSojaSustentable = comando.Dto.EsSojaSustentable;
+            hidraulica.EsEspecial = comando.Dto.EsEspecial;
         }
 
         protected override void Validar(ModificarPuestosDeCargaDescarga comando, Resultado resultado)
