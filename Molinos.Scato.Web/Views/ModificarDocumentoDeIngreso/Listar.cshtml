@@ -35,7 +35,6 @@
              grid => grid.Columns(
                  grid.ColumnaSeleccionarDocumento(Html, "ModificarDocumentoDeIngreso", useAjax: false, filtrarPorTarjeta: (bool)(ViewBag.FiltrarPorTarjeta ?? false), soloLectura: (bool)(ViewBag.SoloLectura ?? false)),
                  grid.ColumnaVerFotoCartaPorte(Html, "ObtenerFotoDeCartaPorte", "DescargarFotoDeCartaPorte", "Foto"),
-                 grid.ColumnaDescargarPDFCartaPorte(Html, "DescargarPDFCartaPorte", "DescargarPDFCartaPorte", "CargarCartaPorte"),
                  grid.Columna("Patente", Textos.Patente),
                  grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngreso, x => String.IsNullOrEmpty(x.NumeroDocumentoIngresoLegal) ? x.NumeroDocumentoIngreso : x.NumeroDocumentoIngresoLegal),
                  grid.Columna("NumeroDocumentoIngreso", Textos.NumeroDocumentoIngresoInterno, x => String.IsNullOrEmpty(x.NumeroDocumentoIngresoLegal) ? "" : x.NumeroDocumentoIngreso),
