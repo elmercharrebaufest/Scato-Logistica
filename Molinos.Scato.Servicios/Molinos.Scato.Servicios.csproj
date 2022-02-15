@@ -526,6 +526,7 @@
     <Compile Include="Procesamiento\ProcesadorEnviarMensajesAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorGuardarEtiquetasPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirFileGenerico.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarCaladoCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarPesadaCircular.cs" />

@@ -118,5 +118,21 @@ namespace Molinos.Scato.ModuloImpresor.Impresion
             Marshal.FreeCoTaskMem(pBytes);
             return true;
         }
+
+        public static bool SendFileBytesPrinter(string szPrinterName, byte[] file)
+        {
+            bool bSuccess = false;
+            int nLength = file.Length;
+            // Your unmanaged pointer.
+            IntPtr pUnmanagedBytes = new IntPtr(0);
+            // Allocate some unmanaged memory for those bytes.
+            pUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);
+            // Copy the managed byte array into the unmanaged array.
+            Marshal.Copy(file, 0, pUnmanagedBytes, nLength);
+            bSuccess = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, nLength);
+            // Free the unmanaged memory that you allocated earlier.
+            Marshal.FreeCoTaskMem(pUnmanagedBytes);
+            return bSuccess;
+        }
     }
 }

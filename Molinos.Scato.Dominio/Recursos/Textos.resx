@@ -9772,4 +9772,10 @@
   <data name="EsEspecial" xml:space="preserve">
     <value>Es hidraúlica especial</value>
   </data>
+  <data name="Descargar_PDF_CPE" xml:space="preserve">
+    <value>Descargar CPE Electrónica</value>
+  </data>
+  <data name="Reimpresion_Documentos_CPE_Eliminar" xml:space="preserve">
+    <value>El documento seleccionado no puede ser eliminado.</value>
+  </data>
 </root>

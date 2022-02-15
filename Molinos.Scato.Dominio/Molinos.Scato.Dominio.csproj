@@ -116,6 +116,7 @@
     <Compile Include="Comandos\GuardarModuloDeCarga.cs" />
     <Compile Include="Comandos\GuardarPlanillaDeTurnos.cs" />
     <Compile Include="Comandos\ImprimirEtiquetaPuerto.cs" />
+    <Compile Include="Comandos\ImprimirFileGenerico.cs" />
     <Compile Include="Comandos\InformarArriboCircular.cs" />
     <Compile Include="Comandos\InformarCaladoCircular.cs" />
     <Compile Include="Comandos\InformarPesadaCircular.cs" />

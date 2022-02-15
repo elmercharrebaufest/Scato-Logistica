@@ -23,5 +23,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int? Cosecha { get; set; }
         public DateTime? FechaUltimaActualizacion { get; set; }
         public DateTime? FechaCacheado { get; set; }
+        public byte[] Pdf { get; set; }
     }
 }

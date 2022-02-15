@@ -24541,6 +24541,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El documento seleccionado no puede ser eliminado..
+        /// </summary>
+        public static string Reimpresion_Documentos_CPE_Eliminar {
+            get {
+                return ResourceManager.GetString("Reimpresion_Documentos_CPE_Eliminar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No se encontraron impresiones para el documento ingresado.
         /// </summary>
         public static string Reimpresion_DocumentosNoEncontrados {

@@ -40,7 +40,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int CentroId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Centro")]
-        public string CentroDescripcion { get; set; }       
+        public string CentroDescripcion { get; set; }
+        public string CodigoDocumentoImpresion { get; set; }
 
     }
 }
