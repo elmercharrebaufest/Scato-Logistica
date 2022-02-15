@@ -25981,6 +25981,33 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Semaforo Amarillo.
+        /// </summary>
+        public static string SemaforoVagones_Amarillo {
+            get {
+                return ResourceManager.GetString("SemaforoVagones_Amarillo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semaforo Rojo.
+        /// </summary>
+        public static string SemaforoVagones_Rojo {
+            get {
+                return ResourceManager.GetString("SemaforoVagones_Rojo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semaforo Verde.
+        /// </summary>
+        public static string SemaforoVagones_Verde {
+            get {
+                return ResourceManager.GetString("SemaforoVagones_Verde", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No se pudo registrar la Carta de Porte (Carta de porte: {0}) en el Sistema Industria. Por favor, revisar el Panel de Control de Transacciones.
         /// </summary>
         public static string ServicioMonsanto_Error {

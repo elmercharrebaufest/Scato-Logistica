@@ -9778,4 +9778,13 @@
   <data name="Reimpresion_Documentos_CPE_Eliminar" xml:space="preserve">
     <value>El documento seleccionado no puede ser eliminado.</value>
   </data>
+  <data name="SemaforoVagones_Amarillo" xml:space="preserve">
+    <value>Semaforo Amarillo</value>
+  </data>
+  <data name="SemaforoVagones_Rojo" xml:space="preserve">
+    <value>Semaforo Rojo</value>
+  </data>
+  <data name="SemaforoVagones_Verde" xml:space="preserve">
+    <value>Semaforo Verde</value>
+  </data>
 </root>

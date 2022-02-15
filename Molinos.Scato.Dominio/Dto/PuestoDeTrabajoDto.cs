@@ -141,5 +141,14 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_ActivarRegistroInactividad")]
         public bool ActivarRegistroInactividad { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "SemaforoVagones_Rojo")] 
+        public string SemaforoRojoCodigo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "SemaforoVagones_Amarillo")]
+        public string SemaforoAmarilloCodigo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "SemaforoVagones_Verde")]
+        public string SemaforoVerdeCodigo { get; set; }
     }
 }

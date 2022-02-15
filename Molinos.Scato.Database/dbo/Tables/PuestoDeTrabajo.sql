@@ -32,7 +32,10 @@
     [Concentrador] NVARCHAR(100) NULL, 
     [OrdenBalanza] INT NULL, 
     [IntercomunicadorCodigo] NVARCHAR(50) NULL, 
-	[ActivarRegistroInactividad] BIT NOT NULL DEFAULT 0
+	[ActivarRegistroInactividad] BIT NOT NULL DEFAULT 0,
+	[SemaforoRojo] NVARCHAR(100) NULL,
+	[SemaforoAmarillo] NVARCHAR(100) NULL,
+	[SemaforoVerde] NVARCHAR(100) NULL
     CONSTRAINT [PK_dbo.PuestoDeTrabajo] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
 	CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Balanza_Balanza_Id] FOREIGN KEY ([Balanza_Id]) REFERENCES [dbo].[Balanza] ([Id])

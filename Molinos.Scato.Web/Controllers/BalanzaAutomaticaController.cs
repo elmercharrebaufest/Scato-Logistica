@@ -619,31 +619,34 @@ namespace Molinos.Scato.Web.Controllers
                 if (!string.IsNullOrEmpty(color))
                 {
                     var puestoTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
-                    var barreras = (!string.IsNullOrEmpty(puestoTrabajo?.Entrada) ? puestoTrabajo?.Entrada?.Split(',').ToList() : new List<string>()).Where(w => w.ToUpper().Trim().Contains("SEMAFORO"));
 
-                    if (barreras.Any())
+                    semaforo = color == "ROJO"     ? puestoTrabajo?.SemaforoRojoCodigo :
+                               color == "AMARILLO" ? puestoTrabajo?.SemaforoAmarilloCodigo :
+                               color == "VERDE"    ? puestoTrabajo?.SemaforoVerdeCodigo : string.Empty;
+
+                    if (!string.IsNullOrEmpty(semaforo))
                     {
-                        semaforo = barreras.FirstOrDefault(f => f.ToUpper().Trim().Contains(color));
-                        if (!string.IsNullOrEmpty(semaforo))
+                        log.Info("Se envia cambio de estado al semaforo : {0}, color : {1}", semaforo, color);
+                        var resultadoSemaforo = orquestador.Ejecutar(new EjecutarAperturaBarrera { CodigoDispositivo = semaforo });
+                        if (resultadoSemaforo.Mensaje.Codigo == 0)
                         {
-                            log.Info("Se envia cambio de estado al semaforo : {0}, color : {1}", semaforo, color);
-                            var resultadoSemaforo = orquestador.Ejecutar(new EjecutarAperturaBarrera { CodigoDispositivo = semaforo });
-                            if (resultadoSemaforo.Mensaje.Codigo == 0)
+                            log.Info("Se envio cambio de estado al semaforo : {0}, color : {1} correctamente.", semaforo, color);
+                            notificador.Notificar(new NotificacionDto
                             {
-                                log.Info("Se envio cambio de estado al semaforo : {0}, color : {1} correctamente.", semaforo, color);
-                                notificador.Notificar(new NotificacionDto
-                                {
-                                    Grupo = "Automaticas",
-                                    Mensaje = new NotificacionSemaforoVagonesAutomaticaDto { PuestoId = puestoId, Color = color }.ToJson(),
-                                    TipoAlerta = TipoAlerta.CambioEstadoSemaforo,
-                                    PuestoId = puestoId
-                                });
-                            }
-                            else
-                            {
-                                log.Info("Mensaje de error Semaforo vagones codigo: {0}, descripcion : {1}", resultadoSemaforo.Mensaje.Codigo, resultadoSemaforo.Mensaje.Descripcion);
-                            }
+                                Grupo = "Automaticas",
+                                Mensaje = new NotificacionSemaforoVagonesAutomaticaDto { PuestoId = puestoId, Color = color }.ToJson(),
+                                TipoAlerta = TipoAlerta.CambioEstadoSemaforo,
+                                PuestoId = puestoId
+                            });
                         }
+                        else
+                        {
+                            log.Info("Mensaje de error Semaforo vagones codigo: {0}, descripcion : {1}", resultadoSemaforo.Mensaje.Codigo, resultadoSemaforo.Mensaje.Descripcion);
+                        }
+                    }
+                    else
+                    {
+                        log.Info("Mensaje de error Semaforo vagones, no existe semaforo configurado para el color : {0}, puestoDeTrabajoId : {1}", color, puestoId);
                     }
                 }
             }

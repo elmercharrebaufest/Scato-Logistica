@@ -25,8 +25,14 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.BalanzaNombre, mat => mat.MapFrom(puesto => puesto.Balanza.Nombre))
 
                   .ForMember(x => x.EstadoConexion, mat => mat.MapFrom(puesto => puesto.Automatico && (puesto.Estados.Count > 0 && puesto.Estados.Last().Estado)))
-                  .ForMember(x => x.MensajeConexion, mat => mat.MapFrom(puesto => puesto.Estados.Count > 0 ? puesto.Estados.Last().Mensaje : ""));
-            Mapper.CreateMap<PuestoDeTrabajoDto, PuestoDeTrabajo>();
+                  .ForMember(x => x.MensajeConexion, mat => mat.MapFrom(puesto => puesto.Estados.Count > 0 ? puesto.Estados.Last().Mensaje : ""))
+                  .ForMember(x => x.SemaforoRojoCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoRojo))
+                  .ForMember(x => x.SemaforoAmarilloCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoAmarillo))
+                  .ForMember(x => x.SemaforoVerdeCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoVerde));
+            Mapper.CreateMap<PuestoDeTrabajoDto, PuestoDeTrabajo>()
+                .ForMember(x => x.SemaforoRojo, mat => mat.MapFrom(puesto => puesto.SemaforoRojoCodigo))
+                .ForMember(x => x.SemaforoAmarillo, mat => mat.MapFrom(puesto => puesto.SemaforoAmarilloCodigo))
+                .ForMember(x => x.SemaforoVerde, mat => mat.MapFrom(puesto => puesto.SemaforoVerdeCodigo));
 
             Mapper.CreateMap<PuestoDeTrabajo, PuestoDeTrabajoContingenciaDto>()
                 .ForMember(x => x.Contingencia, mat => mat.MapFrom(puesto => !puesto.PidePatente && puesto.ImprimeTarjetaDeAcceso));

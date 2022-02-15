@@ -79,5 +79,9 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual int? OrdenBalanza { get; set; }
         public virtual bool ActivarRegistroInactividad { get; set; }
 
+        public virtual string SemaforoRojo { get; set; }
+        public virtual string SemaforoAmarillo { get; set; }
+        public virtual string SemaforoVerde { get; set; }
+
     }
 }
