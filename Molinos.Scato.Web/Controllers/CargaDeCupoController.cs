@@ -154,7 +154,7 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.Remove("CTG");
             if (ModelState.IsValid)
             {
-                log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}, CP {3}", model.Cupo, model.Numero, datosUsuario.CentroId);
+                log.Debug("Asignación de Cupo No Granos {0}, tarjeta {1}, centro {2}", model.Cupo, model.Numero, datosUsuario.CentroId);
                 if (servicio.EsTarjetaBloqueada(model.Numero, datosUsuario.CentroId))
                 {
                     ModelState.AddModelError("", Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada);

@@ -101,6 +101,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("InstanciaWorkflow", Textos.Recorrido_Inexistente);
             }
+
+            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow);
+            if (recorrido != null && comando.TipoCalle == TipoCalle.NoGranos && 
+                Repositorio.Existe<CallePorRecorrido>(x=>x.FechaEgreso == null &&
+                (x.CargaDeCupo.Patente == recorrido.Patente || x.Recorrido.Patente == recorrido.Patente )))
+            {
+                resultado.Error("Recorrido", Textos.CallePorRecorrido_YaAsignado);
+            }
         }
     }
 }

@@ -9787,4 +9787,7 @@
   <data name="SemaforoVagones_Verde" xml:space="preserve">
     <value>Semaforo Verde</value>
   </data>
+  <data name="CallePorRecorrido_YaAsignado" xml:space="preserve">
+    <value>Vehiculo ya asignado a una calle</value>
+  </data>
 </root>

@@ -6109,6 +6109,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vehiculo ya asignado a una calle.
+        /// </summary>
+        public static string CallePorRecorrido_YaAsignado {
+            get {
+                return ResourceManager.GetString("CallePorRecorrido_YaAsignado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cámara.
         /// </summary>
         public static string Camara {

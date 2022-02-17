@@ -66,7 +66,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Repositorio.Existe<CargaDeCupo>(
                 e => e.Patente == comando.Dto.Patente
                 && e.Centro.Id == comando.Dto.CentroId
-                && (e.Recorrido != null && (!e.Recorrido.Rechazado || (e.Recorrido.Rechazado && !e.Recorrido.Terminado)))))
+                && e.Recorrido != null && !e.Recorrido.Terminado))
             {
                 resultado.Error("Cupo1", $"El camion {comando.Dto.Patente} ya se encuentra en circuito");
             }
