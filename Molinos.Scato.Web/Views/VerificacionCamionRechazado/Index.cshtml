@@ -1,5 +1,7 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Seguridad;
+@using Molinos.Scato.Web.Seguridad;
 @model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
 
 @{
@@ -28,24 +30,27 @@
     @Html.Hidden("workflow", workflow)
     @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
 
-    <div class="centered">
-        @Textos.VerificacionCamionRechazado_VehiculoRechazado
-        
-        <br/>
-        <br/>
-        
-        @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>) ViewBag.Motivos, new {@class = "input-xlarge"})
-        
-        <br/>
-        <br/>
+<div class="centered">
+    @Textos.VerificacionCamionRechazado_VehiculoRechazado
 
-        @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new {@class = "input-xlarge textarea-large"})
-        
-        <br/>
-        <br/>
+    <br />
+    <br />
 
-       @* <button type="submit" class="btn-primary no-rechazar">@Textos.VerificacionCamionRechazado_NoRechazar</button>    *@
-        <button type="submit" class="btn btn-primary rechazar">@Textos.ExcesoDePeso_Rechazar</button>
-        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new {@class="btn"})
-    </div>
+    @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge" })
+
+    <br />
+    <br />
+
+    @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large" })
+
+    <br />
+    <br />
+
+    @if (PermisosHelper.Is(PermisosScato.Administradores))
+    {
+        <button type="submit" class="btn-primary no-rechazar">@Textos.VerificacionCamionRechazado_NoRechazar</button>
+    }
+    <button type="submit" class="btn btn-primary rechazar">@Textos.ExcesoDePeso_Rechazar</button>
+    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+</div>
 }
