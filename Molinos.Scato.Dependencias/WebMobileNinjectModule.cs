@@ -2,6 +2,7 @@
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Impl;
+using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Modules;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioComandos>("ServicioComandos");
             this.BindChannelFactory<IListaDeWorkflows>("ListaDeWorkflows");
             this.BindChannelFactory<IFirmaProvider>("FirmaProvider");
+            //this.BindChannelFactory<IServicioOrquestador>("Orquestador");
             BindServiciosActividad();
 
         }

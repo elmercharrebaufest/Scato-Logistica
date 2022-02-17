@@ -8,6 +8,7 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.WebMobile.Helpers;
 using Ninject.Extensions.Logging;
 
@@ -21,6 +22,8 @@ namespace Molinos.Scato.WebMobile.Controllers
         private readonly IServicioRepositorio servicio;
         private readonly ILogger log;
         private readonly IListaDeWorkflows listaDeWorkflows;
+        //private readonly IServicioOrquestador servicioOrquestador;
+
 
         public EstadoDePlantaController(
             ILogger log,
@@ -29,6 +32,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             IConfiguracionProvider configuracion,
             IServicioComandos servicioComandos,
             IListaDeWorkflows listaDeWorkflows
+            //IServicioOrquestador servicioOrquestador
 
             ) : base(log, servicio, configuracion)
         {
@@ -38,6 +42,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             this.configuracion = configuracion;
             this.servicioComandos = servicioComandos;
             this.listaDeWorkflows = listaDeWorkflows;
+            //this.servicioOrquestador = servicioOrquestador;
         }
 
         public ActionResult Index()
@@ -75,6 +80,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 Materiales = materiales
             };
             BuscarPesadaOnline();
+            //BuscarDatosViento();
             return View(datosGraficoEstadoCupo);
         }
 
@@ -145,5 +151,28 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             ViewBag.Datos = datos;
         }
+
+        //public void BuscarDatosViento()
+        //{
+        //    try
+        //    {
+        //        var respuesta = (ResultadoMeteorologica)servicioOrquestador.Ejecutar(new EjecutarEstacionMeteorologica { CodigoDispositivo = "ESTMETSLO" });
+        //        foreach (var dato in respuesta.Imagenes)
+        //        {
+        //            if (dato.Descripcion == "VIENTO")
+        //            {
+        //                ViewBag.VelocidadViento = dato.Detalle[1];
+        //                ViewBag.DireccionViento = dato.Detalle[3];
+
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        log.Error(ex, "Error al obtener información meterologica");
+        //    }
+        //}
     }
 }
+
+
