@@ -10,7 +10,8 @@ namespace Molinos.Scato.Actividades.Internas
     public class BuscarDatosMailRechazoDeCamion : CodeActivity
     {
         public OutArgument<string> Body { get; set; }
-        
+        public InArgument<string> Observaciones { get; set; }
+
         protected override void Execute(CodeActivityContext context)
         {
             var servicioRepositorio = context.GetExtension<IServicioRepositorio>();
@@ -23,7 +24,8 @@ namespace Molinos.Scato.Actividades.Internas
                 var usuarioRechazo = servicioRepositorio.ObtenerUsuarioRechazoPorWorkflowInstance(context.WorkflowInstanceId);
                 var controlRecorridoRechazo = servicioRepositorio.ObtenerControlRecorrido(context.WorkflowInstanceId, Textos.Actividad_VerificacionCamionRechazado);
                 var motivoRechazo = controlRecorridoRechazo?.Mensaje ?? string.Empty;
-                var observaciones = controlRecorridoRechazo?.Comentario ?? string.Empty;
+                var observaciones = !string.IsNullOrEmpty(Observaciones.Get(context)) ? Observaciones.Get(context) : controlRecorridoRechazo?.Comentario ?? string.Empty;
+
 
                 //genero tabla de caracteristicas
                 StringBuilder tablaCalidades = new StringBuilder();
