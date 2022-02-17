@@ -156,7 +156,7 @@ function ObtenerDatosSap() {
     } else {
         LimpiarChofer();
         BlockUI($("#MensajeBuscandoDatos").val());
-        $.getJSON($("#PatenteCamion").data().numeroUrl, { numero: $('#PatenteCamion').val() }, function (data) {
+        $.getJSON($("#PatenteCamion").data().numeroUrl, { numero: $('#PatenteCamion').val(), workflow: $("#WorkflowDescripcion").val() }, function (data) {
             if (data.datosSap == -1) {
                 $('.btn.btn-primary').attr('disabled', 'disabled');
                 MostrarAlertaError(data.error);
