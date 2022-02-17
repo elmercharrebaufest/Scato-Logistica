@@ -283,4 +283,3 @@ function limpiarVentana() {
     $(".btn").prop('disabled', true);
 }
 
-

@@ -124,7 +124,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                        var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
+                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera);
 
                     }
                     if (model.ImprimeTarjetaDeAcceso)
@@ -194,7 +195,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, true);
+                        var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera, true);
                         model.MaterialId = 0;
                     }
                     if(!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
@@ -218,7 +220,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View("Form", model);
         }
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string codigoBarrera, bool circuitoNoGranos = false)
         {
             try
             {
@@ -254,6 +256,7 @@ namespace Molinos.Scato.Web.Controllers
                         }
                         log.Debug($"Fila asignada {fila} por el puestoId: {nombrePc}");
                         MostrarPorCartel(nombrePc, fila, centroId, patente);
+                        AperturaDeBarrera(codigoBarrera);
                     }
                 }
             }
@@ -652,17 +655,17 @@ namespace Molinos.Scato.Web.Controllers
 
             try
             {
-                var mensajes = mensajesCartel.Select(s =>
+                var mensajes = mensajesCartel.Select(s => 
                     new EnviarMensajeCarteLed
-                    {
-                        Mensaje = string.Format(s.Mensaje, mensaje, patente),
-                        PuestoDeTrabajoId = puestoDeTrabajo.Id,
-                        NumeroPrograma = s.Programa,
-                        NumeroTrama = s.Trama,
-                        NumeroVariable = s.Variable,
-                        SegundosDeEspera = s.SegundosDeEspera
-                    }
-                ).ToList();
+                        {
+                            Mensaje = string.Format(s.Mensaje, mensaje, patente),
+                            PuestoDeTrabajoId = puestoDeTrabajo.Id,
+                            NumeroPrograma = s.Programa,
+                            NumeroTrama = s.Trama,
+                            NumeroVariable = s.Variable,
+                            SegundosDeEspera = s.SegundosDeEspera
+                        }
+                    ).ToList();
 
                 servicioComandos.Ejecutar(new EnviarMensajesAsincronoCartelLed { Mensajes = mensajes });
             }
@@ -757,9 +760,9 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             errorMsg = string.Format("El CTG {0} no se encuentra en estado ACTIVO", numeroCtg);
                             errorCode = "4";
-                        }
+                        }                    
                     }
-                    
+
                     if (cartaPorteResponse.PdfImage != null)
                     {
                         cartaPorteResponse.PdfImage = DibujarEtiqueta(cartaPorteResponse.PdfImage, new CargaDeCupoDto()
@@ -790,7 +793,7 @@ namespace Molinos.Scato.Web.Controllers
 
                                 pdfString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(cartaPorteResponse.PdfImage));
                             }
-                        }
+                        }                    
                     }
                 }
 
@@ -810,5 +813,16 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
+        private void AperturaDeBarrera(string codigo)
+        {
+            try
+            {
+                servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera { CodigoDispositivo = codigo });
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo levantar la barrera");
+            }
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<ZSDWS_SCATO> servicioSap;
         private Mock<IServicioOrquestador> servOrquestador;
         private Mock<IConfiguracionProvider> configuracion;
+        private Mock<IServicioNotificarUsuario> notificador;
         [SetUp]
         public void SetUp()
         {

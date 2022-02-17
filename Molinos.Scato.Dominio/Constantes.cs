@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Molinos.Scato.Dominio
 {
@@ -22,12 +23,6 @@ namespace Molinos.Scato.Dominio
         public struct TipoDeActividad
         {
             public const string Rechazar = "TRECH";
-        }
-
-        public struct TiposDeHidraulicas
-        {
-            public const string NoDescarga = "NODES";
-            public const string NoDeEpa = "NODEE";
         }
     }
 }

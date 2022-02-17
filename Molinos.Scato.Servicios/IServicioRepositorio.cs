@@ -2588,5 +2588,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Resultado ActualizarFechaEstadoCacheadoCPECentro(int id, string mensaje);
+        
+        [OperationContract]
+        string ObtenerDispositivoBarreraEntrada(int puestoId);
     }
 }

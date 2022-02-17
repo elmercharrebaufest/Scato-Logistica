@@ -9573,5 +9573,11 @@ namespace Molinos.Scato.Servicios.Impl
             repositorio.GuardarCambios();
             return resultado;
         }
+        public string ObtenerDispositivoBarreraEntrada(int puestoId)
+        {
+            return repositorio.ObtenerProyeccion<PuestoDeTrabajo, string>(
+                x => x.Id == puestoId,
+                x => x.Entrada);
+        }
     }
 }
