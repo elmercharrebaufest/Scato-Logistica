@@ -795,7 +795,7 @@
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
     <Content Include="Scripts\area\monitorCPECacheada\index.js" />
-    <Content Include="Scripts\area\shared\intercomunicadorDispositivo.js" />
+    <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
@@ -1001,7 +1001,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Styles\area\shared\intercomunicadorDispositivo.css" />
+    <Content Include="Styles\area\shared\intercomunicador.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
