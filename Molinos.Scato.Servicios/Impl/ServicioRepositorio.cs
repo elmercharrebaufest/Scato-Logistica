@@ -7314,12 +7314,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         private FotosDto ListarFotosGenerico(string actividad, Expression<Func<Recorrido, bool>> filtro)
         {
-            var datosCamion = repositorio.Listar(x => new { x.Centro.CodigoSAP, x.NumeroDocumentoIngreso, x.Patente, Material = x.Material.Descripcion, x.FechaInicio, x.TipoVehiculo, x.Id }, filtro).LastOrDefault();
+            var datosCamion = repositorio.Listar(x => new { x.Centro.CodigoSAP, x.NumeroDocumentoIngreso, x.Patente, Material = x.Material.Descripcion, x.FechaInicio, x.TipoVehiculo, x.Id, CentroId = x.Centro.Id }, filtro).LastOrDefault();
             if (datosCamion == null) return new FotosDto();
             var fileName = FotoCamionHelper.GenerarNombreBusqueda(datosCamion.CodigoSAP, datosCamion.NumeroDocumentoIngreso, datosCamion.Patente, actividad, datosCamion.TipoVehiculo);
+            var centro = repositorio.Obtener<Centro>(datosCamion.CentroId);
             var retorno = new FotosDto { Fotos = new List<FotoDto>(), Material = datosCamion.Material, NumeroDocumentoIngreso = datosCamion.NumeroDocumentoIngreso, Patente = datosCamion.Patente, FechaInicio = datosCamion.FechaInicio, RecorridoId = datosCamion.Id };
 
-            return ListarFotos(fileName, retorno);
+            return ListarFotos(fileName, retorno, fotosPath:centro?.FotosPath);
         }
 
         public FotosDto ListarFotosCamion(Guid instanciaWorkflow, string actividad)
@@ -7507,11 +7508,11 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Contar<Recorrido>(x => !x.Terminado && x.Rechazado && centroId == x.Centro.Id);
         }
 
-        private FotosDto ListarFotos(string fileName, FotosDto retorno, bool obtenerPrimera = false)
+        private FotosDto ListarFotos(string fileName, FotosDto retorno, bool obtenerPrimera = false, string fotosPath = null)
         {
             try
             {
-                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera).OrderByDescending(x => x.CreationTime))
+                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera, fotosPath:fotosPath).OrderByDescending(x => x.CreationTime))
                 {
                     var nombre = foundFile.Name.Split('.')[0].Split('-');
                     var actividad = nombre.Count() >= 4 ? nombre[3] : string.Empty;
@@ -7571,15 +7572,15 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        private List<FileData> BuscarFotos(string fileName, DateTime fechaInicio, bool obtenerPrimera = false, List<string> directorios = null)
+        private List<FileData> BuscarFotos(string fileName, DateTime fechaInicio, bool obtenerPrimera = false, List<string> directorios = null, string fotosPath = null)
         {
-            return BuscarFotos(fileName, new string[] { fechaInicio.ToString("yyyyMMdd"), fechaInicio.AddDays(1).ToString("yyyyMMdd"), fechaInicio.AddDays(-1).ToString("yyyyMMdd") }, obtenerPrimera, directorios);
+            return BuscarFotos(fileName, new string[] { fechaInicio.ToString("yyyyMMdd"), fechaInicio.AddDays(1).ToString("yyyyMMdd"), fechaInicio.AddDays(-1).ToString("yyyyMMdd") }, obtenerPrimera, directorios, fotosPath);
         }
 
-        private List<FileData> BuscarFotos(string fileName, string[] subpaths, bool obtenerPrimera = false, List<string> directorios = null)
+        private List<FileData> BuscarFotos(string fileName, string[] subpaths, bool obtenerPrimera = false, List<string> directorios = null, string fotosPath = null)
         {
             log.Debug("Inicio BuscarFotos" + fileName);
-            var path = configuracion.AppSettings["FotosPath"];
+            var path = !string.IsNullOrEmpty(fotosPath) ? fotosPath : configuracion.AppSettings["FotosPath"];
             var resultado = new List<FileData>();
             try
             {

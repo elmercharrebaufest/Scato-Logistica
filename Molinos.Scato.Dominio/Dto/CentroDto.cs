@@ -261,5 +261,9 @@ namespace Molinos.Scato.Dominio.Dto
 
         public DateTime? FechaEjecucionCacheoCPE { get; set; }
         public string ErrorCacheoAfipCPE { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_Ruta_Imagenes")]        
+        [StringLength(200, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
+        public string FotosPath { get; set; }
     }
 }

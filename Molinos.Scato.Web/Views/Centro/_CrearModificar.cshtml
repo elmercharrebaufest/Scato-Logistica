@@ -408,6 +408,17 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.FotosPath, new { @class = "control-label labelEmail" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.FotosPath, new { @class = "control input-medium", maxlength = 200 })
+                @Html.ValidationMessageFor(model => model.FotosPath)
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row right">
     <button type="submit" id="aceptar" class="btn btn-primary">@Textos.Aceptar</button>
     <button type="button" id="cancelar" class="btn">@Textos.Cancelar</button>

@@ -8755,6 +8755,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ruta Almacenamiento de Imagenes.
+        /// </summary>
+        public static string Centro_Ruta_Imagenes {
+            get {
+                return ResourceManager.GetString("Centro_Ruta_Imagenes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sociedad.
         /// </summary>
         public static string Centro_Sociedad {
