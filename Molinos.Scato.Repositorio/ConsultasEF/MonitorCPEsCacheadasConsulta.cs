@@ -92,7 +92,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             var sqlQuery = @"SELECT CPE.Id FROM CartaPorteElectronica CPE
                         LEFT JOIN CartaPorte CP
-                        ON CP.NroCartaPorte = CPE.NroCTG
+                        ON CP.NroCartaPorte = CAST(CPE.NroCTG AS varchar)
                         WHERE CP.NroCartaPorte IS NULL AND CPE.PlantaDestino = @planta";
 
             var sqlEjecucion = contexto.Database.SqlQuery<int>(sqlQuery,
