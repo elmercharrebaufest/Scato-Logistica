@@ -772,11 +772,12 @@ namespace Molinos.Scato.Web.ServicioHub
 
         private void NotificarIntercomunicadorEstadoSignalR(NotificacionEvento notificacion)
         {
+            var estados = notificacion.Datos["Dato"].Split(';');
             var notificacionIntercomunicador = new EstadoIntercomunicadorDto
             {
                 CodigoDispositivo = notificacion.CodigoDispositivo,
-                Mic = notificacion.Datos["Mic"].ToLower() == "true",
-                Speaker = notificacion.Datos["Speaker"].ToLower() == "true",
+                Mic = estados[0].ToLower() == "true",
+                Speaker = estados[1].ToLower() == "true",
             };
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
