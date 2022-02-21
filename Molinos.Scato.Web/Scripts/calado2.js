@@ -593,7 +593,12 @@ function setearGrado() {
                 $(".grado").val(2)
             } else {
                 $(".grado").val(1)
-            } 
+            }
+
+            if($(".grado").val() == 0) {
+                var check = $(".grado").parent().parent().parent().find('input.checkBoxCaracteristica');
+                $(check).prop('checked', true);
+            }
         }
     }
    
