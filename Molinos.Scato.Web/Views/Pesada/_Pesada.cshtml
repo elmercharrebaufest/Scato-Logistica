@@ -216,8 +216,16 @@
                                     }
                                     else
                                     {
-                                        @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
-                                    }
+                                        if (Model.TipoVehiculo == TipoVehiculo.Tren && Model.TipoPesada == TipoPesada.Bruto)
+                                        {
+                                            @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10, data_peso_url = Url.Action("TomarPeso", Model.ActividadXaml), style = "margin-right:10px" })
+                                        }
+                                        else
+                                        { 
+                                            @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
+                                        }
+
+                                }
                                 </div>
                             </div>
                         </td>
