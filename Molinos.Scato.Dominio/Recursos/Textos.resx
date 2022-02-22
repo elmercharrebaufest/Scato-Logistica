@@ -9790,4 +9790,7 @@
   <data name="Centro_Ruta_Imagenes" xml:space="preserve">
     <value>Ruta Almacenamiento de Imagenes</value>
   </data>
+  <data name="AFIP_Error" xml:space="preserve">
+    <value>Ocurrió un error en la consulta del servicio de AFIP</value>
+  </data>
 </root>
