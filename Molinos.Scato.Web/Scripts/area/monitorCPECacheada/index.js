@@ -53,7 +53,10 @@ MonitorCPECacheadaVM.prototype = {
                             url: self.generalUrls.procesarCacheadoUrl,
                             data: request,
                             success: function (data) {
-                                self.vm.mainModule.methods.refrescarGrilla();
+                                if (data == true)
+                                    self.vm.mainModule.methods.refrescarGrilla();
+                                else
+                                    alert(self.messages.afipError);
                             },
                             error: function (error) {
                             },

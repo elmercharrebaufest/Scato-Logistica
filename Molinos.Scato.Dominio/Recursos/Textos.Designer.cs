@@ -3391,6 +3391,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ocurrió un error en la consulta del servicio de AFIP.
+        /// </summary>
+        public static string AFIP_Error {
+            get {
+                return ResourceManager.GetString("AFIP_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balanza.
         /// </summary>
         public static string AFIP_ListarCarga_Balanza {
