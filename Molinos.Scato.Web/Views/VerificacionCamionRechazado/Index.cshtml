@@ -7,6 +7,7 @@
 @{
     ViewBag.Title = Textos.VerificacionCamionRechazado_Titulo;
     string workflow = ViewBag.Workflow;
+
 }
 
 @section scripts
@@ -26,31 +27,35 @@
     @Html.HiddenFor(model => model.Actividad)
     @Html.HiddenFor(model => model.ActividadXaml)
     @Html.HiddenFor(model => model.PuestoDeTrabajoId)
-    @Html.HiddenFor(model => model.Decision, new {@class = "valorDecision"})
+    @Html.HiddenFor(model => model.Decision, new { @class = "valorDecision" })
+    @Html.HiddenFor(model => model.RevierteRechazo, new { @class = "RevierteRechazo" })
     @Html.Hidden("workflow", workflow)
     @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)
 
-<div class="centered">
-    @Textos.VerificacionCamionRechazado_VehiculoRechazado
+    <div class="centered">
+        @Textos.VerificacionCamionRechazado_VehiculoRechazado
 
-    <br />
-    <br />
+        <br />
+        <br />
 
-    @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge" })
+        @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge" })
 
-    <br />
-    <br />
+        <br />
+        <br />
 
-    @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large" })
+        @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large" })
 
-    <br />
-    <br />
+        <br />
+        <br />
 
-    @if (PermisosHelper.Is(PermisosScato.Administradores))
-    {
-        <button type="submit" class="btn-primary no-rechazar">@Textos.VerificacionCamionRechazado_NoRechazar</button>
-    }
-    <button type="submit" class="btn btn-primary rechazar">@Textos.ExcesoDePeso_Rechazar</button>
-    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
-</div>
+        @if (PermisosHelper.Is(PermisosScato.Administradores))
+        {
+            if (ViewBag.TipoVehiculo == "Tren")
+            {
+                <button type="submit" class="btn btn-warning no-rechazar">@Textos.VerificacionCamionRechazado_NoRechazar</button>
+            }
+        }
+        <button type="submit" class="btn btn-primary rechazar">@Textos.ExcesoDePeso_Rechazar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    </div>
 }

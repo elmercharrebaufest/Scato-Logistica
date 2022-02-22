@@ -44,6 +44,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.PesoMaximo = servicio.ObtenerPesoMaximo(recorrido.TipoVehiculo, datosUsuario.CentroId);
             ViewBag.Workflow = recorrido.Workflow.Codigo;
             ViewBag.WorkflowDefinicionId = recorrido.WorkflowDefinicionId;
+            ViewBag.TipoVehiculo = recorrido.TipoVehiculo.ToString();
             CargarMotivos();
 
             return View(controlRecorrido);

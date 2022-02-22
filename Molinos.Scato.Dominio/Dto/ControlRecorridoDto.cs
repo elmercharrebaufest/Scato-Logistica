@@ -32,5 +32,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo TipoVehiculo { get; set; }
         public string Tarjeta { get; set; }
         public string Calle { get; set; }
+        public bool RevierteRechazo { get; set; }
     }
 }
