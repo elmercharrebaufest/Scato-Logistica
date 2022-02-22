@@ -563,6 +563,13 @@ namespace Molinos.Scato.Web.Controllers
             if (proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO")
             {
                 EncenderSemaforoVagon(color, puestoId);
+                tren.PesoBruto = 0;
+                tren.PesoTara = 0;
+                
+            }
+            if (proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADATARA")
+            {
+                tren.PesoTara = 0;
             }
 
             return new JsonResult()
