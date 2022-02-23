@@ -195,7 +195,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
-            if(PermisosHelper.Is(PermisosScato.Administradores))
+            if(PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
             {
                 ViewBag.Balanzas = automatizadoFull ?
                     (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :

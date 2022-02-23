@@ -715,5 +715,12 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "HidraulicasEspeciales")]
         HidraulicasEspeciales = 606,
 
+
+        [Display(ResourceType = typeof(Textos), Name = "VerBalanzasPesada")]
+        VerBalanzasPesada = 607,
+
+        [Display(ResourceType = typeof(Textos), Name = "VerRevertirRechazoVagones")]
+        VerRevertirRechazoVagones = 608,
+
     }
 }

@@ -9793,4 +9793,10 @@
   <data name="AFIP_Error" xml:space="preserve">
     <value>Ocurrió un error en la consulta del servicio de AFIP</value>
   </data>
+  <data name="VerBalanzasPesada" xml:space="preserve">
+    <value>Ver Balanzas Pesada</value>
+  </data>
+  <data name="VerRevertirRechazoVagones" xml:space="preserve">
+    <value>Ver Revertir Rechazo Vagones</value>
+  </data>
 </root>
