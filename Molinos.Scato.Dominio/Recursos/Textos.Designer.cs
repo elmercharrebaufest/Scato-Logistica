@@ -28236,6 +28236,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ver Balanzas Pesada.
+        /// </summary>
+        public static string VerBalanzasPesada {
+            get {
+                return ResourceManager.GetString("VerBalanzasPesada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ver Eventos.
         /// </summary>
         public static string VerEventos {
@@ -28376,6 +28385,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string VerLogs {
             get {
                 return ResourceManager.GetString("VerLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ver Revertir Rechazo Vagones.
+        /// </summary>
+        public static string VerRevertirRechazoVagones {
+            get {
+                return ResourceManager.GetString("VerRevertirRechazoVagones", resourceCulture);
             }
         }
         
