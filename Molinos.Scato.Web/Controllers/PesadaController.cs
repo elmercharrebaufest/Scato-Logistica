@@ -114,95 +114,112 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(Pesada pesada, string workflow, int workflowDefinicionId, DatosUsuario datosUsuario)
         {
-            log.Debug("Puesto de Trabajo Post {0}", datosUsuario.PuestoDeTrabajoId);
-            if (ModelState.IsValid) //Todos los datos obligatorios fueron ingresados
+            try
             {
-                if (pesada.Patente.ToLower() != pesada.PatenteOriginal.ToLower()) //Patente ingresada incorrectamente
+
+                log.Debug("Puesto de Trabajo Post {0}", datosUsuario.PuestoDeTrabajoId);
+                if (ModelState.IsValid) //Todos los datos obligatorios fueron ingresados
                 {
-                    TempData["Alerta"] = Textos.Pesada_PatenteInvalida;
-                    TempData["TipoAlerta"] = TipoAlerta.Advertencia;
-                    return RedirectToAction("Index", "ListaDeCamiones");
-                }
-                var balanza = servicio.ObtenerBalanza(pesada.BalanzaId);
-                //if (string.IsNullOrEmpty(datosUsuario.NombrePc) || datosUsuario.NombrePc == "NoTienePuesto")
-                //{
-                //    log.Error("No se pudo identificar el puesto de trabajo");
-                //    return new ContentResult { Content = Textos.Pesada_ErrorPuestoDeTrabajo };
-                //}
-                //if (datosUsuario.NombrePc != balanza.PuestoDeTrabajo)
-                //{
-                //    log.Error("El puesto de trabajo para la balanza con id {0} no coincide con el actual puesto de trabajo {1}", pesada.BalanzaId, datosUsuario.NombrePc);
-                //    return new ContentResult { Content = Textos.Pesada_ErrorBalanzaPuestoDeTrabajo };
-                //}
-                if (balanza.EstaEnCero && pesada.Peso.HasValue) //Balanza en condiciones de pesar
-                {
-                    var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
-                    if (centro.ValidarLimiteMinimoDePeso && centro.LimiteMinimoDePeso.HasValue && pesada.Peso.Value <= centro.LimiteMinimoDePeso)
+                    if (pesada.Patente.ToLower() != pesada.PatenteOriginal.ToLower()) //Patente ingresada incorrectamente
                     {
-                        return new ContentResult { Content = Textos.ErrorPesoPesadaNoValido + centro.LimiteMinimoDePeso };
+                        TempData["Alerta"] = Textos.Pesada_PatenteInvalida;
+                        TempData["TipoAlerta"] = TipoAlerta.Advertencia;
+                        return RedirectToAction("Index", "ListaDeCamiones");
                     }
-                    pesada.Rechazado = !string.IsNullOrEmpty(pesada.Mensaje);
-                    var cookie = new CookieUsuario();
-                    cookie.ActualizarValor("BalanzaId", pesada.BalanzaId.ToString(CultureInfo.InvariantCulture));
-                    var controlRecorrido = new ControlRecorridoDto
+                    var balanza = servicio.ObtenerBalanza(pesada.BalanzaId);
+                    //if (string.IsNullOrEmpty(datosUsuario.NombrePc) || datosUsuario.NombrePc == "NoTienePuesto")
+                    //{
+                    //    log.Error("No se pudo identificar el puesto de trabajo");
+                    //    return new ContentResult { Content = Textos.Pesada_ErrorPuestoDeTrabajo };
+                    //}
+                    //if (datosUsuario.NombrePc != balanza.PuestoDeTrabajo)
+                    //{
+                    //    log.Error("El puesto de trabajo para la balanza con id {0} no coincide con el actual puesto de trabajo {1}", pesada.BalanzaId, datosUsuario.NombrePc);
+                    //    return new ContentResult { Content = Textos.Pesada_ErrorBalanzaPuestoDeTrabajo };
+                    //}
+                    if (balanza.EstaEnCero && pesada.Peso.HasValue) //Balanza en condiciones de pesar
                     {
-                        Actividad = Textos.Pesada + " (" + pesada.TipoPesada.DisplayEnum() + ")" + (pesada.Rechazado ? "/Rechazo" : string.Empty),
-                        ActividadXaml = pesada.ActividadXaml,
-                        WorkflowInstanceId = pesada.WorkflowInstanceId,
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario,
-                        Decision = pesada.Rechazado,
-                        Comentario = pesada.Comentario,
-                        Mensaje = pesada.Mensaje
-                    };
-                    var proximaAccion = workflows.ObtenerWorkflowProximaAccion(pesada.WorkflowInstanceId);
-                    if (!proximaAccion.ProximaAccion.StartsWith("Pesada" + pesada.TipoPesada.ToString()) && proximaAccion.ProximaAccion != "PesadaCargaExportacion") //Controla la actividad actual con la pantalla actual
-                    {
-                        log.Error("El vehículo no se encuentra en la pesada: {0}", pesada.TipoPesada.ToString());
-                        return new ContentResult { Content = Textos.Error_EtapaIncorrecta };
-                    }
-                    var servicioWf = factory.CrearServicio(workflowDefinicionId);
-                    var resultadoActividad = servicioWf.Pesada(pesada.WorkflowInstanceId, pesada.Peso.Value, pesada.AlmacenId, pesada.HidraulicaId, pesada.CalleId, pesada.BalanzaId, pesada.ProximaBalanzaId, pesada.ControlPesada, DateTime.Now, controlRecorrido);
-                    if (!resultadoActividad.HayErrores) //Peso tomado correctamente
-                    {
-                        comando.Ejecutar(new CrearBalanzaModificarModalidad { Dto = 
-                            new BalanzaModificacionModalidadDto {
-                                Modalidad = balanza.Modalidad,
-                                BalanzaId = balanza.Id,
-                                BalanzaNombre = balanza.Nombre,
-                                Fecha = DateTime.Now,
-                                Motivo = "Cambio modalidad balanza",
-                                NombreUsuarioResponsable = datosUsuario.NombreUsuario
-                            }
-                        });
-                        comando.Ejecutar(new ModificarBalanzaEstaEnCero
+                        var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
+                        if (centro.ValidarLimiteMinimoDePeso && centro.LimiteMinimoDePeso.HasValue && pesada.Peso.Value <= centro.LimiteMinimoDePeso)
                         {
-                            BalanzaId = pesada.BalanzaId,
-                            EstaEnCero = false
-                        });
-                        return new ContentResult { Content = "OK" };
+                            return new ContentResult { Content = Textos.ErrorPesoPesadaNoValido + centro.LimiteMinimoDePeso };
+                        }
+                        pesada.Rechazado = !string.IsNullOrEmpty(pesada.Mensaje);
+                        var cookie = new CookieUsuario();
+                        cookie.ActualizarValor("BalanzaId", pesada.BalanzaId.ToString(CultureInfo.InvariantCulture));
+                        var controlRecorrido = new ControlRecorridoDto
+                        {
+                            Actividad = Textos.Pesada + " (" + pesada.TipoPesada.DisplayEnum() + ")" + (pesada.Rechazado ? "/Rechazo" : string.Empty),
+                            ActividadXaml = pesada.ActividadXaml,
+                            WorkflowInstanceId = pesada.WorkflowInstanceId,
+                            PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                            NombreUsuario = datosUsuario.NombreUsuario,
+                            Decision = pesada.Rechazado,
+                            Comentario = pesada.Comentario,
+                            Mensaje = pesada.Mensaje
+                        };
+                        var proximaAccion = workflows.ObtenerWorkflowProximaAccion(pesada.WorkflowInstanceId);
+                        if (!proximaAccion.ProximaAccion.StartsWith("Pesada" + pesada.TipoPesada.ToString()) && proximaAccion.ProximaAccion != "PesadaCargaExportacion") //Controla la actividad actual con la pantalla actual
+                        {
+                            log.Error("El vehículo no se encuentra en la pesada: {0}", pesada.TipoPesada.ToString());
+                            return new ContentResult { Content = Textos.Error_EtapaIncorrecta };
+                        }
+                        var servicioWf = factory.CrearServicio(workflowDefinicionId);
+                        var resultadoActividad = servicioWf.Pesada(pesada.WorkflowInstanceId, pesada.Peso.Value, pesada.AlmacenId, pesada.HidraulicaId, pesada.CalleId, pesada.BalanzaId, pesada.ProximaBalanzaId, pesada.ControlPesada, DateTime.Now, controlRecorrido);
+                        if (!resultadoActividad.HayErrores) //Peso tomado correctamente
+                        {
+                            comando.Ejecutar(new CrearBalanzaModificarModalidad
+                            {
+                                Dto =
+                                new BalanzaModificacionModalidadDto
+                                {
+                                    Modalidad = balanza.Modalidad,
+                                    BalanzaId = balanza.Id,
+                                    BalanzaNombre = balanza.Nombre,
+                                    Fecha = DateTime.Now,
+                                    Motivo = "Cambio modalidad balanza",
+                                    NombreUsuarioResponsable = datosUsuario.NombreUsuario
+                                }
+                            });
+                            comando.Ejecutar(new ModificarBalanzaEstaEnCero
+                            {
+                                BalanzaId = pesada.BalanzaId,
+                                EstaEnCero = false
+                            });
+                            return new ContentResult { Content = "OK" };
+                        }
+                        return new ContentResult { Content = resultadoActividad.Errores.First().Value };
                     }
-                    return new ContentResult { Content = resultadoActividad.Errores.First().Value };
-                }
-                //Balanza no está en cero
-                return !balanza.EstaEnCero
-                           ? new ContentResult { Content = Textos.Pesada_BalanzaNoCero }
-                           : new ContentResult { Content = Textos.Pesada_Error };
-            } //Hubieron errores
-            return new ContentResult { Content = Textos.Pesada_Error };
+                    //Balanza no está en cero
+                    return !balanza.EstaEnCero
+                               ? new ContentResult { Content = Textos.Pesada_BalanzaNoCero }
+                               : new ContentResult { Content = Textos.Pesada_Error };
+                } //Hubieron errores
+                return new ContentResult { Content = Textos.Pesada_Error };
+
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("Logeo Error Prod InnerException {0}", ex.InnerException);
+                log.Error("Logeo Error Prod Message {0}", ex.Message);
+                log.Error("Logeo Error Prod StackTrace {0}", ex.StackTrace);
+                throw;
+            }
         }
 
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
-            if(PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
+            if (PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
             {
                 ViewBag.Balanzas = automatizadoFull ?
                     (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
                     PermisosHelper.Is(PermisosScato.BalanzaAutomatica) ?
                     servicio.ListarBalanzasActivas(datosUsuario.CentroId, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
                 servicio.ListarBalanzasActivasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
-            } else
+            }
+            else
             {
                 ViewBag.Balanzas = null;
             }
