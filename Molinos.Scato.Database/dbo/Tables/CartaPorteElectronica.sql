@@ -53,5 +53,6 @@
     [NumeroPrecinto] VARCHAR(20) NULL,
     [Pdf]     VARBINARY(MAX) NULL,
     [CuitTransportistaTramo2]         BIGINT NULL,
-    [TarifaReferencia] FLOAT NOT NULL DEFAULT 0,
+    [TarifaReferencia] FLOAT NOT NULL DEFAULT 0, 
+    [FechaCacheado] DATETIME NULL,
 )

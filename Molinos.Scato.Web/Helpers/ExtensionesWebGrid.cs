@@ -87,9 +87,9 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("EliminarImprimir", "", f =>
                 html.Raw(
                 "<span>" +
-                html.BotonLink(Textos.Previsualizar, "Previsualizar", controller, new { f.id }, style + " ajax-previsualizar-link", "icon-search", true).ToHtmlString() +
-                html.BotonLink(Textos.Imprimir, "Imprimir", controller, new { f.id }, style + " ajax-imprimir-link", "icon-print", true).ToHtmlString() +
-                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                html.BotonLink(Textos.Previsualizar, "Previsualizar", controller, new { f.id, f.ctg }, style + " ajax-previsualizar-link", "icon-search", true).ToHtmlString() +
+                html.BotonLink(Textos.Imprimir, "Imprimir", controller, new { f.id, f.ctg }, style + " ajax-imprimir-link", "icon-print", true).ToHtmlString() +
+                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id, f.ctg }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
                 "</span>"
                 )
                 , "editar-borrar-columna", false);
@@ -285,8 +285,9 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("verFotos"
                                 , "[FotoHeader]"
                                 , f => f.tieneFotoIngreso ?
-                                    html.Raw(html.BotonLink(Textos.Previsualizar, action, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-camera", true).ToHtmlString() +
-                                    html.BotonLink(Textos.Previsualizar, action2, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-previsualizar-link", "icon-download-alt", true).ToHtmlString())
+                                    html.Raw(
+                                        html.BotonLink(Textos.Previsualizar, action, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-camera", true).ToHtmlString() +
+                                        html.BotonLink(Textos.Previsualizar, action2, controller, new { id = (int)f.id, f.numeroDocumentoIngreso }, style + " ajax-previsualizar-link", "icon-download-alt", true).ToHtmlString())
                                     : null
                                 , "editar-borrar-columna"
                                 , false
@@ -302,6 +303,19 @@ namespace Molinos.Scato.Web.Helpers
                 "</span>"
                 )
                 , "editar-borrar-columna", false);
+        }
+
+        public static WebGridColumn ColumnaDescargarPDFCartaPorte(this WebGrid grid, HtmlHelper html, string action, string action2, string controller, string style = "")
+        {
+            return grid.Column("descargarCPE"
+                                , "PDF"
+                                , f => f.tipoWorkFlowEgreso && f.tipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte ?
+                                    html.Raw(
+                                        html.BotonLink(Textos.Descargar_PDF_CPE, action, controller, new { id = f.numeroDocumentoIngreso, f.numeroDocumentoIngreso }, style + " ajax-popup-link", "icon-download-alt", true).ToHtmlString())
+                                    : null
+                                , "editar-pdf-columna"
+                                , false
+                                );
         }
 
     }

@@ -4,7 +4,7 @@
 
 @{
     var noMostrarBoton = (bool?)ViewBag.NoReemplazarCp ?? false;
-    var camaras = (List<string>)ViewBag.Camaras;
+    var camaras = (List<VideoCamaraDto>)ViewBag.Camaras;
     var i = 0;
     var filas = Convert.ToInt32(Math.Sqrt(camaras.Count()));
     var colSinRedondear = Decimal.Divide(camaras.Count(), filas);
@@ -32,6 +32,13 @@
         height: 100%;
         overflow: hidden;
     }
+
+    .codigo-camara {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background-color: wheat;
+    }
 </style>
 
 <head>
@@ -43,21 +50,26 @@
 <div style="height: 100vh" class="container-fluid">
     @for (var fila = 0; fila < filas; fila++)
     {
-        <div class="row" style="height: @(100 / filas)vh">
-            @for (var j = 0; j < columnas; j++)
+    <div class="row" style="height: @(100 / filas)vh">
+        @for (var j = 0; j < columnas; j++)
+        {
+            if (j + i < camaras.Count())
             {
-                if (j + i < camaras.Count())
-                {
-                    <div class="col-sm-@(12/columnas)">
-                        <img src="@camaras[j + i]" />
 
-                    </div>
-                }
+                <div class="col-sm-@(12/columnas)">
+                    <img src="@camaras[j + i].Directorio" />
+                    @if (ViewBag.MostrarNombre)
+                    {
+                        <div class="codigo-camara">@camaras[i + j].Codigo</div>
+                    }
+                </div>
+
             }
-            @{
-                i += columnas;
-            }
-        </div>
+        }
+        @{
+            i += columnas;
+        }
+    </div>
     }
 </div>
 

@@ -229,11 +229,15 @@
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamaras))
                                         {
-                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamaras, "Index", "VideoCamara", null, new { @class = "ajax-popup-link" })</li>
+                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamaras, "Index", "VideoCamara", new { nombrePc = "PuestoVC", mostrarNombre = false }, new { @class = "ajax-popup-link" })</li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasBalanza))
                                         {
-                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasBalanza,"Index","VideoCamaraBalanza",null,new { @class="ajax-popup-link"})</li>
+                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasBalanza, "Index", "VideoCamara", new { nombrePc = "PuestoBalanzaVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasExportacion))
+                                        {
+                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasExportacion, "Index", "VideoCamara", new { nombrePc = "PuestoExportacionVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
                                         }
                                     </ul>
                                 </li>
@@ -716,6 +720,10 @@
                                 @if (PermisosHelper.Is(PermisosScato.GraficoDePlanta))
                                 {
                                     <li>@Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.MonitorCPECacheada))
+                                {
+                                    <li>@Html.ActionLink(Textos.MonitorCPECacheada, "Index", "MonitorCPECacheada")</li>
                                 }
                             </ul>
                         </li>

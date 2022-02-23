@@ -16,36 +16,94 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             this.tipoCalle = tipoCalle;
             this.materialid = materialid;
         }
+
         public Calle Ejecutar(DbContext contexto)
+        {
+            var calle = ObtenerCalleCircular(contexto);
+            if (calle == null)
+                calle = ObtenerCalle(contexto);
+
+            return calle;
+        }
+
+        private Calle ObtenerCalleCircular(DbContext contexto)
         {
             if (this.tipoCalle == TipoCalle.PreCalado)
             {
-                var ultimoCamion = contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == TipoCalle.Circular && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid) && x.FechaEgreso == null).OrderBy(x => x.Id).FirstOrDefault();
-                
-                if(ultimoCamion != null)
+                var ultimoCamion = ObtenerUltimoCamion(contexto);
+
+                if (ultimoCamion != null)
                 {
                     var centroInformaCircular = contexto.Set<Centro>().FirstOrDefault(x => x.Id == ultimoCamion.Calle.CentroId);
-                    
-                    if(centroInformaCircular != null)
-                    {
-                        var minutosEsperaCircular = centroInformaCircular?.MinutosEsperaCircular ?? 20;
 
-                        if (centroInformaCircular.InformaCircular &&
-                            ultimoCamion.FechaIngeso.AddMinutes(minutosEsperaCircular) <= DateTime.Now &&
-                            !ultimoCamion.Calle.Bloqueada)
+                    if (centroInformaCircular != null)
+                    {
+                        var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto);
+
+                        if (camionesLlamadosPorCalado < (centroInformaCircular?.LimiteCamionesCalado ?? 8))
                         {
-                            return ultimoCamion.Calle;
+                            var minutosEsperaCircular = centroInformaCircular?.MinutosEsperaCircular ?? 20;
+
+                            if (centroInformaCircular.InformaCircular
+                                && !ultimoCamion.Calle.Bloqueada
+                                && ultimoCamion.FechaIngeso.AddMinutes(minutosEsperaCircular) <= DateTime.Now)
+                            {
+                                return ultimoCamion.Calle;
+                            }
                         }
                     }
                 }
             }
+            return null;
+        }
 
-            return contexto.Set<Calle>()
-                .Where(x => x.TipoCalle == tipoCalle && !x.Deshabilitada &&
-                        !x.Bloqueada &&
-                        contexto.Set<CallePorRecorrido>().Any(y => (y.CargaDeCupo.Material.Id == materialid || y.Recorrido.Material.Id == materialid) && y.FechaEgreso == null && y.Calle.Id == x.Id))
-                .OrderBy(x => contexto.Set<CallePorRecorrido>().OrderBy(y => y.Id).FirstOrDefault(y => y.FechaEgreso == null && y.Calle.Id == x.Id).FechaIngeso)
-                .FirstOrDefault();
+        private Calle ObtenerCalle(DbContext contexto)
+        {
+            var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto);
+            var ultimoCamion = ObtenerUltimoCamion(contexto);
+            if (ultimoCamion != null)
+            {
+                var centro = contexto.Set<Centro>().FirstOrDefault(x => x.Id == ultimoCamion.Calle.CentroId);
+                if (camionesLlamadosPorCalado < (centro?.LimiteCamionesCalado ?? 8))
+                {
+                    //return contexto.Set<Calle>()
+                    //    .Where(x => x.TipoCalle == tipoCalle && !x.Deshabilitada &&
+                    //            !x.Bloqueada &&
+                    //            contexto.Set<CallePorRecorrido>().Any(y => (y.CargaDeCupo.Material.Id == materialid || y.Recorrido.Material.Id == materialid) && y.FechaEgreso == null && y.Calle.Id == x.Id))
+                    //    .OrderBy(x => contexto.Set<CallePorRecorrido>().OrderBy(y => y.Id).FirstOrDefault(y => y.FechaEgreso == null && y.Calle.Id == x.Id).FechaIngeso)
+                    //    .FirstOrDefault();
+
+                    return contexto.Set<CallePorRecorrido>()
+                              .Where(x => x.FechaEgreso == null
+                               && x.Calle.Deshabilitada == false
+                               && x.Calle.Bloqueada == false
+                               && x.Calle.TipoCalle == tipoCalle
+                               && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid))
+                              .OrderBy(x => x.FechaIngeso)
+                              .Select(q => q.Calle)
+                              .FirstOrDefault();
+                }
+            }
+            return null;
+        }
+
+        private int ObtenerCantidadCamionesLlamadosPorCalado(DbContext contexto)
+        {
+            return contexto.Set<CallePorRecorrido>()
+                .Count(x => x.FechaEgreso == null
+                && x.Calle.TipoCalle == tipoCalle
+                && x.Calle.FechaLLamada.HasValue &&
+                (x.Recorrido.Material.Id == materialid || x.CargaDeCupo.Material.Id == materialid));
+        }
+
+        private CallePorRecorrido ObtenerUltimoCamion(DbContext contexto)
+        {
+            return contexto.Set<CallePorRecorrido>()
+                            .Where(x => x.FechaEgreso == null
+                             && x.Calle.TipoCalle == tipoCalle
+                            && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid))
+                            .OrderBy(x => x.Id)
+                            .FirstOrDefault();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
@@ -30,7 +31,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.EsSustentable, f => f.MapFrom(r => r.Establecimiento != null))
                 .ForMember(t => t.CalleDesc, f => f.MapFrom(r => r.Calle.Nombre))
                 .ForMember(t => t.CalleId, f => f.MapFrom(r => r.Calle.Id))
-                .ForMember(t => t.TieneFotoIngreso, f => f.MapFrom(r => r.Vehiculo != null && !string.IsNullOrEmpty(r.Vehiculo.CartaPorte.FotoRutaDestino)));
+                .ForMember(t => t.TieneFotoIngreso, f => f.MapFrom(r => r.Vehiculo != null && !string.IsNullOrEmpty(r.Vehiculo.CartaPorte.FotoRutaDestino)))
+                .ForMember(t => t.TipoWorkFlowEgreso, f => f.MapFrom(r => r.Workflow != null && r.Workflow.TipoDeWorkflow == TipoDeWorkflow.Egreso));
             Mapper.CreateMap<RecorridoDto, Recorrido>();
 
             Mapper.CreateMap<Recorrido, DatosInstanciaWorkflowDto>()

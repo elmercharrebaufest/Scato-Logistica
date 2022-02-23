@@ -8,6 +8,7 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
@@ -328,5 +329,30 @@ namespace Molinos.Scato.Test.Controllers
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ViewBag.EsIngreso, Is.EqualTo(true));
         }
+
+        [Test]
+        public void DescargarPDFCartaPorte()
+        {
+            var ctg = "20200008069";
+            servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ConsultarPDFCpe>())).Returns(new ResultadoConsultarPDFCpe { Pdf = new byte[] { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 } });
+            //Act
+            var result = target.DescargarPDFCartaPorte(ctg);
+            //Assert
+            Assert.IsInstanceOf<FileContentResult>(result);
+        }
+
+        [Test]
+        public void DescargarPDFCartaPorteError()
+        {
+            var ctg = "20200008069";
+            var resultado = new Resultado();
+            resultado.Errores.Add(new KeyValuePair<string, string>("3", "Error no se pudo obtener la imagen de la CP desde SCATO"));
+            servComandosMock.Setup(s => s.Ejecutar(It.IsAny<ConsultarPDFCpe>())).Returns(resultado);
+            var result = target.DescargarPDFCartaPorte(ctg);
+            //Assert
+            Assert.IsNull(result);
+        }
+
+        
     }
 }

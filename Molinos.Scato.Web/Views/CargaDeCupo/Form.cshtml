@@ -61,12 +61,36 @@
         width: auto;
         padding-right: 15px;
     }
+
+    .contenedor-barrera {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 55%;
+        margin-left: auto;
+    }
+
+    .bar-ico {
+        font-size: 80px;
+    }
+
+    .apertura {
+        color: #07c35f !important;
+    }
+
+    .cierre {
+        color: #ea1f1f !important;
+    }
+
+    .botones-barrera {
+        margin: 20px 0;
+    }
 </style>
 
 @if (mostrarAlertaExitosa && string.IsNullOrEmpty(fila) && esCircuitoNoGranos)
 {
     <script type="text/javascript">
-            MostrarAlertaExitosa('Carga Exitosa, Camión debe dirigirse a Mesa FAS.', 10000);
+        MostrarAlertaExitosa('Carga Exitosa, Camión debe dirigirse a Mesa FAS.', 10000);
     </script>
 }
 else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
@@ -115,7 +139,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
 @if (ViewData.ModelState["PuestoDeTrabajoId"] != null && ViewData.ModelState["PuestoDeTrabajoId"].Errors.Any())
 {
     <div class="alert alert-error">
-        @Html.ValidationMessageFor(model => model.PuestoDeTrabajoId)
+        <span>@Html.ViewData.ModelState["PuestoDeTrabajoId"].Errors.FirstOrDefault().ErrorMessage</span>
     </div>
 }
 
@@ -131,9 +155,9 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                     <div style="width: 260px; display: inline-flex;">
                         @*Esto es de no granos. Se comenta por el momento*@
                         <div style="width: 160px;">
-                            @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
-                            @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
-                        </div>
+                                @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
+                                @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
+                            </div>
                         <div style="width: 100px; display: none">
                             @Html.Label(@Textos.CPE, new { @class = "control-label inline" })
                             @Html.CheckBoxFor(x => x.CPE, new { id = "cpe" })
@@ -206,7 +230,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                         @Html.ValidationMessageFor(model => model.Patente)
                     </div>
                 </div>
-                
+
                 <div class="control-group sinMargen">
                     @Html.Label("Material", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
@@ -235,6 +259,15 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                         <img id="imagen-patente" src="" alt="Foto frontal del camión&#10&#13Cargando..." style="max-height: 100%; max-width: 100%;height:300px" />
                     </div>
                 </div>
+
+                @*<div class="contenedor-barrera">
+                    <span>Estado de barrera: </span>
+                    <span class="bar-ico icon-barrera-cerrada" id="barreraCargaCupo"></span>
+                    <div class="botones-barrera">
+                        <a class="btn tarjetaMaestro apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-unlock"> </i> </a>
+                        <a class="btn tarjetaMaestro cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-lock"> </i> </a>
+                    </div>
+                </div>*@
             </div>
         </div>
         <div class="row-fluid" style="margin-top:20px">
@@ -246,7 +279,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
 
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="row-fluid">
                 @*se muestran error de validacion con venta Fas*@
                 <div class="span12 alert alert-error hide" id="validation-ventaFas-error">

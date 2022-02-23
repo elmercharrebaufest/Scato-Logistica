@@ -95,7 +95,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             try
             {
                 StringBuilder sbfilter = new StringBuilder();
-                sbfilter.AppendFormat("Select count(*) from Impresion where Impresion.Eliminada = 0 and ");
+                sbfilter.AppendFormat("Select count(*) as cnt from Impresion where Impresion.Eliminada = 0 and ");
                 sbfilter.Append("(");
                 sbfilter.Append("EXISTS");
                 sbfilter.Append("(");
@@ -126,6 +126,11 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                 query = sbfilter.ToString();
 
+                if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
+                {
+                    query = $"select sum(cnt) as total from ({sbfilter.ToString()} UNION SELECT COUNT(*) from CartaPorteElectronica where Pdf is not null and NroCTG = '{numerodoc}' ) tmp";
+                }
+
             }
             catch (Exception e)
             {
@@ -142,7 +147,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             try
             {
                 StringBuilder sbfilter = new StringBuilder();
-                sbfilter.AppendFormat("Select {0} * from Impresion where Impresion.Eliminada = 0 and ", !string.IsNullOrEmpty(numerodoc) || !string.IsNullOrEmpty(patente) ? string.Empty : top);
+                sbfilter.AppendFormat("Select {0} *, null as Ctg from Impresion where Impresion.Eliminada = 0 and ", !string.IsNullOrEmpty(numerodoc) || !string.IsNullOrEmpty(patente) ? string.Empty : top);
                 sbfilter.Append("(");
                 sbfilter.Append("EXISTS");
                 sbfilter.Append("(");
@@ -175,6 +180,12 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 {
                     sbfilter.Append(" order by Impresion.FechaImpresion DESC");
                 }
+
+                if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
+                {
+                    sbfilter.AppendFormat(" union (select 0, 0, 29, FechaEmision, SUBSTRING(Dominio,0,CHARINDEX(',',Dominio,0)), 'CartaPorteElectronica', NEWID(), '0', NroCTG from CartaPorteElectronica where Pdf is not null and NroCTG = '{0}')", numerodoc);
+                }
+
                 query = sbfilter.ToString();
 
             }

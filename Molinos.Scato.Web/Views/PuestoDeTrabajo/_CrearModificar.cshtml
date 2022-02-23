@@ -232,6 +232,30 @@
 </div>
 
 <div class="control-group">
+    @Html.LabelFor(model => model.SemaforoRojoCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SemaforoRojoCodigo, barreras, "")
+        @Html.ValidationMessageFor(model => model.SemaforoRojoCodigo)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.SemaforoAmarilloCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SemaforoAmarilloCodigo, barreras, "")
+        @Html.ValidationMessageFor(model => model.SemaforoAmarilloCodigo)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.SemaforoVerdeCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.SemaforoVerdeCodigo, barreras, "")
+        @Html.ValidationMessageFor(model => model.SemaforoVerdeCodigo)
+    </div>
+</div>
+
+<div class="control-group">
     @Html.LabelFor(model => model.NombrePc, new { @class = "control-label" })
     <div class="controls">
         @Html.TextBoxFor(model => model.NombrePc, new { @class = "input-large" })
@@ -292,10 +316,10 @@
         @Html.ValidationMessageFor(model => model.Firmware)
     </div>
 </div>
-@*<div class="control-group">
+<div class="control-group">
     @Html.LabelFor(model => model.ActivarRegistroInactividad, new { @class = "control-label" })
     <div class="controls">
         @Html.CheckBoxFor(model => model.ActivarRegistroInactividad, new { @class = "input-large" })
         @Html.ValidationMessageFor(model => model.ActivarRegistroInactividad)
     </div>
-</div>*@
+</div>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -15,6 +9,11 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Helpers;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.Linq;
 
 namespace Molinos.Scato.Web.ServicioHub
 {
@@ -32,14 +31,14 @@ namespace Molinos.Scato.Web.ServicioHub
         private readonly HubClient hubClientLectura;
         private readonly HubClientNotificar hubClientNotificar;
 
-        public ServicioSuscriptor(ILogger log, 
-            IServicioComandos comandos, 
-            IServicioActividadFactory<IEjecutarService> factory, 
-            IServicioRepositorio servicio, 
-            IServicioOrquestador servicioOrquestador, 
-            IListaDeWorkflows workflows, 
+        public ServicioSuscriptor(ILogger log,
+            IServicioComandos comandos,
+            IServicioActividadFactory<IEjecutarService> factory,
+            IServicioRepositorio servicio,
+            IServicioOrquestador servicioOrquestador,
+            IListaDeWorkflows workflows,
             HubClientFactory hubClientFactory,
-            IServicioActividadFactory<IPesadaService>  pesadaFactory,
+            IServicioActividadFactory<IPesadaService> pesadaFactory,
             IServicioEstadoPuesto estadoPuesto,
             IFirmwareFactory firmwareFactory)
         {
@@ -148,15 +147,15 @@ namespace Molinos.Scato.Web.ServicioHub
                             if (lecturaPuestoDeTrabajo.TarjetaValida && lecturaPuestoDeTrabajo.VideoCamaras.Any())
                             {
                                 EjecutarDispositivosConPatente(lecturaPuestoDeTrabajo);
-                            }                            
-                            if(lecturaPuestoDeTrabajo.TarjetaValida)
+                            }
+                            if (lecturaPuestoDeTrabajo.TarjetaValida)
                             {
                                 EjecutarPuestoConPatente(lecturaPuestoDeTrabajo);
                             }
                             else
                             {
                                 lecturaPuestoDeTrabajo.MensajeError = $"Tarjeta no válida: {lecturaPuestoDeTrabajo.NumeroDeTarjeta}";
-                                NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo,new DatosRecorridoDto(), "En Espera");
+                                NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, new DatosRecorridoDto(), "En Espera");
                             }
                         }
                         else if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente)
@@ -212,7 +211,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 {
                     NotificarEstadoConexionPorSignalR(notificacion, estado);
                 }
-            } 
+            }
             else if (notificacion.CodigoEvento == "LecturaQr")
             {
                 NotificarQRSignalR(notificacion);
@@ -220,6 +219,10 @@ namespace Molinos.Scato.Web.ServicioHub
             else if (notificacion.CodigoEvento == "EntradaActivada" || notificacion.CodigoEvento == "EntradaDesactivada")
             {
                 NotificarSensorVagonesSinalR(notificacion);
+            }
+            else if (notificacion.CodigoEvento == "CambioEstadoIntercomunicador")
+            {
+                NotificarIntercomunicadorEstadoSignalR(notificacion);
             }
         }
 
@@ -241,7 +244,6 @@ namespace Molinos.Scato.Web.ServicioHub
                 hubClientNotificar.Invoke("Notificar", notificacionDto);
 
                 log.Debug("Fin- Mensaje enviado a usuario: {0} exitosamente", notificacionDto.Grupo);
-
             }
             catch (Exception e)
             {
@@ -327,7 +329,6 @@ namespace Molinos.Scato.Web.ServicioHub
                         {
                             log.Error("Fallo la Apertura del dispositivo: {0}", resultado.Mensaje.Descripcion);
                         }
-
                     }
                     catch (Exception e)
                     {
@@ -342,7 +343,6 @@ namespace Molinos.Scato.Web.ServicioHub
                 var resultado = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
                 {
                     CodigoDispositivo = dispositivo
-
                 });
 
                 if (resultado.Mensaje.Codigo != 0)
@@ -357,7 +357,6 @@ namespace Molinos.Scato.Web.ServicioHub
                 var resultado = servicioOrquestador.Ejecutar(new EjecutarCierreBarrera
                 {
                     CodigoDispositivo = dispositivo
-
                 });
 
                 if (resultado.Mensaje.Codigo != 0)
@@ -376,7 +375,6 @@ namespace Molinos.Scato.Web.ServicioHub
                     var resultado = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
                     {
                         CodigoDispositivo = dispositivo
-
                     });
 
                     if (resultado.Mensaje.Codigo != 0)
@@ -384,7 +382,6 @@ namespace Molinos.Scato.Web.ServicioHub
                         log.Error("Fallo la Apertura del dispositivo: {0}", resultado.Mensaje.Descripcion);
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -421,6 +418,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Error(e, "Fallo la ejecucion del workflow relacionado con la tarjeta: {0}", lecturaPuestoDeTrabajo.NumeroDeTarjeta);
             }
         }
+
         private void EjecutarPuestoConPatente(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
             try
@@ -428,7 +426,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Debug("Validando puesto sin patente. Tarjeta: {0} Puesto: {1}",
                     lecturaPuestoDeTrabajo.NumeroDeTarjeta, lecturaPuestoDeTrabajo.PuestoDeTrabajoId);
                 var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { lecturaPuestoDeTrabajo.NumeroDeTarjeta });
-                
+
                 var proximaActividad = new ProximaAccionDto();
                 if (recorrido != null)
                 {
@@ -451,7 +449,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 //todas las etapas que no sean pesada muestra mensaje
                 else if (!proximaActividad.ProximaAccion.ToLower().Contains("pesada"))
                 {
-                    lecturaPuestoDeTrabajo.MensajeError = "El camion se encuentra en etapa:" + proximaActividad.ProximaAccion; 
+                    lecturaPuestoDeTrabajo.MensajeError = "El camion se encuentra en etapa:" + proximaActividad.ProximaAccion;
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, "");
                     return;
                 }
@@ -467,7 +465,7 @@ namespace Molinos.Scato.Web.ServicioHub
                     };
                 var resultado = servicio.ValidarProximaActividadPorPuesto(recorrido, proximaActividad.ProximaAccion, puestos, ConfigurationManager.AppSettings["Reportes.Username"]);
                 lecturaPuestoDeTrabajo.MensajeError = null;
-                
+
                 if (resultado.Valida)
                 {
                     if (!lecturaPuestoDeTrabajo.ReconocimientoExitoso)
@@ -509,7 +507,6 @@ namespace Molinos.Scato.Web.ServicioHub
                              TipoVehiculo = recorrido.TipoVehiculo,
                              Tarjeta = recorrido.TarjetaDeAcceso,
                              Calle = recorrido.Calle,
-                             
                          });
                     if (resultadoActividad != null && resultadoActividad.HayErrores)
                     {
@@ -531,7 +528,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Error(e, "Fallo la ejecucion del workflow relacionado con la tarjeta: {0}", lecturaPuestoDeTrabajo.NumeroDeTarjeta);
             }
         }
-        
+
         private void EjecutarPuestoSinPatente(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo)
         {
             try
@@ -569,7 +566,6 @@ namespace Molinos.Scato.Web.ServicioHub
                                                                       resultado.ProximaActividad);
                 }
 
-
                 if (resultado.Valida)
                 {
                     var serviciowf = factory.CrearServicio(resultado.WorkflowDefinicionId);
@@ -601,7 +597,8 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Error(e, "Fallo la ejecucion del workflow relacionado con la tarjeta: {0}", lecturaPuestoDeTrabajo.NumeroDeTarjeta);
             }
         }
-        private void NotificarBalanzadaPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido,string proximaActividad)
+
+        private void NotificarBalanzadaPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, DatosRecorridoDto recorrido, string proximaActividad)
         {
             proximaActividad = proximaActividad ?? "";
             var notificacion = new NotificacionPesadaAutomaticaDto
@@ -611,9 +608,9 @@ namespace Molinos.Scato.Web.ServicioHub
                 CartaPorte = recorrido == null ? "" : recorrido.CartaDePorte,
                 Diferencia = "0",
                 Peso = "0",
-                DifNeto ="0",
-                DifPeso="0",
-                PesoBrutoOrigen ="0",
+                DifNeto = "0",
+                DifPeso = "0",
+                PesoBrutoOrigen = "0",
                 PesoNetoOrigen = "0",
 
                 Entregador = recorrido == null ? "" : recorrido.Entregador ? "Si" : "No",
@@ -653,7 +650,6 @@ namespace Molinos.Scato.Web.ServicioHub
                 hubClientNotificar.Invoke("Notificar", notificacionDto);
 
                 log.Debug("Fin- Mensaje enviado a usuario: {0} exitosamente", notificacionDto.Grupo);
-
             }
             catch (Exception e)
             {
@@ -662,7 +658,7 @@ namespace Molinos.Scato.Web.ServicioHub
         }
 
         private void NotificarQRSignalR(NotificacionEvento notificacion)
-        {            
+        {
             try
             {
                 //Inicio la conexion con SignalR
@@ -693,7 +689,6 @@ namespace Molinos.Scato.Web.ServicioHub
             var sensor = notificacion?.CodigoDispositivo ?? string.Empty;
             var listaDePuestos = servicio.ListarPuestosDeBalanzasAutomaticas().Where(x => !string.IsNullOrEmpty(x.Concentrador)).ToList();
             var puestos = new List<ConcentradorDto>();
-            
 
             foreach (var p in listaDePuestos)
             {
@@ -716,10 +711,10 @@ namespace Molinos.Scato.Web.ServicioHub
 
             try
             {
-                var dato    = notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty;
+                var dato = notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty;
                 var entrada = notificacion.Datos.ContainsKey("Entrada") ? notificacion.Datos["Entrada"] : string.Empty;
 
-                if(!string.IsNullOrEmpty(dato) && !string.IsNullOrEmpty(entrada))
+                if (!string.IsNullOrEmpty(dato) && !string.IsNullOrEmpty(entrada))
                 {
                     if (bool.TryParse(dato, out bool j))
                     {
@@ -732,6 +727,7 @@ namespace Molinos.Scato.Web.ServicioHub
                         };
 
                         #region NotificarEvento
+
                         var notificacionDto = new NotificacionDto
                         {
                             Grupo = "Automaticas",
@@ -750,19 +746,20 @@ namespace Molinos.Scato.Web.ServicioHub
                             hubClientNotificar.Invoke("Notificar", notificacionDto);
 
                             log.Debug("Fin- Mensaje enviado a usuario: {0} exitosamente", notificacionDto.Grupo);
-
                         }
                         catch (Exception e)
                         {
                             log.Error(e, "Error al enviar notificación: {0}", notificacionDto.Mensaje);
                         }
-                        #endregion
+
+                        #endregion NotificarEvento
                     }
                     else
                     {
                         log.Debug($"El comando del sensor vagones : {sensor} es invalido.");
                     }
-                } else
+                }
+                else
                 {
                     log.Debug($"Notificacion sensor vagones incompleta Dato : {dato}, entrada : {entrada}");
                 }
@@ -771,6 +768,19 @@ namespace Molinos.Scato.Web.ServicioHub
             {
                 log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
             }
+        }
+
+        private void NotificarIntercomunicadorEstadoSignalR(NotificacionEvento notificacion)
+        {
+            var estados = notificacion.Datos["Dato"].Split(';');
+            var notificacionIntercomunicador = new EstadoIntercomunicadorDto
+            {
+                CodigoDispositivo = notificacion.CodigoDispositivo,
+                Mic = estados[0].ToLower() == "true",
+                Speaker = estados[1].ToLower() == "true",
+            };
+
+            hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
         }
     }
 }

@@ -513,6 +513,7 @@
     <Compile Include="Procesamiento\ProcesadorConsultarDestinatarioCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarEstadoCtg.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarImagenCpe.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarPDFCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
@@ -525,6 +526,7 @@
     <Compile Include="Procesamiento\ProcesadorEnviarMensajesAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorGuardarEtiquetasPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirFileGenerico.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarCaladoCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarPesadaCircular.cs" />

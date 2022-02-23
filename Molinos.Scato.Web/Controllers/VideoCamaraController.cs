@@ -29,11 +29,13 @@ namespace Molinos.Scato.Web.Controllers
             this.servicioComandos = servicioComandos;
         }
         [DatosUsuario]
-        public ActionResult Index(DatosUsuario datosUsuario)
+        public ActionResult Index(DatosUsuario datosUsuario, string nombrePc, bool mostrarNombre)
         {
-            var camaras = servicio.ListarCamarasPorNombrePc("PuestoVC", datosUsuario.CentroId).ToList();
-            log.Debug(string.Join(", ", camaras.ToArray()));
+            var camaras = servicio.ObtenerCamarasPorNombrePc(nombrePc, datosUsuario.CentroId).ToList();
+            log.Debug(string.Join(", ", camaras.Select(x => x.Codigo).ToArray()));
+
             ViewBag.Camaras = camaras;
+            ViewBag.MostrarNombre = mostrarNombre;
             return View();
         }
     }

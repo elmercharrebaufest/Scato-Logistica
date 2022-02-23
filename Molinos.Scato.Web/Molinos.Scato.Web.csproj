@@ -328,6 +328,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
     <Compile Include="Controllers\CategoriaCamionesController.cs" />
@@ -340,7 +341,6 @@
     <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
     <Compile Include="Controllers\CamionDemoradoController.cs" />
-    <Compile Include="Controllers\VideoCamaraBalanzaController.cs" />
     <Compile Include="Controllers\VideoCamaraController.cs" />
     <Compile Include="Controllers\LoteAuditoriaController.cs" />
     <Compile Include="Controllers\PagoDeReciboMunicipalController.cs" />
@@ -636,6 +636,7 @@
     <Compile Include="Models\ImpresionTarjetaDeAccesoModel.cs" />
     <Compile Include="Models\IngresoCIUModel.cs" />
     <Compile Include="Models\CambioModalidadPuestoModel.cs" />
+    <Compile Include="Models\MonitorCPECacheadaViewModel.cs" />
     <Compile Include="Models\PesadaCargaExportacion.cs" />
     <Compile Include="Models\PlanillaF515ViewModel.cs" />
     <Compile Include="Models\ReportViewModel.cs" />
@@ -793,7 +794,8 @@
     </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
-    <Content Include="Scripts\area\shared\intercomunicadorDispositivo.js" />
+    <Content Include="Scripts\area\monitorCPECacheada\index.js" />
+    <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
@@ -999,7 +1001,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Styles\area\shared\intercomunicadorDispositivo.css" />
+    <Content Include="Styles\area\shared\intercomunicador.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2261,8 +2263,6 @@
     <Content Include="Views\AsignacionDeEstablecimiento\_VehiculoDemorado.cshtml" />
     <Content Include="Views\ControlDeCalado\_PinchazosPorCalada.cshtml" />
     <Content Include="Views\BalanzaAutomatica\AccionesEspeciales.cshtml" />
-    <Content Include="Views\VideoCamaraBalanza\Camaras.cshtml" />
-    <Content Include="Views\VideoCamaraBalanza\Index.cshtml" />
     <Content Include="Views\DocumentoExterno\Index.cshtml" />
     <Content Include="Views\EtiquetaPuerto\Index.cshtml" />
     <Content Include="Views\BalanzaAutomatica\BalanzaExpo.cshtml" />
@@ -2284,6 +2284,10 @@
     <Content Include="Views\Shared\Intercomunicador\_Intercomunicador.cshtml" />
     <Content Include="Views\Shared\Intercomunicador\_IntercomunicadorDispositivo.cshtml" />
     <Content Include="Views\Visteo\_VehiculoRechazado.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\Index.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\_Listado.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\_Filtro.cshtml" />
+    <Content Include="Views\MonitorCPECacheada\CPE.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

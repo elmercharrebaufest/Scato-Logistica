@@ -7,14 +7,12 @@ function attachDataPickers() {
 var deleteLinkObj;
 var confirmarLinkObj;
 var mensajeAplicacionCompleto;
-var mensajeAplicacionDetalle = {header:'', body:''};
+var mensajeAplicacionDetalle = { header: '', body: '' };
 $(document).ready(function () {
-    
+
     $("#dialogo-editar").draggable({
         handle: ".modal-header"
     });
-
-
 
     if (!$("#alerta").hasClass("hide")) {
         if ($("#alerta").hasClass("alert-success"))
@@ -33,11 +31,11 @@ $(document).ready(function () {
         });
         return false;
     });
-    
+
     $(document).on("submit", "form.causaBlock", function () {
         BlockUI($("form.causaBlock").data().mensajeEspera);
     });
-    
+
     /* delete Link */
     $(document).on('click', '.ajax-borrar-link', function () {
         deleteLinkObj = $(this); /*for future use*/
@@ -47,7 +45,7 @@ $(document).ready(function () {
         });
         return false; /* prevents the default behaviour */
     });
-    
+
     /* delete Link */
     $(document).on('click', '.ajax-borrar-con-motivo-link', function () {
         deleteLinkObj = $(this); /*for future use*/
@@ -56,20 +54,20 @@ $(document).ready(function () {
         });
         return false; /* prevents the default behaviour */
     });
-    
+
     $('#dialogo-borrar').on('shown', function () {
         $('#dialogo-borrar-cancelar').focus();
     });
-    
-    
-   $(function () {
-       $("[data-hide]").on("click", function () {
-           $(this).closest("." + $(this).attr("data-hide")).hide();
-           // -or-, see below
-           // $(this).closest("." + $(this).attr("data-hide")).hide();
-       });
-   });
-    
+
+
+    $(function () {
+        $("[data-hide]").on("click", function () {
+            $(this).closest("." + $(this).attr("data-hide")).hide();
+            // -or-, see below
+            // $(this).closest("." + $(this).attr("data-hide")).hide();
+        });
+    });
+
     $('#dialogo-borrar-cancelar').click(function () {
         $('#dialogo-borrar').modal('hide');
     });
@@ -81,7 +79,7 @@ $(document).ready(function () {
                 MostrarAlertaExitosa();
             } else {
                 MostrarAlertaError(data);
-                
+
             }
         })
             .error(
@@ -105,7 +103,7 @@ $(document).ready(function () {
         $.get(this.href, cargarDialogoEditar);
         return false;
     });
-    
+
     $('#dialogo-ver-ok').click(function () {
         $('#dialogo-ver').modal('hide');
     });
@@ -125,7 +123,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.ajax-popup-link2', function () {
-        window.open(this.href, "popupWindow","width=1250, height=561, scrollbars=yes,directories=no,location=no");
+        window.open(this.href, "popupWindow", "width=1250, height=561, scrollbars=yes,directories=no,location=no");
         return false;
     });
 
@@ -142,13 +140,13 @@ $(document).ready(function () {
         $this.html(errorText);
         $('#error-box-container').slideDown('slow');
     });
-    
+
     $('#dialogo-editar').on('show', function () {
         $(this).find('.modal-body').css({
             height: 'auto', 'max-height': '400px', 'padding-right': '50px'
         });
     });
-       
+
     $('#dialogo-editar').on('shown', function () {
         $(this).find('.modal-body').find(':input:enabled:visible:first').focus();
     });
@@ -161,9 +159,9 @@ $(document).ready(function () {
         var container = $('#gridContainer');
         if (container.attr('data-grid-url')) {
             container.data().gridUrl = RemoverParametrosDeUrl(container.data().gridUrl) + "?filtro=" + $('#search-form input[name="filtro"]').val();
-        }      
+        }
     });
-    
+
     ObtenerPuestoDeTrabajo();
     RedireccionarAListaAutomatizada();
     RedireccionarABalanzaAutomatizada();
@@ -176,7 +174,7 @@ $(document).ready(function () {
 
     obtenerMensajesAplicacion();
     setInterval(obtenerMensajesAplicacion, 5000);
-   
+
 
     $("#alertaFija").click(function () {
         cargarDialogoVerCentrado(mensajeAplicacionDetalle);
@@ -202,7 +200,7 @@ function BlockUI(message) {
         paddingTop: 10,
         paddingBottom: 10,
         "padding-left": 20,
-        
+
     };
     $.blockUI({
         overlayCSS: { backgroundColor: 'white' },
@@ -222,7 +220,7 @@ function cargarDialogoEditar(data) {
 
     $('#dialogo-editar').modal({
         backdrop: 'static', keyboard: false
-     }).css({
+    }).css({
         'top': '30%',
         'margin-left': function () {
             return -($(this).width() / 2);
@@ -271,7 +269,7 @@ function cargarDialogoVerCentrado(data) {
         'margin-left': '-455px',
         'overflow': 'auto',
 
-        });
+    });
     $('body').css({
         'overflow': 'hidden'
     });
@@ -307,7 +305,7 @@ function editarRepuestaFormulario(respuesta) {
 }
 
 function MostrarAlertaError(data) {
-   
+
     if (data != null) {
         $("#alertaError span").html(data);
     } else {
@@ -325,7 +323,7 @@ function MostrarAlertaAdvertencia(data) {
     }
     $("#alertaAdvertencia").show();
     $("#alertaAdvertencia").delay(500).addClass("in");
-    
+
 }
 
 function MostrarAlertaExitosa(data, delay) {
@@ -352,7 +350,7 @@ function ActualizarEstadoServicios(mensaje) {
     $('#serviciosWeb').tooltip('destroy');
     if (mensaje != null && mensaje != undefined && mensaje != "Ok") {
         $("#serviciosWeb").css("color", "red");
-        $('#serviciosWeb').tooltip({ 'title':"Los/el siguiente servicio se encuentran caidos: \n" + mensaje,'placement':'bottom', 'trigger': 'hover' });
+        $('#serviciosWeb').tooltip({ 'title': "Los/el siguiente servicio se encuentran caidos: \n" + mensaje, 'placement': 'bottom', 'trigger': 'hover' });
     } else {
         $("#serviciosWeb").css("color", "rgb(0, 163, 24)");
 
@@ -422,7 +420,7 @@ function ObtenerNombrePC() {
         url: $("#ObtenerNombrePcUrl").val(),
         async: false,
         data: {},
-        success: function(nombre) {
+        success: function (nombre) {
             $.cookie('NombrePc', nombre);
             if (nombre.length == 0) {
                 ObtenerNombrePCPorActiveX();
@@ -458,10 +456,10 @@ function ObtenerPuestoDeTrabajo() {
         $.getJSON($("#ObtenerPuestoDeTrabajoUrl").val(), { nombrePc: nombrePc },
             function (data) {
                 $.cookie('PuestoDeTrabajoId', data.Id);
-            }).error(function() {
+            }).error(function () {
                 $.cookie('PuestoDeTrabajoId', 0);
             });
-    } catch(e) {
+    } catch (e) {
         $.cookie('PuestoDeTrabajoId', 0);
     }
 }
@@ -501,11 +499,11 @@ function RedireccionarAListaAutomatizada() {
             url: $("#RedireccionarAListaAutomatizadaUrl").val(),
             dataType: 'json',
             async: false,
-            data: {nombrePc : nombrePc},
-            success: function(data) {
+            data: { nombrePc: nombrePc },
+            success: function (data) {
                 $.cookie('RedireccionarAListaAutomatizada', data);
             },
-            error: function(data) {
+            error: function (data) {
                 $.cookie('RedireccionarAListaAutomatizada', false);
             }
         });
@@ -533,6 +531,35 @@ function RemoverParametrosDeUrl(oldUrl) {
 
 }
 
+function UpdateQueryString(key, value, url) {
+    if (!url) url = window.location.href;
+    var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)(.*)", "gi");
+
+    if (re.test(url)) {
+        if (typeof value !== 'undefined' && value !== null)
+            return url.replace(re, '$1' + key + "=" + value + '$2$3');
+        else {
+            var hash = url.split('#');
+            url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+            if (typeof hash[1] !== 'undefined' && hash[1] !== null)
+                url += '#' + hash[1];
+            return url;
+        }
+    }
+    else {
+        if (typeof value !== 'undefined' && value !== null) {
+            var separator = url.indexOf('?') !== -1 ? '&' : '?', hash2 = url.split('#');
+            url = hash2[0] + separator + key + '=' + value;
+            if (typeof hash2[1] !== 'undefined' && hash2[1] !== null)
+                url += '#' + hash2[1];
+            return url;
+        }
+        else
+            return url;
+    }
+}
+
+
 function mostrarCreditos() {
     $.showCredits({
         title: 'Scato',
@@ -553,7 +580,7 @@ function mostrarCreditos() {
 function mensualCreditos() {
     var today = new Date();
     if (today.getDate() == 10 && today.getHours() == 11) {
-        
+
         var credit = $.cookie("credit");
         if (credit == null) {
             mostrarCreditos();
@@ -634,7 +661,7 @@ function obtenerMensajesAplicacion() {
         type: 'GET',
         cache: false
     }).done(function (result) {
-        
+
         if (result && result.TipoAccion != "Baja" && result.TipoAccion.length > 1) {
             mensajeAplicacionDetalle = { header: result.FechaString + 'hs <br /> ' + result.Titulo, body: reemplazarSaltosDeLinea(result.Detalle) };
             var mensajeCompleto = " " + result.FechaString + "hs : " + "<strong>" + result.Titulo + "</strong>" + ", " + (result.Detalle.length > 10 ? result.Detalle.substring(0, 30) + "... (Haga Click aqui para ver mas detalle)" : result.Detalle);

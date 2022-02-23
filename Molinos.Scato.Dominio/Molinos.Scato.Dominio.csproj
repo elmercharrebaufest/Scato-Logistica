@@ -90,6 +90,7 @@
     <Compile Include="Comandos\ConsultarCPEPorDestino.cs" />
     <Compile Include="Comandos\ConsultarCPDigital.cs" />
     <Compile Include="Comandos\ConsultarDestinatarioCPE.cs" />
+    <Compile Include="Comandos\ConsultarPDFCpe.cs" />
     <Compile Include="Comandos\CrearAgenciaControlPrivado.cs" />
     <Compile Include="Comandos\CrearAgenciaMaritimaPuerto.cs" />
     <Compile Include="Comandos\CrearAgenteControlPrivado.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Comandos\GuardarModuloDeCarga.cs" />
     <Compile Include="Comandos\GuardarPlanillaDeTurnos.cs" />
     <Compile Include="Comandos\ImprimirEtiquetaPuerto.cs" />
+    <Compile Include="Comandos\ImprimirFileGenerico.cs" />
     <Compile Include="Comandos\InformarArriboCircular.cs" />
     <Compile Include="Comandos\InformarCaladoCircular.cs" />
     <Compile Include="Comandos\InformarPesadaCircular.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Comandos\ResultadoConsultaCpePorDestino.cs" />
     <Compile Include="Comandos\ResultadoCircular.cs" />
     <Compile Include="Comandos\ResultadoConsultarImagenCpe.cs" />
+    <Compile Include="Comandos\ResultadoConsultarPDFCpe.cs" />
     <Compile Include="Comandos\ResultadoCrearCalle.cs" />
     <Compile Include="Comandos\ResultadoCartaPorteElectronica.cs" />
     <Compile Include="Comandos\ResultadoFas.cs" />
@@ -668,6 +671,10 @@
     <Compile Include="ConsultarImagenCpe.cs" />
     <Compile Include="Consultas\Expresiones.cs" />
     <Compile Include="Consultas\Paginacion.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
+    <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
+    <Compile Include="Dto\EstadoIntercomunicadorDto.cs" />
     <Compile Include="Dto\RegistroInactividadDto.cs" />
     <Compile Include="Dto\MotivoInactividadDto.cs" />
     <Compile Include="Dto\ArriboCircularResponseDto.cs" />

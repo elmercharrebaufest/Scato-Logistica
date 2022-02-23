@@ -109,6 +109,11 @@
                   <mca:CSharpReference x:TypeArguments="x:String">body</mca:CSharpReference>
                 </OutArgument>
               </local:BuscarDatosMailRechazoDeCamion.Body>
+              <local:BuscarDatosMailRechazoDeCamion.Observaciones>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">Motivo</mca:CSharpValue>
+                </InArgument>
+              </local:BuscarDatosMailRechazoDeCamion.Observaciones>
             </local:BuscarDatosMailRechazoDeCamion>
             <FlowStep.Next>
               <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_5">
@@ -165,7 +170,7 @@
     <x:Reference>__ReferenceID1</x:Reference>
     <x:Reference>__ReferenceID2</x:Reference>
     <x:Reference>__ReferenceID3</x:Reference>
-    <sads:DebugSymbol.Symbol>d2lDOlxURlNcTW9saW5vcyAtIFNDVDIwMFxNb2xpbm9zLlNjYXRvLURFVlxNb2xpbm9zLlNjYXRvLkFjdGl2aWRhZGVzXEVudmlhck1haWxBTWVzYUVudHJhZGFSZWNoYXphZG9zLnhhbWwQKQcpNgEDJAckNgECWAOpAQ8CAQFhCWceAgFtag1wNAIBX3MRkgEkAgEQlQEVmwEsAgECZA9k9QECAW5tE21dAgFgjwEXjwGYAQIBUooBF4oBZAIBRXYXdlkCATiFAReFAVwCASt7F3tpAgEegAEXgAFdAgERmAEbmAHTAgIBAw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2hDOlxVc2Vyc1xkc2FuY2hlelxNb2xpbm9zXFNjYXRvTG9naXN0aWNhXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcRW52aWFyTWFpbEFNZXNhRW50cmFkYVJlY2hhemFkb3MueGFtbBEpByk2AQMkByQ2AQJYA64BDwIBAWEJZx4CAXpqDXU0AgFfeBGXASQCARCaARWgASwCAQJkD2T1AQIBe20TbV0CAW1yE3JXAgFglAEXlAGYAQIBUo8BF48BZAIBRXsXe1kCATiKAReKAVwCASuAAReAAWkCAR6FAReFAV0CARGdARudAdMCAgED</sads:DebugSymbol.Symbol>
   </Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

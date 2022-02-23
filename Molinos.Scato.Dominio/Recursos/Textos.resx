@@ -4669,7 +4669,7 @@
   <data name="PuestoDeTrabajo_Automatico" xml:space="preserve">
     <value>Automático</value>
   </data>
-	<data name="PuestoDeTrabajo_ValidarInactividadCalado" xml:space="preserve">
+  <data name="PuestoDeTrabajo_ValidarInactividadCalado" xml:space="preserve">
     <value>Validar Inactividad Calado</value>
   </data>
   <data name="PuestoDeTrabajo_NombrePc" xml:space="preserve">
@@ -9445,6 +9445,9 @@
   <data name="VisualizarVideoCamarasBalanza" xml:space="preserve">
     <value>Visualizar Video Camaras Balanza</value>
   </data>
+  <data name="VisualizarVideoCamarasExportacion" xml:space="preserve">
+    <value>Visualizar Video Camaras Exportación</value>
+  </data>
   <data name="Error_CpExistente" xml:space="preserve">
     <value>La Carta de porte {0} ya se cargó previamente</value>
   </data>
@@ -9706,7 +9709,88 @@
   <data name="Default_MotivoInactividad" xml:space="preserve">
     <value>Seleccione motivo</value>
   </data>
- <data name="MotivoInactividad_Requerido" xml:space="preserve">
+  <data name="MotivoInactividad_Requerido" xml:space="preserve">
     <value>Debe seleccionar un motivo</value>
+  </data>
+  <data name="AbmCategoriaCamiones" xml:space="preserve">
+    <value>ABM Categoria Camiones</value>
+  </data>
+  <data name="HidraulicasEspeciales" xml:space="preserve">
+    <value>Hidraúlicas Especiales</value>
+  </data>
+  <data name="MonitorCPECacheada_Titulo" xml:space="preserve">
+    <value>Monitor CPEs Cacheadas</value>
+  </data>
+  <data name="MonitorCPECacheada_PendientesIngresar" xml:space="preserve">
+    <value>Camiones cacheados pendientes de ingresar</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaEjecucionJob" xml:space="preserve">
+    <value>Fecha ultima ejecución job</value>
+  </data>
+  <data name="MonitorCPECacheada_Patente" xml:space="preserve">
+    <value>Patente</value>
+  </data>
+  <data name="MonitorCPECacheada_CTG" xml:space="preserve">
+    <value>CTG</value>
+  </data>
+  <data name="MonitorCPECacheada_Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCacheado" xml:space="preserve">
+    <value>Fecha Cacheado</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPE" xml:space="preserve">
+    <value>Fecha CPE</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPEDesde" xml:space="preserve">
+    <value>Fecha CPE Desde</value>
+  </data>
+  <data name="MonitorCPECacheada_FechaCPEHasta" xml:space="preserve">
+    <value>Fecha CPE Hasta</value>
+  </data>
+  <data name="MonitorCPECacheada_VerCamionesNoLlegada" xml:space="preserve">
+    <value>Ver camiones que aun no llegaron</value>
+  </data>
+  <data name="RefrescarGrillaAutomaticamante" xml:space="preserve">
+    <value>Refrescar Grilla Automáticamente</value>
+  </data>
+  <data name="Descargar_PDF_CPE" xml:space="preserve">
+    <value>Descargar CPE Electrónica</value>
+  </data>
+  <data name="MonitorCPECacheada_VerCPE" xml:space="preserve">
+    <value>Ver CPE</value>
+  </data>
+  <data name="MonitorCPECacheada" xml:space="preserve">
+    <value>Monitor CPEs Cacheadas</value>
+  </data>
+  <data name="ConfirmarEjecucion" xml:space="preserve">
+    <value>¿Esta Seguro de Ejecutar la acción seleccionada?</value>
+  </data>
+  <data name="MonitorCPECacheada_EjecutarJob" xml:space="preserve">
+    <value>Ejecutar Job</value>
+  </data>
+  <data name="EsEspecial" xml:space="preserve">
+    <value>Es hidraúlica especial</value>
+  </data>
+  <data name="Reimpresion_Documentos_CPE_Eliminar" xml:space="preserve">
+    <value>El documento seleccionado no puede ser eliminado.</value>
+  </data>
+  <data name="SemaforoVagones_Amarillo" xml:space="preserve">
+    <value>Semaforo Amarillo</value>
+  </data>
+  <data name="SemaforoVagones_Rojo" xml:space="preserve">
+    <value>Semaforo Rojo</value>
+  </data>
+  <data name="SemaforoVagones_Verde" xml:space="preserve">
+    <value>Semaforo Verde</value>
+  </data>
+  <data name="CallePorRecorrido_YaAsignado" xml:space="preserve">
+    <value>Vehiculo ya asignado a una calle</value>
+  </data>
+  <data name="Centro_Ruta_Imagenes" xml:space="preserve">
+    <value>Ruta Almacenamiento de Imagenes</value>
+  </data>
+  <data name="AFIP_Error" xml:space="preserve">
+    <value>Ocurrió un error en la consulta del servicio de AFIP</value>
   </data>
 </root>

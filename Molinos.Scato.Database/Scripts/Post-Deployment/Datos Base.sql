@@ -293,6 +293,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 246) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 247) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamaras', 0, 247, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 248) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EmbarquesPorBuques', 1, 248, 'Embarques por Buques'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 262) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pinchazos por Calada', 0, 262, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 263) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion', 0, 263, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 249) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalle', 1, 249, 'Estado De Calle'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 250) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalleLlamar', 1, 250, 'Estado De Calle - Llamar'); END
@@ -307,6 +308,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 258) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 259) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Reasignacion de Calles PostCalado', 1, 259, 'ReasignacionCallesPostCalado'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 260) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Llamado De Filas Automatico', 1, 260, 'LlamadoDeFilasAutomatico'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 261) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Cambio De Material En Filas', 1, 261, 'CambioDeMaterialEnFilas'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 264) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitor CPEs Cacheadas', 0, 264, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 300) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanceros', 2, 300, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 301) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Administradores', 2, 301, NULL); END
@@ -394,6 +396,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 602) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 603) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Line up exportar',4,603, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 605) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Puesto Pausado',1,605, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 606) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Hidraulicas Especiales',1,606, NULL); END
+--IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
@@ -529,6 +533,7 @@ IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'TicketPesadaAd
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'EtiquetaRubrosAnalizar') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('EtiquetaRubrosAnalizar', 'EtiquetaRubrosAnalizar', 'EtiquetaRubrosAnalizar') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'AsigRecorrCtrolCalid') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'ImpGaritaSalida') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('ImpGaritaSalida', 'ImpGaritaSalida', 'ImpGaritaSalida') END
+IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaDePorteElectronica') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaDePorteElectronica', 'Impresion de Carta de Porte Electronica', 'CartaDePorteElectronica') END
 
 
 

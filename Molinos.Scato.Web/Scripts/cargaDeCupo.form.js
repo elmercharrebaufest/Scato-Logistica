@@ -3,6 +3,7 @@ var errorInhabilitacion = false;
 sinAfip = false;
 sinCupo = false;
 sinFotoCartaPorte = false;
+
 $(document).ready(function () {
     activarCPE();
 
@@ -18,18 +19,18 @@ $(document).ready(function () {
                 if ($("#CTG").val().length == 11 || $("#CTG").val().length == 12) {
                     $('#CTG').trigger('change');
                     $('#Cupo').focus();
-                }                
+                }
             }
         }
     };
 
     $.unblockUI();
-    
+
     $('#dialogo-confirmar').modal('hide');
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
 
-    $(document).on('click', '.confirmar-boton', function () {        
+    $(document).on('click', '.confirmar-boton', function () {
         var mensaje = "";
         if (errorInhabilitacion) {
             mensaje = "El vehículo se encuentra inhabilitado";
@@ -138,15 +139,15 @@ $(document).ready(function () {
     if (puestoDeTrabajo !== null) {
         $("#PuestoDeTrabajoId").val(puestoDeTrabajo.Id);
     }
-   
-    
+
+
     if ($.cookie("checkvalidarPatente") !== undefined) {
         $('#checkvalidarPatente').prop('checked', true);
         TomarFotoConPatente();
     } else {
         $("#marco-patente").addClass('hide');
     }
-    
+
     $('#checkvalidarPatente').change(function () {
         BlockUI();
         if ($('#checkvalidarPatente').is(':checked')) {
@@ -170,7 +171,7 @@ $(document).ready(function () {
             if (ValidarNumeroTarjeta()) {
                 TomarFotoCP();
             }
-            cargarCupoPorCTG();            
+            cargarCupoPorCTG();
         }
     });
     $('#NumeroCartaPorte').on('keydown', function (event) {
@@ -212,7 +213,7 @@ $(document).ready(function () {
     $('#Numero').change(function () {
         if ($('#Numero').val() && $('#circuitoNoGranos').is(':checked') && $('#checkvalidarPatente').is(':checked')) {
             TomarFotoConPatente();
-        }        
+        }
     });
 
     $('#cpe').change(function () {
@@ -221,7 +222,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $('#CTG').focus();
         }, 100);
-        if ($('#cpe').is(':checked')) {            
+        if ($('#cpe').is(':checked')) {
             ConfiguracionCPEActiva(true);
         } else {
             ConfiguracionCPEInactiva(true);
@@ -298,6 +299,7 @@ $(document).ready(function () {
             $('.zoomContainer').remove();
         }, 200);
     }
+
 });
 
 var blockui = [];
@@ -327,7 +329,7 @@ function ValidarNumeroTarjeta() {
     return ValidarObjeto($("form"), $("#Numero"));
 }
 
-function cargarCupoPorCTG() {    
+function cargarCupoPorCTG() {
     if (sinAfip) {
         $("#btnAceptar").focus();
         return;
@@ -435,7 +437,7 @@ var patenteNoReconocida = 'Patente no reconocida';
 
 function ValidarPatentesIguales() {
     errorPatente = false;
-    if ($('#checkvalidarPatente').is(':checked')) {        
+    if ($('#checkvalidarPatente').is(':checked')) {
         if ($("#patenteALPR").html() !== patenteNoReconocida &&
             $("#patenteALPR").html() !== '' &&
             $("#Patente").val() !== '' &&
@@ -444,7 +446,7 @@ function ValidarPatentesIguales() {
                 $("#validation-danger").html("<strong>La patente reconocida en la imagen (" + $("#patenteALPR").html().toUpperCase() + ") no coincide con :  (" + $("#Patente").val().toUpperCase() + ")</strong>");
             } else {
                 $("#validation-danger").html("<strong>La patente reconocida en la imagen (" + $("#patenteALPR").html().toUpperCase() + ") no coincide con la obtenida de AFIP (" + $("#Patente").val().toUpperCase() + ")</strong>");
-            }            
+            }
             $("#validation-patente-danger").removeClass("hide");
             errorPatente = true;
         } else if (
@@ -521,12 +523,12 @@ function DisabledControlers(status) {
     $("#NumeroCartaPorte").val("");
 }
 
-function DisableControlersCPE(status, clearinpunts) {    
-    $('#Patente').prop('readonly', true);    
+function DisableControlersCPE(status, clearinpunts) {
+    $('#Patente').prop('readonly', true);
     //$('#circuitoNoGranos').prop('disabled', status);
     $('#circuitoNoGranos').prop('checked', false);
     $('#NumeroCartaPorte').attr('disabled', status);
-    $("#NumeroCartaPorte").val("");    
+    $("#NumeroCartaPorte").val("");
     $('#Cupo').prop('readonly', false);
     if (clearinpunts) {
         $("#CTG").val("");

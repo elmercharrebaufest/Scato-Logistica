@@ -22,8 +22,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(DesasignarCalle comando)
         {
             var asignaciones = Repositorio.Listar<CallePorRecorrido>(
-                x => x.FechaEgreso == null && 
-                x.Id != comando.UltimaAsignacionId && 
+                x => x.FechaEgreso == null &&
+                x.Id != comando.UltimaAsignacionId &&
                 (x.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow || x.CargaDeCupo.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow));
             if (asignaciones.Any())
             {
@@ -32,12 +32,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     asignacion.Recorrido = asignacion.Recorrido;
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
-                    if(asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
+                    if (asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
                         asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
                     {
                         LLamarSiguienteCallePreCalado(asignacion);
                         LiberarFilaSiQuedaVacia(asignacion);
-                    }                    
+                    }
                 }
                 Repositorio.GuardarCambios();
             }
@@ -51,28 +51,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var puestosCalados = Repositorio.Listar<Calle>(x => x.TipoCalle == Dominio.Enums.TipoCalle.Calado && x.Material.Id == materialId && x.Automatica);
             if (puestosCalados.Any())
             {
-                var camionesLlamadosPorCalado = Repositorio.Contar<CallePorRecorrido>(
-                    x => x.FechaEgreso == null && x.Calle.FechaLLamada.HasValue && 
-                    (x.Recorrido.Material.Id == materialId || x.CargaDeCupo.Material.Id == materialId));
-
-                if (camionesLlamadosPorCalado < 8)
+                var calle = administradorDeCalles.ObtenerSiguienteCalle(materialId);
+                if (calle != null)
                 {
-                    var calle = administradorDeCalles.ObtenerSiguienteCalle(materialId);
-                    if (calle != null)
-                    {
-                        calle.Bloqueada = true;
-                        calle.FechaLLamada = DateTime.Now;
-                    }
-                    //else
-                    //{
-                    //    foreach(var puesto in puestosCalados)
-                    //    {
-                    //        puesto.Automatica = false;
-                    //        puesto.Material = null;
-                    //    }
-                    //}
-                }                
-            }            
+                    calle.Bloqueada = true;
+                    calle.FechaLLamada = DateTime.Now;
+                }
+            }
         }
 
         private void LiberarFilaSiQuedaVacia(CallePorRecorrido asignacion)

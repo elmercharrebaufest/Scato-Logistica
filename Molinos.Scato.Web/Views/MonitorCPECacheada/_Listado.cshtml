@@ -1,0 +1,52 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<MonitorCPECacheadaListadoDto>)ViewBag.Items;
+}
+
+<div class="row-fluid" style="margin-bottom:5px">
+    <div class="span4">
+        <span>
+            @Textos.MonitorCPECacheada_PendientesIngresar: @ViewBag.CamionesPendientes
+        </span>
+    </div>
+    <div class="span4 pull-right" style="text-align: right">
+        <a href="#" title="@Textos.MonitorCPECacheada_EjecutarJob" class="btn" onclick="monitorCPECacheadaVM.vm.mainModule.actions.procesarCPEJob()"><i class="icon-play"></i></a>
+        @if (string.IsNullOrWhiteSpace(ViewBag.ErrorCacheoAfipCPE))
+        {
+            <span>
+                @Textos.MonitorCPECacheada_FechaEjecucionJob: @ViewBag.FechaUltimaEjecucion
+            </span>
+        }
+        else
+        {
+            <span title="@ViewBag.ErrorCacheoAfipCPE" style="color:red">
+                @Textos.MonitorCPECacheada_FechaEjecucionJob: @ViewBag.FechaUltimaEjecucion
+            </span>
+        }
+    </div>
+</div>
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+
+                grid.Column("EjecutarTest"
+                , ""
+                , f => Html.BotonId(Textos.Ejecutar, (int)f.Id, "btn procesarBtnGridClass", "icon-play",true)
+                , "editar-borrar-columna", false),
+
+                grid.Column("VerCPE"
+                , ""
+                , f => f.TienePDF == true ? Html.BotonLink(Textos.MonitorCPECacheada_VerCPE, "VerCPE", "MonitorCPECacheada", new { Id = f.Id }, "ajax-popup-link btn", "icon-picture", true, true) : null
+                , "editar-borrar-columna", false),
+
+                grid.Columna("Patente", Textos.MonitorCPECacheada_Patente),
+                grid.Columna("CTG", Textos.MonitorCPECacheada_CTG),
+                grid.Columna("MaterialDescripcion", Textos.MonitorCPECacheada_Material),
+                grid.Columna("FechaCacheado", Textos.MonitorCPECacheada_FechaCacheado),
+                grid.Columna("FechaCPE", Textos.MonitorCPECacheada_FechaCPE)
+                ))

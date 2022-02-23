@@ -41,10 +41,9 @@
     url = '@Url.Action("RedireccionarPesada")';
 </script>
 
-<link href="~/Styles/area/shared/intercomunicadorDispositivo.css" rel="stylesheet" />
+
 <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/balanzaAutomatica.js")"></script>
-<script src="~/Scripts/area/shared/intercomunicadorDispositivo.js"></script>
 
 @if (mostrarAlertaPaseAutomatico && !string.IsNullOrEmpty(mensajeAlertaPaseAutomatico))
 {
@@ -475,4 +474,10 @@
         background-color: #00FF00; /*#00FF00*/
     }
 
+    .icon-barrera-cerrada {
+        color: red; /*#FFFF00*/
+    }
+    .icon-barrera-abierta {
+        color: forestgreen; /*#00FF00*/
+    }
 </style>

@@ -132,7 +132,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult GenerarGraficoCamionesPorHora(GraficoCamionesHoraDto model)
         {
             var centroId = ClaimsPrincipal.Current.GetUserClaim("CentroId");
-            if(model == null)
+            if (model.FechaVieja == DateTime.MinValue || model.FechaVieja == DateTime.MaxValue)
             {
                 model = new GraficoCamionesHoraDto { FechaVieja = DateTime.Now.AddDays(-365) };
             }

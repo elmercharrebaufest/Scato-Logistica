@@ -80,5 +80,10 @@ namespace Molinos.Scato.Dominio.Entidades
         public int? Planta { get; set; }
         public bool ContingenciaAfipCpe { get; set; }
         public int? MinutosInactividadCalado { get; set; }
+        public int? LimiteCamionesCalado { get; set; }
+
+        public virtual DateTime? FechaEjecucionCacheoCPE { get; set; }
+        public virtual string ErrorCacheoAfipCPE { get; set; }
+        public virtual string FotosPath { get; set; }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Recursos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -93,15 +93,18 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "Material_Camara")]
         public int CamaraId { get; set; }
+
         public string CamaraDesc { get; set; }
         public string CamaraCodigoSap { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Centro_Provincia")]
         public int? ProvinciaId { get; set; }
+
         public string ProvinciaDesc { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Centro_Localidad")]
         public int? LocalidadId { get; set; }
+
         public string LocalidadDesc { get; set; }
         public string LocalidadCodigoSap { get; set; }
 
@@ -194,7 +197,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-
             if (Cuit == null)
             {
                 yield return new ValidationResult(string.Format(Textos.Error_Requerido), new[] { "Cuit" });
@@ -232,24 +234,36 @@ namespace Molinos.Scato.Dominio.Dto
             return resto == 0 ? 0 : resto == 1 ? 9 : 11 - resto;
         }
 
-
         [Display(ResourceType = typeof(Textos), Name = "Centro_ValidarLimiteDeCreditoVentaEnSAP")]
         public bool ValidarLimiteDeCreditoVentaEnSAP { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Centro_ValidarLimiteMinimoDePeso")]
         public bool ValidarLimiteMinimoDePeso { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Centro_LimiteMinimoDePeso")]
         public int? LimiteMinimoDePeso { get; set; }
 
         //[Display(ResourceType = typeof(Textos), Name = "Centro_ModificaPinchazos")]
         public bool ModificaPinchazosPorCalada { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "InformarCircular")]
         public bool InformaCircular { get; set; }
+
         public int? MinutosEsperaCircular { get; set; }
         public int? Sucursal { get; set; }
         public int? Planta { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "ContingenciaAfipCpe")]
         public bool ContingenciaAfipCpe { get; set; }
+
         public int? MinutosInactividadCalado { get; set; }
+        public int? LimiteCamionesCalado { get; set; }
+
+        public DateTime? FechaEjecucionCacheoCPE { get; set; }
+        public string ErrorCacheoAfipCPE { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_Ruta_Imagenes")]        
+        [StringLength(200, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
+        public string FotosPath { get; set; }
     }
 }

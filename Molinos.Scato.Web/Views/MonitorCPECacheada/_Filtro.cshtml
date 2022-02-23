@@ -1,0 +1,58 @@
+﻿@model Molinos.Scato.Web.Models.MonitorCPECacheadaViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+<div class="accordion-inner">
+    <div class="row-fluid">
+        <div class="span2">
+            @Html.Label(Textos.MonitorCPECacheada_FechaCPEDesde)
+        </div>
+        <div class="span2">
+            @Html.EditorFor(m => m.Data.FechaCPEDesde, Model.Data.FechaCPEDesde != null ? Model.Data.FechaCPEDesde.Value.FormattedFixed() : string.Empty, "FechaCPEDesde")
+        </div>
+
+        <div class="span2">
+            @Html.Label(Textos.MonitorCPECacheada_Material)
+        </div>
+        <div class="span2">
+            @Html.DropDownListFor(m => m.Data.MaterialId, (IEnumerable<SelectListItem>)Model.MaterialList, Textos.Todos, new { Id = "materialDDL", @Class = "control input-medium", Style = "width:100%", @Name = "MaterialId" })
+        </div>
+
+        <div class="span2">
+            @Html.Label(Textos.Patente)
+        </div>
+        <div class="span2">
+            @Html.TextBoxFor(m => m.Data.Patente, new { @Class = "control input-medium", Autocomplete = "off", Style = "width:89%", @Name = "Patente" })
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span2">
+            @Html.Label(Textos.MonitorCPECacheada_FechaCPEHasta)
+        </div>
+        <div class="span2">
+            @Html.EditorFor(m => m.Data.FechaCPEHasta, Model.Data.FechaCPEHasta != null ? Model.Data.FechaCPEHasta.Value.FormattedFixed() : string.Empty, "FechaCPEHasta")
+        </div>
+
+        <div class="span2">
+            @Html.Label(Textos.MonitorCPECacheada_CTG)
+        </div>
+        <div class="span2">
+            @Html.TextBoxFor(m => m.Data.CTG, new { @Class = "control input-medium", Autocomplete = "off", Style = "width:89%", @Name = "CTG" })
+        </div>
+
+        <div class="span4">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" @(Model.Data.VerCamionesPorLlegar ? "checked" : "unchecked") name="VerCamionesPorLlegar" 
+                           onchange="monitorCPECacheadaVM.vm.mainModule.events.checkVerCamionesPorLlegar(this)"
+                           value="@Model.Data.VerCamionesPorLlegar.ToString().ToLower()">@Textos.MonitorCPECacheada_VerCamionesNoLlegada 
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12 cajaButtons2" style="margin-left: -108px">
+            <input class="btn btn-default col-xs-12" value="@Textos.Filtrar" type="submit" />
+        </div>
+    </div>
+</div>

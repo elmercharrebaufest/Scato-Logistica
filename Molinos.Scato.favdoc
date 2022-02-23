@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Favorites xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <folders />
+  <favorites>
+    <Favorite>
+      <name>BajaCtgDefinitivaConsulta.cs</name>
+      <path>Molinos.Scato.Repositorio\ConsultasEF\BajaCtgDefinitivaConsulta.cs</path>
+      <absolutePath>D:\BAUFEST\MOLINOS GIT\SCATO WEB\Molinos.Scato.Repositorio\ConsultasEF\BajaCtgDefinitivaConsulta.cs</absolutePath>
+    </Favorite>
+    <Favorite>
+      <name>ProcesadorConsultarCPDigital.cs</name>
+      <path>Molinos.Scato.Servicios\Procesamiento\ProcesadorConsultarCPDigital.cs</path>
+      <absolutePath>D:\BAUFEST\MOLINOS GIT\SCATO WEB\Molinos.Scato.Servicios\Procesamiento\ProcesadorConsultarCPDigital.cs</absolutePath>
+    </Favorite>
+    <Favorite>
+      <name>SincronizarMaestrosController.cs</name>
+      <path>Molinos.Scato.Web\Controllers\SincronizarMaestrosController.cs</path>
+      <absolutePath>D:\BAUFEST\MOLINOS GIT\SCATO WEB\Molinos.Scato.Web\Controllers\SincronizarMaestrosController.cs</absolutePath>
+    </Favorite>
+  </favorites>
+</Favorites>

@@ -177,7 +177,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerDatos(string numero, DatosUsuario datosUsuario)
+        public JsonResult ObtenerDatos(string numero, string workflow, DatosUsuario datosUsuario)
         {
             log.Info("Empieza el método FAS");
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
@@ -226,10 +226,14 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
                         }
-                        //if (chofer == null)
-                        //{
-                        //    return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ChoferInexistente, ordenCargaFas[i].CHOFER) }, JsonRequestBehavior.AllowGet);
-                        //}
+                        if (workflow.Contains("Venta") && !tipoComercial.Descripcion.ToLower().Contains("venta"))
+                        {
+                            continue;
+                        }
+                        if (workflow.Contains("Expo") && !tipoComercial.Descripcion.ToLower().Contains("expo"))
+                        {
+                            continue;
+                        }
                         var itemSap = new OrdenCargaFasDto
                         {
                             CuitTransporte = ConvertirCuil(ordenCargaFas[i].CUIT_TR),
@@ -250,7 +254,14 @@ namespace Molinos.Scato.Web.Controllers
                        
                         datosSap.Add(itemSap);
                     }
-                    return Json(new { datosSap }, JsonRequestBehavior.AllowGet);
+                    if(datosSap.Count > 0)
+                    {
+                        return Json(new { datosSap }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { datosSap = -1, error = Textos.OrdenCargaFAS_Inexistente + "para " + workflow }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 log.Info("No hay items en la respuesta");
             }

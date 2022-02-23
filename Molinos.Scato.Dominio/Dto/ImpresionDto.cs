@@ -10,5 +10,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoImpresion TipoImpresion { get; set; }
         public string Patente { get; set; }
         public bool Eliminada { get; set; }
+        public long? Ctg { get; set; }
     }
 }

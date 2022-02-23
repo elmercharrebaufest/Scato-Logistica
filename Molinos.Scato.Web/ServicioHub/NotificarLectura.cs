@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Dto;
 
 namespace Molinos.Scato.Web.ServicioHub
@@ -14,6 +15,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoDeTrabajoId).informarLectura(new { notificacion.NumeroDeTarjeta, notificacion.PrimerNumeroDeTarjeta, notificacion.PuestoDeTrabajoId, notificacion.TarjetaValida, notificacion.MensajeError, notificacion.EsTarjetaSupervisor, notificacion.PatenteLeida, notificacion.Patente, notificacion.OcrActivo, notificacion.ReconocimientoExitoso });
             }
         }
+
         public void NotificarLecturaCpe(LecturaCpeDto notificacion)
         {
             if (Clients != null)
@@ -21,6 +23,7 @@ namespace Molinos.Scato.Web.ServicioHub
                 Clients.Group(notificacion.CentroId + "|" + notificacion.PuestoId).informarLecturaCpe(new { notificacion.NroCtg });
             }
         }
+
         public void NotificarEstadoConexion(EstadoConexionDto notificacion)
         {
             if (Clients != null)
@@ -32,6 +35,19 @@ namespace Molinos.Scato.Web.ServicioHub
         public void EscucharPuestosDeTrabajo(string centroId, string puestoId)
         {
             Groups.Add(Context.ConnectionId, centroId + "|" + puestoId.ToLower());
+        }
+
+        public void UnirseAGrupo(string codigoGrupo)
+        {
+            Groups.Add(Context.ConnectionId, codigoGrupo);
+        }
+
+        public void NotificarCambioEstadoIntercomunicador(EstadoIntercomunicadorDto estado)
+        {
+            if (Clients != null)
+            {
+                Clients.Group(Constantes.NotificacionGrupos.Intercomunicador).actualizarEstadoIntercomunicador(estado);
+            }
         }
     }
 }

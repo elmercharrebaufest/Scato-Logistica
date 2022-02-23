@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Molinos.Scato.Dominio
+﻿namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -12,6 +6,11 @@ namespace Molinos.Scato.Dominio
         {
             public const string HaciaLaWeb = "2web";
             public const string DesdeLaWeb = "web2";
+        }
+
+        public struct NotificacionGrupos
+        {
+            public const string Intercomunicador = "Intercomunicador";
         }
 
         public struct Entidad

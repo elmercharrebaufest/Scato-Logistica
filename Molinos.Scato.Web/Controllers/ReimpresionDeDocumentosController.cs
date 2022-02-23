@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -72,19 +74,43 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult Imprimir(DatosUsuario datosUsuario, int id, int impresora, int cantCopias)
+        public ActionResult Imprimir(DatosUsuario datosUsuario, int id, int impresora, int cantCopias, string ctg = null)
         {
             try
             {
-                var resultado =
-                    servicioComandos.Ejecutar(new ImprimirDocumento
-                        {
-                            Id = id,
-                            Impresora = impresora,
-                            CentroId = datosUsuario.CentroId,
-                            CantCopias = cantCopias
+                if(id == default(int) && !string.IsNullOrEmpty(ctg))
+                {
+                    var impresoraModel = servicio.ObtenerImpresora(impresora);
+                    var cartaPorte = servicioComandos.Ejecutar(new ConsultarPDFCpe { NroCtg = Convert.ToInt64(ctg) }) as ResultadoConsultarPDFCpe;
+                    if (cartaPorte != null && !cartaPorte.HayErrores)
+                    {
+                        var resultado = 
+                        servicioComandos.Ejecutar(new ImprimirFileGenerico {
+                            CantidadCopias = cantCopias,
+                            File = cartaPorte.Pdf,
+                            Impresora = impresoraModel?.Direccion,
+                            CodigoDocumentoImpresion = Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaDePorteElectronica)
                         });
-                return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.FirstOrDefault());
+
+                        return Content("true");
+                    }
+                    else
+                    {
+                        return Content(cartaPorte.Errores.Values.FirstOrDefault());
+                    }
+                }
+                else
+                {
+                    var resultado =
+                    servicioComandos.Ejecutar(new ImprimirDocumento
+                    {
+                        Id = id,
+                        Impresora = impresora,
+                        CentroId = datosUsuario.CentroId,
+                        CantCopias = cantCopias
+                    });
+                    return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.FirstOrDefault());
+                }                
             }
             catch (Exception e)
             {
@@ -93,11 +119,26 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult Previsualizar(DatosUsuario datosUsuario, int id)
+        public ActionResult Previsualizar(DatosUsuario datosUsuario, int id, string ctg = null)
         {
             try
             {
-                var resultado =
+                if(id == default(int) && !string.IsNullOrEmpty(ctg))
+                {
+                    var cartaPorte = servicioComandos.Ejecutar(new ConsultarPDFCpe { NroCtg = Convert.ToInt64(ctg) }) as ResultadoConsultarPDFCpe;
+
+                    if (System.Web.HttpContext.Current != null)
+                    {
+                        System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("RetornoExportacion", "ok"));
+                    }
+
+                    if (cartaPorte != null && !cartaPorte.HayErrores)
+                        return File(cartaPorte.Pdf, "application/octet-stream", $"{ctg}.pdf");
+
+                    return Content(cartaPorte.Errores.Values.FirstOrDefault());
+                } else
+                {
+                    var resultado =
                     servicioComandos.Ejecutar(new ImprimirDocumento
                     {
                         Id = id,
@@ -105,16 +146,17 @@ namespace Molinos.Scato.Web.Controllers
                         CentroId = datosUsuario.CentroId,
                         CantCopias = 1
                     });
-                if (System.Web.HttpContext.Current != null)
-                {
-                    System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("RetornoExportacion", "ok"));
+                    if (System.Web.HttpContext.Current != null)
+                    {
+                        System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("RetornoExportacion", "ok"));
+                    }
+                    if (!resultado.HayErrores)
+                    {
+                        byte[] file = ((ResultadoPrevisualizar)resultado).Archivo;
+                        return File(file, "application/octet-stream", "vistaPrevia.pdf");
+                    }
+                    return Content(resultado.Errores.Values.FirstOrDefault());
                 }
-                if (!resultado.HayErrores)
-                {   
-                    byte[] file = ((ResultadoPrevisualizar) resultado).Archivo;
-                    return File(file, "application/octet-stream", "vistaPrevia.pdf");
-                }
-                return Content(resultado.Errores.Values.FirstOrDefault());
             }
             catch (Exception e)
             {
@@ -122,12 +164,18 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        public ActionResult Eliminar(int id)
+        public ActionResult Eliminar(int id, string ctg = null)
         {
             try
             {
-                var resultado = servicioComandos.Ejecutar(new EliminarDocumento { Id = id });
-                return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.FirstOrDefault());
+                if(id == default(int) && !string.IsNullOrEmpty(ctg))
+                {
+                    return Content(Textos.Reimpresion_Documentos_CPE_Eliminar);
+                } else
+                {
+                    var resultado = servicioComandos.Ejecutar(new EliminarDocumento { Id = id });
+                    return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.FirstOrDefault());
+                }
             }
             catch (Exception e)
             {

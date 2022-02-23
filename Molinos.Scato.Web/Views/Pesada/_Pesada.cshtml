@@ -1,9 +1,11 @@
 ﻿@using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.Dominio.Helpers
 @using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
 @model Molinos.Scato.Web.Models.Pesada
 @{
-    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas ?? new List<SelectListItem>();
     var proximasBalanzas = (IEnumerable<SelectListItem>)ViewBag.ProximasBalanzas;
     var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
     var hidraulicas = (IEnumerable<SelectListItem>)ViewBag.Hidraulicas;
@@ -40,11 +42,18 @@
         margin-bottom: 5px;
     }
 </style>
-@Html.Hidden("Automatizado",(bool)ViewBag.Automatizado)
+@Html.Hidden("Automatizado", (bool)ViewBag.Automatizado)
 <div class="row-fluid-ie7 separacion">
     <div class="grupo-carta-porte balanzaColor" id="balanza" style="padding-bottom: 0">
         @Html.LabelFor(model => model.BalanzaId):
-        @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-large", tabIndex = "-10", data_balanza_url = Url.Action("ObtenerBalanza", Model.ActividadXaml) })
+        @if (PermisosHelper.Is(PermisosScato.Administradores))
+        {
+            @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-large", tabIndex = "-10", data_balanza_url = Url.Action("ObtenerBalanza", Model.ActividadXaml) })
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-large", tabIndex = "-10", data_balanza_url = Url.Action("ObtenerBalanza", Model.ActividadXaml), disabled = "disabled" })
+        }
         <button id="btnACero" type="button" class="btn hide" tabindex="1" style="margin-left: 15px">@Textos.BalanzaACero_Titulo</button>
         @Html.ValidationMessageFor(model => model.BalanzaId)
     </div>
@@ -171,7 +180,14 @@
                                     {
                                         <div class="input-append">
                                             @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso1", @readonly = "readonly", tabIndex = "-10", data_peso_url = Url.Action("TomarPeso", Model.ActividadXaml), style = "margin-right:10px" })
-                                            <button id="tomarPeso" class="btn" type="button" tabIndex="1" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
+                                            @if (PermisosHelper.Is(PermisosScato.Administradores))
+                                            {
+                                                <button id="tomarPeso" class="btn" type="button" tabIndex="1" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
+                                            }
+                                            else
+                                            {
+                                                <button id="tomarPeso" class="btn" type="button" tabIndex="1" data-mensaje-esperar="@Textos.Pesada_Espere" disabled="disabled">@Textos.TomarPeso</button>
+                                            }
                                         </div>
                                         @Html.ValidationMessageFor(model => model.Peso)
                                     }
@@ -200,8 +216,9 @@
                                     }
                                     else
                                     {
-                                        @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
-                                    }
+                                            @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
+                                        
+                                }
                                 </div>
                             </div>
                         </td>
@@ -253,7 +270,6 @@
             }
             @if ((bool)ViewBag.CargarProximaBalanza)
             {
-
                 <div class="control-group">
                     @Html.Label(Textos.ProximaBalanza + ":", new { @class = "control-label" })
                     <div class="controls">

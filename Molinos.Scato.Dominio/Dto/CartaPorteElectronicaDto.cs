@@ -14,6 +14,7 @@ namespace Molinos.Scato.Dominio.Dto
     public sealed class CartaPorteElectronicaDto
     {
         public int Id { get; set; }
+        public int? TipoCartaPorte { get; set; }
         public int MaterialId { get; set; }
         public int CentroId { get; set; }
         public string NroOrden { get; set; }
@@ -21,5 +22,7 @@ namespace Molinos.Scato.Dominio.Dto
         public long NroCtg { get; set; }
         public int? Cosecha { get; set; }
         public DateTime? FechaUltimaActualizacion { get; set; }
+        public DateTime? FechaCacheado { get; set; }
+        public byte[] Pdf { get; set; }
     }
 }

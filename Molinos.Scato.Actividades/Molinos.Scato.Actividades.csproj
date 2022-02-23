@@ -83,6 +83,7 @@
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="EnviarMensajeCircular.cs" />
     <Compile Include="EnviarMensajeV3.cs" />
+    <Compile Include="ImpresionGenericaFile.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
     <Compile Include="Internas\InformarEstadoCaladoCircular.cs" />
     <Compile Include="Internas\VerificarEsPuestoAutomatico.cs" />
