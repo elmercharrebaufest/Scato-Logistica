@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Servicios;
+using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
@@ -9,10 +13,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Servicios;
-using Ninject.Extensions.Logging;
 using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.Web.Seguridad
@@ -31,6 +31,7 @@ namespace Molinos.Scato.Web.Seguridad
         {
             get { return DependencyResolver.Current.GetService<IServicioRepositorio>(); }
         }
+
         private static IServicioComandos ServicioComandos
         {
             get { return DependencyResolver.Current.GetService<IServicioComandos>(); }
@@ -70,14 +71,13 @@ namespace Molinos.Scato.Web.Seguridad
                     identity.AddClaim(new Claim(ClaimTypes.Role, permiso.Codigo.Value.ToString()));
                 }
             }
-            
+
             try
             {
                 var requestIP = GetUserIP();
                 log.Info($"ScatoClaimsAuthenticationManager Ips usado: {requestIP} para el usuario {nombreUsuario}");
 
                 IPAddress IP = IPAddress.Parse(requestIP);
-
                 IPHostEntry GetIPHost = Dns.GetHostEntry(IP);
 
                 List<string> hostName = GetIPHost.HostName.ToString().Split('.').ToList();
@@ -85,21 +85,18 @@ namespace Molinos.Scato.Web.Seguridad
                 string ComputerName = hostName.First();
 
                 string MachineName1 = Environment.MachineName;
-
                 string MachineName2 = Dns.GetHostName();
-
                 string MachineName3 = HttpContext.Current.Request.ServerVariables["REMOTE_HOST"].ToString();
-
                 string MachineName4 = Environment.GetEnvironmentVariable("COMPUTERNAME");
 
                 identity.AddClaim(new Claim("UserComputerName", ComputerName));
-                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(),MachineName1,MachineName2,MachineName3,MachineName4, RequestIP), nombreUsuario);
+                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(), MachineName1, MachineName2, MachineName3, MachineName4, RequestIP), nombreUsuario);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}.", nombreUsuario);
 
-                log.Error(ex,"Error IP");
+                log.Error(ex, "Error IP");
             }
 
             var ci = new ClaimsIdentity(((ClaimsIdentity)incomingPrincipal.Identity).Claims, "Negotiate");
