@@ -70,23 +70,24 @@ namespace Molinos.Scato.Web.Seguridad
                     identity.AddClaim(new Claim(ClaimTypes.Role, permiso.Codigo.Value.ToString()));
                 }
             }
-            
+
             try
             {
-                var ips = (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ?? "");
-                var RequestIP = ips.Split(',').Last().Trim().Split(':').First();
-                log.Info($"Ips detectados: {ips} para el usuario {nombreUsuario}");
-                IPAddress IP = IPAddress.Parse(RequestIP);
+                var requestIP = GetUserIP();
+                log.Info($"Ips detectados: {requestIP} para el usuario {nombreUsuario}");
+
+                IPAddress IP = IPAddress.Parse(requestIP);
                 IPHostEntry GetIPHost = Dns.GetHostEntry(IP);
-                
                 List<string> hostName = GetIPHost.HostName.ToString().Split('.').ToList();
+
                 string ComputerName = hostName.First();
                 string MachineName1 = Environment.MachineName;
-                string MachineName2 = System.Net.Dns.GetHostName();
+                string MachineName2 = Dns.GetHostName();
                 string MachineName3 = HttpContext.Current.Request.ServerVariables["REMOTE_HOST"].ToString();
-                string MachineName4 = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
+                string MachineName4 = Environment.GetEnvironmentVariable("COMPUTERNAME");
+
                 identity.AddClaim(new Claim("UserComputerName", ComputerName));
-                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(),MachineName1,MachineName2,MachineName3,MachineName4, RequestIP), nombreUsuario);
+                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(), MachineName1, MachineName2, MachineName3, MachineName4, requestIP), nombreUsuario);
             }
             catch (Exception)
             {
@@ -118,5 +119,15 @@ namespace Molinos.Scato.Web.Seguridad
             FederatedAuthentication.SessionAuthenticationModule.WriteSessionTokenToCookie(sessionSecurityToken);
         }
 
+        private string GetUserIP()
+        {
+            var ip = (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null
+                  && HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != "")
+                 ? HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"]
+                 : HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            if (ip.Contains(","))
+                ip = ip.Split(',').First();
+            return ip.Trim();
+        }
     }
 }
