@@ -74,36 +74,23 @@ namespace Molinos.Scato.Web.Seguridad
             try
             {
                 var requestIP = GetUserIP();
-                log.Info($"Ips detectado: {requestIP} para el usuario {nombreUsuario}");
-
-                GetIpAddress();
+                log.Info($"ScatoClaimsAuthenticationManager Ips usado: {requestIP} para el usuario {nombreUsuario}");
 
                 IPAddress IP = IPAddress.Parse(requestIP);
 
-                log.Info($"Ips trace: ---1");
-
                 IPHostEntry GetIPHost = Dns.GetHostEntry(IP);
 
-                log.Info($"Ips trace: ---2");
                 List<string> hostName = GetIPHost.HostName.ToString().Split('.').ToList();
-
-                log.Info($"Ips trace: ---3");
 
                 string ComputerName = hostName.First();
 
-                log.Info($"Ips trace: ---4");
                 string MachineName1 = Environment.MachineName;
 
-                log.Info($"Ips trace: ---5");
                 string MachineName2 = Dns.GetHostName();
 
-                log.Info($"Ips trace: ---5");
                 string MachineName3 = HttpContext.Current.Request.ServerVariables["REMOTE_HOST"].ToString();
 
-                log.Info($"Ips trace: ---6");
                 string MachineName4 = Environment.GetEnvironmentVariable("COMPUTERNAME");
-
-                log.Info($"Ips trace: ---7");
 
                 identity.AddClaim(new Claim("UserComputerName", ComputerName));
                 log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(), MachineName1, MachineName2, MachineName3, MachineName4, requestIP), nombreUsuario);
@@ -112,19 +99,7 @@ namespace Molinos.Scato.Web.Seguridad
             {
                 log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}.", nombreUsuario);
 
-                log.Info(ex,"Error IP");
-                //log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}. Se intenta obtener la IP", nombreUsuario);
-                //try
-                //{
-                //    var ips = (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ?? "");
-                //    var RequestIP = ips.Split(',').Last().Trim().Split(':').First();
-
-                //    identity.AddClaim(new Claim("UserComputerName", RequestIP));
-                //}
-                //catch (Exception)
-                //{
-                //    log.Info("Nombre de pc detectada: tampoco no se pudo detectar la IP para el usuario {0}", nombreUsuario);
-                //}
+                log.Error(ex,"Error IP");
             }
 
             var ci = new ClaimsIdentity(((ClaimsIdentity)incomingPrincipal.Identity).Claims, "Negotiate");
@@ -147,28 +122,10 @@ namespace Molinos.Scato.Web.Seguridad
                  ? HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"]
                  : HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
 
-            log.Info($"Ips detectados string: {ip}");
+            log.Info($"ScatoClaimsAuthenticationManager Ips detectadas : {ip}");
             if (ip.Contains(","))
                 ip = ip.Split(',').First();
             return ip.Trim();
-        }
-
-        private string GetIpAddress()
-        {
-            string ip = "";
-            var userip = HttpContext.Current.Request.UserHostAddress;
-            if (HttpContext.Current.Request.UserHostAddress != null)
-            {
-                Int64 macinfo = new Int64();
-                string macSrc = macinfo.ToString("X");
-                if (macSrc == "0")
-                {
-                    log.Info($"Ips v2 detectados string: {userip}");
-                    ip = userip;
-                }
-            }
-
-            return ip;
         }
     }
 }
