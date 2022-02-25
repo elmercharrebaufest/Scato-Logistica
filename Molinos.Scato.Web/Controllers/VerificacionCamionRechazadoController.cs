@@ -45,6 +45,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Workflow = recorrido.Workflow.Codigo;
             ViewBag.WorkflowDefinicionId = recorrido.WorkflowDefinicionId;
             ViewBag.TipoVehiculo = recorrido.TipoVehiculo.ToString();
+            ViewBag.CentroId = recorrido.Centro.Id;
             CargarMotivos();
 
             return View(controlRecorrido);
