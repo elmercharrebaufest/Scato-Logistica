@@ -171,7 +171,7 @@ namespace Molinos.Scato.Web.Controllers
                                 BalanzaId = balanza.Id,
                                 BalanzaNombre = balanza.Nombre,
                                 Fecha = DateTime.Now,
-                                Motivo = "Cambio modalidad balanza",
+                                Motivo = Textos.CambioModalidadBalanzaMotivo,
                                 NombreUsuarioResponsable = datosUsuario.NombreUsuario
                             }
                         });

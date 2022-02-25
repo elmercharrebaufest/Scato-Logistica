@@ -9799,4 +9799,7 @@
   <data name="VerRevertirRechazoVagones" xml:space="preserve">
     <value>Ver Revertir Rechazo Vagones</value>
   </data>
+  <data name="CambioModalidadBalanzaMotivo" xml:space="preserve">
+    <value>Camión avanza de etapa en forma manual sin cambio de modalidad balanza</value>
+  </data>
 </root>
