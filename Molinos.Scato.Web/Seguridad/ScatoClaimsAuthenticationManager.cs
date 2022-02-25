@@ -81,6 +81,7 @@ namespace Molinos.Scato.Web.Seguridad
                 
                 List<string> hostName = GetIPHost.HostName.ToString().Split('.').ToList();
                 string ComputerName = hostName.First();
+
                 string MachineName1 = Environment.MachineName;
                 string MachineName2 = System.Net.Dns.GetHostName();
                 string MachineName3 = HttpContext.Current.Request.ServerVariables["REMOTE_HOST"].ToString();
