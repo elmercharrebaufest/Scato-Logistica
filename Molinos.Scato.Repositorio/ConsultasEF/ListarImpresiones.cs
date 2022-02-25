@@ -183,7 +183,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                 if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
                 {
-                    sbfilter.AppendFormat(" union (select 0, 0, 29, FechaEmision, SUBSTRING(Dominio,0,CHARINDEX(',',Dominio,0)), 'CartaPorteElectronica', NEWID(), '0', NroCTG from CartaPorteElectronica where Pdf is not null and NroCTG = '{0}')", numerodoc);
+                    sbfilter.AppendFormat(" union (select 0, '', 29, FechaEmision, SUBSTRING(Dominio,0,CHARINDEX(',',Dominio,0)), 'CartaPorteElectronica', NEWID(), '0', NroCTG from CartaPorteElectronica where Pdf is not null and NroCTG = '{0}')", numerodoc);
                 }
 
                 query = sbfilter.ToString();
