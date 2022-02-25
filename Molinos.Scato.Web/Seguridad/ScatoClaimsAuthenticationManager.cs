@@ -90,12 +90,11 @@ namespace Molinos.Scato.Web.Seguridad
                 string MachineName4 = Environment.GetEnvironmentVariable("COMPUTERNAME");
 
                 identity.AddClaim(new Claim("UserComputerName", ComputerName));
-                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(), MachineName1, MachineName2, MachineName3, MachineName4, RequestIP), nombreUsuario);
+                log.Info("Nombre de pc detectada: {0} para el usuario {1}", String.Join(",", ComputerName, Dns.GetHostName(), MachineName1, MachineName2, MachineName3, MachineName4, requestIP), nombreUsuario);
             }
             catch (Exception ex)
             {
                 log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}.", nombreUsuario);
-
                 log.Error(ex, "Error IP");
             }
 
