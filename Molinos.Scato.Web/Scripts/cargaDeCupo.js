@@ -73,37 +73,52 @@
             $("#validation-cupo").removeClass("alert-info");
             $("#validation-cupo").removeClass("alert-error");
             var cupo = $('#Cupo').val();
+            let imagen = $('#ImagenCartaPorte').val();
             if (/^MOL[0-9]{4}\/[0-9]{8}$/.test(cupo) && !$('#checkSinCupo').is(':checked')) {
                 BlockCupos($("#ValidandoCupo").val());
-                $.getJSON($("#ValidarCupoUrl").val(), { cupo: cupo }, function (data) {
-                    if (data.error !== undefined) {
-                        $("#validation-cupo-body").html("<strong>" + data.error + "</strong>");
-                        $("#validation-cupo").removeClass("hide");
-                        $("#validation-cupo").addClass("alert-error");
-                        $("#Cupo").focus();
-                    } else {
-                        var especial = "";
-                        if (data.model.Especial && data.model.MaterialId == 4 ) {
-                             especial = " Sustentable";
+                var request = {
+                    cupo: cupo,
+                    imagen: imagen
+                }
+                $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: $("#ValidarCupoUrl").val(),
+                    data: request,
+                    success: function (data) {
+                        if (data.error !== undefined) {
+                            $("#validation-cupo-body").html("<strong>" + data.error + "</strong>");
+                            $("#validation-cupo").removeClass("hide");
+                            $("#validation-cupo").addClass("alert-error");
+                            $("#Cupo").focus();
+                        } else {
+                            var especial = "";
+                            if (data.model.Especial && data.model.MaterialId == 4) {
+                                especial = " Sustentable";
+                            }
+                            else if (data.model.Especial) {
+                                especial = " Especial";
+                            }
+                            $("#validation-cupo-body").html("<h4><strong>" + data.model.RespuestaSap + "</strong></h4>  Fecha: <strong>" + data.model.FechaSap + "</strong>  Material: <strong>" + data.model.MaterialDescripcion + especial + "</strong>  Proveedor: <strong>" + data.model.ProveedorDescripcion + "(" + data.model.ProveedorCuit + ")</strong>");
+                            $("#validation-cupo").removeClass("hide");
+                            $("#validation-cupo").addClass(data.model.RespuestaSap == 'Cupo del día' ? "alert-success" : data.model.RespuestaSap == "Cupo vencido" ? "alert-block" : data.model.RespuestaSap == "Cupo futuro" ? "alert-info" : "");
+                            cupoValido = true;
+                            $("#MaterialId").val(data.model.MaterialId);
+                            $("#FechaSap").val(data.model.FechaSap);
+                            $("#Especial").val(data.model.Especial);
+                            $("#RespuestaSap").val(data.model.RespuestaSap);
+                            $("#Camara").val(data.model.Camara);
+                            if ($("#cupoValidation").text() === '') {
+                                $("#btnAceptar").focus();
+                            }
+                            if (data.model.Especial) {
+                                SetearFotoCP(data.PdfImageSustentableBase64 ? "" : "error", data.PdfImageSustentableBase64, $("#CodigoCamaraCPDir").val(), true);
+                            }
                         }
-                        else if (data.model.Especial){
-                             especial = " Especial";
-                        }
-                        $("#validation-cupo-body").html("<h4><strong>" + data.model.RespuestaSap + "</strong></h4>  Fecha: <strong>" + data.model.FechaSap + "</strong>  Material: <strong>" + data.model.MaterialDescripcion + especial + "</strong>  Proveedor: <strong>" + data.model.ProveedorDescripcion + "(" + data.model.ProveedorCuit + ")</strong>");
-                        $("#validation-cupo").removeClass("hide");
-                        $("#validation-cupo").addClass(data.model.RespuestaSap == 'Cupo del día' ? "alert-success" : data.model.RespuestaSap == "Cupo vencido" ? "alert-block" : data.model.RespuestaSap == "Cupo futuro" ? "alert-info" : "" );
-                        cupoValido = true;
-                        $("#MaterialId").val(data.model.MaterialId);
-                        $("#FechaSap").val(data.model.FechaSap);
-                        $("#Especial").val(data.model.Especial);
-                        $("#RespuestaSap").val(data.model.RespuestaSap);
-                        $("#Camara").val(data.model.Camara);
-                        if ($("#cupoValidation").text() === ''){
-                            $("#btnAceptar").focus();
-                        }
-                        
-                    }
-                }).complete(function () {
+                    },
+                    error: function (error) {
+                    },
+                }).always(function () {
                     UnblockCupos();
                 });
             }

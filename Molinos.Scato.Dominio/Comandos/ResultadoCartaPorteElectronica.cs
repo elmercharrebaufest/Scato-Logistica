@@ -12,5 +12,7 @@ namespace Molinos.Scato.Dominio.Comandos
         [DataMember]
         public byte[] PdfImage { get; set; }
         public List<long> CTGsDeOperativo { get; set; }
+        [DataMember]
+        public byte[] PdfImageSustentable { get; set; }
     }
 }

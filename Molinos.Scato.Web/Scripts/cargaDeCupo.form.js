@@ -257,9 +257,10 @@ $(document).ready(function () {
     $('#CTG').change(function () {
         var nroCTG = $('#CTG').val();
         var tarjeta = $('#Numero').val();
+        var esEpecial = $('#Especial').val();
         if ((nroCTG.length == 11 || nroCTG.length == 12) && $.isNumeric(nroCTG) && $('#cpe').is(':checked')) {
             BlockCupos($("#MensajeBuscandoCartaPorte").val());
-            $.getJSON($("#links").data().urlObtenerCpe, { numeroCtg: nroCTG, tarjeta: tarjeta }, function (data) {
+            $.getJSON($("#links").data().urlObtenerCpe, { numeroCtg: nroCTG, tarjeta: tarjeta, esEpecial: esEpecial}, function (data) {
                 if (data.CodigoDeError == 1) {
                     MostrarAlertaInfo(data.Error);
                 } else if (data.CodigoDeError == 3 || data.CodigoDeError == 4) {
@@ -283,7 +284,11 @@ $(document).ready(function () {
                     }
 
                     $('#checkSinCupo').prop('checked', false);
-                    SetearFotoCP(data.PdfImageBase64 ? "" : "error", data.PdfImageBase64, $("#CodigoCamaraCPDir").val());
+                    if (esEpecial == "true") {
+                        SetearFotoCP(data.PdfImageSustentableBase64 ? "" : "error", data.PdfImageSustentableBase64, $("#CodigoCamaraCPDir").val(), true);
+                    } else {
+                        SetearFotoCP(data.PdfImageBase64 ? "" : "error", data.PdfImageBase64, $("#CodigoCamaraCPDir").val(), false);
+                    }
                 } else {
                     MostrarAlertaError(data.Error);
                 }
@@ -383,9 +388,13 @@ function TomarFotoCP() {
     }
 }
 
-function SetearFotoCP(error, imagen, directorio) {
+function SetearFotoCP(error, imagen, directorio, esSustentable) {
     if (error === "") {
-        $('#ImagenCartaPorte').val(imagen);
+        if (esSustentable) {
+            $('#ImagenCartaPorteSustentable').val(imagen);
+        } else {
+            $('#ImagenCartaPorte').val(imagen);
+        }
         $('#FotoRutaDestino').val(directorio);
         $('#imagen-cp').load(function () {
             UnblockCupos();

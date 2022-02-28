@@ -23,7 +23,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(AgregarMarcaSustentable comando)
         {
-            var resultado = new Resultado();
+            var resultado = new ResultadoCartaPorteElectronica();
+            if(comando.SoloDibujar)
+            {
+                Bitmap imagenBitmap;
+                using (var ms = new MemoryStream(comando.PdfImage))
+                {
+                        imagenBitmap = new Bitmap(ms);
+                }
+                var imagenConSelloSustentable = DibujarSustentable(imagenBitmap);
+                resultado.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
+                return resultado;
+            }
             try
             {
                 if (File.Exists(comando.RutaFotoCP))
@@ -60,10 +71,36 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             using (Graphics graphics = Graphics.FromImage(imagenCP))
             {
-                graphics.DrawImage(imagenSustentable, posicionImagenSustentableX, posicionImagenSustentableY);
+                graphics.DrawImage(imagenSustentable, posicionImagenSustentableX, posicionImagenSustentableY, 300, 150);
             }
 
             return imagenCP;
+        }
+
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        private static byte[] ImageToByte(Image img)
+        {
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            var myEncoderParameters = new EncoderParameters(1);
+            myEncoderParameters.Param[0] = new EncoderParameter(myEncoder, 70L);
+            using (var stream = new MemoryStream())
+            {
+                img.Save(stream, jgpEncoder, myEncoderParameters);
+                return stream.ToArray();
+            }
         }
     }
 }
