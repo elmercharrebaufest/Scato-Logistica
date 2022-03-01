@@ -678,6 +678,7 @@ namespace Molinos.Scato.Web.Controllers
 
         private void Suscribir(string codigoDisp, string codigoEvento, string urlSuscriptor)
         {
+            log.Info("Intercomunicador - Entro a Suscribir {0}{1}{2}", codigoDisp, codigoEvento, urlSuscriptor);
             try
             {
                 var resultado = orquestador.Suscribir(new ComandoSuscribir
