@@ -22,5 +22,10 @@
         {
             public const string Rechazar = "TRECH";
         }
+
+        public struct CodigosEventos
+        {
+            public const string CambioEstadoIntercomunicador = "CambioEstadoIntercomunicador";
+        }
     }
 }

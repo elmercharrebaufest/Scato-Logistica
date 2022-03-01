@@ -518,7 +518,7 @@ IntercomunicadorDispositivoVM.prototype = {
                         try {
                             self.vm.mainModule.models.configuration.request = new XMLHttpRequest();
                             self.vm.mainModule.models.configuration.request.onreadystatechange = self.vm.mainModule.methods.signInSpeakCallback;
-                            var uri = self.vmData.ICWebServerUrl + "/sign_in?channel=" + self.vmData.PublishingPathSpeak + '-' + self.vmData.AudioPort + "&publish=true";
+                            var uri = self.vmData.ICWebServerUrl + "/sign_in?channel=" + self.vmData.PublishingPathSpeak + '-' + self.vmData.PuertoDeAudio + "&publish=true";
                             self.trace("Connect to " + uri);
                             self.vm.mainModule.models.configuration.request.open("GET", uri, true);
                             self.vm.mainModule.models.configuration.request.send();
@@ -672,6 +672,7 @@ $(function () {
 });
 
 notificadorLectura.client.actualizarEstadoIntercomunicador = function (data) {
+    //CodigoDispositivo es el codigo del Sensor
     if (data.Speaker == true) {
         $(".deviceStatus_" + data.CodigoDispositivo).removeClass("apagado");
         $(".deviceStatus_" + data.CodigoDispositivo).addClass("prendido");

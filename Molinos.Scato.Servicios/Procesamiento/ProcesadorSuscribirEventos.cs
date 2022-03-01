@@ -58,9 +58,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 Suscribir(puestoDeTrabajo.Id, puestoDeTrabajo.LectorQr, "LecturaQr",
                             urlNotificacionesWeb, resultadoComando);
-
-                Suscribir(puestoDeTrabajo.Id, puestoDeTrabajo.IntercomunicadorCodigo, "CambioEstadoIntercomunicador",
-                      urlNotificacionesWeb, resultadoComando);
             }
 
             var balanzas = Repositorio.Listar<BalanzaPuerto>();

@@ -36,7 +36,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://valhalla:8080/ServicioOrquestador?wsdl=wsdl0" />
+  <wsdl:import namespace="http://orquestador.molinos.com.ar" location="http://nbpe00033:8080/ServicioOrquestador?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="BasicHttpBinding_IServicioOrquestador" type="i0:IServicioOrquestador">
     <wsp:PolicyReference URI="#BasicHttpBinding_IServicioOrquestador_policy" />
@@ -588,14 +588,14 @@
   </wsdl:binding>
   <wsdl:service name="ServicioOrquestador">
     <wsdl:port name="BasicHttpBinding_IServicioOrquestador" binding="tns:BasicHttpBinding_IServicioOrquestador">
-      <soap:address location="http://valhalla:8080/ServicioOrquestador" />
+      <soap:address location="http://nbpe00033:8080/ServicioOrquestador" />
     </wsdl:port>
     <wsdl:port name="NetTcpBinding_IServicioOrquestador" binding="tns:NetTcpBinding_IServicioOrquestador">
-      <soap12:address location="net.tcp://valhalla:8081/ServicioOrquestador" />
+      <soap12:address location="net.tcp://nbpe00033:8081/ServicioOrquestador" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://valhalla:8081/ServicioOrquestador</wsa10:Address>
+        <wsa10:Address>net.tcp://nbpe00033:8081/ServicioOrquestador</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>Valhalla\AlexArdela</Upn>
+          <Upn>BAUNET\odepierola</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
