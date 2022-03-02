@@ -264,6 +264,7 @@ namespace Molinos.Scato.Servicios.Impl
                 Camara = x.VideoCamaras.FirstOrDefault().Codigo,
                 Orden = x.OrdenBalanza,
                 IntercomunicadorCodigo = x.IntercomunicadorCodigo,
+                RutaNotificacion = configuracion.AppSettings["UrlNotificacionesWeb"],
             }, x => x.AutomatizadoFull && x.Balanza != null && x.Centro.Id == centroId);
             foreach (var b in balanzas)
             {

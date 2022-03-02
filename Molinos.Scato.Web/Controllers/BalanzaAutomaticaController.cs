@@ -63,7 +63,6 @@ namespace Molinos.Scato.Web.Controllers
         private void ListarConsulta(DatosUsuario datosUsuario)
         {
             var balanzas = servicio.ListarPuestosAutomaticosporCentro(datosUsuario.CentroId);
-            var urlNotificacionesWeb = ConfigurationManager.AppSettings["UrlNotificacionesWeb"];
             foreach (var balanza in balanzas)
             {
                 if (!string.IsNullOrEmpty(balanza.IntercomunicadorCodigo))
@@ -71,7 +70,7 @@ namespace Molinos.Scato.Web.Controllers
                     var intercomunicadorConfig = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
                     var intercomunicador = GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, intercomunicadorConfig.Sensor, intercomunicadorConfig.PuertoDeAudio);
                     balanza.IntercomunicadorDispositivo = intercomunicador;
-                    Suscribir(intercomunicadorConfig.Sensor, CodigosEventos.CambioEstadoIntercomunicador, urlNotificacionesWeb);
+                    Suscribir(intercomunicadorConfig.Sensor, CodigosEventos.CambioEstadoIntercomunicador, balanza.RutaNotificacion);
                 }
             }
             ViewBag.Balanzas = balanzas.Where(x => x.Orden.HasValue).OrderBy(x => x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();

@@ -12,6 +12,7 @@
         public int BalanzaId { get; set; }
         public int? Orden { get; set; }
         public string IntercomunicadorCodigo { get; set; }
+        public string RutaNotificacion { get; set; }
         public IntercomunicadorDispositivoDto IntercomunicadorDispositivo { get; set; }
     }
 }
