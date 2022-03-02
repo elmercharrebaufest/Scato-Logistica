@@ -263,12 +263,12 @@ namespace Molinos.Scato.Servicios.Impl
                 EsExpo = x.Balanza.EsExportacion,
                 Camara = x.VideoCamaras.FirstOrDefault().Codigo,
                 Orden = x.OrdenBalanza,
-                IntercomunicadorCodigo = x.IntercomunicadorCodigo,
-                RutaNotificacion = configuracion.AppSettings["UrlNotificacionesWeb"],
+                IntercomunicadorCodigo = x.IntercomunicadorCodigo
             }, x => x.AutomatizadoFull && x.Balanza != null && x.Centro.Id == centroId);
             foreach (var b in balanzas)
             {
                 b.CamaraUrl = servicioOrquestador.ObtenerUrlPorCamara(new string[] { b.Camara }).FirstOrDefault();
+                b.RutaNotificacion = configuracion.AppSettings["UrlNotificacionesWeb"];
                 //log.Debug($"Url: {b.CamaraUrl} para camara {b.Camara}");
             }
             return balanzas;
