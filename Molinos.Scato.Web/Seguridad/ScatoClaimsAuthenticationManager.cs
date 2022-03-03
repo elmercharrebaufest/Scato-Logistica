@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Servicios;
+using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Services;
 using System.IdentityModel.Tokens;
@@ -9,10 +13,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Servicios;
-using Ninject.Extensions.Logging;
 using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.Web.Seguridad
@@ -31,6 +31,7 @@ namespace Molinos.Scato.Web.Seguridad
         {
             get { return DependencyResolver.Current.GetService<IServicioRepositorio>(); }
         }
+
         private static IServicioComandos ServicioComandos
         {
             get { return DependencyResolver.Current.GetService<IServicioComandos>(); }

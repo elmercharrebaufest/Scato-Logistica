@@ -50,7 +50,7 @@
 
         @if (PermisosHelper.Is(PermisosScato.VerRevertirRechazoVagones))
         {
-            if (ViewBag.TipoVehiculo == "Tren")
+            if (ViewBag.TipoVehiculo == "Tren" && ViewBag.CentroId == 5)
             {
                 <button type="submit" class="btn btn-warning no-rechazar">@Textos.VerificacionCamionRechazado_NoRechazar</button>
             }
