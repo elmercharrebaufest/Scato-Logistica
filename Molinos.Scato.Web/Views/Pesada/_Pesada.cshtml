@@ -52,7 +52,7 @@
         }
         else
         {
-            @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-large", tabIndex = "-10", data_balanza_url = Url.Action("ObtenerBalanza", Model.ActividadXaml), disabled = "disabled" })
+            @Html.DropDownListFor(model => model.BalanzaId, balanzas, new { @class = "control input-large", tabIndex = "-10", data_balanza_url = Url.Action("ObtenerBalanza", Model.ActividadXaml), @readonly = "readonly", @style = "pointer-events: none;" })
         }
         <button id="btnACero" type="button" class="btn hide" tabindex="1" style="margin-left: 15px">@Textos.BalanzaACero_Titulo</button>
         @Html.ValidationMessageFor(model => model.BalanzaId)
