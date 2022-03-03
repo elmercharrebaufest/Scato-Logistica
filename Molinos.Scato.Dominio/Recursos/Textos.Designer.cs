@@ -6928,6 +6928,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Valor por Defecto Calado.
+        /// </summary>
+        public static string CaracteristicaDeCalidad_ValorPorDefectoCalado {
+            get {
+                return ResourceManager.GetString("CaracteristicaDeCalidad_ValorPorDefectoCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear característica de Calidad por Workflow.
         /// </summary>
         public static string CaracteristicaDeCalidadPorWorkflow_Crear {
@@ -13165,6 +13174,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Error_Invalido {
             get {
                 return ResourceManager.GetString("Error_Invalido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El Valor ingresado no es válido, debe ser mayor al Valor Mínimo y menor al Máximo.
+        /// </summary>
+        public static string Error_Invalido_ValorPorDefectoCalado {
+            get {
+                return ResourceManager.GetString("Error_Invalido_ValorPorDefectoCalado", resourceCulture);
             }
         }
         

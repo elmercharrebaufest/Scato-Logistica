@@ -45,5 +45,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         public bool AnalisisAutomatico { get; set; }
         public decimal? ToleranciaSinMensaje { get; set; }
+        public bool TieneValorCaladoPorDefecto { get; set; }
     }
 }

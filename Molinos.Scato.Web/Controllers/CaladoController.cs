@@ -129,14 +129,15 @@ namespace Molinos.Scato.Web.Controllers
                             Caracteristica = x.Descripcion,
                             CaracteristicaId = x.Id,
                             EsHumedad = x.EsHumedad,
-                            ValorCalado = null,
+                            ValorCalado = (x.CaladoPorDefecto != null ) ? x.CaladoPorDefecto : null,
                             EnviaAnalisisObligatorio = x.NoAceptarSiSeDefineUnValor,
                             NroDeToma = 1,
                             ToleranciaSinAnalisis = x.ToleranciaSinAnalisis,
                             ToleranciaSinMensaje = x.ToleranciaSinMensaje,
                             Dispositivo = x.Dispositivo,
                             CaracteristicaNombreNirs = x.NombreNirs,
-                            Modalidad = x.Dispositivo == TipoDispositivo.NIRS ? ((NirsDto)ViewBag.Nirs).Modalidad : (x.Dispositivo == TipoDispositivo.Humedimetro ? ((HumedimetroDto)ViewBag.Humedimetro).Modalidad : Modalidad.Manual)
+                            Modalidad = x.Dispositivo == TipoDispositivo.NIRS ? ((NirsDto)ViewBag.Nirs).Modalidad : (x.Dispositivo == TipoDispositivo.Humedimetro ? ((HumedimetroDto)ViewBag.Humedimetro).Modalidad : Modalidad.Manual),
+                            TieneValorCaladoPorDefecto = x.CaladoPorDefecto != null
                         }).ToList(),
                 MuestraConjunto = null,
                 NumeroOrden = recorrido.Centro.Descripcion.Substring(0, 3).Trim().ToUpper() + recorrido.Calado.Id.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0'),

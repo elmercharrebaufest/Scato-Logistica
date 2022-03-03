@@ -9802,4 +9802,10 @@
   <data name="CambioModalidadBalanzaMotivo" xml:space="preserve">
     <value>Camión avanza de etapa en forma manual sin cambio de modalidad balanza</value>
   </data>
+  <data name="CaracteristicaDeCalidad_ValorPorDefectoCalado" xml:space="preserve">
+    <value>Valor por Defecto Calado</value>
+  </data>
+  <data name="Error_Invalido_ValorPorDefectoCalado" xml:space="preserve">
+    <value>El Valor ingresado no es válido, debe ser mayor al Valor Mínimo y menor al Máximo</value>
+  </data>
 </root>

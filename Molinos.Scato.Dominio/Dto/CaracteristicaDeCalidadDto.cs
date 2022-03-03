@@ -169,6 +169,11 @@ namespace Molinos.Scato.Dominio.Dto
             {
                 yield return new ValidationResult(Textos.Error_Invalido, new[] { "ToleranciaSinAnalisis" });
             }
+
+            if (CaladoPorDefecto < CaladoMinimo || CaladoPorDefecto > CaladoMaximo)
+            {
+                yield return new ValidationResult(Textos.Error_Invalido_ValorPorDefectoCalado, new[] { "CaladoPorDefecto" });
+            }
         }
 
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_IntervaloDeAnalisis")]
@@ -181,6 +186,11 @@ namespace Molinos.Scato.Dominio.Dto
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public decimal? ToleranciaSinMensaje { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_ValorPorDefectoCalado")]
+        [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")] 
+        public decimal? CaladoPorDefecto { get; set; }
 
     }
 }

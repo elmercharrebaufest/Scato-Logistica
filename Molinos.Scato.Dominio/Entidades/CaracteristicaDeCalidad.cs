@@ -57,5 +57,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool IntervaloDeAnalisis { get; set; }
         public virtual bool EnviaASap { get; set; }
         public virtual decimal? ToleranciaSinMensaje { get; set; }
+        public virtual decimal? CaladoPorDefecto { get; set; }
     }
 }
