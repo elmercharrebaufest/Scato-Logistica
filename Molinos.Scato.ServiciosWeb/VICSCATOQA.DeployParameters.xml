@@ -8,7 +8,7 @@
   <!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoqaor.molinos.com.ar:8081/ServicioOrquestador" />-->
   <setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wsctg/services/CTGService_v4.0" />
   <!--<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://GVICECCDES.ar.molinos.local:8010/sap/bc/srt/rfc/sap/zsdws_scato/220/zsdws_scato/zsdws_scato" />-->
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://gviceccqa.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
   <setParameter name="CpeEndPoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wscpe/services/soap" />

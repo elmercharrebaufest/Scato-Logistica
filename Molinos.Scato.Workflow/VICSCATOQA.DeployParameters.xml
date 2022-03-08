@@ -7,7 +7,7 @@
   <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
   <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
   <!--<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://GVICECCDES.ar.molinos.local:8010/sap/bc/srt/rfc/sap/zsdws_scato/220/zsdws_scato/zsdws_scato" />-->
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="https://gviceccqa.molinosagro.ad/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
 
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
