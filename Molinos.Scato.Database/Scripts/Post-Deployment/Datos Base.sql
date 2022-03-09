@@ -1377,3 +1377,9 @@ GO
 --Entidades con Tipos De Actividad
 IF NOT EXISTS (SELECT 1 FROM EntidadTipoDeActividad WHERE Entidad_Id = (SELECT Id FROM Entidad WHERE Codigo = 'EVIST') AND TipoDeActividad_Id = (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) BEGIN INSERT INTO EntidadTipoDeActividad VALUES((SELECT Id FROM Entidad WHERE Codigo = 'EVIST'), (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) END
 GO
+
+--Configuraciones Generales
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'AFIP' AND  Nombre = 'ConsultasParalelas' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('AFIP', 'ConsultasParalelas', '1', NULL, GETDATE(), 'SCATO')
+END

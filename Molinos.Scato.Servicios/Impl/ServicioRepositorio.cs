@@ -7321,7 +7321,7 @@ namespace Molinos.Scato.Servicios.Impl
             var centro = repositorio.Obtener<Centro>(datosCamion.CentroId);
             var retorno = new FotosDto { Fotos = new List<FotoDto>(), Material = datosCamion.Material, NumeroDocumentoIngreso = datosCamion.NumeroDocumentoIngreso, Patente = datosCamion.Patente, FechaInicio = datosCamion.FechaInicio, RecorridoId = datosCamion.Id };
 
-            return ListarFotos(fileName, retorno, fotosPath:centro?.FotosPath);
+            return ListarFotos(fileName, retorno, fotosPath: centro?.FotosPath);
         }
 
         public FotosDto ListarFotosCamion(Guid instanciaWorkflow, string actividad)
@@ -7513,7 +7513,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             try
             {
-                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera, fotosPath:fotosPath).OrderByDescending(x => x.CreationTime))
+                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera, fotosPath: fotosPath).OrderByDescending(x => x.CreationTime))
                 {
                     var nombre = foundFile.Name.Split('.')[0].Split('-');
                     var actividad = nombre.Count() >= 4 ? nombre[3] : string.Empty;
@@ -8523,7 +8523,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false)
         {
-            return (excluirEspeciales) 
+            return (excluirEspeciales)
                 ? Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
                     x => x.Centro.Id == centroId && (x.EsSojaSustentable == esSustentable || sustentableMixta) && (x.EsEspecial != excluirEspeciales || x.EsEspecial == null))
                 : Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
@@ -9571,6 +9571,7 @@ namespace Molinos.Scato.Servicios.Impl
             repositorio.GuardarCambios();
             return resultado;
         }
+
         public string ObtenerDispositivoBarreraEntrada(int puestoId)
         {
             return repositorio.ObtenerProyeccion<PuestoDeTrabajo, string>(
@@ -9578,19 +9579,19 @@ namespace Molinos.Scato.Servicios.Impl
                 x => x.Entrada);
         }
 
-        public ConfiguracionGeneralDto ObtenerConfiguracion(string pantalla, string nombre, int? centroId)
+        public ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null)
         {
-            return Obtener<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.Nombre == nombre && x.CentroId == centroId);
+            return Obtener<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.Nombre == nombre && (centroId.HasValue? x.CentroId == centroId : x.CentroId == null));
         }
 
-        public List<ConfiguracionGeneralDto> ObtenerConfiguraciones(string pantalla, List<string> nombres, int? centroId)
+        public List<ConfiguracionGeneralDto> ListarConfiguracionesGenerales(string pantalla, int? centroId = null)
         {
-            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && nombres.Contains(x.Nombre) && x.CentroId == centroId).ToList();
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && (centroId.HasValue ? x.CentroId == centroId : x.CentroId == null)).ToList();
         }
 
-        public List<ConfiguracionGeneralDto> ObtenerConfiguraciones(string pantalla, int? centroId)
+        public List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null)
         {
-            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.CentroId == centroId).ToList();
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && nombres.Contains(x.Nombre) && (centroId.HasValue ? x.CentroId == centroId : x.CentroId == null)).ToList();
         }
     }
 }

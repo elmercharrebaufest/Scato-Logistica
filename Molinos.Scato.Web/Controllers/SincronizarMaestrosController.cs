@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
@@ -69,7 +70,7 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         public ActionResult CachearCpeAfip(DatosUsuario datosUsuario)
         {
-            CachearCpeAfip(datosUsuario.CentroId, 3, 5, "AMBOS");
+            CachearCpeAfip(datosUsuario.CentroId, 3, "AMBOS");
             return Json(true);
         }
 
@@ -200,7 +201,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        public void CachearCpeAfip(int centro = 5, int reintentos = 3, int consultasParalelo = 5, string tipoCpe = "AMBOS")
+        public void CachearCpeAfip(int centro = 5, int reintentos = 3, string tipoCpe = "AMBOS")
         {
             var cpesPendientes = (ResultadoConsultaCpePorDestino)servicioComandos.Ejecutar(
                 new ConsultarCPEPorDestino()
@@ -215,9 +216,13 @@ namespace Molinos.Scato.Web.Controllers
             {
                 servicioRepositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, null);
                 var cpesNoCacheadas = servicioRepositorio.ObtenerCpesNoCacheadas(cpesPendientes.Cpes);
+                var consultasParaleloVal = servicioRepositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.AFIP, Constantes.ConfiguracionGeneral.AFIP.ConsultasParalelas);
+
+                var consultasParalelo = 0;
+                int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
 
                 log.Debug("Se inicia el proceso de cacheo");
-                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo }, (ctg) =>
+                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo}, (ctg) =>
                 {
                     var intentos = 0;
                     var ok = false;

@@ -33,10 +33,17 @@
             public struct Pantalla
             {
                 public const string EficienciaCalado = "EficienciaCalado";
+                public const string AFIP = "AFIP";
             }
-            public struct Nombre
+
+            public struct EficienciaCalado
             {
                 public const string EficienciaCalles = "EficienciaCalles";
+            }
+
+            public struct AFIP
+            {
+                public const string ConsultasParalelas = "ConsultasParalelas";
             }
         }
     }
