@@ -7614,10 +7614,6 @@ namespace Molinos.Scato.Servicios.Impl
             return resultado;
         }
 
-        private void ObtenerFotosEnDirectorio(string fileName, string path, List<FileData> resultado, bool obtenerPrimera = false)
-        {
-        }
-
         public List<EstadoMaterialDto> ListarEstadoPlanta(int centroId, bool mostrarIngresos, bool esGrano)
         {
             return Listar<EstadoMaterial, EstadoMaterialDto>(
@@ -9580,6 +9576,21 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerProyeccion<PuestoDeTrabajo, string>(
                 x => x.Id == puestoId,
                 x => x.Entrada);
+        }
+
+        public ConfiguracionGeneralDto ObtenerConfiguracion(string pantalla, string nombre, int? centroId)
+        {
+            return Obtener<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.Nombre == nombre && x.CentroId == centroId);
+        }
+
+        public List<ConfiguracionGeneralDto> ObtenerConfiguraciones(string pantalla, List<string> nombres, int? centroId)
+        {
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && nombres.Contains(x.Nombre) && x.CentroId == centroId).ToList();
+        }
+
+        public List<ConfiguracionGeneralDto> ObtenerConfiguraciones(string pantalla, int? centroId)
+        {
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.CentroId == centroId).ToList();
         }
     }
 }

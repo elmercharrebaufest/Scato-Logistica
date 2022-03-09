@@ -27,5 +27,17 @@
         {
             public const string CambioEstadoIntercomunicador = "CambioEstadoIntercomunicador";
         }
+
+        public struct ConfiguracionGeneral
+        {
+            public struct Pantalla
+            {
+                public const string EficienciaCalado = "EficienciaCalado";
+            }
+            public struct Nombre
+            {
+                public const string EficienciaCalles = "EficienciaCalles";
+            }
+        }
     }
 }

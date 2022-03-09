@@ -505,6 +505,7 @@
     <Build Include="dbo\Tables\MotivoInactividad.sql" />
     <Build Include="dbo\Tables\RegistroInactividad.sql" />
     <Build Include="dbo\Tables\RegistroStockOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\ConfiguracionGeneral.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />
