@@ -2601,5 +2601,23 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null);
+
+        [OperationContract]
+        ListaPaginada<VisualizacionBarreraDto> ListarPaginadoVisualizacionBarrera(int centroId, Paginacion paginacion);
+
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarreras(int grupoId);
+
+        [OperationContract]
+        VisualizacionBarreraDto ObtenerVisualizacionBarrera(int id);
+
+        [OperationContract]
+        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario);
+
+        [OperationContract]
+        int ObtenerCantidadBarrerasPorUsuario(string usuario);
+
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarrerasActivos();
     }
 }

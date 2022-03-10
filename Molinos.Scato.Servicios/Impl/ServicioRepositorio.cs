@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Administration;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -9592,6 +9593,63 @@ namespace Molinos.Scato.Servicios.Impl
         public List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null)
         {
             return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && nombres.Contains(x.Nombre) && (centroId.HasValue ? x.CentroId == centroId : x.CentroId == null)).ToList();
+        }
+
+        public ListaPaginada<VisualizacionBarreraDto> ListarPaginadoVisualizacionBarrera(int centroId, Paginacion paginacion)
+        {
+            Expression<Func<VisualizacionBarrera, bool>> expresionFiltro =
+                x =>
+                 x.CentroId == centroId;
+
+            return Listar<VisualizacionBarrera, VisualizacionBarreraDto>(expresionFiltro, paginacion);
+        }
+
+        public IList<SensorBarreraDto> ListarSensoresBarreras(int grupoId)
+        {
+            return Listar<SensorBarrera, SensorBarreraDto>(x => x.VisualizacionBarrera.Id == grupoId);
+        }
+
+        public VisualizacionBarreraDto ObtenerVisualizacionBarrera(int id)
+        {
+            return Obtener<VisualizacionBarrera, VisualizacionBarreraDto>(id);
+        }
+
+        public IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario)
+        {
+            var usuarioDto = Obtener<Usuario, UsuarioDto>(x => x.NombreUsuario.Equals(usuario));
+            if(usuarioDto != null)
+            {
+                var lista = (Listar<VisualizacionBarrera, VisualizacionBarreraDto>()).Where(w => !w.Deshabilitada && w.Visible).ToList();
+                return lista.Where(w => usuarioDto.RolesAsociados.Any(a => a.Id == w.RolId)).ToList();
+            }
+
+            return new List<VisualizacionBarreraDto>();
+        }
+
+        public int ObtenerCantidadBarrerasPorUsuario(string usuario)
+        {
+            int resultado = 0;
+
+            try
+            {
+                var listaGrupos = ObtenerGruposBarrerasPorUsuario(usuario);
+                foreach (var grupo in listaGrupos)
+                {
+                    var sensores = ListarSensoresBarreras(grupo.Id);
+                    resultado += sensores.Count();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return resultado;
+        }
+
+        public IList<SensorBarreraDto> ListarSensoresBarrerasActivos()
+        {
+            return Listar<SensorBarrera, SensorBarreraDto>(x => !x.VisualizacionBarrera.Deshabilitada);
         }
     }
 }

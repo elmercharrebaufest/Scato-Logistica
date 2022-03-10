@@ -109,6 +109,10 @@ $(document).ready(function () {
     }));
 
     $(conectarSignalR());
+
+    $("li.view-dashboard-barreras").click(function () {
+        $("#barreraModal").modal("show");
+    });
 });
 
 function conectarSignalR() {
@@ -128,6 +132,7 @@ function conectarSignalR() {
     window.hubReady.done(function () {
         recargarNotificaciones(false, true, true);
         notificador.server.unirseAGrupo(grupos);
+        notificador.server.unirseAGrupo('SENSORESBARRERA');
     });
 }
 
@@ -208,6 +213,8 @@ function mostrarAlertaPorPantalla(tipoAlerta, mensaje) {
         ActualizarEstadoServicios(mensaje);
     } else if (tipoAlerta == 9) {
         NotificarCPMesaEntrada(mensaje);
+    } else if (tipoAlerta == 12) {
+        NotificarCambioEstadoBarrera(mensaje);
     }
 }
 

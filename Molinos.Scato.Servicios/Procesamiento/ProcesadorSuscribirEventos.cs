@@ -60,6 +60,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             urlNotificacionesWeb, resultadoComando);
             }
 
+            var dispositivosBarrera = (Repositorio.Listar<VisualizacionBarrera>()).Where(w => !w.Deshabilitada).SelectMany(s => s.SensoresBarreras).ToList();
+            var sensoresBarrera = dispositivosBarrera.Select(s => s.CodigoDispositivoSensorArriba).ToList();
+                sensoresBarrera.AddRange(dispositivosBarrera.Select(p => p.CodigoDispositivoSensorArriba).ToList());
+                sensoresBarrera = sensoresBarrera.Distinct().ToList();
+
+            for (int i = 0; i < sensoresBarrera.Count; i++)
+            {
+                var sensor = sensoresBarrera[i];
+                Suscribir(i, sensor, "CambioEstadoSensorBarrera",
+                            urlNotificacionesWeb, resultadoComando);
+            }
+
             var balanzas = Repositorio.Listar<BalanzaPuerto>();
             if(balanzas != null)
             {

@@ -9802,6 +9802,42 @@
   <data name="CambioModalidadBalanzaMotivo" xml:space="preserve">
     <value>Camión avanza de etapa en forma manual sin cambio de modalidad balanza</value>
   </data>
+  <data name="AbmBarrera" xml:space="preserve">
+    <value>ABM Barrera</value>
+  </data>
+  <data name="Administracion_Barrera" xml:space="preserve">
+    <value>Administración Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_Crear" xml:space="preserve">
+    <value>Crear Grupo Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_Nombre" xml:space="preserve">
+    <value>Barrera</value>
+  </data>
+  <data name="Barrera_Nuevo" xml:space="preserve">
+    <value> Nuevo Grupo</value>
+  </data>
+  <data name="Barrera_Sensor_Abajo" xml:space="preserve">
+    <value>Sensor Abajo</value>
+  </data>
+  <data name="Barrera_Sensor_Arriba" xml:space="preserve">
+    <value>Sensor Arriba</value>
+  </data>
+  <data name="Barrera_Titulo" xml:space="preserve">
+    <value>Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_crear_codigo_Obligatorio" xml:space="preserve">
+    <value>El campo código es requerido</value>
+  </data>
+  <data name="Barrera_crear_descripcion_Obligatorio" xml:space="preserve">
+    <value>El campo descripcion es requerido</value>
+  </data>
+  <data name="Barrera_crear_Rol_Obligatorio" xml:space="preserve">
+    <value>El campo rol es requerido</value>
+  </data>
+  <data name="Barrera_Modificar" xml:space="preserve">
+    <value>Modificar Grupo Visualización de Barreras</value>
+  </data>
   <data name="CaracteristicaDeCalidad_ValorPorDefectoCalado" xml:space="preserve">
     <value>Valor por Defecto Calado</value>
   </data>
