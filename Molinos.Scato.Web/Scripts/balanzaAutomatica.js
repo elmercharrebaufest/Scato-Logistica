@@ -44,6 +44,10 @@ $(document).ready(function () {
             var estadoSemaforos = JSON.parse(notificacion.Mensaje);
             ModificarEstadosSemaforo(estadoSemaforos);
         }
+
+        if (notificacion !== null && notificacion.TipoAlerta == 12) {
+            NotificarCambioEstadoBarrera(notificacion.Mensaje);
+        }
     };
 
     // Start the connection

@@ -546,6 +546,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         VisualizarVideoCamarasExportacion = 263,
         [Display(ResourceType = typeof(Textos), Name = "MonitorCPECacheada")]
         MonitorCPECacheada = 264,
+        [Display(ResourceType = typeof(Textos), Name = "AbmBarrera")]
+        AbmBarrera = 265,
 
         //Permisos Notificaciones
         Balanceros = 300,

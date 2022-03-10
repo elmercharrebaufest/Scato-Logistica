@@ -14,6 +14,7 @@
         NotificacionEstadoWeb = 8,
         CartaPorte = 9,
         CambioEstadoBalanzas = 10,
-        CambioEstadoSemaforo = 11
+        CambioEstadoSemaforo = 11,
+        CambioEstadoBarrera = 12
     }
 }

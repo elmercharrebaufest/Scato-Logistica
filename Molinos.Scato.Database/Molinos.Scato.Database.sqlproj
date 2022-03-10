@@ -505,6 +505,8 @@
     <Build Include="dbo\Tables\MotivoInactividad.sql" />
     <Build Include="dbo\Tables\RegistroInactividad.sql" />
     <Build Include="dbo\Tables\RegistroStockOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\VisualizacionBarrera.sql" />
+    <Build Include="dbo\Tables\SensorBarrera.sql" />
     <Build Include="dbo\Tables\ConfiguracionGeneral.sql" />
   </ItemGroup>
   <ItemGroup>

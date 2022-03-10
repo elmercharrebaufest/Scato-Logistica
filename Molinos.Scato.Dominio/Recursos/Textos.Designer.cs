@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -147,6 +147,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AbmBalanza {
             get {
                 return ResourceManager.GetString("AbmBalanza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ABM Barrera.
+        /// </summary>
+        public static string AbmBarrera {
+            get {
+                return ResourceManager.GetString("AbmBarrera", resourceCulture);
             }
         }
         
@@ -2743,6 +2752,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administración Visualización de Barreras.
+        /// </summary>
+        public static string Administracion_Barrera {
+            get {
+                return ResourceManager.GetString("Administracion_Barrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administración de Bocas de Destino.
         /// </summary>
         public static string Administracion_BocaDestinos {
@@ -5214,6 +5232,96 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string BalanzaTara {
             get {
                 return ResourceManager.GetString("BalanzaTara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Grupo Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Crear {
+            get {
+                return ResourceManager.GetString("Barrera_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo código es requerido.
+        /// </summary>
+        public static string Barrera_crear_codigo_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_codigo_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo descripcion es requerido.
+        /// </summary>
+        public static string Barrera_crear_descripcion_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_descripcion_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo rol es requerido.
+        /// </summary>
+        public static string Barrera_crear_Rol_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_Rol_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificar Grupo Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Modificar {
+            get {
+                return ResourceManager.GetString("Barrera_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barrera.
+        /// </summary>
+        public static string Barrera_Nombre {
+            get {
+                return ResourceManager.GetString("Barrera_Nombre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Nuevo Grupo.
+        /// </summary>
+        public static string Barrera_Nuevo {
+            get {
+                return ResourceManager.GetString("Barrera_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Abajo.
+        /// </summary>
+        public static string Barrera_Sensor_Abajo {
+            get {
+                return ResourceManager.GetString("Barrera_Sensor_Abajo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Arriba.
+        /// </summary>
+        public static string Barrera_Sensor_Arriba {
+            get {
+                return ResourceManager.GetString("Barrera_Sensor_Arriba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Titulo {
+            get {
+                return ResourceManager.GetString("Barrera_Titulo", resourceCulture);
             }
         }
         

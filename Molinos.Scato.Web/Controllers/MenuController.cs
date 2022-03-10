@@ -33,6 +33,16 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
 
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
+            var grupoBarrera = servicio.ObtenerGruposBarrerasPorUsuario(datosUsuario.NombreUsuario);
+            for (int i = 0; i < grupoBarrera.Count; i++)
+            {
+                var sensores = servicio.ListarSensoresBarreras(grupoBarrera[i].Id);
+                grupoBarrera[i].SensoresBarreras = sensores;
+            }
+            ViewBag.ModulosBarrera = grupoBarrera;
+            var sensoresBarrera = servicio.ListarSensoresBarreras(grupoBarrera?.FirstOrDefault()?.Id ?? 0);
+            ViewBag.SensoresBarrera = sensoresBarrera;
+            ViewBag.TotalSensoresBarrera = servicio.ObtenerCantidadBarrerasPorUsuario(datosUsuario.NombreUsuario);
 
             var rm = new ResourceManager(typeof(Textos));
             ViewBag.Idiomas = CultureInfo.GetCultures(CultureTypes.AllCultures).Select(x => x).Where(x => ResourceManagerExist(rm, x)).ToSelectList(x => x.LCID.ToString(CultureInfo.InvariantCulture), x => x.NativeName.Split('(')[0]);

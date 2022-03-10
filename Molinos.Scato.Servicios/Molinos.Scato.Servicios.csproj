@@ -261,6 +261,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\BodegaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroBalanzaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ReglaDeAnalisisObligatorioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SensorBarreraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\SentidoManoDeEmbarqueMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoDeActividadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoDeBuquePuertoMappingProfile.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\LoteBiotecnologiaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\IngresosBodegaTransmisionASapMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\InformarCupoTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VisualizacionBarreraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZE7550TransmisionASapMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\PinchazosPorCaladaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZonaMappingProfile.cs" />
@@ -521,10 +523,12 @@
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeCamioneroCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajesAsincronoCartelLed.cs" />
@@ -587,6 +591,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaCamara.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRegistroInactividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorNotificarLecturaCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerTickets.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerPesada.cs" />

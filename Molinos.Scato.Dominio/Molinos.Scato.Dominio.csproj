@@ -107,11 +107,13 @@
     <Compile Include="Comandos\ConfirmarArribo.cs" />
     <Compile Include="Comandos\CrearMotivosLimpieza.cs" />
     <Compile Include="Comandos\CrearLogCambioDeModalidadCalle.cs" />
+    <Compile Include="Comandos\CrearVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EliminarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\CrearRegistroInactividad.cs" />
     <Compile Include="Comandos\EliminarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\EliminarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\EliminarMotivosLimpieza.cs" />
+    <Compile Include="Comandos\EliminarVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Comandos\EnviarMensajeCamioneroCircular.cs" />
     <Compile Include="Comandos\EnviarMensajesAsincronoCartelLed.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Comandos\ModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Comandos\ModificarRecorridoMuestraAuditoriaCamara.cs" />
     <Compile Include="Comandos\ModificarRegistroInactividad.cs" />
+    <Compile Include="Comandos\ModificarVisualizacionBarrera.cs" />
     <Compile Include="Comandos\NotificarLecturaCPE.cs" />
     <Compile Include="Comandos\ObtenerTickets.cs" />
     <Compile Include="Comandos\ObtenerPesada.cs" />
@@ -679,6 +682,7 @@
     <Compile Include="Dto\ConfiguracionKeyValueDto.cs" />
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoDatosGraficosDto.cs" />
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoValoresDto.cs" />
+    <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
@@ -810,6 +814,7 @@
     <Compile Include="Dto\ResultadoCamaraDto.cs" />
     <Compile Include="Dto\EntradaDto.cs" />
     <Compile Include="Dto\SectorCantidadCamionesDto.cs" />
+    <Compile Include="Dto\SensorBarreraDto.cs" />
     <Compile Include="Dto\SentidoManoDeEmbarqueDto.cs" />
     <Compile Include="Dto\TipoDeActividadDto.cs" />
     <Compile Include="Dto\TipoDeBuquePuertoDto.cs" />
@@ -914,6 +919,7 @@
     <Compile Include="Dto\PanelServiciosWebDto.cs" />
     <Compile Include="Dto\FirmaDto.cs" />
     <Compile Include="Dto\UsuarioMatriculaDto.cs" />
+    <Compile Include="Dto\VisualizacionBarreraDto.cs" />
     <Compile Include="Dto\WorkflowCreadoDto.cs" />
     <Compile Include="Dto\MovimientoDeBinesDto.cs" />
     <Compile Include="Dto\LoteBiotecnologiaListaDto.cs" />
@@ -1074,6 +1080,7 @@
     <Compile Include="Entidades\MuestraEnvioACamaraBiotecnologia.cs" />
     <Compile Include="Entidades\InformarCupoTransmisionASap.cs" />
     <Compile Include="Entidades\LogExceptuadosTicketMunicipal.cs" />
+    <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
     <Compile Include="Enums\CaracteristicasCalidad.cs" />
@@ -1581,6 +1588,7 @@
       <DependentUpon>Textos.resx</DependentUpon>
     </Compile>
     <Compile Include="Seguridad\PermisosScato.cs" />
+    <Compile Include="SensorBarrera.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Recursos\Textos.fr.resx">

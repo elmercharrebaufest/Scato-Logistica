@@ -1,0 +1,143 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.VisualizacionBarreraDto
+@{
+    var sensoresBarrera = (string)ViewBag.sensoresBarrera;
+}
+
+<style>
+
+    .span6 {
+        width: 430px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .form-horizontal .control-label {
+        width: 170px;
+        font-size: 12px;
+    }
+
+    #dialogo-editar-body {
+        padding-right: 0px !important;
+    }
+
+    #dialogo-editar .control-group {
+        margin-bottom: 5px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    label.checkbox {
+        font-size: 12px;
+    }
+
+    .tablaDatos label {
+        margin-bottom: 0;
+    }
+
+    .control-label2 {
+        width: auto;
+        display: inline;
+        font-size: 12px;
+    }
+
+    .help-inline {
+        padding-left: 0;
+    }
+
+    #dialogo-editar-body {
+        max-height: 440px !important;
+        width: 905px !important;
+    }
+
+    .span6 {
+        width: 400px;
+    }
+</style>
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"></div>
+
+@*@Html.HiddenFor(m => m.EsHumedad)*@
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.Hidden("VisualizacionBarreraId", Model == null ? 0 : Model.Id)
+            @Html.LabelFor(model => model.Codigo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Codigo, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.Codigo)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.Descripcion)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.Label(Textos.Rol, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownList("RolId", (IEnumerable<SelectListItem>)ViewBag.Roles, new { @class = "control input-large" })
+                @Html.ValidationMessageFor(m => m.RolId)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Deshabilitada, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(model => model.Deshabilitada, new { @class = "input-large", data_toggle = "tooltip" })
+                @Html.ValidationMessageFor(model => model.Deshabilitada)
+            </div>
+        </div>
+
+        <div class="control-group">
+            @Html.LabelFor(model => model.Visible, new { @class = "control-label" })
+            <div class="controls">
+                @Html.CheckBoxFor(model => model.Visible, new { @class = "input-large", data_toggle = "tooltip" })
+                @Html.ValidationMessageFor(model => model.Visible)
+            </div>
+        </div>
+        <div id="grilla">
+            <div class="span11">
+                <div class="row-fluid">
+                    @Html.Hidden("sensoresBarreraPostBack", sensoresBarrera)
+                    <input type="hidden" name="sensoresBarrera" id="sensoresBarrera" data-bind="value: ko.toJSON(sensoresBarrera)" />
+                    <div class="bordeGris">
+                        @Textos.Barrera_Sensor_Arriba :
+                        @Html.DropDownList("Sensores", (IEnumerable<SelectListItem>)ViewBag.Sensores, new { id = "CodigoDispositivoSensorArriba", @class = "control input-large", data_bind = "value: $root.newCodigoDispositivoSensorArriba" })
+                        @Textos.Barrera_Sensor_Abajo :
+                        @Html.DropDownList("Sensores", (IEnumerable<SelectListItem>)ViewBag.Sensores, new { id = "CodigoDispositivoSensorAbajo", @class = "control input-large", data_bind = "value: $root.newCodigoDispositivoSensorAbajo" })
+                        @Textos.Barrera_Nombre :
+                        @Html.DropDownList("Sensores", (IEnumerable<SelectListItem>)ViewBag.Barreras, new { id = "Nombre", @class = "control input-medium", data_bind = "value: $root.newNombre" })
+                        <button id="botonCrearSensor" data-bind="click: botonCrearSensor" class="btn" data-obtener-sensores="@Url.Action("ObtenerSensoresBarrera", "Barrera")">Añadir</button>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>SensorArriba</th>
+                            <th>SensorAbajo</th>
+                            <th>Nombre</th>
+                            <th>@Textos.Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: sensoresBarrera">
+                        <tr>
+                            <td data-bind="text: CodigoDispositivoSensorArriba" />
+                            <td data-bind="text: CodigoDispositivoSensorAbajo" />
+                            <td data-bind="text: Nombre" />
+                            <td><a href="#" data-bind="click: $root.removeSensorBarrera"><i class="icon-trash"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

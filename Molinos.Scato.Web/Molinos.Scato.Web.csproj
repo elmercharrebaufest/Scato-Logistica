@@ -371,6 +371,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
@@ -841,6 +842,7 @@
     <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
+    <Content Include="Scripts\barrera.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
@@ -2332,6 +2334,11 @@
     <Content Include="Views\MonitorCPECacheada\_Listado.cshtml" />
     <Content Include="Views\MonitorCPECacheada\_Filtro.cshtml" />
     <Content Include="Views\MonitorCPECacheada\CPE.cshtml" />
+    <Content Include="Views\Barrera\Index.cshtml" />
+    <Content Include="Views\Barrera\Listar.cshtml" />
+    <Content Include="Views\Barrera\Crear.cshtml" />
+    <Content Include="Views\Barrera\_CrearModificar.cshtml" />
+    <Content Include="Views\Barrera\Modificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

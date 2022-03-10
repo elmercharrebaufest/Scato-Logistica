@@ -56,6 +56,7 @@ namespace Molinos.Scato.Web.Controllers
             var caracteristicaDeCalidad = new CaracteristicaDeCalidadDto { TipoCaracteristica = CaracteristicasCalidad.Ninguno, EnviaASap = true };
             return View(caracteristicaDeCalidad);
         }
+
         [DatosUsuario]
         [HttpPost]
         public ActionResult Crear(DatosUsuario datosUsuario, string descuentos, CaracteristicaDeCalidadDto model)
