@@ -96,6 +96,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             ViewBag.aceptaPendiente = true;
+            carta.FechaVto = DateTime.Now;
             return View(carta);
         }
 
