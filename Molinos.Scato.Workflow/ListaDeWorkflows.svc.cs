@@ -537,7 +537,7 @@ namespace Molinos.Scato.Workflow
                         && permisos.Any(y => y == x.ProximaAccion)
                         && (!filtro.SoloDemorados || (filtro.SoloDemorados && x.FechaUltimaModificacion != null && filtro.TiempoMaxEntreActividades != null && ((DateTime)x.FechaUltimaModificacion).AddSeconds((int)filtro.TiempoMaxEntreActividades) < DateTime.Now))
                             && ((filtro.Workflow != null && x.Workflow != null && x.Workflow.Contains(filtro.Workflow)) || filtro.Workflow == null)
-                            && ((filtro.ProximaAccion != null && x.ProximaAccion.Contains(filtro.ProximaAccion)) || filtro.ProximaAccion == null)
+                            && ((filtro.ProximaAccion != null && ((filtro.ProximaAccion == "Pendiente" && x.ProximaAccion == "Pendiente") || (filtro.ProximaAccion != "Pendiente" && x.ProximaAccion.Contains(filtro.ProximaAccion)))) || filtro.ProximaAccion == null)
                             && ((filtro.Patente != null && x.Patente != null && x.Patente.ToLower().Contains(filtro.Patente.ToLower())) || filtro.Patente == null)
                             && ((filtro.TipoDocumentoDeIngreso != null && x.TipoDocumentoDeIngreso == filtro.TipoDocumentoDeIngreso) || filtro.TipoDocumentoDeIngreso == null)
                             && ((filtro.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso.Contains(filtro.NumeroDocumentoDeIngreso)) || filtro.NumeroDocumentoDeIngreso == null)

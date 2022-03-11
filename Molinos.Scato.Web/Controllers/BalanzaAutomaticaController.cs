@@ -161,9 +161,11 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var resultado = servicio.ValidarProximaActividadPorPuesto(recorrido, proximaActividad.ProximaAccion, puestos, datosUsuario.NombreUsuario);
+            
 
             log.Debug($"Ejecutando etapa { proximaActividad.ProximaAccion }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
             log.Debug($"Peso tomado { peso }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
+            
             //if (recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren) {
             //    while (true)
             //    {
@@ -176,35 +178,41 @@ namespace Molinos.Scato.Web.Controllers
 
             if (resultado.Valida)
             {
-                var balanzaId = servicio.ObtenerBalanzaAsociadaAPuestoAutomatico(resultado.PuestoDeTrabajoId);
-                var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
-                var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
-                     peso ?? 0, 0, null, null, balanzaId.Id, null,
-                     false, DateTime.Now, new ControlRecorridoDto
-                     {
-                         WorkflowInstanceId = resultado.InstanceId,
-                         NombreUsuario = datosUsuario.NombreUsuario,
-                         Actividad = resultado.ProximaActividad,
-                         ActividadXaml = resultado.ProximaActividad,
-                         Decision = false,
-                         PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
-                         Automatizado = peso == null || peso == 0,
-
-                         CartaDePorte = recorrido.CartaDePorte,
-                         Entregador = recorrido.Entregador,
-                         Material = recorrido.Material,
-                         Patente = recorrido.Patente,
-                         PesoOrigenBruto = recorrido.PesoBrutoOrigen,
-                         PesoOrigenTara = recorrido.PesoTaraOrigen,
-                         TipoVehiculo = recorrido.TipoVehiculo,
-                         Tarjeta = recorrido.TarjetaDeAcceso,
-                         PesoBruto = recorrido.PesoBruto,
-                         PesoTara = recorrido.PesoTara,
-                         PesoOrigenNeto = recorrido.PesoNetoOrigen,
-                         Calle = recorrido.Calle
-                     });
-
-                EncenderSemaforoVagon(color, puestoId);
+               try
+                {
+                    var balanzaId = servicio.ObtenerBalanzaAsociadaAPuestoAutomatico(resultado.PuestoDeTrabajoId);
+                    var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
+                    var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
+                         peso ?? 0, 0, null, null, balanzaId.Id, null,
+                         false, DateTime.Now, new ControlRecorridoDto
+                         {
+                             WorkflowInstanceId = resultado.InstanceId,
+                             NombreUsuario = datosUsuario.NombreUsuario,
+                             Actividad = resultado.ProximaActividad,
+                             ActividadXaml = resultado.ProximaActividad,
+                             Decision = false,
+                             PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
+                             Automatizado = peso == null || peso == 0,
+                             CartaDePorte = recorrido.CartaDePorte,
+                             Entregador = recorrido.Entregador,
+                             Material = recorrido.Material,
+                             Patente = recorrido.Patente,
+                             PesoOrigenBruto = recorrido.PesoBrutoOrigen,
+                             PesoOrigenTara = recorrido.PesoTaraOrigen,
+                             TipoVehiculo = recorrido.TipoVehiculo,
+                             Tarjeta = recorrido.TarjetaDeAcceso,
+                             PesoBruto = recorrido.PesoBruto,
+                             PesoTara = recorrido.PesoTara,
+                             PesoOrigenNeto = recorrido.PesoNetoOrigen,
+                             Calle = recorrido.Calle
+                         });
+                    
+                    EncenderSemaforoVagon(color, puestoId);
+                }
+                catch(Exception e)
+                {
+                    log.Debug("Error crear servicio pesada:" + e.Message);
+                }
             }
             return Json("ok", JsonRequestBehavior.AllowGet);
         }

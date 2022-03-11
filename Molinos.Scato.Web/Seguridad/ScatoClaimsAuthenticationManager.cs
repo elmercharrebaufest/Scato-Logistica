@@ -75,6 +75,7 @@ namespace Molinos.Scato.Web.Seguridad
             try
             {
                 var requestIP = GetUserIP();
+
                 log.Info($"ScatoClaimsAuthenticationManager Ips usado: {requestIP} para el usuario {nombreUsuario}");
 
                 IPAddress IP = IPAddress.Parse(requestIP);
@@ -100,7 +101,7 @@ namespace Molinos.Scato.Web.Seguridad
             {
                 log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}.", nombreUsuario);
 
-                log.Error(ex,"Error IP");
+                log.Error(ex, "Error IP");
             }
 
             var ci = new ClaimsIdentity(((ClaimsIdentity)incomingPrincipal.Identity).Claims, "Negotiate");
@@ -126,7 +127,22 @@ namespace Molinos.Scato.Web.Seguridad
             log.Info($"ScatoClaimsAuthenticationManager Ips detectadas : {ip}");
             if (ip.Contains(","))
                 ip = ip.Split(',').First();
-            return ip.Trim();
+            return GetIpWithoutPort(ip.Trim());
+        }
+
+        public string GetIpWithoutPort(string ip)
+        {
+            var splitList = ip.Split(':');
+            if (splitList.Length > 2)
+            {
+                ip = IPAddress.Parse(ip).ToString();
+            }
+            else if (splitList.Length == 2)
+            {
+                ip = splitList[0];
+            }
+
+            return ip;
         }
     }
 }
