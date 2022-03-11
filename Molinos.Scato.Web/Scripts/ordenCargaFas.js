@@ -21,7 +21,7 @@ jQuery(document).ready(function () {
     $(".close").click(function () {
         $("#alertaError").hide();
     });
-    if ($("#PatenteCamion").val().length > 0 && !$("#EsModificacion")) {
+    if ($("#PatenteCamion").val().length > 0 && $("#EsModificacion").val()!= "True") {
         ObtenerDatosSap();
     }
     $('#PatenteCamion').on("focusout", function () {

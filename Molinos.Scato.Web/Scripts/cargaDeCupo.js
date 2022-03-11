@@ -116,7 +116,7 @@
 
 
     $('#Patente').change(validarEgresoVentaFas)
-    $('circuitoNoGranos').change(validarEgresoVentaFas)
+    $('#circuitoNoGranos').change(validarEgresoVentaFas)
 
     $("#validation-ventaFas-close").on("click", function () {
         $("#validation-ventaFas-error").addClass("hide");
@@ -139,6 +139,7 @@ function TomarFotoConPatente() {
                         $("#patenteALPR").html(data.patente);
                         if ($('#circuitoNoGranos').is(':checked') && !$('#Patente').val()) {
                             $('#Patente').val(data.patente);
+                            validarEgresoVentaFas();
                         }
                         if ($('#cpe').is(':checked') && !$('#Patente').val()) {
                             $('#Patente').val(data.patente);
