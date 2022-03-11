@@ -20,8 +20,8 @@
             <h5>Patente: @Html.DisplayFor(x => x.Patente)</h5>
             @foreach (var w in workflows)
             {
-                w.Codigo = w.Codigo.Replace("1029-","slo.");
-                @Html.ActionLink(w.Descripcion, "Index", Textos.ResourceManager.GetString("Workflow_" + w.Codigo.Remove(0,4)), new { workflow = w.Codigo, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
+                var codigo = w.Codigo.Replace("1029-", "slo.").Remove(0, 4);
+                @Html.ActionLink(w.Descripcion, "Index", Textos.ResourceManager.GetString("Workflow_" + codigo), new { workflow = w.Codigo, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
             }
         </div>
     </div>
