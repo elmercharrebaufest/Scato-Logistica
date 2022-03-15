@@ -141,7 +141,6 @@ namespace Molinos.Scato.Web.Seguridad
             {
                 ip = splitList[0];
             }
-
             return ip;
         }
     }

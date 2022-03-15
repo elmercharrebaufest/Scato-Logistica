@@ -211,7 +211,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 catch(Exception e)
                 {
-                    log.Debug("Error crear servicio pesada:" + e.Message);
+                    log.Error(e,"Error crear servicio pesada:");
                 }
             }
             return Json("ok", JsonRequestBehavior.AllowGet);
