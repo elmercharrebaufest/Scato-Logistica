@@ -53,7 +53,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                         Actividad = s.Actividad,
                                         Tabla = s.Tabla,
                                         Comentario = s.Comentario,
-                                        Usuario = s.Usuario
+                                        Usuario = s.Usuario,
+                                        Plataforma = s.Plataforma 
                                     }).OrderBy(t => t.Fecha);
                 return resultado.ToList();
             }
