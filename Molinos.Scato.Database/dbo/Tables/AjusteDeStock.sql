@@ -9,6 +9,7 @@
     [PesoNetoEgreso] DECIMAL (18, 2) NOT NULL,
 	[Centro_Id]                  INT             NOT NULL,
 	[Observaciones] NVARCHAR (30),
+	[NumeroCTG] NVARCHAR (40)  NOT NULL DEFAULT '',
     CONSTRAINT [PK_dbo.AjusteDeStock] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_dbo.AjusteDeStock_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
 	CONSTRAINT [FK_dbo.AjusteDeStock_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
