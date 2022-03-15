@@ -2594,6 +2594,7 @@ namespace Molinos.Scato.Servicios
         string ObtenerDispositivoBarreraEntrada(int puestoId);
 
         [OperationContract]
+        string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, DateTime? fecha);
         ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null);
 
         [OperationContract]

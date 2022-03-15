@@ -343,4 +343,10 @@
   <data name="WorkflowTipo" xml:space="preserve">
     <value>Tipo</value>
   </data>
+  <data name="Calle" xml:space="preserve">
+    <value>Calle</value>
+  </data>
+  <data name="Calador" xml:space="preserve">
+    <value>Calador</value>
+  </data>
 </root>

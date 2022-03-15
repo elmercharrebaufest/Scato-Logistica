@@ -116,6 +116,24 @@ namespace Molinos.Scato.WfEditorWeb.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calador.
+        /// </summary>
+        public static string Calador {
+            get {
+                return ResourceManager.GetString("Calador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calle.
+        /// </summary>
+        public static string Calle {
+            get {
+                return ResourceManager.GetString("Calle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelar.
         /// </summary>
         public static string Cancelar {

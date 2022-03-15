@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Molinos.Scato.Dominio.Consultas;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -18,7 +15,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public ControlRecorridoLogActividadConsulta(Guid filtro)
         {
             this.filtro = filtro;
-
         }
 
         public virtual List<ControlRecorridoLogActividadConsultaDto> Ejecutar(DbContext contexto)
@@ -35,7 +31,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Actividad = logActividad.Actividad,
                                      Comentario = "",
                                      Tabla = "LogActividad",
-                                     Usuario = ""
+                                     Usuario = "",
+                                     Plataforma = "",
                                  }).Union(
                                     from controlRecorrido in contexto.Set<ControlRecorrido>()
                                     where controlRecorrido.WorkflowInstanceId == filtro
@@ -45,7 +42,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                         Actividad = controlRecorrido.Actividad,
                                         Comentario = (controlRecorrido.Decision == true ? "Fue rechazado. " : "Fue aceptado. ") + controlRecorrido.Comentario,
                                         Tabla = "ControlRecorrido",
-                                        Usuario = controlRecorrido.NombreUsuario
+                                        Usuario = controlRecorrido.NombreUsuario,
+                                        Plataforma = controlRecorrido.PuestoDeTrabajo.NombrePuesto
                                     })
                                 .Select(
                                     s =>
@@ -69,7 +67,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Actividad = logActividad.Actividad,
                                      Comentario = "",
                                      Tabla = "LogActividad",
-                                     Usuario = ""
+                                     Usuario = "",
+                                     Plataforma = "",
                                  }).Union(
                                 from controlRecorrido in contexto.Set<ControlRecorrido>()
                                 where controlRecorrido.WorkflowInstanceId == filtro
@@ -79,7 +78,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     Actividad = controlRecorrido.Actividad,
                                     Comentario = (controlRecorrido.Decision == true ? "Fue rechazado. " : "Fue aceptado. ") + controlRecorrido.Comentario,
                                     Tabla = "ControlRecorrido",
-                                    Usuario = controlRecorrido.NombreUsuario
+                                    Usuario = controlRecorrido.NombreUsuario,
+                                    Plataforma = controlRecorrido.PuestoDeTrabajo.NombrePuesto
                                 })
                                 .Select(
                                     s =>
@@ -93,9 +93,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     }).OrderBy(t => t.Fecha);
                 return resultado.ToList();
             }
-
-
-
         }
     }
 }
