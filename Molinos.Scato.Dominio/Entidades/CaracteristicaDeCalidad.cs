@@ -25,7 +25,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool InternoPorObservados { get; set; }
         public virtual bool InspeccionDeCamionesVacios { get; set; }
         public virtual bool EsModificable { get; set; }
-        public virtual bool EsPesoHectolitrico { get; set; }
+        public virtual bool? EsPesoHectolitrico { get; set; }
         public virtual bool EsHumedad { get; set; }
         public virtual EnvioACamara SituacionEnvioACamara { get; set; }
         public virtual decimal? SiSuperaValorCamara { get; set; }
