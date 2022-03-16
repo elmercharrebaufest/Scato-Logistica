@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Test.Mock;
 using Molinos.Scato.Web.Controllers;
 using Molinos.Scato.Web.Models;
@@ -17,6 +18,7 @@ namespace Molinos.Scato.Test.Controllers
     {
         private Mock<IServicioRepositorio> servRepositorioMock;
         private Mock<IServicioComandos> servComandosMock;
+        private Mock<IServicioOrquestador> servOrquestador;
         private MenuController target;
 
         [SetUp]
@@ -24,7 +26,8 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock = new Mock<IServicioRepositorio>();
             servComandosMock = new Mock<IServicioComandos>();
-            target = new MenuController(new NullLogger(), servRepositorioMock.Object, servComandosMock.Object);
+            servOrquestador = new Mock<IServicioOrquestador>();
+            target = new MenuController(new NullLogger(), servRepositorioMock.Object, servComandosMock.Object, servOrquestador.Object);
         }
 
 

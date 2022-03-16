@@ -38,7 +38,7 @@ namespace Molinos.Scato.Web.Controllers
 
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
             var grupoBarrera = servicio.ObtenerGruposBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-            for (int i = 0; i < grupoBarrera.Count; i++)
+            for (int i = 0; i < grupoBarrera?.Count; i++)
             {
                 var sensores = servicio.ListarSensoresBarreras(grupoBarrera[i].Id);
                 grupoBarrera[i].SensoresBarreras = sensores;
@@ -48,8 +48,8 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.SensoresBarrera = sensoresBarrera;
             ViewBag.TotalSensoresBarrera = servicio.ObtenerCantidadBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
             var puetoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
-            var barreraSupervisor = puetoTrabajo.EntradaSupervisor?.Split(',').ToList() ?? new List<string>();
-                barreraSupervisor.AddRange(puetoTrabajo.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
+            var barreraSupervisor = puetoTrabajo?.EntradaSupervisor?.Split(',').ToList() ?? new List<string>();
+                barreraSupervisor.AddRange(puetoTrabajo?.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
             ViewBag.BarrerasSupervisor = barreraSupervisor;
             ViewBag.PuestoId = puetoTrabajo?.Id;
 
