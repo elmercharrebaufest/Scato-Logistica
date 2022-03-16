@@ -6838,6 +6838,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Es Peso Hectolitrico.
+        /// </summary>
+        public static string CaracteristicaDeCalidad_EsPesoHectolitrico {
+            get {
+                return ResourceManager.GetString("CaracteristicaDeCalidad_EsPesoHectolitrico", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Es Proteina.
         /// </summary>
         public static string CaracteristicaDeCalidad_EsProteina {
@@ -14695,6 +14704,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ExistePedidoDeTraslado_Titulo {
             get {
                 return ResourceManager.GetString("ExistePedidoDeTraslado_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ya se cargó la característica Peso hectolitrico.
+        /// </summary>
+        public static string ExistePesoHectolitrico {
+            get {
+                return ResourceManager.GetString("ExistePesoHectolitrico", resourceCulture);
             }
         }
         
@@ -23347,6 +23365,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PesoTaraOrigen {
             get {
                 return ResourceManager.GetString("PesoTaraOrigen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se pudo tomar el Peso Hectolitríco de manera automática.
+        /// </summary>
+        public static string PH_AutomaticaError {
+            get {
+                return ResourceManager.GetString("PH_AutomaticaError", resourceCulture);
             }
         }
         

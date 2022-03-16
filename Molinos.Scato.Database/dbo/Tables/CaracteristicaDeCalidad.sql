@@ -45,6 +45,7 @@
     [ToleranciaSinMensaje] DECIMAL(18, 2) NULL,
 	[SiSuperaValorCamara] DECIMAL(18, 2) NULL, 
     [CaladoPorDefecto] DECIMAL(18, 2) NULL, 
+    [EsPesoHectolitrico] BIT NULL , 
     CONSTRAINT [PK_dbo.CaracteristicaDeCalidad] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_dbo.CaracteristicaDeCalidad_dbo.MaterialPorCentro_MaterialPorCentro_Id] FOREIGN KEY ([MaterialPorCentro_Id]) REFERENCES [dbo].[MaterialPorCentro] ([Id]),
 	CONSTRAINT [FK_dbo.CaracteristicaDeCalidad_dbo.CaracteristicaDeCalidadMaestro_CaracteristicaDeCalidadMaestro_Id] FOREIGN KEY ([CaracteristicaDeCalidadMaestro_Id]) REFERENCES [dbo].[CaracteristicaDeCalidadMaestro] ([Id])

@@ -9844,4 +9844,13 @@
   <data name="Error_Invalido_ValorPorDefectoCalado" xml:space="preserve">
     <value>El Valor ingresado no es válido, debe ser mayor al Valor Mínimo y menor al Máximo</value>
   </data>
+  <data name="CaracteristicaDeCalidad_EsPesoHectolitrico" xml:space="preserve">
+    <value>Es Peso Hectolitrico</value>
+  </data>
+  <data name="ExistePesoHectolitrico" xml:space="preserve">
+    <value>Ya se cargó la característica Peso hectolitrico</value>
+  </data>
+  <data name="PH_AutomaticaError" xml:space="preserve">
+    <value>No se pudo tomar el Peso Hectolitríco de manera automática</value>
+  </data>
 </root>

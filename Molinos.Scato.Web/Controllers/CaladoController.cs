@@ -129,6 +129,7 @@ namespace Molinos.Scato.Web.Controllers
                             Caracteristica = x.Descripcion,
                             CaracteristicaId = x.Id,
                             EsHumedad = x.EsHumedad,
+                            EsPesoHelectrolitico = x.EsPesoHectolitrico,
                             ValorCalado = (x.CaladoPorDefecto != null ) ? x.CaladoPorDefecto : null,
                             EnviaAnalisisObligatorio = x.NoAceptarSiSeDefineUnValor,
                             NroDeToma = 1,
@@ -319,6 +320,37 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Error(ex, "Error en tomar humedad para el humedimetro con Id {0}", humedimetro);
                 return Json(Textos.Humedad_AutomaticaError, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public ActionResult TomarPH(string humedimetro, long fecha)
+        {
+            try
+            {
+                log.Info("Se tomará el peso hectolitrico en modalidad automática para el humedimetro {0}", humedimetro);
+                var ejecutarTomaDeHumedad = new EjecutarAnalisisHumedad { CodigoDispositivo = humedimetro, FechaDeInicio = new DateTime(fecha) };
+                var resultado = orquestador.Ejecutar(ejecutarTomaDeHumedad);
+                var hayPH = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "PH");
+                log.Info("Llamada al orquestador exitosa. Hay Peso Hectolitrico = {0}", hayPH);
+                if (resultado.Mensaje.Codigo == 207)
+                {
+                    return Json(null, JsonRequestBehavior.AllowGet);
+                }
+                if (resultado.Mensaje.Codigo != 0)
+                {
+                    log.Error("(" + Textos.Codigo + ":{0}) " + Textos.PH_AutomaticaError + "\r\n{1}", resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                    return Json("(" + Textos.Codigo + ":" + resultado.Mensaje.Codigo + ") " + Textos.PH_AutomaticaError + "\r\n" + resultado.Mensaje.Descripcion, JsonRequestBehavior.AllowGet);
+                }
+
+                return hayPH
+                           ? Json(resultado.Valores.First(f => f.Key == "PH").Value, JsonRequestBehavior.AllowGet)
+                           : Json(Textos.PH_AutomaticaError, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error en tomar el peso hectolitríco para el humedimetro con Id {0}", humedimetro);
+                return Json(Textos.PH_AutomaticaError, JsonRequestBehavior.AllowGet);
             }
         }
 
