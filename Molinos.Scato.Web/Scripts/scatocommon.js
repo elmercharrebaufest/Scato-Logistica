@@ -692,7 +692,6 @@ function NotificarCambioEstadoBarrera(mensaje) {
             }
         }
 
-
         for (var k = 0; k < estadoBarreras.SensoresAbajo.length; k++) {
             var item = estadoBarreras.SensoresAbajo[k];
             if (item.Estado) {

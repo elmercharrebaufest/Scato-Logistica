@@ -2613,10 +2613,10 @@ namespace Molinos.Scato.Servicios
         VisualizacionBarreraDto ObtenerVisualizacionBarrera(int id);
 
         [OperationContract]
-        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario);
+        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario, int centroId);
 
         [OperationContract]
-        int ObtenerCantidadBarrerasPorUsuario(string usuario);
+        int ObtenerCantidadBarrerasPorUsuario(string usuario, int centroId);
 
         [OperationContract]
         IList<SensorBarreraDto> ListarSensoresBarrerasActivos();

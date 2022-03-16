@@ -9624,25 +9624,25 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<VisualizacionBarrera, VisualizacionBarreraDto>(id);
         }
 
-        public IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario)
+        public IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario, int centroId)
         {
             var usuarioDto = Obtener<Usuario, UsuarioDto>(x => x.NombreUsuario.Equals(usuario));
             if(usuarioDto != null)
             {
-                var lista = (Listar<VisualizacionBarrera, VisualizacionBarreraDto>()).Where(w => !w.Deshabilitada && w.Visible).ToList();
+                var lista = (Listar<VisualizacionBarrera, VisualizacionBarreraDto>()).Where(w => !w.Deshabilitada && w.Visible && w.CentroId == centroId).ToList();
                 return lista.Where(w => usuarioDto.RolesAsociados.Any(a => a.Id == w.RolId)).ToList();
             }
 
             return new List<VisualizacionBarreraDto>();
         }
 
-        public int ObtenerCantidadBarrerasPorUsuario(string usuario)
+        public int ObtenerCantidadBarrerasPorUsuario(string usuario, int centroId)
         {
             int resultado = 0;
 
             try
             {
-                var listaGrupos = ObtenerGruposBarrerasPorUsuario(usuario);
+                var listaGrupos = ObtenerGruposBarrerasPorUsuario(usuario, centroId);
                 foreach (var grupo in listaGrupos)
                 {
                     var sensores = ListarSensoresBarreras(grupo.Id);

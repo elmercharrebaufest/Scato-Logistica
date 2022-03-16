@@ -44,7 +44,7 @@
 @CuitMRP varchar(11),
 @TipoCompraIdp varchar(1),
 @CuitVicentin varchar(11),
-@CuitChivilcoy varchar(11),
+@CuitChivilcoy varchar(13),
 @TipoDestinoIdp varchar(1)
 
 set @FechaDesdep = @FechaDesde
@@ -55,7 +55,7 @@ set @CuitMOA = '30715118773'
 set @CuitMRP = '30500858628'
 set @TipoCompraIdp = @TipoCompra
 set @CuitVicentin = '30500959629'
-set @CuitChivilcoy = '0001'
+set @CuitChivilcoy = '30-50085862-8'
 set @TipoDestinoIdp = @TipoDestino
 
 
@@ -894,6 +894,8 @@ ORDER BY ord</CommandText>
         <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoDestino, '0' AS ord
 UNION
 SELECT        '1' AS Id, 'Vicentin' AS TipoDestino, '1' AS ord
+UNION
+SELECT        '2' AS Id, 'Chivilcoy' AS TipoDestino, '2' AS ord
 ORDER BY ord</CommandText>
       </Query>
       <Fields>

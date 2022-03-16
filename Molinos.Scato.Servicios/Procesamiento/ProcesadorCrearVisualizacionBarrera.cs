@@ -8,6 +8,7 @@ using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
+using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
 using System;
 using System.Linq;
@@ -17,9 +18,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorCrearVisualizacionBarrera : ProcesadorComando<CrearVisualizacionBarrera>
     {
-        public ProcesadorCrearVisualizacionBarrera(IRepositorio repositorio, IConversor conversor, ILogger log)
+        private readonly IServicioOrquestador orquestador;
+        private readonly IConfiguracionProvider config;
+
+        public ProcesadorCrearVisualizacionBarrera(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOrquestador orquestador, IConfiguracionProvider config)
             : base(repositorio, conversor, log)
         {
+            this.orquestador = orquestador;
+            this.config = config;
         }
 
         public override Resultado Ejecutar(CrearVisualizacionBarrera comando)
@@ -50,7 +56,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                     Pantalla = comando.GetType().Name,
                                     Usuario = comando.Usuario,
                                     Fecha = DateTime.Now,
-                                    Evento = EventoABM.Baja,
+                                    Evento = EventoABM.Alta,
                                     Entidad = comando.ToXml()
                                 };
                                 Repositorio.Agregar(logAbm);
@@ -58,7 +64,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             }
                             catch (Exception e)
                             {
-                                Log.Warn(e, "Ocurrio un error al crear el log AMB Eliminar");
+                                Log.Warn(e, "Ocurrio un error al crear el log AMB Crear");
                             }
                         }
 
@@ -69,6 +75,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     Log.Error(e, "Error al crear característica de calidad {0}", comando.Dto.Descripcion);
                     resultado.Error("", Textos.Error);
+                }
+
+                if (!resultado.HayErrores)
+                {
+                    foreach (var sensor in comando.Dto.SensoresBarreras)
+                    {
+                        Suscribir(sensor.CodigoDispositivoSensorArriba);
+                        Suscribir(sensor.CodigoDispositivoSensorAbajo);
+                    }
                 }
             }
 
@@ -106,6 +121,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
             item.Rol = Repositorio.Obtener<Rol>(comando.Dto.RolId);
 
             return item;
+        }
+
+        private void Suscribir(string codigoDispositivo)
+        {
+            try
+            {
+                orquestador.Suscribir(new ComandoSuscribir
+                {
+                    CodigoDispositivo = codigoDispositivo,
+                    CodigoEvento = "CambioEstadoSensorBarrera",
+                    RutaAccesoSuscriptor = config.AppSettings["UrlNotificacionesWeb"],
+                    Persistente = true
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error al suscribir sensor de barrera: {codigoDispositivo}", e);
+            }
         }
     }
 }

@@ -111,7 +111,44 @@ $(document).ready(function () {
     $(conectarSignalR());
 
     $("li.view-dashboard-barreras").click(function () {
-        $("#barreraModal").modal("show");
+        $("#dashboardBarrerasModal").modal("show");
+    });
+
+    $(document).on('click', ".tarjetaMaestroSupervisorBarrera", function () {
+        $("#elemento-id").val($(this).data().puestoId);
+        $("#elemento-barrera").val(obtenerDispositivoBarrera($(this).data().id, 3));
+        $("#url").val($("#GestionarBarrera").val());
+        $("#elemento-accion").val(obtenerDispositivoBarrera($(this).data().id, 1));
+        $("#actividades-modal").modal("hide");
+        $("#modalGestionBarrera").modal("hide");
+        $("#gestionbarreraSupervisorModal").modal("show");
+    });
+
+    $("#guardarEventoBarrera").click(function () {
+        if (ValidarMotivo()) { return false; }
+        $.ajax({
+            url: $("#url").val(),
+            dataType: 'json',
+            data: {
+                puestoId: $("#elemento-id").val(),
+                codigo: $("#elemento-barrera").val(),
+                motivo: $("#motivo").val(),
+                accion: $("#elemento-accion").val()
+            },
+            type: "GET",
+            success: function (data) {
+                if (data == "ok") {
+                    $("#motivo").val("");
+                    $("#gestionbarreraSupervisorModal").modal("hide");
+                }
+            }
+        });
+    });
+
+    $("#barreraHeader").click(function () {
+        if ($("#cantidadBarreras").val() && $("#cantidadBarreras").val() == 1) {
+            $("#modalGestionBarrera").modal("show");
+        }        
     });
 });
 
@@ -284,3 +321,35 @@ function actualizarTimeAgo(server, hora) {
         return $.when.apply($, deferreds);
     };
 })(jQuery);
+
+function obtenerDispositivoBarrera(id, length) {
+    var resultado = "";
+
+    try {
+        if (id != null && id != "") {
+            var splitId = id.split("-");
+            if (splitId.length >= length) {
+                resultado = splitId[length-1];
+            }
+        }
+    } catch (error) {
+
+    }
+
+    return resultado;
+}
+
+function ValidarMotivo() {
+    $("#error-requerido").hide();
+    $("#error-largo").hide();
+    var motivo = $("#motivo").val();
+    if (motivo == "") {
+        $("#error-requerido").show();
+        return true;
+    }
+    if (motivo.length < 10) {
+        $("#error-largo").show();
+        return true;
+    }
+    return false;
+}

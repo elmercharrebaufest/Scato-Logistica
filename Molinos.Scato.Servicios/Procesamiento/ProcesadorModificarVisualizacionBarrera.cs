@@ -4,16 +4,23 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
+using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
+using System;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorModificarVisualizacionBarrera : ProcesadorModificar<ModificarVisualizacionBarrera>
     {
-        public ProcesadorModificarVisualizacionBarrera(IRepositorio repositorio, IConversor conversor, ILogger log)
+        private readonly IServicioOrquestador orquestador;
+        private readonly IConfiguracionProvider config;
+
+        public ProcesadorModificarVisualizacionBarrera(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOrquestador orquestador, IConfiguracionProvider config)
             : base(repositorio, conversor, log)
         {
+            this.orquestador = orquestador;
+            this.config = config;
         }
 
         protected override void ModificarEntidad(ModificarVisualizacionBarrera comando)
@@ -42,13 +49,39 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 foreach (var sensor in sensores)
                 {
                     visualizacionBarrera.SensoresBarreras.Add(sensor);
+                    Suscribir(sensor.CodigoDispositivoSensorArriba);
+                    Suscribir(sensor.CodigoDispositivoSensorAbajo);
                 }
+            }
+
+            foreach (var sensor in visualizacionBarrera.SensoresBarreras)
+            {
+                Suscribir(sensor.CodigoDispositivoSensorArriba);
+                Suscribir(sensor.CodigoDispositivoSensorAbajo);
             }
         }
 
         protected override void Validar(ModificarVisualizacionBarrera comando, Resultado resultado)
         {
 
+        }
+
+        private void Suscribir(string codigoDispositivo)
+        {
+            try
+            {
+                orquestador.Suscribir(new ComandoSuscribir
+                {
+                    CodigoDispositivo = codigoDispositivo,
+                    CodigoEvento = "CambioEstadoSensorBarrera",
+                    RutaAccesoSuscriptor = config.AppSettings["UrlNotificacionesWeb"],
+                    Persistente = true
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error al suscribir sensor de barrera: {codigoDispositivo}", e);
+            }
         }
     }
 }
