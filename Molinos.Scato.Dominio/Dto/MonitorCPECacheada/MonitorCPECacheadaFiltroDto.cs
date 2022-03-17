@@ -16,5 +16,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int CamionesPendientes { get; set; }
         public DateTime? FechaEjecucionCacheoCPE { get; set; }
         public string ErrorCacheoAfipCPE { get; set; }
+
+        //PARA EJECUCION DEL JOB , SI ES TRUE NO SE VA A HACER EL COUNT DE CAMIONES PENDIENTES POR LLEGAR PARA AHORRAR RECURSOS
+        public bool EsJobAutomatico { get; set; }
     }
 }

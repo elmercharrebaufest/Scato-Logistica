@@ -1,5 +1,7 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
@@ -222,44 +224,83 @@ namespace Molinos.Scato.Web.Controllers
                 int.TryParse(consultasParaleloVal?.Valor, out consultasParalelo);
 
                 log.Debug("Se inicia el proceso de cacheo");
-                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo}, (ctg) =>
-                {
-                    var intentos = 0;
-                    var ok = false;
+                Parallel.ForEach(cpesNoCacheadas, new ParallelOptions { MaxDegreeOfParallelism = consultasParalelo }, (ctg) =>
+                 {
+                     var intentos = 0;
+                     var ok = false;
 
-                    while (!ok && intentos < reintentos)
-                    {
-                        try
-                        {
-                            var cpe = cpesPendientes.Cpes.First(x => x.Ctg == ctg);
+                     while (!ok && intentos < reintentos)
+                     {
+                         try
+                         {
+                             var cpe = cpesPendientes.Cpes.First(x => x.Ctg == ctg);
 
-                            var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
-                            {
-                                CentroId = centro,
-                                TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
-                                NroCtg = ctg,
-                                ConsultaAfip = true,
-                                FechaUltimaActualizacion = cpe.FechaUltimaModificacion
-                            });
+                             var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
+                             {
+                                 CentroId = centro,
+                                 TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                                 NroCtg = ctg,
+                                 ConsultaAfip = true,
+                                 FechaUltimaActualizacion = cpe.FechaUltimaModificacion
+                             });
 
-                            ok = !resultado.HayErrores;
-                        }
-                        catch (Exception ex)
-                        {
-                            log.Error("Ocurrio un problema al realizar el cache de {0}: {1}", ctg, ex.Message);
-                            ok = false;
-                        }
-                        finally
-                        {
-                            intentos++;
-                        }
-                    }
-                });
+                             ok = !resultado.HayErrores;
+                         }
+                         catch (Exception ex)
+                         {
+                             log.Error("Ocurrio un problema al realizar el cache de {0}: {1}", ctg, ex.Message);
+                             ok = false;
+                         }
+                         finally
+                         {
+                             intentos++;
+                         }
+                     }
+                 });
             }
             else
             {
                 servicioRepositorio.ActualizarFechaEstadoCacheadoCPECentro(centro, cpesPendientes.Errores.FirstOrDefault().Value);
                 log.Error("Ocurrio un problema al realizar ConsultarCPEPorDestino: {0}", cpesPendientes.Errores.FirstOrDefault().Value);
+            }
+        }
+
+        public void SinscronizarCartaPorteElectronicaActivos(int centro = 5, int items = 10000)
+        {
+            try
+            {
+                var paginacion = new Paginacion("CTG", default, 1, itemsPorPagina: items);
+                var filtro = new MonitorCPECacheadaFiltroDto
+                {
+                    CentroId = centro,
+                    EsJobAutomatico = true
+                };
+
+                var registros = servicioRepositorio.ListarCPEsCacheadas(filtro, paginacion);
+
+                foreach (var cpe in registros.MonitorCPECacheadaListado)
+                {
+                    var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
+                    {
+                        CentroId = centro,
+                        TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
+                        NroCtg = cpe.CTG.Value,
+                        ConsultaAfip = true,
+                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion
+                    });
+
+                    if (resultado.HayErrores)
+                    {
+                        foreach (var error in resultado.Errores)
+                        {
+                            log.Error("Ocurrio un problema al realizar el proceso de SinscronizarEstadosCartaPorteElectronicaActivos del CTG: {0} - {1}", cpe.CTG.Value, error);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Ocurrio un problema al realizar el proceso de SinscronizarEstadosCartaPorteElectronicaActivos: ", e.Message);
             }
         }
     }

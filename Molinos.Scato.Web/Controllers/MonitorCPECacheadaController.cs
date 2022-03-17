@@ -70,7 +70,6 @@ namespace Molinos.Scato.Web.Controllers
             return Json(result);
         }
 
- 
         [DatosUsuario]
         public ActionResult VerCPE(int id)
         {
