@@ -9580,14 +9580,18 @@ namespace Molinos.Scato.Servicios.Impl
                 x => x.Entrada);
         }
 
-        public string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, DateTime? fecha)
+        public string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, int? analisisDeCalidadId)
         {
-            var fechaFinal = fecha;
-            var fechaInicio = fecha?.AddHours(-1);
-            return repositorio.ObtenerMayor<LogLecturaDeTarjeta, DateTime, string>(
-                x => x.Patente == patente && fechaInicio < x.Fecha && fechaFinal >= x.Fecha,
+            var fechaCalado = repositorio.ObtenerProyeccion<AnalisisDeCalidad, DateTime?>(x => x.Id == analisisDeCalidadId,
+                                                  x => x.Calado.FechaCreacion);
+
+            var fechaFinal = fechaCalado;
+            var fechaInicio = fechaCalado?.AddHours(-1);
+            var result = repositorio.ObtenerMayor<LogLecturaDeTarjeta, DateTime, string>(
+                x => (x.Patente == patente && (x.Fecha > fechaInicio && x.Fecha <= fechaFinal)),
                 x => x.Fecha,
                 x => x.PuestoDeTrabajo.NombrePuesto);
+            return result;
         }
         
         public ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null)

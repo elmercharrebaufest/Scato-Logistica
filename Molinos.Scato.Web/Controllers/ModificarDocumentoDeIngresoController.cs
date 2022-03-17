@@ -808,25 +808,28 @@ namespace Molinos.Scato.Web.Controllers
                 var calidades = new List<CalidadCaracteristicaDto>();
                 var muestraEnvioACamara = recorrido.Calado != null ? servicio.ObtenerMuestraEnvioACamaraPorCalado(recorrido.Calado.Id) : null;
                 var analisisDeCalidad = recorrido.AnalisisDeCalidad;
-                var puestoDeTrabajo = servicio.ObtenerPuestoDeLogLecturaDeTarjeta(recorrido.Patente, recorrido.FechaInicio);
-
-                if (!string.IsNullOrEmpty(puestoDeTrabajo))
-                {
-                    var caladorCalle = puestoDeTrabajo.Split('-');
-                    if (caladorCalle.Length > 1)
-                    {
-                        ViewBag.Calador = caladorCalle[0];
-                        ViewBag.Calle = caladorCalle[1];
-                    }
-                    else
-                    {
-                        ViewBag.Calador = caladorCalle[0];
-                        ViewBag.Calle = string.Empty;
-                    }
-                }
+            
 
                 if (analisisDeCalidad != null)
                 {
+
+                    var puestoDeTrabajo = servicio.ObtenerPuestoDeLogLecturaDeTarjeta(recorrido.Patente, analisisDeCalidad.Id);
+
+                    if (!string.IsNullOrEmpty(puestoDeTrabajo))
+                    {
+                        var caladorCalle = puestoDeTrabajo.Split('-');
+                        if (caladorCalle.Length > 1)
+                        {
+                            ViewBag.Calador = caladorCalle[0];
+                            ViewBag.Calle = caladorCalle[1];
+                        }
+                        else
+                        {
+                            ViewBag.Calador = caladorCalle[0];
+                            ViewBag.Calle = string.Empty;
+                        }
+                    }
+
                     var usuario = servicio.ObtenerUsuarioId(analisisDeCalidad.Usuario);
                     ViewBag.Nombre = usuario != null ? usuario.Nombre : null;
                     ViewBag.Apellido = usuario != null ? usuario.Apellido : null;
