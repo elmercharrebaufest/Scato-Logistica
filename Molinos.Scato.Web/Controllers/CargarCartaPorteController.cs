@@ -412,8 +412,9 @@ namespace Molinos.Scato.Web.Controllers
 
                     var errorCode = cartaPorteResponse.HayErrores ? cartaPorteResponse.Errores.Keys.First() : "3";
                     var errorMsg = cartaPorteResponse.Errores.Values.FirstOrDefault();
+                    var estadoPermiteIngresar = new List<string> { "AC", "CF", "CO" };
 
-                    if (!cartaPorteResponse.HayErrores && cartaPorteResponse.Cpe?.EstadoCpe != "AC")
+                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
                         if (new List<string> { "AN", "RE" }.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
                         {

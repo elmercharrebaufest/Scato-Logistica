@@ -761,6 +761,7 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 var estadoErroresBloqueantes = new List<string> { "AN", "RE" };
+                var estadoPermiteIngresar = new List<string> { "AC","CF","CO" };
                 log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
                 var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = numeroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaMinima = true }) as ResultadoCartaPorteElectronica;
                 log.Debug(cartaPorteResponse.HayErrores ? "Error al obtener carta de porte CTG-CPE en carga de Cupo. {0}: " + cartaPorteResponse.Errores.Values.First() : "Devolviendo carta de porte en carga de Cupo. CTG-CPE {0}", numeroCtg);
@@ -771,7 +772,7 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (errorCode != "2")
                 {
-                    if (!cartaPorteResponse.HayErrores && cartaPorteResponse.Cpe?.EstadoCpe != "AC")
+                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
                         if (estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim()))
                         {
