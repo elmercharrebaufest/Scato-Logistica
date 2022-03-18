@@ -269,7 +269,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             try
             {
-                var paginacion = new Paginacion("CTG", default, 1, itemsPorPagina: items);
+                var paginacion = new Paginacion("CTG", DirOrden.Asc, 1, itemsPorPagina: items);
                 var filtro = new MonitorCPECacheadaFiltroDto
                 {
                     CentroId = centro,
