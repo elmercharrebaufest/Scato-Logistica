@@ -68,7 +68,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var carta = servicio.ObtenerCartaPorteVacia(datosUsuario.CentroId, workflow, destinatarioCodigoSap, titularCodigoSap, centroDestino, rtteComercial);
-            var cargaCupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
+            //var cargaCupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
             carta.EsClienteDestinatario = false;
             if (cargaDeCupoId > 0)
             {
@@ -94,14 +94,14 @@ namespace Molinos.Scato.Web.Controllers
                         ViewBag.FotoMesaDigitalizacionSustentable = foto.Fotos.First().Foto;
                     }
                 }
-                if (!(cargaCupo is null))
+                if (!(carga is null))
                 {
-                    var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = cargaCupo.Patente } };
-                    carta.Patente = cargaCupo.Patente;
-                    carta.MaterialId = cargaCupo.MaterialId;
-                    carta.Material = cargaCupo.MaterialDescripcion;
+                    var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = carga.Patente } };
+                    carta.Patente = carga.Patente;
+                    carta.MaterialId = carga.MaterialId;
+                    carta.Material = carga.MaterialDescripcion;
                     carta.VehiculoJson = vehiculos.ToJson();
-                    carta.Cupo = cargaCupo.Cupo;
+                    carta.Cupo = carga.Cupo;
                 }
             }
             ViewBag.aceptaPendiente = true;
