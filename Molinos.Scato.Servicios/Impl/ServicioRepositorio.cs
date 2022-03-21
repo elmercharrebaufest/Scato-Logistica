@@ -7598,17 +7598,20 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
                         {
-                            foreach (var subpath in subpaths)
+                            foreach (var subCarpeta in Directory.GetDirectories(carpeta))
                             {
-                                var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + carpeta + "\\" + subpath + "\\";
-                                if (Directory.Exists(puestoDeTrabajoFecha))
+                                foreach (var subpath in subpaths)
                                 {
-                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
-                                    if (filesInDir.Any() && obtenerPrimera)
+                                    var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + carpeta + "\\" + subCarpeta + "\\" + subpath + "\\";
+                                    if (Directory.Exists(puestoDeTrabajoFecha))
                                     {
-                                        return new List<FileData> { filesInDir.First() };
+                                        var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                        if (filesInDir.Any() && obtenerPrimera)
+                                        {
+                                            return new List<FileData> { filesInDir.First() };
+                                        }
+                                        resultado.AddRange(filesInDir);
                                     }
-                                    resultado.AddRange(filesInDir);
                                 }
                             }
                         }
