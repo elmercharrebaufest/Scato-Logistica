@@ -534,6 +534,18 @@ jQuery(document).ready(function ($) {
             cursor: "crosshair"
         });
     }
+    if ($("#FotoMesaDigitalizacionSustentable").val() != "") {
+        $("#foto1").attr("src", 'data:image/jpeg;base64,' + $("#FotoMesaDigitalizacionSustentable").val());
+        $('#fotoDiv').css('display', 'inline');
+        $('.tomarFoto1').css('display', 'inline');
+        $('.tomarFoto2').css('display', 'inline');
+        $('.ocultar').hide();
+        $('#tabFotos a[href="#fotoDiv1"]').tab('show');
+        $('#foto1').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair"
+        });
+    }
     if ($("#FotoMesaDigitalizacion2").val() != "") {
         $("#foto2").attr("src", 'data:image/jpeg;base64,' + $("#FotoMesaDigitalizacion2").val());
         $('#foto2').elevateZoom({
@@ -1302,17 +1314,31 @@ function obtenerFotoCartaPorteElectronica(nroCTG) {
                 if (data.CodigoDeError == 1) {
                     MostrarAlertaInfo(data.Error);
                 } else if (data.CodigoDeError == 0) {
-                    $('#foto1').attr("src", 'data:image/jpeg;base64,' + data.PdfImageBase64);
-                    $('#fotoDiv').css('display', 'inline');
-                    $('.tomarFoto1').css('display', 'inline');
-                    $('.tomarFoto2').css('display', 'inline');
-                    $('#FotoMesaDigitalizacion1').val(data.PdfImageBase64);
-                    $('.ocultar').hide();
-                    $('#tabFotos a[href="#fotoDiv1"]').tab('show');
-                    $('#foto1').elevateZoom({
-                        zoomType: "inner",
-                        cursor: "crosshair"
-                    });
+                    if ($('#FotoMesaDigitalizacionSustentable').val() != "") {
+                        $('#foto1').attr("src", 'data:image/jpeg;base64,' + $('#FotoMesaDigitalizacionSustentable').val());
+                        $('#fotoDiv').css('display', 'inline');
+                        $('.tomarFoto1').css('display', 'inline');
+                        $('.tomarFoto2').css('display', 'inline');
+                        $('#FotoMesaDigitalizacion1').val(data.PdfImageBase64);
+                        $('.ocultar').hide();
+                        $('#tabFotos a[href="#fotoDiv1"]').tab('show');
+                        $('#foto1').elevateZoom({
+                            zoomType: "inner",
+                            cursor: "crosshair"
+                        });
+                    } else {
+                        $('#foto1').attr("src", 'data:image/jpeg;base64,' + data.PdfImageBase64);
+                        $('#fotoDiv').css('display', 'inline');
+                        $('.tomarFoto1').css('display', 'inline');
+                        $('.tomarFoto2').css('display', 'inline');
+                        $('#FotoMesaDigitalizacion1').val(data.PdfImageBase64);
+                        $('.ocultar').hide();
+                        $('#tabFotos a[href="#fotoDiv1"]').tab('show');
+                        $('#foto1').elevateZoom({
+                            zoomType: "inner",
+                            cursor: "crosshair"
+                        });
+                    }
                 } else {
                     MostrarAlertaError(data.Error);
                 }

@@ -2620,5 +2620,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<SensorBarreraDto> ListarSensoresBarrerasActivos();
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
     }
 }

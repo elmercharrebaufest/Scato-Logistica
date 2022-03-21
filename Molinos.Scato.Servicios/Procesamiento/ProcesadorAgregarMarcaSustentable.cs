@@ -23,18 +23,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(AgregarMarcaSustentable comando)
         {
-            var resultado = new ResultadoCartaPorteElectronica();
             if(comando.SoloDibujar)
             {
+                var resultadoDibujo = new ResultadoCartaPorteElectronica();
                 Bitmap imagenBitmap;
                 using (var ms = new MemoryStream(comando.PdfImage))
                 {
                         imagenBitmap = new Bitmap(ms);
                 }
                 var imagenConSelloSustentable = DibujarSustentable(imagenBitmap);
-                resultado.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
-                return resultado;
+                resultadoDibujo.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
+                return resultadoDibujo;
             }
+
+            var resultado = new ResultadoGuardarFoto();
             try
             {
                 if (File.Exists(comando.RutaFotoCP))
@@ -44,6 +46,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     var imagenCpSustentable = DibujarSustentable(imagenCp);
                     imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Png);
+                    resultado.Path = Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto);
                 }
             }
             catch (Exception e)

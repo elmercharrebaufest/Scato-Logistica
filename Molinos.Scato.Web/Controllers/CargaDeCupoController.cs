@@ -120,14 +120,8 @@ namespace Molinos.Scato.Web.Controllers
                 else
                 {
                     model.FotoRutaDestino = resultado.Mensaje;
-                    servicioComandos.Ejecutar(new AgregarMarcaSustentable
-                    {
-                        RutaFotoCP = model.FotoRutaDestino,
-                        CodigoCentroSap = model.CentroCodigoSap,
-                        NroDocumento = model.NumeroCartaPorte,
-                        Patente = model.Patente,
-                        SoloDibujar = false
-                    });
+                    model.FotoRutaSustentable = resultado.PathSustentable;
+
                     if (!model.NoAsignaCalleEnGaritaEntrada)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);

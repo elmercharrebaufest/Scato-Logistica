@@ -9689,5 +9689,13 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<SensorBarrera, SensorBarreraDto>(x => !x.VisualizacionBarrera.Deshabilitada);
         }
+
+        public CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo)
+        {
+            var result = repositorio.ObtenerMayor<CargaDeCupo, int>(
+                x => x.Cupo == cupo,
+                x => x.Id);
+            return conversor.Convertir<CargaDeCupo, CargaDeCupoDto>(result);
+        }
     }
 }
