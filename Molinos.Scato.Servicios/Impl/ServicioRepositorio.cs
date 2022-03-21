@@ -7592,17 +7592,41 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         continue;
                     }
-                    foreach (var subpath in subpaths)
+
+                    //Modificacion Multiples Paths - Mejora en Acopios (Pergamino)
+                    if (!string.IsNullOrEmpty(fotosPath))
                     {
-                        var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
-                        if (Directory.Exists(puestoDeTrabajoFecha))
+                        foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
                         {
-                            var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
-                            if (filesInDir.Any() && obtenerPrimera)
+                            foreach (var subpath in subpaths)
                             {
-                                return new List<FileData> { filesInDir.First() };
+                                var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + carpeta + "\\" + subpath + "\\";
+                                if (Directory.Exists(puestoDeTrabajoFecha))
+                                {
+                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                    if (filesInDir.Any() && obtenerPrimera)
+                                    {
+                                        return new List<FileData> { filesInDir.First() };
+                                    }
+                                    resultado.AddRange(filesInDir);
+                                }
                             }
-                            resultado.AddRange(filesInDir);
+                        }
+                    } 
+                    else
+                    {
+                        foreach (var subpath in subpaths)
+                        {
+                            var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
+                            if (Directory.Exists(puestoDeTrabajoFecha))
+                            {
+                                var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                if (filesInDir.Any() && obtenerPrimera)
+                                {
+                                    return new List<FileData> { filesInDir.First() };
+                                }
+                                resultado.AddRange(filesInDir);
+                            }
                         }
                     }
                 }
