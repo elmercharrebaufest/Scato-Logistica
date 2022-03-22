@@ -7597,23 +7597,21 @@ namespace Molinos.Scato.Servicios.Impl
                     if (!string.IsNullOrEmpty(fotosPath))
                     {
                         foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
-                        {
-                            foreach (var subCarpeta in Directory.GetDirectories(carpeta))
+                        {                      
+                            foreach (var subpath in subpaths)
                             {
-                                foreach (var subpath in subpaths)
+                                var puestoDeTrabajoFecha = carpeta + "\\" + subpath + "\\";
+                                log.Debug("Ruta-File:" + puestoDeTrabajoFecha);
+                                if (Directory.Exists(puestoDeTrabajoFecha))
                                 {
-                                    var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + carpeta + "\\" + subCarpeta + "\\" + subpath + "\\";
-                                    if (Directory.Exists(puestoDeTrabajoFecha))
+                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                    if (filesInDir.Any() && obtenerPrimera)
                                     {
-                                        var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
-                                        if (filesInDir.Any() && obtenerPrimera)
-                                        {
-                                            return new List<FileData> { filesInDir.First() };
-                                        }
-                                        resultado.AddRange(filesInDir);
+                                        return new List<FileData> { filesInDir.First() };
                                     }
+                                    resultado.AddRange(filesInDir);
                                 }
-                            }
+                            }                            
                         }
                     } 
                     else
