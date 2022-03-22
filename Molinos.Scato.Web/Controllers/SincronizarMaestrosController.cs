@@ -280,6 +280,7 @@ namespace Molinos.Scato.Web.Controllers
 
                 foreach (var cpe in registros.MonitorCPECacheadaListado)
                 {
+                    log.Debug("Sinscronizando CartaPorteElectronica " + cpe.CTG.Value);
                     var resultado = servicioComandos.Ejecutar(new ConsultarCPDigital()
                     {
                         CentroId = centro,
@@ -288,6 +289,8 @@ namespace Molinos.Scato.Web.Controllers
                         ConsultaAfip = true,
                         FechaUltimaActualizacion = cpe.FechaUltimaActualizacion
                     });
+
+                 
 
                     if (resultado.HayErrores)
                     {
