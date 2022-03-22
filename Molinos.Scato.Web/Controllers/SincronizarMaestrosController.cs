@@ -287,8 +287,8 @@ namespace Molinos.Scato.Web.Controllers
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.CTG.Value,
                         ConsultaAfip = true,
-                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion
-                    });
+                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
+                    });;
 
                  
 
