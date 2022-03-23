@@ -373,6 +373,7 @@
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
+    <Compile Include="Controllers\EsperaConfirmacionController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />

@@ -412,7 +412,9 @@ namespace Molinos.Scato.Dominio.Seguridad
         CamionDemorado = 198,
         [Display(ResourceType = typeof(Textos), Name = "ActEnEsperaHB4")]
         EnEsperaHB4= 199,
-
+        [Display(ResourceType = typeof(Textos), Name = "ActEsperaConfirmacion")]
+        ActividadEsperaConfirmacion = 700,
+        
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]
         IniciarWorkflow = 200,
