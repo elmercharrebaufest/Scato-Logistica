@@ -2623,5 +2623,12 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
+        
+        [OperationContract]
+        ConfigSensoresDto ObtenerConfiguracionSensores(int id);
+        [OperationContract]
+        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId);
+        [OperationContract]
+        IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
     }
 }

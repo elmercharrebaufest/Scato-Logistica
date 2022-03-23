@@ -286,6 +286,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Abm Configuracion Sensores.
+        /// </summary>
+        public static string AbmConfiguracionSensores {
+            get {
+                return ResourceManager.GetString("AbmConfiguracionSensores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Consultar Documento de Ingreso.
         /// </summary>
         public static string AbmConsultarDocumentoDeIngreso {
@@ -23878,6 +23887,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_Concentrador {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_Concentrador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuracion Sensores.
+        /// </summary>
+        public static string PuestoDeTrabajo_ConfigSensor {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_ConfigSensor", resourceCulture);
             }
         }
         

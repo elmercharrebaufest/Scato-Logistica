@@ -724,5 +724,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "VerRevertirRechazoVagones")]
         VerRevertirRechazoVagones = 608,
 
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionSensores")]
+        AbmConfiguracionSensores = 609,
+
     }
 }

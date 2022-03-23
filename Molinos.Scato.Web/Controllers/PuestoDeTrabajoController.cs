@@ -228,7 +228,8 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Balanzas = servicio.ListarTodasLasBalanzasActivas(centroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             ViewBag.Intercomunicadores = servicioOrquestador.ListarIntercomunicadores().ToSelectList(x => x.Codigo, x => x.Descripcion +" ("+x.Codigo+")");
             ViewBag.Firmwares = firmwareFactory.FirmwareDisponibles().Select(x => new SelectListItem { Text = Regex.Replace(x.Key, "([a-z])([A-Z])", "$1 $2"), Value = x.Value, Selected = model != null ? model.Firmware == x.Value : false }).ToList();
-            ViewBag.Concentradores = servicioOrquestador.ListarConcentradores().ToSelectList(x => x.Codigo, x => x.Descripcion);
+            //ViewBag.Concentradores = servicioOrquestador.ListarConcentradores().ToSelectList(x => x.Codigo, x => x.Descripcion);
+            ViewBag.ConfigSensores = servicio.ListarConfiguracionSensores(centroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
         }
     }
 }

@@ -9698,5 +9698,32 @@ namespace Molinos.Scato.Servicios.Impl
                 x => x.Id);
             return conversor.Convertir<CargaDeCupo, CargaDeCupoDto>(result);
         }
+        
+        public ConfigSensoresDto ObtenerConfiguracionSensores(int id)
+        {
+            return Obtener<ConfigSensores, ConfigSensoresDto>(id);
+        }
+        public ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId)
+        {
+            Expression<Func<ConfigSensores, bool>> expresionFiltro = null;
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                int filtroInt;
+                if (!int.TryParse(filtro, out filtroInt))
+                {
+                    filtroInt = int.MaxValue;
+                }
+
+                filtro = filtro.Trim();
+                expresionFiltro =
+                    x =>
+                    x.Descripcion.Equals(filtroInt) || x.Descripcion.Contains(filtro) || x.Id.Equals(filtroInt);
+            }
+
+            return Listar<ConfigSensores, ConfigSensoresDto>(expresionFiltro, paginacion);
+        }
+        public IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId) {
+            return Listar<ConfigSensores, ConfigSensoresDto>(x => x.Centro.Id == centroId);
+        }
     }
 }

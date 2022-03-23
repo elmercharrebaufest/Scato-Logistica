@@ -1,0 +1,138 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ConfigSensoresDto
+@{
+    var sensoresBarrera = (IEnumerable<SelectListItem>)ViewBag.Sensores;
+}
+
+<style>
+
+    .span6 {
+        width: 430px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .span3 {
+        width: 200px;
+        /*border: solid 1px #c3c3c3;*/
+    }
+
+    .form-horizontal .control-label {
+        width: 170px;
+        font-size: 12px;
+    }
+
+    #dialogo-editar-body {
+        padding-right: 0px !important;
+    }
+
+    #dialogo-editar .control-group {
+        margin-bottom: 5px;
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    label.checkbox {
+        font-size: 12px;
+    }
+
+    .tablaDatos label {
+        margin-bottom: 0;
+    }
+
+    .control-label2 {
+        width: auto;
+        display: inline;
+        font-size: 12px;
+    }
+
+    .help-inline {
+        padding-left: 0;
+    }
+
+    #dialogo-editar-body {
+        max-height: 440px !important;
+        width: 905px !important;
+    }
+
+    .span6 {
+        width: 400px;
+    }
+</style>
+
+<div id="links"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"></div>
+
+@*@Html.HiddenFor(m => m.EsHumedad)*@
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Descripcion, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.Descripcion)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorBarreraEntradaArriba, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorBarreraEntradaArriba, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorBarreraEntradaArriba)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorBarreraEntradaAbajo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorBarreraEntradaAbajo, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorBarreraEntradaAbajo)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorPosicionIngreso, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorPosicionIngreso, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorPosicionIngreso)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorPosicionSalida, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorPosicionSalida, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorPosicionSalida)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="height: auto;">
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorBarreraSalidaArriba, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorBarreraSalidaArriba, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorBarreraSalidaArriba)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <div class="control-group">
+            @Html.LabelFor(model => model.SensorBarreraSalidaAbajo, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.SensorBarreraSalidaAbajo, sensoresBarrera, new { @class = "control" })
+                @Html.ValidationMessageFor(model => model.SensorBarreraSalidaAbajo)
+            </div>
+        </div>
+    </div>
+</div>

@@ -371,6 +371,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
@@ -2339,6 +2340,11 @@
     <Content Include="Views\Barrera\Crear.cshtml" />
     <Content Include="Views\Barrera\_CrearModificar.cshtml" />
     <Content Include="Views\Barrera\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\_CrearModificar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Index.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Modificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -150,5 +150,9 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "SemaforoVagones_Verde")]
         public string SemaforoVerdeCodigo { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_ConfigSensor")]
+        public int? ConfigSensor_Id { get; set; }
+        public ConfigSensoresDto ConfigSensores { get; set; }
+
     }
 }

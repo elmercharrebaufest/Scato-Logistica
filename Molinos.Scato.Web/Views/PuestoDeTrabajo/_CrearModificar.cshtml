@@ -10,7 +10,7 @@
     var cartelesLed = (IEnumerable<SelectListItem>)ViewBag.CartelesLed;
     var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
     var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
-    var concentradores = (IEnumerable<SelectListItem>)ViewBag.Concentradores;
+    var configSensores = (IEnumerable<SelectListItem>)ViewBag.ConfigSensores;
     var intercomunicadores = (IEnumerable<SelectListItem>)ViewBag.Intercomunicadores;
 }
 <style>
@@ -152,10 +152,10 @@
 </div>
 
 <div class="control-group">
-    @Html.LabelFor(model => model.Concentrador, new { @class = "control-label" })
+    @Html.LabelFor(model => model.ConfigSensor_Id, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.Concentrador, concentradores, "")
-        @Html.ValidationMessageFor(model => model.Concentrador)
+        @Html.DropDownListFor(model => model.ConfigSensor_Id, configSensores, "")
+        @Html.ValidationMessageFor(model => model.ConfigSensor_Id)
     </div>
 </div>
 

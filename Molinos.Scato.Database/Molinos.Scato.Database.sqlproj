@@ -508,6 +508,7 @@
     <Build Include="dbo\Tables\VisualizacionBarrera.sql" />
     <Build Include="dbo\Tables\SensorBarrera.sql" />
     <Build Include="dbo\Tables\ConfiguracionGeneral.sql" />
+    <Build Include="dbo\Tables\ConfigSensores.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

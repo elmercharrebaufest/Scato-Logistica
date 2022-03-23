@@ -9853,4 +9853,10 @@
   <data name="PH_AutomaticaError" xml:space="preserve">
     <value>No se pudo tomar el Peso Hectolitríco de manera automática</value>
   </data>
+  <data name="AbmConfiguracionSensores" xml:space="preserve">
+    <value>Abm Configuracion Sensores</value>
+  </data>
+  <data name="PuestoDeTrabajo_ConfigSensor" xml:space="preserve">
+    <value>Configuracion Sensores</value>
+  </data>
 </root>

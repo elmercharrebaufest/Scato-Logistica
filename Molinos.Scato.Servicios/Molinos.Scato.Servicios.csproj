@@ -148,6 +148,7 @@
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfigSensoresMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CategoriaVehiculoMappingProfile.cs" />
@@ -518,6 +519,7 @@
     <Compile Include="Procesamiento\ProcesadorConsultarEstadoCtg.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarImagenCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpe.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionSensores.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionGeneral.cs" />
@@ -527,6 +529,7 @@
     <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionGeneral.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionSensores.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeAsincronoCartelLed.cs" />
@@ -577,6 +580,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarATAPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargadoPlanoDeCarga.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionSensores.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCoordinadorPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEmbarque.cs" />

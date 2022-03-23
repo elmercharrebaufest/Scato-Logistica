@@ -66,21 +66,30 @@ namespace Molinos.Scato.Servicios.Impl
             }
             puestos = new List<ConcentradorDto>();
             var listaDePuestos = repositorio.ListarPuestosDeBalanzasAutomaticas();
-            foreach (var p in listaDePuestos.Where(x => !string.IsNullOrEmpty(x.Concentrador)))
+            
+            foreach (var p in listaDePuestos.Where(x => x.ConfigSensores != null))
             {
                 var puesto = new ConcentradorDto()
                 {
                     PuestoId = p.Id,
-                    Concentrador = p.Concentrador
+                    Concentrador = p.ConfigSensores.Descripcion,
+                    ConfigSensores = p.ConfigSensores,
+                    Sensores = new List<DispositivoGenericoDto> { 
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorBarreraEntradaArriba },
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorBarreraEntradaAbajo },
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorPosicionIngreso },
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorPosicionSalida},
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorBarreraSalidaArriba }, 
+                        new DispositivoGenericoDto {Codigo = p.ConfigSensores.SensorBarreraSalidaAbajo }
+                    },
+                    EstadoSensoresBalanzaDto = new EstadoSensoresBalanzaDto()
                 };
-                puesto.Sensores = orquestador.ListarSensoresPorConcentrador(p.Concentrador).Select(x => new Dominio.Dto.DispositivoGenericoDto { Codigo = x.Codigo, Descripcion = x.Descripcion }).ToList();
-                if (puesto.Sensores.Any())
+
+                foreach (var sensor in puesto.Sensores)
                 {
-                    foreach (var sensor in puesto.Sensores)
-                    {
-                        comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-                    }
+                    comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
                 }
+
                 puestos.Add(puesto);
             }
             log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
@@ -139,6 +148,65 @@ namespace Molinos.Scato.Servicios.Impl
             //    });
             //});
         }
+
+        public void NotificarCambioDeEstado(string sensor, bool mensaje)
+        {
+            log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
+            var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
+            if (puesto == null)
+            {
+                log.Error($"No hay puesto con contrador para el sensor: {sensor}");
+
+                return;
+            }
+            
+            foreach (var propertyInfo in puesto.ConfigSensores.GetType().GetProperties())
+            {
+                if (propertyInfo.GetValue(puesto.ConfigSensores).ToString() == sensor)
+                {
+                    if (propertyInfo.Name == "SensorBarreraEntradaArriba")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva = mensaje;
+                    }
+                    if (propertyInfo.Name == "SensorBarreraEntradaAbajo")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva = mensaje;
+                    }
+                    if (propertyInfo.Name == "SensorPosicionIngreso")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva = mensaje;
+                    }
+                    if (propertyInfo.Name == "SensorPosicionSalida")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva = mensaje;
+                    }
+                    if (propertyInfo.Name == "SensorBarreraEntradaArriba")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva = mensaje;
+                    }
+                    if (propertyInfo.Name == "SensorBarreraEntradaAbajo")
+                    {
+                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva = mensaje;
+                    }
+                }
+            }
+
+            var estadoBalanza = new EstadoSensoresBalanzaDto()
+            {
+                PuestoId = puesto.PuestoId,
+                BarreraEntradaActiva = puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva,
+                BarreraSalidaActiva = puesto.EstadoSensoresBalanzaDto.BarreraSalidaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraSalidaDesactiva,
+                SensorIngresoActiva = puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva,
+                SensorTrompaActiva = puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva
+            };
+            notificar.Notificar(new NotificacionDto
+            {
+                Grupo = "Automaticas",
+                Mensaje = estadoBalanza.ToJson(),
+                TipoAlerta = TipoAlerta.CambioEstadoBalanzas
+            });
+        }
+
         private byte[] StringToByteArray(string hex)
         {
             return Enumerable.Range(0, hex.Length)

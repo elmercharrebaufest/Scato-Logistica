@@ -96,6 +96,7 @@
     <Compile Include="Comandos\CrearAgenciaMaritimaPuerto.cs" />
     <Compile Include="Comandos\CrearAgenteControlPrivado.cs" />
     <Compile Include="Comandos\CrearATAPuerto.cs" />
+    <Compile Include="Comandos\CrearConfiguracionSensores.cs" />
     <Compile Include="Comandos\CrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Comandos\CrearCategoriaVehiculo.cs" />
     <Compile Include="Comandos\CrearConfiguracionGeneral.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Comandos\EliminarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\EliminarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\EliminarMotivosLimpieza.cs" />
+    <Compile Include="Comandos\EliminarConfiguracionSensores.cs" />
     <Compile Include="Comandos\EliminarVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Comandos\EnviarMensajeCamioneroCircular.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Comandos\ModificarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\ModificarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\ModificarCoordinadorPuerto.cs" />
+    <Compile Include="Comandos\ModificarConfiguracionSensores.cs" />
     <Compile Include="Comandos\ModificarEmbarque.cs" />
     <Compile Include="Comandos\CrearEstadoPuerto.cs" />
     <Compile Include="Comandos\ModificarEstiba.cs" />
@@ -674,6 +677,7 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Dto\ConfigSensoresDto.cs" />
     <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
     <Compile Include="Constantes.cs" />
     <Compile Include="ConsultarImagenCpe.cs" />
@@ -936,6 +940,7 @@
     <Compile Include="Entidades\CartaPorteOtrosPuertos.cs" />
     <Compile Include="Entidades\CategoriaVehiculo.cs" />
     <Compile Include="Entidades\CeldaManoDeEmbarque.cs" />
+    <Compile Include="Entidades\ConfigSensores.cs" />
     <Compile Include="Entidades\ConfiguracionAutomatizacionEtapas.cs" />
     <Compile Include="Entidades\ConfiguracionGeneral.cs" />
     <Compile Include="Entidades\ConfiguracionMail.cs" />

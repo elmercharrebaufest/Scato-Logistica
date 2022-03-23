@@ -46,7 +46,16 @@ namespace Molinos.Scato.Servicios.Impl
                         }
                         break;
                     case "CambioEstadoSensor":
-                        estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, notificacion.Datos["Mensaje"]);
+                        bool estado;
+
+                        if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
+                        {
+                            estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, estado);
+                        }
+                        //else
+                        //{
+                        //    estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, notificacion.Datos["Mensaje"]);
+                        //}
                         break;
                     case "LecturaCPE":
                         LecturaCartaPorteElectronica(notificacion.CodigoDispositivo, int.Parse(notificacion.Datos["QR"]));
