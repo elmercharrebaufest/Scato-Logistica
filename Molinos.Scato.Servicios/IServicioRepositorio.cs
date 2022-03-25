@@ -2630,5 +2630,8 @@ namespace Molinos.Scato.Servicios
         ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId);
         [OperationContract]
         IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
+
+        [OperationContract]
+        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId);
     }
 }

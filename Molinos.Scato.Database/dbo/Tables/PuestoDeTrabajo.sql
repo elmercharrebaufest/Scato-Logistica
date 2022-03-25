@@ -37,10 +37,13 @@
 	[SemaforoAmarillo] 				NVARCHAR(100) NULL,
 	[SemaforoVerde] 				NVARCHAR(100) NULL,
 	[ConfigSensores_Id] 			INT NULL, 
+	[VisualizacionBarrera_Id]		INT NULL,
+	[RequiereComentarioGestionarBarrera] 	BIT NOT NULL DEFAULT 0,
     CONSTRAINT [PK_dbo.PuestoDeTrabajo] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
 	CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.Balanza_Balanza_Id] FOREIGN KEY ([Balanza_Id]) REFERENCES [dbo].[Balanza] ([Id]),
     CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.ConfigSensor_Id] FOREIGN KEY ([ConfigSensores_Id]) REFERENCES [dbo].[ConfigSensores] ([Id]),
+	CONSTRAINT [FK_dbo.PuestoDeTrabajo_dbo.VisualizacionBarrera_Id] FOREIGN KEY ([VisualizacionBarrera_Id]) REFERENCES [dbo].[VisualizacionBarrera] ([Id])
 );
 
 

@@ -9859,4 +9859,10 @@
   <data name="PuestoDeTrabajo_ConfigSensor" xml:space="preserve">
     <value>Configuracion Sensores</value>
   </data>
+  <data name="PuestoDeTrabajo_RequiereComentarioGestionarBarrera" xml:space="preserve">
+    <value>Requiere Comentario Gestionar Barrera</value>
+  </data>
+  <data name="PuestoDeTrabajo_VisualizacionBarrera" xml:space="preserve">
+    <value>Visualizacion Barrera</value>
+  </data>
 </root>

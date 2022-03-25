@@ -14,9 +14,12 @@
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
     var sensoresBarrera = (IList<SensorBarreraDto>)ViewBag.sensoresBarrera;
     var totalSensoresBarrera = (int)ViewBag.totalSensoresBarrera;
+    var gestionarBarrera = (bool)(ViewBag.GestionarBarrera ?? false);
+    var requiereComentarioGestionarBarrera = (bool)(ViewBag.RequiereComentarioGestionarBarrera ?? false);
 }
 
 @Html.Hidden("cantidadBarreras", totalSensoresBarrera)
+@Html.Hidden("requiereComentarioGestionarBarrera", requiereComentarioGestionarBarrera)
 
 
 @Scripts.Render("~/bundles/blockUI")
@@ -1187,12 +1190,20 @@
                                 <div class="controls">
                                     <span id="@("barrera-" + item.Id + "-" + item.Nombre)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                                     <div style="margin-left: 30px;">
-                                        @foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
+                                        @if (gestionarBarrera)
                                         {
-                                            if (barreraSupervisor == item.Nombre)
+                                            <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                            <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                        }
+                                        else
+                                        {
+                                            foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
                                             {
-                                                <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                                <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                                if (barreraSupervisor == item.Nombre)
+                                                {
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                                }
                                             }
                                         }
                                     </div>
@@ -1260,12 +1271,23 @@
                     <div class="controls">
                         <span id="@("barrera-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                         <div>
-                            @foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
+                            @if (gestionarBarrera)
                             {
-                                if (barreraSupervisor == sensoresBarrera[0].Nombre)
+                                foreach (var sensor in sensoresBarrera)
                                 {
-                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensor.Id + "-" + sensor.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensor.Id + "-" + sensor.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
+                                {
+                                    if (barreraSupervisor == sensoresBarrera[0].Nombre)
+                                    {
+                                        <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                        <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                    }
                                 }
                             }
                         </div>

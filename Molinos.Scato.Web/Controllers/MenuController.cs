@@ -7,6 +7,7 @@ using System.Linq;
 using System.Resources;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
@@ -33,25 +34,50 @@ namespace Molinos.Scato.Web.Controllers
 
         [DatosUsuario]
         public ActionResult Menu(DatosUsuario datosUsuario)
-        {
+        {            
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
-            var grupoBarrera = servicio.ObtenerGruposBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-            for (int i = 0; i < grupoBarrera?.Count; i++)
+
+            #region VisualizacionBarreras
+            var puestoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
+            if (puestoTrabajo?.VisualizacionBarrera_Id is null)
             {
-                var sensores = servicio.ListarSensoresBarreras(grupoBarrera[i].Id);
-                grupoBarrera[i].SensoresBarreras = sensores;
+                var grupoBarrera = servicio.ObtenerGruposBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
+                for (int i = 0; i < grupoBarrera?.Count; i++)
+                {
+                    var sensores = servicio.ListarSensoresBarreras(grupoBarrera[i].Id);
+                    grupoBarrera[i].SensoresBarreras = sensores;
+                }
+                ViewBag.ModulosBarrera = grupoBarrera;
+                var sensoresBarrera = servicio.ListarSensoresBarreras(grupoBarrera?.FirstOrDefault()?.Id ?? 0);
+                ViewBag.SensoresBarrera = sensoresBarrera;
+                ViewBag.TotalSensoresBarrera = servicio.ObtenerCantidadBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
             }
-            ViewBag.ModulosBarrera = grupoBarrera;
-            var sensoresBarrera = servicio.ListarSensoresBarreras(grupoBarrera?.FirstOrDefault()?.Id ?? 0);
-            ViewBag.SensoresBarrera = sensoresBarrera;
-            ViewBag.TotalSensoresBarrera = servicio.ObtenerCantidadBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-            var puetoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
-            var barreraSupervisor = puetoTrabajo?.EntradaSupervisor?.Split(',').ToList() ?? new List<string>();
-                barreraSupervisor.AddRange(puetoTrabajo?.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
+            else
+            {
+                var configVisualizacionBarrera = servicio.ObtenerVisualizacionBarrera(Convert.ToInt32(puestoTrabajo?.VisualizacionBarrera_Id));
+                ViewBag.RequiereComentarioGestionarBarrera = puestoTrabajo.RequiereComentarioGestionarBarrera;
+                if (configVisualizacionBarrera != null && !configVisualizacionBarrera.Deshabilitada)
+                {
+                    configVisualizacionBarrera.SensoresBarreras = servicio.ListarSensoresBarreras(configVisualizacionBarrera.Id);
+                    ViewBag.ModulosBarrera = new List<VisualizacionBarreraDto> { configVisualizacionBarrera };
+                    ViewBag.SensoresBarrera = configVisualizacionBarrera?.SensoresBarreras;
+                    ViewBag.TotalSensoresBarrera = configVisualizacionBarrera.SensoresBarreras?.Count;
+                    ViewBag.GestionarBarrera = true;
+                }
+                else
+                {
+                    ViewBag.ModulosBarrera = new List<VisualizacionBarreraDto>();
+                    ViewBag.SensoresBarrera = new List<SensorBarreraDto>();
+                    ViewBag.TotalSensoresBarrera = 0;
+                }
+            }
+
+            var barreraSupervisor = puestoTrabajo?.EntradaSupervisor?.Split(',').ToList() ?? new List<string>();
+            barreraSupervisor.AddRange(puestoTrabajo?.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
             ViewBag.BarrerasSupervisor = barreraSupervisor;
-            ViewBag.PuestoId = puetoTrabajo?.Id;
+            ViewBag.PuestoId = puestoTrabajo?.Id;
+            #endregion
 
             var rm = new ResourceManager(typeof(Textos));
             ViewBag.Idiomas = CultureInfo.GetCultures(CultureTypes.AllCultures).Select(x => x).Where(x => ResourceManagerExist(rm, x)).ToSelectList(x => x.LCID.ToString(CultureInfo.InvariantCulture), x => x.NativeName.Split('(')[0]);
@@ -222,7 +248,10 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(e, $"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera : {codigo}");
                 return Json($"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera", JsonRequestBehavior.AllowGet);          
             }
-            servicioComandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = puestoId, Motivo = $"{motivo} - {(accion == "A" ? "APERTURA" : "CIERRE")} ", Usuario = datosUsuario.NombreUsuario });
+            if (!string.IsNullOrEmpty(motivo))
+            {
+                servicioComandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = puestoId, Motivo = $"{motivo} - {(accion == "A" ? "APERTURA" : "CIERRE")} ", Usuario = datosUsuario.NombreUsuario });
+            }
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }

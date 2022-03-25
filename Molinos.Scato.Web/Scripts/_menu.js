@@ -121,28 +121,16 @@ $(document).ready(function () {
         $("#elemento-accion").val(obtenerDispositivoBarrera($(this).data().id, 1));
         $("#actividades-modal").modal("hide");
         $("#modalGestionBarrera").modal("hide");
-        $("#gestionbarreraSupervisorModal").modal("show");
+        if ($("#requiereComentarioGestionarBarrera").val() == 'True') {
+            $("#gestionbarreraSupervisorModal").modal("show");            
+        } else {
+            EjecutarComandoBarrera();
+        }
     });
 
     $("#guardarEventoBarrera").click(function () {
         if (ValidarMotivo()) { return false; }
-        $.ajax({
-            url: $("#url").val(),
-            dataType: 'json',
-            data: {
-                puestoId: $("#elemento-id").val(),
-                codigo: $("#elemento-barrera").val(),
-                motivo: $("#motivo").val(),
-                accion: $("#elemento-accion").val()
-            },
-            type: "GET",
-            success: function (data) {
-                if (data == "ok") {
-                    $("#motivo").val("");
-                    $("#gestionbarreraSupervisorModal").modal("hide");
-                }
-            }
-        });
+        EjecutarComandoBarrera();
     });
 
     $("#barreraHeader").click(function () {
@@ -352,4 +340,24 @@ function ValidarMotivo() {
         return true;
     }
     return false;
+}
+
+function EjecutarComandoBarrera() {
+    $.ajax({
+        url: $("#url").val(),
+        dataType: 'json',
+        data: {
+            puestoId: $("#elemento-id").val(),
+            codigo: $("#elemento-barrera").val(),
+            motivo: $("#motivo").val(),
+            accion: $("#elemento-accion").val()
+        },
+        type: "GET",
+        success: function (data) {
+            if (data == "ok") {
+                $("#motivo").val("");
+                $("#gestionbarreraSupervisorModal").modal("hide");
+            }
+        }
+    });
 }

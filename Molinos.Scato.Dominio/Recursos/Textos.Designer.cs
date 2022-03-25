@@ -24089,6 +24089,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requiere Comentario Gestionar Barrera.
+        /// </summary>
+        public static string PuestoDeTrabajo_RequiereComentarioGestionarBarrera {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_RequiereComentarioGestionarBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Barrera / Semáforo Salida.
         /// </summary>
         public static string PuestoDeTrabajo_Salida {
@@ -24148,6 +24157,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_ValidarLectura {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_ValidarLectura", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizacion Barrera.
+        /// </summary>
+        public static string PuestoDeTrabajo_VisualizacionBarrera {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_VisualizacionBarrera", resourceCulture);
             }
         }
         

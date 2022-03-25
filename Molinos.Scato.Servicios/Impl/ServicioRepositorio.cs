@@ -9725,5 +9725,10 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId) {
             return Listar<ConfigSensores, ConfigSensoresDto>(x => x.Centro.Id == centroId);
         }
+
+        public IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId)
+        {
+            return (Listar<VisualizacionBarrera, VisualizacionBarreraDto>()).Where(w => !w.Deshabilitada && w.CentroId == centroId).ToList();
+        }
     }
 }
