@@ -1,0 +1,85 @@
+﻿.header-eficiencia {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.header-eficiencia div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 256px;
+    font-size: 1.3rem;
+}
+
+.header-eficiencia--logo {
+    display: flex;
+    max-width: 256px;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-eficiencia--logo img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.header-eficiencia--pendiente {
+    font-weight: 500;
+}
+
+.header-eficiencia--pendiente span {
+    font-weight: bold;
+    font-size: 3rem;
+    color: red;
+}
+
+.header-eficiencia--sector {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.body-eficiencia {
+    display: flex;
+}
+
+.body-eficiencia > div {
+    width: 50%;
+    padding: 2rem;
+}
+
+.body-eficiencia h2 {
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.partialEficiencia {
+    margin-top: 1rem;
+}
+
+.body-eficiencia canvas {
+    width: 100%;
+    min-height: 400px;
+}
+
+@media screen and (max-width: 768px) {
+    .header-eficiencia {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .header-eficiencia div {
+        margin: 1rem 0;
+    }
+
+    .body-eficiencia {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .body-eficiencia > div {
+        width: 100%;
+    }
+}

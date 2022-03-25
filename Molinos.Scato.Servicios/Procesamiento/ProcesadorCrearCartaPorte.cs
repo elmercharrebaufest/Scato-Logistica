@@ -154,7 +154,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 NumeroPrecinto = cartaPorteFerroviario is null ? comando?.Orden?.NumeroPrecinto : cartaPorteFerroviario?.NumeroPrecinto,
                                 TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null,
                                 PagadorFlete = pagadorFlete,
-                                RepresentanteRecibidor = representanteRecibidor
+                                RepresentanteRecibidor = representanteRecibidor,
+                                FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
                         };
                         foreach (var vehiculo in vehiculos)
                         {

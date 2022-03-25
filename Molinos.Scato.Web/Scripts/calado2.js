@@ -27,12 +27,9 @@ function TomarHumedad() {
         $.getJSON($("#HumedimetroId").data().url, function (data) {
             if ($.isNumeric(data) && data != null) {
                 if (escuchar) {
-                    $(".textboxHumedad").val(formatFloat(data));
-                    
-                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
-                        
+                    $(".textboxHumedad").val(formatFloat(data));                  
+                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {                        
                         var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
-
                         jQuery.each(listaRangos, function () {
                             if (this.ValorDesde <= data && this.ValorHasta >= data) {
                                 data = this.ValorRedondeado;
@@ -63,10 +60,51 @@ function TomarHumedad() {
     }
 }
 
+function TomarPH() {
+    //Toma el peso hectolitrico desde el orquestador
+    if (!$('.boton-PH').hasClass('play')) {
+        $.getJSON($("#HumedimetroId_PH").data().url, function (data) {
+            if ($.isNumeric(data) && data != null) {
+                if (escuchar) {
+                    $(".textboxPH").val(formatFloat(data));
+                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
+                        var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
+                        jQuery.each(listaRangos, function () {
+                            if (this.ValorDesde <= data && this.ValorHasta >= data) {
+                                data = this.ValorRedondeado;
+                            }
+                        });
+
+                        $(".textboxCaracteristica.textboxPH").val(formatFloat(data));
+                        $(".humedimetro-manual-PH").val(1);
+                    }
+
+                    $(".boton-manual_PH").attr("disabled", false);
+                    $(".nroDeToma").val(parseInt($(".nroDeToma").val()) + 1);
+                    $("form").validate().element($(".textboxCaracteristica.textboxPH"));
+                }
+                estadoHumedimetro = true;
+            } else if (estadoHumedimetro) {
+                if (data != null) {
+                    //Devolvió error 
+                    MostrarAlertaInfo($('#humedimetroNoResponde').val());
+                    estadoHumedimetro = false;
+                }
+            }
+        }).complete(function () {
+            if (escuchar) {
+                setTimeout(TomarPH, 1500);
+            }
+        });
+    }
+}
+
+
 var escuchar = false;
 function Humedimetro(intervalo, segundos) {
     if (escuchar) {
         TomarHumedad();
+        TomarPH();
         return setTimeout(function () { DetenerHumedimetro(intervalo); }, segundos * 1000);
     } else {
         if (intervalo != null) clearTimeout(intervalo);
@@ -98,7 +136,7 @@ function InicializarHumedimetro() {
         var segundos = 180;
         $('.boton-humedad').on('click', function () {
             if ($('.boton-humedad').hasClass('play')) {
-                intervalo = IniciarHumedimetro(intervalo, segundos);
+                intervalo = IniciarHumedimetro(intervalo, segundos);              
             } else {
                 intervalo = DetenerHumedimetro(intervalo);
             }
@@ -113,7 +151,15 @@ function InicializarHumedimetro() {
             $(".textboxHumedad").focus();
         });
 
-        $('.boton-humedad').click();
+        $(".boton-manual_PH").on('click', function () {
+            intervalo = DetenerHumedimetro(intervalo);
+            $(".textboxPH").attr("readonly", false);
+            $(".boton-manual_PH").attr("disabled", true);
+            $(".humedimetro-manual-PH").removeClass("hidden");
+            $(".textboxPH").focus();
+        });
+       
+        $('.boton-humedad').click();     
     }
 }
 

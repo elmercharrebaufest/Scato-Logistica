@@ -71,8 +71,18 @@
 
     <div class="centered">
         <div class="row row-carta-porte">
-            @Html.Label(Textos.Perito + ":", new { style = "display: inline-block; font-size: 13pt; font-weight:bold;" })
-            @Html.Label("Usuario", (string)ViewBag.Nombre + " " + (string)ViewBag.Apellido, new { id = "usuario", style = "display: inline-block; font-size: 12pt" })
+            <div class="span4">
+                @Html.Label(Textos.Perito + ":", new { style = "display: inline-block; font-size: 13pt; font-weight:bold;" })
+                @Html.Label("Usuario", (string)ViewBag.Nombre + " " + (string)ViewBag.Apellido, new { id = "usuario", style = "display: inline-block; font-size: 12pt" })
+            </div>
+            <div class="span4">
+                @Html.Label(Textos.Calador.ToUpper() + ":", new {style = "display: inline-block; font-size: 13pt; font-weight:bold;" })
+                @Html.Label("", (string)ViewBag.Calador, new {style = "display: inline-block; font-size: 12pt" })
+            </div>
+            <div class="span4">
+                @Html.Label(Textos.Calle.ToUpper() + ":", new {style = "display: inline-block; font-size: 13pt; font-weight:bold;" })
+                @Html.Label("", (string)ViewBag.Calle, new {style = "display: inline-block; font-size: 12pt" })
+            </div>
         </div>
     </div>
 

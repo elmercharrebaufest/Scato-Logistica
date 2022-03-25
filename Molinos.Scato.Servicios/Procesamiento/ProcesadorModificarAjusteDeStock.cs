@@ -48,6 +48,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 ajuste.NumeroDocumentoIngreso = comando.Dto.NumeroDocumentoIngreso;
             }
+            if (ajuste.NumeroCTG == null || ajuste.NumeroCTG != comando.Dto.NumeroCTG)
+            {
+                ajuste.NumeroCTG = comando.Dto.NumeroCTG;
+            }
             Repositorio.Agregar(new LogAjusteDeStock
                 {
                     Centro = ajuste.Centro,
@@ -55,6 +59,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     FechaAjuste = ajuste.Fecha,
                     Material = ajuste.Material,
                     NumeroDocumentoIngreso = ajuste.NumeroDocumentoIngreso,
+                    NumeroCTG = ajuste.NumeroCTG,
                     Observaciones = ajuste.Observaciones,
                     PesoBrutoIngreso = ajuste.PesoBrutoIngreso,
                     PesoNetoEgreso = ajuste.PesoNetoEgreso,

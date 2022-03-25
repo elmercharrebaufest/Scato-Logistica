@@ -49,6 +49,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public virtual ActionResult Index(string workflow, DatosUsuario datosUsuario, string destinatarioCodigoSap = "", string titularCodigoSap = "", string centroDestino = "", string rtteComercial = "", int cargaDeCupoId = 0)
         {
+            ViewBag.FotoMesaDigitalizacionSustentable = null;
             ViewBag.Usuario = datosUsuario.NombreUsuario;
             log.Debug("Cookie Usuario: {0}", new CookieUsuario());
             if (!servicio.WorkflowActivoConDefinicionActiva(workflow))
@@ -67,7 +68,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var carta = servicio.ObtenerCartaPorteVacia(datosUsuario.CentroId, workflow, destinatarioCodigoSap, titularCodigoSap, centroDestino, rtteComercial);
-            var cargaCupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
+            //var cargaCupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
             carta.EsClienteDestinatario = false;
             if (cargaDeCupoId > 0)
             {
@@ -85,17 +86,26 @@ namespace Molinos.Scato.Web.Controllers
                         ViewBag.PuestoDeTrabajo = path;
                     }
                 }
-                if (!(cargaCupo is null))
+                if (!string.IsNullOrEmpty(carga.FotoRutaSustentable))
                 {
-                    var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = cargaCupo.Patente } };
-                    carta.Patente = cargaCupo.Patente;
-                    carta.MaterialId = cargaCupo.MaterialId;
-                    carta.Material = cargaCupo.MaterialDescripcion;
+                    var foto = servicio.ObtenerFotoPorPath(carga.FotoRutaSustentable);
+                    if (foto.Fotos.Any())
+                    {
+                        ViewBag.FotoMesaDigitalizacionSustentable = foto.Fotos.First().Foto;
+                    }
+                }
+                if (!(carga is null))
+                {
+                    var vehiculos = new List<VehiculoDto> { new VehiculoDto { Patente = carga.Patente } };
+                    carta.Patente = carga.Patente;
+                    carta.MaterialId = carga.MaterialId;
+                    carta.Material = carga.MaterialDescripcion;
                     carta.VehiculoJson = vehiculos.ToJson();
-                    carta.Cupo = cargaCupo.Cupo;
+                    carta.Cupo = carga.Cupo;
                 }
             }
             ViewBag.aceptaPendiente = true;
+            carta.FechaVto = DateTime.Now;
             return View(carta);
         }
 
@@ -258,7 +268,11 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 var fecha = DateTime.Now;
                 orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(fotoMesaDigitalizacion1, orden, puestoDeTrabajo, datosUsuario, fecha);
-                
+                var cupo = servicio.ObtenerCupoPorCupoSap(orden.Cupo); // TODO Optimizar consulta del cupo para determinar si es especial
+                if(cupo != null && cupo.Especial)
+                {
+                    orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, fecha);
+                }
                 if (!String.IsNullOrEmpty(fotoMesaDigitalizacion2))
                 {
                     orden.FotoRutaDestinoDetalle = GuardarfotoMesaDigitalizacion(fotoMesaDigitalizacion2, orden, puestoDeTrabajo, datosUsuario, fecha.AddMinutes(1));
@@ -278,6 +292,10 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             var imagenBase64 = Convert.ToBase64String(cartaPorteImagen.PdfImage);
                             orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenBase64, orden, puestoDeTrabajo, datosUsuario, fecha, ctgVagon.ToString());
+                            if (cupo != null && cupo.Especial)
+                            {
+                                orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, fecha);
+                            }
                         }
                     }
                     var controlRecorrido = GenerarControlRecorrido(datosUsuario);
@@ -411,8 +429,9 @@ namespace Molinos.Scato.Web.Controllers
 
                     var errorCode = cartaPorteResponse.HayErrores ? cartaPorteResponse.Errores.Keys.First() : "3";
                     var errorMsg = cartaPorteResponse.Errores.Values.FirstOrDefault();
+                    var estadoPermiteIngresar = new List<string> { "AC", "CF", "CO" };
 
-                    if (!cartaPorteResponse.HayErrores && cartaPorteResponse.Cpe?.EstadoCpe != "AC")
+                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
                         if (new List<string> { "AN", "RE" }.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
                         {
@@ -806,6 +825,24 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(e, "No se pudo descargar el PDF del CTG: {0}", id);
                 throw;
             }
+        }
+
+        private string GuardarfotoMesaDigitalizacionSelloSustentable(CartaPorteDto orden, DatosUsuario datosUsuario, DateTime fecha, string numCtg = null)
+        {
+            if (!string.IsNullOrEmpty(orden.FotoRutaDestino))
+            {
+                log.Debug($"GuardarfotoMesaDigitalizacionSustentable {orden.FotoRutaDestino} {fecha}");
+                var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                {
+                    RutaFotoCP = orden.FotoRutaDestino,
+                    CodigoCentroSap = datosUsuario.CentroCodigoSap,
+                    NroDocumento = orden.NroCartaPorte,
+                    Patente = orden.Patente,
+                    SoloDibujar = false
+                }) as ResultadoGuardarFoto;
+                return resultadoSustentable != null ? resultadoSustentable.Path : null;
+            }
+            return null;
         }
     }
 }

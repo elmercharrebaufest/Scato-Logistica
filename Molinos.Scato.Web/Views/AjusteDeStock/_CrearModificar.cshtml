@@ -49,7 +49,14 @@
                 @Html.TextBoxFor(model => model.NumeroDocumentoIngreso, new { @class = "control input-medium numero"})
                 @Html.ValidationMessageFor(model => model.NumeroDocumentoIngreso)
             </div>
-        </div>    
+        </div>  
+        <div>
+            @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control input-medium numeroctg"})
+                @Html.ValidationMessageFor(model => model.NumeroCTG)
+            </div>
+        </div>  
         <div>
             @Html.LabelFor(model => model.MaterialId, new {@class = "control-label"})
             <div class="controls">

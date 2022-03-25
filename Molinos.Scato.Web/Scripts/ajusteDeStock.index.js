@@ -3,7 +3,9 @@
         return (this.value != "CartaPorte" && this.value != "Remito");
     }).remove();
 
-    $(".numero").mask("9999-99999999");
+    $(".numero").mask("99999-99999999");
+    $(".numeroctg").mask("999999999999");
+
     $("#FechaMovimiento").click(function() {
         $("#FechaCP").mask("99/99/9999");
     });

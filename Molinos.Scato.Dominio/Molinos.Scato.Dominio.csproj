@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,13 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.Dominio</RootNamespace>
     <AssemblyName>Molinos.Scato.Dominio</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,6 +98,7 @@
     <Compile Include="Comandos\CrearATAPuerto.cs" />
     <Compile Include="Comandos\CrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Comandos\CrearCategoriaVehiculo.cs" />
+    <Compile Include="Comandos\CrearConfiguracionGeneral.cs" />
     <Compile Include="Comandos\CrearCoordinadorPuerto.cs" />
     <Compile Include="Comandos\CrearCpOtrosPuertos.cs" />
     <Compile Include="Comandos\CrearEstiba.cs" />
@@ -107,8 +109,10 @@
     <Compile Include="Comandos\CrearLogCambioDeModalidadCalle.cs" />
     <Compile Include="Comandos\EliminarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\CrearRegistroInactividad.cs" />
+    <Compile Include="Comandos\EliminarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\EliminarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\EliminarMotivosLimpieza.cs" />
+    <Compile Include="Comandos\EliminarVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Comandos\EnviarMensajeCamioneroCircular.cs" />
     <Compile Include="Comandos\EnviarMensajesAsincronoCartelLed.cs" />
@@ -147,6 +151,7 @@
     <Compile Include="Comandos\ModificarATAPuerto.cs" />
     <Compile Include="Comandos\ModificarCargadoPlanoDeCarga.cs" />
     <Compile Include="Comandos\ModificarCategoriaVehiculo.cs" />
+    <Compile Include="Comandos\ModificarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\ModificarCoordinadorPuerto.cs" />
     <Compile Include="Comandos\ModificarEmbarque.cs" />
     <Compile Include="Comandos\CrearEstadoPuerto.cs" />
@@ -667,10 +672,17 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
     <Compile Include="Constantes.cs" />
     <Compile Include="ConsultarImagenCpe.cs" />
     <Compile Include="Consultas\Expresiones.cs" />
     <Compile Include="Consultas\Paginacion.cs" />
+    <Compile Include="Dto\ConfiguracionKeyValueDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\ConfiguracionHorarioDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\EficienciaCaladoDatosGraficosDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\ConfiguracionesEficienciaCaladoDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\EficienciaCaladoValoresDto.cs" />
+    <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
@@ -923,6 +935,7 @@
     <Compile Include="Entidades\CategoriaVehiculo.cs" />
     <Compile Include="Entidades\CeldaManoDeEmbarque.cs" />
     <Compile Include="Entidades\ConfiguracionAutomatizacionEtapas.cs" />
+    <Compile Include="Entidades\ConfiguracionGeneral.cs" />
     <Compile Include="Entidades\ConfiguracionMail.cs" />
     <Compile Include="Entidades\CubitacionDeTanques.cs" />
     <Compile Include="Entidades\DensidadPorTemperaturaDeMaterial.cs" />

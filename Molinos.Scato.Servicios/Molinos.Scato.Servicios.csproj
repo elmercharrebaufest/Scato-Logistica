@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props" Condition="Exists('..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <AssemblyName>Molinos.Scato.Servicios</AssemblyName>
     <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <WcfConfigValidationEnabled>False</WcfConfigValidationEnabled>
     <XsdCodeGenEnabled>False</XsdCodeGenEnabled>
     <XsdCodeGenSerializerMode>XmlSerializer</XsdCodeGenSerializerMode>
@@ -35,6 +35,7 @@
     <SccProvider>SAK</SccProvider>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -151,6 +152,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CategoriaVehiculoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionAutomatizacionEtapasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionGeneralMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadTipoDeActividadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
@@ -516,10 +518,12 @@
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeCamioneroCircular.cs" />
@@ -569,6 +573,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarATAPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargadoPlanoDeCarga.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCoordinadorPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEmbarque.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearEstadoPuerto.cs" />
@@ -1255,127 +1260,10 @@
     </None>
     <None Include="Service References\AfipCPDigitalService\wscpe.wsdl" />
     <None Include="Service References\AfipCTGWebService\CTGService_v41.wsdl" />
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.anularCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.cambiarDestinoDestinatarioCTGRechazadoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarArriboResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroDestinoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroEstablecimientoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.operacionCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.rechazarCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.regresarAOrigenCTGRechazadoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGDatoPendienteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGInicialResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGReturnType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipWebService\LoginCms.wsdl" />
@@ -1434,6 +1322,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion.datasource">

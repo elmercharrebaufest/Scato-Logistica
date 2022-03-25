@@ -66,7 +66,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 model.CentroId = datosUsuario.CentroId;
                 model.NombreUsuario = datosUsuario.NombreUsuario;
-                model.NumeroDocumentoIngreso = model.NumeroDocumentoIngreso.Replace("-", "");                    
+                model.NumeroDocumentoIngreso = model.NumeroDocumentoIngreso.Replace("-", " ");                    
 
                 if ((model.PesoBrutoIngreso == 0 && model.PesoNetoIngreso != 0 && model.PesoNetoEgreso != 0) || (model.PesoBrutoIngreso != 0 && model.PesoNetoIngreso == 0 && model.PesoNetoEgreso != 0) || (model.PesoBrutoIngreso != 0 && model.PesoNetoIngreso != 0 && model.PesoNetoEgreso == 0) || (model.PesoBrutoIngreso != 0 && model.PesoNetoIngreso != 0 && model.PesoNetoEgreso != 0))
                 {
@@ -105,7 +105,7 @@ namespace Molinos.Scato.Web.Controllers
             if (ModelState.IsValid)
             {
                 model.NombreUsuario = datosUsuario.NombreUsuario;
-                model.NumeroDocumentoIngreso = model.NumeroDocumentoIngreso.Replace("-", "");
+                model.NumeroDocumentoIngreso = model.NumeroDocumentoIngreso.Replace("-", " ");
                 var resultado = servicioComandos.Ejecutar(new ModificarAjusteDeStock { Dto = model, Usuario = datosUsuario.NombreUsuario });
                 if (!resultado.HayErrores)
                 {

@@ -31,7 +31,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     catch (Exception e)
                     {
                         Log.Error(e, "Error al imprimir en la impresora: " + comando.Impresora);
-                        throw;
                     }
                 }
                 else
@@ -42,7 +41,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception e)
             {
                 Log.Error(e, "Error al imprimir en modulo ProcesadorImprimirFileGenerico");
-                throw;
             }
         }
 

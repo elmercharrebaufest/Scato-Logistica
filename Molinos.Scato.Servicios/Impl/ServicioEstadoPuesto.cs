@@ -22,7 +22,7 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly IConfiguracionProvider config;
         private IList<ConcentradorDto> puestos;
 
-        public ServicioEstadoPuesto(ILogger log, IServicioRepositorio repositorio, IServicioNotificarUsuario notificar, 
+        public ServicioEstadoPuesto(ILogger log, IServicioRepositorio repositorio, IServicioNotificarUsuario notificar,
             IServicioOrquestador orquestador, IServicioComandos comandos, IConfiguracionProvider config)
         {
 
@@ -32,7 +32,7 @@ namespace Molinos.Scato.Servicios.Impl
             this.orquestador = orquestador;
             this.comandos = comandos;
             this.config = config;
-            
+
             ActualizarPuestos();
         }
         public void ActualizarPuestos()
@@ -89,15 +89,15 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarCambioDeEstado(string sensor, string mensaje)
         {
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
-            var puesto = puestos.Where(x => x.Sensores.Any(y=>y.Codigo == sensor)).FirstOrDefault();
-            if(puesto == null)
+            var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
+            if (puesto == null)
             {
                 log.Error($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
-            }            
+            }
             var estados = StringToByteArray(mensaje.Replace("-", ""));
-            if(estados == null)
+            if (estados == null)
             {
                 log.Error($"El byte de respuesta { mensaje } no corresponde con el de estado");
                 return;
@@ -148,7 +148,7 @@ namespace Molinos.Scato.Servicios.Impl
         }
         public bool ValidarEstadoPuesto(int puestoId)
         {
-            var puesto = puestos.Where(x => x.PuestoId == puestoId ).FirstOrDefault();
+            var puesto = puestos.Where(x => x.PuestoId == puestoId).FirstOrDefault();
             var valido = true;
             if (puesto == null)
             {

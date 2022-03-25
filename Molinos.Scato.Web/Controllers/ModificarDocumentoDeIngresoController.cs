@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
-using Molinos.Scato.Actividades.Servicios;
+﻿using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -16,6 +10,11 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -46,7 +45,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 model = ObtenerDatosCookie(model);
             }
-            
+
             ListarConsulta(datosUsuario.CentroId, pagina, ordenarPor, dirOrden, model);
 
             if (!String.IsNullOrEmpty(error))
@@ -63,12 +62,12 @@ namespace Molinos.Scato.Web.Controllers
         private ModificarDocumentoDeIngresoDto ObtenerDatosCookie(ModificarDocumentoDeIngresoDto filtro)
         {
             var cookie = new CookieUsuario();
-            
+
             filtro.Patente = cookie.Valor("DocumentoIngresoPatente");
             filtro.NumeroDocumentoIngreso = cookie.Valor("DocumentoIngresoNumeroDocumentoDeIngreso");
             if (cookie.Valor("DocumentoIngresoFechaTaraDesde") != "" && cookie.Valor("DocumentoIngresoFechaTaraDesde") != null)
             {
-                filtro.FechaTaraDesdeCP = DateTime.Parse(cookie.Valor("DocumentoIngresoFechaTaraDesde"));            
+                filtro.FechaTaraDesdeCP = DateTime.Parse(cookie.Valor("DocumentoIngresoFechaTaraDesde"));
             }
             if (cookie.Valor("DocumentoIngresoFechaTaraHasta") != "" && cookie.Valor("DocumentoIngresoFechaTaraHasta") != null)
             {
@@ -130,7 +129,7 @@ namespace Molinos.Scato.Web.Controllers
             return filtro;
         }
 
-        public ActionResult DocumentoOrigen(int recorridoId, TipoDocumentoIngreso tipoDoc, bool soloLectura, bool esDocumentoDeOrigen = false, bool filtrarPorTarjeta = false,bool actualizarCookie = false, bool tieneDatosExportacion = false)
+        public ActionResult DocumentoOrigen(int recorridoId, TipoDocumentoIngreso tipoDoc, bool soloLectura, bool esDocumentoDeOrigen = false, bool filtrarPorTarjeta = false, bool actualizarCookie = false, bool tieneDatosExportacion = false)
         {
             ViewBag.SoloLectura = soloLectura;
             ViewBag.RecorridoId = recorridoId;
@@ -148,7 +147,6 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.Patente = recorrido.Patente;
                 ViewBag.NumeroDocumento = recorrido.NumeroDocumentoIngreso;
             }
-            
 
             if (actualizarCookie)
             {
@@ -159,7 +157,7 @@ namespace Molinos.Scato.Web.Controllers
                     NumeroDeTarjeta = "",
                     Patente = recorrido.Patente
                 });
-            }           
+            }
 
             object documentoDeIngreso;
             if (tipoDoc == TipoDocumentoIngreso.CartaPorte)
@@ -174,22 +172,21 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ViewBag.FotoMesaDigitalizacion1 = foto.Fotos.First().Foto;
                 }
-                if(documentoDeIngresoAux.TipoVehiculo == TipoVehiculo.Tren)
+                if (documentoDeIngresoAux.TipoVehiculo == TipoVehiculo.Tren)
                 {
                     foreach (var vehiculo in documentoDeIngresoAux.Vehiculos)
                     {
                         vehiculo.NumOrden = documentoDeIngresoAux?.CTG;
-                        vehiculo.Sucural  = documentoDeIngresoAux?.Sucursal?.ToString("D5");
-                        vehiculo.NumCTG   = documentoDeIngresoAux?.NroCartaPorte;
+                        vehiculo.Sucural = documentoDeIngresoAux?.Sucursal?.ToString("D5");
+                        vehiculo.NumCTG = documentoDeIngresoAux?.NroCartaPorte;
                     }
                 }
                 CargarCartaPorteController.SetearVista(recorrido.Workflow, recorrido.Centro.Id, servicio, this);
-                
             }
             else if ((tipoDoc == TipoDocumentoIngreso.OrdenCargaInterna))
             {
-                documentoDeIngreso = servicio.ObtenerOrdenCargaInternaPorInstanceId(recorrido.InstanciaWorkflow);                 
-               IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, recorrido.Centro.Id, servicio, this);
+                documentoDeIngreso = servicio.ObtenerOrdenCargaInternaPorInstanceId(recorrido.InstanciaWorkflow);
+                IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, recorrido.Centro.Id, servicio, this);
             }
             else if ((tipoDoc == TipoDocumentoIngreso.OrdenDeDescarga))
             {
@@ -226,7 +223,7 @@ namespace Molinos.Scato.Web.Controllers
             else if ((tipoDoc == TipoDocumentoIngreso.Remito))
             {
                 documentoDeIngreso = servicio.ObtenerRemitoPorOrdenDeDescarga(recorrido.NumeroDocumentoIngreso);
-                //(documentoDeIngreso as RemitoDto).Almacen_Id = servicio.ObtenerAlmacenPorRecorrido((documentoDeIngreso as RemitoDto).RecorridoId); 
+                //(documentoDeIngreso as RemitoDto).Almacen_Id = servicio.ObtenerAlmacenPorRecorrido((documentoDeIngreso as RemitoDto).RecorridoId);
                 IngresoRemitoController.SetearVista(recorrido.Workflow, servicio, this);
             }
             else if ((tipoDoc == TipoDocumentoIngreso.RemitoBodegaUvaPropia) && soloLectura)
@@ -668,7 +665,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.EsDocumentoDeOrigen = false;
             ViewBag.FiltrarPorTarjeta = false;
             ViewBag.Rechazado = false;
-            orden.Almacen_Id = servicio.ObtenerAlmacenPorRecorrido(orden.RecorridoId); 
+            orden.Almacen_Id = servicio.ObtenerAlmacenPorRecorrido(orden.RecorridoId);
 
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var resultadoChofer = SetearChofer(orden.Chofer);
@@ -747,9 +744,9 @@ namespace Molinos.Scato.Web.Controllers
                 actividad = recorrido.Rechazado && recorrido.Terminado ? Textos.Rechazado : actividad;
                 var act = actividad == "" ? ListaDeWorkflows.ObtenerWorkflowProximaAccion(recorrido.InstanciaWorkflow) : new ProximaAccionDto();
                 ViewBag.Rechazado = recorrido.Rechazado;
-                ViewBag.Actividad = string.IsNullOrEmpty(actividad) && !string.IsNullOrEmpty(act.ProximaAccion) ? 
+                ViewBag.Actividad = string.IsNullOrEmpty(actividad) && !string.IsNullOrEmpty(act.ProximaAccion) ?
                     Textos.ResourceManager.GetString("Act" + act.ProximaAccion) + (recorrido.Rechazado ? "(" + Textos.Rechazado + ")" : "") :
-                    string.IsNullOrEmpty(actividad) && act.Mensaje == Textos.Error_WorkflowNoIdle ? "Procesando Actividad": actividad;
+                    string.IsNullOrEmpty(actividad) && act.Mensaje == Textos.Error_WorkflowNoIdle ? "Procesando Actividad" : actividad;
                 ViewBag.FechaCalado = recorrido.AnalisisDeCalidad != null
                                           ? recorrido.AnalisisDeCalidad.FechaCreacion
                                           : recorrido.Calado != null ? recorrido.Calado.FechaCreacion : null;
@@ -802,6 +799,8 @@ namespace Molinos.Scato.Web.Controllers
             var recorrido = servicio.ObtenerRecorrido(recorridoId);
             ViewBag.FiltrarPorTarjeta = filtrarPorTarjeta;
             ViewBag.TieneDatosExportacion = tieneDatosExportacion;
+            ViewBag.Calador = string.Empty;
+            ViewBag.Calle = string.Empty;
             if (recorrido != null)
             {
                 ViewBag.Rechazado = recorrido.Rechazado;
@@ -809,12 +808,31 @@ namespace Molinos.Scato.Web.Controllers
                 var calidades = new List<CalidadCaracteristicaDto>();
                 var muestraEnvioACamara = recorrido.Calado != null ? servicio.ObtenerMuestraEnvioACamaraPorCalado(recorrido.Calado.Id) : null;
                 var analisisDeCalidad = recorrido.AnalisisDeCalidad;
+            
+
                 if (analisisDeCalidad != null)
                 {
+
+                    var puestoDeTrabajo = servicio.ObtenerPuestoDeLogLecturaDeTarjeta(recorrido.Patente, analisisDeCalidad.Id);
+
+                    if (!string.IsNullOrEmpty(puestoDeTrabajo))
+                    {
+                        var caladorCalle = puestoDeTrabajo.Split('-');
+                        if (caladorCalle.Length > 1)
+                        {
+                            ViewBag.Calador = caladorCalle[0];
+                            ViewBag.Calle = caladorCalle[1];
+                        }
+                        else
+                        {
+                            ViewBag.Calador = caladorCalle[0];
+                            ViewBag.Calle = string.Empty;
+                        }
+                    }
+
                     var usuario = servicio.ObtenerUsuarioId(analisisDeCalidad.Usuario);
                     ViewBag.Nombre = usuario != null ? usuario.Nombre : null;
                     ViewBag.Apellido = usuario != null ? usuario.Apellido : null;
-
 
                     foreach (var analisisPorCaracteristica in analisisDeCalidad.CaracteristicasAnalizadas)
                     {
@@ -838,7 +856,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (calado != null)
                 {
                     var huboRecalado = analisisDeCalidad != null && calado.FechaCreacion > analisisDeCalidad.FechaCreacion;
-                    
+
                     if (ViewBag.Nombre == null || huboRecalado)
                     {
                         var calador = servicio.ObtenerUsuarioId(calado.Usuario);
@@ -846,9 +864,9 @@ namespace Molinos.Scato.Web.Controllers
                         ViewBag.Apellido = calador != null ? calador.Apellido : null;
                     }
 
-                    if(huboRecalado)
+                    if (huboRecalado)
                     {
-                        calidades = calidades.Where(c=> !calado.CaladosPorCaracteristica.Any(x => c.CaracteristicaId == x.CaracteristicaId.ToString(CultureInfo.CurrentCulture))).ToList();
+                        calidades = calidades.Where(c => !calado.CaladosPorCaracteristica.Any(x => c.CaracteristicaId == x.CaracteristicaId.ToString(CultureInfo.CurrentCulture))).ToList();
                     }
 
                     //carateristicas no analizadas
@@ -868,7 +886,6 @@ namespace Molinos.Scato.Web.Controllers
                         });
                     }
                     ViewBag.Comentario = calado.Comentario;
-                  
                 }
                 ViewBag.TipoDocumentoString = EspacioEntreMayusculas(tipoDoc.ToString());
                 ViewBag.TipoDocumento = tipoDoc;
@@ -903,7 +920,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.TipoDocumento = tipoDoc;
             ViewBag.NumeroDocumento = numeroDoc;
             ViewBag.Patente = patente;
-           
+
             SetearDatosPestanias(recorridoId, tipoDoc, numeroDoc, patente);
             return View();
         }
@@ -939,7 +956,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.Patente = recorrido.Patente;
             }
             ViewBag.TipoDocumentoString = EspacioEntreMayusculas(tipoDoc.ToString());
-            ViewBag.TipoDocumento = tipoDoc;            
+            ViewBag.TipoDocumento = tipoDoc;
             SetearDatosPestanias(recorridoId, tipoDoc, numeroDoc, patente);
             return View();
         }
@@ -957,7 +974,6 @@ namespace Molinos.Scato.Web.Controllers
 
             ViewBag.Nacionalidades = servicio.ListarPaises().ToSelectList(dto => dto.Id.ToString(CultureInfo.InvariantCulture), dto => dto.Descripcion).OrderBy(s => s.Text);
             ViewBag.Firmas = servicio.ListarFirmas().ToSelectList(dto => dto.Id.ToString(CultureInfo.InvariantCulture), dto => dto.RazonSocial);
-
 
             IngresoDeDatosDeExportacionDto datosExportacionDto = servicio.ObtenerIngresoDeDatosDeExportacionPorRecorrido(recorridoId);
             return View(datosExportacionDto);
@@ -996,7 +1012,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             ActualizarCookie(model);
             ListarConsulta(datosUsuario.CentroId, pagina, ordenarPor, dirOrden, model);
-           
+
             ViewBag.FiltrarPorTarjeta = model.FiltrarPorTarjeta;
             ViewBag.SoloLectura = soloLectura;
 

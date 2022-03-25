@@ -1,8 +1,9 @@
 ﻿CREATE TABLE [dbo].[Bodega] (
-    [Id]     INT            IDENTITY (1, 1) NOT NULL,
+    [Id]     INT           IDENTITY (1, 1) NOT NULL,
     [Nombre] NVARCHAR (60) NULL,
-    
-    CONSTRAINT [PK_dbo.Bodega] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [UK_Bodega_Nombre] UNIQUE (Nombre) 
+    CONSTRAINT [PK_dbo.Bodega] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
+    CONSTRAINT [UK_Bodega_Nombre] UNIQUE NONCLUSTERED ([Nombre] ASC) WITH (FILLFACTOR = 90, PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON)
 );
+
+
 GO

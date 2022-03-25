@@ -79,6 +79,7 @@ namespace Molinos.Scato.Web.Seguridad
                 log.Info($"ScatoClaimsAuthenticationManager Ips usado: {requestIP} para el usuario {nombreUsuario}");
 
                 IPAddress IP = IPAddress.Parse(requestIP);
+
                 IPHostEntry GetIPHost = Dns.GetHostEntry(IP);
 
                 List<string> hostName = GetIPHost.HostName.ToString().Split('.').ToList();
@@ -86,8 +87,11 @@ namespace Molinos.Scato.Web.Seguridad
                 string ComputerName = hostName.First();
 
                 string MachineName1 = Environment.MachineName;
+
                 string MachineName2 = Dns.GetHostName();
+
                 string MachineName3 = HttpContext.Current.Request.ServerVariables["REMOTE_HOST"].ToString();
+
                 string MachineName4 = Environment.GetEnvironmentVariable("COMPUTERNAME");
 
                 identity.AddClaim(new Claim("UserComputerName", ComputerName));
@@ -96,6 +100,7 @@ namespace Molinos.Scato.Web.Seguridad
             catch (Exception ex)
             {
                 log.Info("Nombre de pc detectada: no se pudo detectar para el usuario {0}.", nombreUsuario);
+
                 log.Error(ex, "Error IP");
             }
 

@@ -20,5 +20,7 @@ namespace Molinos.Scato.Dominio.Entidades
         
         public virtual string NombreUsuario { get; set; }
         public virtual string Tipo { get; set; }
+        public virtual string NumeroCTG { get; set; }
+
     }
 }

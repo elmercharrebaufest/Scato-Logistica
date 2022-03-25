@@ -1,4 +1,5 @@
 ﻿using Microsoft.Web.Administration;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -263,11 +264,12 @@ namespace Molinos.Scato.Servicios.Impl
                 EsExpo = x.Balanza.EsExportacion,
                 Camara = x.VideoCamaras.FirstOrDefault().Codigo,
                 Orden = x.OrdenBalanza,
-                IntercomunicadorCodigo = x.IntercomunicadorCodigo,
+                IntercomunicadorCodigo = x.IntercomunicadorCodigo
             }, x => x.AutomatizadoFull && x.Balanza != null && x.Centro.Id == centroId);
             foreach (var b in balanzas)
             {
                 b.CamaraUrl = servicioOrquestador.ObtenerUrlPorCamara(new string[] { b.Camara }).FirstOrDefault();
+                b.RutaNotificacion = configuracion.AppSettings["UrlNotificacionesWeb"];
                 //log.Debug($"Url: {b.CamaraUrl} para camara {b.Camara}");
             }
             return balanzas;
@@ -7320,7 +7322,7 @@ namespace Molinos.Scato.Servicios.Impl
             var centro = repositorio.Obtener<Centro>(datosCamion.CentroId);
             var retorno = new FotosDto { Fotos = new List<FotoDto>(), Material = datosCamion.Material, NumeroDocumentoIngreso = datosCamion.NumeroDocumentoIngreso, Patente = datosCamion.Patente, FechaInicio = datosCamion.FechaInicio, RecorridoId = datosCamion.Id };
 
-            return ListarFotos(fileName, retorno, fotosPath:centro?.FotosPath);
+            return ListarFotos(fileName, retorno, fotosPath: centro?.FotosPath);
         }
 
         public FotosDto ListarFotosCamion(Guid instanciaWorkflow, string actividad)
@@ -7512,7 +7514,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             try
             {
-                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera, fotosPath:fotosPath).OrderByDescending(x => x.CreationTime))
+                foreach (FileData foundFile in BuscarFotos(fileName, retorno.FechaInicio, obtenerPrimera, fotosPath: fotosPath).OrderByDescending(x => x.CreationTime))
                 {
                     var nombre = foundFile.Name.Split('.')[0].Split('-');
                     var actividad = nombre.Count() >= 4 ? nombre[3] : string.Empty;
@@ -7590,17 +7592,42 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         continue;
                     }
-                    foreach (var subpath in subpaths)
+
+                    //Modificacion Multiples Paths - Mejora en Acopios (Pergamino)
+                    if (!string.IsNullOrEmpty(fotosPath))
                     {
-                        var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
-                        if (Directory.Exists(puestoDeTrabajoFecha))
-                        {
-                            var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
-                            if (filesInDir.Any() && obtenerPrimera)
+                        foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
+                        {                      
+                            foreach (var subpath in subpaths)
                             {
-                                return new List<FileData> { filesInDir.First() };
+                                var puestoDeTrabajoFecha = carpeta + "\\" + subpath + "\\";
+                                log.Debug("Ruta-File:" + puestoDeTrabajoFecha);
+                                if (Directory.Exists(puestoDeTrabajoFecha))
+                                {
+                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                    if (filesInDir.Any() && obtenerPrimera)
+                                    {
+                                        return new List<FileData> { filesInDir.First() };
+                                    }
+                                    resultado.AddRange(filesInDir);
+                                }
+                            }                            
+                        }
+                    } 
+                    else
+                    {
+                        foreach (var subpath in subpaths)
+                        {
+                            var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
+                            if (Directory.Exists(puestoDeTrabajoFecha))
+                            {
+                                var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                if (filesInDir.Any() && obtenerPrimera)
+                                {
+                                    return new List<FileData> { filesInDir.First() };
+                                }
+                                resultado.AddRange(filesInDir);
                             }
-                            resultado.AddRange(filesInDir);
                         }
                     }
                 }
@@ -7611,10 +7638,6 @@ namespace Molinos.Scato.Servicios.Impl
             }
             log.Debug("Fin BuscarFotos" + fileName);
             return resultado;
-        }
-
-        private void ObtenerFotosEnDirectorio(string fileName, string path, List<FileData> resultado, bool obtenerPrimera = false)
-        {
         }
 
         public List<EstadoMaterialDto> ListarEstadoPlanta(int centroId, bool mostrarIngresos, bool esGrano)
@@ -8526,7 +8549,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false)
         {
-            return (excluirEspeciales) 
+            return (excluirEspeciales)
                 ? Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
                     x => x.Centro.Id == centroId && (x.EsSojaSustentable == esSustentable || sustentableMixta) && (x.EsEspecial != excluirEspeciales || x.EsEspecial == null))
                 : Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(
@@ -9574,11 +9597,81 @@ namespace Molinos.Scato.Servicios.Impl
             repositorio.GuardarCambios();
             return resultado;
         }
+
         public string ObtenerDispositivoBarreraEntrada(int puestoId)
         {
             return repositorio.ObtenerProyeccion<PuestoDeTrabajo, string>(
                 x => x.Id == puestoId,
                 x => x.Entrada);
+        }
+
+        public string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, int? analisisDeCalidadId)
+        {
+            var fechaCalado = repositorio.ObtenerProyeccion<AnalisisDeCalidad, DateTime?>(x => x.Id == analisisDeCalidadId,
+                                                  x => x.Calado.FechaCreacion);
+
+            var fechaFinal = fechaCalado;
+            var fechaInicio = fechaCalado?.AddHours(-1);
+            var result = repositorio.ObtenerMayor<LogLecturaDeTarjeta, DateTime, string>(
+                x => (x.Patente == patente && (x.Fecha > fechaInicio && x.Fecha <= fechaFinal)),
+                x => x.Fecha,
+                x => x.PuestoDeTrabajo.NombrePuesto);
+            return result;
+        }
+        
+        public ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null)
+        {
+            return Obtener<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && x.Nombre == nombre && (centroId.HasValue? x.CentroId == centroId : x.CentroId == null));
+        }
+
+        public List<ConfiguracionGeneralDto> ListarConfiguracionesGenerales(string pantalla, int? centroId = null)
+        {
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && (centroId.HasValue ? x.CentroId == centroId : x.CentroId == null)).ToList();
+        }
+
+        public List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null)
+        {
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == pantalla && nombres.Contains(x.Nombre) && (centroId.HasValue ? x.CentroId == centroId : x.CentroId == null)).ToList();
+        }
+
+        public CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo)
+        {
+            var result = repositorio.ObtenerMayor<CargaDeCupo, int>(
+                x => x.Cupo == cupo,
+                x => x.Id);
+            return conversor.Convertir<CargaDeCupo, CargaDeCupoDto>(result);
+        }
+        
+        public List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta)
+        {
+            return repositorio.ListarConsulta(new ListarEficienciaCalado(desde, hasta));
+        }
+
+        public List<EficienciaCaladoValoresDto> ListarCallesCalado(int centroId)
+        {
+            var callesCalado = Listar<Calle, CalleDto>(x => x.CentroId == centroId && x.TipoCalle == TipoCalle.Calado && !x.Deshabilitada);
+            var nombresCallesCalado = callesCalado.Select(x => x.Nombre).ToList();
+            var puestoDeTrabajoCalado = Listar<PuestoDeTrabajo, PuestoDeTrabajoDto>(p => nombresCallesCalado.Any(c => p.NombrePuesto.StartsWith(c)));
+            return puestoDeTrabajoCalado.Select(x => new EficienciaCaladoValoresDto 
+            {
+                Id = x.Id,
+                Cantidad = 0,
+                Nombre = x.NombrePuesto.Substring((x.NombrePuesto.IndexOf("-")) + 1, x.NombrePuesto.Length - (x.NombrePuesto.IndexOf("-")) - 1).Trim()
+            } ).ToList();
+        }
+
+        public EficienciaCaladoValoresDto ObtenerEficienciaCalle(int id, int centroId)
+        {
+            var configuracion = ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EficienciaCalado, Constantes.ConfiguracionGeneral.EficienciaCalado.EficienciaCalles, centroId);
+            var configuracionCalles = configuracion.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
+            return configuracionCalles.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public int ObtenerCantidadPendientesPorCalar(int centroId)
+        {
+            var currentDate = DateTime.Now;
+            currentDate = currentDate.Date.Add(TimeSpan.Parse("00:00:00.000"));
+            return repositorio.Contar<CallePorRecorrido>(x => x.Calle.TipoCalle == TipoCalle.PreCalado && x.Calle.CentroId == centroId && x.FechaIngeso >= currentDate && x.FechaEgreso == null);
         }
     }
 }

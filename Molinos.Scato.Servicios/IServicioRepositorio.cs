@@ -2262,6 +2262,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false);
+
         [OperationContract]
         IList<MaterialDto> ListarMaterialesFiltroF515(int centroId);
 
@@ -2588,8 +2589,35 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Resultado ActualizarFechaEstadoCacheadoCPECentro(int id, string mensaje);
-        
+
         [OperationContract]
         string ObtenerDispositivoBarreraEntrada(int puestoId);
+
+        [OperationContract]
+        string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, int? analisisDeCalidadId);
+
+        [OperationContract]
+        ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null);
+
+        [OperationContract]
+        List<ConfiguracionGeneralDto> ListarConfiguracionesGenerales(string pantalla, int? centroId = null);
+
+        [OperationContract]
+        List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
+
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta);
+
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ListarCallesCalado(int centroId);
+
+        [OperationContract]
+        EficienciaCaladoValoresDto ObtenerEficienciaCalle(int id, int centroId);
+
+        [OperationContract]
+        int ObtenerCantidadPendientesPorCalar(int centroId);
     }
 }

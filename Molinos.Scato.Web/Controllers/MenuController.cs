@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IdentityModel.Services;
@@ -6,8 +7,10 @@ using System.Linq;
 using System.Resources;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -19,19 +22,20 @@ namespace Molinos.Scato.Web.Controllers
     {
         private readonly IServicioComandos servicioComandos;
         private ILogger log;
+        private readonly IServicioOrquestador orquestador;
 
-        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos)
+        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioOrquestador orquestador)
             : base(servicio)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
+            this.orquestador = orquestador;
         }
 
         [DatosUsuario]
         public ActionResult Menu(DatosUsuario datosUsuario)
-        {
+        {            
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
 
             var rm = new ResourceManager(typeof(Textos));
@@ -179,6 +183,36 @@ namespace Molinos.Scato.Web.Controllers
                 var grupos = servicio.ObtenerGruposPorUsuario(nombreUsuario);
                 cookie.ActualizarValor("Grupo", String.Join("|", grupos.ToArray()));
             }
+        }
+
+        [DatosUsuario]
+        public ActionResult GestionarBarrera(DatosUsuario datosUsuario, int puestoId, string codigo, string motivo, string accion)
+        {
+            try
+            {
+                switch (accion)
+                {
+                    case "A": //Apertura de BarreraMaestro
+                        orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
+                        break;
+                    case "C": //Cierre de Barrera
+                        orquestador.Ejecutar(new EjecutarCierreBarrera { CodigoDispositivo = codigo });
+                        break;
+                    default:
+                        break;
+                }                
+            }
+            catch (Exception e)
+            {
+                log.Error(e, $"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera : {codigo}");
+                return Json($"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera", JsonRequestBehavior.AllowGet);          
+            }
+            if (!string.IsNullOrEmpty(motivo))
+            {
+                servicioComandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = puestoId, Motivo = $"{motivo} - {(accion == "A" ? "APERTURA" : "CIERRE")} ", Usuario = datosUsuario.NombreUsuario });
+            }
+
+            return Json("ok", JsonRequestBehavior.AllowGet);
         }
     }
 }

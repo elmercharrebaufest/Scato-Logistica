@@ -19,6 +19,7 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
@@ -44,6 +45,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(Guid id, DatosUsuario datosUsuario)
         {
             var recorrido = servicio.ObtenerRecorridoPorGuid(id);
+            ViewBag.WorkflowInstanceUid = id;
 
             if (recorrido != null)
             {
@@ -172,6 +174,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.EsDocumentoDeOrigen = false;
             ViewBag.FiltrarPorTarjeta = false;
             ViewBag.Rechazado = false;
+            ViewBag.WorkflowInstanceUid = WorkflowId;
 
             ViewBag.RecorridoId = orden.RecorridoId;
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
@@ -216,6 +219,7 @@ namespace Molinos.Scato.Web.Controllers
                 return View(orden);
             }
             IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+            log.Debug($"ErrorModel : {JsonConvert.SerializeObject(ModelState)}");
             return View(orden);
         }
         [HttpPost]

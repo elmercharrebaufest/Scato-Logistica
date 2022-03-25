@@ -91,7 +91,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool InspeccionDeCamionesVacios { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsModificable")]
         public bool EsModificable { get; set; }
-
+      
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsHumedad")]
         public bool EsHumedad { get { return TipoCaracteristica == CaracteristicasCalidad.EsHumedad; } }
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsTenorAzucarino")]
@@ -110,32 +110,26 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsMermaVolatil { get { return TipoCaracteristica == CaracteristicasCalidad.EsMermaVolatil; } }
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsProteina")]
         public bool EsProteina { get { return TipoCaracteristica == CaracteristicasCalidad.EsProteina; } }
-
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsInsectosVivos")]
         public bool EsInsectosVivos { get { return TipoCaracteristica == CaracteristicasCalidad.EsInsectosVivos; } }
-
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_PrioridadEnCalado")]
         [Range(0, 99, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public int? PrioridadEnCalado { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_NoAceptarSiSeDefineUnValor")]
         public bool NoAceptarSiSeDefineUnValor { get; set; }
         public string CodigoCamara { get; set; }
-
         public List<DescuentoDto> DescuentosDto { get; set; }
-
         public bool SeEnviaACamara { get; set; }
-
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EnvioACamara")]
         public EnvioACamara SituacionEnvioACamara { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_SiSuperaValorCamara")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
-        public decimal? SiSuperaValorCamara { get; set; }
+        public decimal? SiSuperaValorCamara { get; set; }    
         
         [Display(ResourceType = typeof(Textos), Name = "TipoCaracteristica")]
         public CaracteristicasCalidad TipoCaracteristica { get; set; }
-
 
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_ValorEspecialMinimo")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
@@ -157,7 +151,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Nirs_NombreCalidad")]
         [MaxLength(50, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string NombreNirs { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (CaladoMaximo < CaladoMinimo)
@@ -168,6 +161,11 @@ namespace Molinos.Scato.Dominio.Dto
             if (ToleranciaSinAnalisis < CaladoMinimo || ToleranciaSinAnalisis > CaladoMaximo)
             {
                 yield return new ValidationResult(Textos.Error_Invalido, new[] { "ToleranciaSinAnalisis" });
+            }
+
+            if (CaladoPorDefecto < CaladoMinimo || CaladoPorDefecto > CaladoMaximo)
+            {
+                yield return new ValidationResult(Textos.Error_Invalido_ValorPorDefectoCalado, new[] { "CaladoPorDefecto" });
             }
         }
 
@@ -181,6 +179,15 @@ namespace Molinos.Scato.Dominio.Dto
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public decimal? ToleranciaSinMensaje { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_ValorPorDefectoCalado")]
+        [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")] 
+        public decimal? CaladoPorDefecto { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsPesoHectolitrico")]
+        public bool EsPesoHectolitrico { get { return TipoCaracteristica == CaracteristicasCalidad.EsPesoHectolitrico; } }
+
 
     }
 }

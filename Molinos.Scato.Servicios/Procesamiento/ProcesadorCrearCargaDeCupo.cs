@@ -31,11 +31,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cupo.Centro = Repositorio.Obtener<Centro>(comando.Dto.CentroId);
             cupo.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             cupo.PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.PuestoDeTrabajoId);
-            cupo.Reingresado = Repositorio.Existe<CargaDeCupo>(x => ((x.SinCupo == false && x.Cupo == comando.Dto.Cupo) || ((!comando.Dto.CPE && x.NumeroCartaPorte != null && x.NumeroCartaPorte == comando.Dto.NumeroCartaPorte) || (comando.Dto.CPE && x.CTG != null && x.CTG == comando.Dto.CTG))) &&
+            cupo.Reingresado = Repositorio.Existe<CargaDeCupo>(x => (( x.NumeroCartaPorte != null && x.NumeroCartaPorte == comando.Dto.NumeroCartaPorte && x.Patente== comando.Dto.Patente) || (x.CTG != null && x.CTG == comando.Dto.CTG && x.Patente == comando.Dto.Patente)) &&
                                                                 
                                                                 x.Centro.Id == comando.Dto.CentroId &&
                                                                 x.Recorrido != null &&
-                                                                x.Recorrido.Rechazado);
+                                                                x.Recorrido.Rechazado);//Tarea - (ANS-128) - Número de CP para camión reingresado - SR58195
             return cupo;
         }
 
@@ -136,6 +136,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             comando.Dto.FotoRutaDestino = path.Path;
                             ((ResultadoCrear)resultado).Mensaje = path.Path;
+
+                            var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                            {
+                                RutaFotoCP = comando.Dto.FotoRutaDestino,
+                                CodigoCentroSap = comando.Dto.CentroCodigoSap,
+                                NroDocumento = comando.Dto.CTG,
+                                Patente = comando.Dto.Patente,
+                                SoloDibujar = false
+                            }) as ResultadoGuardarFoto;
+                            if (resultadoSustentable != null && !string.IsNullOrEmpty(resultadoSustentable.Path))
+                            {
+                                comando.Dto.FotoRutaSustentable = resultadoSustentable.Path;
+                                ((ResultadoCrear)resultado).PathSustentable = resultadoSustentable.Path;
+                            }
+                            else
+                            {
+                                resultado.Error("ResultadoSustentable", "No se pudo guardar la foto CP con sello sustentable");
+                            }
                         }
                         else
                         {

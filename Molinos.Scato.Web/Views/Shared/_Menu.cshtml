@@ -14,7 +14,6 @@
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
 }
 
-
 @Scripts.Render("~/bundles/blockUI")
 <script>
     //Se cierra el diálogo cuando se presiona ESC
@@ -47,6 +46,7 @@
                     @Html.Hidden("ListaDeCamionesUrl", Url.Action("Index", "ListaDeCamiones"))
                     @Html.Hidden("BorrarPermisosCookie", Url.Action("BorrarPermisosCookie", "Menu"))
                     @Html.Hidden("ActualizarCookie", Url.Action("ActualizarCookiePermisos", "Menu"))
+                    @Html.Hidden("GestionarBarrera", Url.Action("GestionarBarrera"))
                 </li>
             </ul>
             <ul class="nav">
@@ -113,7 +113,7 @@
                                         {
                                             <li>@Html.ActionLink(Textos.ExcepcionEnvioCamara_Titulo, "Index", "ExcepcionEnvioCamara")</li>
                                         }
-                                       
+
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -588,6 +588,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.DocumentoExterno, "Index", "DocumentoExterno")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionEficienciaCalado))
+                                {
+                                    <li>@Html.ActionLink(Textos.ConfiguracionEficienciaCalado_Titulo, "Index", "ConfiguracionEficienciaCalado")</li>
+                                }
                             </ul>
                         </li>
 
@@ -1043,7 +1047,6 @@
                         </li>
                     </ul>
                 </li>
-
             </ul>
 
 
@@ -1135,3 +1138,47 @@
         </p>
     </div>
 }
+
+<div id="dashboardBarrerasModal" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 50%; top: 30%; width: 1005px; margin-top: -160.542px; margin-right: auto; margin-left: -460.005px;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4>Visualización de Barreras :</h4>
+    </div>
+</div>
+
+<div id="gestionbarreraSupervisorModal" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Indique motivo:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="control-group">
+            @Html.Label("Motivo", new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
+            </div>
+        </div>
+
+        <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+        <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
+
+        @Html.Hidden("elemento-id")
+        @Html.Hidden("elemento-barrera")
+        @Html.Hidden("url")
+        @Html.Hidden("elemento-accion")
+    </div>
+
+    <div class="modal-footer">
+        <a href="#" id="guardarEventoBarrera" class="btn btn-primary">Aceptar</a>
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
+    </div>
+</div>

@@ -25,10 +25,10 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool InternoPorObservados { get; set; }
         public virtual bool InspeccionDeCamionesVacios { get; set; }
         public virtual bool EsModificable { get; set; }
+        public virtual bool? EsPesoHectolitrico { get; set; }
         public virtual bool EsHumedad { get; set; }
         public virtual EnvioACamara SituacionEnvioACamara { get; set; }
         public virtual decimal? SiSuperaValorCamara { get; set; }
-
         [InverseProperty("CaracteristicaDeCalidad")]
         public virtual ICollection<Descuento> Descuentos { get; set; }
         public virtual ICollection<ConfiguracionDeTabla> ConfiguracionesDeTabla { get; set; }
@@ -47,15 +47,16 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsInsectosVivos { get; set; }
         public virtual decimal? ValorProteina { get; set; }
         public virtual decimal? ValorProteinaMedia { get; set; }
-
         public virtual decimal? ValorEspecialMinimo { get; set; }
         public virtual decimal? ValorEspecialMaximo { get; set; }
         public virtual bool EsAutomatizable { get; set; }
         public virtual TipoDispositivo Dispositivo { get; set; }
         public virtual string NombreNirs { get; set; }
-
         public virtual bool IntervaloDeAnalisis { get; set; }
         public virtual bool EnviaASap { get; set; }
         public virtual decimal? ToleranciaSinMensaje { get; set; }
+        public virtual decimal? CaladoPorDefecto { get; set; }
+        
     }
+  
 }

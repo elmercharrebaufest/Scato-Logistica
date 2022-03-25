@@ -1,7 +1,5 @@
 ﻿@model Molinos.Scato.Web.Models.MonitorCPECacheadaViewModel
 @using Molinos.Scato.Dominio.Recursos
-@using Molinos.Scato.Web
-@using Molinos.Scato.Web.Helpers
 @{
     ViewBag.Title = Textos.MonitorCPECacheada_Titulo;
 }
@@ -26,14 +24,14 @@
                 </a>
             </div>
             <div id="collapseContent" class="accordion-body collapse">
-                @using (Ajax.BeginForm("Listar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "filterContainer", @class = "form-search" }))
+                @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "filterContainer", @class = "form-search" }))
                 {
                     @Html.Partial("_Filtro")
                 }
             </div>
         </div>
     </div>
-    <div id="gridContainer" style="margin-top: 10px" data-grid-url="@Url.Action("Listar")">
+    <div id="gridContainer" style="margin-top: 10px" data-grid-url="@Url.Action("Index")">
         @Html.Partial("_Listado")
     </div>
 </div>

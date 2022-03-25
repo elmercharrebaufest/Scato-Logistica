@@ -34,6 +34,9 @@
           <QueryParameter Name="@TipoDestino">
             <Value>=Parameters!TipoDestino.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@TipoSustentable">
+            <Value>=Parameters!TipoSustentable.Value</Value>
+          </QueryParameter>
         </QueryParameters>
         <CommandText>declare 
 @FechaDesdep datetime, 
@@ -44,8 +47,9 @@
 @CuitMRP varchar(11),
 @TipoCompraIdp varchar(1),
 @CuitVicentin varchar(11),
-@CuitChivilcoy varchar(11),
-@TipoDestinoIdp varchar(1)
+@CuitChivilcoy varchar(13),
+@TipoDestinoIdp varchar(1),
+@TipoSustentableIdp varchar(1)
 
 set @FechaDesdep = @FechaDesde
 set @FechaHastap = @FechaHasta
@@ -55,8 +59,9 @@ set @CuitMOA = '30715118773'
 set @CuitMRP = '30500858628'
 set @TipoCompraIdp = @TipoCompra
 set @CuitVicentin = '30500959629'
-set @CuitChivilcoy = '0001'
+set @CuitChivilcoy = '30-50085862-8'
 set @TipoDestinoIdp = @TipoDestino
+set @TipoSustentableIdp = @TipoSustentable
 
 
 SELECT DISTINCT
@@ -69,24 +74,24 @@ SELECT DISTINCT
 	CASE WHEN cp.CEE = 'null' THEN NULL ELSE cp.CEE END CEE,
 	CONCAT(RIGHT('00000' + CAST(cp.Sucursal AS VARCHAR(5)), 5), RIGHT('00000000' + CAST(cp.NroOrden AS VARCHAR(8)), 8))  NroCTG,
 	cp.FechaCarga  FechaCTG,
-	cp.TitularCuit TitularCuit,
+	REPLACE(cp.TitularCuit, '-','') TitularCuit,
 	cp.TitularRazonSocial TitularRS,
 	'' NroPlanta,
-	cp.IntermediarioCuit IntermediarioCuit,
+	REPLACE(cp.IntermediarioCuit, '-','') IntermediarioCuit,
 	cp.IntermediarioRazonSocial IntermediarioRS,
 	CASE
 		WHEN (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL 
 			AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaSecundaria2
+		THEN REPLACE(cp.CuitRemitenteComercialVentaSecundaria2, '-','')
 		WHEN (cp.CuitRemitenteComercialVentaSecundaria IS NOT NULL 
 			AND cp.CuitRemitenteComercialVentaSecundaria NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaSecundaria
+		THEN REPLACE(cp.CuitRemitenteComercialVentaSecundaria, '-','')
 		WHEN (cp.CuitRemitenteComercialVentaPrimaria IS NOT NULL
 			AND cp.CuitRemitenteComercialVentaPrimaria NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaPrimaria
+		THEN REPLACE(cp.CuitRemitenteComercialVentaPrimaria, '-','')
 		WHEN (cp.RemitenteCuit IS NOT NULL
 			AND cp.RemitenteCuit NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.RemitenteCuit
+		THEN REPLACE(cp.RemitenteCuit, '-','')
 		ELSE NULL
 	END RemitenteCuit,
 	CASE
@@ -103,7 +108,7 @@ SELECT DISTINCT
 			AND cp.RemitenteCuit NOT IN(@CuitMOA,@CuitMRP, ''))
 		THEN cp.RemitenteRazonSocial
 	END RemitenteRS,
-	cp.CuitMercadoATermino AgenteDeComprasCuit,
+	REPLACE(cp.CuitMercadoATermino, '-','') AgenteDeComprasCuit,
 	cp.ProductoCodigo ProductoCodigo,
 	m.DescripcionCorta Mercaderia,
 	'' TipoGrano,
@@ -130,7 +135,7 @@ SELECT DISTINCT
 			AND (cp.CuitRemitenteComercialVentaSecundaria2 IS NULL
 				OR cp.CuitRemitenteComercialVentaSecundaria2 IN(@CuitMOA,@CuitMRP ,''))
 			AND cp.CorredorCuit IS NOT NULL AND cp.CorredorCuit != ''
-		THEN cp.CorredorCuit
+		THEN REPLACE(cp.CorredorCuit, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -141,14 +146,14 @@ SELECT DISTINCT
 			OR (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL
 				AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP, '') ))
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Otro'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) != '01'
 			AND (cp.RemitenteCuit IS NULL  
 				OR cp.RemitenteCuit IN(@CuitMOA,@CuitMRP ,'') )
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Otro'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) != '01'
@@ -161,7 +166,7 @@ SELECT DISTINCT
 			AND (cp.CuitRemitenteComercialVentaSecundaria2 IS NULL
 				OR cp.CuitRemitenteComercialVentaSecundaria2 IN(@CuitMOA,@CuitMRP ,'') ))
 			AND cp.CorredorCuit IS NOT NULL AND cp.CorredorCuit != ''
-		THEN cp.CorredorCuit
+		THEN REPLACE(cp.CorredorCuit, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			
 			--AND cp.CTG = 'Otro'
@@ -175,7 +180,7 @@ SELECT DISTINCT
 			OR (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL
 				AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP ,'') ))
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		ELSE NULL
 	END CorredorCuit,
 	CASE
@@ -239,20 +244,20 @@ SELECT DISTINCT
 		THEN cp.RazonSocialCorredorVentaSecundaria
 		ELSE NULL
 	END CorredorRS,
-	cp.EntregadorCuit EntregadorCuit,
+	REPLACE(cp.EntregadorCuit, '-','') EntregadorCuit,
 	cp.EntregadorRazonSocial EntregadorRS,
-	cp.DestinatarioCuit DestinatarioCuit,
+	REPLACE(cp.DestinatarioCuit, '-','') DestinatarioCuit,
 	cp.DestinatarioRazonSocial DestinatarioRS,
-	cp.DestinoCuit DestinoCuit,
+	REPLACE(cp.DestinoCuit, '-','') DestinoCuit,
 	cp.DestinoRazonSocial DestinoRS,
 	CASE WHEN cp.Planta = '25567' THEN 'San Lorenzo' WHEN cp.Planta = '21832' THEN 'RICARDONE' ELSE '' END Planta,
-	cp.TransporteCuit TransporteCuit,
+	REPLACE(cp.TransporteCuit, '-','') TransporteCuit,
 	cp.TransporteRazonSocial TransporteRS,
 	cp.TransportePatente Patente,
 	'' PatenteAcoplado,
 	'' KmARecorrer,
 	'' TarfiaXTonelada,
-	cp.ChoferCuit ChoferCuit,
+	REPLACE(cp.ChoferCuit, '-','') ChoferCuit,
 	cp.ChoferRazonSocial ChoferRS,
 	DATEADD(HOUR,-3,cp.FechaArribo) FechaCompletaArribo,
 	DATEADD(HOUR,-3,cp.FechaDescarga) FechaCompletaDescarga,
@@ -264,12 +269,19 @@ SELECT DISTINCT
 	'' Clasificacion,
 	'' InterFlete,
 	'' Cupo,
-	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND ccp.Valor &gt; 13.5 THEN 13.5 --soja
+	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+										   when m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+										   when m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+										   when m.CodigoONCCA = 2  AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+										   when m.CodigoONCCA = 23 AND ccp.Valor &gt; 13.5 THEN 13.5 --soja
 										   when m.CodigoONCCA = 19 AND ccp.Valor &gt; 14.5 THEN 14.5 --maiz
 										   when m.CodigoONCCA = 15 AND ccp.Valor &gt; 14 THEN 14 --trigo
 										   when m.CodigoONCCA = 2 AND ccp.Valor &gt; 11 THEN 11 --girasol
 										   ELSE ccp.Valor END) else 0 end Humedad,
-	CASE WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPSOJHUM,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 13.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 13.5 / 100
+		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 13.5 THEN 0	
+		 WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPSOJHUM,
  
 	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor ELSE 0 END MPSOJGQU,
 
@@ -289,7 +301,11 @@ SELECT DISTINCT
 	CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor ELSE 0 END MPMAZQUE,
 	CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor ELSE 0 END MPMAZMEX,
 	CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor ELSE 0 END MPMAZTIP,
-	CASE WHEN ecc.CodigoSap = 'MPMAZHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPMAZHUM,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.5 / 100
+		 WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.5 THEN 0	
+		 WHEN ecc.CodigoSap = 'MPMAZHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPMAZHUM,
+
 	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor ELSE 0 END MPMAZOLO,
 	CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor ELSE 0 END MPMAZAMO,
 	CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor ELSE 0 END MPMAZMCH,
@@ -303,7 +319,11 @@ SELECT DISTINCT
 	CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor ELSE 0 END MPTRPQUE,
 	CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor ELSE 0 END MPTRPPIC,
 	CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor ELSE 0 END MPTRPTRE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPHM' THEN  cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPTRPHM,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.0 / 100
+		 WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.0 THEN 0	
+		 WHEN ecc.CodigoSap = 'MPTRPHM' THEN  cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPTRPHM,
+
 	CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor ELSE 0 END MPTRPINS,
 	CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor ELSE 0 END MPTRPOLO,
 	CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor ELSE 0 END MPTRPPST,
@@ -315,7 +335,11 @@ SELECT DISTINCT
 	CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor ELSE 0 END MPGIRCHA,
 	CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor ELSE 0 END MPGIRESC,
 	CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor ELSE 0 END MPGIRGAR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPGIRHUM,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 11.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 11.0 / 100
+		 WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 11.0 THEN 0
+		 WHEN ecc.CodigoSap = 'MPGIRHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPGIRHUM,
+
 	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor ELSE 0 END MPGIRHUR,
 	CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor ELSE 0 END MPGIRINV,
 	CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor ELSE 0 END MPGIRMGR,
@@ -329,13 +353,14 @@ FROM CartaPorteOtrosPuertos cp
 LEFT JOIN Material m ON m.Id = cp.Material_Id
 LEFT JOIN (SELECT CartaPorteOtrosPuertos_Id, SUM(Valor) Valor FROM CaracteristicasCartaPorteOtrosPuertos WHERE CodigoExterno &lt;&gt; 'HUMEDAD' GROUP BY CartaPorteOtrosPuertos_Id) SumCaracteristicas ON SumCaracteristicas.CartaPorteOtrosPuertos_Id = cp.Id
 LEFT JOIN CaracteristicasCartaPorteOtrosPuertos ccp ON ccp.CartaPorteOtrosPuertos_Id = cp.Id 
-LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoExterno = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
+LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoSap = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
 
 WHERE CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &lt;= CAST(@FechaHastap AS DATE) AND CAST(@FechaDesdep AS DATE) &gt;= CAST('2021-11-01' AS DATE)
 AND cp.Material_Id = @MaterialIdp
 AND (@AlmacenIdp = '0' OR @AlmacenIdp = cp.Planta)
 AND (@TipoCompraIdp = '0' OR (@TipoCompraIdp = '1' AND cp.TitularCuit != @CuitMOA OR @TipoCompraIdp = '2' AND cp.TitularCuit = @CuitMOA))
-AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))</CommandText>
+AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))
+AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentable = 1 OR @TipoSustentableIdp = '2' AND (cp.EsSustentable = 0 OR cp.EsSustentable is null)))</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -894,6 +919,8 @@ ORDER BY ord</CommandText>
         <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoDestino, '0' AS ord
 UNION
 SELECT        '1' AS Id, 'Vicentin' AS TipoDestino, '1' AS ord
+UNION
+SELECT        '2' AS Id, 'Chivilcoy' AS TipoDestino, '2' AS ord
 ORDER BY ord</CommandText>
       </Query>
       <Fields>
@@ -903,6 +930,31 @@ ORDER BY ord</CommandText>
         </Field>
         <Field Name="TipoDestino">
           <DataField>TipoDestino</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ord">
+          <DataField>ord</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="TipoSustentable">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoSustentable, '0' AS ord
+UNION
+SELECT        '1' AS Id, 'Si' AS TipoSustentable, '1' AS ord
+UNION
+SELECT        '2' AS Id, 'No' AS TipoSustentable, '2' AS ord
+ORDER BY ord</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TipoSustentable">
+          <DataField>TipoSustentable</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ord">
@@ -11237,6 +11289,22 @@ ORDER BY ord</CommandText>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="TipoSustentable">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Sustentable</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>TipoSustentable</DataSetName>
+          <ValueField>Id</ValueField>
+          <LabelField>TipoSustentable</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -11282,6 +11350,11 @@ ORDER BY ord</CommandText>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>TipoDestino</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>TipoSustentable</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

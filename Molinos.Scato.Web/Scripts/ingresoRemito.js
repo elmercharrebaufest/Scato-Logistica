@@ -249,10 +249,10 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
     $.getJSON($("#links").data().urlObtenerTipovehiculoPorPatente, { patente: patente, acoplado: acoplado, workflow: $('#WorkflowDescripcion').val() }, function (data) {
         if (data.CodigoDeError == 0) {
             if (data.Categoria != null) {
-                if ($('#TipoVehiculo option[value=' + data.Categoria + ']').length == 0) {
+                if ($('#tipoVehiculoDropdown option[value=' + data.Categoria + ']').length == 0) {
                     MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
                 } else {
-                    $('#TipoVehiculo').val(data.Categoria);
+                    $('#tipoVehiculoDropdown').val(data.Categoria);
                 }
             } else {
                 MostrarAlertaError("El servicio CNRT no devolvió información sobre la categoría del vehículo, debe ingresarla manualmente.");
