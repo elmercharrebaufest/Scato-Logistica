@@ -112,7 +112,6 @@
     <Compile Include="Comandos\EliminarConfiguracionGeneral.cs" />
     <Compile Include="Comandos\EliminarEtiquetaPuerto.cs" />
     <Compile Include="Comandos\EliminarMotivosLimpieza.cs" />
-    <Compile Include="Comandos\EliminarVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Comandos\EnviarMensajeCamioneroCircular.cs" />
     <Compile Include="Comandos\EnviarMensajesAsincronoCartelLed.cs" />
