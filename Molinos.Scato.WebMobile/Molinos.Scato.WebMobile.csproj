@@ -220,6 +220,7 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\eficienciaCalado.css" />
+    <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\estadoPlayaInterna.js" />
     <Content Include="Scripts\knockout-fast-foreach.min.js" />
