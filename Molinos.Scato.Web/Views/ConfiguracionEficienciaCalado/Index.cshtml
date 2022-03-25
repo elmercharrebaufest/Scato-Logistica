@@ -1,0 +1,80 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Seguridad
+@using Newtonsoft.Json
+@model Molinos.Scato.Web.Models.ConfiguracionEficienciaCaladoViewModel
+@{
+    ViewBag.Title = Textos.ConfiguracionEficienciaCalado_Titulo;
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/area/configuracionEficienciaCalado/index.js")"></script>
+
+<style>
+    .subTitSecciones {
+        font-size: 1.1rem;
+        margin: 1rem 0;
+        color: #36634b;
+        font-weight: 600;
+    }
+
+    .gridEficiencia {
+        margin-top: 4rem;
+    }
+
+        .gridEficiencia th,
+        .gridEficiencia td {
+            text-align: center;
+        }
+</style>
+
+<div id="mainContainer">
+    <div class="container-fluid">
+        <div class="titSecciones">@Textos.Administracion_ConfiguracionEficienciaCalado</div>
+    </div>
+    <div class="container-fluid ">
+        <div class="subTitSecciones" style="width:auto">
+            Horario de turno :
+        </div>
+        <div id="horariosContainer">
+            @Html.Partial("HorarioDeTurno")
+        </div>
+    </div>
+    <div class="container-fluid grillaPad">
+        <div class="subTitSecciones" style="width:auto">
+            Eficiencia por Calle
+        </div>
+        @if (PermisosHelper.Is(PermisosScato.AbmPuestoDeTrabajo))
+        {
+            @Html.ActionLink(Textos.ConfiguracionEficienciaCalado_Nuevo, "Crear", "ConfiguracionEficienciaCalado", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
+        }
+        <div class="gridEficiencia">
+            @Html.Partial("Listar", Model)
+        </div>
+    </div>
+</div>
+
+<script>
+    var configuracionEficienciaCaladoConfig = {
+        containerId: "mainContainer",
+        generalIds: {
+            horarioEntrada: "horarioDesde",
+            horarioSalida: "horarioHasta",
+            listaCalles: "callesCaladoEficiencia",
+            nombreInputCalleEficiencia: "nombreEficienciaDeCalle",
+        },
+        vmData: @(Html.Raw(JsonConvert.SerializeObject(Model, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }))),
+        labels: {},
+        messages: {},
+        models: {},
+        aucDataSourceUrls: {},
+        generalUrls: {
+            actualizarHorario: '@Url.Action("ActualizarHorario")',
+        },
+    };
+
+    var configuracionEficienciaCaladoVM = new ConfiguracionEficienciaCaladoVM(configuracionEficienciaCaladoConfig);
+
+    $(function () {
+        configuracionEficienciaCaladoVM.onReady();
+    });
+</script>

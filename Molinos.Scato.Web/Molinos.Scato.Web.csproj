@@ -374,6 +374,7 @@
     <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
+    <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
@@ -682,6 +683,7 @@
     <Compile Include="Models\ImpresionTarjetaDeAccesoModel.cs" />
     <Compile Include="Models\IngresoCIUModel.cs" />
     <Compile Include="Models\CambioModalidadPuestoModel.cs" />
+    <Compile Include="Models\ConfiguracionEficienciaCaladoViewModel.cs" />
     <Compile Include="Models\MonitorCPECacheadaViewModel.cs" />
     <Compile Include="Models\PesadaCargaExportacion.cs" />
     <Compile Include="Models\PlanillaF515ViewModel.cs" />
@@ -840,6 +842,7 @@
     </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Scripts\area\configuracionEficienciaCalado\index.js" />
     <Content Include="Scripts\area\monitorCPECacheada\index.js" />
     <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
@@ -2346,6 +2349,12 @@
     <Content Include="Views\ConfiguracionSensores\Index.cshtml" />
     <Content Include="Views\ConfiguracionSensores\Listar.cshtml" />
     <Content Include="Views\ConfiguracionSensores\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\_CrearModificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Index.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\HorarioDeTurno.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

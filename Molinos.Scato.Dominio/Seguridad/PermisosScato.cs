@@ -550,6 +550,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         MonitorCPECacheada = 264,
         [Display(ResourceType = typeof(Textos), Name = "AbmBarrera")]
         AbmBarrera = 265,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionEficienciaCalado")]
+        AbmConfiguracionEficienciaCalado = 266,
 
         //Permisos Notificaciones
         Balanceros = 300,

@@ -2595,6 +2595,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, int? analisisDeCalidadId);
+
+        [OperationContract]
         ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null);
 
         [OperationContract]
@@ -2626,12 +2628,26 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         ConfigSensoresDto ObtenerConfiguracionSensores(int id);
+        
         [OperationContract]
         ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId);
+        
         [OperationContract]
         IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
 
         [OperationContract]
         IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId);
+        
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta);
+
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ListarCallesCalado(int centroId);
+
+        [OperationContract]
+        EficienciaCaladoValoresDto ObtenerEficienciaCalle(int id, int centroId);
+
+        [OperationContract]
+        int ObtenerCantidadPendientesPorCalar(int centroId);
     }
 }

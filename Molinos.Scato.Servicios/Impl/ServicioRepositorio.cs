@@ -9703,6 +9703,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<ConfigSensores, ConfigSensoresDto>(id);
         }
+        
         public ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId)
         {
             Expression<Func<ConfigSensores, bool>> expresionFiltro = null;
@@ -9722,6 +9723,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             return Listar<ConfigSensores, ConfigSensoresDto>(expresionFiltro, paginacion);
         }
+        
         public IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId) {
             return Listar<ConfigSensores, ConfigSensoresDto>(x => x.Centro.Id == centroId);
         }
@@ -9729,6 +9731,37 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId)
         {
             return (Listar<VisualizacionBarrera, VisualizacionBarreraDto>()).Where(w => !w.Deshabilitada && w.CentroId == centroId).ToList();
+        }
+        public List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta)
+        {
+            return repositorio.ListarConsulta(new ListarEficienciaCalado(desde, hasta));
+        }
+
+        public List<EficienciaCaladoValoresDto> ListarCallesCalado(int centroId)
+        {
+            var callesCalado = Listar<Calle, CalleDto>(x => x.CentroId == centroId && x.TipoCalle == TipoCalle.Calado && !x.Deshabilitada);
+            var nombresCallesCalado = callesCalado.Select(x => x.Nombre).ToList();
+            var puestoDeTrabajoCalado = Listar<PuestoDeTrabajo, PuestoDeTrabajoDto>(p => nombresCallesCalado.Any(c => p.NombrePuesto.StartsWith(c)));
+            return puestoDeTrabajoCalado.Select(x => new EficienciaCaladoValoresDto 
+            {
+                Id = x.Id,
+                Cantidad = 0,
+                Nombre = x.NombrePuesto.Substring((x.NombrePuesto.IndexOf("-")) + 1, x.NombrePuesto.Length - (x.NombrePuesto.IndexOf("-")) - 1).Trim()
+            } ).ToList();
+        }
+
+        public EficienciaCaladoValoresDto ObtenerEficienciaCalle(int id, int centroId)
+        {
+            var configuracion = ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EficienciaCalado, Constantes.ConfiguracionGeneral.EficienciaCalado.EficienciaCalles, centroId);
+            var configuracionCalles = configuracion.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
+            return configuracionCalles.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public int ObtenerCantidadPendientesPorCalar(int centroId)
+        {
+            var currentDate = DateTime.Now;
+            currentDate = currentDate.Date.Add(TimeSpan.Parse("00:00:00.000"));
+            return repositorio.Contar<CallePorRecorrido>(x => x.Calle.TipoCalle == TipoCalle.PreCalado && x.Calle.CentroId == centroId && x.FechaIngeso >= currentDate && x.FechaEgreso == null);
         }
     }
 }

@@ -39,6 +39,7 @@
             public struct EficienciaCalado
             {
                 public const string EficienciaCalles = "EficienciaCalles";
+                public const string HorarioTurno = "HorarioTurno";
             }
 
             public struct AFIP

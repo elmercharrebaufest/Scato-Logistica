@@ -291,6 +291,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AbmConfiguracionSensores {
             get {
                 return ResourceManager.GetString("AbmConfiguracionSensores", resourceCulture);
+                }
+        }
+        
+        /// <summary>   
+        ///   Looks up a localized string similar to ABM Configuración Eficiencia Calado.
+        /// </summary>
+        public static string AbmConfiguracionEficienciaCalado {
+            get {
+                return ResourceManager.GetString("AbmConfiguracionEficienciaCalado", resourceCulture);
             }
         }
         
@@ -2865,6 +2874,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Administracion_Clientes {
             get {
                 return ResourceManager.GetString("Administracion_Clientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administración de Eficiencia Calado.
+        /// </summary>
+        public static string Administracion_ConfiguracionEficienciaCalado {
+            get {
+                return ResourceManager.GetString("Administracion_ConfiguracionEficienciaCalado", resourceCulture);
             }
         }
         
@@ -9516,6 +9534,42 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ConfiguracionDeTabla_CaracteristicasDeCalidad {
             get {
                 return ResourceManager.GetString("ConfiguracionDeTabla_CaracteristicasDeCalidad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Eficiencia de Calle Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Crear {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificar Eficiencia de Calle Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Modificar {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nueva Calle.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Nuevo {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuración Eficiencia Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Titulo {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Titulo", resourceCulture);
             }
         }
         

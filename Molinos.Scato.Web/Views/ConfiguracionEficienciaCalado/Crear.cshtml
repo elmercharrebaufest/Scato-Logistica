@@ -1,0 +1,12 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.EficienciaCaladoValoresDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.ConfiguracionEficienciaCalado_Crear;
+}
+
+@using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.ConfiguracionEficienciaCalado_Crear }))
+{
+    @Html.Partial("_CrearModificar", Model)
+}

@@ -9865,4 +9865,22 @@
   <data name="PuestoDeTrabajo_VisualizacionBarrera" xml:space="preserve">
     <value>Visualizacion Barrera</value>
   </data>
+  <data name="AbmConfiguracionEficienciaCalado" xml:space="preserve">
+    <value>ABM Configuración Eficiencia Calado</value>
+  </data>
+  <data name="Administracion_ConfiguracionEficienciaCalado" xml:space="preserve">
+    <value>Administración de Eficiencia Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Titulo" xml:space="preserve">
+    <value>Configuración Eficiencia Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Nuevo" xml:space="preserve">
+    <value>Nueva Calle</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Crear" xml:space="preserve">
+    <value>Crear Eficiencia de Calle Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Modificar" xml:space="preserve">
+    <value>Modificar Eficiencia de Calle Calado</value>
+  </data>
 </root>

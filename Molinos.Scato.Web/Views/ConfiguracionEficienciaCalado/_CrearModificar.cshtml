@@ -1,0 +1,37 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.EficienciaCaladoValoresDto
+
+@{
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+}
+<style>
+    .validation-summary-errors {
+        color: #ff0000;
+    }
+</style>
+
+<div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.Id, new { @class = "control-label" })
+        <div class="controls">
+            @Html.DropDownListFor(model => model.Id, calles, new { id = "callesCaladoEficiencia" })
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+    </div>
+
+    <div class="control-group">
+        @Html.LabelFor(model => model.Cantidad, new { @class = "control-label" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.Cantidad, new { @class = "input-large" })
+            @Html.ValidationMessageFor(model => model.Cantidad)
+        </div>
+    </div>
+
+    <input type="hidden" name="nombre" value="" id="nombreEficienciaDeCalle" />
+</div>
+
+<script>
+    $(function () {
+        configuracionEficienciaCaladoVM.vm.mainModule.events.setearIdCallesDropdown();
+    });
+</script>

@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Web.Models.ConfiguracionEficienciaCaladoViewModel
+
+@{
+    Layout = null;
+    var horarios = Model.Horarios;
+    var horaEntrada = horarios.HoraEntrada != null ? horarios.HoraEntrada : "00:00:00";
+    var horaSalida = horarios.HoraEntrada != null ? horarios.HoraSalida : "00:00:00";
+}
+<div class="horarioForm" id="horarioForm">
+    <div>
+        <label>Desde: </label>
+        <div class="controls">
+            <input type="time" name="horarioDesde" value=@horaEntrada id="horarioDesde" />
+        </div>
+    </div>
+    <div>
+        <label>Hasta: </label>
+        <div class="controls">
+            <input type="time" name="horarioHasta" value=@horaSalida id="horarioHasta" />
+        </div>
+    </div>
+    <a id="actualizarHorario" class="btn btn-primary pull-right" href="" onclick="configuracionEficienciaCaladoVM.vm.mainModule.actions.actualizarHorarioTurno()">Actualizar Horario</a>
+</div>

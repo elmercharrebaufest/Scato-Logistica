@@ -684,7 +684,9 @@
     <Compile Include="Consultas\Expresiones.cs" />
     <Compile Include="Consultas\Paginacion.cs" />
     <Compile Include="Dto\ConfiguracionKeyValueDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\ConfiguracionHorarioDto.cs" />
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoDatosGraficosDto.cs" />
+    <Compile Include="Dto\EficienciaCalado\ConfiguracionesEficienciaCaladoDto.cs" />
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoValoresDto.cs" />
     <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />

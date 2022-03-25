@@ -195,6 +195,7 @@
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
+    <Compile Include="Controllers\EficienciaCaladoController.cs" />
     <Compile Include="Controllers\EstadoPlayaInternaController.cs" />
     <Compile Include="Controllers\EstadoDeCalleController.cs" />
     <Compile Include="Controllers\EstadoDePlantaController.cs" />
@@ -218,6 +219,8 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\eficienciaCalado.css" />
+    <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\estadoPlayaInterna.js" />
     <Content Include="Scripts\knockout-fast-foreach.min.js" />
     <Compile Include="Seguridad\FixedWsFederationAuthenticationModule.cs" />
@@ -506,6 +509,7 @@
     <Content Include="Views\EstadoDeCalle\_MoverCamionRechazado.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\Calles.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\Index.cshtml" />
+    <Content Include="Views\EficienciaCalado\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
