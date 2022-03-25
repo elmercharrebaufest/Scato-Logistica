@@ -1,7 +1,9 @@
 ﻿@model Molinos.Scato.Web.Models.MonitorCPECacheadaViewModel
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
-
+@{
+    Layout = null;
+}
 <div class="accordion-inner">
     <div class="row-fluid">
         <div class="span2">
@@ -43,16 +45,16 @@
         <div class="span4">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" @(Model.Data.VerCamionesPorLlegar ? "checked" : "unchecked") name="VerCamionesPorLlegar" 
+                    <input type="checkbox" @(Model.Data.VerCamionesPorLlegar ? "checked" : "unchecked") name="VerCamionesPorLlegar"
                            onchange="monitorCPECacheadaVM.vm.mainModule.events.checkVerCamionesPorLlegar(this)"
-                           value="@Model.Data.VerCamionesPorLlegar.ToString().ToLower()">@Textos.MonitorCPECacheada_VerCamionesNoLlegada 
-                </label>
+                           value="@Model.Data.VerCamionesPorLlegar.ToString().ToLower()">@Textos.MonitorCPECacheada_VerCamionesNoLlegada
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 cajaButtons2" style="margin-left: -108px">
+                <input class="btn btn-default col-xs-12" value="@Textos.Filtrar" type="submit" />
             </div>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span12 cajaButtons2" style="margin-left: -108px">
-            <input class="btn btn-default col-xs-12" value="@Textos.Filtrar" type="submit" />
-        </div>
-    </div>
-</div>
