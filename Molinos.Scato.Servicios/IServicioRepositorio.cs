@@ -2649,5 +2649,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerCantidadPendientesPorCalar(int centroId);
+
+        [OperationContract]
+        FotoDto ObtenerFotoSustentable(int centroId, string numeroDocumento, string actividad);
     }
 }
