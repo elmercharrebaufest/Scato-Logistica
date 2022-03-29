@@ -104,7 +104,7 @@ var escuchar = false;
 function Humedimetro(intervalo, segundos) {
     if (escuchar) {
         TomarHumedad();
-        TomarPH();
+        //TomarPH();
         return setTimeout(function () { DetenerHumedimetro(intervalo); }, segundos * 1000);
     } else {
         if (intervalo != null) clearTimeout(intervalo);
