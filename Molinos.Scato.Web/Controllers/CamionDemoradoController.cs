@@ -177,9 +177,12 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.WorkflowInstanceUid = WorkflowId;
 
             ViewBag.RecorridoId = orden.RecorridoId;
+            log.Debug($"Camion no granos demorado { orden.PatenteCamion }, con orden nro {orden.NumeroOrden} ({WorkflowId})");
+
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
             if (ModelState.IsValid)
             {
+
                 if (orden.PatenteCamion != null)
                 {
                     orden.PatenteCamion = orden.PatenteCamion.ToUpper();
@@ -190,6 +193,8 @@ namespace Molinos.Scato.Web.Controllers
                 }
 
                 var resultadoChofer = SetearChofer(orden.Chofer);
+                log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: chofer { (resultadoChofer ? "": "no") } seteado.");
+
                 if (!resultadoChofer)
                 {
                     IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
@@ -197,6 +202,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
 
                 var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
+                log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: modificacion orden fas { orden.NumeroOrden} {(resultado.HayErrores? "con" : "sin")} error.");
 
                 if (!resultado.HayErrores)
                 {
