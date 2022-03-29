@@ -17,7 +17,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override ControlRecorrido CrearEntidad(CrearControlRecorrido comando)
         {
-            Log.Debug($"Crear Control recorrido para {comando.Dto.ActividadXaml}, por usuario {comando.Dto.NombreUsuario}, en puesto {comando.Dto.PuestoDeTrabajoId}");
+            Log.Debug($"Crear Control recorrido para {comando.Dto.ActividadXaml}, por usuario {comando.Dto.NombreUsuario}, en puesto {comando.Dto.PuestoDeTrabajoId}, con id {comando.Dto.WorkflowInstanceId }");
             var control = Conversor.Convertir<ControlRecorridoDto, ControlRecorrido>(comando.Dto);
             control.Fecha = DateTime.Now;
             control.PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.PuestoDeTrabajoId);
