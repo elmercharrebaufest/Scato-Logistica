@@ -200,7 +200,13 @@ namespace Molinos.Scato.Web.Controllers
                     IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
                     return View(orden);
                 }
-
+                var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, orden.EsTransportista);
+                orden.TransportistaId = transportistaId;
+                if (!resultadoTransportista)
+                {
+                    IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                    return View(orden);
+                }
                 var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
                 log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: modificacion orden fas { orden.NumeroOrden} {(resultado.HayErrores? "con" : "sin")} error.");
 
