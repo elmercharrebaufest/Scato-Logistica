@@ -36,6 +36,14 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType =typeof(Textos), Name = "NombreEstablecimeinto")]
         public string NombreEstablecimiento { get; set; }
 
+        public string Localidad { get; set; }
+        public string LocalidadCodigoAfip { get; set; }
+        public int? LocalidadId { get; set; }
+
+        public string Provincia { get; set; }
+        public int? ProvinciaCodigoAfip { get; set; }
+        public int? ProvinciaId { get; set; }
+
         public StockDeEstablecimientoDto()
         {
             this.StockUtilizado = 0;

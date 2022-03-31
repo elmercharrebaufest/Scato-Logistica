@@ -177,46 +177,78 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.WorkflowInstanceUid = WorkflowId;
 
             ViewBag.RecorridoId = orden.RecorridoId;
+            log.Debug($"Camion no granos demorado { orden.PatenteCamion }, con orden nro {orden.NumeroOrden} ({WorkflowId})");
+
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
             if (ModelState.IsValid)
             {
-                if (orden.PatenteCamion != null)
+                try
                 {
-                    orden.PatenteCamion = orden.PatenteCamion.ToUpper();
-                }
-                if (orden.PatenteAcoplado != null)
-                {
-                    orden.PatenteAcoplado = orden.PatenteAcoplado.ToUpper();
-                }
+                    if (servicio.ExisteOrdenCargaFas(orden.NumeroOrden))
+                    {
+                        TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
+                        TempData["TipoAlerta"] = TipoAlerta.Error;
+                        IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                        return View(orden);
+                    }
+                    if (orden.PatenteCamion != null)
+                    {
+                        orden.PatenteCamion = orden.PatenteCamion.ToUpper();
+                    }
+                    if (orden.PatenteAcoplado != null)
+                    {
+                        orden.PatenteAcoplado = orden.PatenteAcoplado.ToUpper();
+                    }
 
-                var resultadoChofer = SetearChofer(orden.Chofer);
-                if (!resultadoChofer)
-                {
+                    var resultadoChofer = SetearChofer(orden.Chofer);
+                    log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: chofer { (resultadoChofer ? "" : "no") } seteado.");
+
+                    if (!resultadoChofer)
+                    {
+                        IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                        return View(orden);
+                    }
+                    var transportistaId = orden.TransportistaId;
+
+                    var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, false);
+                    orden.TransportistaId = transportistaId;
+                    if (!resultadoTransportista)
+                    {
+                        IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                        return View(orden);
+                    }
+                    log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: transportista { (resultadoChofer ? "" : "no") } seteado.");
+
+                    var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
+                    log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: modificacion orden fas { orden.NumeroOrden} {(resultado.HayErrores ? "con" : "sin")} error.");
+
+                    if (!resultado.HayErrores)
+                    {
+                        var recorrido = servicio.ObtenerDatosDeInstanciaPorGuid(WorkflowId);
+
+                        var demoraService = actividadFactory.CrearServicio(recorrido.WorkflowDefinicionId);
+                        var controlRecorrido = new ControlRecorridoDto
+                        {
+                            Actividad = Textos.CamionDemorado,
+                            ActividadXaml = "AsignacionTarjetaDeAcceso",
+                            WorkflowInstanceId = WorkflowId,
+                            PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                            NombreUsuario = datosUsuario.NombreUsuario
+                        };
+                        var resultadoService = demoraService.CamionDemorado(controlRecorrido, WorkflowId, false);
+                        return RedirectToAction("Index", "ListaDeCamiones");
+                    }
+                    ModelState.AgregarErrores(resultado);
                     IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
                     return View(orden);
                 }
-
-                var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
-
-                if (!resultado.HayErrores)
+                catch (Exception e)
                 {
-                    var recorrido = servicio.ObtenerDatosDeInstanciaPorGuid(WorkflowId);
-
-                    var demoraService = actividadFactory.CrearServicio(recorrido.WorkflowDefinicionId);
-                    var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.CamionDemorado,
-                        ActividadXaml = "AsignacionTarjetaDeAcceso",
-                        WorkflowInstanceId = WorkflowId,
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
-                    var resultadoService = demoraService.CamionDemorado(controlRecorrido, WorkflowId, false);
-                    return RedirectToAction("Index", "ListaDeCamiones");
+                    log.Error(e.Message);
+                    ModelState.AddModelError("", e.Message);
+                    IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+                    return View(orden);
                 }
-                ModelState.AgregarErrores(resultado);
-                IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
-                return View(orden);
             }
             IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
             log.Debug($"ErrorModel : {JsonConvert.SerializeObject(ModelState)}");
