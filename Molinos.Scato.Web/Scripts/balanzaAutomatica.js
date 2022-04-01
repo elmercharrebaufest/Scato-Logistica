@@ -333,10 +333,7 @@ function ErrorBalanza(b, id) {
 
     ActivarInterval(b.Id);
     $('#' + b.Id).tooltip('show');
-    $("#" + b.Id).click(function (e) {
-        if ($(e.target).hasClass("intercomunicador"))
-            return true
-
+    $("#" + b.Id + " .estado-balanza").click(function (e) {
         //document.cookie = "PuestoDeTrabajoId=" + b.Id;
         if (b.NoRedirecciona == false) {
             $.cookie('PuestoDeTrabajoId', b.Id);
@@ -474,7 +471,7 @@ function Parpadeo(id) {
 function CancelarInterval(id) {
     error[id] = false;
     $('#' + id).tooltip('destroy');
-    $('#' + id).unbind("click");
+    $('#' + id + " .estado-balanza").unbind("click");
     $('#' + id).css('cursor', 'auto');
 }
 function ActivarInterval(id) {
@@ -703,7 +700,7 @@ function MostrarEspera(b, notificacionId) {
 
     ActivarInterval(b.Id);
     $('#' + b.Id).tooltip('show');
-    $("#" + b.Id).click(function () {
+    $("#" + b.Id + " .estado-balanza").click(function () {
         $.ajax({
             url: $("#confirmarEspera").val(),
             dataType: 'json',
