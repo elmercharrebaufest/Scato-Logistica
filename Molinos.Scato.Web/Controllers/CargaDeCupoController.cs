@@ -127,8 +127,9 @@ namespace Molinos.Scato.Web.Controllers
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, true);
-
+                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                        AperturaDeBarrera(codigoBarrera);
                     }
                     if (model.ImprimeTarjetaDeAcceso)
                     {
