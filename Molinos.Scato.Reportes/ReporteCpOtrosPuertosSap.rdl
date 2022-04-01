@@ -573,7 +573,7 @@ LEFT JOIN (
 	GROUP BY CartaPorteOtrosPuertos_Id
 ) SumCaracteristicasChivilcoy ON SumCaracteristicasChivilcoy.Id = cp.Id
 LEFT JOIN CaracteristicasCartaPorteOtrosPuertos ccp ON ccp.CartaPorteOtrosPuertos_Id = cp.Id 
-LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoSap = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
+LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoExterno = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
 
 WHERE CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &lt;= CAST(@FechaHastap AS DATE) AND CAST(@FechaDesdep AS DATE) &gt;= CAST('2021-11-01' AS DATE)
 AND cp.Material_Id = @MaterialIdp
