@@ -127,8 +127,9 @@ namespace Molinos.Scato.Web.Controllers
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera);
-
+                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                        AperturaDeBarrera(codigoBarrera);
                     }
                     if (model.ImprimeTarjetaDeAcceso)
                     {
@@ -193,12 +194,12 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
+                    var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera, true);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, true);
                         model.MaterialId = 0;
                     }
                     if(!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
@@ -210,6 +211,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         ImprimirTarjetaDeAcceso(model, datosUsuario, resultado);
                     }
+                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                    AperturaDeBarrera(codigoBarrera);
                 }
 
 
@@ -222,7 +225,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View("Form", model);
         }
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string codigoBarrera, bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, bool circuitoNoGranos = false)
         {
             try
             {
@@ -258,8 +261,7 @@ namespace Molinos.Scato.Web.Controllers
                         }
                         log.Debug($"Fila asignada {fila} por el puestoId: {nombrePc}");
                         MostrarPorCartel(nombrePc, fila, centroId, patente);
-                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {patente}");
-                        AperturaDeBarrera(codigoBarrera);
+                        
                     }
                 }
             }
