@@ -284,7 +284,7 @@ SELECT DISTINCT
 
 	CASE WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 13.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 13.5 / 100
 		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 13.5 THEN 0	
-		 WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) 
+		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
 		 ELSE 0 
 	END MPSOJHUM,
  
@@ -374,7 +374,9 @@ SELECT DISTINCT
 
 	CASE WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.5 / 100
 		 WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.5 THEN 0	
-		 WHEN ecc.CodigoSap = 'MPMAZHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPMAZHUM,
+		 WHEN ecc.CodigoSap = 'MPMAZHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPMAZHUM,
 
 	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
 		 WHEN ecc.CodigoSap = 'MPMAZOLO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
@@ -442,7 +444,9 @@ SELECT DISTINCT
 
 	CASE WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.0 / 100
 		 WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.0 THEN 0	
-		 WHEN ecc.CodigoSap = 'MPTRPHM' THEN  cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPTRPHM,
+		 WHEN ecc.CodigoSap = 'MPTRPHM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPTRPHM,
 
 	CASE WHEN ecc.CodigoSap = 'MPTRPINS' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
 		 WHEN ecc.CodigoSap = 'MPTRPINS' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
@@ -501,7 +505,9 @@ SELECT DISTINCT
 
 	CASE WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 11.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 11.0 / 100
 		 WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 11.0 THEN 0
-		 WHEN ecc.CodigoSap = 'MPGIRHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPGIRHUM,
+		 WHEN ecc.CodigoSap = 'MPGIRHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPGIRHUM,
 
 	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
 		 WHEN ecc.CodigoSap = 'MPGIRHUR' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
