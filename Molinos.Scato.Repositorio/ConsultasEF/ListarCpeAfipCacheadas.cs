@@ -19,10 +19,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public List<CartaPorteElectronicaDto> Ejecutar(DbContext contexto)
         {
             var onlyCtgs = ctgs.Select(x => x.Ctg).ToList();
-
             var resultado =
                 contexto.Set<CartaPorteElectronica>()
-                        .Where(x=> onlyCtgs.Any(c=> c == x.NroCTG))
+                        .Where(x=> onlyCtgs.Contains(x.NroCTG.Value))
                         .Select(x => new CartaPorteElectronicaDto() { NroCtg = x.NroCTG.Value, FechaUltimaActualizacion = x.FechaUltimaActualizacion }).ToList();
 
             return resultado.Where(x=> ctgs.Any(c=>c.Ctg == x.NroCtg && c.FechaUltimaModificacion == x.FechaUltimaActualizacion)).ToList();
