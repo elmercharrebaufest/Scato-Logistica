@@ -548,6 +548,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         VisualizarVideoCamarasExportacion = 263,
         [Display(ResourceType = typeof(Textos), Name = "MonitorCPECacheada")]
         MonitorCPECacheada = 264,
+        [Display(ResourceType = typeof(Textos), Name = "AbmBarrera")]
+        AbmBarrera = 265,
         [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionEficienciaCalado")]
         AbmConfiguracionEficienciaCalado = 266,
 
@@ -718,12 +720,11 @@ namespace Molinos.Scato.Dominio.Seguridad
         PuestoPausado = 605,
         [Display(ResourceType = typeof(Textos), Name = "HidraulicasEspeciales")]
         HidraulicasEspeciales = 606,
-
-
         [Display(ResourceType = typeof(Textos), Name = "VerBalanzasPesada")]
         VerBalanzasPesada = 607,
-
         [Display(ResourceType = typeof(Textos), Name = "VerRevertirRechazoVagones")]
         VerRevertirRechazoVagones = 608,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionSensores")]
+        AbmConfiguracionSensores = 609,
     }
 }
