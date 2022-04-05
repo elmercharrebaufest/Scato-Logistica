@@ -937,6 +937,14 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Patente = recorrido.Patente;
             ViewBag.TieneDatosExportacion = tieneDatosExportacion;
             SetearDatosPestanias(recorridoId, tipoDoc, numeroDoc, patente);
+            if(recorrido != null)
+            {
+                var fotoSustentable = servicio.ObtenerFotoSustentable(recorrido.Centro.Id, recorrido.NumeroDocumentoIngreso, "sustentable");
+                if(fotoSustentable != null && !(fotos.Fotos.Where(f => f.Foto != fotoSustentable.Foto && f.Fecha != fotoSustentable.Fecha).ToList().Count > 0))
+                {
+                    fotos.Fotos.Add(fotoSustentable);
+                }
+            }
             return View("Fotos", fotos);
         }
 

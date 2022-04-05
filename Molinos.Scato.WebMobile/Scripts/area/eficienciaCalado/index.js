@@ -16,7 +16,9 @@ EficienciaCaladoVM.prototype = {
                 selectors: {
                     graficoPorHora: $('#' + self.generalIds.graficoEficienciaPorHora),
                     graficoPorTurno: $('#' + self.generalIds.graficoEficienciaPorTurno),
-                    cantidadCamiones: $('#' + self.generalIds.cantidadCamionesPendientes)
+                    cantidadCamiones: $('#' + self.generalIds.cantidadCamionesPendientes),
+                    barChartPorHora: null,
+                    barChartPorTurno: null
                 },
                 states: {},
                 actions: {}, //Eventos que hacen feedback
@@ -45,8 +47,8 @@ EficienciaCaladoVM.prototype = {
                             dataType: "json",
                             url: self.generalUrls.obtenerEficiencia,
                             success: function (data) {
-                                self.vm.mainModule.methods.dibujarGraficoEficiencia(data[0].Calles, data[0].Porcentajes, self.vm.mainModule.methods.obtenerColoresBarras(data[0].Porcentajes), self.vm.mainModule.selectors.graficoPorHora);
-                                self.vm.mainModule.methods.dibujarGraficoEficiencia(data[1].Calles, data[1].Porcentajes, self.vm.mainModule.methods.obtenerColoresBarras(data[1].Porcentajes), self.vm.mainModule.selectors.graficoPorTurno);
+                                self.vm.mainModule.methods.dibujarGraficoEficiencia(data[0].Calles, data[0].Porcentajes, self.vm.mainModule.methods.obtenerColoresBarras(data[0].Porcentajes), self.vm.mainModule.selectors.graficoPorHora, self.vm.mainModule.selectors.barChartPorHora);
+                                self.vm.mainModule.methods.dibujarGraficoEficiencia(data[1].Calles, data[1].Porcentajes, self.vm.mainModule.methods.obtenerColoresBarras(data[1].Porcentajes), self.vm.mainModule.selectors.graficoPorTurno, self.vm.mainModule.selectors.barChartPorTurno);
                             },
                             error: function (error) {
                             },
@@ -54,12 +56,18 @@ EficienciaCaladoVM.prototype = {
                         });
                     },
 
-                    dibujarGraficoEficiencia: function (calles, porcentajes, colores, canvas) {
-                        //if (self.myLineChartHidraulicas) {
-                        //    self.myLineChartHidraulicas.destroy();
-                        //}
+                    dibujarGraficoEficiencia: function (calles, porcentajes, colores, canvas, barChart) {
+                        if (barChart) {
+                            barChart.destroy();
+                        }
+                        let limite = 100;
+                        $.each(porcentajes, function (index, value) {
+                            if (value > limite) {
+                                limite = value;
+                            }
+                        });
                         var ctxh = canvas;
-                        var barChart = new Chart(ctxh, {
+                        barChart = new Chart(ctxh, {
                             type: 'bar',
                             data: {
                                 labels: calles,
@@ -84,7 +92,7 @@ EficienciaCaladoVM.prototype = {
                                         {
                                             ticks: {
                                                 min: 0,
-                                                max: 100
+                                                max: limite
                                             }
                                         }
                                     ],

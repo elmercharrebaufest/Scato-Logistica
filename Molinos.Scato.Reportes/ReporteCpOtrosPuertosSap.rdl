@@ -63,7 +63,6 @@ set @CuitChivilcoy = '30-50085862-8'
 set @TipoDestinoIdp = @TipoDestino
 set @TipoSustentableIdp = @TipoSustentable
 
-
 SELECT DISTINCT
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 4, 1) Pref,
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 5, 8) NroCartaPorte,
@@ -264,8 +263,12 @@ SELECT DISTINCT
 	cp.DestinoPB Bruto,
 	cp.DestinoPT Tara,
 	cp.DestinoPN Neto,
-	cp.MermaTotal Merma,
-	cp.NetoConvenido NetoAplicado,
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CONVERT(Numeric(10,0), ((SumCaracteristicasChivilcoy.Valor * cp.DestinoPN) / 100))
+		 ELSE cp.MermaTotal 
+	END Merma,
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN cp.DestinoPN - CONVERT(Numeric(10,0), ((SumCaracteristicasChivilcoy.Valor * cp.DestinoPN) / 100))
+		 ELSE cp.NetoConvenido 
+	END NetoAplicado,
 	'' Clasificacion,
 	'' InterFlete,
 	'' Cupo,
@@ -281,79 +284,296 @@ SELECT DISTINCT
 
 	CASE WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 13.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 13.5 / 100
 		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 13.5 THEN 0	
-		 WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPSOJHUM,
+		 WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) 
+		 ELSE 0 
+	END MPSOJHUM,
  
-	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor ELSE 0 END MPSOJGQU,
+	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJGQU' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor
+		 ELSE 0 
+	END MPSOJGQU,
 
-	CASE WHEN ecc.CodigoSap = 'MPSOJGDA' THEN ccp.Valor ELSE 0 END MPSOJGDA,
-	CASE WHEN ecc.CodigoSap = 'MPSOJCEX' THEN ccp.Valor ELSE 0 END MPSOJCEX,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' THEN ccp.Valor ELSE 0 END MPSOJMCHA,
-	CASE WHEN ecc.CodigoSap = 'MPSOJTIE' THEN ccp.Valor ELSE 0 END MPSOJTIE,
-	CASE WHEN ecc.CodigoSap = 'MPSOJOLO' THEN ccp.Valor ELSE 0 END MPSOJOLO,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMCH' THEN ccp.Valor ELSE 0 END MPSOJMCH,
-	CASE WHEN ecc.CodigoSap = 'MPSOJREV' THEN ccp.Valor ELSE 0 END MPSOJREV,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMOH' THEN ccp.Valor ELSE 0 END MPSOJMOH,
-	CASE WHEN ecc.CodigoSap = 'MPSOJAVE' THEN ccp.Valor ELSE 0 END MPSOJAVE,
-	CASE WHEN ecc.CodigoSap = 'MPSOJGVE' THEN ccp.Valor ELSE 0 END MPSOJGVE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor ELSE 0 END MPMAZGRA,
-	CASE WHEN ecc.CodigoSap = 'MPMAZPHE' THEN ccp.Valor ELSE 0 END MPMAZPHE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZGDA' THEN ccp.Valor ELSE 0 END MPMAZGDA,
-	CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor ELSE 0 END MPMAZQUE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor ELSE 0 END MPMAZMEX,
-	CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor ELSE 0 END MPMAZTIP,
+	CASE WHEN ecc.CodigoSap = 'MPSOJGDA' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJGDA' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJGDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJCEX' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJCEX' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJMCHA' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMCHA,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJTIE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJTIE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJTIE,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJOLO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJOLO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMCH' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJMCH' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMCH,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJREV' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJREV' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJREV,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMOH' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJMOH' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMOH,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJAVE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJAVE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJAVE,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPSOJGVE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJGVE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZGRA,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZPHE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZPHE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZPHE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZGDA' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZGDA' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZGDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZQUE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZQUE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZQUE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZMEX' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZMEX' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZMEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZTIP' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZTIP' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZTIP,
 
 	CASE WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.5 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.5 / 100
 		 WHEN ecc.CodigoSap = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.5 THEN 0	
 		 WHEN ecc.CodigoSap = 'MPMAZHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPMAZHUM,
 
-	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor ELSE 0 END MPMAZOLO,
-	CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor ELSE 0 END MPMAZAMO,
-	CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor ELSE 0 END MPMAZMCH,
-	CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor ELSE 0 END MPTRPGRA,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPHE' THEN ccp.Valor ELSE 0 END MPTRPPHE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPCEX' THEN ccp.Valor ELSE 0 END MPTRPCEX,
-	CASE WHEN ecc.CodigoSap = 'MPTRPARD' THEN ccp.Valor ELSE 0 END MPTRPARD,
-	CASE WHEN ecc.CodigoSap = 'MPTRPTDA' THEN ccp.Valor ELSE 0 END MPTRPTDA,
-	CASE WHEN ecc.CodigoSap = 'MPTRPCAR' THEN ccp.Valor ELSE 0 END MPTRPCAR,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPZB' THEN ccp.Valor ELSE 0 END MPTRPPZB,
-	CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor ELSE 0 END MPTRPQUE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor ELSE 0 END MPTRPPIC,
-	CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor ELSE 0 END MPTRPTRE,
+	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZOLO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZAMO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZAMO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZAMO,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZMCH' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPMAZMCH' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZMCH,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPGRA,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPHE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPPHE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPHE,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPCEX' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPCEX' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPARD' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPARD' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPARD,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPTDA' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPTDA' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPTDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPCAR' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPCAR' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPCAR,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPZB' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPPZB' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPZB,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPQUE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPQUE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPQUE,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPIC' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPPIC' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPIC,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPTRE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPTRE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPTRE,
 
 	CASE WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 14.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 14.0 / 100
 		 WHEN ecc.CodigoSap = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 14.0 THEN 0	
 		 WHEN ecc.CodigoSap = 'MPTRPHM' THEN  cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPTRPHM,
 
-	CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor ELSE 0 END MPTRPINS,
-	CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor ELSE 0 END MPTRPOLO,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor ELSE 0 END MPTRPPST,
-	CASE WHEN ecc.CodigoSap = 'MPTRPRTI' THEN ccp.Valor ELSE 0 END MPTRPRTI,
-	CASE WHEN ecc.CodigoSap = 'MPTRPRO' THEN ccp.Valor ELSE 0 END MPTRPRO,
-	CASE WHEN ecc.CodigoSap = 'MPGIRACI' THEN ccp.Valor ELSE 0 END MPGIRACI,
-	CASE WHEN ecc.CodigoSap = 'MPGIRAOL' THEN ccp.Valor ELSE 0 END MPGIRAOL,
-	CASE WHEN ecc.CodigoSap = 'MPGIRCEX' THEN ccp.Valor ELSE 0 END MPGIRCEX,
-	CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor ELSE 0 END MPGIRCHA,
-	CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor ELSE 0 END MPGIRESC,
-	CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor ELSE 0 END MPGIRGAR,
+	CASE WHEN ecc.CodigoSap = 'MPTRPINS' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPINS' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPINS,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPOLO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPOLO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPST' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPPST' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPST,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPRTI' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPRTI' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPRTI,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPRO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPTRPRO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPRO,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRACI' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRACI' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRACI,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRAOL' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRAOL' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRAOL,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRCEX' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRCEX' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRCHA' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRCHA' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRCHA,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRESC' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRESC' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRESC,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRGAR' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRGAR' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRGAR,
 
 	CASE WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &gt; 11.0 THEN CONVERT(INT, CASE WHEN IsNumeric(CONVERT(VARCHAR(50), cp.DestinoPN)) = 1 THEN CONVERT(VARCHAR(50), cp.DestinoPN) ELSE 0 END) * 11.0 / 100
 		 WHEN ecc.CodigoSap = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy AND isnull(SumCaracteristicas.Valor,0) &lt;= 11.0 THEN 0
 		 WHEN ecc.CodigoSap = 'MPGIRHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPGIRHUM,
 
-	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor ELSE 0 END MPGIRHUR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor ELSE 0 END MPGIRINV,
-	CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor ELSE 0 END MPGIRMGR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRMOH' THEN ccp.Valor ELSE 0 END MPGIRMOH,
-	CASE WHEN ecc.CodigoSap = 'MPGIROLO' THEN ccp.Valor ELSE 0 END MPGIROLO,
-	CASE WHEN ecc.CodigoSap = 'MPGIRREV' THEN ccp.Valor ELSE 0 END MPGIRREV,
-	CASE WHEN ecc.CodigoSap = 'MPGIRTEM' THEN ccp.Valor ELSE 0 END MPGIRTEM,
-	CASE WHEN ecc.CodigoSap = 'MPGIRGCL' THEN ccp.Valor ELSE 0 END MPGIRGCL,
-	CASE WHEN ecc.CodigoSap = 'MPGIRTIE' THEN ccp.Valor ELSE 0 END MPGIRTIE
+	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRHUR' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRHUR,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRINV' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRINV' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRINV,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRMGR' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRMGR' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRMGR,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRMOH' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRMOH' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRMOH,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIROLO' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIROLO' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIROLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRREV' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRREV' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRREV,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRTEM' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRTEM' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRTEM,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRGCL' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRGCL' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRGCL,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRTIE' AND cp.DestinoCuit = @CuitChivilcoy THEN (ccp.Valor * cp.DestinoPN) / 100
+		 WHEN ecc.CodigoSap = 'MPGIRTIE' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRTIE
+
 FROM CartaPorteOtrosPuertos cp
 LEFT JOIN Material m ON m.Id = cp.Material_Id
-LEFT JOIN (SELECT CartaPorteOtrosPuertos_Id, SUM(Valor) Valor FROM CaracteristicasCartaPorteOtrosPuertos WHERE CodigoExterno &lt;&gt; 'HUMEDAD' GROUP BY CartaPorteOtrosPuertos_Id) SumCaracteristicas ON SumCaracteristicas.CartaPorteOtrosPuertos_Id = cp.Id
+LEFT JOIN (
+	SELECT CartaPorteOtrosPuertos_Id, SUM(Valor) Valor 
+	FROM CaracteristicasCartaPorteOtrosPuertos 
+	WHERE CodigoExterno &lt;&gt; 'HUMEDAD' 
+	GROUP BY CartaPorteOtrosPuertos_Id
+) SumCaracteristicas ON SumCaracteristicas.CartaPorteOtrosPuertos_Id = cp.Id
+LEFT JOIN (
+	SELECT CartaPorteOtrosPuertos_Id as Id, SUM(Valor) Valor FROM 
+		(SELECT CartaPorteOtrosPuertos_Id,
+		CASE WHEN CodigoExterno = 'MPSOJHUM' AND Valor &gt; 13.5 THEN 13.5
+			 WHEN CodigoExterno = 'MPSOJHUM' AND Valor &lt;= 13.5 THEN 0
+			 WHEN CodigoExterno = 'MPMAZHUM' AND Valor &gt; 14.5 THEN 14.5
+			 WHEN CodigoExterno = 'MPMAZHUM' AND Valor &lt;= 14.5 THEN 0
+			 WHEN CodigoExterno = 'MPTRPHM' AND Valor &gt; 14.0 THEN 14.0
+			 WHEN CodigoExterno = 'MPTRPHM' AND Valor &lt;= 14.0 THEN 0
+			 WHEN CodigoExterno = 'MPGIRHUM' AND Valor &gt; 11.0 THEN 11.0
+			 WHEN CodigoExterno = 'MPGIRHUM' AND Valor &lt;= 11.0 THEN 0
+			 ELSE Valor
+		END Valor
+		FROM CaracteristicasCartaPorteOtrosPuertos) as temp
+	GROUP BY CartaPorteOtrosPuertos_Id
+) SumCaracteristicasChivilcoy ON SumCaracteristicasChivilcoy.Id = cp.Id
 LEFT JOIN CaracteristicasCartaPorteOtrosPuertos ccp ON ccp.CartaPorteOtrosPuertos_Id = cp.Id 
-LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoSap = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
+LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoExterno = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
 
 WHERE CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &gt;= CAST(@FechaDesdep AS DATE) AND CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &lt;= CAST(@FechaHastap AS DATE) AND CAST(@FechaDesdep AS DATE) &gt;= CAST('2021-11-01' AS DATE)
 AND cp.Material_Id = @MaterialIdp
@@ -574,11 +794,11 @@ AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentabl
         </Field>
         <Field Name="Merma">
           <DataField>Merma</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="NetoAplicado">
           <DataField>NetoAplicado</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Clasificacion">
           <DataField>Clasificacion</DataField>

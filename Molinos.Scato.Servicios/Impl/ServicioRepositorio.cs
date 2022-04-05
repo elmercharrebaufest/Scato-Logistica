@@ -9673,5 +9673,46 @@ namespace Molinos.Scato.Servicios.Impl
             currentDate = currentDate.Date.Add(TimeSpan.Parse("00:00:00.000"));
             return repositorio.Contar<CallePorRecorrido>(x => x.Calle.TipoCalle == TipoCalle.PreCalado && x.Calle.CentroId == centroId && x.FechaIngeso >= currentDate && x.FechaEgreso == null);
         }
+
+        public FotoDto ObtenerFotoSustentable(int centroId, string numeroDocumento, string actividad)
+        {
+            FotoDto result = null;
+            var cartaPorte = ObtenerUltimo<CartaPorte, CartaPorteDto>(x => x.NroCartaPorte == numeroDocumento && x.CentroDestino.Id == centroId, x => x.Id);
+            var path = cartaPorte.FotoRutaDestino;
+            var index = path.IndexOf("Mesa");
+            var pathSustentable = path.Substring(0, index) + "sustentable.png";
+            if (File.Exists(pathSustentable))
+            {
+                var fecha = File.GetCreationTime(pathSustentable);
+                result = ObtenerImagenSustentable(pathSustentable, fecha, actividad);
+            }
+            return result;
+        }
+
+        private FotoDto ObtenerImagenSustentable(string path, DateTime fecha, string actividad)
+        {
+            FotoDto result = null;
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                byte[] buffer = null;
+                buffer = new byte[fs.Length];
+                fs.Read(buffer, 0, (int)fs.Length);
+
+                using (Image image = Image.FromStream(fs))
+                {
+                    var documentcontentsSmall = image.ResizeImage(50, 28);
+
+                    result = new FotoDto
+                    {
+                        Actividad = actividad,
+                        Foto = buffer,
+                        FotoChica = documentcontentsSmall,
+                        Fecha = fecha.ToString("dd/MM/yyyy HH:mm"),
+                        Extension = Path.GetExtension(path)
+                    };
+                }
+            }
+            return result;
+        }
     }
 }
