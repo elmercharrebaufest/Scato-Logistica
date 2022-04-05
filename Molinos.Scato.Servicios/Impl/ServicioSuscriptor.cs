@@ -46,6 +46,8 @@ namespace Molinos.Scato.Servicios.Impl
                         }
                         break;
                     case "CambioEstadoSensor":
+                        estadoPuesto.NotificarSensorBarrera(notificacion);
+
                         bool estado;
 
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))

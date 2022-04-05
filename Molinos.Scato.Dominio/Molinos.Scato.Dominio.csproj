@@ -1595,7 +1595,7 @@
       <DependentUpon>Textos.resx</DependentUpon>
     </Compile>
     <Compile Include="Seguridad\PermisosScato.cs" />
-    <Compile Include="SensorBarrera.cs" />
+    <Compile Include="Entidades\SensorBarrera.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Recursos\Textos.fr.resx">

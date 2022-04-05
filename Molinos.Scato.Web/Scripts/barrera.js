@@ -1,9 +1,11 @@
-﻿function Sensor(id, CodigoDispositivoSensorArriba, CodigoDispositivoSensorAbajo, Nombre) {
+﻿function Sensor(id, CodigoDispositivoSensorArriba, CodigoDispositivoSensorAbajo, CodigoDispositivoSensorQuiebre, Barrera, BarreraBajar) {
     if (id == 0) {
         this.Id = id;
         this.CodigoDispositivoSensorArriba = CodigoDispositivoSensorArriba;
         this.CodigoDispositivoSensorAbajo = CodigoDispositivoSensorAbajo;
-        this.Nombre = Nombre;
+        this.CodigoDispositivoSensorQuiebre = CodigoDispositivoSensorQuiebre;
+        this.Barrera = Barrera;
+        this.BarreraBajar = BarreraBajar;
         this.VisualizacionBarreraId = $("#VisualizacionBarreraId").val();
         this.EsNuevo = true;
     } else {
@@ -11,7 +13,9 @@
         this.Id = id.Id;
         this.CodigoDispositivoSensorArriba = id.CodigoDispositivoSensorArriba.toString();
         this.CodigoDispositivoSensorAbajo = id.CodigoDispositivoSensorAbajo.toString();
-        this.Nombre = id.Nombre.toString();
+        this.CodigoDispositivoSensorQuiebre = id.CodigoDispositivoSensorQuiebre.toString();
+        this.Barrera = id.Barrera.toString();
+        this.BarreraBajar = id.BarreraBajar.toString();
         this.VisualizacionBarreraId = id.CaracteristicaDeCalidadId;
         this.EsNuevo = id.EsNuevo;
         this._destroy = id._destroy;
@@ -24,7 +28,9 @@ function SensoresListViewModel() {
 
     self.newCodigoDispositivoSensorArriba = ko.observable();
     self.newCodigoDispositivoSensorAbajo = ko.observable();
-    self.newNombre = ko.observable();
+    self.newCodigoDispositivoSensorQuiebre = ko.observable();
+    self.newBarrera = ko.observable();
+    self.newBarreraBajar = ko.observable();
 
     if ($("#sensoresBarreraPostBack").val() != "") {
 
@@ -33,7 +39,9 @@ function SensoresListViewModel() {
         $.each(mappedSensores, function (index, value) {
             value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
             value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
-            value.Nombre = value.Nombre;
+            value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
+            value.Barrera = value.Barrera;
+            value.BarreraBajar = value.BarreraBajar;
         });
 
         self.sensoresBarrera(mappedSensores);
@@ -44,8 +52,10 @@ function SensoresListViewModel() {
                 var mappedSensores = $.map(allData, function (item) { return new Sensor(item); });
                 $.each(mappedSensores, function (index, value) {
                     value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
-                    value.CodigoDispositivoSensorAbajo  = value.CodigoDispositivoSensorAbajo;
-                    value.Nombre = value.Nombre;
+                    value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
+                    value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
+                    value.Barrera = value.Barrera;
+                    value.BarreraBajar = value.BarreraBajar;
                 });
 
                 self.sensoresBarrera(mappedSensores);
@@ -55,7 +65,7 @@ function SensoresListViewModel() {
 
     // Operations
     self.botonCrearSensor = function () {
-        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newNombre()));
+        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newCodigoDispositivoSensorQuiebre(), self.newBarrera(), self.newBarreraBajar()));
     };
 
     self.removeSensorBarrera = function (sensor) {
@@ -74,7 +84,9 @@ $(document).ready(function () {
         $.each(sensoresBarrera, function (index, value) {
             value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
             value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
-            value.Nombre = value.Nombre;
+            value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
+            value.Barrera = value.Barrera;
+            value.BarreraBajar = value.BarreraBajar;
         });
 
         $('#sensoresBarrera').val(ko.toJSON(sensoresBarrera));

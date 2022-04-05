@@ -286,20 +286,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abm Configuracion Sensores.
-        /// </summary>
-        public static string AbmConfiguracionSensores {
-            get {
-                return ResourceManager.GetString("AbmConfiguracionSensores", resourceCulture);
-                }
-        }
-        
-        /// <summary>   
         ///   Looks up a localized string similar to ABM Configuración Eficiencia Calado.
         /// </summary>
         public static string AbmConfiguracionEficienciaCalado {
             get {
                 return ResourceManager.GetString("AbmConfiguracionEficienciaCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abm Configuracion Sensores.
+        /// </summary>
+        public static string AbmConfiguracionSensores {
+            get {
+                return ResourceManager.GetString("AbmConfiguracionSensores", resourceCulture);
             }
         }
         
@@ -5317,6 +5317,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barrera Bajar.
+        /// </summary>
+        public static string Barrera_Nombre_Bajar {
+            get {
+                return ResourceManager.GetString("Barrera_Nombre_Bajar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Nuevo Grupo.
         /// </summary>
         public static string Barrera_Nuevo {
@@ -5340,6 +5349,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Barrera_Sensor_Arriba {
             get {
                 return ResourceManager.GetString("Barrera_Sensor_Arriba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor de Quiebre.
+        /// </summary>
+        public static string Barrera_Sensor_Quiebre {
+            get {
+                return ResourceManager.GetString("Barrera_Sensor_Quiebre", resourceCulture);
             }
         }
         

@@ -9883,4 +9883,10 @@
   <data name="ConfiguracionEficienciaCalado_Modificar" xml:space="preserve">
     <value>Modificar Eficiencia de Calle Calado</value>
   </data>
+  <data name="Barrera_Nombre_Bajar" xml:space="preserve">
+    <value>Barrera Bajar</value>
+  </data>
+  <data name="Barrera_Sensor_Quiebre" xml:space="preserve">
+    <value>Sensor de Quiebre</value>
+  </data>
 </root>

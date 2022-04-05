@@ -250,5 +250,46 @@ namespace Molinos.Scato.Servicios.Impl
             });
             return valido;
         }
+
+        public void NotificarSensorBarrera(NotificacionEvento notificacion)
+        {
+            log.Debug($"Procesando notificaciones para {notificacion?.CodigoDispositivo} CodigoEvento {notificacion?.CodigoEvento}");
+            var sensor = notificacion?.CodigoDispositivo ?? string.Empty;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(sensor))
+                {
+                    var listadoSensores = repositorio.ListarSensoresBarrerasActivos().ToList();
+
+                    var sensoresArriba = listadoSensores
+                        .Where(w => w.CodigoDispositivoSensorArriba == sensor)
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+
+                    var sensoresAbajo = listadoSensores
+                        .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+
+                    var notificacionSensorBarrera = new EstadoSensoresBarreraDto
+                    {
+                        Dispositivo = sensor,
+                        SensoresArriba = sensoresArriba,
+                        SensoresAbajo = sensoresAbajo
+                    };
+
+                    notificar.Notificar(new NotificacionDto
+                    {
+                        Grupo = "SENSORESBARRERA",
+                        Mensaje = notificacionSensorBarrera.ToJson(),
+                        TipoAlerta = TipoAlerta.CambioEstadoBarrera
+                    });
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
+            }
+        }
     }
 }

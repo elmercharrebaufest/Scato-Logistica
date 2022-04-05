@@ -115,21 +115,27 @@ $(document).ready(function () {
     });
 
     $(document).on('click', ".tarjetaMaestroSupervisorBarrera", function () {
-        $("#elemento-id").val($(this).data().puestoId);
-        $("#elemento-barrera").val(obtenerDispositivoBarrera($(this).data().id, 3));
-        $("#url").val($("#GestionarBarrera").val());
-        $("#elemento-accion").val(obtenerDispositivoBarrera($(this).data().id, 1));
+        $("#elemento-id-Menu").val($(this).data().puestoId);
+        $("#elemento-barrera-Menu").val(obtenerDispositivoBarrera($(this).data().id, 3));
+        $("#url-Menu").val($("#GestionarBarrera").val());
+        $("#elemento-accion-Menu").val(obtenerDispositivoBarrera($(this).data().id, 1));
         $("#actividades-modal").modal("hide");
         $("#modalGestionBarrera").modal("hide");
-        if ($("#requiereComentarioGestionarBarrera").val() == 'True') {
-            $("#gestionbarreraSupervisorModal").modal("show");            
-        } else {
-            EjecutarComandoBarrera();
+
+        if ($("#gestionarBarrera").val() == 'True') {
+            if ($("#requiereComentarioGestionarBarrera").val() == 'True') {
+                $("#gestionbarreraSupervisorModal").modal("show");
+            } else {
+                EjecutarComandoBarrera();
+            }
         }
+        else {
+            $("#gestionbarreraSupervisorModal").modal("show");
+        }        
     });
 
     $("#guardarEventoBarrera").click(function () {
-        if (ValidarMotivo()) { return false; }
+        if (ValidarMotivoMenu()) { return false; }
         EjecutarComandoBarrera();
     });
 
@@ -327,10 +333,10 @@ function obtenerDispositivoBarrera(id, length) {
     return resultado;
 }
 
-function ValidarMotivo() {
+function ValidarMotivoMenu() {
     $("#error-requerido").hide();
     $("#error-largo").hide();
-    var motivo = $("#motivo").val();
+    var motivo = $("#motivoMenu").val();
     if (motivo == "") {
         $("#error-requerido").show();
         return true;
@@ -344,18 +350,18 @@ function ValidarMotivo() {
 
 function EjecutarComandoBarrera() {
     $.ajax({
-        url: $("#url").val(),
+        url: $("#url-Menu").val(),
         dataType: 'json',
         data: {
-            puestoId: $("#elemento-id").val(),
-            codigo: $("#elemento-barrera").val(),
-            motivo: $("#motivo").val(),
-            accion: $("#elemento-accion").val()
+            puestoId: $("#elemento-id-Menu").val(),
+            codigo: $("#elemento-barrera-Menu").val(),
+            motivo: $("#motivoMenu").val(),
+            accion: $("#elemento-accion-Menu").val()
         },
         type: "GET",
         success: function (data) {
             if (data == "ok") {
-                $("#motivo").val("");
+                $("#motivoMenu").val("");
                 $("#gestionbarreraSupervisorModal").modal("hide");
             }
         }

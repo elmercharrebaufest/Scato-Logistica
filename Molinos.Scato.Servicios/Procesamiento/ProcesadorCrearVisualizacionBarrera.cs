@@ -130,8 +130,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 orquestador.Suscribir(new ComandoSuscribir
                 {
                     CodigoDispositivo = codigoDispositivo,
-                    CodigoEvento = "CambioEstadoSensorBarrera",
-                    RutaAccesoSuscriptor = config.AppSettings["UrlNotificacionesWeb"],
+                    CodigoEvento = "CambioEstadoSensor",
+                    RutaAccesoSuscriptor = config.AppSettings["UrlNotificaciones"],
                     Persistente = true
                 });
             }

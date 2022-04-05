@@ -12,5 +12,7 @@ namespace Molinos.Scato.Servicios
         void NotificarCambioDeEstado(string concentrador, bool mensaje);
         [OperationContract]
         bool ValidarEstadoPuesto(int puestoId);
+        [OperationContract]
+        void NotificarSensorBarrera(NotificacionEvento notificacion);
     }
 }

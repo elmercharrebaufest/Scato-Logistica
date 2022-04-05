@@ -226,10 +226,6 @@ namespace Molinos.Scato.Web.ServicioHub
                 log.Info("Intercomunicador - Entro a CambioEstadoIntercomunicador");
                 NotificarIntercomunicadorEstadoSignalR(notificacion);
             }
-            else if (notificacion.CodigoEvento == "CambioEstadoSensorBarrera")
-            {
-                NotificarSensorBarreraSinalR(notificacion);
-            }
         }
 
         private void NotificarUsuarioErrorPorSignalR(LecturaPuestoDeTrabajoDto lecturaPuestoDeTrabajo, TipoAlerta tipo = TipoAlerta.Error)
@@ -788,50 +784,6 @@ namespace Molinos.Scato.Web.ServicioHub
             };
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
-        }
-
-        private void NotificarSensorBarreraSinalR(NotificacionEvento notificacion)
-        {
-            log.Debug($"Procesando notificaciones para {notificacion?.CodigoDispositivo} CodigoEvento {notificacion?.CodigoEvento}");
-            var sensor = notificacion?.CodigoDispositivo ?? string.Empty;
-
-            try
-            {
-                if (!string.IsNullOrEmpty(sensor))
-                {
-                    var listadoSensores = servicio.ListarSensoresBarrerasActivos().ToList();                    
-
-                    var sensoresArriba = listadoSensores
-                        .Where(w => w.CodigoDispositivoSensorArriba == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Nombre, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
-
-                    var sensoresAbajo = listadoSensores
-                        .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Nombre, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
-
-                    var notificacionSensorBarrera = new EstadoSensoresBarreraDto
-                    {
-                        Dispositivo = sensor,
-                        SensoresArriba = sensoresArriba,
-                        SensoresAbajo = sensoresAbajo
-                    };
-
-                    //var notificacionBarreras
-                    var notificacionDto = new NotificacionDto
-                    {
-                        Grupo = "SENSORESBARRERA",
-                        Mensaje = notificacionSensorBarrera.ToJson(),
-                        TipoAlerta = TipoAlerta.CambioEstadoBarrera
-                    };
-
-                    hubClientNotificar.Invoke("Notificar", notificacionDto);
-                }
-                
-            }
-            catch (Exception e)
-            {
-                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
-            }
         }
     }
 }

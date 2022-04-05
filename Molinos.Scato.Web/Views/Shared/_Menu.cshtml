@@ -20,6 +20,7 @@
 
 @Html.Hidden("cantidadBarreras", totalSensoresBarrera)
 @Html.Hidden("requiereComentarioGestionarBarrera", requiereComentarioGestionarBarrera)
+@Html.Hidden("gestionarBarrera", gestionarBarrera)
 
 
 @Scripts.Render("~/bundles/blockUI")
@@ -1063,8 +1064,8 @@
                 {
                     <li class="dropdown menu-adminrepo" id="barreraHeader">
                         <div style="border: 1px solid #ccc; border-radius: 6px; text-align: center;">
-                            <span id="@("barrera-"+sensoresBarrera[0].Nombre)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
-                            <span style="display: block;font-size: .75em; font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif; margin-top: 5px;">@sensoresBarrera[0].Nombre</span>
+                            <span id="@("barrera-"+sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                            <span style="display: block;font-size: .75em; font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif; margin-top: 5px;">@sensoresBarrera[0].Barrera</span>
                         </div>
                     </li>
                 }
@@ -1190,23 +1191,23 @@
                     {
                         <div class="row">
                             <div class="control-group" style="margin-left: 30px;">
-                                <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@item.Nombre</label>
+                                <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@item.Barrera</label>
                                 <div class="controls">
-                                    <span id="@("barrera-" + item.Id + "-" + item.Nombre)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                                    <span id="@("barrera-" + item.Id + "-" + item.Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                                     <div style="margin-left: 30px;">
                                         @if (gestionarBarrera)
                                         {
-                                            <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                            <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                            <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                            <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
                                         }
                                         else
                                         {
                                             foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
                                             {
-                                                if (barreraSupervisor == item.Nombre)
+                                                if (barreraSupervisor == item.Barrera)
                                                 {
-                                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
                                                 }
                                             }
                                         }
@@ -1241,17 +1242,17 @@
         <div class="control-group">
             @Html.Label("Motivo", new { @class = "control-label" })
             <div class="controls">
-                @Html.TextArea("Motivo", new { id = "motivo", @class = "form-control", style = "width:350px;" })
+                @Html.TextArea("Motivo", new { id = "motivoMenu", @class = "form-control", style = "width:350px;" })
             </div>
         </div>
 
         <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
         <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
 
-        @Html.Hidden("elemento-id")
-        @Html.Hidden("elemento-barrera")
-        @Html.Hidden("url")
-        @Html.Hidden("elemento-accion")
+        @Html.Hidden("elemento-id-Menu")
+        @Html.Hidden("elemento-barrera-Menu")
+        @Html.Hidden("url-Menu")
+        @Html.Hidden("elemento-accion-Menu")
     </div>
 
     <div class="modal-footer">
@@ -1271,26 +1272,26 @@
             @if (Enumerable.Count(sensoresBarrera) > 0)
             {
                 <div class="control-group" style="margin-left: 30px;">
-                    <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@sensoresBarrera[0].Nombre</label>
+                    <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@sensoresBarrera[0].Barrera</label>
                     <div class="controls">
-                        <span id="@("barrera-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                        <span id="@("barrera-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                         <div>
                             @if (gestionarBarrera)
                             {
                                 foreach (var sensor in sensoresBarrera)
                                 {
-                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensor.Id + "-" + sensor.Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensor.Id + "-" + sensor.Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensor.Id + "-" + sensor.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensor.Id + "-" + sensor.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
                                 }
                             }
                             else
                             {
                                 foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
                                 {
-                                    if (barreraSupervisor == sensoresBarrera[0].Nombre)
+                                    if (barreraSupervisor == sensoresBarrera[0].Barrera)
                                     {
-                                        <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
-                                        <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Nombre)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                        <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                        <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
                                     }
                                 }
                             }
