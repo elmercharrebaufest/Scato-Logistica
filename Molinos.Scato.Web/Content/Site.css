@@ -949,3 +949,31 @@ a {
     margin-left: 4px;
     margin-right: 4px;
 }
+
+.horarioForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.horarioForm > div {
+    display: flex;
+    align-items: center;
+}
+
+.horarioForm .controls input,
+.horarioForm label {
+    margin: 0px;
+    margin-right: 10px;
+}
+
+@media screen and (max-width: 780px) {
+    .horarioForm {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .horarioForm > div {
+        margin-bottom: 1rem;
+    }
+}

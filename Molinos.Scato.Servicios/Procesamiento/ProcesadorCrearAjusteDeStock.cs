@@ -29,6 +29,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 FechaAjuste = ajuste.Fecha,
                 Material = ajuste.Material,
                 NumeroDocumentoIngreso = ajuste.NumeroDocumentoIngreso,
+                NumeroCTG = ajuste.NumeroCTG,
                 Observaciones = ajuste.Observaciones,
                 PesoBrutoIngreso = ajuste.PesoBrutoIngreso,
                 PesoNetoEgreso = ajuste.PesoNetoEgreso,

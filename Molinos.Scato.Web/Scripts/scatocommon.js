@@ -676,3 +676,32 @@ function obtenerMensajesAplicacion() {
         }
     });
 }
+
+function NotificarCambioEstadoBarrera(mensaje) {
+    var estadoBarreras = JSON.parse(mensaje);
+
+    try {
+
+        for (var j = 0; j < estadoBarreras.SensoresArriba.length; j++) {
+            var item = estadoBarreras.SensoresArriba[j];
+            if (item.Estado) {
+                $("#barrera-" + item.Id + "-" + item.Barrera).removeClass("icon-barrera-cerrada");
+                $("#barrera-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
+                $("#barrera-" + item.Barrera).removeClass("icon-barrera-cerrada");
+                $("#barrera-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
+            }
+        }
+
+        for (var k = 0; k < estadoBarreras.SensoresAbajo.length; k++) {
+            var item = estadoBarreras.SensoresAbajo[k];
+            if (item.Estado) {
+                $("#barrera-" + item.Id + "-" + item.Barrera).removeClass("icon-barrera-abierta");
+                $("#barrera-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-cerrada").css({ 'color': 'red' });
+                $("#barrera-" + item.Barrera).removeClass("icon-barrera-abierta");
+                $("#barrera-" + item.Barrera).addClass("icon-barrera-cerrada").css({ 'color': 'red' });
+            }
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}

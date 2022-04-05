@@ -1,0 +1,27 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Web.Models.ConfiguracionEficienciaCaladoViewModel
+
+@{
+    Layout = null;
+    var items = Model.Items;
+}
+
+@Html.Grilla(items,
+    grilla =>
+    grilla.Columns(
+        grilla.Column("EliminarModificar", "", f =>
+                Html.Raw(
+                "<span>" +
+                Html.BotonLink(Textos.Modificar, "Modificar", "ConfiguracionEficienciaCalado", new { f.id }, " ajax-editar-link", "icon-edit", true).ToHtmlString() +
+                Html.BotonLink(Textos.Eliminar, "Eliminar", "ConfiguracionEficienciaCalado", new { f.id }, " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                "</span>"
+                )
+                , "editar-borrar-columna", false),
+        grilla.Columna("Nombre", "Calle"),
+        grilla.Columna("Cantidad", "Eficiencia Teórica")
+))

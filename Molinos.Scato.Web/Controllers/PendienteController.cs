@@ -26,6 +26,7 @@ namespace Molinos.Scato.Web.Controllers
 
         public ActionResult Index(int id)
         {
+            ViewBag.FotoMesaDigitalizacionSustentable = null;
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
             if (cargaDeCupo.CircuitoNoGranos)
             {
@@ -51,6 +52,14 @@ namespace Molinos.Scato.Web.Controllers
                 if (foto.Fotos.Any())
                 {
                     ViewBag.FotoMesaDigitalizacion1 = foto.Fotos.First().Foto;
+                }
+            }
+            if (!string.IsNullOrEmpty(cargaDeCupo.FotoRutaSustentable))
+            {
+                var foto = servicio.ObtenerFotoPorPath(cargaDeCupo.FotoRutaSustentable);
+                if (foto.Fotos.Any())
+                {
+                    ViewBag.FotoMesaDigitalizacionSustentable = foto.Fotos.First().Foto;
                 }
             }
             return View(cargaDeCupo);

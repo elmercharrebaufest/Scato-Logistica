@@ -160,7 +160,6 @@ function EstadoDeCallesViewModel() {
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
 
     self.ListarCamiones = function () {
-        console.log("listar");
         $.ajax({
             url: urlEstadoDeCalles,
             type: 'POST',
@@ -215,8 +214,6 @@ function abrirModal() {
 }
 
 function ConfirmarEnviarAFilaRechazado() {
-    console.log("Hola");
-    console.log("Vamos bien");
     $.ajax({
         url: urlConfirmarRechazado,
         data: {
@@ -226,7 +223,6 @@ function ConfirmarEnviarAFilaRechazado() {
         type: "POST",
         success: function (result) {
             $("#modal-rechazo-mover").modal("hide");
-            console.log("Aca Bien");
         },
         error: function (error) {
             console.log(error);

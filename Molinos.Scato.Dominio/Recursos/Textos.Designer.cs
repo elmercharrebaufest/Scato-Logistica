@@ -151,6 +151,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ABM Barrera.
+        /// </summary>
+        public static string AbmBarrera {
+            get {
+                return ResourceManager.GetString("AbmBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ABM Bocas de Destino.
         /// </summary>
         public static string AbmBocaDestino {
@@ -273,6 +282,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AbmCliente {
             get {
                 return ResourceManager.GetString("AbmCliente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abm Configuracion Sensores.
+        /// </summary>
+        public static string AbmConfiguracionSensores {
+            get {
+                return ResourceManager.GetString("AbmConfiguracionSensores", resourceCulture);
+                }
+        }
+        
+        /// <summary>   
+        ///   Looks up a localized string similar to ABM Configuración Eficiencia Calado.
+        /// </summary>
+        public static string AbmConfiguracionEficienciaCalado {
+            get {
+                return ResourceManager.GetString("AbmConfiguracionEficienciaCalado", resourceCulture);
             }
         }
         
@@ -2743,6 +2770,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administración Visualización de Barreras.
+        /// </summary>
+        public static string Administracion_Barrera {
+            get {
+                return ResourceManager.GetString("Administracion_Barrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administración de Bocas de Destino.
         /// </summary>
         public static string Administracion_BocaDestinos {
@@ -2838,6 +2874,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Administracion_Clientes {
             get {
                 return ResourceManager.GetString("Administracion_Clientes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administración de Eficiencia Calado.
+        /// </summary>
+        public static string Administracion_ConfiguracionEficienciaCalado {
+            get {
+                return ResourceManager.GetString("Administracion_ConfiguracionEficienciaCalado", resourceCulture);
             }
         }
         
@@ -5218,6 +5263,96 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crear Grupo Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Crear {
+            get {
+                return ResourceManager.GetString("Barrera_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo código es requerido.
+        /// </summary>
+        public static string Barrera_crear_codigo_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_codigo_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo descripcion es requerido.
+        /// </summary>
+        public static string Barrera_crear_descripcion_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_descripcion_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El campo rol es requerido.
+        /// </summary>
+        public static string Barrera_crear_Rol_Obligatorio {
+            get {
+                return ResourceManager.GetString("Barrera_crear_Rol_Obligatorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificar Grupo Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Modificar {
+            get {
+                return ResourceManager.GetString("Barrera_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barrera.
+        /// </summary>
+        public static string Barrera_Nombre {
+            get {
+                return ResourceManager.GetString("Barrera_Nombre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Nuevo Grupo.
+        /// </summary>
+        public static string Barrera_Nuevo {
+            get {
+                return ResourceManager.GetString("Barrera_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Abajo.
+        /// </summary>
+        public static string Barrera_Sensor_Abajo {
+            get {
+                return ResourceManager.GetString("Barrera_Sensor_Abajo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Arriba.
+        /// </summary>
+        public static string Barrera_Sensor_Arriba {
+            get {
+                return ResourceManager.GetString("Barrera_Sensor_Arriba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualización de Barreras.
+        /// </summary>
+        public static string Barrera_Titulo {
+            get {
+                return ResourceManager.GetString("Barrera_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boca Destino.
         /// </summary>
         public static string Boca_Destino {
@@ -6244,6 +6379,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Camión avanza de etapa en forma manual sin cambio de modalidad balanza.
+        /// </summary>
+        public static string CambioModalidadBalanzaMotivo {
+            get {
+                return ResourceManager.GetString("CambioModalidadBalanzaMotivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patente.
         /// </summary>
         public static string Camion_Patente {
@@ -6721,6 +6865,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Es Peso Hectolitrico.
+        /// </summary>
+        public static string CaracteristicaDeCalidad_EsPesoHectolitrico {
+            get {
+                return ResourceManager.GetString("CaracteristicaDeCalidad_EsPesoHectolitrico", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Es Proteina.
         /// </summary>
         public static string CaracteristicaDeCalidad_EsProteina {
@@ -6915,6 +7068,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CaracteristicaDeCalidad_ValorMinomo {
             get {
                 return ResourceManager.GetString("CaracteristicaDeCalidad_ValorMinomo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valor por Defecto Calado.
+        /// </summary>
+        public static string CaracteristicaDeCalidad_ValorPorDefectoCalado {
+            get {
+                return ResourceManager.GetString("CaracteristicaDeCalidad_ValorPorDefectoCalado", resourceCulture);
             }
         }
         
@@ -9372,6 +9534,42 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ConfiguracionDeTabla_CaracteristicasDeCalidad {
             get {
                 return ResourceManager.GetString("ConfiguracionDeTabla_CaracteristicasDeCalidad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Eficiencia de Calle Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Crear {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificar Eficiencia de Calle Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Modificar {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nueva Calle.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Nuevo {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuración Eficiencia Calado.
+        /// </summary>
+        public static string ConfiguracionEficienciaCalado_Titulo {
+            get {
+                return ResourceManager.GetString("ConfiguracionEficienciaCalado_Titulo", resourceCulture);
             }
         }
         
@@ -13160,6 +13358,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El Valor ingresado no es válido, debe ser mayor al Valor Mínimo y menor al Máximo.
+        /// </summary>
+        public static string Error_Invalido_ValorPorDefectoCalado {
+            get {
+                return ResourceManager.GetString("Error_Invalido_ValorPorDefectoCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El largo del Campo {0} debe ser un minimo de {1} cáracteres.
         /// </summary>
         public static string Error_LargoMensaje {
@@ -14560,6 +14767,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ExistePedidoDeTraslado_Titulo {
             get {
                 return ResourceManager.GetString("ExistePedidoDeTraslado_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ya se cargó la característica Peso hectolitrico.
+        /// </summary>
+        public static string ExistePesoHectolitrico {
+            get {
+                return ResourceManager.GetString("ExistePesoHectolitrico", resourceCulture);
             }
         }
         
@@ -23216,6 +23432,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No se pudo tomar el Peso Hectolitríco de manera automática.
+        /// </summary>
+        public static string PH_AutomaticaError {
+            get {
+                return ResourceManager.GetString("PH_AutomaticaError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pinchazos por Camiones Calados.
         /// </summary>
         public static string PinchazosPorCalada {
@@ -23720,6 +23945,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuracion Sensores.
+        /// </summary>
+        public static string PuestoDeTrabajo_ConfigSensor {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_ConfigSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear Puesto de Trabajo.
         /// </summary>
         public static string PuestoDeTrabajo_Crear {
@@ -23909,6 +24143,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Requiere Comentario Gestionar Barrera.
+        /// </summary>
+        public static string PuestoDeTrabajo_RequiereComentarioGestionarBarrera {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_RequiereComentarioGestionarBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Barrera / Semáforo Salida.
         /// </summary>
         public static string PuestoDeTrabajo_Salida {
@@ -23968,6 +24211,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_ValidarLectura {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_ValidarLectura", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizacion Barrera.
+        /// </summary>
+        public static string PuestoDeTrabajo_VisualizacionBarrera {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_VisualizacionBarrera", resourceCulture);
             }
         }
         

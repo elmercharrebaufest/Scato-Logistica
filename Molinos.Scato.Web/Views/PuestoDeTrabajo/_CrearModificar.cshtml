@@ -10,7 +10,6 @@
     var cartelesLed = (IEnumerable<SelectListItem>)ViewBag.CartelesLed;
     var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
     var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
-    var concentradores = (IEnumerable<SelectListItem>)ViewBag.Concentradores;
     var intercomunicadores = (IEnumerable<SelectListItem>)ViewBag.Intercomunicadores;
 }
 <style>
@@ -152,16 +151,6 @@
 </div>
 
 <div class="control-group">
-    @Html.LabelFor(model => model.Concentrador, new { @class = "control-label" })
-    <div class="controls">
-        @Html.DropDownListFor(model => model.Concentrador, concentradores, "")
-        @Html.ValidationMessageFor(model => model.Concentrador)
-    </div>
-</div>
-
-
-
-<div class="control-group">
     @Html.LabelFor(model => model.VideoCamara, new { @class = "control-label" })
     <div class="controls">
         @Html.DropDownListFor(model => model.VideoCamara, camaras, "")
@@ -272,7 +261,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.Automatizado, new { @class = "control-label" })
     <div class="controls">
-        @Html.CheckBoxFor(model => model.Automatizado, new { @class = "input-large",data_toggle="tooltip",title="En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
+        @Html.CheckBoxFor(model => model.Automatizado, new { @class = "input-large", data_toggle = "tooltip", title = "En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
         @Html.ValidationMessageFor(model => model.Automatizado)
     </div>
     @Html.LabelFor(model => model.AutomatizadoFull, new { @class = "control-label" })

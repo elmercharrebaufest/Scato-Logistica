@@ -1,8 +1,9 @@
 ﻿CREATE TABLE [dbo].[Destino] (
-    [Id]     INT            IDENTITY (1, 1) NOT NULL,
+    [Id]     INT           IDENTITY (1, 1) NOT NULL,
     [Nombre] NVARCHAR (60) NULL,
-    
-    CONSTRAINT [PK_dbo.Destino] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [UK_Destino_Nombre] UNIQUE (Nombre) 
+    CONSTRAINT [PK_dbo.Destino] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
+    CONSTRAINT [UK_Destino_Nombre] UNIQUE NONCLUSTERED ([Nombre] ASC) WITH (STATISTICS_NORECOMPUTE = ON)
 );
+
+
 GO

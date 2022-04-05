@@ -120,13 +120,16 @@ namespace Molinos.Scato.Web.Controllers
                 else
                 {
                     model.FotoRutaDestino = resultado.Mensaje;
+                    model.FotoRutaSustentable = resultado.PathSustentable;
+
                     if (!model.NoAsignaCalleEnGaritaEntrada)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera);
-
+                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                        AperturaDeBarrera(codigoBarrera);
                     }
                     if (model.ImprimeTarjetaDeAcceso)
                     {
@@ -191,12 +194,12 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
+                    var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId != 0)
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, codigoBarrera, true);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, true);
                         model.MaterialId = 0;
                     }
                     if(!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
@@ -208,6 +211,8 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         ImprimirTarjetaDeAcceso(model, datosUsuario, resultado);
                     }
+                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                    AperturaDeBarrera(codigoBarrera);
                 }
 
 
@@ -220,7 +225,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View("Form", model);
         }
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string codigoBarrera, bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, bool circuitoNoGranos = false)
         {
             try
             {
@@ -256,8 +261,7 @@ namespace Molinos.Scato.Web.Controllers
                         }
                         log.Debug($"Fila asignada {fila} por el puestoId: {nombrePc}");
                         MostrarPorCartel(nombrePc, fila, centroId, patente);
-                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {patente}");
-                        AperturaDeBarrera(codigoBarrera);
+                        
                     }
                 }
             }
@@ -295,19 +299,20 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ValidarCupoEnSap(string cupo, DatosUsuario datosUsuario)
+        public JsonResult ValidarCupoEnSap(string cupo, string imagen, DatosUsuario datosUsuario)
         {
             var model = new CargaDeCupoDto();
+            var pdfSustentableString = string.Empty;
 
-            ////model.MaterialId = 4;
-            ////model.RespuestaSap = "hola";
-            ////model.ProveedorDescripcion = "SUCESION DE RUEDA ALFREDO EDUARDO";
-            ////model.ProveedorCuit = "20-00200069-6";
-            ////model.MaterialDescripcion = "Semilla de Soja";
-            ////model.FechaSap = "2019-01-29";
-            ////model.Especial = false;
-            ////model.Camara = "Fabrica";
-            ////return Json(new { model }, JsonRequestBehavior.AllowGet);
+            //model.MaterialId = 4;
+            //model.RespuestaSap = "Cupo del día";
+            //model.ProveedorDescripcion = "MOLINOS AGRO S.A.";
+            //model.ProveedorCuit = "30-71511877-3";
+            //model.MaterialDescripcion = "Poroto de soja";
+            //model.FechaSap = "2021-02-28";
+            //model.Especial = true;
+            //model.Camara = "Fabrica";
+            //return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
 
             if (servicio.CupoConsumido(cupo, datosUsuario.CentroId))
             {
@@ -362,7 +367,18 @@ namespace Molinos.Scato.Web.Controllers
                         model.FechaSap = respuesta.FECHA;
                         model.Especial = esEspecial;
                         model.Camara = respuesta.CALIDAD;
-                        return Json(new { model }, JsonRequestBehavior.AllowGet);
+
+                        if (model.Especial && !String.IsNullOrEmpty(imagen))
+                        {
+                            imagen = imagen.Replace("data:image/jpg;base64,", string.Empty);
+                            var imagenSustentable = Convert.FromBase64String(imagen);
+                            imagenSustentable = DibujarSelloSustentable(imagenSustentable);
+                            if (imagenSustentable != null)
+                            {
+                                pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imagenSustentable));
+                            }
+                        }
+                        return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
                     }
                     log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", cupo);
                     return Json(new { error = respuesta.MENSAJE }, JsonRequestBehavior.AllowGet);
@@ -736,21 +752,23 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "")
+        public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
         {
             try
             {
                 var estadoErroresBloqueantes = new List<string> { "AN", "RE" };
+                var estadoPermiteIngresar = new List<string> { "AC","CF","CO" };
                 log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
                 var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = numeroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaMinima = true }) as ResultadoCartaPorteElectronica;
                 log.Debug(cartaPorteResponse.HayErrores ? "Error al obtener carta de porte CTG-CPE en carga de Cupo. {0}: " + cartaPorteResponse.Errores.Values.First() : "Devolviendo carta de porte en carga de Cupo. CTG-CPE {0}", numeroCtg);
                 var errorCode = cartaPorteResponse.HayErrores ? cartaPorteResponse.Errores.Keys.First() : "3";
                 var errorMsg = cartaPorteResponse.Errores.Values.FirstOrDefault();
                 var pdfString = string.Empty;
+                var pdfSustentableString = string.Empty;
 
                 if (errorCode != "2")
                 {
-                    if (!cartaPorteResponse.HayErrores && cartaPorteResponse.Cpe?.EstadoCpe != "AC")
+                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
                         if (estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim()))
                         {
@@ -771,8 +789,16 @@ namespace Molinos.Scato.Web.Controllers
                             Numero = tarjeta,
                             NumeroCartaPorte = numeroCtg.ToString()
                         }, 18);
-
                         pdfString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(cartaPorteResponse.PdfImage));
+
+                        if(esEpecial)
+                        {
+                            cartaPorteResponse.PdfImageSustentable = DibujarSelloSustentable(cartaPorteResponse.PdfImage);
+                            if(cartaPorteResponse.PdfImageSustentable != null)
+                            {
+                                pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(cartaPorteResponse.PdfImageSustentable));
+                            }
+                        }
                     }
                     else
                     {
@@ -791,8 +817,16 @@ namespace Molinos.Scato.Web.Controllers
                                     Numero = tarjeta,
                                     NumeroCartaPorte = numeroCtg.ToString()
                                 }, 18);
-
                                 pdfString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(cartaPorteResponse.PdfImage));
+
+                                if(esEpecial)
+                                {
+                                    cartaPorteResponse.PdfImageSustentable = DibujarSelloSustentable(cartaPorteResponse.PdfImage);
+                                    if(cartaPorteResponse.PdfImageSustentable != null)
+                                    {
+                                        pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(cartaPorteResponse.PdfImageSustentable));
+                                    }
+                                }
                             }
                         }                    
                     }
@@ -800,7 +834,7 @@ namespace Molinos.Scato.Web.Controllers
 
                 return new JsonResult()
                 {
-                    Data = new { cartaPorteResponse.Cpe, CodigoDeError = errorCode, Error = errorMsg, PdfImageBase64 = pdfString},
+                    Data = new { cartaPorteResponse.Cpe, CodigoDeError = errorCode, Error = errorMsg, PdfImageBase64 = pdfString, PdfImageSustentableBase64 = pdfSustentableString},
                     ContentType = "application/json",
                     ContentEncoding = System.Text.Encoding.UTF8,
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
@@ -824,6 +858,20 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Error(e, "No se pudo levantar la barrera");
             }
+        }
+
+        private byte[] DibujarSelloSustentable(byte[] PdfImage)
+        {
+            if (PdfImage != null)
+            {
+                var resultado = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                {
+                    SoloDibujar = true,
+                    PdfImage = PdfImage
+                }) as ResultadoCartaPorteElectronica;
+                return resultado.PdfImageSustentable;
+            }
+            return null;
         }
     }
 }

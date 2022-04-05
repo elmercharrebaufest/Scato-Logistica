@@ -1505,6 +1505,83 @@ namespace Molinos.Scato.Servicios.Orquestador {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="IntercomunicadorDispositivoBaseDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class IntercomunicadorDispositivoBaseDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> PuertoDeAudioField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Codigo {
+            get {
+                return this.CodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
+                    this.CodigoField = value;
+                    this.RaisePropertyChanged("Codigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> PuertoDeAudio {
+            get {
+                return this.PuertoDeAudioField;
+            }
+            set {
+                if ((this.PuertoDeAudioField.Equals(value) != true)) {
+                    this.PuertoDeAudioField = value;
+                    this.RaisePropertyChanged("PuertoDeAudio");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Sensor {
+            get {
+                return this.SensorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorField, value) != true)) {
+                    this.SensorField = value;
+                    this.RaisePropertyChanged("Sensor");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://orquestador.molinos.com.ar", ConfigurationName="Orquestador.IServicioOrquestador")]
     public interface IServicioOrquestador {
@@ -1726,12 +1803,12 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudioResponse")]
-        System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo);
+        Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudioResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1993,11 +2070,11 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.PrenderApagarDispositivoAsync(codigoDispositivo, activar, server);
         }
         
-        public System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo) {
+        public Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo) {
             return base.Channel.ObtenerIntercomunicadorPuertoDeAudio(codigoDispositivo);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo) {
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo) {
             return base.Channel.ObtenerIntercomunicadorPuertoDeAudioAsync(codigoDispositivo);
         }
     }

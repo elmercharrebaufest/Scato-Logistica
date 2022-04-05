@@ -13,7 +13,7 @@ $(document).ready(function () {
             recargarCentros();
         }
     });
-    
+
     $(document).on('click', '#refrescarCookies', (function () {
         $.removeCookie("PuestoDeTrabajoId");
         $.removeCookie("RedireccionarAListaAutomatizada");
@@ -28,9 +28,9 @@ $(document).ready(function () {
             });
             window.location = $("#ListaDeCamionesUrl").val();
 
-        });             
+        });
     }));
-    
+
     $(document).on('click', '#centrosDescripciones li', (function () {
         $('#centroActualBoton').text($(this).data().centro);
         $.ajax({
@@ -54,14 +54,14 @@ $(document).ready(function () {
                 MostrarAlertaError();
             }
         });
-        
+
     }));
-    
-    $('#idiomas li').on('click', (function() {
+
+    $('#idiomas li').on('click', (function () {
         $('#idiomaBoton').text($(this).data().idioma);
     }));
 
-    $("#NotificacionesDropDownButton").on('click', (function() {
+    $("#NotificacionesDropDownButton").on('click', (function () {
         if (!$("#NotificacionesDropDown").hasClass("open")) {
             if (!estaActualizado) {
                 recargarNotificaciones(true, true, true);
@@ -77,7 +77,7 @@ $(document).ready(function () {
         notificarLectura(item.data().id, item.data().grupo);
     }));
 
-    $(document).on('click', '.eliminarNotificacion',(function () {
+    $(document).on('click', '.eliminarNotificacion', (function () {
         var item = $(this);
         var liparent = item.closest('li');
         if (liparent.hasClass("noLeido")) actualizarJewelCount($('#unreadbadge').text() - 1);
@@ -123,7 +123,7 @@ function conectarSignalR() {
         }
     };
 
-    
+
     // Start the connection
     window.hubReady.done(function () {
         recargarNotificaciones(false, true, true);
@@ -133,19 +133,19 @@ function conectarSignalR() {
 
 function recargarCentros() {
     $.getJSON($("#centroActualBoton").data().listarcentros, null,
-            function (response) {
-                var options = '';
-                for (var i = 0; i < response.length; i++) {
-                    
+        function (response) {
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
 
-                    if (response[i].Descripcion == $('#centroActualBoton').text()) {
-                        options += '<li data-centro="' + response[i].Descripcion + '" data-centroid="' + response[i].Id + '"><a href="#">' + response[i].Descripcion + ' <i class="icon-ok"></i></a></li>';
-                    } else {
-                        options += '<li data-centro="' + response[i].Descripcion + '" data-centroid="' + response[i].Id + '"><a href="#">' + response[i].Descripcion + '</a></li>';
-                    }
+
+                if (response[i].Descripcion == $('#centroActualBoton').text()) {
+                    options += '<li data-centro="' + response[i].Descripcion + '" data-centroid="' + response[i].Id + '"><a href="#">' + response[i].Descripcion + ' <i class="icon-ok"></i></a></li>';
+                } else {
+                    options += '<li data-centro="' + response[i].Descripcion + '" data-centroid="' + response[i].Id + '"><a href="#">' + response[i].Descripcion + '</a></li>';
                 }
-                $('#centrosDescripciones').html(options);
-            });
+            }
+            $('#centrosDescripciones').html(options);
+        });
 }
 
 function recargarNotificaciones(listarSobre, mostrarAlerta, contar) {
@@ -156,14 +156,14 @@ function recargarNotificaciones(listarSobre, mostrarAlerta, contar) {
         function (response) {
             if (mostrarAlerta && response.AlertasNoLeidas != null && response.AlertasNoLeidas.length > 0) {
 
-                var mensaje =  response.AlertasNoLeidas[0].Mensaje;
+                var mensaje = response.AlertasNoLeidas[0].Mensaje;
                 var tipoAlerta = response.AlertasNoLeidas[0].TipoAlerta;
-                
+
                 for (var j = 1; j < response.AlertasNoLeidas.length; j++) {
                     if (tipoAlerta == response.AlertasNoLeidas[j].TipoAlerta) {
-                        
+
                         mensaje += (tipoAlerta == 4 ? '\n' : '<br />') + response.AlertasNoLeidas[j].Mensaje;
-                        
+
                     } else {
                         mostrarAlertaPorPantalla(tipoAlerta, mensaje);
                         mensaje = response.AlertasNoLeidas[j].Mensaje;
@@ -177,7 +177,7 @@ function recargarNotificaciones(listarSobre, mostrarAlerta, contar) {
                     response.Cantidad = response.Cantidad - 1;
                 }
             }
-            
+
             if (listarSobre && response.NotificacionesSobre != null) {
                 var options = '';
                 for (var i = 0; i < response.NotificacionesSobre.length; i++) {
@@ -219,11 +219,11 @@ function notificarLecturaTodos(grupos) {
     $.getJSON($("#NotificacionesDropDown").data().marcarLeidosTodosUrl, null,
         function () {
             estaActualizado = false;
-            });
+        });
 }
 
 function limpiarNotificaciones() {
-    $('#messages li').each(function() {
+    $('#messages li').each(function () {
         var item = $(this);
         if (item.data().id != null) {
             item.remove();
@@ -245,15 +245,15 @@ function notificacionDropDownItem(notificacion) {
     var item = '<li';
     if (!notificacion.Leido) item += ' class="noLeido"';
     item += ' data-id="' + notificacion.Id + '" data-grupo="' + notificacion.Grupo + '">' +
-            '<a href="#">' + '<button type="button" class="eliminarNotificacion" data-id="' + notificacion.Id + '">×</button>' +
-                '<div class="notificacion-body">' +
-                    '<div class="notificacion-mensaje">' + notificacion.Mensaje + '</div>' +
-                    '<div class="notificacion-hora">' +
-                        '<i class="icon-time"></i>' +
-                        '<span>' + actualizarTimeAgo(notificacion.HoraServidor, notificacion.HoraVista) + '</span>' +
-                    '</div>' +
-                '</div>' +
-            '</a>' +
+        '<a href="#">' + '<button type="button" class="eliminarNotificacion" data-id="' + notificacion.Id + '">×</button>' +
+        '<div class="notificacion-body">' +
+        '<div class="notificacion-mensaje">' + notificacion.Mensaje + '</div>' +
+        '<div class="notificacion-hora">' +
+        '<i class="icon-time"></i>' +
+        '<span>' + actualizarTimeAgo(notificacion.HoraServidor, notificacion.HoraVista) + '</span>' +
+        '</div>' +
+        '</div>' +
+        '</a>' +
         '</li>';
     return item;
 }
@@ -262,9 +262,9 @@ function actualizarTimeAgo(server, hora) {
     var serverd = new Date(server);
     var horad = new Date(hora);
     var distance = (serverd.getTime() - horad.getTime()),
-				seconds = Math.abs(distance) / 1000,
-				minutes = seconds / 60,
-				hours = minutes / 60;
+        seconds = Math.abs(distance) / 1000,
+        minutes = seconds / 60,
+        hours = minutes / 60;
     if (hours < 24) {
         return Globalize.format(horad, Globalize.culture().calendars.standard.patterns.t);
     } else {

@@ -8,6 +8,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Helpers;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -222,6 +223,7 @@ namespace Molinos.Scato.Web.ServicioHub
             }
             else if (notificacion.CodigoEvento == "CambioEstadoIntercomunicador")
             {
+                log.Info("Intercomunicador - Entro a CambioEstadoIntercomunicador");
                 NotificarIntercomunicadorEstadoSignalR(notificacion);
             }
         }
@@ -772,6 +774,7 @@ namespace Molinos.Scato.Web.ServicioHub
 
         private void NotificarIntercomunicadorEstadoSignalR(NotificacionEvento notificacion)
         {
+            log.Info("Intercomunicador - Entro a NotificarIntercomunicadorEstadoSignalR {0}", JsonConvert.SerializeObject(notificacion.Datos["Dato"]));
             var estados = notificacion.Datos["Dato"].Split(';');
             var notificacionIntercomunicador = new EstadoIntercomunicadorDto
             {

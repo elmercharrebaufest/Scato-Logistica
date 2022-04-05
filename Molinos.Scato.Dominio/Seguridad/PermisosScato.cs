@@ -412,7 +412,9 @@ namespace Molinos.Scato.Dominio.Seguridad
         CamionDemorado = 198,
         [Display(ResourceType = typeof(Textos), Name = "ActEnEsperaHB4")]
         EnEsperaHB4= 199,
-
+        [Display(ResourceType = typeof(Textos), Name = "ActEsperaConfirmacion")]
+        ActividadEsperaConfirmacion = 700,
+        
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]
         IniciarWorkflow = 200,
@@ -546,6 +548,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         VisualizarVideoCamarasExportacion = 263,
         [Display(ResourceType = typeof(Textos), Name = "MonitorCPECacheada")]
         MonitorCPECacheada = 264,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionEficienciaCalado")]
+        AbmConfiguracionEficienciaCalado = 266,
 
         //Permisos Notificaciones
         Balanceros = 300,
@@ -721,6 +725,5 @@ namespace Molinos.Scato.Dominio.Seguridad
 
         [Display(ResourceType = typeof(Textos), Name = "VerRevertirRechazoVagones")]
         VerRevertirRechazoVagones = 608,
-
     }
 }

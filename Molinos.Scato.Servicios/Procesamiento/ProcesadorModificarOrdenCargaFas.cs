@@ -51,7 +51,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Tipo Comercial",
-                    ValorOriginal = ordenCargaFas.TipoComercial.Descripcion,
+                    ValorOriginal = ordenCargaFas.TipoComercial?.Descripcion,
                     ValorNuevo = tipoComercial.Descripcion,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,
@@ -64,7 +64,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Material",
-                    ValorOriginal = ordenCargaFas.Material.Descripcion,
+                    ValorOriginal = ordenCargaFas.Material?.Descripcion,
                     ValorNuevo = material.Descripcion,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,
@@ -90,7 +90,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Chofer",
-                    ValorOriginal = ordenCargaFas.Chofer.Nombre + " " + ordenCargaFas.Chofer.Apellido,
+                    ValorOriginal = ordenCargaFas.Chofer != null ? ordenCargaFas.Chofer.Nombre + " " + ordenCargaFas.Chofer.Apellido : "",
                     ValorNuevo = chofer.Nombre + " " + chofer.Apellido,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,

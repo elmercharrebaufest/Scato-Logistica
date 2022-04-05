@@ -1,17 +1,19 @@
-﻿CREATE TABLE [dbo].[GeneradorNumeroDeTicket2](
-	[PuestoDeTrabajo_Id] [int] NOT NULL,
-	[Id] [int] NOT NULL,
- [PagoConMercadoPago] BIT NOT NULL DEFAULT 0, 
-    CONSTRAINT [PK_GeneradorNumeroDeTicket2] PRIMARY KEY CLUSTERED (	[PuestoDeTrabajo_Id] ASC,[Id] ASC,PagoConMercadoPago)
- );
+﻿CREATE TABLE [dbo].[GeneradorNumeroDeTicket2] (
+    [PuestoDeTrabajo_Id] INT NOT NULL,
+    [Id]                 INT NOT NULL,
+    [PagoConMercadoPago] BIT DEFAULT ((0)) NOT NULL,
+    CONSTRAINT [PK_GeneradorNumeroDeTicket2] PRIMARY KEY CLUSTERED ([PuestoDeTrabajo_Id] ASC, [Id] ASC, [PagoConMercadoPago] ASC) WITH (FILLFACTOR = 90, STATISTICS_NORECOMPUTE = ON),
+    CONSTRAINT [FK_dbo.GeneradorNumeroDeTicket2_dbo.PuestoDeTrabajo_PuestoDeTrabajo_Id] FOREIGN KEY ([PuestoDeTrabajo_Id]) REFERENCES [dbo].[PuestoDeTrabajo] ([Id])
+);
+
+
 
 GO
 
-ALTER TABLE [dbo].[GeneradorNumeroDeTicket2]  WITH CHECK ADD  CONSTRAINT [FK_dbo.GeneradorNumeroDeTicket2_dbo.PuestoDeTrabajo_PuestoDeTrabajo_Id] FOREIGN KEY([PuestoDeTrabajo_Id])
-REFERENCES [dbo].[PuestoDeTrabajo] ([Id])
+
 GO
 
-ALTER TABLE [dbo].[GeneradorNumeroDeTicket2] CHECK CONSTRAINT [FK_dbo.GeneradorNumeroDeTicket2_dbo.PuestoDeTrabajo_PuestoDeTrabajo_Id]
+
 GO
 
 CREATE TRIGGER InsteadTriggerGeneradorNumeroDeTicket2 on GeneradorNumeroDeTicket2 INSTEAD OF INSERT AS

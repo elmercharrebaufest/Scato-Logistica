@@ -107,6 +107,30 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [HttpParamAction]
+        [DatosUsuario]
+        public ActionResult Rechazar(AltaCTGDto model, int workflowDefinicionId, bool verReintentar, DatosUsuario datosUsuario)
+        {
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                Actividad = Textos.ActAltaCTG,
+                ActividadXaml = "AltaCTG",
+                WorkflowInstanceId = model.WorkflowId,
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario
+            };
+            var serviciowf = factory.CrearServicio(workflowDefinicionId);
+            var resultado = serviciowf.AltaCTG(model.WorkflowId, DecisionCtg.Rechazar, "", 0, controlRecorrido, model.Sucursal, model.NroOrden);
+            if (!resultado.HayErrores)
+            {
+                return RedirectToAction("Index", "ListaDeCamiones");
+            }
+            SetearVista(model.WorkflowId, workflowDefinicionId, verReintentar, false);
+            ModelState.AgregarErrores(resultado);
+            return View("index", model);
+        }
+
+        [HttpPost]
+        [HttpParamAction]
         public ActionResult Cancelar()
         {
             return RedirectToAction("Index", "ListaDeCamiones");

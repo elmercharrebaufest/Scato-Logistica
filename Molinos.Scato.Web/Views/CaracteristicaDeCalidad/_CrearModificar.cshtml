@@ -119,6 +119,13 @@
             </div>
         </div>
         <div class="control-group">
+            @Html.LabelFor(m => m.CaladoPorDefecto, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(m => m.CaladoPorDefecto, new { @class = "campoNumerico" })
+                @Html.ValidationMessageFor(m => m.CaladoPorDefecto)
+            </div>
+        </div>
+        <div class="control-group">
             @Html.LabelFor(m => m.ValorEspecialMinimo, new { @class = "control-label" })
             <div class="controls">
                 @Html.TextBoxFor(m => m.ValorEspecialMinimo, new { @class = "campoNumerico", id = "valorEspecialMin" })

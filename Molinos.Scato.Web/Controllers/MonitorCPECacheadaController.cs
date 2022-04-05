@@ -29,26 +29,22 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        [HttpGet]
-        public ActionResult Index(DatosUsuario datosUsuario)
+        public ActionResult Index(DatosUsuario datosUsuario, MonitorCPECacheadaFiltroDto filtro, string ordenarPor = "CTG", DirOrden dirOrden = DirOrden.Asc, int pagina = 1)
         {
             var vm = ObtenerMonitorCPECacheadaVM();
-            var paginacion = new Paginacion("CTG", DirOrden.Asc, 1, itemsPorPagina: 10);
-            var filtro = new MonitorCPECacheadaFiltroDto
-            {
-                CentroId = datosUsuario.CentroId
-            };
+            var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, itemsPorPagina: 10);
+            filtro.CentroId = datosUsuario.CentroId;
             var resultado = servicio.ListarCPEsCacheadas(filtro, paginacion);
             ViewBag.CamionesPendientes = resultado.CamionesPendientes;
             ViewBag.FechaUltimaEjecucion = resultado.FechaUltimaEjecucion;
             ViewBag.ErrorCacheoAfipCPE = resultado.ErrorCacheoAfipCPE;
             ViewBag.Items = resultado.MonitorCPECacheadaListado;
-
             return View(vm);
         }
 
-        [DatosUsuario]
         [AjaxOnly]
+        [DatosUsuario]
+        [ActionName("Index")]
         public ActionResult Listar(DatosUsuario datosUsuario, MonitorCPECacheadaFiltroDto filtro, string ordenarPor = "CTG", DirOrden dirOrden = DirOrden.Asc, int pagina = 1)
         {
             var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, itemsPorPagina: 10);
@@ -70,7 +66,6 @@ namespace Molinos.Scato.Web.Controllers
             return Json(result);
         }
 
- 
         [DatosUsuario]
         public ActionResult VerCPE(int id)
         {
@@ -95,7 +90,7 @@ namespace Molinos.Scato.Web.Controllers
                         TipoVehiculo = cpe.TipoCartaPorte == 79 ? (int)TipoVehiculo.Tren : (int)TipoVehiculo.Camión,
                         NroCtg = cpe.NroCtg,
                         ConsultaAfip = true,
-                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion
+                        FechaUltimaActualizacion = cpe.FechaUltimaActualizacion ?? DateTime.Now
                     });
 
                     result = !resultado.HayErrores;

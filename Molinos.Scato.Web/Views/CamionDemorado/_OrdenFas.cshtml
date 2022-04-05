@@ -8,6 +8,7 @@
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
     var kmdropdown = new List<SelectListItem>();
     string WorkflowDescripcion = ViewBag.WorkflowDescripcion.ToString();
+    string WorkflowInstanceUid = ViewBag.WorkflowInstanceUid?.ToString() ?? string.Empty;
 }
 <div id="links"
      data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
@@ -150,7 +151,7 @@
                 @Html.HiddenFor(model => model.VehiculoDemorado)
                 @Html.HiddenFor(model => model.Id)
                 @Html.HiddenFor(model => model.RecorridoId)
-                @Html.Hidden("WorkflowId")
+                @Html.Hidden("WorkflowId", WorkflowInstanceUid)
             </div>
         </fieldset>
     </div>
@@ -158,7 +159,6 @@
 <script>
     $(document).ready(
         function () {
-            $("#WorkflowId").val($("#Id").val());
             $("#Id").val('@Model.Id');
         })
 </script>

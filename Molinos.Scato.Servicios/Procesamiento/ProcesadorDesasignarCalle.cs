@@ -47,7 +47,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void LLamarSiguienteCallePreCalado(CallePorRecorrido asignacion)
         {
-            var materialId = asignacion.Recorrido != null ? asignacion.Recorrido.Material.Id : asignacion.CargaDeCupo.Material.Id;
+            var materialId = asignacion?.Recorrido != null ? asignacion?.Recorrido?.Material?.Id ?? 0 : asignacion?.CargaDeCupo?.Material?.Id ?? 0;
             var puestosCalados = Repositorio.Listar<Calle>(x => x.TipoCalle == Dominio.Enums.TipoCalle.Calado && x.Material.Id == materialId && x.Automatica);
             if (puestosCalados.Any())
             {

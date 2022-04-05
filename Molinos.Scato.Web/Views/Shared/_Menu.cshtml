@@ -14,7 +14,6 @@
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
 }
 
-
 @Scripts.Render("~/bundles/blockUI")
 <script>
     //Se cierra el diálogo cuando se presiona ESC
@@ -47,6 +46,7 @@
                     @Html.Hidden("ListaDeCamionesUrl", Url.Action("Index", "ListaDeCamiones"))
                     @Html.Hidden("BorrarPermisosCookie", Url.Action("BorrarPermisosCookie", "Menu"))
                     @Html.Hidden("ActualizarCookie", Url.Action("ActualizarCookiePermisos", "Menu"))
+                    @Html.Hidden("GestionarBarrera", Url.Action("GestionarBarrera"))
                 </li>
             </ul>
             <ul class="nav">
@@ -113,7 +113,7 @@
                                         {
                                             <li>@Html.ActionLink(Textos.ExcepcionEnvioCamara_Titulo, "Index", "ExcepcionEnvioCamara")</li>
                                         }
-                                       
+
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -588,6 +588,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.DocumentoExterno, "Index", "DocumentoExterno")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionEficienciaCalado))
+                                {
+                                    <li>@Html.ActionLink(Textos.ConfiguracionEficienciaCalado_Titulo, "Index", "ConfiguracionEficienciaCalado")</li>
+                                }
                             </ul>
                         </li>
 
@@ -1043,7 +1047,6 @@
                         </li>
                     </ul>
                 </li>
-
             </ul>
 
 

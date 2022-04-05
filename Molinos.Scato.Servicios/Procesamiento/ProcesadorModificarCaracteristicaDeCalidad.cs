@@ -120,6 +120,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Error("TipoCaracteristica", Textos.ExisteGranosDañados);
                 }
             }
+
+            if (comando.Dto.EsPesoHectolitrico)
+            {
+                cantidad++;
+                if (Repositorio.Existe<CaracteristicaDeCalidad>(e => e.Id != comando.Dto.Id && e.MaterialPorCentro.Material.Id == comando.Dto.MaterialId && e.MaterialPorCentro.Centro.Id == comando.Dto.CentroId && (e.EsPesoHectolitrico==true)))
+                {
+                    resultado.Error("TipoCaracteristica", Textos.ExistePesoHectolitrico);
+                }
+            }
             if (cantidad > 1)
             {
                 resultado.Error("SoloUno", Textos.Error_SoloUno);

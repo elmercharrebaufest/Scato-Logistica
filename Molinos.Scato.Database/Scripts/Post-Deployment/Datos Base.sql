@@ -241,6 +241,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 196) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 197) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Salida de centro Playa',1,197,'SalidaDeCentroPlaya'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 198) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Camion Demorado',1,198,'CamionDemorado'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 199) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('En Espera HB4',1,199,'EnEsperaHB4'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 700) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Espera Confirmacion', 1, 700, 'EsperaConfirmacion'); END
 
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 200) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('IniciarWorkflow', 1, 200, NULL); END
@@ -309,6 +310,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 259) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 260) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Llamado De Filas Automatico', 1, 260, 'LlamadoDeFilasAutomatico'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 261) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Cambio De Material En Filas', 1, 261, 'CambioDeMaterialEnFilas'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 264) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitor CPEs Cacheadas', 0, 264, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 266) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Eficiencia Calado', 0, 266, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 300) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanceros', 2, 300, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 301) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Administradores', 2, 301, NULL); END
@@ -1377,3 +1379,19 @@ GO
 --Entidades con Tipos De Actividad
 IF NOT EXISTS (SELECT 1 FROM EntidadTipoDeActividad WHERE Entidad_Id = (SELECT Id FROM Entidad WHERE Codigo = 'EVIST') AND TipoDeActividad_Id = (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) BEGIN INSERT INTO EntidadTipoDeActividad VALUES((SELECT Id FROM Entidad WHERE Codigo = 'EVIST'), (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) END
 GO
+
+--Configuraciones Generales
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'AFIP' AND  Nombre = 'ConsultasParalelas' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('AFIP', 'ConsultasParalelas', '1', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EficienciaCalado' AND  Nombre = 'EficienciaCalles' AND  Centro_Id = 5) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EficienciaCalado', 'EficienciaCalles', '[]', 5, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EficienciaCalado' AND  Nombre = 'HorarioTurno' AND  Centro_Id = 5) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EficienciaCalado', 'HorarioTurno', '{"HoraEntrada":"08:00","HoraSalida":"20:00"}', 5, GETDATE(), 'SCATO')
+END
