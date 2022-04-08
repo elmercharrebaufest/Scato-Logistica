@@ -392,10 +392,6 @@ namespace Molinos.Scato.Dominio.Dto
                 {
                     yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_FechaCP), new[] { "FechaCP" });
                 }
-                if (FechaVto == null)
-                {
-                    yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_FechaVto), new[] { "FechaVto" });
-                }
                 if (TipoDeWorkflow == TipoDeWorkflow.Ingreso && string.IsNullOrEmpty(CTG))
                 {
                     yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CTG), new[] { "CTG" });
@@ -437,12 +433,6 @@ namespace Molinos.Scato.Dominio.Dto
             if (FechaCP != null && FechaCP > FechaEmision)
             {
                 yield return new ValidationResult(string.Format(Textos.Error_FechaMenor + Textos.CartaPorte_FechaIngreso, Textos.CartaPorte_FechaCP), new[] { "FechaCP" });
-            }
-
-            
-            if (FechaVto != null && FechaEmision.Date > FechaVto.Date)
-            {
-                yield return new ValidationResult(string.Format(Textos.Error_FechaMayor + FechaEmision.Date + FechaVto.Date, Textos.CartaPorte_FechaVto), new[] { "FechaVto" });
             }
 
             if (RequiereCupo && (Cupo == null || !(new Regex(@"^MOL[0-9]{4}\/[0-9]{8}$").Match(Cupo).Success)))

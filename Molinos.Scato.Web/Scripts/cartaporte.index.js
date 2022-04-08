@@ -106,22 +106,6 @@ jQuery(document).ready(function ($) {
         return true;
     }, $('#FechaCP').data().error2);
 
-    $.validator.addMethod("FechaVtoValidacion", function (value, element) {
-        if (vehiculoDemorado== true) return true;
-        if (Globalize.parseDate($('#FechaEmision').val()) > Globalize.parseDate($('#FechaVto').val()))
-            return false;
-        return true;
-    }, $('#FechaVto').data().error);
-
-    $.validator.addMethod("FechaVtoValidacionMaxima", function (value, element) {
-        if (vehiculoDemorado== true) return true;
-        var fechaActual = Globalize.parseDate($('#FechaEmision').val());
-        fechaActual.setDate(fechaActual.getDate() + 61);
-        if (fechaActual < Globalize.parseDate($('#FechaVto').val()))
-            return false;
-        return true;
-    }, $('#FechaVto').data().errorMaxima);
-
     $.validator.addMethod("anexoRequerido", function (value, element) {
         return value.length > 0;
     }, $('#mensajeAnexo').data().errorRequerido);
@@ -621,7 +605,6 @@ jQuery(document).ready(function ($) {
 
                 $.getJSON($("#links").data().urlObtenerCartaPorteCtgCompragranos, { numeroCtg: nroCartaPorte, workflow: $('#workflow').val(), tipoVehiculo: !$("#tipoVehiculoDropdown").val() ? "0" : $("#tipoVehiculoDropdown").val(), consultactg: $('#DescargaCartaPortePorCtg').is(':checked') }, function (data) {
                     var nroIngresado = $('#NroCartaPorte').val();
-                    console.log(data);
                     if (data.CodigoDeError + "" === "0" || data.CodigoDeError + "" === "1" || data.CodigoDeError + "" === "3" || data.CodigoDeError + "" === "4") {
                         if (data.CodigoDeError === "0" && nroIngresado != "" && nroIngresado != null && data.Cpe.NroCartaPorte != "" && data.Cpe.NroCartaPorte != null && nroIngresado != data.Cpe.NroCartaPorte) {
                             MostrarAlertaError("El número de CTG obtenido de afip (" + data.Cpe.NroCartaPorte + ") no coincide con el ingresado (" + nroIngresado + ")");
@@ -665,10 +648,6 @@ jQuery(document).ready(function ($) {
     //FechaCP
     if ($('#fechaCPIni').val() != null && $('#fechaCPIni').val() != "") {
         $('#FechaCP').val($('#fechaCPIni').val());
-    }
-    //FechaVto
-    if ($('#fechaVTOcp').val() != null && $('#fechaVTOcp').val() != "") {
-        $('#FechaVto').val($('#fechaVTOcp').val());
     }
 
     //Patente

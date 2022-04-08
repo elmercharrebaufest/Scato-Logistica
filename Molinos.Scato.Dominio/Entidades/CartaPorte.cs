@@ -16,7 +16,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string CEE { get; set; }
         [Required]
         public virtual DateTime FechaCP { get; set; }
-        [Required]
+        
         public virtual DateTime FechaVto { get; set; }
         [Required]
         public virtual DateTime FechaEmision { get; set; }
