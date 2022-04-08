@@ -101,7 +101,7 @@
 @if (humedimetro != null)
 {
     @Html.Hidden("HumedimetroId", humedimetro.Id, new { data_url = @Url.Action("TomarHumedad", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
-    @Html.Hidden("HumedimetroId_PH", humedimetro.Id, new { data_url = @Url.Action("TomarPH", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
+    @Html.Hidden("HumedimetroHumedadPHId", humedimetro.Id, new { data_url = @Url.Action("TomarHumedadPH", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
 }
 @if (nirs != null)
 {

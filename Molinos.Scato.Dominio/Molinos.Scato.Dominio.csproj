@@ -689,6 +689,7 @@
     <Compile Include="Dto\EficienciaCalado\ConfiguracionesEficienciaCaladoDto.cs" />
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoValoresDto.cs" />
     <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
+    <Compile Include="Dto\HumedimetroRespuestaDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
@@ -817,6 +818,8 @@
     <Compile Include="Dto\PlanoDeCargaHistoricoDto.cs" />
     <Compile Include="Dto\RamalFerroviarioDto.cs" />
     <Compile Include="Dto\ReporteDetalleMovimientoDto.cs" />
+    <Compile Include="Dto\RespuestaEstandar\MensajeEstandarDto.cs" />
+    <Compile Include="Dto\RespuestaEstandar\RespuestaEstandarDto.cs" />
     <Compile Include="Dto\ResultadoCamaraDto.cs" />
     <Compile Include="Dto\EntradaDto.cs" />
     <Compile Include="Dto\SectorCantidadCamionesDto.cs" />
@@ -1090,6 +1093,7 @@
     <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
+    <Compile Include="Enums\TipoDeMensajeDeRespuesta.cs" />
     <Compile Include="Enums\CaracteristicasCalidad.cs" />
     <Compile Include="Enums\CodigoMensajeCartelLed.cs" />
     <Compile Include="Enums\TipoPinchazo.cs" />

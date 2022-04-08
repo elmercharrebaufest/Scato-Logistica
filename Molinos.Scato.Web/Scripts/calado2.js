@@ -27,8 +27,8 @@ function TomarHumedad() {
         $.getJSON($("#HumedimetroId").data().url, function (data) {
             if ($.isNumeric(data) && data != null) {
                 if (escuchar) {
-                    $(".textboxHumedad").val(formatFloat(data));                  
-                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {                        
+                    $(".textboxHumedad").val(formatFloat(data));
+                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
                         var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
                         jQuery.each(listaRangos, function () {
                             if (this.ValorDesde <= data && this.ValorHasta >= data) {
@@ -39,15 +39,15 @@ function TomarHumedad() {
                         $(".textboxCaracteristica.textboxHumedad").val(formatFloat(data));
                         $(".humedimetro-manual").val(1);
                     }
-                    
-                    $(".boton-manual").attr("disabled", false); 
+
+                    $(".boton-manual").attr("disabled", false);
                     $(".nroDeToma").val(parseInt($(".nroDeToma").val()) + 1);
                     $("form").validate().element($(".textboxCaracteristica.textboxHumedad"));
                 }
                 estadoHumedimetro = true;
             } else if (estadoHumedimetro) {
                 if (data != null) {
-                    //Devolvió error 
+                    //Devolvió error
                     MostrarAlertaInfo($('#humedimetroNoResponde').val());
                     estadoHumedimetro = false;
                 }
@@ -60,51 +60,88 @@ function TomarHumedad() {
     }
 }
 
-function TomarPH() {
-    //Toma el peso hectolitrico desde el orquestador
-    if (!$('.boton-PH').hasClass('play')) {
-        $.getJSON($("#HumedimetroId_PH").data().url, function (data) {
-            if ($.isNumeric(data) && data != null) {
-                if (escuchar) {
-                    $(".textboxPH").val(formatFloat(data));
-                    if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
-                        var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
-                        jQuery.each(listaRangos, function () {
-                            if (this.ValorDesde <= data && this.ValorHasta >= data) {
-                                data = this.ValorRedondeado;
-                            }
-                        });
-
-                        $(".textboxCaracteristica.textboxPH").val(formatFloat(data));
-                        $(".humedimetro-manual-PH").val(1);
-                    }
-
-                    $(".boton-manual_PH").attr("disabled", false);
-                    $(".nroDeToma").val(parseInt($(".nroDeToma").val()) + 1);
-                    $("form").validate().element($(".textboxCaracteristica.textboxPH"));
+function TomarHumedadPH() {
+    if (escuchar) {
+        if (!$('.boton-humedad').hasClass('play') || !$('.boton-PH').hasClass('play')) {
+            $.getJSON($("#HumedimetroHumedadPHId").data().url, function (response) {
+                if (!response.EsValido) {
+                    MostrarMensajesDeRespuesta(response)
+                } else {
+                    if (response.TieneAdvertencias) {
+                        MostrarMensajesDeRespuesta(response);
+                    };
+                    SetearHumedad(response.Data.Humedad);
+                    SetearPH(response.Data.PH);
+                }               
+            }).complete(function () {
+                setTimeout(TomarHumedadPH, 1500);
+            });
+        }
+    }
+}
+function SetearHumedad(humedad) {
+    if (!$('.boton-humedad').hasClass('play')) {
+        $(".textboxHumedad").val(formatFloat(humedad));
+        if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
+            var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
+            jQuery.each(listaRangos, function () {
+                if (this.ValorDesde <= humedad && this.ValorHasta >= humedad) {
+                    humedad = this.ValorRedondeado;
                 }
-                estadoHumedimetro = true;
-            } else if (estadoHumedimetro) {
-                if (data != null) {
-                    //Devolvió error 
-                    MostrarAlertaInfo($('#humedimetroNoResponde').val());
-                    estadoHumedimetro = false;
-                }
-            }
-        }).complete(function () {
-            if (escuchar) {
-                setTimeout(TomarPH, 1500);
-            }
-        });
+            });
+
+            $(".textboxCaracteristica.textboxHumedad").val(formatFloat(humedad));
+            $(".humedimetro-manual").val(1);
+        }
+
+        $(".boton-manual").attr("disabled", false);
+        $(".nroDeToma").val(parseInt($(".nroDeToma").val()) + 1);
+        $("form").validate().element($(".textboxCaracteristica.textboxHumedad"));
+
+        estadoHumedimetro = true;
     }
 }
 
+function SetearPH(ph) {
+    if (!$('.boton-PH').hasClass('play')) {
+        $(".textboxPH").val(formatFloat(ph));
+        if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
+            var listaRangos = JSON.parse($("#rangosDeRedondeoJson").val());
+            jQuery.each(listaRangos, function () {
+                if (this.ValorDesde <= ph && this.ValorHasta >= ph) {
+                    ph = this.ValorRedondeado;
+                }
+            });
+
+            $(".textboxCaracteristica.textboxPH").val(formatFloat(ph));
+            $(".humedimetro-manual-PH").val(1);
+        }
+
+        $(".boton-manual_PH").attr("disabled", false);
+        $(".nroDeToma").val(parseInt($(".nroDeToma").val()) + 1);
+        $("form").validate().element($(".textboxCaracteristica.textboxPH"));
+
+        estadoHumedimetro = true;
+    }
+}
+
+function MostrarMensajesDeRespuesta(response) {
+    response.Mensajes.forEach(function (item, index, array) {
+        if (!response.EsValido) {
+            console.log("Error: " + item.Mensaje)
+        } else {
+            if (item.TipoDeMensaje === 1) {
+                console.log("Advertencia: " + item.Mensaje);
+            }
+        }
+    })
+}
 
 var escuchar = false;
 function Humedimetro(intervalo, segundos) {
     if (escuchar) {
-        TomarHumedad();
-        //TomarPH();
+        //TomarHumedad();
+        TomarHumedadPH();
         return setTimeout(function () { DetenerHumedimetro(intervalo); }, segundos * 1000);
     } else {
         if (intervalo != null) clearTimeout(intervalo);
@@ -136,7 +173,7 @@ function InicializarHumedimetro() {
         var segundos = 180;
         $('.boton-humedad').on('click', function () {
             if ($('.boton-humedad').hasClass('play')) {
-                intervalo = IniciarHumedimetro(intervalo, segundos);              
+                intervalo = IniciarHumedimetro(intervalo, segundos);
             } else {
                 intervalo = DetenerHumedimetro(intervalo);
             }
@@ -158,11 +195,10 @@ function InicializarHumedimetro() {
             $(".humedimetro-manual-PH").removeClass("hidden");
             $(".textboxPH").focus();
         });
-       
-        $('.boton-humedad').click();     
+
+        $('.boton-humedad').click();
     }
 }
-
 
 function TomarAnalisis() {
     //Toma el humedad desde el orquestador
@@ -171,7 +207,7 @@ function TomarAnalisis() {
         $('.boton-nirs').removeClass('play');
         $('.boton-manual-nirs ').prop('disabled', true);
         $('.textboxnirs').val("");
-        
+
         $.getJSON($("#NirsId").data().url, function (data) {
             if (data != null && typeof data != "string") {
                 $.each(data, function (key, value) {
@@ -180,7 +216,6 @@ function TomarAnalisis() {
 
                         if ($("#rangosDeRedondeoJson").val() != null && $("#rangosDeRedondeoJson").val() != undefined) {
                             if ($(".textboxCaracteristica.textboxnirs" + key).data().eshumedad == "True") {
-
                                 //round redondea el 0.15 hacia 0.2, mientras que -0.15 hacia 0.1. Se cambia el signo para que en 0.15 sea para abajo y se vuelve a cambiar para que quede positivo
                                 value = -Math.round(-value * 10) / 10;
 
@@ -192,7 +227,7 @@ function TomarAnalisis() {
                                     }
                                 });
                             }
-                            
+
                             $(".textboxCaracteristica.textboxnirs" + key).val(formatFloat(value));
                             $(".modalidad" + key).val(1);
                         }
@@ -201,12 +236,11 @@ function TomarAnalisis() {
                     }
                 });
 
-                    $(".boton-manual-nirs").attr("disabled", false);
-                    $(".nroDeTomaNirs").val(parseInt($(".nroDeTomaNirs").val()) + 1);
-            } else if (data != null)
-                {
-                    //Devolvió error 
-                    MostrarAlertaInfo(data);
+                $(".boton-manual-nirs").attr("disabled", false);
+                $(".nroDeTomaNirs").val(parseInt($(".nroDeTomaNirs").val()) + 1);
+            } else if (data != null) {
+                //Devolvió error
+                MostrarAlertaInfo(data);
             }
             $('.boton-nirs').html('<i class="icon-play"></i>');
             $('.boton-nirs').addClass('play');
@@ -234,7 +268,7 @@ function InicializarNirs() {
         });
 
         $(".boton-manual-nirs").on('click', function () {
-            $('.textboxnirs'+ $(this).data().textbox).attr("readonly", false);
+            $('.textboxnirs' + $(this).data().textbox).attr("readonly", false);
             $(this).attr("disabled", true);
             $('.textboxnirs' + $(this).data().textbox).focus();
             $(".humedimetro-manual-nirs").removeClass("hidden");
@@ -292,11 +326,10 @@ function validarPatente() {
 $(document).ready(function () {
     $('input:not([readonly="readonly"]):enabled:visible:first').focus();
     if ($("#TipoVehiculo").val() != 1) {
-        $(".patente-internacional").mask("?*******", {placeholder: ""});
+        $(".patente-internacional").mask("?*******", { placeholder: "" });
     } else {
         $(".patente-internacional").mask("?9999999");
     }
-
 
     //Valido si ingresó la patente correcta
     if ($(".patente").val().toLowerCase().replace('_', '') != $(".patenteOriginal").val().toLowerCase()) {
@@ -306,9 +339,9 @@ $(document).ready(function () {
     }
     $('.patente').on('keydown', function (e) {
         if (e.which == 9 && !$(".patente").is('[readonly="readonly"]')) {
-                validarPatente();
-                e.preventDefault();
-                return false;
+            validarPatente();
+            e.preventDefault();
+            return false;
         }
         return true;
     });
@@ -316,21 +349,21 @@ $(document).ready(function () {
     $(document).on('change', ".patente", function () {
         validarPatente();
     });
-    
+
     $(document).on('click', '.rechazar-boton', function () {
         BlockUI();
         Mousetrap.pause();
         $.get(this.href, cargarDialogoRechazar);
         return false;
     });
-    
+
     $(document).on('click', '.dialogo-rechazar-cerrar', function () {
         $("#dialogo-rechazar").modal('hide');
         $("#mensajeRechazar").html("");
         Mousetrap.unpause();
         return false;
     });
-    
+
     $(document).on('click', '.checkBoxCaracteristica', function () {
         var check = $(this);
         var valor = check.parent().parent().find('input.textboxCaracteristica');
@@ -348,7 +381,7 @@ $(document).ready(function () {
         var valor = $(this);
         var check = valor.parent().parent().parent().find('input.checkBoxCaracteristica');
         var hidden = valor.parent().parent().parent().find('input[type=hidden][name="' + $(check).attr('name') + '"]');
-        
+
         if ($(valor).val() != '' && $(valor).val() != null && Globalize.parseFloat($(valor).val()) > 0) {
             $(check).prop('checked', true);
             $(check).attr('disabled', true);
@@ -385,7 +418,7 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     $(document).on('click', '#aceptar', function () {
         if (!($(this).closest('form').valid())) {
             $('.validation-summary-errors').show();
@@ -394,15 +427,14 @@ $(document).ready(function () {
             $(this).closest('form').submit();
         }
     });
-    
+
     $(document).on('click', '#botonCancelar', function () {
         BlockUI();
         return true;
     });
-    
 
     // Esto hace que se disparen los shortcuts aún cuando el foco esté en algún campo
-    Mousetrap.stopCallback = function(e, element, combo) {
+    Mousetrap.stopCallback = function (e, element, combo) {
         return false;
     };
 
@@ -420,11 +452,11 @@ $(document).ready(function () {
     $(document).on("submit", "form.causaBlock", function () {
         Mousetrap.pause();
     });
-    
+
     $(window).keydown(function (event) {
         return event.keyCode != 13;
     });
-    
+
     $('#mensajeRechazar').bind('keypress', function (event) {
         if (event.keyCode == 27) {
             $('.close').click();
@@ -436,21 +468,20 @@ $(document).ready(function () {
         }
         return true;
     });
-    
+
     $.validator.addMethod("textboxCaracteristica", function (value, element) {
         return value == '' || (Globalize.parseFloat(value) >= parseFloat($(element).data().min) && Globalize.parseFloat(value) <= parseFloat($(element).data().max));
     }, $('#mensajeRangoValido').val());
-    
+
     $.validator.addMethod("caracteristicaObligatoria", function (value, element) {
         return value.length > 0;
     }, $('#campoRequerido').val());
-    
+
     $.validator.addMethod("caracteristicaNoNuleable", function (value, element) {
         return value.length > 0;
     }, $('#caracteristicaNoNuleable').val());
 
-
-  //seteo de grado automatico trigo y maiz
+    //seteo de grado automatico trigo y maiz
 
     $(".gradoAutomatico").attr("readonly", true)
     $(".pesohectolitrico").change(setearGrado)
@@ -463,7 +494,6 @@ $(document).ready(function () {
     $('[class*="granosard"]').change(setearGrado)
 
     //////
-
 });
 
 function hasNumericValue(valor) {
@@ -471,7 +501,6 @@ function hasNumericValue(valor) {
         var value = parseFloat((valor.trim()).replace(",", "."), 10)
         return value != NaN;
     } return false;
-
 }
 function camposRequeridosTienenValor(campos) {
     return campos.every(hasNumericValue)
@@ -496,66 +525,65 @@ function setearGrado() {
     var caracteristicasObligatoriasMaiz = [$(".pesohectolitrico").val(), $(".granosquebrados").val(), $(".granosdañados").val(), $(".materiasextrañas").val()];
 
     var caracteristicasCalidadPorMaterial = {
-        trigo : {
-            gQuebrados : {
-                GradoTres :2,
+        trigo: {
+            gQuebrados: {
+                GradoTres: 2,
                 GradoDos: 1.20,
-                GradoUno:0.5
+                GradoUno: 0.5
             },
-            pesoHectolitrico :{
-                GradoTres :73,
+            pesoHectolitrico: {
+                GradoTres: 73,
                 GradoDos: 76,
                 GradoUno: 79,
-                caladoMaximo : 100
+                caladoMaximo: 100
             },
-            tDañados : {
-                GradoTres :3,
+            tDañados: {
+                GradoTres: 3,
                 GradoDos: 2,
-                GradoUno:1
+                GradoUno: 1
             },
-            materiasExtrañas : {
-                GradoTres :1.5,
+            materiasExtrañas: {
+                GradoTres: 1.5,
                 GradoDos: 0.8,
-                GradoUno:0.2
+                GradoUno: 0.2
             },
-            gArdidos : {
-                GradoTres :1.5,
+            gArdidos: {
+                GradoTres: 1.5,
                 GradoDos: 1,
-                GradoUno:0.5
+                GradoUno: 0.5
             },
-            gConCarbon : {
-                GradoTres :0.3,
+            gConCarbon: {
+                GradoTres: 0.3,
                 GradoDos: 0.2,
-                GradoUno:0.1
+                GradoUno: 0.1
             },
-            gPanzaBlanca : {
-                GradoTres :40,
+            gPanzaBlanca: {
+                GradoTres: 40,
                 GradoDos: 25,
-                GradoUno:15
+                GradoUno: 15
             }
         },
-        maiz:{
-            gQuebrados :  {
-                GradoTres :5,
+        maiz: {
+            gQuebrados: {
+                GradoTres: 5,
                 GradoDos: 3,
-                GradoUno:2
+                GradoUno: 2
             },
-            pesoHectolitrico :{
-                GradoTres :69,
+            pesoHectolitrico: {
+                GradoTres: 69,
                 GradoDos: 72,
                 GradoUno: 75,
                 caladoMaximo: 100
-
             },
-            gDañados : {
-                GradoTres :8,
+            gDañados: {
+                GradoTres: 8,
                 GradoDos: 5,
-                GradoUno:3
+                GradoUno: 3
             },
-            materiasExtrañas : {
-                GradoTres :2,
+            materiasExtrañas: {
+                GradoTres: 2,
                 GradoDos: 1.5,
-                GradoUno:1
+                GradoUno: 1
             }
         }
     }
@@ -578,12 +606,11 @@ function setearGrado() {
                 (granosQuebrados <= caracteristicasCalidadPorMaterial.maiz.gQuebrados.GradoTres && granosQuebrados > caracteristicasCalidadPorMaterial.maiz.gQuebrados.GradoDos) ||
                 (materiasExt <= caracteristicasCalidadPorMaterial.maiz.materiasExtrañas.GradoTres && materiasExt > caracteristicasCalidadPorMaterial.maiz.materiasExtrañas.GradoDos)
             );
-            esGradoDos =(
+            esGradoDos = (
                 (ph >= caracteristicasCalidadPorMaterial.maiz.pesoHectolitrico.GradoDos && ph < caracteristicasCalidadPorMaterial.maiz.pesoHectolitrico.GradoUno)
                 || (granosDañados <= caracteristicasCalidadPorMaterial.maiz.gDañados.GradoDos && granosDañados > caracteristicasCalidadPorMaterial.maiz.gDañados.GradoUno)
                 || (granosQuebrados <= caracteristicasCalidadPorMaterial.maiz.gQuebrados.GradoDos && granosQuebrados > caracteristicasCalidadPorMaterial.maiz.gQuebrados.GradoUno)
                 || (materiasExt <= caracteristicasCalidadPorMaterial.maiz.materiasExtrañas.GradoDos && materiasExt > caracteristicasCalidadPorMaterial.maiz.materiasExtrañas.GradoUno));
-
         }
 
         if (esTrigo) {
@@ -604,7 +631,6 @@ function setearGrado() {
                 || conCarbon > caracteristicasCalidadPorMaterial.trigo.gConCarbon.GradoTres
                 || conCarbon < 0;
 
-
             esGradoTres = (
                 (ph >= caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoTres && ph < caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoDos)
                 || (materiasExt <= caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoTres && materiasExt > caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoDos)
@@ -617,23 +643,20 @@ function setearGrado() {
 
             esGradoDos = !esGradoTres &&
                 (
-                (ph >= caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoDos && ph < caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoUno)
-                || (materiasExt <= caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoDos && materiasExt > caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoUno)
-                || (ardidos <= caracteristicasCalidadPorMaterial.trigo.gArdidos.GradoDos && ardidos > caracteristicasCalidadPorMaterial.trigo.gArdidos.GradoUno)
-                || (totalDañados <= caracteristicasCalidadPorMaterial.trigo.tDañados.GradoDos && totalDañados > caracteristicasCalidadPorMaterial.trigo.tDañados.GradoUno)
-                || (conCarbon <= caracteristicasCalidadPorMaterial.trigo.gConCarbon.GradoDos && conCarbon > caracteristicasCalidadPorMaterial.trigo.gConCarbon.GradoUno)
-                || (panzaBlanca <= caracteristicasCalidadPorMaterial.trigo.gPanzaBlanca.GradoDos && panzaBlanca > caracteristicasCalidadPorMaterial.trigo.gPanzaBlanca.GradoUno)
-                || (granosQuebrados <= caracteristicasCalidadPorMaterial.trigo.gQuebrados.GradoDos && granosQuebrados > caracteristicasCalidadPorMaterial.trigo.gQuebrados.GradoUno)
+                    (ph >= caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoDos && ph < caracteristicasCalidadPorMaterial.trigo.pesoHectolitrico.GradoUno)
+                    || (materiasExt <= caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoDos && materiasExt > caracteristicasCalidadPorMaterial.trigo.materiasExtrañas.GradoUno)
+                    || (ardidos <= caracteristicasCalidadPorMaterial.trigo.gArdidos.GradoDos && ardidos > caracteristicasCalidadPorMaterial.trigo.gArdidos.GradoUno)
+                    || (totalDañados <= caracteristicasCalidadPorMaterial.trigo.tDañados.GradoDos && totalDañados > caracteristicasCalidadPorMaterial.trigo.tDañados.GradoUno)
+                    || (conCarbon <= caracteristicasCalidadPorMaterial.trigo.gConCarbon.GradoDos && conCarbon > caracteristicasCalidadPorMaterial.trigo.gConCarbon.GradoUno)
+                    || (panzaBlanca <= caracteristicasCalidadPorMaterial.trigo.gPanzaBlanca.GradoDos && panzaBlanca > caracteristicasCalidadPorMaterial.trigo.gPanzaBlanca.GradoUno)
+                    || (granosQuebrados <= caracteristicasCalidadPorMaterial.trigo.gQuebrados.GradoDos && granosQuebrados > caracteristicasCalidadPorMaterial.trigo.gQuebrados.GradoUno)
                 );
-
-
         }
-
 
         if (camposTienenValor) {
             if (esGradoCero) {
                 $(".grado").val(0)
-            }else if (esGradoTres) {
+            } else if (esGradoTres) {
                 $(".grado").val(3)
             } else if (esGradoDos) {
                 $(".grado").val(2)
@@ -641,11 +664,10 @@ function setearGrado() {
                 $(".grado").val(1)
             }
 
-            if($(".grado").val() == 0) {
+            if ($(".grado").val() == 0) {
                 var check = $(".grado").parent().parent().parent().find('input.checkBoxCaracteristica');
                 $(check).prop('checked', true);
             }
         }
     }
-   
 }
