@@ -105,7 +105,6 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             ViewBag.aceptaPendiente = true;
-            carta.FechaVto = DateTime.Now;
             return View(carta);
         }
 
@@ -114,6 +113,7 @@ namespace Molinos.Scato.Web.Controllers
         [ViewBagToResponseHeader]
         public virtual ActionResult Index(string workflow, string puestoDeTrabajo, string fotoMesaDigitalizacion1, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario)
         {
+            orden.FechaVto = DateTime.Now;
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;

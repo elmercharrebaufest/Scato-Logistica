@@ -238,13 +238,6 @@
                             @Html.ValidationMessageFor(model => model.FechaCP)
                         </div>
                     </div>
-                    <div class="span6 control-group control-group-no-bottom FechaVto">
-                        @Html.LabelFor(model => model.FechaVto, new { @class = "control-label small" })
-                        <div class="">
-                            @Html.TextBox("FechaVto", Model.FechaVto.Formatted(), new { @class = "date control input-small FechaVtoValidacion FechaVtoValidacionMaxima", data_date_format = Html.ClientDateFormat(), data_error = string.Format(Textos.Error_FechaMayor + "<br/>" + Textos.CartaPorte_FechaIngreso, new[] { Textos.CartaPorte_FechaVto }), data_error_maxima = string.Format(Textos.Error_FechaVto + "<br/>" + Textos.CartaPorte_FechaIngreso) })
-                            @Html.ValidationMessageFor(model => model.FechaVto)
-                        </div>
-                    </div>
                 </div>
                 <div class="row row-carta-porte">
                     <div class="control-group control-group-no-bottom">
