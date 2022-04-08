@@ -692,5 +692,11 @@ namespace Molinos.Scato.Workflow
                 waiter = null;
             }
         }
+
+        public InstanciaWorkflowDto ObtenerWorkflowPendientePorNumeroTarjetaAcceso(string numeroTarjeta, int? centroId)
+        {
+            var pendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(centroId ?? 0, 0);
+            return !string.IsNullOrEmpty(numeroTarjeta) ? pendientes.FirstOrDefault(f => f.NumeroDeTarjeta == numeroTarjeta) : null;
+        }
     }
 }

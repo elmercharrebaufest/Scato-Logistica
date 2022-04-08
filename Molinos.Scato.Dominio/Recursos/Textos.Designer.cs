@@ -27066,6 +27066,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Número de Tarjeta de Acceso en uso con la patente : {0}.
+        /// </summary>
+        public static string TarjetaDeAcceso_EnUso_Pendiente {
+            get {
+                return ResourceManager.GetString("TarjetaDeAcceso_EnUso_Pendiente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha Hasta debe ser mayor o igual que Fecha Desde.
         /// </summary>
         public static string TarjetaRango_ErrorFechas {

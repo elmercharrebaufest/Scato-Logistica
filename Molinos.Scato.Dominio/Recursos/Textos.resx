@@ -9889,4 +9889,7 @@
   <data name="Barrera_Sensor_Quiebre" xml:space="preserve">
     <value>Sensor de Quiebre</value>
   </data>
+  <data name="TarjetaDeAcceso_EnUso_Pendiente" xml:space="preserve">
+    <value>Número de Tarjeta de Acceso en uso con la patente : {0}</value>
+  </data>
 </root>
