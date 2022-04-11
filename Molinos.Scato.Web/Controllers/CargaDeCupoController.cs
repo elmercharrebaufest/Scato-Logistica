@@ -1,4 +1,12 @@
-﻿using Molinos.Scato.Actividades.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
@@ -15,14 +23,7 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
+
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -38,8 +39,8 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IFirmaProvider firma;
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
 
-        public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
-            IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
+        public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, 
+            IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador, 
             IConfiguracionProvider configuracion, IFirmaProvider firma,
             IServicioActividadFactory<ICargarCartaPorteService> factory)
             : base(servicio)
@@ -160,6 +161,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
+                    CargarCartaPorte(resultado.Id, datosUsuario);
                     return View("Form");
                 }
             }

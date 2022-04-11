@@ -307,7 +307,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 EstadoCpe = cartaPorteRequest.Estado,
                                 Vehiculos = new List<VehiculoDto>() { new VehiculoDto { Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
                                 PatenteAcoplado = cartaPorte.Dominio.Split(',').Length > 1 ? cartaPorte.Dominio.Split(',')[1] : string.Empty,
-                                PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty
+                                PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty,
+                                Primero = true
                                 }}
                             };
                             return resultado;
