@@ -322,7 +322,11 @@ function ErrorBalanza(b, id) {
     if (b.Error == "El puesto de trabajo actual no está habilitado para ejecutar la próxima actividad") {
         return;
     }
-    CargarbalanzadaAutomatica(b);
+    if (b.Actividad == "" || b.Actividad == null) {
+        CancelarInterval(b.Id);
+    } else {
+        CargarbalanzadaAutomatica(b);
+    }
     $("#etapa" + b.Id).html(b.NoRedirecciona == false ? b.Actividad : "Error: " + b.Actividad);
 
     $('#' + b.Id).tooltip({ 'title': b.Error, 'trigger': 'manual' });
