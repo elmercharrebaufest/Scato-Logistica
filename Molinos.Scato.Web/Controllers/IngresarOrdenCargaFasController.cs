@@ -226,14 +226,16 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
                         }
-                        //if (workflow.Contains("Venta") && !tipoComercial.Descripcion.ToLower().Contains("venta"))
-                        //{
-                        //    continue;
-                        //}
-                        //if (workflow.Contains("Expo") && !tipoComercial.Descripcion.ToLower().Contains("expo"))
-                        //{
-                        //    continue;
-                        //}
+                        if (workflow.Contains("Venta") && tipoComercial.Descripcion.ToLower().Contains("EFC"))
+                        {
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Venta fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}")
+                            continue;
+                        }
+                        if (workflow.Contains("Expo") && !tipoComercial.Descripcion.ToLower().Contains("EFC"))
+                        {
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Expo fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}")
+                            continue;
+                        }
                         var itemSap = new OrdenCargaFasDto
                         {
                             CuitTransporte = ConvertirCuil(ordenCargaFas[i].CUIT_TR),
