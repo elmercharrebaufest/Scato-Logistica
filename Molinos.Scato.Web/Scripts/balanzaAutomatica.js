@@ -607,7 +607,9 @@ function redraw(ctx, gkhead, canvas) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
-    ctx.drawImage(gkhead, -500, -100);
+    let ejeX = -((gkhead.width - canvas.width) / 2);
+    let ejeY = -((gkhead.height - canvas.height) / 2);
+    ctx.drawImage(gkhead, ejeX, ejeY);
 
 }
 
