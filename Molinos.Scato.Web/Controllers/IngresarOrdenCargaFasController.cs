@@ -228,12 +228,12 @@ namespace Molinos.Scato.Web.Controllers
                         }
                         if (workflow.Contains("Venta") && tipoComercial.Descripcion.ToLower().Contains("EFC"))
                         {
-                            log.Debug($"{ordenCargaFas[i].VBELN} no es Venta fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}")
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Venta fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}");
                             continue;
                         }
                         if (workflow.Contains("Expo") && !tipoComercial.Descripcion.ToLower().Contains("EFC"))
                         {
-                            log.Debug($"{ordenCargaFas[i].VBELN} no es Expo fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}")
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Expo fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}");
                             continue;
                         }
                         var itemSap = new OrdenCargaFasDto
