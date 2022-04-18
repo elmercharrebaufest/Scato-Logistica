@@ -163,13 +163,21 @@ namespace Molinos.Scato.Workflow
             var resultadoWorkflows = FiltrarWorkFlows(resultado, filtro);
             resultadoWorkflows = servicioRepositorio.ConsultarEstadoWorkflow(resultadoWorkflows);
 
+            var workflows = servicioRepositorio.ListarDatosDeWorkflows(resultadoWorkflows.InstanciasWorkflowDto.Select(x => x.Id).Distinct().ToList());
+            
+            if (filtro.ExcluirRechazados)
+            {
+                var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Any(w => w == x.Id));
+            }
+
             var listarWorkflows = new ListarWorkFlowsDto
             {
                 InstanciasWorkflowDto = ListarWorkFlows(resultadoWorkflows.InstanciasWorkflowDto, filtro, paginacion),
                 ProximasAcciones = resultadoWorkflows.InstanciasWorkflowDto.Where(w => w.ProximaAccion != null).Select(s => s.ProximaAccion).Distinct().OrderBy(x => x).ToList(),
             };
 
-            var datos = servicioRepositorio.ListarDatosDeWorkflows(listarWorkflows.InstanciasWorkflowDto.Select(x => x.Id).Distinct().ToList());
+            var datos = workflows;
 
             foreach (var instanciaWorkflowDto in listarWorkflows.InstanciasWorkflowDto)
             {

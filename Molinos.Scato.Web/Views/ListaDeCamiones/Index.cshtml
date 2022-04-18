@@ -33,6 +33,22 @@
     }
 </style>
 
+<style>
+    .inputEspecial {
+        margin: 0;
+        display: flex !important;
+        align-items: center;
+        min-height: 30px;
+    }
+    .inputEspecial label,
+    .inputEspecial input {
+        margin: 0;
+    }
+    .inputEspecial input {
+        margin-right: 10px;
+    }
+</style>
+
 @Html.Hidden("ListaAutomatizadaUrl", Url.Action("Index", "ListaDeTareasAutomatizada"))
 @Html.Hidden("BalanzaAutomatizadaUrl", Url.Action("Index", "BalanzaAutomatica"))
 @Html.Hidden("VenimosDeListaDeTareasAutomatizada", (bool)ViewBag.VenimosDeListaDeTareasAutomatizada)
@@ -242,6 +258,11 @@
                                     @Html.LabelFor(model => model.ExcluirRechazados)
                                     @Html.HiddenFor(model => model.ExcluirRechazados, new { id = "filtroExcluirRechazados" })
                                 </div>
+                            </div>
+                            <div class="span4 sinBorde inputEspecial">
+                                @Html.CheckBoxFor(model => model.ExcluirRechazados)
+                                @Html.LabelFor(model => model.ExcluirRechazados)
+                                @Html.HiddenFor(model => model.ExcluirRechazados, new { id = "filtroExcluirRechazados" })
                             </div>
                         </div>
                         <div class="row-fluid">

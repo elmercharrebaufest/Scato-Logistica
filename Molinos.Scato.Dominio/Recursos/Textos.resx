@@ -9931,4 +9931,7 @@
   <data name="StockTolerancia" xml:space="preserve">
     <value>Tolerancia</value>
   </data>
+  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
+    <value>Omitir rechazados</value>
+  </data>
 </root>
