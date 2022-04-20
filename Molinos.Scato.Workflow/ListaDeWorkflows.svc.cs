@@ -766,5 +766,32 @@ namespace Molinos.Scato.Workflow
             var pendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(centroId ?? 0, 0);
             return !string.IsNullOrEmpty(numeroTarjeta) ? pendientes.FirstOrDefault(f => f.NumeroDeTarjeta == numeroTarjeta) : null;
         }
+
+        private void FiltrarWorkflowsConRecorrido(WorkFlowsFiltradosDto resultadoWorkflows, IList<DatosInstanciaWorkflowDto> workflows, FiltroListaDeWorkflowsDto filtro)
+        {
+            log.Debug("Tamaño de lista de workflow {0}", resultadoWorkflows.InstanciasWorkflowDto.Count());
+            log.Debug("Tamaño de lista de workflow de recorrido {0}", workflows.Count());
+            if (filtro.ExcluirRechazados)
+            {
+                var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Contains(x.Id));
+            }
+
+            if (filtro.TipoMaterial != TipoMaterial.Todos)
+            {
+                var workflowsFiltroTipoMaterial = (filtro.TipoMaterial == TipoMaterial.Granos)
+                    ? workflows.Where(x => x.EsGrano).Select(x => x.Id).ToList()
+                    : workflows.Where(x => !x.EsGrano).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTipoMaterial.Contains(x.Id));
+            }
+
+            if (filtro.TieneEntregador != FiltroEntregador.Todos)
+            {
+                var workflowsFiltroTieneEntregador = (filtro.TieneEntregador == FiltroEntregador.SinEntregador)
+                    ? workflows.Where(x => x.Entregador == "SIN ENTREGA" || string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList()
+                    : workflows.Where(x => x.Entregador != "SIN ENTREGA" && !string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTieneEntregador.Contains(x.Id));
+            }
+        }
     }
 }
