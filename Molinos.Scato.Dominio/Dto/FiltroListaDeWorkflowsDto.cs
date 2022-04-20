@@ -77,6 +77,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Workflow_ExcluirRechazados")]
         public bool ExcluirRechazados { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "Workflow_TieneEntregador")]
-        public FiltroEntregador TieneEntregador { get; set; }
+        public FiltroEntregador? TieneEntregador { get; set; }
     }
 }

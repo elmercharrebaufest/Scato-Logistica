@@ -164,12 +164,8 @@ namespace Molinos.Scato.Workflow
             resultadoWorkflows = servicioRepositorio.ConsultarEstadoWorkflow(resultadoWorkflows);
 
             var workflows = servicioRepositorio.ListarDatosDeWorkflows(resultadoWorkflows.InstanciasWorkflowDto.Select(x => x.Id).Distinct().ToList());
-            
-            if (filtro.ExcluirRechazados)
-            {
-                var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Any(w => w == x.Id));
-            }
+
+            FiltrarWorkflowsConRecorrido(resultadoWorkflows, workflows, filtro);
 
             var listarWorkflows = new ListarWorkFlowsDto
             {
@@ -774,6 +770,31 @@ namespace Molinos.Scato.Workflow
         {
             var pendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(centroId ?? 0, 0);
             return !string.IsNullOrEmpty(numeroTarjeta) ? pendientes.FirstOrDefault(f => f.NumeroDeTarjeta == numeroTarjeta) : null;
+        }
+
+        private void FiltrarWorkflowsConRecorrido(WorkFlowsFiltradosDto resultadoWorkflows, IList<DatosInstanciaWorkflowDto> workflows, FiltroListaDeWorkflowsDto filtro)
+        {
+            if (filtro.ExcluirRechazados)
+            {
+                var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Any(w => w == x.Id));
+            }
+
+            if (filtro.TipoMaterial != TipoMaterial.Todos)
+            {
+                var workflowsFiltroTipoMaterial = (filtro.TipoMaterial == TipoMaterial.Granos)
+                    ? workflows.Where(x => x.EsGrano).Select(x => x.Id).ToList()
+                    : workflows.Where(x => !x.EsGrano).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTipoMaterial.Any(w => w == x.Id));
+            }
+
+            if (filtro.TieneEntregador != FiltroEntregador.Todos)
+            {
+                var workflowsFiltroTieneEntregador = (filtro.TieneEntregador == FiltroEntregador.SinEntregador)
+                    ? workflows.Where(x => x.Entregador == "SIN ENTREGA" || string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList()
+                    : workflows.Where(x => x.Entregador != "SIN ENTREGA" && !string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList();
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTieneEntregador.Any(w => w == x.Id));
+            }
         }
     }
 }

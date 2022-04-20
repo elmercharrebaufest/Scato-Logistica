@@ -6074,7 +6074,8 @@ namespace Molinos.Scato.Servicios.Impl
                         LlegoEnHorario = x.LlegoEnHorario,
                         Proteina = "",
                         AlmacenDestino = x.Almacen.DescripcionCorta != null ? x.Almacen.DescripcionCorta : "",
-                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null
+                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null,
+                        EsGrano = x.Material.EsGrano
                     }, x => instanceIds.Contains(x.InstanciaWorkflow),
                     instanceIds.Count);
             foreach (var dato in datos)
