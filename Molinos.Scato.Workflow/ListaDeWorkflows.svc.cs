@@ -774,10 +774,12 @@ namespace Molinos.Scato.Workflow
 
         private void FiltrarWorkflowsConRecorrido(WorkFlowsFiltradosDto resultadoWorkflows, IList<DatosInstanciaWorkflowDto> workflows, FiltroListaDeWorkflowsDto filtro)
         {
+            log.Debug("Tamaño de lista de workflow {0}", resultadoWorkflows.InstanciasWorkflowDto.Count());
+            log.Debug("Tamaño de lista de workflow de recorrido {0}", workflows.Count());
             if (filtro.ExcluirRechazados)
             {
                 var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Any(w => w == x.Id));
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Contains(x.Id));
             }
 
             if (filtro.TipoMaterial != TipoMaterial.Todos)
@@ -785,7 +787,7 @@ namespace Molinos.Scato.Workflow
                 var workflowsFiltroTipoMaterial = (filtro.TipoMaterial == TipoMaterial.Granos)
                     ? workflows.Where(x => x.EsGrano).Select(x => x.Id).ToList()
                     : workflows.Where(x => !x.EsGrano).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTipoMaterial.Any(w => w == x.Id));
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTipoMaterial.Contains(x.Id));
             }
 
             if (filtro.TieneEntregador != FiltroEntregador.Todos)
@@ -793,7 +795,7 @@ namespace Molinos.Scato.Workflow
                 var workflowsFiltroTieneEntregador = (filtro.TieneEntregador == FiltroEntregador.SinEntregador)
                     ? workflows.Where(x => x.Entregador == "SIN ENTREGA" || string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList()
                     : workflows.Where(x => x.Entregador != "SIN ENTREGA" && !string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTieneEntregador.Any(w => w == x.Id));
+                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTieneEntregador.Contains(x.Id));
             }
         }
     }
