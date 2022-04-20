@@ -162,18 +162,13 @@ namespace Molinos.Scato.Workflow
             }
             var resultadoWorkflows = FiltrarWorkFlows(resultado, filtro);
             resultadoWorkflows = servicioRepositorio.ConsultarEstadoWorkflow(resultadoWorkflows);
-
-            var workflows = servicioRepositorio.ListarDatosDeWorkflows(resultadoWorkflows.InstanciasWorkflowDto.Select(x => x.Id).Distinct().ToList());
-
-            FiltrarWorkflowsConRecorrido(resultadoWorkflows, workflows, filtro);
-
             var listarWorkflows = new ListarWorkFlowsDto
             {
                 InstanciasWorkflowDto = ListarWorkFlows(resultadoWorkflows.InstanciasWorkflowDto, filtro, paginacion),
                 ProximasAcciones = resultadoWorkflows.InstanciasWorkflowDto.Where(w => w.ProximaAccion != null).Select(s => s.ProximaAccion).Distinct().OrderBy(x => x).ToList(),
             };
 
-            var datos = workflows;
+            var datos = servicioRepositorio.ListarDatosDeWorkflows(listarWorkflows.InstanciasWorkflowDto.Select(x => x.Id).Distinct().ToList());
 
             foreach (var instanciaWorkflowDto in listarWorkflows.InstanciasWorkflowDto)
             {
@@ -579,7 +574,7 @@ namespace Molinos.Scato.Workflow
                         && permisos.Any(y => y == x.ProximaAccion)
                         && (!filtro.SoloDemorados || (filtro.SoloDemorados && x.FechaUltimaModificacion != null && filtro.TiempoMaxEntreActividades != null && ((DateTime)x.FechaUltimaModificacion).AddSeconds((int)filtro.TiempoMaxEntreActividades) < DateTime.Now))
                             && ((filtro.Workflow != null && x.Workflow != null && x.Workflow.Contains(filtro.Workflow)) || filtro.Workflow == null)
-                            && ((filtro.ProximaAccion != null && ((filtro.ProximaAccion == "Pendiente" && x.ProximaAccion == "Pendiente") || (filtro.ProximaAccion != "Pendiente" && x.ProximaAccion == filtro.ProximaAccion))) || filtro.ProximaAccion == null)
+                            && ((filtro.ProximaAccion != null && ((filtro.ProximaAccion == "Pendiente" && x.ProximaAccion == "Pendiente") || (filtro.ProximaAccion != "Pendiente" && x.ProximaAccion.Contains(filtro.ProximaAccion)))) || filtro.ProximaAccion == null)
                             && ((filtro.Patente != null && x.Patente != null && x.Patente.ToLower().Contains(filtro.Patente.ToLower())) || filtro.Patente == null)
                             && ((filtro.TipoDocumentoDeIngreso != null && x.TipoDocumentoDeIngreso == filtro.TipoDocumentoDeIngreso) || filtro.TipoDocumentoDeIngreso == null)
                             && ((filtro.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso.Contains(filtro.NumeroDocumentoDeIngreso)) || filtro.NumeroDocumentoDeIngreso == null)
@@ -770,33 +765,6 @@ namespace Molinos.Scato.Workflow
         {
             var pendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(centroId ?? 0, 0);
             return !string.IsNullOrEmpty(numeroTarjeta) ? pendientes.FirstOrDefault(f => f.NumeroDeTarjeta == numeroTarjeta) : null;
-        }
-
-        private void FiltrarWorkflowsConRecorrido(WorkFlowsFiltradosDto resultadoWorkflows, IList<DatosInstanciaWorkflowDto> workflows, FiltroListaDeWorkflowsDto filtro)
-        {
-            log.Debug("Tamaño de lista de workflow {0}", resultadoWorkflows.InstanciasWorkflowDto.Count());
-            log.Debug("Tamaño de lista de workflow de recorrido {0}", workflows.Count());
-            if (filtro.ExcluirRechazados)
-            {
-                var workflowsRechazados = workflows.Where(x => !x.Rechazado).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsRechazados.Contains(x.Id));
-            }
-
-            if (filtro.TipoMaterial != TipoMaterial.Todos)
-            {
-                var workflowsFiltroTipoMaterial = (filtro.TipoMaterial == TipoMaterial.Granos)
-                    ? workflows.Where(x => x.EsGrano).Select(x => x.Id).ToList()
-                    : workflows.Where(x => !x.EsGrano).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTipoMaterial.Contains(x.Id));
-            }
-
-            if (filtro.TieneEntregador != FiltroEntregador.Todos)
-            {
-                var workflowsFiltroTieneEntregador = (filtro.TieneEntregador == FiltroEntregador.SinEntregador)
-                    ? workflows.Where(x => x.Entregador == "SIN ENTREGA" || string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList()
-                    : workflows.Where(x => x.Entregador != "SIN ENTREGA" && !string.IsNullOrEmpty(x.Entregador)).Select(x => x.Id).ToList();
-                resultadoWorkflows.InstanciasWorkflowDto = resultadoWorkflows.InstanciasWorkflowDto.Where(x => workflowsFiltroTieneEntregador.Contains(x.Id));
-            }
         }
     }
 }
