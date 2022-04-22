@@ -411,7 +411,7 @@ namespace Molinos.Scato.Workflow
         private IEnumerable<InstanciaWorkflowDto> ObtenerWorkFlows()
         {
             CreateInstanceQuery();
-            var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs { InstanceStatus = InstanceStatus.Running, InstanceCondition = InstanceCondition.Idle };
+            var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs { InstanceStatus = InstanceStatus.Running, InstanceCondition = InstanceCondition.Idle | InstanceCondition.Exception | InstanceCondition.UserSuspension };
             waiter = new ManualResetEvent(false);
             var resultadoPrueba = new List<InstanciaWorkflowDto>();
             instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgs, TimeSpan.FromSeconds(60), ExecuteQueryCallback, resultadoPrueba);
