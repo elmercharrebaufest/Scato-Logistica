@@ -30,6 +30,7 @@ namespace Molinos.Scato.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Log4NetConfig.Configure(Server);
+            TelemetryConfiguration.Active.TelemetryInitializers.Add(new RoleTelemetryInitializer());
         }
 
         void CookieTempDataProvider_ValidationException(object sender, Exception e)

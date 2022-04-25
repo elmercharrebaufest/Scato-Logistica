@@ -17,6 +17,7 @@ namespace Molinos.Scato.Workflow
         {
             var fileInfo = new FileInfo(Server.MapPath("~/log4net.config"));
             log4net.Config.XmlConfigurator.ConfigureAndWatch(fileInfo);
+            TelemetryConfiguration.Active.TelemetryInitializers.Add(new RoleTelemetryInitializer());
 
             var servicio = new ChannelFactory<IServicioWorkflows>("ServicioWorkflows").CreateChannel();
             HostingEnvironment.RegisterVirtualPathProvider(new WorkflowVirtualPathProvider(servicio));
