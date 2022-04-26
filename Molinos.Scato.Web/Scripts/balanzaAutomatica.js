@@ -206,7 +206,6 @@ $(document).ready(function () {
     $(".btn-balanza").attr("disabled", true);  
     $(document).on('click', ".btn-modal-finalizar", AbrirModalFinalizarPesaje);
 
-    $.post($("#actualizarEstadoSensores").val());
 });
 
 function ValidarMotivo() {

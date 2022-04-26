@@ -349,5 +349,26 @@ namespace Molinos.Scato.Servicios.Impl
             }
 
         }
+
+        //Para refactor por cache o base
+        //public List<EstadoSensoresBalanzaDto> ConsultarEstadoBarreras()
+        //{
+        //    log.Debug($"Consultando el estado de los puestos");
+
+        //    var estados = new List<EstadoSensoresBalanzaDto>();
+        //    foreach (var puesto in puestos)
+        //    {
+        //        var estadoBalanza = new EstadoSensoresBalanzaDto()
+        //        {
+        //            PuestoId = puesto.PuestoId,
+        //            BarreraEntradaActiva = puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva,
+        //            BarreraSalidaActiva = puesto.EstadoSensoresBalanzaDto.BarreraSalidaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraSalidaDesactiva,
+        //            SensorIngresoActiva = puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva,
+        //            SensorTrompaActiva = puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva
+        //        };
+        //        estados.Add(estadoBalanza);
+        //    }
+        //    return estados;
+        //}
     }
 }
