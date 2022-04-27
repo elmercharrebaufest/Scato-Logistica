@@ -29,8 +29,7 @@ namespace Molinos.Scato.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Log4NetConfig.Configure(Server);
-            TelemetryConfiguration.Active.TelemetryInitializers.Add(new RoleTelemetryInitializer());
+            Log4NetConfig.Configure(Server);    
         }
 
         void CookieTempDataProvider_ValidationException(object sender, Exception e)
