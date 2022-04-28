@@ -10,7 +10,6 @@ namespace Molinos.Scato.ServiciosWeb
         protected void Application_Start()
         {
             Log4NetConfig.Configure(Server);
-            TelemetryConfiguration.Active.TelemetryInitializers.Add(new RoleTelemetryInitializer());
         }
 
         protected void Application_Error()
