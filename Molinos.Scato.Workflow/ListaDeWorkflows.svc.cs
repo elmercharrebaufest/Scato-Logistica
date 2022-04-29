@@ -411,18 +411,6 @@ namespace Molinos.Scato.Workflow
 
         private IEnumerable<InstanciaWorkflowDto> ObtenerWorkFlows()
         {
-            CreateInstanceQuery();
-            var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs { InstanceStatus = InstanceStatus.Running, InstanceCondition = InstanceCondition.Idle };
-            waiter = new ManualResetEvent(false);
-            var resultadoPrueba = new List<InstanciaWorkflowDto>();
-            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgs, TimeSpan.FromSeconds(60), ExecuteQueryCallback, resultadoPrueba);
-            waiter.WaitOne();
-            waiter.Close();
-            return resultadoPrueba;
-        }
-
-        public IEnumerable<InstanciaWorkflowDto> ObtenerTotalWorkflows()
-        {
             var instanceQueryExecuteArgsRunning = new InstanceQueryExecuteArgs()
             {
                 InstanceStatus = InstanceStatus.Running,
@@ -456,6 +444,47 @@ namespace Molinos.Scato.Workflow
             resultadoFinal.AddRange(resultadoRunning);
             log.Debug("WF RUNNING: {0}", resultadoRunning.Count);
 
+            // PARA SUSPENDED
+            CreateInstanceQuery();
+            waiter = new ManualResetEvent(false);
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsSuspended, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
+                                     resultadoSuspended);
+            waiter.WaitOne();
+            waiter.Close();
+            resultadoFinal.AddRange(resultadoSuspended);
+            log.Debug("WF SUSPENDED: {0}", resultadoSuspended.Count);
+
+            return resultadoFinal;
+
+        }
+
+        public IEnumerable<InstanciaWorkflowDto> ObtenerTotalWorkflows()
+        {
+            var instanceQueryExecuteArgsRunning = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Running,
+                InstanceCondition = InstanceCondition.Idle
+            };
+
+            var instanceQueryExecuteArgsSuspended = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.UserSuspension,
+            };
+
+            var resultadoFinal = new List<InstanciaWorkflowDto>();
+            var resultadoRunning = new List<InstanciaWorkflowDto>();
+            var resultadoSuspended = new List<InstanciaWorkflowDto>();
+
+            // PARA RUNNING
+            CreateInstanceQuery();
+            waiter = new ManualResetEvent(false);
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsRunning, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
+                                            resultadoRunning);
+            waiter.WaitOne();
+            waiter.Close();
+            resultadoFinal.AddRange(resultadoRunning);
+            log.Debug("WF RUNNING: {0}", resultadoRunning.Count);
 
             // PARA EXCEPTION
             CreateInstanceQuery();
