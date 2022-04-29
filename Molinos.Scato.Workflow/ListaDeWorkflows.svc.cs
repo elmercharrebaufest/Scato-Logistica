@@ -454,6 +454,8 @@ namespace Molinos.Scato.Workflow
             waiter.WaitOne();
             waiter.Close();
             resultadoFinal.AddRange(resultadoRunning);
+            log.Debug("WF RUNNING: {0}", resultadoRunning.Count);
+
 
             // PARA EXCEPTION
             CreateInstanceQuery();
@@ -472,6 +474,7 @@ namespace Molinos.Scato.Workflow
             waiter.WaitOne();
             waiter.Close();
             resultadoFinal.AddRange(resultadoSuspended);
+            log.Debug("WF SUSPENDED: {0}", resultadoSuspended.Count);
 
             return resultadoFinal;
         }
