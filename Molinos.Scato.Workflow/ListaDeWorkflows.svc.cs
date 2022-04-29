@@ -162,7 +162,7 @@ namespace Molinos.Scato.Workflow
             }
             var resultadoWorkflows = FiltrarWorkFlows(resultado, filtro);
             resultadoWorkflows = servicioRepositorio.ConsultarEstadoWorkflow(resultadoWorkflows);
-           
+
             var listarWorkflows = new ListarWorkFlowsDto
             {
                 InstanciasWorkflowDto = ListarWorkFlows(resultadoWorkflows.InstanciasWorkflowDto, filtro, paginacion),
