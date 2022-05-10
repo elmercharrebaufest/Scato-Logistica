@@ -9943,4 +9943,7 @@
   <data name="FiltroEntregador_SinEntregador" xml:space="preserve">
     <value>Sin Entregador</value>
   </data>
+  <data name="StockTolerancia" xml:space="preserve">
+    <value>Tolerancia</value>
+  </data>
 </root>
