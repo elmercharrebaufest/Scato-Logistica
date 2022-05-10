@@ -436,26 +436,13 @@ namespace Molinos.Scato.Workflow
 
             // PARA RUNNING
             CreateInstanceQuery();
+            var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs { InstanceStatus = InstanceStatus.Running, InstanceCondition = InstanceCondition.Idle };
             waiter = new ManualResetEvent(false);
-            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsRunning, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
-                                            resultadoRunning);
+            var resultadoPrueba = new List<InstanciaWorkflowDto>();
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgs, TimeSpan.FromSeconds(60), ExecuteQueryCallback, resultadoPrueba);
             waiter.WaitOne();
             waiter.Close();
-            resultadoFinal.AddRange(resultadoRunning);
-            log.Debug("WF RUNNING: {0}", resultadoRunning.Count);
-
-            // PARA SUSPENDED
-            CreateInstanceQuery();
-            waiter = new ManualResetEvent(false);
-            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsSuspended, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
-                                     resultadoSuspended);
-            waiter.WaitOne();
-            waiter.Close();
-            resultadoFinal.AddRange(resultadoSuspended);
-            log.Debug("WF SUSPENDED: {0}", resultadoSuspended.Count);
-
-            return resultadoFinal;
-
+            return resultadoPrueba;
         }
 
         public IEnumerable<InstanciaWorkflowDto> ObtenerTotalWorkflows()
@@ -466,6 +453,12 @@ namespace Molinos.Scato.Workflow
                 InstanceCondition = InstanceCondition.Idle
             };
 
+            var instanceQueryExecuteArgsException = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.Exception,
+            };
+
             var instanceQueryExecuteArgsSuspended = new InstanceQueryExecuteArgs()
             {
                 InstanceStatus = InstanceStatus.Suspended,
@@ -474,6 +467,7 @@ namespace Molinos.Scato.Workflow
 
             var resultadoFinal = new List<InstanciaWorkflowDto>();
             var resultadoRunning = new List<InstanciaWorkflowDto>();
+            var resultadoException = new List<InstanciaWorkflowDto>();
             var resultadoSuspended = new List<InstanciaWorkflowDto>();
 
             // PARA RUNNING
