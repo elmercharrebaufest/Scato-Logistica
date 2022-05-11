@@ -144,7 +144,9 @@ $(document).ready(function () {
             $("#modalGestionBarrera").modal("show");
         }        
     });
-    
+    if ($("#barreraHeader")) {
+        $.post($("#ActualizarEstadoBarrera").val());
+    }
 
 });
 

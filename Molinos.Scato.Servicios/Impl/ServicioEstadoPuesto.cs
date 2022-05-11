@@ -355,20 +355,17 @@ namespace Molinos.Scato.Servicios.Impl
         //{
         //    log.Debug($"Consultando el estado de los puestos");
 
-        //    var estados = new List<EstadoSensoresBalanzaDto>();
-        //    foreach (var puesto in puestos)
-        //    {
-        //        var estadoBalanza = new EstadoSensoresBalanzaDto()
-        //        {
-        //            PuestoId = puesto.PuestoId,
-        //            BarreraEntradaActiva = puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva,
-        //            BarreraSalidaActiva = puesto.EstadoSensoresBalanzaDto.BarreraSalidaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraSalidaDesactiva,
-        //            SensorIngresoActiva = puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva,
-        //            SensorTrompaActiva = puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva
-        //        };
-        //        estados.Add(estadoBalanza);
-        //    }
-        //    return estados;
-        //}
+
+        public void ActualizarBarreras(string nombrePc)
+        {
+            var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
+            foreach (var sensor in sensores)
+            {
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo});
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
+            }
+
+        }
     }
 }
