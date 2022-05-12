@@ -250,12 +250,12 @@ namespace Molinos.Scato.Servicios.Impl
             var estadoSensorTrompa = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorPosicionSalida }) as ResultadoEstadoSensor;
             log.Debug($"Estado del sensor de entrada: {estadoSensorIngreso.EstadoActivo}, Estado del sensor de salida: {estadoSensorTrompa.EstadoActivo}, ");
 
-            if (!estadoSensorIngreso.EstadoActivo)
+            if (estadoSensorIngreso.EstadoActivo)
             {
                 mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaAvanzarCamion);
                 valido = false;
             }
-            else if (!estadoSensorTrompa.EstadoActivo)
+            else if (estadoSensorTrompa.EstadoActivo)
             {
                 mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaRetrocederCamion);
                 valido = false;
