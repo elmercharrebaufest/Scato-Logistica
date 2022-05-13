@@ -25,6 +25,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "RequierePuestoDeTrabajo")]
         public int PuestoDeTrabajoId { get; set; }
+        public string PuestoDeTrabajo { get; set; }
         public bool SinFotoCartaPorte { get; set; }
         public bool ImprimeCartaPorte { get; set; }
         public bool ImprimeTarjetaDeAcceso { get; set; }

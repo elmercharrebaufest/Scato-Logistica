@@ -2,16 +2,16 @@
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
+using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
-using Ninject;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioEstadoPuesto : IServicioEstadoPuesto
     {
         private readonly ILogger log;
@@ -25,7 +25,6 @@ namespace Molinos.Scato.Servicios.Impl
         public ServicioEstadoPuesto(ILogger log, IServicioRepositorio repositorio, IServicioNotificarUsuario notificar, 
             IServicioOrquestador orquestador, IServicioComandos comandos, IConfiguracionProvider config)
         {
-
             this.log = log;
             this.repositorio = repositorio;
             this.notificar = notificar;
@@ -35,6 +34,7 @@ namespace Molinos.Scato.Servicios.Impl
             
             ActualizarPuestos();
         }
+
         public void ActualizarPuestos()
         {
             if (puestos != null)
@@ -45,7 +45,6 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         try
                         {
-
                             var resultadoOrq = orquestador.CancelarSuscripcion(new ComandoCancelarSuscripcion
                             {
                                 CodigoDispositivo = sensor.Codigo,
@@ -120,12 +119,12 @@ namespace Molinos.Scato.Servicios.Impl
                 SensorIngresoActiva = !byteEstado.BitAt(1),
                 SensorTrompaActiva = !byteEstado.BitAt(0)
             };
-            notificar.Notificar(new NotificacionDto
-            {
-                Grupo = "Automaticas",
-                Mensaje = estadoBalanza.ToJson(),
-                TipoAlerta = TipoAlerta.CambioEstadoBalanzas
-            });
+            //notificar.Notificar(new NotificacionDto
+            //{
+            //    Grupo = "Automaticas",
+            //    Mensaje = estadoBalanza.ToJson(),
+            //    TipoAlerta = TipoAlerta.CambioEstadoBalanzas
+            //});
             puesto.EstadoSensoresBalanzaDto = estadoBalanza;
 
             //var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
@@ -159,34 +158,43 @@ namespace Molinos.Scato.Servicios.Impl
 
                 return;
             }
-            
+
+            var estadoCambio = "";
             foreach (var propertyInfo in puesto.ConfigSensores.GetType().GetProperties())
             {
-                if (propertyInfo.GetValue(puesto.ConfigSensores).ToString() == sensor)
+                var prop = propertyInfo.GetValue(puesto.ConfigSensores).ToString();
+                if ( prop == sensor)
                 {
+                    log.Debug($"Buscando { prop } igual a sensor {sensor} ");
                     if (propertyInfo.Name == "SensorBarreraEntradaArriba")
                     {
                         puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva = mensaje;
+                        estadoCambio = "BarreraEntradaActiva";
                     }
                     if (propertyInfo.Name == "SensorBarreraEntradaAbajo")
                     {
                         puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva = mensaje;
+                        estadoCambio = "BarreraEntradaActiva";
                     }
                     if (propertyInfo.Name == "SensorPosicionIngreso")
                     {
                         puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva = mensaje;
+                        estadoCambio = "SensorIngresoActiva";
                     }
                     if (propertyInfo.Name == "SensorPosicionSalida")
                     {
                         puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva = mensaje;
+                        estadoCambio = "SensorTrompaActiva";
                     }
-                    if (propertyInfo.Name == "SensorBarreraEntradaArriba")
+                    if (propertyInfo.Name == "SensorBarreraSalidaArriba")
                     {
-                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva = mensaje;
+                        puesto.EstadoSensoresBalanzaDto.BarreraSalidaActiva = mensaje;
+                        estadoCambio = "BarreraSalidaActiva";
                     }
-                    if (propertyInfo.Name == "SensorBarreraEntradaAbajo")
+                    if (propertyInfo.Name == "SensorBarreraSalidaAbajo")
                     {
-                        puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva = mensaje;
+                        puesto.EstadoSensoresBalanzaDto.BarreraSalidaDesactiva = mensaje;
+                        estadoCambio = "BarreraSalidaActiva";
                     }
                 }
             }
@@ -197,7 +205,8 @@ namespace Molinos.Scato.Servicios.Impl
                 BarreraEntradaActiva = puesto.EstadoSensoresBalanzaDto.BarreraEntradaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraEntradaDesactiva,
                 BarreraSalidaActiva = puesto.EstadoSensoresBalanzaDto.BarreraSalidaActiva && !puesto.EstadoSensoresBalanzaDto.BarreraSalidaDesactiva,
                 SensorIngresoActiva = puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva,
-                SensorTrompaActiva = puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva
+                SensorTrompaActiva = puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva,
+                SensorModificado = estadoCambio
             };
             notificar.Notificar(new NotificacionDto
             {
@@ -205,6 +214,7 @@ namespace Molinos.Scato.Servicios.Impl
                 Mensaje = estadoBalanza.ToJson(),
                 TipoAlerta = TipoAlerta.CambioEstadoBalanzas
             });
+
         }
 
         private byte[] StringToByteArray(string hex)
@@ -214,6 +224,7 @@ namespace Molinos.Scato.Servicios.Impl
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
         }
+
         public bool ValidarEstadoPuesto(int puestoId)
         {
             var puesto = puestos.Where(x => x.PuestoId == puestoId ).FirstOrDefault();
@@ -223,14 +234,28 @@ namespace Molinos.Scato.Servicios.Impl
                 log.Error($"No hay puesto con contrador para el puestoId: {puestoId}");
                 return valido;
             }
+            log.Debug($"Se encontro puesto Id {puesto.PuestoId}");
             var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
+            var estadoEntradaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaArriba }) as ResultadoEstadoSensor;
+            var estadoEntradaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaArriba }) as ResultadoEstadoSensor;
+            var estadoSalidaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaArriba }) as ResultadoEstadoSensor;
+            var estadoSalidaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaArriba }) as ResultadoEstadoSensor;
+            if(!estadoEntradaAbajo.EstadoActivo && estadoEntradaArriba.EstadoActivo 
+                && !estadoSalidaAbajo.EstadoActivo && estadoSalidaArriba.EstadoActivo)
+            {
+                log.Debug($"Algunas de las dos barreras no estan cerradas.");
+                return false;
+            }
+            var estadoSensorIngreso = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorPosicionIngreso }) as ResultadoEstadoSensor;
+            var estadoSensorTrompa = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorPosicionSalida }) as ResultadoEstadoSensor;
+            log.Debug($"Estado del sensor de entrada: {estadoSensorIngreso.EstadoActivo}, Estado del sensor de salida: {estadoSensorTrompa.EstadoActivo}, ");
 
-            if (!puesto.EstadoSensoresBalanzaDto.SensorIngresoActiva)
+            if (estadoSensorIngreso.EstadoActivo)
             {
                 mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaAvanzarCamion);
                 valido = false;
             }
-            else if (!puesto.EstadoSensoresBalanzaDto.SensorTrompaActiva)
+            else if (estadoSensorTrompa.EstadoActivo)
             {
                 mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaRetrocederCamion);
                 valido = false;
@@ -290,6 +315,39 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
             }
+        }
+
+        public void NotificarEstado()
+        {
+            log.Debug($"Actualizando el estado de los puestos");
+            var listaSensores = new List<string>();
+
+            foreach (var puesto in puestos)
+            {
+                listaSensores = puesto.Sensores.Select(x => x.Codigo).ToList();
+            }
+            foreach (var sensor in listaSensores)
+            {
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor });
+            }
+        }
+
+        //Para refactor por cache o base
+        public IList<ConcentradorDto> ConsultarEstadoBarreras()
+        {          
+            return puestos;
+        }
+
+        public void ActualizarBarreras(string nombrePc)
+        {
+            var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
+            foreach (var sensor in sensores)
+            {
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo});
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
+            }
+
         }
     }
 }

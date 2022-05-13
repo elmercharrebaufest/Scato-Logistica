@@ -15,19 +15,26 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string NombreChofer { get; set; }
 
-        public int RecorridoId { get; set; }
+        public int? RecorridoId { get; set; }
+        public int? CargaDeCupoId { get; set; }
 
         public int CalleId { get; set; }
-        public Guid InstanciaWorflow { get; set; }
+        public Guid? InstanciaWorflow { get; set; }
         public bool Rechazado { get; set; }
         public TipoCalle TipoCalle { get; set; }
         public bool PermisoReasignarCallePostCalado { get; set; }
         public TipoCalidad TipoCalidad { get; set; }
         public int MaterialId { get; set; }
-        public int CaladoId { get; set; }
+        public int? CaladoId { get; set; }
         public TipoCalidad CalidadCamion { get; set; }
         public string Tarjeta { get; set; }
-        public Guid InstanceId { get; set; }
+        public Guid? InstanceId { get; set; }
         public string Etapa { get; set; }
+        public bool CalleNoGrano { get; set; }
+        public string NombreWorkflow { get; set; }
+        public DateTime FechaIngreso { get; set; }
+        public TipoDocumentoIngreso? TipoDocumento { get; set; }
+        public string Cliente { get; set; }
+        public string Material { get; set; }
     }
 }

@@ -1093,6 +1093,7 @@
     <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
+    <Compile Include="Enums\FiltroEntregador.cs" />
     <Compile Include="Enums\TipoDeMensajeDeRespuesta.cs" />
     <Compile Include="Enums\CaracteristicasCalidad.cs" />
     <Compile Include="Enums\CodigoMensajeCartelLed.cs" />

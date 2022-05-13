@@ -56,6 +56,7 @@
                     @Html.Hidden("BorrarPermisosCookie", Url.Action("BorrarPermisosCookie", "Menu"))
                     @Html.Hidden("ActualizarCookie", Url.Action("ActualizarCookiePermisos", "Menu"))
                     @Html.Hidden("GestionarBarrera", Url.Action("GestionarBarrera"))
+                    @Html.Hidden("ActualizarEstadoBarrera", Url.Action("ActualizarEstadoBarreras"))
                 </li>
             </ul>
             <ul class="nav">
@@ -251,6 +252,10 @@
                                         @if (PermisosHelper.Is(PermisosScato.AbmBarrera))
                                         {
                                             <li>@Html.ActionLink(Textos.Barrera_Titulo, "Index", "Barrera")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionSensores))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ConfigSensores_Titulo, "Index", "ConfiguracionSensores")</li>
                                         }
                                     </ul>
                                 </li>

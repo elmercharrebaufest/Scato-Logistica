@@ -6,6 +6,7 @@
     [FechaHasta]            DATETIME        NOT NULL,
     [StockDeclarado]        DECIMAL (18, 2) NOT NULL,
     [StockReservado]        DECIMAL (18, 2) DEFAULT ((0)) NOT NULL,
+    [Tolerancia] DECIMAL(18, 2) NULL, 
     CONSTRAINT [PK_dbo.StockDeEstablecimiento] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON)
 );
 

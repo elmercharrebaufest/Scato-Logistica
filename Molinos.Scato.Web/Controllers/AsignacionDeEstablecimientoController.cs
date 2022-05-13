@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -46,13 +47,13 @@ namespace Molinos.Scato.Web.Controllers
             if (ModelState.IsValid)
             {
                 var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActAsignacionDeEstablecimiento,
-                        ActividadXaml = "AsignacionDeEstablecimiento",
-                        WorkflowInstanceId = model.InstanceId,
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
+                {
+                    Actividad = Textos.ActAsignacionDeEstablecimiento,
+                    ActividadXaml = "AsignacionDeEstablecimiento",
+                    WorkflowInstanceId = model.InstanceId,
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                    NombreUsuario = datosUsuario.NombreUsuario
+                };
 
                 int? establecimiento;
                 if (model.EstablecimientoId > 0)
@@ -61,7 +62,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 else
                 {
-                    establecimiento = null;  
+                    establecimiento = null;
                 }
                 var accesoService = factory.CrearServicio(model.WorkflowDefinicionId);
                 if (model.TipoVehiculo == TipoVehiculo.Tren)
@@ -72,7 +73,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         if (servicioWorkflows.ObtenerWorkflowProximaAccion(vagon).ProximaAccion == "AsignacionDeEstablecimiento")
                         {
-                            var resultado = accesoService.AsignacionDeEstablecimiento(vagon, establecimiento, controlRecorrido,false);
+                            var resultado = accesoService.AsignacionDeEstablecimiento(vagon, establecimiento, controlRecorrido, false);
 
                             ViewBag.HayErrores = resultado.HayErrores;
                             if (resultado.HayErrores)
@@ -107,12 +108,12 @@ namespace Molinos.Scato.Web.Controllers
             return View(model);
         }
 
-        
+
         private AsignacionDeEstablecimientoDto SetearVista(Guid instanceId)
         {
             var model = servicio.ObtenerAsignacionDeEstablecimiento(instanceId);
             var establecimientos = new List<SelectListItem>();
-            establecimientos.AddRange(model.Establecimientos.Select(establecimiento => new SelectListItem {Selected = false, Text = establecimiento.NombreDeEstablecimiento, Value = establecimiento.Id.ToString(CultureInfo.InvariantCulture)}));
+            establecimientos.AddRange(model.Establecimientos.Select(establecimiento => new SelectListItem { Selected = false, Text = establecimiento.NombreDeEstablecimiento, Value = establecimiento.Id.ToString(CultureInfo.InvariantCulture) }));
             establecimientos = establecimientos.OrderBy(x => x.Text).ToList();
             establecimientos.Insert(0, new SelectListItem { Selected = false, Text = Textos.Default_Establecimiento, Value = "-1" });
             ViewBag.Establecimientos = establecimientos;
@@ -129,15 +130,25 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        public JsonResult ProcedenciaCartaPorteIgualALocalidadEstablecimiento(string instanceId,string establecimientoId)
+        public JsonResult ProcedenciaCartaPorteIgualALocalidadEstablecimiento(string instanceId, string establecimientoId)
         {
             var instance = new Guid(instanceId);
             var cartaPorte = servicio.ObtenerCartaPortePorInstanceId(instance);
+            var establecimiento = establecimientoId != "" ? servicio.ObtenerEstablecimiento(Convert.ToInt32(establecimientoId)) : null;
 
-            var establecimiento =  establecimientoId != "" ? servicio.ObtenerEstablecimiento(Convert.ToInt32(establecimientoId)) : null;
+            if (establecimiento != null)
+            {
+                int.TryParse(establecimiento.CodigoDeEstablecimiento, out int codigoEstablecimiento);
+
+                if (codigoEstablecimiento > Constantes.AsignacionDeEstablecimientoRangos.Desde && codigoEstablecimiento < Constantes.AsignacionDeEstablecimientoRangos.Hasta)
+                {
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+
             return establecimientoId != "-1" && !String.IsNullOrEmpty(establecimientoId) && cartaPorte != null && establecimiento != null
-                       ? Json(establecimiento.LocalidadId == cartaPorte.ProcedenciaId, JsonRequestBehavior.AllowGet)
-                       : Json(true, JsonRequestBehavior.AllowGet);
+                   ? Json(establecimiento.LocalidadId == cartaPorte.ProcedenciaId, JsonRequestBehavior.AllowGet)
+                   : Json(true, JsonRequestBehavior.AllowGet);
         }
 
         [DatosUsuario]
@@ -181,7 +192,7 @@ namespace Molinos.Scato.Web.Controllers
             return View("_VehiculoDemorado");
         }
         [DatosUsuario]
-        public ActionResult Pendiente( int workflowDefinicionId, Guid instanceId, string comentario, DatosUsuario datosUsuario)
+        public ActionResult Pendiente(int workflowDefinicionId, Guid instanceId, string comentario, DatosUsuario datosUsuario)
         {
             log.Info("{0} - AsignacionDeEstablecimiento Pendiente", instanceId);
 

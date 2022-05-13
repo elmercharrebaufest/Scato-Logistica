@@ -1,0 +1,39 @@
+﻿.rowFiltros {
+    display: flex;
+    align-items: center;
+}
+
+.columnFiltro {
+    display: flex;
+    width: 33.3%;
+}
+
+.labelFiltro {
+    width: 35%;
+}
+
+.inputEspecial {
+    margin: 0;
+    display: flex !important;
+    align-items: center;
+    min-height: 30px;
+}
+
+.inputEspecial label,
+.inputEspecial input {
+    margin: 0;
+}
+
+.inputEspecial input {
+   margin-right: 10px;
+}
+
+@media screen and (max-width: 1100px) {
+    .rowFiltros {
+        flex-direction: column;
+    }
+    .columnFiltro {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+}

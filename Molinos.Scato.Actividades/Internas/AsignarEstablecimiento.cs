@@ -1,5 +1,6 @@
 using System;
 using System.Activities;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
@@ -24,15 +25,20 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 if (establecimientoId.HasValue)
                 {
-                    resultado = context.GetExtension<IServicioRepositorio>().ValidarStockEstablecimiento(establecimientoId.Value, instanceId);
+                    var establecimientoModel = context.GetExtension<IServicioRepositorio>().ObtenerEstablecimiento(establecimientoId ?? 0);
+                    int.TryParse(establecimientoModel.CodigoDeEstablecimiento, out int codigoEstablecimiento);
+                    if (codigoEstablecimiento <= Constantes.AsignacionDeEstablecimientoRangos.Desde
+                       || codigoEstablecimiento >= Constantes.AsignacionDeEstablecimientoRangos.Hasta) { 
+                        resultado = context.GetExtension<IServicioRepositorio>().ValidarStockEstablecimiento(establecimientoId.Value, instanceId);
+                    }
                     if (!resultado.HayErrores)
                     {
                         var servicioComandos = context.GetExtension<IServicioComandos>();
                         resultado = servicioComandos.Ejecutar(new ModificarRecorridoEstablecimiento
-                            {
-                                InstanceId = instanceId,
-                                EstablecimientoId = establecimientoId.Value
-                            });
+                        {
+                            InstanceId = instanceId,
+                            EstablecimientoId = establecimientoId.Value
+                        });
 
                         var cartaPorte = context.GetExtension<IServicioRepositorio>().ObtenerCartaPortePorInstanceId(instanceId);
                         var recorrido = context.GetExtension<IServicioRepositorio>().ObtenerRecorridoPorGuid(instanceId);
@@ -52,14 +58,14 @@ namespace Molinos.Scato.Actividades.Internas
                             resultado.Errores.Add("", Textos.Error_ActualizarGenerico);
                         }
                     }
-                    
+
                 }
             }
             catch (Exception)
             {
                 resultado.Errores.Add("1", Textos.Error_ActualizarGenerico);
             }
-            return resultado;          
+            return resultado;
         }
     }
 }

@@ -51,6 +51,9 @@ namespace Molinos.Scato.Actividades.Behaviour
                             xNs.GetName(ScatoPersistenceParticipant.PropiedadTipoVehiculo),
                             xNs.GetName(ScatoPersistenceParticipant.PropiedadActividad),
                             xNs.GetName(ScatoPersistenceParticipant.PropiedadProcedencia),
+                            xNs.GetName(ScatoPersistenceParticipant.PropiedadEsGrano),
+                            xNs.GetName(ScatoPersistenceParticipant.PropiedadEntregador),
+                            xNs.GetName(ScatoPersistenceParticipant.PropiedadEsRechazado),
                         };
 
                     store.Promote("DatosWorkflow", nuevasPropiedades, null);

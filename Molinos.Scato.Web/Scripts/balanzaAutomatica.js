@@ -53,6 +53,9 @@ $(document).ready(function () {
     // Start the connection
     window.hubReady.done(function () {
         notificador.server.unirseAGrupo('Automaticas');
+
+        $.post($("#actualizarEstadoSensores").val());
+
     });
 
     $(".btn-aceptar").click(function () {
@@ -200,6 +203,7 @@ $(document).ready(function () {
     $(".btn.expo-btn").attr("disabled", true);
     $(".btn-balanza").attr("disabled", true);  
     $(document).on('click', ".btn-modal-finalizar", AbrirModalFinalizarPesaje);
+
 });
 
 function ValidarMotivo() {
@@ -364,6 +368,13 @@ function ErrorBalanza(b, id) {
 
 function PatenteNoReconocida(b, id) {
     CargarbalanzadaAutomatica(b);
+    if (b.PatentePrevia != null && b.PatentePrevia != "") {
+        $("#patente" + b.Id).val(b.PatentePrevia);
+        $("#patente" + b.Id).html(b.PatentePrevia);
+    } else {
+        $("#patente" + b.Id).val(b.Patente);
+        $("#patente" + b.Id).html(b.Patente);
+    }
     $("#patente" + b.Id).prop('disabled', false);
     $("#aceptar" + b.Id).prop('disabled', false);
     $('#' + b.Id).tooltip({ 'title': b.Error, 'trigger': 'manual' });
@@ -533,67 +544,68 @@ function cargarCanvas(id, foto) {
     var canvas = document.getElementById('canvas' + id);
     canvas.width = 380;
     canvas.height = 120;
-    var gkhead = new Image;
-    gkhead.src = 'data:image/jpeg;base64,' + foto;
     var ctx = canvas.getContext('2d');
-    trackTransforms(ctx);
-    redraw(ctx, gkhead, canvas);
+    var gkhead = new Image;
+    gkhead.onload = () => {
 
-    var lastX = 0, lastY = 0;
+        trackTransforms(ctx);
+        redraw(ctx, gkhead, canvas);
+        var lastX = 0, lastY = 0;
+        var dragStart, dragged;
+        canvas.addEventListener('mousedown', function (evt) {
+            document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+            lastX = evt.pageX;
+            lastY = evt.pageY;
+            dragStart = ctx.transformedPoint(lastX, lastY);
+            dragged = false;
 
-    var dragStart, dragged;
+            $(document).attr('unselectable', 'on')
+                .css({
+                    '-moz-user-select': 'none',
+                    '-o-user-select': 'none',
+                    '-khtml-user-select': 'none', /* you could also put this in a class */
+                    '-webkit-user-select': 'none',/* and add the CSS class here instead */
+                    '-ms-user-select': 'none',
+                    'user-select': 'none'
+                }).bind('selectstart', function () { return false; });
+        }, false);
 
-    canvas.addEventListener('mousedown', function (evt) {
-        document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-        lastX = evt.pageX;
-        lastY = evt.pageY;
-        dragStart = ctx.transformedPoint(lastX, lastY);
-        dragged = false;
+        document.addEventListener('mousemove', function (evt) {
+            lastX = evt.pageX;
+            lastY = evt.pageY;
+            dragged = true;
+            if (dragStart) {
+                var pt = ctx.transformedPoint(lastX, lastY);
+                ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+                redraw(ctx, gkhead, canvas);
+            }
+        }, false);
 
-        $(document).attr('unselectable', 'on')
-            .css({
-                '-moz-user-select': 'none',
-                '-o-user-select': 'none',
-                '-khtml-user-select': 'none', /* you could also put this in a class */
-                '-webkit-user-select': 'none',/* and add the CSS class here instead */
-                '-ms-user-select': 'none',
-                'user-select': 'none'
-            }).bind('selectstart', function () { return false; });
-    }, false);
+        var zoom = function (clicks) {
+        }
 
-    document.addEventListener('mousemove', function (evt) {
-        lastX = evt.pageX;
-        lastY = evt.pageY;
-        dragged = true;
-        if (dragStart) {
-            var pt = ctx.transformedPoint(lastX, lastY);
-            ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+        document.addEventListener('mouseup', function (evt) {
+            $(document).removeAttr('unselectable');
+            $(document).removeAttr("style");
+            $(document).attr('unselectable', 'on');
+            $(document).unbind('selectstart');
+
+            dragStart = null;
+            if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+        }, false);
+
+        window.addEventListener('resize', resizeCanvas, false);
+
+        resizeCanvas();
+        function resizeCanvas() {
+
+            canvas.width = 380;
             redraw(ctx, gkhead, canvas);
         }
-    }, false);
 
-    var zoom = function (clicks) {
-    }
-
-    document.addEventListener('mouseup', function (evt) {
-        $(document).removeAttr('unselectable');
-        $(document).removeAttr("style");
-        $(document).attr('unselectable', 'on');
-        $(document).unbind('selectstart');
-
-        dragStart = null;
-        if (!dragged) zoom(evt.shiftKey ? -1 : 1);
-    }, false);
-
-    window.addEventListener('resize', resizeCanvas, false);
-    resizeCanvas();
-    function resizeCanvas() {
-
-        canvas.width = 380;
-        redraw(ctx, gkhead, canvas);
-    }
-
-    fitImage(ctx, gkhead, canvas);
+        fitImage(ctx, gkhead, canvas);
+    };
+    gkhead.src = 'data:image/jpeg;base64,' + foto;
 };
 
 function redraw(ctx, gkhead, canvas) {
@@ -758,37 +770,46 @@ function ModificarEstados(estadoSensores) {
         }
     }
     else {
-        if (estadoSensores.BarreraEntradaActiva == true) {
-            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-        } else {
-            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        if (estadoSensores.SensorModificado == 'BarreraEntradaActiva' ) {
+            if (estadoSensores.BarreraEntradaActiva == true) {
+                $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+                $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+            } else {
+                $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+                $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+            }
         }
 
-        if (estadoSensores.BarreraSalidaActiva == true) {
-            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-        } else {
-            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        if (estadoSensores.SensorModificado == 'BarreraSalidaActiva') {
+            if (estadoSensores.BarreraSalidaActiva == true) {
+                $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+                $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+            } else {
+                $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+                $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+            }
         }
 
-        if (estadoSensores.SensorIngresoActiva == true) {
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-        } else {
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        if (estadoSensores.SensorModificado == 'SensorIngresoActiva') {
+            if (estadoSensores.SensorIngresoActiva == true) {
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            } else {
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            }
         }
 
-        if (estadoSensores.SensorTrompaActiva == true) {
-            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-        } else {
-            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        if (estadoSensores.SensorModificado == 'SensorTrompaActiva') {
+            if (estadoSensores.SensorTrompaActiva == true) {
+                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            } else {
+                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            }
         }
+
     }
 }
 
@@ -1026,3 +1047,4 @@ function StartWitch(input, validation) {
         return false;
     }
 }
+

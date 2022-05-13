@@ -2652,5 +2652,10 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         FotoDto ObtenerFotoSustentable(int centroId, string numeroDocumento, string actividad);
+
+        [OperationContract]
+        IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta);
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
     }
 }

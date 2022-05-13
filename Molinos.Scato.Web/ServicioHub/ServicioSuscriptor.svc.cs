@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 namespace Molinos.Scato.Web.ServicioHub
 {
@@ -259,6 +260,7 @@ namespace Molinos.Scato.Web.ServicioHub
             try
             {
                 log.Debug("Iniciando conexion signalR");
+                log.Debug($"Lectura de Puesto de Trabajo : {JsonConvert.SerializeObject(lecturaPuestoDeTrabajo)}");
                 hubClientLectura.Invoke("NotificarLectura", lecturaPuestoDeTrabajo);
                 log.Debug("Fin - Iniciando conexion signalR");
             }
@@ -473,16 +475,23 @@ namespace Molinos.Scato.Web.ServicioHub
                     if (!lecturaPuestoDeTrabajo.ReconocimientoExitoso)
                     {
                         lecturaPuestoDeTrabajo.MensajeError = "Patente no reconocida";
+                        var lecturas = servicio.ObtenerLogLecturasPorTarjeta(lecturaPuestoDeTrabajo.NumeroDeTarjeta);
+                        if(lecturas != null && lecturas.Count >= 1)
+                        {
+                            recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault().PatenteLeida;
+                        }
                         NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, proximaActividad.ProximaAccion);
                         return;
                     }
-                    //while (true)
-                    //{
-                    //    if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId))
-                    //        break;
 
-                    //    Thread.Sleep(5000);
-                    //}
+                    while (true)
+                    {
+                        var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) && valida != "1")
+                            break;
+                        var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                        Thread.Sleep(tiempoDeCiclo);
+                    }                 
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, resultado.ProximaActividad);
                     var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
@@ -629,7 +638,8 @@ namespace Molinos.Scato.Web.ServicioHub
                 TipoPesoOrigen = proximaActividad.Contains("Bruto") ? "Bruto Org:" : proximaActividad.Contains("Tara") ? "Tara Org:" : "Peso Org:",
                 DocumentoIngreso = recorrido.TipoDocumento.ToString(),
                 TipoComercial = recorrido.TipoComercial,
-                WorkflowDefinicionId = recorrido.WorkflowDefinicionId
+                WorkflowDefinicionId = recorrido.WorkflowDefinicionId,
+                PatentePrevia = recorrido.PatentePrevia
             };
             var notificacionDto = new NotificacionDto
             {

@@ -6,6 +6,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Molinos.Scato.Web.App_Start;
 using log4net;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Molinos.Scato.Web
 {

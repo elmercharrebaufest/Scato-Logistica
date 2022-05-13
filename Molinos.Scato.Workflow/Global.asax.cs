@@ -5,6 +5,8 @@ using System.Web.Hosting;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Workflow.VirtualPath;
 using log4net;
+using Microsoft.ApplicationInsights.Extensibility;
+using Molinos.Scato.Workflow.App_Start;
 
 namespace Molinos.Scato.Workflow
 {

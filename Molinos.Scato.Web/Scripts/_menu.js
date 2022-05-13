@@ -144,6 +144,8 @@ $(document).ready(function () {
             $("#modalGestionBarrera").modal("show");
         }        
     });
+    
+
 });
 
 function conectarSignalR() {
@@ -164,6 +166,9 @@ function conectarSignalR() {
         recargarNotificaciones(false, true, true);
         notificador.server.unirseAGrupo(grupos);
         notificador.server.unirseAGrupo('SENSORESBARRERA');
+        if ($("#barreraHeader")) {
+            $.post($("#ActualizarEstadoBarrera").val());
+        }
     });
 }
 

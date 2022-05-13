@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.ServiceModel.Configuration;
-using System.Threading;
-using System.Web.Configuration;
-using Microsoft.ApplicationServer.StoreManagement.Control;
+﻿using Microsoft.ApplicationServer.StoreManagement.Control;
 using Microsoft.ApplicationServer.StoreManagement.Query;
 using Microsoft.ApplicationServer.StoreManagement.Sql.Control;
 using Microsoft.ApplicationServer.StoreManagement.Sql.Query;
@@ -22,7 +12,16 @@ using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Behavior;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Linq;
+using System.ServiceModel.Configuration;
+using System.Threading;
+using System.Web.Configuration;
 
 namespace Molinos.Scato.Workflow
 {
@@ -30,6 +29,8 @@ namespace Molinos.Scato.Workflow
     /// Servicio que provee el listado de Workflows activos que están esperando por alguna acción del usuario.
     /// Provee la información estandard provista por WF e información custom agregada por <see cref="ScatoPersistenceParticipant"/>
     /// </summary>
+    ///
+    [AiErrorHandlerBehaviorAttribute]
     public class ListaDeWorkflows : IListaDeWorkflows, IDisposable
     {
         private readonly ILogger log;
@@ -51,6 +52,7 @@ namespace Molinos.Scato.Workflow
             factory.Initialize("storeA", new NameValueCollection { { "ConnectionString", connectionString } });
             instanceQuery = factory.CreateInstanceQuery();
         }
+
         private InstanceControl CreateInstanceControl()
         {
             var factoryControl = new SqlInstanceControlProvider();
@@ -105,7 +107,6 @@ namespace Molinos.Scato.Workflow
             waiter.WaitOne();
             waiter.Close();
 
-
             var resultado = new Resultado();
             var instanceControl = CreateInstanceControl();
             var waiterControl = new ManualResetEvent(false);
@@ -152,7 +153,7 @@ namespace Molinos.Scato.Workflow
                 var pendientes = servicioRepositorio.ListarDatosDeWorkflowsPendientes(filtro.CentroId ?? 0, 0);
                 if (filtro.MostrarCamionesPendientes)
                 {
-                    resultado = resultado.Union(pendientes.Where(x=>x.ProximaAccion == PermisosScato.CamionesPendientesMesa.Text()));
+                    resultado = resultado.Union(pendientes.Where(x => x.ProximaAccion == PermisosScato.CamionesPendientesMesa.Text()));
                 }
                 if (filtro.MostrarCamionesPendientesNoGranos)
                 {
@@ -161,6 +162,7 @@ namespace Molinos.Scato.Workflow
             }
             var resultadoWorkflows = FiltrarWorkFlows(resultado, filtro);
             resultadoWorkflows = servicioRepositorio.ConsultarEstadoWorkflow(resultadoWorkflows);
+
             var listarWorkflows = new ListarWorkFlowsDto
             {
                 InstanciasWorkflowDto = ListarWorkFlows(resultadoWorkflows.InstanciasWorkflowDto, filtro, paginacion),
@@ -196,7 +198,7 @@ namespace Molinos.Scato.Workflow
                     instanciaWorkflowDto.LlegoEnHorario = dato.LlegoEnHorario;
                     instanciaWorkflowDto.Proteina = dato.Proteina;
                     instanciaWorkflowDto.AlmacenDestino = dato.AlmacenDestino;
-                    instanciaWorkflowDto.DiferenciaPesoNeto = dato.DiferenciaPesoNeto.HasValue? dato.DiferenciaPesoNeto.ToString():"";
+                    instanciaWorkflowDto.DiferenciaPesoNeto = dato.DiferenciaPesoNeto.HasValue ? dato.DiferenciaPesoNeto.ToString() : "";
                 }
                 instanciaWorkflowDto.NumeroDocumentoDeIngreso = instanciaWorkflowDto.NumeroDocumentoDeIngreso is null ? instanciaWorkflowDto.CTG : instanciaWorkflowDto.NumeroDocumentoDeIngreso;
             }
@@ -205,9 +207,8 @@ namespace Molinos.Scato.Workflow
 
         public IList<InstanciaWorkflowPuertoDto> ListarEmbarques(string filtroProximaAccion = null)
         {
-
             //var resultado = ObtenerTotalWorkflows().Where(x => x.TipoVehiculo == TipoVehiculo.Vapor && (string.IsNullOrEmpty(filtroProximaAccion) || x.ProximaAccion == filtroProximaAccion))
-            
+
             var resultado = ObtenerWorkFlows().Where(x => x.TipoVehiculo == TipoVehiculo.Vapor && (string.IsNullOrEmpty(filtroProximaAccion) || x.ProximaAccion == filtroProximaAccion))
                     .Select(x => new InstanciaWorkflowPuertoDto
                     {
@@ -225,13 +226,13 @@ namespace Molinos.Scato.Workflow
                 var lineup = datos.LineUps.FirstOrDefault(x => x.InstanciaWorkflow == instanciaWorkflowDto.Id);
                 instanciaWorkflowDto.Embarque = embarque;
                 instanciaWorkflowDto.LineUp = lineup;
-                if(embarque != null && lineup != null)
+                if (embarque != null && lineup != null)
                 {
                     lineup.Ubicacion = embarque.Ubicacion;
                 }
             }
 
-            return resultado.FindAll(x=>x.Embarque !=null && x.Embarque.Ubicacion !=1).OrderBy(x => x.LineUp != null ? x.LineUp.Orden : int.MaxValue).ToList();
+            return resultado.FindAll(x => x.Embarque != null && x.Embarque.Ubicacion != 1).OrderBy(x => x.LineUp != null ? x.LineUp.Orden : int.MaxValue).ToList();
             //return resultado.OrderBy(x => x.LineUp != null ? x.LineUp.Orden : int.MaxValue).ToList();
         }
 
@@ -338,34 +339,34 @@ namespace Molinos.Scato.Workflow
             {
                 instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgs, TimeSpan.FromSeconds(60),
                     result =>
+                    {
+                        try
                         {
-                            try
+                            var info = instanceQuery.EndExecuteQuery(result).FirstOrDefault();
+                            if (info != null)
                             {
-                                var info = instanceQuery.EndExecuteQuery(result).FirstOrDefault();
-                                if (info != null)
+                                if (info.InstanceStatus == InstanceStatus.Running)
                                 {
-                                    if (info.InstanceStatus == InstanceStatus.Running)
+                                    if (info.InstanceCondition == InstanceCondition.Idle)
                                     {
-                                        if (info.InstanceCondition == InstanceCondition.Idle)
-                                        {
-                                            resultado.ProximaAccion = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadActividad);
-                                            resultado.Mensaje = null;
-                                        }
-                                        else
-                                        {
-                                            resultado.Mensaje = Textos.Error_WorkflowNoIdle;
-                                            log.Debug("Workflow {0} aun corriendo", info.InstanceId);
-                                        }
+                                        resultado.ProximaAccion = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadActividad);
+                                        resultado.Mensaje = null;
                                     }
                                     else
                                     {
-                                        resultado.Mensaje = Textos.Error_WorkflowSuspendido;
-                                        log.Error("Error encontrado al intentar ejecutar el wf {0}, error {1}: {2}", info.InstanceId, info.ExceptionName, info.ExceptionMessage);
+                                        resultado.Mensaje = Textos.Error_WorkflowNoIdle;
+                                        log.Debug("Workflow {0} aun corriendo", info.InstanceId);
                                     }
                                 }
+                                else
+                                {
+                                    resultado.Mensaje = Textos.Error_WorkflowSuspendido;
+                                    log.Error("Error encontrado al intentar ejecutar el wf {0}, error {1}: {2}", info.InstanceId, info.ExceptionName, info.ExceptionMessage);
+                                }
                             }
-                            finally { wait.Set(); }
-                        }, null);
+                        }
+                        finally { wait.Set(); }
+                    }, null);
                 wait.WaitOne();
             }
 
@@ -422,18 +423,57 @@ namespace Molinos.Scato.Workflow
 
         public IEnumerable<InstanciaWorkflowDto> ObtenerTotalWorkflows()
         {
-            CreateInstanceQuery();
-            var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs() { 
+            var instanceQueryExecuteArgsRunning = new InstanceQueryExecuteArgs()
+            {
                 InstanceStatus = InstanceStatus.Running,
-                InstanceCondition = null };
+                InstanceCondition = InstanceCondition.Idle
+            };
+
+            var instanceQueryExecuteArgsException = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.Exception,
+            };
+
+            var instanceQueryExecuteArgsSuspended = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.UserSuspension,
+            };
+
+            var resultadoFinal = new List<InstanciaWorkflowDto>();
+            var resultadoRunning = new List<InstanciaWorkflowDto>();
+            var resultadoException = new List<InstanciaWorkflowDto>();
+            var resultadoSuspended = new List<InstanciaWorkflowDto>();
+
+            // PARA RUNNING
+            CreateInstanceQuery();
             waiter = new ManualResetEvent(false);
-            var resultadoPrueba = new List<InstanciaWorkflowDto>();
-            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgs, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
-                                            resultadoPrueba);
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsRunning, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
+                                            resultadoRunning);
             waiter.WaitOne();
             waiter.Close();
+            resultadoFinal.AddRange(resultadoRunning);
 
-            return resultadoPrueba;
+            // PARA EXCEPTION
+            CreateInstanceQuery();
+            waiter = new ManualResetEvent(false);
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsException, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
+                                     resultadoException);
+            waiter.WaitOne();
+            waiter.Close();
+            resultadoFinal.AddRange(resultadoException);
+
+            // PARA SUSPENDED
+            CreateInstanceQuery();
+            waiter = new ManualResetEvent(false);
+            instanceQuery.BeginExecuteQuery(instanceQueryExecuteArgsSuspended, TimeSpan.FromSeconds(60), ExecuteQueryCallback,
+                                     resultadoSuspended);
+            waiter.WaitOne();
+            waiter.Close();
+            resultadoFinal.AddRange(resultadoSuspended);
+
+            return resultadoFinal;
         }
 
         public IEnumerable<InstanciaWorkflowDto> ObtenerWorkflowFiltro(int status, int condition)
@@ -456,7 +496,6 @@ namespace Molinos.Scato.Workflow
 
         public InstanciaWorkflowDto ObtenerWorkflow(Guid instance)
         {
-
             CreateInstanceQuery();
             var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs
             {
@@ -470,7 +509,6 @@ namespace Molinos.Scato.Workflow
             waiter.Close();
             var instancia = resultadoPrueba.FirstOrDefault();
             return instancia;
-
         }
 
         public List<GraficoDePlantaDto> ListarGraficoDePlanta(int centroId)
@@ -537,14 +575,29 @@ namespace Molinos.Scato.Workflow
                         && permisos.Any(y => y == x.ProximaAccion)
                         && (!filtro.SoloDemorados || (filtro.SoloDemorados && x.FechaUltimaModificacion != null && filtro.TiempoMaxEntreActividades != null && ((DateTime)x.FechaUltimaModificacion).AddSeconds((int)filtro.TiempoMaxEntreActividades) < DateTime.Now))
                             && ((filtro.Workflow != null && x.Workflow != null && x.Workflow.Contains(filtro.Workflow)) || filtro.Workflow == null)
-                            && ((filtro.ProximaAccion != null && ((filtro.ProximaAccion == "Pendiente" && x.ProximaAccion == "Pendiente") || (filtro.ProximaAccion != "Pendiente" && x.ProximaAccion.Contains(filtro.ProximaAccion)))) || filtro.ProximaAccion == null)
+                            && ((filtro.ProximaAccion != null && ((filtro.ProximaAccion == "Pendiente" && x.ProximaAccion == "Pendiente") || (filtro.ProximaAccion != "Pendiente" && x.ProximaAccion == filtro.ProximaAccion))) || filtro.ProximaAccion == null)
                             && ((filtro.Patente != null && x.Patente != null && x.Patente.ToLower().Contains(filtro.Patente.ToLower())) || filtro.Patente == null)
                             && ((filtro.TipoDocumentoDeIngreso != null && x.TipoDocumentoDeIngreso == filtro.TipoDocumentoDeIngreso) || filtro.TipoDocumentoDeIngreso == null)
                             && ((filtro.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso.Contains(filtro.NumeroDocumentoDeIngreso)) || filtro.NumeroDocumentoDeIngreso == null)
                             && ((filtro.MaterialId.HasValue && x.MaterialId == filtro.MaterialId.Value) || filtro.MaterialId == null)
                             && ((filtro.Calidad != null && x.Calidad.ToLower().Contains(filtro.Calidad.ToLower())) || filtro.Calidad == null)
-                            && ((filtro.TipoComercialId.HasValue && x.TipoComercialId == filtro.TipoComercialId) || filtro.TipoComercialId == null);
+                            && ((filtro.TipoComercialId.HasValue && x.TipoComercialId == filtro.TipoComercialId) || filtro.TipoComercialId == null)
+                            && (!filtro.ExcluirRechazados || (filtro.ExcluirRechazados && x.EsRechazado != "True"));
                 instanciasWorkflow = instanciasWorkflow.Where(expresionFiltro);
+
+                if (filtro.TipoMaterial != TipoMaterial.Todos)
+                {
+                    instanciasWorkflow = (filtro.TipoMaterial == TipoMaterial.Granos)
+                        ? instanciasWorkflow.Where(x => x.EsGrano == "True" && !string.IsNullOrEmpty(x.EsGrano))
+                        : instanciasWorkflow.Where(x => x.EsGrano == "False" && !string.IsNullOrEmpty(x.EsGrano));
+                }
+
+                if (filtro.TieneEntregador != FiltroEntregador.Todos)
+                {
+                    instanciasWorkflow = (filtro.TieneEntregador == FiltroEntregador.SinEntregador)
+                    ? instanciasWorkflow.Where(x => x.Entregador == "SIN ENTREGA" || string.IsNullOrEmpty(x.Entregador))
+                    : instanciasWorkflow.Where(x => x.Entregador != "SIN ENTREGA" && !string.IsNullOrEmpty(x.Entregador));
+                }
 
                 resultado.InstanciasWorkflowDto = instanciasWorkflow;
             }
@@ -609,6 +662,9 @@ namespace Molinos.Scato.Workflow
                         ChoferDNI = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadChoferDNI),
                         ChoferNombre = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadChoferNombre),
                         Procedencia = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadProcedencia),
+                        EsGrano = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadEsGrano),
+                        Entregador = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadEntregador),
+                        EsRechazado = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadEsRechazado),
 
                         Id = info.InstanceId,
                         Estado = info.InstanceStatus,
@@ -623,7 +679,6 @@ namespace Molinos.Scato.Workflow
                 waiter.Set();
             }
         }
-
 
         private void ObtenerHostInfo(IAsyncResult result)
         {
@@ -677,7 +732,6 @@ namespace Molinos.Scato.Workflow
             return tiempoMaxEntreActividades != null && fechaUltimaModificacion != null &&
                    ((DateTime)fechaUltimaModificacion).AddSeconds((int)tiempoMaxEntreActividades) < DateTime.Now;
         }
-
 
         public void Dispose()
         {

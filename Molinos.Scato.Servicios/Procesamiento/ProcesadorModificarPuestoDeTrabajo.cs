@@ -36,6 +36,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Conversor.Convertir(comando.Dto, camara);
             camara.Centro = Repositorio.Obtener<Centro>(comando.Dto.CentroId);
             camara.Balanza = Repositorio.Obtener<Balanza>(comando.Dto.BalanzaId);
+            camara.ConfigSensores = Repositorio.Obtener<ConfigSensores>(comando.Dto.ConfigSensor_Id);
             camara.VisualizacionBarrera = Repositorio.Obtener<VisualizacionBarrera>(comando.Dto.VisualizacionBarrera_Id);
             var videocamarasAEliminar = Repositorio.Listar<VideoCamara>(x => x.PuestoDeTrabajo == null && x.ActividadPorDispositivo == null);
             Repositorio.RemoverTodos(videocamarasAEliminar);

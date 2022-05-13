@@ -9547,6 +9547,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuracion Sensores.
+        /// </summary>
+        public static string ConfigSensores_Titulo {
+            get {
+                return ResourceManager.GetString("ConfigSensores_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Características de Calidad.
         /// </summary>
         public static string ConfiguracionDeTabla_CaracteristicasDeCalidad {
@@ -15469,6 +15478,33 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Filtro {
             get {
                 return ResourceManager.GetString("Filtro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Con Entregador.
+        /// </summary>
+        public static string FiltroEntregador_ConEntregador {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_ConEntregador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sin Entregador.
+        /// </summary>
+        public static string FiltroEntregador_SinEntregador {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_SinEntregador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Todos.
+        /// </summary>
+        public static string FiltroEntregador_Todos {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_Todos", resourceCulture);
             }
         }
         
@@ -26305,6 +26341,60 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sensor Barrera Entrada Abajo.
+        /// </summary>
+        public static string SensorBarreraEntradaAbajo {
+            get {
+                return ResourceManager.GetString("SensorBarreraEntradaAbajo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Barrera Entrada Arriba.
+        /// </summary>
+        public static string SensorBarreraEntradaArriba {
+            get {
+                return ResourceManager.GetString("SensorBarreraEntradaArriba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Barrera Salida Abajo.
+        /// </summary>
+        public static string SensorBarreraSalidaAbajo {
+            get {
+                return ResourceManager.GetString("SensorBarreraSalidaAbajo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Barrera Salida Arriba.
+        /// </summary>
+        public static string SensorBarreraSalidaArriba {
+            get {
+                return ResourceManager.GetString("SensorBarreraSalidaArriba", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Posicion Ingreso.
+        /// </summary>
+        public static string SensorPosicionIngreso {
+            get {
+                return ResourceManager.GetString("SensorPosicionIngreso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor Posicion Salida.
+        /// </summary>
+        public static string SensorPosicionSalida {
+            get {
+                return ResourceManager.GetString("SensorPosicionSalida", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No se pudo registrar la Carta de Porte (Carta de porte: {0}) en el Sistema Industria. Por favor, revisar el Panel de Control de Transacciones.
         /// </summary>
         public static string ServicioMonsanto_Error {
@@ -26594,6 +26684,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string StockReservado {
             get {
                 return ResourceManager.GetString("StockReservado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tolerancia.
+        /// </summary>
+        public static string StockTolerancia {
+            get {
+                return ResourceManager.GetString("StockTolerancia", resourceCulture);
             }
         }
         
@@ -29199,6 +29298,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Omitir rechazados.
+        /// </summary>
+        public static string Workflow_ExcluirRechazados {
+            get {
+                return ResourceManager.GetString("Workflow_ExcluirRechazados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha Calado.
         /// </summary>
         public static string Workflow_FechaCalado {
@@ -29384,6 +29492,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Workflow_SoloSinDescuentos {
             get {
                 return ResourceManager.GetString("Workflow_SoloSinDescuentos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entregador.
+        /// </summary>
+        public static string Workflow_TieneEntregador {
+            get {
+                return ResourceManager.GetString("Workflow_TieneEntregador", resourceCulture);
             }
         }
         

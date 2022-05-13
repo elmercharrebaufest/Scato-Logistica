@@ -171,7 +171,7 @@ namespace Molinos.Scato.Web.Controllers
                                 BalanzaId = balanza.Id,
                                 BalanzaNombre = balanza.Nombre,
                                 Fecha = DateTime.Now,
-                                Motivo = Textos.CambioModalidadBalanzaMotivo,
+                                Motivo = pesada.MotivoPesadaManual,
                                 NombreUsuarioResponsable = datosUsuario.NombreUsuario
                             }
                         });
@@ -289,7 +289,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult ObtenerBalanza(int balanzaId)
         {
             var balanza = servicio.ObtenerBalanza(balanzaId);
-            return Json(new { balanza.Color, Modalidad = (int?)balanza.Modalidad, balanza.EstaEnCero, balanza.PuestoDeTrabajo },
+            return Json(new { balanza.Color, Modalidad = (int?)balanza.Modalidad, balanza.EstaEnCero, balanza.PuestoDeTrabajo, balanza.CentroId },
                         JsonRequestBehavior.AllowGet);
         }
 
@@ -382,6 +382,45 @@ namespace Molinos.Scato.Web.Controllers
             }
             ModelState.AddModelError("peso", String.Format(Textos.Error_Requerido, Textos.Peso));
             return View("~/Views/Pesada/TomarPeso.cshtml", pesada);
+        }
+
+        [DatosUsuario]
+        public ActionResult TomarPesoConMotivo(int balanzaid, DatosUsuario datosUsuario)
+        {
+            //Random random = new Random();
+            //int randomNumber = random.Next(10000, 50000);
+            //randomNumber = 10000;
+            //return Json(new { Pesaje = randomNumber, MensajeMotivoAutomatico = Textos.CambioModalidadBalanzaMotivo }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                log.Info("Se tomará el peso en modalidad automática para la balanza con Id {0}", balanzaid);
+                var balanza = servicio.ObtenerBalanza(balanzaid);
+
+                log.Info("Se tomará el peso en modalidad automática para la balanza con Id {0}", balanzaid);
+                var resultado = EjecutarPesaje(balanza.CodigoCabezal);
+
+                if (resultado.Mensaje.Codigo != 0)
+                {
+                    log.Error("Error al tomar la pesada en balanza {0}. Mensaje: {1} - {2}",
+                              balanzaid, resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                    return
+                        Json(new
+                        {
+                            MensajeError = "(" + Textos.Codigo + ":" + resultado.Mensaje.Codigo + ") " + Textos.Pesada_AutomaticaError +
+                            "\r\n" + resultado.Mensaje.Descripcion
+                        }, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(new { Pesaje = resultado.Valores["Pesaje"], MensajeMotivoAutomatico = Textos.CambioModalidadBalanzaMotivo }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error en tomar peso para la balanza con Id {0}", balanzaid);
+                return Json(new
+                {
+                    MensajeError = Textos.Pesada_AutomaticaError
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

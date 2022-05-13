@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
@@ -9,8 +8,6 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -22,13 +19,16 @@ namespace Molinos.Scato.Web.Controllers
         private readonly ILogger log;
         private readonly IServicioComandos servicioComandos;
         private readonly IServicioOrquestador servicioOrquestador;
+        private readonly IServicioEstadoPuesto estadoPuesto;
 
-        public ConfiguracionSensoresController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioOrquestador servicioOrquestador)
+        public ConfiguracionSensoresController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, 
+            IServicioOrquestador servicioOrquestador, IServicioEstadoPuesto estadoPuesto)
             : base(servicio)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
             this.servicioOrquestador = servicioOrquestador;
+            this.estadoPuesto = estadoPuesto;
         }
 
         [DatosUsuario]
@@ -67,6 +67,8 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (!resultado.HayErrores)
                 {
+                    estadoPuesto.ActualizarPuestos();
+
                     return new AjaxEditSuccessResult();
                 }
                 ModelState.AgregarErrores(resultado);
@@ -91,12 +93,13 @@ namespace Molinos.Scato.Web.Controllers
                        
                 var resultado = servicioComandos.Ejecutar(new ModificarConfiguracionSensores
                 {
-                    Dto = model,                    
+                    Dto = model,
                     Usuario = datosUsuario.NombreUsuario
                 });
 
                 if (!resultado.HayErrores)
                 {
+                    estadoPuesto.ActualizarPuestos();
                     return new AjaxEditSuccessResult();
                 }
                 ModelState.AgregarErrores(resultado);

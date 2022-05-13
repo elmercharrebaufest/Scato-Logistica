@@ -118,7 +118,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             if (!(model is null)) 
                 model.PermisoReasignarCallePostCalado = servicio.TienePermiso(usuario.Value, PermisosScato.ReasignacionCallesPostCalado);
             var calle = servicio.ObtenerCalle(calleId);
-            var caracteristicasAnalizadas = servicio.ListarCaladoPorCaracteristicas(model.CaladoId);
+            var caracteristicasAnalizadas = model.CaladoId.HasValue ? servicio.ListarCaladoPorCaracteristicas(model.CaladoId.Value): null; 
             List<Dominio.Dto.CalleDto> calles = null;
 
             if (model.TipoCalidad == TipoCalidad.Otros || model.TipoCalidad == TipoCalidad.PendientesPostCalado)

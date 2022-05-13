@@ -165,16 +165,18 @@ namespace Molinos.Scato.Web.Controllers
 
             log.Debug($"Ejecutando etapa { proximaActividad.ProximaAccion }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
             log.Debug($"Peso tomado { peso }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
-            
-            //if (recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren) {
-            //    while (true)
-            //    {
-            //        if (estadoPuesto.ValidarEstadoPuesto(puestoId))
-            //            break;
 
-            //        Thread.Sleep(5000);
-            //    }
-            //}
+            if (recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren)
+            {
+                while (true)
+                {
+                    var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                    if (estadoPuesto.ValidarEstadoPuesto(puestoId) && valida != "1")
+                        break;
+                    var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                    Thread.Sleep(tiempoDeCiclo);
+                }
+            }
 
             if (resultado.Valida)
             {
@@ -706,5 +708,20 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(ex, "No se pudo acceder al orquestador de dispositivos");
             }
         }
+
+        public void ActualizarEstadoSensores()
+        {
+            estadoPuesto.NotificarEstado();
+        }
+
+        //public JsonResult ConsultarEstadoSensores()
+        //{
+        //    var estados = estadoPuesto.ConsultarEstadoBarreras();
+        //    return new JsonResult()
+        //    {
+        //        Data = estados,
+        //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //    };
+        //}
     }
 }

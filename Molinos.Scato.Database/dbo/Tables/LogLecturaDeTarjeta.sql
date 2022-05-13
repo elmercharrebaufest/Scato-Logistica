@@ -8,6 +8,7 @@
     [CantidadDeDiferencias]    INT           DEFAULT ((0)) NOT NULL,
     [ExisteOtroCamionEnPlanta] BIT           NULL,
     [ReconocimientoExitoso]    BIT           DEFAULT ((0)) NOT NULL,
+    [Tarjeta] NVARCHAR(15) NULL, 
     CONSTRAINT [PK_dbo.LogLecturaDeTarjeta] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.LogLecturaDeTarjeta_dbo.PuestoDeTrabajo_PuestoDeTrabajo_Id] FOREIGN KEY ([PuestoDeTrabajo_Id]) REFERENCES [dbo].[PuestoDeTrabajo] ([Id]) ON DELETE CASCADE
 );

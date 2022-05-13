@@ -214,7 +214,28 @@ namespace Molinos.Scato.Web.Controllers
             filtro.SoloDemorados = Boolean.Parse(cookie.Valor("SoloDemorados") ?? "false");
             filtro.OrdenarPor = cookie.Valor("OrdenarPor");
             filtro.DirOrden = cookie.Valor("DirOrden") == "1" ?  DirOrden.Desc : DirOrden.Asc;
-            
+            filtro.ExcluirRechazados = Boolean.Parse(cookie.Valor("ExcluirRechazados") ?? "false");
+
+            var valorTipoMaterial = cookie.Valor("TipoMaterial");
+            TipoMaterial tipoMaterialCookie;
+            if (!string.IsNullOrEmpty(valorTipoMaterial) && Enum.TryParse<TipoMaterial>(valorTipoMaterial, out tipoMaterialCookie))
+            {
+                filtro.TipoMaterial = tipoMaterialCookie;
+            } else
+            {
+                filtro.TipoMaterial = TipoMaterial.Todos;
+            }
+
+            var valorTieneEntregador = cookie.Valor("TieneEntregador");
+            FiltroEntregador tieneEntregadorCookie;
+            if (!string.IsNullOrEmpty(valorTieneEntregador) && Enum.TryParse<FiltroEntregador>(valorTieneEntregador, out tieneEntregadorCookie))
+            {
+                filtro.TieneEntregador = tieneEntregadorCookie;
+            }
+            else
+            {
+                filtro.TieneEntregador = FiltroEntregador.Todos;
+            }
 
             var valor = cookie.Valor("TipoDocumentoDeIngreso");
             TipoDocumentoIngreso tipoDocumentoDeIngresoCookie;
@@ -249,6 +270,9 @@ namespace Molinos.Scato.Web.Controllers
             cookie.ActualizarValor("SoloDemorados", filtro.SoloDemorados.ToString());
             cookie.ActualizarValor("OrdenarPor", ordenarPor);
             cookie.ActualizarValor("DirOrden", ((int)dirOrden).ToString());
+            cookie.ActualizarValor("ExcluirRechazados", filtro.ExcluirRechazados.ToString());
+            cookie.ActualizarValor("TipoMaterial", filtro.TipoMaterial.ToString());
+            cookie.ActualizarValor("TieneEntregador", filtro.TieneEntregador.ToString());
             return filtro;
         }
     }

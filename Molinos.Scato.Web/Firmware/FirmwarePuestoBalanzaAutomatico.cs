@@ -104,13 +104,14 @@ namespace Molinos.Scato.Web.Firmware
                         NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, recorrido.ProximaAccion);
                         return;
                     }
-                    //while (true)
-                    //{
-                    //    if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId))
-                    //        break;
-
-                    //    Thread.Sleep(5000);
-                    //}
+                    while (true)
+                    {
+                        var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) && valida != "1")
+                            break;
+                        var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                        Thread.Sleep(tiempoDeCiclo);
+                    }
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, resultado.ProximaActividad);
                     var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,

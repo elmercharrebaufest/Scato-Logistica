@@ -23,13 +23,15 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioComandos servicioComandos;
         private ILogger log;
         private readonly IServicioOrquestador orquestador;
+        private readonly IServicioEstadoPuesto servicioEstado;
 
-        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioOrquestador orquestador)
+        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioOrquestador orquestador, IServicioEstadoPuesto servicioEstado)
             : base(servicio)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
             this.orquestador = orquestador;
+            this.servicioEstado = servicioEstado;
         }
 
         [DatosUsuario]
@@ -231,17 +233,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             try
             {
-                switch (accion)
-                {
-                    case "A": //Apertura de BarreraMaestro
-                        orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
-                        break;
-                    case "C": //Cierre de Barrera
-                        orquestador.Ejecutar(new EjecutarCierreBarrera { CodigoDispositivo = codigo });
-                        break;
-                    default:
-                        break;
-                }                
+                orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
             }
             catch (Exception e)
             {
@@ -254,6 +246,13 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public void ActualizarEstadoBarreras(DatosUsuario datosUsuario)
+        {
+            servicioEstado.ActualizarBarreras(datosUsuario.NombrePc);
+
         }
     }
 }

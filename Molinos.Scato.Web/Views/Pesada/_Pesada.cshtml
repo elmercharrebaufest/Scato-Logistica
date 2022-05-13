@@ -43,6 +43,7 @@
     }
 </style>
 @Html.Hidden("Automatizado", (bool)ViewBag.Automatizado)
+@Html.Hidden("CentroId")
 <div class="row-fluid-ie7 separacion">
     <div class="grupo-carta-porte balanzaColor" id="balanza" style="padding-bottom: 0">
         @Html.LabelFor(model => model.BalanzaId):
@@ -179,7 +180,7 @@
                                     @if (Model.TipoPesada == TipoPesada.Bruto)
                                     {
                                         <div class="input-append">
-                                            @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso1", @readonly = "readonly", tabIndex = "-10", data_peso_url = Url.Action("TomarPeso", Model.ActividadXaml), style = "margin-right:10px" })
+                                            @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso1", @readonly = "readonly", tabIndex = "-10", data_peso_url = Url.Action("TomarPesoConMotivo", Model.ActividadXaml), style = "margin-right:10px" })
                                             @if (PermisosHelper.Is(PermisosScato.Administradores))
                                             {
                                                 <button id="tomarPeso" class="btn" type="button" tabIndex="1" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
@@ -216,9 +217,9 @@
                                     }
                                     else
                                     {
-                                            @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
-                                        
-                                }
+                                        @Html.TextBox("PesoTara", pesoTara, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10 })
+
+                                    }
                                 </div>
                             </div>
                         </td>
@@ -341,6 +342,12 @@
             <label class="control-label">@Textos.PesoManual:</label>
             <div class="controls">
                 @Html.TextBox("PesoManual", null, new { @class = "control input-small", autocomplete = "off", tabIndex = 2 })
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">@Textos.Motivo:</label>
+            <div class="controls">
+                @Html.TextArea("MotivoPesada", null, new { @class = "control input-small", required = "required" })
             </div>
         </div>
     </div>

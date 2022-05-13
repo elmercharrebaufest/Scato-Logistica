@@ -28,6 +28,17 @@
             public const string CambioEstadoIntercomunicador = "CambioEstadoIntercomunicador";
         }
 
+        public struct AFIPCodigoDeError
+        {
+            public const string NoExistenSolicitudes = "800";
+        }
+
+        public struct AsignacionDeEstablecimientoRangos 
+        {
+            public const int Desde = 90000;
+            public const int Hasta = 99998;
+        }
+
         public struct ConfiguracionGeneral
         {
             public struct Pantalla

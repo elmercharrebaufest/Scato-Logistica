@@ -33,5 +33,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string Calle { get; set; }
         public TipoDocumentoIngreso TipoDocumento { get; set; }
         public string TipoComercial { get; set; }
+        public string PatentePrevia { get; set; }
     }
 }

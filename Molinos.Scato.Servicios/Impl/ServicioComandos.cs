@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.ApplicationInsights;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Procesamiento;
 using Ninject;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioComandos : IServicioComandos
     {
         private readonly IKernel kernel;
         private readonly ILogger log;
         private IDictionary<Type, Type> procesadores;
+        private readonly TelemetryClient aiClient;
 
         public ServicioComandos(IKernel kernel, ILogger log)
         {
             this.kernel = kernel;
             this.log = log;
+            this.aiClient = new TelemetryClient();
             RegistrarProcesadores();
         }
 
@@ -25,6 +30,19 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var tipoProcesador = procesadores[comando.GetType()];
             var procesador = (IProcesadorComando) kernel.Get(tipoProcesador);
+
+            try
+            {
+                if (aiClient.IsEnabled())
+                {
+                    aiClient.TrackTrace($"Ejecutando procesador --> {tipoProcesador.Name}");
+                }
+            } 
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo registrar en AI el comando {0}", tipoProcesador.Name);
+            }
+
             return procesador.Ejecutar(comando);
         }
 

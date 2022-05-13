@@ -19,6 +19,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IServicioRepositorio> servRepositorioMock;
         private Mock<IServicioComandos> servComandosMock;
         private Mock<IServicioOrquestador> servOrquestador;
+        private Mock<IServicioEstadoPuesto> servEstadoPuesto;
         private MenuController target;
 
         [SetUp]
@@ -27,7 +28,8 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock = new Mock<IServicioRepositorio>();
             servComandosMock = new Mock<IServicioComandos>();
             servOrquestador = new Mock<IServicioOrquestador>();
-            target = new MenuController(new NullLogger(), servRepositorioMock.Object, servComandosMock.Object, servOrquestador.Object);
+            servEstadoPuesto = new Mock<IServicioEstadoPuesto>();
+            target = new MenuController(new NullLogger(), servRepositorioMock.Object, servComandosMock.Object, servOrquestador.Object, servEstadoPuesto.Object);
         }
 
 

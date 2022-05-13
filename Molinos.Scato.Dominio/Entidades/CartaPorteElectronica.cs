@@ -64,5 +64,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual long? CuitTransportistaTramo2 { get; set; }        
         public virtual double TarifaReferencia { get; set; }
         public virtual DateTime? FechaCacheado { get; set; }
+        public virtual bool? NoEncontradaAFIP { get; set; }
     }
 }

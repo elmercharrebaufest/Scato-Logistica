@@ -9892,4 +9892,43 @@
   <data name="TarjetaDeAcceso_EnUso_Pendiente" xml:space="preserve">
     <value>Número de Tarjeta de Acceso en uso con la patente : {0}</value>
   </data>
+  <data name="ConfigSensores_Titulo" xml:space="preserve">
+    <value>Configuracion Sensores</value>
+  </data>
+  <data name="SensorBarreraEntradaAbajo" xml:space="preserve">
+    <value>Sensor Barrera Entrada Abajo</value>
+  </data>
+  <data name="SensorBarreraEntradaArriba" xml:space="preserve">
+    <value>Sensor Barrera Entrada Arriba</value>
+  </data>
+  <data name="SensorBarreraSalidaAbajo" xml:space="preserve">
+    <value>Sensor Barrera Salida Abajo</value>
+  </data>
+  <data name="SensorBarreraSalidaArriba" xml:space="preserve">
+    <value>Sensor Barrera Salida Arriba</value>
+  </data>
+  <data name="SensorPosicionIngreso" xml:space="preserve">
+    <value>Sensor Posicion Ingreso</value>
+  </data>
+  <data name="SensorPosicionSalida" xml:space="preserve">
+    <value>Sensor Posicion Salida</value>
+  </data>
+  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
+    <value>Omitir rechazados</value>
+  </data>
+  <data name="Workflow_TieneEntregador" xml:space="preserve">
+    <value>Entregador</value>
+  </data>
+  <data name="FiltroEntregador_Todos" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="FiltroEntregador_ConEntregador" xml:space="preserve">
+    <value>Con Entregador</value>
+  </data>
+  <data name="FiltroEntregador_SinEntregador" xml:space="preserve">
+    <value>Sin Entregador</value>
+  </data>
+  <data name="StockTolerancia" xml:space="preserve">
+    <value>Tolerancia</value>
+  </data>
 </root>

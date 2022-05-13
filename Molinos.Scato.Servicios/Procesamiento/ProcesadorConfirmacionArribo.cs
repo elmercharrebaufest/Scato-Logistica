@@ -160,7 +160,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             {
                                 Servicio= "ConfirmarArribo",
                                 Consulta= confirmarArriboRequest.ToXml(),
-                                Respuesta= response.respuesta.ToXml()
+                                Respuesta= response.respuesta.ToXml(),
+                                Fecha = DateTime.Now,
                         });
                     Log.Debug("Baja de ctg {0} procesada correctamente", comando.Dto.NroCartaPorte);
                 }

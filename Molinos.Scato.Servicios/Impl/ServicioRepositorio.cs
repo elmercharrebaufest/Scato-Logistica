@@ -11,6 +11,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Repositorio.ConsultasEF;
+using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Helpers;
 using Molinos.Scato.Servicios.Orquestador;
@@ -32,6 +33,7 @@ using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioRepositorio : IServicioRepositorio
     {
         private readonly IRepositorio repositorio;
@@ -7214,7 +7216,7 @@ namespace Molinos.Scato.Servicios.Impl
                 {
                     resultado.Error("", Textos.AsignacionEstablecimientoError_FueraVigencia);
                 }
-                else if (netoOrigen.HasValue && StockEPAutilizado(stockEstablecimiento.CodigoEstablecimiento, stockEstablecimiento.Cosecha) + netoOrigen.Value > stockEstablecimiento.StockDeclarado - stockEstablecimiento.StockReservado)
+                else if (netoOrigen.HasValue && StockEPAutilizado(stockEstablecimiento.CodigoEstablecimiento, stockEstablecimiento.Cosecha) + netoOrigen.Value > stockEstablecimiento.StockDeclarado - stockEstablecimiento.StockReservado + (stockEstablecimiento.Tolerancia ?? 0))
                 {
                     resultado.Error("", Textos.AsignacionEstablecimientoError_LimiteStockSuperado);
                 }
@@ -8885,23 +8887,32 @@ namespace Molinos.Scato.Servicios.Impl
              && x.Calle.Id == calleId
              && x.FechaEgreso == null, x => new InfoPatenteDeCalleDto
              {
-                 Patente = x.Recorrido.Patente,
-                 NombreChofer = x.Recorrido.Chofer.Nombre + "  " + x.Recorrido.Chofer.Apellido,
-                 CartaPorte = x.Recorrido.NumeroDocumentoIngreso,
-                 RecorridoId = x.Recorrido.Id,
+                 Patente = x.Recorrido != null ? x.Recorrido.Patente :x.CargaDeCupo != null ? x.CargaDeCupo.Patente :"",
+                 NombreChofer = x.Recorrido != null ? x.Recorrido.Chofer.Nombre + "  " + x.Recorrido.Chofer.Apellido : "",
+                 CartaPorte = x.Recorrido != null ? x.Recorrido.NumeroDocumentoIngreso : x.CargaDeCupo != null ? x.CargaDeCupo.CTG:"",
+                 RecorridoId = x.Recorrido != null ? x.Recorrido.Id:(int?)null,
+                 CargaDeCupoId = x.CargaDeCupo != null ? x.CargaDeCupo.Id:(int?)null,
+
                  CalleId = x.Calle.Id,
-                 InstanciaWorflow = x.Recorrido.InstanciaWorkflow,
-                 Rechazado = x.Recorrido.Rechazado,
+                 InstanciaWorflow = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : (Guid?)null,
+                 Rechazado = x.Recorrido != null && x.Recorrido.Rechazado,
                  TipoCalle = x.Calle.TipoCalle,
                  TipoCalidad = x.Calle.TipoCalidad,
-                 MaterialId = x.Recorrido.Material.Id,
-                 CaladoId = x.Recorrido.Calado.Id,
-                 Tarjeta = x.Recorrido.TarjetaDeAcceso,
-                 InstanceId = x.Recorrido.InstanciaWorkflow,
-                 CalidadCamion = x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() == null ? TipoCalidad.Desconocida : x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad
+                 MaterialId = x.Recorrido != null ? x.Recorrido.Material.Id : x.CargaDeCupo.Material.Id ,
+                 CaladoId = x.Recorrido != null ? x.Recorrido.Calado.Id : (int?)null,
+                 Tarjeta = x.Recorrido != null ? x.Recorrido.TarjetaDeAcceso: x.CargaDeCupo != null ? x.CargaDeCupo.Numero : null,
+                 InstanceId = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : (Guid?)null,
+                 CalidadCamion = x.Recorrido != null && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() == null ? TipoCalidad.Desconocida : x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad,
+                 CalleNoGrano = x.Calle.TipoCalle == TipoCalle.NoGranos,
+                 NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion :"",
+                 FechaIngreso = x.FechaIngeso,
+                 TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
+                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : ""
              });
             var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
+            camion.Cliente = camion.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas ?
+                repositorio.ObtenerProyeccion<OrdenCargaFas, string>(x => x.Recorrido.Id == camion.RecorridoId, x => x.Cliente.Descripcion):"";
             return camion;
         }
 
@@ -9768,13 +9779,20 @@ namespace Molinos.Scato.Servicios.Impl
         {
             FotoDto result = null;
             var cartaPorte = ObtenerUltimo<CartaPorte, CartaPorteDto>(x => x.NroCartaPorte == numeroDocumento && x.CentroDestino.Id == centroId, x => x.Id);
-            var path = cartaPorte.FotoRutaDestino;
-            var index = path.IndexOf("Mesa");
-            var pathSustentable = path.Substring(0, index) + "sustentable.png";
-            if (File.Exists(pathSustentable))
+            if(cartaPorte != null && cartaPorte.FotoRutaDestino != null)
             {
-                var fecha = File.GetCreationTime(pathSustentable);
-                result = ObtenerImagenSustentable(pathSustentable, fecha, actividad);
+                var path = cartaPorte.FotoRutaDestino;
+                var index = path.IndexOf("-Mesa");
+                if(index < 0)
+                {
+                    index = path.LastIndexOf("-");
+                }
+                var pathSustentable = path.Substring(0, index) + "-sustentable.png";
+                if (File.Exists(pathSustentable))
+                {
+                    var fecha = File.GetCreationTime(pathSustentable);
+                    result = ObtenerImagenSustentable(pathSustentable, fecha, actividad);
+                }
             }
             return result;
         }
@@ -9803,6 +9821,26 @@ namespace Molinos.Scato.Servicios.Impl
                 }
             }
             return result;
+        }
+
+        public IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta)
+        {
+            var fecha = DateTime.Now;
+            var hora = new TimeSpan(0);
+            fecha = fecha.Date.Add(hora);
+            return repositorio.Listar<LogLecturaDeTarjeta, LecturaPuestoDeTrabajoDto>(x => new LecturaPuestoDeTrabajoDto
+            {
+                PuestoDeTrabajoId = x.PuestoDeTrabajo.Id,
+                Patente = x.Patente,
+                PatenteLeida = x.PatenteLeida
+            }, x => x.Tarjeta == tarjeta && x.Fecha >= fecha);
+        }
+
+        public IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc)
+        {
+            var grupoId = repositorio.ObtenerProyeccion<PuestoDeTrabajo, int>(x=> x.VisualizacionBarrera != null && x.NombrePc == nombrePc, x=>  x.VisualizacionBarrera.Id);
+            return Listar<SensorBarrera, SensorBarreraDto>(x => x.VisualizacionBarrera.Id == grupoId);
+
         }
     }
 }

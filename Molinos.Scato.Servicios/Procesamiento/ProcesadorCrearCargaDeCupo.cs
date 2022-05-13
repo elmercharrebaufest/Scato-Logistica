@@ -45,6 +45,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (entidadDuplicada != null)
             {
+                Log.Debug($"Camion {comando.Dto.Patente} eliminado por duplicidad de Tarjeta {comando.Dto.Numero}");
                 foreach(var i in entidadDuplicada)
                 {
                     Repositorio.Remover(i);
@@ -55,6 +56,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (entidadDuplicada2 != null)
             {
+                Log.Debug($"Camion {comando.Dto.Patente} eliminado por duplicidad de NumeroCartaPorte {comando.Dto.NumeroCartaPorte}");
                 foreach (var i in entidadDuplicada2)
                 {
                     Repositorio.Remover(i);
@@ -65,6 +67,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (entidadDuplicada3 != null)
             {
+                Log.Debug($"Camion {comando.Dto.Patente} eliminado por duplicidad de Patente {comando.Dto.Patente}");
                 foreach (var i in entidadDuplicada3)
                 {
                     Repositorio.Remover(i);
@@ -75,6 +78,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (entidadDuplicada4 != null)
             {
+                Log.Debug($"Camion {comando.Dto.Patente} eliminado por duplicidad de CTG {comando.Dto.CTG}");
                 foreach (var i in entidadDuplicada4)
                 {
                     Repositorio.Remover(i);

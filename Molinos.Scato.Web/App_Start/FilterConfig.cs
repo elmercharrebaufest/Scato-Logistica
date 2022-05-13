@@ -1,5 +1,5 @@
-﻿using System.Web.Mvc;
-using Molinos.Scato.Web.Atributos;
+﻿using Molinos.Scato.Web.Atributos;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.App_Start
 {
@@ -7,7 +7,7 @@ namespace Molinos.Scato.Web.App_Start
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new AiHandleErrorAttribute());
             filters.Add(new AvoidCacheFilterAttribute());
         }
     }

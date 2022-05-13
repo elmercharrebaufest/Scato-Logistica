@@ -151,5 +151,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Proteina { get; set; }
          public string AlmacenDestino { get; set; }
         public string DiferenciaPesoNeto { get; set; }
+        public string EsGrano { get; set; }
+        public string EsRechazado { get; set; }
     }
 }

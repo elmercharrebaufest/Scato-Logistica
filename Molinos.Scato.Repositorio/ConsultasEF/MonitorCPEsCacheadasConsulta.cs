@@ -27,9 +27,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
             var materialList = contexto.Set<Material>().Where(q => q.EsGrano && !q.CodigoONCCA.Equals(null)).ToList();
 
-          
-
-            var query = contexto.Set<CartaPorteElectronica>().Where(q => q.PlantaDestino == centro.Planta && estadosValidos.Contains(q.Estado)).AsQueryable();
+            var query = contexto.Set<CartaPorteElectronica>().Where(q => q.PlantaDestino == centro.Planta && estadosValidos.Contains(q.Estado) && (q.NoEncontradaAFIP == null || q.NoEncontradaAFIP == false)).AsQueryable();
 
             if (_filtro.CTG.HasValue)
                 query = query.Where(x => x.NroCTG == _filtro.CTG);
@@ -52,7 +50,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             }
 
             var camionesPendientes = new List<int>();
-            if (!_filtro.EsJobAutomatico) { 
+            if (!_filtro.EsJobAutomatico && centro.Planta.HasValue)
+            {
                 camionesPendientes = ObtenerCamionesCacheadosPendientes(contexto, centro.Planta);
             }
 

@@ -254,7 +254,10 @@ function ReiniciarBalanza() {
     if ($("#BalanzaId").val() > 0) {
         $("#Peso").val("");
         $("#PesoManual").val("");
+        $("#MotivoPesada").val("");
+        $("#MotivoPesadaManual").val("");
         $.getJSON($("#BalanzaId").data().balanzaUrl, { balanzaId: $("#BalanzaId").val() }, function (data) {
+            $("#CentroId").val(data.CentroId)
             $(".balanzaColor").css("background-color", data.Color);
             $("#Modalidad").val(data.Modalidad);
             $("#BalanzaPuestoDeTrabajo").val(data.PuestoDeTrabajo);
@@ -343,7 +346,7 @@ function TomarPeso() {
     //    MostrarAlertaError($("#PuestoDeTrabajoPcBalanzaErrorMensaje").val());
     //    return true;
     //}
-    if ($("#Modalidad").val() == 0) {
+    if ($("#Modalidad").val() == 0 || $("#CentroId").val() == 5) {
         cargarDialogoPesar();
         atajosTomarPesoPopUp();
     } else {
@@ -352,11 +355,12 @@ function TomarPeso() {
         $("#tomarPeso").html($("#tomarPeso").data().mensajeEsperar);
         $("#tomarPeso").attr("disabled", true);
         $.getJSON($("#Peso").data().pesoUrl, { balanzaId: $("#BalanzaId").val() }, function (data) {
-            if ($.isNumeric(data)) {
-                $("#Peso").val(data);
+            if ($.isNumeric(data.Pesaje)) {
+                $("#Peso").val(data.Pesaje);
+                $('#MotivoPesadaManual').val(data.MensajeMotivoAutomatico)
                 ActualizarPesos();
             } else { //Devolvió error
-                MostrarAlertaError(data);
+                MostrarAlertaError(data.MensajeError);
             }
         }).complete(function () {
             $("#tomarPeso").html(label);
@@ -369,6 +373,7 @@ function TomarPeso() {
 function GuardarPesoManual() {
     //Salvar Peso Manual
     $('#Peso').val($('#PesoManual').val());
+    $('#MotivoPesadaManual').val($('#MotivoPesada').val())
     $('#dialogo-pesar').modal('hide');
     ActualizarPesos();
     atajosPantallaGeneral();
@@ -382,6 +387,7 @@ function ActualizarPesos() {
     ActualizarDif();
     //Revalidar peso
     ValidarObjeto($("#pesada-form"), $('#Peso'));
+    ValidarObjeto($("#pesada-form"), $('#MotivoPesadaManual'));
 }
 
 function ActualizarDif() {

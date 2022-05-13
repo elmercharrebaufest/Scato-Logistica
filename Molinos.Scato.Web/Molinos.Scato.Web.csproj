@@ -80,8 +80,8 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Activities.Extensions, Version=2.0.6.9, Culture=neutral, PublicKeyToken=23b0c89d0d5ad43f, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.Extensions.dll</HintPath>
@@ -109,6 +109,9 @@
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.20.0\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Log4NetAppender.2.20.0\lib\net452\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationServer.StoreManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -360,6 +363,8 @@
       <DependentUpon>Errores.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterTelemetryProcessor.cs" />
+    <Compile Include="App_Start\RoleTelemetryInitializer.cs" />
     <Compile Include="App_Start\SignalRStartup.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Log4NetConfig.cs" />
@@ -632,6 +637,7 @@
     <Compile Include="Controllers\VerificacionCamionRechazadoController.cs" />
     <Compile Include="CultureAwareQueryStringValueProvider.cs" />
     <Compile Include="CultureAwareQueryStringValueProviderFactory.cs" />
+    <Compile Include="Atributos\AiHandleErrorAttribute.cs" />
     <Compile Include="EXCEL\ExcelDetalleDeMovimientos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosPendientes.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
@@ -1052,6 +1058,8 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Styles\area\listaDeCamiones\filtroDeCamiones.css" />
+    <Content Include="Styles\area\pesada\pesada.css" />
     <Content Include="Styles\area\shared\intercomunicador.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>

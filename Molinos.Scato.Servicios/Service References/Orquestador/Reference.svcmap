@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="5a95b703-d1ce-4342-8053-32a64b8e2323" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="5a95b703-d1ce-4342-8053-32a64b8e2323" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,16 +22,16 @@
     <MetadataSource Address="http://localhost:8080/ServicioOrquestador" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="6cec1e0a-8fbb-44ef-b134-266bb4b39f1b" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd2" />
-    <MetadataFile FileName="ServicioOrquestador3.wsdl" MetadataType="Wsdl" ID="3fa40cde-ae3b-4b93-9694-33d4a47288e7" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?wsdl" />
-    <MetadataFile FileName="ServicioOrquestador8.xsd" MetadataType="Schema" ID="5374a009-64d8-4b81-a529-c65d4a7f6028" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd4" />
-    <MetadataFile FileName="ServicioOrquestador9.xsd" MetadataType="Schema" ID="88a44fa6-72a4-4b29-9852-87aa8d38d90a" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd3" />
-    <MetadataFile FileName="ServicioOrquestador4.wsdl" MetadataType="Wsdl" ID="2dc27286-1717-468a-93bf-55d51fd92266" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?wsdl=wsdl0" />
-    <MetadataFile FileName="ServicioOrquestador10.xsd" MetadataType="Schema" ID="87af2819-f366-4e7e-b1a6-50507968c19a" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd1" />
-    <MetadataFile FileName="ServicioOrquestador11.xsd" MetadataType="Schema" ID="83a3ee70-1be0-4459-bb7d-fb7e739a8a6a" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd5" />
-    <MetadataFile FileName="ServicioOrquestador12.xsd" MetadataType="Schema" ID="7530f33a-9d9b-4936-ae0b-249d0549acae" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd0" />
-    <MetadataFile FileName="ServicioOrquestador13.xsd" MetadataType="Schema" ID="6dabd5b7-ca24-480d-97b3-acb252e08e77" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?xsd=xsd6" />
-    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="3ec5f456-3fdc-43ed-8233-66f26252552f" SourceId="1" SourceUrl="http://nbpe00033:8080/ServicioOrquestador?disco" />
+    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="e64a6345-e8ac-4fe1-9edc-1328d5a74067" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd1" />
+    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="ea500d05-eea8-40b5-8825-3d55617a9ccd" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?disco" />
+    <MetadataFile FileName="ServicioOrquestador8.xsd" MetadataType="Schema" ID="50c1f19a-087f-4355-a573-29917d0f1881" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd3" />
+    <MetadataFile FileName="ServicioOrquestador9.xsd" MetadataType="Schema" ID="583491d3-4f7a-4621-ab29-b65ce9f93bc0" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd4" />
+    <MetadataFile FileName="ServicioOrquestador10.xsd" MetadataType="Schema" ID="6e33588f-2824-4cea-a51f-af7b377753fe" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd5" />
+    <MetadataFile FileName="ServicioOrquestador11.xsd" MetadataType="Schema" ID="e5d84914-a851-4014-a74c-d5208983b155" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd6" />
+    <MetadataFile FileName="ServicioOrquestador3.wsdl" MetadataType="Wsdl" ID="066cde10-0fd2-4ebb-ab75-8f8474969ea7" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?wsdl=wsdl0" />
+    <MetadataFile FileName="ServicioOrquestador12.xsd" MetadataType="Schema" ID="6efb9761-4ff0-448b-bad2-4b6f174f2fe5" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd2" />
+    <MetadataFile FileName="ServicioOrquestador4.wsdl" MetadataType="Wsdl" ID="2610994a-5f12-460c-9600-12421ca7edc1" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?wsdl" />
+    <MetadataFile FileName="ServicioOrquestador13.xsd" MetadataType="Schema" ID="64bcded5-4050-462f-8646-81233085f727" SourceId="1" SourceUrl="http://nbar14939:8080/ServicioOrquestador?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

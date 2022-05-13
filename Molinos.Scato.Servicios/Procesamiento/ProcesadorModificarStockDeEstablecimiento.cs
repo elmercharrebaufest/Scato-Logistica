@@ -21,6 +21,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var stockDeEstablecimiento = Repositorio.Obtener<StockDeEstablecimiento>(comando.Dto.Id);
             stockDeEstablecimiento.FechaHasta = comando.Dto.FechaHasta;
             stockDeEstablecimiento.StockDeclarado = comando.Dto.StockDeclarado;
+            stockDeEstablecimiento.Tolerancia = comando.Dto.Tolerancia;
         }
 
         protected override void Validar(ModificarStockDeEstablecimiento comando, Resultado resultado)

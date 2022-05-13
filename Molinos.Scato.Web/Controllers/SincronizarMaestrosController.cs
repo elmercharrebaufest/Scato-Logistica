@@ -265,7 +265,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        public void SinscronizarCartaPorteElectronicaActivos(int centro = 5, int items = 10000)
+        public void SincronizarCartaPorteElectronicaActivos(int centro = 5, int items = 10000)
         {
             try
             {

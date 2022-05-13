@@ -32,5 +32,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int WorkflowDefinicionId { get; set; }
         public int? PesoBruto { get; set; }
         public int? PesoTara { get; set; }
+        public string PatentePrevia { get; set; }
     }
 }

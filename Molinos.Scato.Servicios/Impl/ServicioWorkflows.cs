@@ -11,11 +11,13 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Repositorio.ConsultasEF;
+using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioWorkflows : IServicioWorkflows
     {
         private readonly IRepositorio repositorio;

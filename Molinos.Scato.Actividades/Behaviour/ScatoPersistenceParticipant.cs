@@ -33,6 +33,9 @@ namespace Molinos.Scato.Actividades.Behaviour
         public const string PropiedadChoferDNI = "ChoferDNI";
         public const string PropiedadChoferNombre = "ChoferNombre";
         public const string PropiedadProcedencia = "Procedencia";
+        public const string PropiedadEsGrano = "EsGrano";
+        public const string PropiedadEntregador = "Entregador";
+        public const string PropiedadEsRechazado = "EsRechazado";
 
         private readonly XNamespace xNs = XNamespace.Get("http://scato.molinos.com/PropiedadesCustom");
 
@@ -59,7 +62,9 @@ namespace Molinos.Scato.Actividades.Behaviour
         public string ChoferDNI { get; set; }
         public string ChoferNombre { get; set; }
         public string Procedencia { get; set; }
-
+        public string EsGrano { get; set; }
+        public string Entregador { get; set; }
+        public string EsRechazado { get; set; }
         protected override void CollectValues(out IDictionary<XName, object> readWriteValues,
                                               out IDictionary<XName, object> writeOnlyValues)
 
@@ -90,6 +95,9 @@ namespace Molinos.Scato.Actividades.Behaviour
                     {xNs.GetName(PropiedadChoferDNI), ChoferDNI},
                     {xNs.GetName(PropiedadChoferNombre), ChoferNombre},
                     {xNs.GetName(PropiedadProcedencia), Procedencia},
+                    {xNs.GetName(PropiedadEsGrano), EsGrano},
+                    {xNs.GetName(PropiedadEntregador), Entregador},
+                    {xNs.GetName(PropiedadEsRechazado), EsRechazado},
                 };
             writeOnlyValues = null;
         }
@@ -120,7 +128,9 @@ namespace Molinos.Scato.Actividades.Behaviour
             ChoferDNI = readWriteValues.ContainsKey(xNs.GetName(PropiedadChoferDNI)) ? readWriteValues[xNs.GetName(PropiedadChoferDNI)] as string : "";
             ChoferNombre = readWriteValues.ContainsKey(xNs.GetName(PropiedadChoferNombre)) ? readWriteValues[xNs.GetName(PropiedadChoferNombre)] as string : "";
             Procedencia = readWriteValues.ContainsKey(xNs.GetName(PropiedadProcedencia)) ? readWriteValues[xNs.GetName(PropiedadProcedencia)] as string : "";
-
+            EsGrano = readWriteValues.ContainsKey(xNs.GetName(PropiedadEsGrano)) ? readWriteValues[xNs.GetName(PropiedadEsGrano)] as string : "";
+            Entregador = readWriteValues.ContainsKey(xNs.GetName(PropiedadEntregador)) ? readWriteValues[xNs.GetName(PropiedadEntregador)] as string : "";
+            EsRechazado = readWriteValues.ContainsKey(xNs.GetName(PropiedadEsRechazado)) ? readWriteValues[xNs.GetName(PropiedadEsRechazado)] as string : "";
         }
     }
 }

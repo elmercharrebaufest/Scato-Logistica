@@ -1,14 +1,14 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
-using Molinos.Scato.Servicios.Orquestador;
+using Molinos.Scato.Servicios.Behavior;
 using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioSuscriptor : IServicioSuscriptor
     {
         private readonly IServicioComandos servicioComandos;
@@ -35,16 +35,19 @@ namespace Molinos.Scato.Servicios.Impl
                         var resultadoApertura = servicioComandos.Ejecutar(new CrearMotivoQuiebreBarrera { CodigoDispositivo = notificacion.CodigoDispositivo, Apertura = true });
                         EnviarMail(Textos.MailQuiebreBarrera, resultadoApertura, notificacion);
                         break;
+
                     case "EntradaDesactivada":
                         var resultadoCierre = servicioComandos.Ejecutar(new CrearMotivoQuiebreBarrera { CodigoDispositivo = notificacion.CodigoDispositivo, Apertura = false });
                         EnviarMail(Textos.MailCierreBarrera, resultadoCierre, notificacion);
                         break;
+
                     case "BalanzadaRecibida":
                         if (notificacion.Datos["tipoBalanzada"] == "fin")
                         {
                             servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = notificacion.CodigoDispositivo, CodigoDispositivo = notificacion.CodigoDispositivo, Hasta = Int32.Parse(notificacion.Datos["id"]) });
                         }
                         break;
+
                     case "CambioEstadoSensor":
                         estadoPuesto.NotificarSensorBarrera(notificacion);
 
@@ -59,6 +62,7 @@ namespace Molinos.Scato.Servicios.Impl
                         //    estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, notificacion.Datos["Mensaje"]);
                         //}
                         break;
+
                     case "LecturaCPE":
                         LecturaCartaPorteElectronica(notificacion.CodigoDispositivo, int.Parse(notificacion.Datos["QR"]));
                         break;
@@ -94,9 +98,11 @@ namespace Molinos.Scato.Servicios.Impl
                 servicioComandos.Ejecutar(new EnvioMail { Destinatarios = usuariosApertura, Titulo = "Quiebre de Barrera", Cuerpo = string.Format(cuerpo, notificacion.CodigoDispositivo, DateTime.Now, notificacion.CodigoDispositivo, ultMovString, Convert.ToBase64String(foto)) });
             }
         }
-        private void LecturaCartaPorteElectronica(string dispositivo, int ctg) {
+
+        private void LecturaCartaPorteElectronica(string dispositivo, int ctg)
+        {
             var puesto = repositorio.ObtenerPuestoDeTrabajoPorDispositivo(dispositivo);
-            servicioComandos.Ejecutar(new NotificarLecturaCPE { PuestoId = puesto.Id,CentroId = puesto.CentroId, NroCtg= ctg });
+            servicioComandos.Ejecutar(new NotificarLecturaCPE { PuestoId = puesto.Id, CentroId = puesto.CentroId, NroCtg = ctg });
         }
     }
 }

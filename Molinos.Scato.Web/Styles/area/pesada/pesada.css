@@ -1,0 +1,21 @@
+﻿.footerPesada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footerPesada > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    padding-left: 20px;
+}
+
+.footerPesada > div:nth-child(1) input {
+    width: 60%;
+    margin: 0 1rem;
+}
+
+.footerPesada > div:nth-child(1) span {
+    width: 20%;
+}

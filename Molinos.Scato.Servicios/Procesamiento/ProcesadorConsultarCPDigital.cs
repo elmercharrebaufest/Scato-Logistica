@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.ServiceModel;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -18,12 +11,19 @@ using Molinos.Scato.Servicios.Conversiones;
 using Ninject;
 using Ninject.Extensions.Logging;
 using PdfiumViewer;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorConsultarCPDigital : ProcesadorComando<ConsultarCPDigital>
     {
-        const int cLongitudMaximaCupo = 16; //Se establece el limite maximo de caracteres para el campo cupo de la consulta de CTG.
+        private const int cLongitudMaximaCupo = 16; //Se establece el limite maximo de caracteres para el campo cupo de la consulta de CTG.
         private readonly CpePortType serviceAfipCPDigital;
         private readonly IAccesoWsCtg accesoWsCtg;
         private IKernel kernel;
@@ -58,7 +58,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (cartaPorteElectronica != null)
                 {
                     cartaPorteElectronica.CuitIntermediario = cartaPorteElectronica.RetiroProductor == true ? cartaPorteElectronica.CuitRemitenteComercialProductor : 0;
-                    
+
                     var cpe = ConvertirCartaPorteDto(auth, cartaPorteElectronica, centro, resultado, comando.ConsultaMinima);
                     resultado.Cpe = cpe;
                     return resultado;
@@ -77,16 +77,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         Log.Debug("ProcesadorConsultarCPDigital - TipoTren - PorCTG");
                         resultado = GuardarCartaPorteElectronica(comando.NroCtg, auth, centro);
-                        if(!resultado.HayErrores) {
+                        if (!resultado.HayErrores)
+                        {
                             foreach (var itemVehiculo in resultado.Cpe.Vehiculos)
                             {
-                                itemVehiculo.NumCTG  = resultado?.Cpe?.NroCartaPorte;
+                                itemVehiculo.NumCTG = resultado?.Cpe?.NroCartaPorte;
                                 itemVehiculo.Sucural = resultado?.Cpe?.Sucursal?.ToString("D5");
                                 itemVehiculo.NumOrden = resultado?.Cpe?.NroOrden?.ToString("D8");
                                 itemVehiculo.TipoVehiculo = TipoVehiculo.Tren;
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         var listaVagones = new List<VehiculoDto>();
                         Log.Debug("ProcesadorConsultarCPDigital - TipoTren - PorOperativo");
@@ -116,7 +118,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             }
                             if (!resultado.HayErrores)
                             {
-                                resultado.Cpe.Vehiculos = listaVagones;                                
+                                resultado.Cpe.Vehiculos = listaVagones;
                             }
                         }
                     }
@@ -162,9 +164,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             foreach (var error in responseCp.respuesta.errores)
                             {
                                 resultado.Errores.Add("2", error.descripcion);
+                                if (error.codigo == Constantes.AFIPCodigoDeError.NoExistenSolicitudes)
+                                {
+                                    if (cartaPorte != null)
+                                    {
+                                        cartaPorte.NoEncontradaAFIP = true;
+                                        continuar = false;
+                                        Repositorio.GuardarCambios();
+                                    }
+                                }
                             }
-
-                            continuar = false;
                         }
 
                         foreach (var error in responseCp.respuesta.errores)
@@ -175,7 +184,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (responseCp.respuesta != null && continuar)
                     {
-                        if(responseCp?.respuesta?.pdf != null)
+                        if (responseCp?.respuesta?.pdf != null)
                         {
                             try
                             {
@@ -267,7 +276,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Pdf = responseCp?.respuesta?.pdf,
                             TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia),
                             FechaCacheado = DateTime.Now,
-
                         };
                         if (cartaPorte != null)
                         {
@@ -344,7 +352,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         if (localidadObj == null)
                         {
                             localidadDto = ObtenerLocalidadAfip(auth, localidad, cartaPorte.Provincia.Value);
-                        } 
+                        }
                         else
                         {
                             localidadDto = localidadObj;
@@ -443,7 +451,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private Localidad ObtenerLocalidadAfip(Auth auth,string localidadAfip, int provinciaAfip)
+        private Localidad ObtenerLocalidadAfip(Auth auth, string localidadAfip, int provinciaAfip)
         {
             var provinciaObj = Repositorio.Listar<Provincia>(x => x.CodigoAfip == provinciaAfip).FirstOrDefault();
             var responseLoc = serviceAfipCPDigital.consultarLocalidadesPorProvincia(new consultarLocalidadesPorProvinciaRequest()
@@ -455,11 +463,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
             });
 
-            if(responseLoc?.respuesta?.errores?.Length == 0)
+            if (responseLoc?.respuesta?.errores?.Length == 0)
             {
                 var loc = responseLoc.respuesta.localidad.FirstOrDefault(x => x.codigo == localidadAfip);
 
-                if(loc != null)
+                if (loc != null)
                 {
                     var localidad = new Localidad
                     {
@@ -503,6 +511,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             return null;
         }
+
         private void AgregarWarning(Resultado resultado, string mensaje)
         {
             if (resultado.Errores.ContainsKey("1"))
@@ -514,6 +523,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("1", mensaje);
             }
         }
+
         private Transportista ObtenerTransportista(string cuitTransportista, Resultado resultado)
         {
             if (!string.IsNullOrEmpty(cuitTransportista))
@@ -529,12 +539,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return null;
         }
 
-        private CartaPorteDto ConvertirCartaPorteDto(Auth auth, CartaPorteElectronica cartaPorte, Centro centro, Resultado resultado,bool consultaMinima)
+        private CartaPorteDto ConvertirCartaPorteDto(Auth auth, CartaPorteElectronica cartaPorte, Centro centro, Resultado resultado, bool consultaMinima)
         {
             if (consultaMinima)
             {
                 var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
-                return new CartaPorteDto {
+                return new CartaPorteDto
+                {
                     NroOrden = cartaPorte.NroOrden,
                     Cupo = cartaPorte.CodigoTurno,
                     Material = material.Descripcion,
@@ -544,14 +555,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Sucursal = cartaPorte.Sucursal,
                     Cpe = true,
                     EstadoCpe = cartaPorte.Estado,
-                    Vehiculos = new List<VehiculoDto>() { 
-                        new VehiculoDto { 
+                    Vehiculos = new List<VehiculoDto>() {
+                        new VehiculoDto {
                             Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
                             PatenteAcoplado = cartaPorte?.Dominio?.Split(',')?.Length > 1 ? cartaPorte?.Dominio?.Split(',')?.LastOrDefault() : string.Empty
-                        } 
+                        }
                     }
                 };
-                
             }
             var localidad = cartaPorte.Localidad.Value.ToString();
             var provincia = cartaPorte.Provincia.Value.ToString();
@@ -628,7 +638,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Observacion = cartaPorte.Observacion,
                 PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
                 RepresentanteRecibidor = representanteRecibidor,
-
             };
 
             var cpe = Conversor.Convertir<Dominio.Entidades.CartaPorte, CartaPorteDto>(entidad);
@@ -670,7 +679,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Errores.Add("2", "No se obtuvo respuesta desde AFIP");
                     Log.Debug($"Consulta de CPE por Nro de operativo ctg {nroOperativo} sin respuesta");
                     return resultado;
-
                 }
                 if (responseCpPorOperativo.respuesta != null && responseCpPorOperativo.respuesta.errores != null && responseCpPorOperativo.respuesta.errores.Any())
                 {
@@ -833,12 +841,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Observacion = responseCp?.respuesta?.cabecera?.observaciones,
 
                         FechaCacheado = DateTime.Now,
-
                     };
                     if (cartaPorte != null)
                     {
                         Conversor.Convertir(cartaPorteRequest, cartaPorte);
-                        if(cartaPorteRequest.Pdf != null)
+                        if (cartaPorteRequest.Pdf != null)
                         {
                             cartaPorte.Pdf = cartaPorteRequest.Pdf;
                         }
@@ -863,7 +870,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             CodigoAfip = localidadObj.CodigoAfip,
                             Descripcion = localidadObj.CodigoAfip + " - " + localidadObj.Descripcion + "(" + localidadObj.Provincia.Descripcion + ")"
                         };
-                    } 
+                    }
                     else
                     {
                         localidadDto = localidadObj;
@@ -930,7 +937,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         TransportistaTramo2 = Convert.ToUInt64(cartaPorte.CuitTransportistaTramo2) == 0 ? null : ObtenerTransportista(cartaPorte.CuitTransportistaTramo2.ToString(), resultado),
                         PagadorFlete = ObtenerProveedor(cartaPorte.CuitPagadorFlete.ToString(), resultado, Textos.CartaPorte_Transportista_Pagador_Flete, false, false, true),
                         RepresentanteRecibidor = representanteRecibidor,
-
                     };
 
                     resultado.Cpe = Conversor.Convertir<Dominio.Entidades.CartaPorte, CartaPorteDto>(entidad);
@@ -953,9 +959,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.Cpe.CodigoRamal = ramalFerroviario.Descripcion;
                         resultado.Cpe.CodigoRamalAfip = ramalFerroviario.CodigoAfip;
                         resultado.Cpe.CodigoRamalId = ramalFerroviario.Id;
-                    }                    
+                    }
                 }
-
             }
             catch (FaultException e)
             {
@@ -967,7 +972,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "No se pudo consultar la CTG {0}", nroCTG);
                 resultado.Errores.Add("2", Textos.Error_Generico);
             }
-            
+
             return resultado;
         }
     }

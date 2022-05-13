@@ -12,5 +12,6 @@
         public bool SensorVagones { get; set; }
         public int SensorDireccionId { get; set; }
         public bool SensorVagonStatus { get; set; }
+        public string SensorModificado { get; set; }
     }
 }

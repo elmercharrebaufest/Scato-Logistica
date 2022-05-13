@@ -44,7 +44,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.Patente, f => f.MapFrom(r => r.Patente))
                 .ForMember(t => t.Transportista, f => f.MapFrom(r => r.Transportista.RazonSocial))
                 .ForMember(t => t.TransportistaId, f => f.MapFrom(r => r.Transportista.Id))
-                .ForMember(t => t.PagaTicketMunicipal, f => f.MapFrom(r => r.PagaTicketMunicipal));
+                .ForMember(t => t.PagaTicketMunicipal, f => f.MapFrom(r => r.PagaTicketMunicipal))
+                .ForMember(t => t.EsGrano, f => f.MapFrom(r => r.Material.EsGrano))
+                .ForMember(t => t.Entregador, f => f.MapFrom(r => r.Vehiculo.CartaPorte.Entregador.RazonSocial));
 
             Mapper.CreateMap<Recorrido, OtroRecorridoDelChoferDto>();
         }

@@ -524,6 +524,7 @@ function DisabledControlers(status) {
     $('#checkvalidarPatente').prop('checked', true);
     $('#checkvalidarPatente').trigger("change");
     $('#checkSinCupo').prop('checked', status);
+    $('[name="SinCupo"]').val(status);
     //$('#checkvalidarPatente').prop('disabled', status);
     $('#checkSinCupo').prop('disabled', status);
     $('#Cupo').prop('readonly', status);
@@ -621,6 +622,7 @@ function ConfiguracionNoGranosActiva() {
     $('#NumeroCartaPorte').attr('disabled', true);
     $('#CTG').attr('disabled', true);
     $('#checkSinCupo').attr('checked', true);
+    $('[name="SinCupo"]').val(true);
     $("#Cupo").val("MOL1111/11111111");
     $('#divSpan6').removeClass('error');
     $("label[for*='Patente']").text("Patente");
@@ -638,6 +640,7 @@ function ConfiguracionNoGranosInactiva() {
     //$('#NumeroCartaPorte').attr('disabled', false);
     $('#CTG').attr('disabled', false);
     $('#checkSinCupo').attr('checked', false)
+    $('[name="SinCupo"]').val(false);
     $("#Cupo").val("");
     $("label[for*='Patente']").text("Patente AFIP");
     $('#Patente').prop('readonly', true);

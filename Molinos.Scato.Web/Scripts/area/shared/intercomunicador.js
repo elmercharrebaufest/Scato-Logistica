@@ -264,7 +264,7 @@ IntercomunicadorDispositivoVM.prototype = {
                                 } else if (self.vm.mainModule.models.configuration.request.status == 409) {
                                     self.vm.mainModule.selectors.btnActivar.prop('checked', false);
                                     self.vm.mainModule.selectors.btnMicrofono.prop('disabled', true);
-                                    alert("Ya existe una conexión creada para el dispositivo seleccionado")
+                                    alert("Ya existe una conexión creada para el dispositivo seleccionado");
                                 }
                             }
                         } catch (e) {
@@ -295,7 +295,6 @@ IntercomunicadorDispositivoVM.prototype = {
                                 self.vm.mainModule.models.configuration.localStream.getTracks().forEach(function (track) {
                                     track.enabled = false;
                                 });
-                                /*               self.vm.mainModule.models.configuration.localStream = null;*/
                             }
                         } catch (e) {
                             self.trace("disconnect error: " + e.description);
@@ -532,12 +531,27 @@ IntercomunicadorDispositivoVM.prototype = {
 
                         if (!audioSource) {
                             const constraints = {
-                                audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
+                                audio: {
+                                    deviceId: audioSource ? { exact: audioSource } : undefined,
+                                    echoCancellation: false,
+                                    noiseSuppression: false,
+                                    latency: 0,
+                                    sampleRate: 48000,
+                                    sampleSize: 24,
+                                    autoGainControl: false
+                                    /*autoGainControl: false,
+                                    channelCount: 2,
+                                    latency: 0,
+                                    volume: 3.0*/
+                                },
+                                video: false
                             };
 
                             let stream = await navigator.mediaDevices.getUserMedia(constraints);
                             self.vm.mainModule.models.configuration.localStream = stream;
                             self.trace('Permisos mic concedidos con localstream: ' + self.vm.mainModule.models.configuration.localStream);
+                        } else {
+                            self.trace('No se encontro un origen de audio para dar permisos');
                         }
                     },
                     getMicDevices: async function () {
@@ -581,6 +595,19 @@ IntercomunicadorDispositivoVM.prototype = {
                             },
                         }).always(function () {
                         });
+                    },
+                    activateIntercomunicador: function () {
+                        self.vm.mainModule.models.configuration.debugLog = [];
+                        self.trace('Listo para recibir audio');
+                        self.vm.mainModule.methods.signInSpeak();
+                        self.vm.mainModule.methods.connectListen();
+                        self.vm.mainModule.methods.deviceActivation(true);
+                    },
+                    deactivateIntercomunicador: function () {
+                        self.trace('Fin de recepcion');
+                        self.vm.mainModule.methods.disconnectListen();
+                        self.vm.mainModule.methods.disconnectSpeak();
+                        self.vm.mainModule.methods.deviceActivation(false);
                     }
                 },
                 models: {
@@ -613,6 +640,9 @@ IntercomunicadorDispositivoVM.prototype = {
         let self = this;
         self.vm.mainModule.models.configuration.debugLog.push(message);
     },
+    sleep: function (ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    },
     init: function () {
         let self = this;
 
@@ -623,26 +653,38 @@ IntercomunicadorDispositivoVM.prototype = {
             self.vm.mainModule.selectors.btnMicrofono.prop('disabled', !self.vm.mainModule.selectors.btnActivar.prop('checked'));
             self.vm.mainModule.models.configuration.retry = self.vm.mainModule.selectors.btnActivar.prop('checked');
             if (self.vm.mainModule.selectors.btnActivar.prop('checked')) {
-                self.vm.mainModule.models.configuration.debugLog = [];
-                self.trace('Listo para recibir audio');
-                self.vm.mainModule.methods.signInSpeak();
-                self.vm.mainModule.methods.connectListen();
-                self.vm.mainModule.methods.deviceActivation(true);
+                self.vm.mainModule.methods.activateIntercomunicador();
+                //self.sleep(1000);
+                //self.vm.mainModule.methods.deactivateIntercomunicador();
+                //self.sleep(1000);
+                //self.vm.mainModule.methods.deviceActivation(true);
             } else {
-                self.trace('Fin de recepcion');
-                self.vm.mainModule.methods.disconnectListen();
-                self.vm.mainModule.methods.disconnectSpeak();
-                self.vm.mainModule.methods.deviceActivation(false);
+                self.vm.mainModule.methods.deactivateIntercomunicador();
             }
         });
 
         self.vm.mainModule.selectors.btnMicrofono.on('mousedown', (e) => {
             self.trace('**************** Inicio de envio de audio **************');
-            self.vm.mainModule.models.configuration.localStream.getTracks().forEach((track) => track.enabled = true);
-            self.vm.mainModule.selectors.remotePlayer.prop('muted', true);
-            self.vm.mainModule.states.microfonoActivado = true;
-            self.vm.mainModule.selectors.pressedAudioButton = $(e.currentTarget);
-            self.vm.mainModule.selectors.pressedAudioButton.find("i").switchClass("fa-microphone-slash", "fa-microphone", 0);
+            if (self.vm.mainModule.models.configuration.localStream != null) {
+                if (self.vm.mainModule.models.configuration.localStream.getTracks().length == 0) {
+                    self.trace('**************** No se encontraron tracks para el stream actual **************');
+                }
+                self.vm.mainModule.models.configuration.localStream.getTracks().forEach((track) => {
+                    track.enabled = true;
+                    self.trace('**************** Track Encontrado **************');
+                    self.trace('Tipo de Track: ' + track.kind);
+                    self.trace('Nombre de Track: ' + track.label);
+                    self.trace('Muteado: ' + track.muted);
+                });
+
+                self.vm.mainModule.selectors.remotePlayer.prop('muted', true);
+                self.vm.mainModule.states.microfonoActivado = true;
+                self.vm.mainModule.selectors.pressedAudioButton = $(e.currentTarget);
+                self.vm.mainModule.selectors.pressedAudioButton.find("i").switchClass("fa-microphone-slash", "fa-microphone", 0);
+            } else {
+                self.trace('**************** El localStream no fue inicializado **************');
+                alert("No se pudo iniciar el dispositivo de audio.");
+            }
         });
 
         $(document).on('mouseup', () => {
