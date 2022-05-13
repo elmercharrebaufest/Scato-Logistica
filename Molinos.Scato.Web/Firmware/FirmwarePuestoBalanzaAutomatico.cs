@@ -10,6 +10,7 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.ServicioHub;
 using Ninject.Extensions.Logging;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 
