@@ -210,7 +210,7 @@
                                     @if (Model.TipoPesada == TipoPesada.Tara)
                                     {
                                         <div class="input-append">
-                                            @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10, data_peso_url = Url.Action("TomarPeso", Model.ActividadXaml), style = "margin-right:10px" })
+                                            @Html.TextBoxFor(model => model.Peso, new { @class = "control input-small peso2", @readonly = "readonly", tabIndex = -10, data_peso_url = Url.Action("TomarPesoConMotivo", Model.ActividadXaml), style = "margin-right:10px" })
                                             <button id="tomarPeso" class="btn" type="button" tabindex="2" data-mensaje-esperar="@Textos.Pesada_Espere">@Textos.TomarPeso</button>
                                         </div>
                                         @Html.ValidationMessageFor(model => model.Peso)
