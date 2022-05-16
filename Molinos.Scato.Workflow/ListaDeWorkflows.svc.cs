@@ -261,7 +261,7 @@ namespace Molinos.Scato.Workflow
                             && ((filtro.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoDeIngreso.Contains(filtro.NumeroDocumentoDeIngreso)) || filtro.NumeroDocumentoDeIngreso == null)
                             && ((filtro.MaterialId.HasValue && x.MaterialId == filtro.MaterialId.Value) || filtro.MaterialId == null)
                             && ((filtro.TipoComercialId.HasValue && x.TipoComercialId == filtro.TipoComercialId) || filtro.TipoComercialId == null)
-                            && ((filtro.Condicion.HasValue && (int)x.Condicion == (int)filtro.Condicion) || (filtro.Condicion.HasValue && (int)filtro.Condicion == 2 && x.Estado == InstanceStatus.Suspended) || filtro.Condicion == null);
+                            && ((filtro.Condicion.HasValue && (int)x.Condicion == (int)filtro.Condicion) || filtro.Condicion == null);
                 instanciasWorkflow = instanciasWorkflow.Where(expresionFiltro);
 
                 resultado.InstanciasWorkflowDto = instanciasWorkflow;
