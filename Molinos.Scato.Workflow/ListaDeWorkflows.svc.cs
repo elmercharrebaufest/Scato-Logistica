@@ -636,9 +636,26 @@ namespace Molinos.Scato.Workflow
                 foreach (var info in instanceQuery.EndExecuteQuery(result))
                 {
                     var codigoWorkflow = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadWorkflow);
+                    var tipoVehiculoValor = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadTipoVehiculo);
+                    var tipoDocumentoDeIngresoValor = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadTipoDocumentoDeIngreso);
+
+
+
+                    TipoVehiculo? tipoVehiculo = null;
+                    if (!string.IsNullOrEmpty(tipoVehiculoValor))
+                        tipoVehiculo = (TipoVehiculo)Enum.Parse(typeof(TipoVehiculo), tipoVehiculoValor);
+
+                    TipoDocumentoIngreso? tipoDocumentoDeIngreso = null;
+                    if (!string.IsNullOrEmpty(tipoDocumentoDeIngresoValor))
+                        tipoDocumentoDeIngreso = (TipoDocumentoIngreso)Enum.Parse(typeof(TipoDocumentoIngreso), tipoDocumentoDeIngresoValor, true);
+
+   
+
                     resultadoPrueba.Add(new InstanciaWorkflowDto
                     {
-                        TipoVehiculo = (TipoVehiculo)Enum.Parse(typeof(TipoVehiculo), ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadTipoVehiculo)),
+                        TipoVehiculo = tipoVehiculo,
+                        TipoDocumentoDeIngreso = tipoDocumentoDeIngreso,
+                        NumeroDocumentoDeIngreso = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadNumeroDocumentoDeIngreso),
                         Patente = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadPatente),
                         ProximaAccion = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadActividad),
                         Workflow = codigoWorkflow,
@@ -646,8 +663,6 @@ namespace Molinos.Scato.Workflow
                         Material = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadMaterial),
                         Transportista = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadTransportista),
                         Cuit = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadCuit),
-                        TipoDocumentoDeIngreso = (TipoDocumentoIngreso)Enum.Parse(typeof(TipoDocumentoIngreso), ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadTipoDocumentoDeIngreso), true),
-                        NumeroDocumentoDeIngreso = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadNumeroDocumentoDeIngreso),
                         CentroCodigoSap = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadCentroCodigoSap),
                         NumeroDeTarjeta = ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadNumeroDeTarjeta),
                         CentroId = Convert.ToInt32(ObtenerValor(info, ScatoPersistenceParticipant.PropiedadNameSpace + ScatoPersistenceParticipant.PropiedadCentroId, true)),

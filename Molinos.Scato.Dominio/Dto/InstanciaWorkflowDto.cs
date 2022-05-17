@@ -34,7 +34,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Proveedor { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Workflow_TipoDocumentoDeIngreso")]
-        public TipoDocumentoIngreso TipoDocumentoDeIngreso { get; set; }
+        public TipoDocumentoIngreso? TipoDocumentoDeIngreso { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Workflow_NumeroDocumentoDeIngreso")]
         public string NumeroDocumentoDeIngreso { get; set; }
@@ -77,7 +77,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string MaterialCodigoSap { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Workflow_TipoVehiculo")]
-        public TipoVehiculo TipoVehiculo { get; set; }
+        public TipoVehiculo? TipoVehiculo { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "TipoComercial")]
         public string TipoComercial { get; set; }
