@@ -81,5 +81,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo TipoVehiculo { get; set; }
         public bool VehiculoDemorado { get; set; }
         public string MotivoDemora { get; set; }
+        public bool ActualizarTipoVehiculo { get; set; }
     }
 }

@@ -4,7 +4,7 @@
 @{
     var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
     var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
-    var ordenFas = ViewBag.OrdenFas != null ? (IEnumerable<SelectListItem>)ViewBag.OrdenFas :new List<SelectListItem>();
+    var ordenFas = ViewBag.OrdenFas != null ? (IEnumerable<SelectListItem>)ViewBag.OrdenFas : new List<SelectListItem>();
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
     var kmdropdown = new List<SelectListItem>();
     string WorkflowDescripcion = ViewBag.WorkflowDescripcion.ToString();
@@ -17,6 +17,7 @@
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"></div>
 
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
+@Html.Hidden("ActualizarTipoVehiculo", true)
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset class="grupo-carta-porte">
