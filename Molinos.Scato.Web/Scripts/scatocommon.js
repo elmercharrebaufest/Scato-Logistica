@@ -421,7 +421,7 @@ function ObtenerNombrePC() {
         async: false,
         data: {},
         success: function (nombre) {
-            $.cookie('NombrePc', nombre);
+            $.cookie('NombrePc', nombre, { expires: 365 });
             if (nombre.length == 0) {
                 ObtenerNombrePCPorActiveX();
             } else {
@@ -449,13 +449,13 @@ function ObtenerNombrePC() {
 function ObtenerPuestoDeTrabajo() {
     var cookiePuesto = $.cookie('PuestoDeTrabajoId');
     try {
-        if ((cookiePuesto != undefined && cookiePuesto.length > 0)) { //Ya existe el valor en la cookie
+        if ((cookiePuesto != undefined && cookiePuesto.length > 0 && cookiePuesto != '0')) { //Ya existe el valor en la cookie
             return;
         }
         var nombrePc = ObtenerNombrePC();
         $.getJSON($("#ObtenerPuestoDeTrabajoUrl").val(), { nombrePc: nombrePc },
             function (data) {
-                $.cookie('PuestoDeTrabajoId', data.Id);
+                $.cookie('PuestoDeTrabajoId', data.Id, { expires: 365 });
             }).error(function () {
                 $.cookie('PuestoDeTrabajoId', 0);
             });
