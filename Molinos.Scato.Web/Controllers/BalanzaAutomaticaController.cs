@@ -171,7 +171,7 @@ namespace Molinos.Scato.Web.Controllers
                 while (true)
                 {
                     var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
-                    if (estadoPuesto.ValidarEstadoPuesto(puestoId) && valida != "1")
+                    if (estadoPuesto.ValidarEstadoPuesto(puestoId) || valida != "1")
                         break;
                     var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
                     Thread.Sleep(tiempoDeCiclo);
