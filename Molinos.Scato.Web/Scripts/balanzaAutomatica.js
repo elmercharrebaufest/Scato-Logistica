@@ -792,21 +792,21 @@ function ModificarEstados(estadoSensores) {
 
         if (estadoSensores.SensorModificado == 'SensorIngresoActiva') {
             if (estadoSensores.SensorIngresoActiva == true) {
-                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-            } else {
                 $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
                 $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            } else {
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
             }
         }
 
         if (estadoSensores.SensorModificado == 'SensorTrompaActiva') {
             if (estadoSensores.SensorTrompaActiva == true) {
-                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-            } else {
                 $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
                 $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            } else {
+                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
             }
         }
 
