@@ -414,7 +414,7 @@ function ObtenerNombrePC() {
     if (cookie != undefined && cookie.length > 0) { //existe el valor en la cookie
         return cookie;
     }
-
+    var nombrePc;
     $.ajax({
         dataType: "json",
         url: $("#ObtenerNombrePcUrl").val(),
@@ -423,15 +423,17 @@ function ObtenerNombrePC() {
         success: function (nombre) {
             $.cookie('NombrePc', nombre, { expires: 365 });
             if (nombre.length == 0) {
-                ObtenerNombrePCPorActiveX();
+                nombrePc = ObtenerNombrePCPorActiveX();
             } else {
                 $("#nombrePc").text(nombre);
+                nombrePc = nombre;
             }
         },
         error: function () {
-            ObtenerNombrePCPorActiveX();
+            nombrePc = ObtenerNombrePCPorActiveX();
         }
     });
+    return nombrePc;
 
     //$.getJSON($("#ObtenerNombrePcUrl").val(), {},
     //    function (nombre) {
@@ -448,8 +450,9 @@ function ObtenerNombrePC() {
 
 function ObtenerPuestoDeTrabajo() {
     var cookiePuesto = $.cookie('PuestoDeTrabajoId');
+    var cookieNombrePc = $.cookie('NombrePc');
     try {
-        if ((cookiePuesto != undefined && cookiePuesto.length > 0 && cookiePuesto != '0')) { //Ya existe el valor en la cookie
+        if (cookiePuesto != undefined && cookiePuesto.length > 0 && (cookiePuesto != '0' || (cookieNombrePc != undefined && cookieNombrePc.length > 0))) { //Ya existe el valor en la cookie
             return;
         }
         var nombrePc = ObtenerNombrePC();
