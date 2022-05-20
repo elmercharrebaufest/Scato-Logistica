@@ -38,6 +38,10 @@
     });
     $('#PatenteCamion').change(ValidarPatenteCnrt);
     $('#PatenteAcoplado').change(ValidarPatenteCnrt);
+    $('#MaterialId').change(CargarAlamacenesPorMaterial);
+
+    
+
 });
 
 function cargarMaterial() {
@@ -185,4 +189,18 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
     }).complete(function () {
         if (callback != null) callback();
     });
+}
+
+function CargarAlamacenesPorMaterial() {
+    var material = $("#MaterialId").val();
+    $.getJSON($('#links').data().urlObtenerAlmacenesPorMaterial, { materialId: material},
+        function (allData) {
+            var options = '';
+            for (var j = 0; j < allData.length; j++) {
+                options += "<option value='" + allData[j].Id + "'>"
+                    + allData[j].Descripcion + "</option>";
+            }
+            $('#Almacen_Id').html(options);
+        }
+    );
 }

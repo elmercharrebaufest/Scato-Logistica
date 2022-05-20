@@ -5,7 +5,7 @@
     var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
     var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
     var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
-    var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
+    var almacenes = new List<SelectListItem>();
     var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
 
     var kmdropdown = new List<SelectListItem>();
@@ -37,7 +37,9 @@
      data-url-buscar-kmporproveedor="@Url.Action("BuscarKmPorProveedor", "Consultas")"
      data-url-obtener-materiales="@Url.Action("ListarMaterialesPorCliente", "Consultas")"
      data-url-obtener-estado-cliente="@Url.Action("ClienteBloqueado", "Consultas")"
+     data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"></div>
+
 <script type="text/javascript">
     workflowId = @ViewBag.WorkflowId
 </script>

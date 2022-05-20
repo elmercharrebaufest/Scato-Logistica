@@ -144,7 +144,15 @@ namespace Molinos.Scato.Web.Controllers
             controller.ViewBag.TiposVehiculo = pesoMaximoPorTipoVehiculo.Where(x => x.TipoVehiculo != TipoVehiculo.Tren ).ToSelectList(f => ((int)f.TipoVehiculo).ToString(), f => f.TipoVehiculo.DisplayText());
             controller.ViewBag.WorkflowId = workflow.Id;
             controller.ViewBag.WorkflowDescripcion = workflow.Descripcion;
+        }
 
+        [HttpGet]
+        [DatosUsuario]
+        public JsonResult ObtenerAlmacenesPorMaterial(int materialId, DatosUsuario datosUsuario)
+        {
+            var almacenes = servicio.ListarAlmacenesPorMaterial(datosUsuario.CentroId, materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
+            var almacenesList = almacenes.ToSelectList(f => f.Id.ToString(), f => f.Descripcion);
+            return Json(almacenes, JsonRequestBehavior.AllowGet);
         }
 
         protected virtual bool Validar(OrdenCargaInternaDto orden, DatosUsuario usuario)
