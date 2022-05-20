@@ -44,7 +44,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (!string.IsNullOrEmpty(recorrido.Vehiculo.CartaPorte.Cupo))
                     {
                         Log.Debug($"Vehiculo con Cupo {recorrido.Vehiculo.CartaPorte.Cupo}");
-                        var cargaDecupoPorCartaDePorte = Repositorio.Listar<CargaDeCupo>(x => x.Cupo == recorrido.Vehiculo.CartaPorte.Cupo && x.Recorrido == null/* && x.Id != cargaDecupo.Id && x.Material != null && x.Material.EsGrano*/ && x.SinCupo == false && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
+                        var cargaDecupoPorCartaDePorte = Repositorio.Listar<CargaDeCupo>(x => x.Cupo == recorrido.Vehiculo.CartaPorte.Cupo && x.Recorrido == null && x.Id != cargaDecupo.Id && x.Material != null && x.Material.EsGrano && x.SinCupo == false && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
                         if (cargaDecupoPorCartaDePorte != null)
                         {
                             Log.Debug($"Eliminando cargaDecupoPorCartaDePorte patente {cargaDecupoPorCartaDePorte.Patente} cupo {cargaDecupoPorCartaDePorte.Cupo} ");
