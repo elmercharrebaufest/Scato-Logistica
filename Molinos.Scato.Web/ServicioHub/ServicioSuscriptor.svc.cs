@@ -487,7 +487,7 @@ namespace Molinos.Scato.Web.ServicioHub
                     while (true)
                     {
                         var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
-                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) && valida != "1")
+                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) || valida != "1")
                             break;
                         var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
                         Thread.Sleep(tiempoDeCiclo);
