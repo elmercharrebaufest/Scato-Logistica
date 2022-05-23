@@ -216,7 +216,7 @@ namespace Molinos.Scato.Web.Controllers
                                 var endPos = numeroDocumentoChofer.LastIndexOf("-");
                                 numeroDocumentoChofer = numeroDocumentoChofer.Substring(startPos + 1, endPos - startPos - 1);
                             }
-                            else if (numeroDocumentoChofer.Length >= 8)
+                            else if (numeroDocumentoChofer.Length >= 10)
                             {
                                 numeroDocumentoChofer = numeroDocumentoChofer.Substring(2, 8);
                             }
