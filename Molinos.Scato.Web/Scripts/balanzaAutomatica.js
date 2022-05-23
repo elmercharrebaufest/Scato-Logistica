@@ -1,6 +1,7 @@
 ﻿var url;
 var error = {};
 var home;
+let flagEjecutarCancelarIntervalo = false;
 
 $(document).ready(function () {
     var notificador = $.connection.notificarUsuario;
@@ -20,6 +21,7 @@ $(document).ready(function () {
                 } else if (balanza.Error == "Espera Confirmacion") {
                     MostrarEspera(balanza, notificacion.Id);
                 } else {
+                    flagEjecutarCancelarIntervalo = true;
                     ErrorBalanza(balanza, notificacion.Id);
                 }
             } else {
@@ -326,7 +328,7 @@ function ErrorBalanza(b, id) {
     if (b.Error == "El puesto de trabajo actual no está habilitado para ejecutar la próxima actividad") {
         return;
     }
-    if (b.Actividad == "" || b.Actividad == null) {
+    if ((b.Actividad == "" || b.Actividad == null) && flagEjecutarCancelarIntervalo == true) {
         CancelarInterval(b.Id);
     } else {
         CargarbalanzadaAutomatica(b);
