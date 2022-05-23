@@ -226,7 +226,7 @@ namespace Molinos.Scato.Web.Controllers
                         var proveedor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].KUNDE.TrimStart(new[] { '0' }));
                         var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));
                         var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
-                        var chofer = servicio.ObtenerChoferPorNumeroDocumento(ordenCargaFas[i].NRO_DOC_CHOFER);
+                        var chofer = servicio.ObtenerChoferPorNumeroDocumento(numeroDocumentoChofer);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
 
                         if (material == null)
