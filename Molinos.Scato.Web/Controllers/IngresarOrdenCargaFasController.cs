@@ -17,6 +17,7 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -207,6 +208,13 @@ namespace Molinos.Scato.Web.Controllers
 
                     for (int i = 0; i < count; i++)
                     {
+                        var numeroDocumentoChofer = ordenCargaFas[i].NRO_DOC_CHOFER;
+                        if (ordenCargaFas[i].TIPO_DOC_CHOFER == TipoDocumentoChofer.Cuit && !string.IsNullOrEmpty(numeroDocumentoChofer)) {
+                            int startPos = numeroDocumentoChofer.IndexOf("-");
+                            int endPos = numeroDocumentoChofer.LastIndexOf("-");
+                            numeroDocumentoChofer = numeroDocumentoChofer.Substring(startPos + 1, endPos - startPos - 1);
+                        }
+
                         var transportista = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_TR), new TiposProveedor {PR = true});
                         var proveedor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].KUNDE.TrimStart(new[] { '0' }));
                         var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));

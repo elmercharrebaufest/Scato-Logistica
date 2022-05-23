@@ -39,6 +39,11 @@
             public const int Hasta = 99998;
         }
 
+        public struct TipoDocumentoChofer
+        {
+            public const string Cuit = "CUI";
+        }
+
         public struct ConfiguracionGeneral
         {
             public struct Pantalla
