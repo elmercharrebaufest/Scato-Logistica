@@ -294,7 +294,23 @@ namespace Molinos.Scato.Servicios.Impl
                 var error = repositorio.ObtenerMayor<Notificacion, int>(x => x.TipoAlerta == TipoAlerta.Automatica && x.PuestoId == puestoid, x => x.Id);
                 if (error != null && !error.Leido)
                 {
-                    resultado.Add(conversor.Convertir<Notificacion, NotificacionDto>(error));
+                    var errorDto = conversor.Convertir<Notificacion, NotificacionDto>(error);
+                    if (errorDto.Mensaje.Contains("\"Actividad\":\"\""))
+                    {
+                        var notificacionConDatos = repositorio.ObtenerMayor<Notificacion, int>(x => x.TipoAlerta == TipoAlerta.Automatica && x.PuestoId == puestoid && x.Hora < errorDto.Hora && !x.Leido && !x.Mensaje.StartsWith("{\"Actividad\":\"\""), x => x.Id);
+                        if(notificacionConDatos != null)
+                        {
+                            var notificacionDtoConDatos = conversor.Convertir<Notificacion, NotificacionDto>(notificacionConDatos);
+                            var balanzaConDatos = ExtensionesSerializacion.FromJson<NotificacionPesadaAutomaticaDto>(notificacionDtoConDatos.Mensaje);
+                            var balanza = ExtensionesSerializacion.FromJson<NotificacionPesadaAutomaticaDto>(errorDto.Mensaje);
+                            balanzaConDatos.Error = balanza.Error;
+                            notificacionConDatos.Mensaje = ExtensionesSerializacion.ToJson<NotificacionPesadaAutomaticaDto>(balanzaConDatos);
+                            resultado.Add(notificacionDtoConDatos);
+                        }
+                    } else
+                    {
+                        resultado.Add(errorDto);
+                    }
                 }
             }
             return resultado;
