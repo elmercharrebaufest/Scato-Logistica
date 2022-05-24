@@ -9946,4 +9946,7 @@
   <data name="StockTolerancia" xml:space="preserve">
     <value>Tolerancia</value>
   </data>
+  <data name="ContingenciaAvanceCpe" xml:space="preserve">
+    <value>Avanza Automatico Cpe</value>
+  </data>
 </root>

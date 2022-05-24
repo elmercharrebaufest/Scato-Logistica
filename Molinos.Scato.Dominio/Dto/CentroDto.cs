@@ -265,5 +265,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Centro_Ruta_Imagenes")]        
         [StringLength(200, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string FotosPath { get; set; }
+       
+        public bool AvanzaCpe { get; set; }
+
     }
 }

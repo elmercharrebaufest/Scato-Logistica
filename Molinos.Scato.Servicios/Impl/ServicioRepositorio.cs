@@ -9858,5 +9858,9 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<SensorBarrera, SensorBarreraDto>(x => x.VisualizacionBarrera.Id == grupoId);
 
         }
+        public bool AvanzaCpe(int centroId)
+        {
+            return repositorio.ObtenerProyeccion<Centro, bool>(x => x.Id == centroId, x => x.AvanzaCpe);
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [DatosUsuario]
-        public ActionResult Index(CargaDeCupoDto model, string imagenCartaPorte, DatosUsuario datosUsuario)
+        public ActionResult Index(CargaDeCupoDto model, string imagenCartaPorte, bool AvanceCpe, DatosUsuario datosUsuario)
         {
             if (model.CircuitoNoGranos)
             {
@@ -72,6 +72,13 @@ namespace Molinos.Scato.Web.Controllers
             }
             model.ImagenCartaPorte = imagenCartaPorte.Replace("data:image/jpg;base64,", "");
             ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(225, datosUsuario.CentroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
+            if (centro.AvanzaCpe != AvanceCpe)
+            {
+                centro.AvanzaCpe = AvanceCpe;
+                servicioComandos.Ejecutar(new ModificarCentro { Dto = centro, Usuario = datosUsuario.NombreUsuario });
+            }
+
             ModelState.Remove("MaterialId");
             ModelState.Remove("Especial");
             if (model.CPE)
@@ -161,7 +168,8 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
-                    CargarCartaPorte(resultado.Id, datosUsuario);
+                    if (AvanceCpe)
+                        CargarCartaPorte(resultado.Id, datosUsuario);
                     return View("Form");
                 }
             }
@@ -597,6 +605,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(225, datosUsuario.CentroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             ViewBag.PuestoDeTrabajo = puestoDeTrabajo != null ? puestoDeTrabajo.ToJson() : null;
             ViewBag.CentroId = datosUsuario.CentroId;
+            ViewBag.AvanzaAutomatico = servicio.AvanzaCpe(datosUsuario.CentroId);
         }
 
         private byte[] DibujarEtiqueta(byte[] foto, CargaDeCupoDto model, int fontSize = 25)
@@ -1004,6 +1013,12 @@ namespace Molinos.Scato.Web.Controllers
                         //return View(orden);
                     }
                 }
+                var tipoVehiculo = ObtenerTipoVehiculoPorPatente(vehiculos.FirstOrDefault().Patente, vehiculos.FirstOrDefault().PatenteAcoplado, workflow, datosUsuario, vehiculos.FirstOrDefault().PatenteAcoplado2).Categoria;
+                if(tipoVehiculo == null)
+                {
+                    log.Debug("Fallo validacion tipo vehiculo");
+                    return;
+                }
 
                 var resultadoChofer = SetearChofer(orden.Chofer);
                 if (resultadoChofer == false)
@@ -1352,6 +1367,20 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             return true;
+        }
+
+        public ResultadoEscalables ObtenerTipoVehiculoPorPatente(string patente, string acoplado, string workflow, DatosUsuario datosUsuario, string acoplado2 = "")
+        {
+            try
+            {
+                log.Debug("Obteniendo Tipo de vehiculo por patente {0} workflow {1}", patente, workflow);
+                return servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = acoplado2, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo obtener el tipo de vehiculo por patente {0}", patente);
+                throw;
+            }
         }
     }
 }

@@ -294,6 +294,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         if (comando.ConsultaMinima)
                         {
                             var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
+                            var titular = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
+                            var rtte = ObtenerProveedor(cartaPorte.CuitRemitenteComercialProductor.ToString(), resultado, Textos.CartaPorte_RtteComercial, false, false, true);
                             resultado.Cpe = new CartaPorteDto
                             {
                                 NroOrden = cartaPorte.NroOrden,
@@ -305,9 +307,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 Sucursal = cartaPorte.Sucursal,
                                 Cpe = true,
                                 EstadoCpe = cartaPorteRequest.Estado,
+                                TitularCartaPorteCodigoSap = titular.CodigoSap,
+                                RtteComercialCodigoSap = rtte.CodigoSap,
                                 Vehiculos = new List<VehiculoDto>() { new VehiculoDto { Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
                                 PatenteAcoplado = cartaPorte.Dominio.Split(',').Length > 1 ? cartaPorte.Dominio.Split(',')[1] : string.Empty,
-                                PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty,
+                                PatenteAcoplado2 = cartaPorte.Dominio.Split(',').Length > 2 ? cartaPorte.Dominio.Split(',').LastOrDefault() : string.Empty,                               
                                 Primero = true
                                 }}
                             };

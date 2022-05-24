@@ -10132,6 +10132,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avanza Automatico Cpe.
+        /// </summary>
+        public static string ContingenciaAvanceCpe {
+            get {
+                return ResourceManager.GetString("ContingenciaAvanceCpe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continuar.
         /// </summary>
         public static string Continuar {

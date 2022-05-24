@@ -2657,5 +2657,7 @@ namespace Molinos.Scato.Servicios
         IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta);
         [OperationContract]
         IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
+        [OperationContract]
+        bool AvanzaCpe(int centroId);
     }
 }
