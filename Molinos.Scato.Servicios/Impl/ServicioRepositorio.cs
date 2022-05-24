@@ -297,7 +297,7 @@ namespace Molinos.Scato.Servicios.Impl
                     var errorDto = conversor.Convertir<Notificacion, NotificacionDto>(error);
                     if (errorDto.Mensaje.Contains("\"Actividad\":\"\""))
                     {
-                        var notificacionConDatos = repositorio.ObtenerMayor<Notificacion, int>(x => x.TipoAlerta == TipoAlerta.Automatica && x.PuestoId == puestoid && x.Hora < errorDto.Hora && !x.Leido && !x.Mensaje.StartsWith("\"Actividad\":\"\""), x => x.Id);
+                        var notificacionConDatos = repositorio.ObtenerMayor<Notificacion, int>(x => x.TipoAlerta == TipoAlerta.Automatica && x.PuestoId == puestoid && x.Hora < errorDto.Hora && !x.Leido && !x.Mensaje.StartsWith("{\"Actividad\":\"\""), x => x.Id);
                         if(notificacionConDatos != null)
                         {
                             var notificacionDtoConDatos = conversor.Convertir<Notificacion, NotificacionDto>(notificacionConDatos);
