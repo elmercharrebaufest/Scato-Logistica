@@ -450,9 +450,8 @@ function ObtenerNombrePC() {
 
 function ObtenerPuestoDeTrabajo() {
     var cookiePuesto = $.cookie('PuestoDeTrabajoId');
-    var cookieNombrePc = $.cookie('NombrePc');
     try {
-        if (cookiePuesto != undefined && cookiePuesto.length > 0 && (cookiePuesto != '0' || (cookieNombrePc != undefined && cookieNombrePc.length > 0))) { //Ya existe el valor en la cookie
+        if (cookiePuesto != undefined && cookiePuesto.length > 0 && cookiePuesto != '0') { //Ya existe el valor en la cookie
             return;
         }
         var nombrePc = ObtenerNombrePC();
