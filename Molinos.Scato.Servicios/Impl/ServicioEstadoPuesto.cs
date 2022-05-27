@@ -343,27 +343,9 @@ namespace Molinos.Scato.Servicios.Impl
             var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
             foreach (var sensor in sensores)
             {
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo});
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
-            }
-
-        }
-
-        //Para refactor por cache o base
-        //public List<EstadoSensoresBalanzaDto> ConsultarEstadoBarreras()
-        //{
-        //    log.Debug($"Consultando el estado de los puestos");
-
-
-        public void ActualizarBarreras(string nombrePc)
-        {
-            var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
-            foreach (var sensor in sensores)
-            {
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo});
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba});
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo });
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
+                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
             }
 
         }
