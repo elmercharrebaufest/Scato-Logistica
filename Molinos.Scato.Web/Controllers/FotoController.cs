@@ -75,6 +75,7 @@ namespace Molinos.Scato.Web.Controllers
             var idsInt = id.Split('-').Select(x => int.Parse(x)).ToList();
             var fotos = servicio.ObtenerFotoCPDeCartasDePortePorrecorrido(idsInt);
             ObtenerFotoSustentable(fotos, idsInt);
+            ObtenerFotoDescargada(fotos, idsInt);
             ViewBag.NoReemplazarCp = idsInt.Count != 1;
             return View("Index",fotos);
         }
@@ -84,7 +85,7 @@ namespace Molinos.Scato.Web.Controllers
             var idsInt = id.Split('-').Select(x => int.Parse(x)).ToList();
             var fotos = servicio.ObtenerFotoCPDeCartasDePortePorrecorrido(idsInt);
             ObtenerFotoSustentable(fotos, idsInt);
-
+            ObtenerFotoDescargada(fotos, idsInt);
             using (var ms = new MemoryStream())
             {
                 using (var zipArchive = new ZipArchive(ms, ZipArchiveMode.Create, true))
@@ -171,6 +172,22 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
         }
-   
+
+        private void ObtenerFotoDescargada(FotosDto fotos, List<int> ids)
+        {
+            foreach (var recorridoId in ids)
+            {
+                var recorrido = servicio.ObtenerRecorrido(recorridoId);
+                if (recorrido != null && recorrido.Centro != null)
+                {
+                    var fotoDescargada = servicio.ObtenerFotoDescargada(recorrido.Centro.Id, recorrido.NumeroDocumentoIngreso, recorrido.NumeroDocumentoIngreso + "-descargado", recorrido.EsSustentable);
+                    if (fotoDescargada != null)
+                    {
+                        fotos.Fotos.Add(fotoDescargada);
+                    }
+                }
+            }
+        }
+
     }
 }

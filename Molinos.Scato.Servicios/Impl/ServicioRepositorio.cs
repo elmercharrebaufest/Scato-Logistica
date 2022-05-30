@@ -9803,17 +9803,17 @@ namespace Molinos.Scato.Servicios.Impl
                 {
                     index = path.LastIndexOf("-");
                 }
-                var pathSustentable = path.Substring(0, index) + "-sustentable.png";
+                var pathSustentable = path.Substring(0, index) + "-sustentable.jpeg";
                 if (File.Exists(pathSustentable))
                 {
                     var fecha = File.GetCreationTime(pathSustentable);
-                    result = ObtenerImagenSustentable(pathSustentable, fecha, actividad);
+                    result = ObtenerImagen(pathSustentable, fecha, actividad);
                 }
             }
             return result;
         }
 
-        private FotoDto ObtenerImagenSustentable(string path, DateTime fecha, string actividad)
+        private FotoDto ObtenerImagen(string path, DateTime fecha, string actividad)
         {
             FotoDto result = null;
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
@@ -9861,6 +9861,29 @@ namespace Molinos.Scato.Servicios.Impl
         public bool AvanzaCpe(int centroId)
         {
             return repositorio.ObtenerProyeccion<Centro, bool>(x => x.Id == centroId, x => x.AvanzaCpe);
+        }
+
+        public FotoDto ObtenerFotoDescargada(int centroId, string numeroDocumento, string actividad, bool esSustentable)
+        {
+            FotoDto result = null;
+            var cartaPorte = ObtenerUltimo<CartaPorte, CartaPorteDto>(x => x.NroCartaPorte == numeroDocumento && x.CentroDestino.Id == centroId, x => x.Id);
+            if (cartaPorte != null && cartaPorte.FotoRutaDestino != null)
+            {
+                var path = cartaPorte.FotoRutaDestino;
+                var index = path.IndexOf("-Mesa");
+                if (index < 0)
+                {
+                    index = path.LastIndexOf("-");
+                }
+                var pathSustentable = esSustentable ? path.Substring(0, index) + "-descargado-sustentable.jpeg" : path.Substring(0, index) + "-descargado.jpeg";
+                if (File.Exists(pathSustentable))
+                {
+                    var fecha = File.GetCreationTime(pathSustentable);
+                    result = ObtenerImagen(pathSustentable, fecha, actividad);
+                }
+
+            }
+            return result;
         }
     }
 }

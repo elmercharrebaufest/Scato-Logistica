@@ -944,6 +944,11 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     fotos.Fotos.Add(fotoSustentable);
                 }
+                var fotoDescargada = servicio.ObtenerFotoDescargada(recorrido.Centro.Id, recorrido.NumeroDocumentoIngreso, "descargado", recorrido.EsSustentable);
+                if (fotoDescargada != null && !(fotos.Fotos.Where(f => f.Foto != fotoDescargada.Foto && f.Fecha != fotoDescargada.Fecha).ToList().Count > 0))
+                {
+                    fotos.Fotos.Add(fotoDescargada);
+                }
             }
             return View("Fotos", fotos);
         }

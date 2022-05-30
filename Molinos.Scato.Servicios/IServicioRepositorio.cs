@@ -2659,5 +2659,8 @@ namespace Molinos.Scato.Servicios
         IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
         [OperationContract]
         bool AvanzaCpe(int centroId);
+
+        [OperationContract]
+        FotoDto ObtenerFotoDescargada(int centroId, string numeroDocumento, string actividad, bool esSustentable);
     }
 }
