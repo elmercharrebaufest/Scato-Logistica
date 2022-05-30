@@ -65,6 +65,7 @@
     [ErrorCacheoAfipCPE]               NVARCHAR (MAX) NULL,
     [FotosPath]                        VARCHAR (200)  NULL,
     [AvanzaCpe] BIT NOT NULL DEFAULT 0, 
+    [MinutosEsperaPrecalado] INT DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_dbo.Centro] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Centro_dbo.Camara_Camara_Id] FOREIGN KEY ([CamaraDefault_Id]) REFERENCES [dbo].[Camara] ([Id]),
     CONSTRAINT [FK_dbo.Centro_dbo.Localidad_Localidad_Id] FOREIGN KEY ([Localidad_Id]) REFERENCES [dbo].[Localidad] ([Id]),

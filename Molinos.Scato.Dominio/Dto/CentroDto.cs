@@ -267,6 +267,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string FotosPath { get; set; }
        
         public bool AvanzaCpe { get; set; }
-
+        public int? MinutosEsperaPrecalado { get; set; }
     }
 }

@@ -72,12 +72,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     //            contexto.Set<CallePorRecorrido>().Any(y => (y.CargaDeCupo.Material.Id == materialid || y.Recorrido.Material.Id == materialid) && y.FechaEgreso == null && y.Calle.Id == x.Id))
                     //    .OrderBy(x => contexto.Set<CallePorRecorrido>().OrderBy(y => y.Id).FirstOrDefault(y => y.FechaEgreso == null && y.Calle.Id == x.Id).FechaIngeso)
                     //    .FirstOrDefault();
+                    var fechaLimite = DateTime.Now.AddMinutes(-(centro?.MinutosEsperaPrecalado ?? 30));
 
                     return contexto.Set<CallePorRecorrido>()
                               .Where(x => x.FechaEgreso == null
                                && x.Calle.Deshabilitada == false
                                && x.Calle.Bloqueada == false
                                && x.Calle.TipoCalle == tipoCalle
+                               && x.FechaIngeso < fechaLimite
                                && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid))
                               .OrderBy(x => x.FechaIngeso)
                               .Select(q => q.Calle)
