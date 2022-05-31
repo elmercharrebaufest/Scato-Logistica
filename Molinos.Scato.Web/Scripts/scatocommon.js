@@ -359,7 +359,7 @@ function ActualizarEstadoServicios(mensaje) {
 $(document).ready(function () {
     /*Centrar la primera vez*/
     CentrarPosicionElemento();
-    /*Centrar por redimensión de pantalla*/
+    /*Centrar por redimensiÃ³n de pantalla*/
     $(window).resize(function (e) { e.preventDefault(); CentrarPosicionElemento(); });
 });
 
@@ -393,7 +393,7 @@ function ObtenerNombrePCPorActiveX() {
             }
         }
         nombre2 = nombre2.replace(' FIN', '');
-        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectó a traves de escritorio remoto
+        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectÃ³ a traves de escritorio remoto
             nombre = nombre2;
         $.cookie('NombrePc', nombre);
         if (nombre.length == 0) {
