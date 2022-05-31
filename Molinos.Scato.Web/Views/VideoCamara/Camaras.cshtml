@@ -5,7 +5,6 @@
 @{
     var noMostrarBoton = (bool?)ViewBag.NoReemplazarCp ?? false;
     var camaras = (List<VideoCamaraDto>)ViewBag.Camaras;
-    var i = 0;
     var filas = Convert.ToInt32(Math.Sqrt(camaras.Count()));
     var colSinRedondear = Decimal.Divide(camaras.Count(), filas);
     var columnas = decimal.ToInt32(colSinRedondear);
@@ -39,6 +38,16 @@
         left: 8px;
         background-color: wheat;
     }
+
+    .matriz-camaras {
+        display: grid;
+        grid-template-columns: repeat(@columnas, 1fr);
+        grid-template-rows: repeat(@filas, 1fr);
+    }
+
+    .camara {
+        position: relative;
+    }
 </style>
 
 <head>
@@ -46,30 +55,16 @@
     <title>|Camaras</title>
 </head>
 
-
-<div style="height: 100vh" class="container-fluid">
-    @for (var fila = 0; fila < filas; fila++)
+<div style="height: 100vh" class="matriz-camaras">
+    @foreach (var camara in camaras)
     {
-    <div class="row" style="height: @(100 / filas)vh">
-        @for (var j = 0; j < columnas; j++)
-        {
-            if (j + i < camaras.Count())
+        <div class="camara" style="order: @camara.Posicion">
+            <img src="@camara.Directorio" />
+            @if (ViewBag.MostrarNombre)
             {
-
-                <div class="col-sm-@(12/columnas)">
-                    <img src="@camaras[j + i].Directorio" />
-                    @if (ViewBag.MostrarNombre)
-                    {
-                        <div class="codigo-camara">@camaras[i + j].Codigo</div>
-                    }
-                </div>
-
+                <div class="codigo-camara">@camara.Codigo</div>
             }
-        }
-        @{
-            i += columnas;
-        }
-    </div>
+        </div>
     }
 </div>
 

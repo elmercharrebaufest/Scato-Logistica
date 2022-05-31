@@ -8992,14 +8992,15 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<VideoCamaraDto> ObtenerCamarasPorNombrePc(string nombrePc, int centroId)
         {
-            var camaras = repositorio.Listar<VideoCamara, string>(x => x.Codigo, x => x.PuestoDeTrabajo.NombrePc == nombrePc && x.PuestoDeTrabajo.Centro.Id == centroId);
+            var camaras = Listar<VideoCamara, VideoCamaraDto>(x => x.PuestoDeTrabajo.NombrePc == nombrePc && x.PuestoDeTrabajo.Centro.Id == centroId);
+            var codigosDeCamara = camaras.Select(c => c.Codigo).ToList();
+            var lista = servicioOrquestador.ObtenerCamaras(codigosDeCamara.ToArray()).ToList();
 
-            var lista = servicioOrquestador.ObtenerCamaras(camaras.ToArray()).ToList();
-
-            return lista.Where(x => camaras.Contains(x.Codigo)).Select(x => new VideoCamaraDto
+            return lista.Where(x => codigosDeCamara.Contains(x.Codigo)).Select(x => new VideoCamaraDto
             {
                 Codigo = x.Codigo,
                 Directorio = x.Url,
+                Posicion = camaras.Where(c => c.Codigo == x.Codigo).Select(c => c.Posicion).FirstOrDefault()
             }).ToList();
         }
 
