@@ -354,7 +354,7 @@ namespace Molinos.Scato.Web.Controllers
             var respuesta = RespuestaEstandarDto.Crear<dynamic>();
             try
             {
-                log.Info("Se tomará el la Humedad y PH en modalidad automática para el humedimetro {0}", humedimetro);
+                log.Debug("Se tomará el la Humedad y PH en modalidad automática para el humedimetro {0}", humedimetro);
                 var ejecutarTomaDeHumedad = new EjecutarAnalisisHumedad { CodigoDispositivo = humedimetro, FechaDeInicio = new DateTime(fecha) };
 
 
@@ -362,8 +362,8 @@ namespace Molinos.Scato.Web.Controllers
                 var hayHumedad = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "AnalisisHumedad");
                 var hayPH = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "PH");
 
-                log.Info("Llamada al orquestador exitosa. Hay Humedad = {0}", hayHumedad);
-                log.Info("Llamada al orquestador exitosa. Hay PH", hayPH);
+                log.Debug("Llamada al orquestador exitosa. Hay Humedad = {0}", hayHumedad);
+                log.Debug("Llamada al orquestador exitosa. Hay PH = {0}", hayPH);
 
                 decimal? humedad = null;
                 decimal? ph = null;
@@ -371,7 +371,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (hayHumedad)
                 {
                     humedad = resultado.Valores.First(f => f.Key == "AnalisisHumedad").Value;
-                    log.Info("Humedad = {0}", humedad);
+                    log.Debug("Humedad = {0}", humedad);
                 }
                 else
                 {
@@ -381,7 +381,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (hayPH)
                 {
                     ph = resultado.Valores.First(f => f.Key == "PH").Value;
-                    log.Info("PH = {0}", ph);
+                    log.Debug("PH = {0}", ph);
                 }
                 else
                 {
