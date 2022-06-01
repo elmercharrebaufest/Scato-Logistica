@@ -9796,7 +9796,6 @@ namespace Molinos.Scato.Servicios.Impl
 
         public FotoDto ObtenerFotoSustentable(int centroId, string numeroDocumento, string actividad)
         {
-            FotoDto result = null;
             var cartaPorte = ObtenerUltimo<CartaPorte, CartaPorteDto>(x => x.NroCartaPorte == numeroDocumento && x.CentroDestino.Id == centroId, x => x.Id);
             if (cartaPorte != null && cartaPorte.FotoRutaDestino != null)
             {
@@ -9810,10 +9809,17 @@ namespace Molinos.Scato.Servicios.Impl
                 if (File.Exists(pathSustentable))
                 {
                     var fecha = File.GetCreationTime(pathSustentable);
-                    result = ObtenerImagen(pathSustentable, fecha, actividad);
+                    return ObtenerImagen(pathSustentable, fecha, actividad);
+                }
+
+                pathSustentable = path.Substring(0, index) + "-sustentable.png";
+                if (File.Exists(pathSustentable))
+                {
+                    var fecha = File.GetCreationTime(pathSustentable);
+                    return ObtenerImagen(pathSustentable, fecha, actividad);
                 }
             }
-            return result;
+            return null;
         }
 
         private FotoDto ObtenerImagen(string path, DateTime fecha, string actividad)
