@@ -17,20 +17,24 @@
         color: #ff0000;
         font-size: 12px;
     }
+
     .field-validation-error {
         color: #ff0000;
     }
 </style>
 
-<div class ="container-fluid">
+<div class="container-fluid">
     <div class="titSecciones">@Textos.AltaCTG</div>
 </div>
+
+<div id="links" data-validar-ctg-cpe-url="@Url.Action("ValidarCTGyCPE", "AltaCTG")"/>
+<input hidden id="modalidadPantalla" value="AltaCTG">
 
 @* ReSharper disable Mvc.ActionNotResolved *@
 @using (Html.BeginForm("Action", "AltaCTG", FormMethod.Post, new { @class = "causaBlock", data_mensaje_espera = Textos.ActAltaCTG }))
 {
-@* ReSharper restore Mvc.ActionNotResolved *@
-    <div id="Automatica" >
+    @* ReSharper restore Mvc.ActionNotResolved *@
+    <div id="Automatica">
         <div>
             <h4>@Textos.AltaCTG_AltaAutomaticaError</h4>
             @Html.ValidationMessageFor(model => model.Errores)
@@ -42,9 +46,9 @@
             <button id="dialogo-rechazar" class="confirmar-boton btn " data-accion="Rechazar" data-mensaje="@string.Format(Textos.ConfirmacionGenerica, Textos.Rechazar, Textos.Pedido)">@Textos.Rechazar</button>
             <button id="dialogo-cancelar" class="btn btn-warning" type="submit" value="Cancelar" name="submitAction">@Textos.Cancelar</button>
         </div>
-    </div> 
-    
-    <div id="Manual" >
+    </div>
+
+    <div id="Manual">
         <div>
             <h4>@Textos.AltaCTG_Titulo</h4>
         </div>
@@ -100,7 +104,7 @@
             <button id="boton-volver" class="btn pull-left">@Textos.Volver</button>
         </div>
     </div>
-  
+
     <div class="modal hide fade" id="dialogo-confirmar">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
