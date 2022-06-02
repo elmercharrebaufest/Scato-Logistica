@@ -31,7 +31,13 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(Guid id, string actividad = "")
         {
             var fotos = servicio.ListarFotosCamion(id, actividad);
-
+            var recorrido = servicio.ObtenerRecorridoPorGuid(id);
+            var idsInt = new List<int>();
+            if (recorrido != null)
+            {
+                idsInt.Add(recorrido.Id);
+            }
+            ObtenerFotoSustentable(fotos, idsInt);
             return View(fotos);
         }
 
