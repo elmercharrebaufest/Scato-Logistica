@@ -3,6 +3,7 @@
     public class SensorBarreraDto
     {
         public int Id { get; set; }
+        public string NombreBarrera { get; set; }
         public string CodigoDispositivoSensorArriba { get; set; }
         public string CodigoDispositivoSensorAbajo { get; set; }
         public string CodigoDispositivoSensorQuiebre { get; set; }

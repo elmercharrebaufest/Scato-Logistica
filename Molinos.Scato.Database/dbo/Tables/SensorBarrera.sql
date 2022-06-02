@@ -6,8 +6,9 @@
 	[VisualizacionBarrera_Id]			INT NOT NULL,
 	[CodigoDispositivoSensorQuiebre]	NVARCHAR (100)  NULL,
 	[Barrera]							NVARCHAR (100)  NULL,
-	[BarreraBajar]						NVARCHAR (100)  NULL
+	[BarreraBajar]						NVARCHAR (100)  NULL,
+	[NombreBarrera]						NVARCHAR(100)	NOT NULL, 
 
 	CONSTRAINT [PK_dbo.SensorBarrera] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [FK_dbo.SensorBarrera_dbo.VisualizacionBarrera_VisualizacionBarrera_Id] FOREIGN KEY ([VisualizacionBarrera_Id]) REFERENCES [dbo].[VisualizacionBarrera] ([Id])
+    CONSTRAINT [FK_dbo.SensorBarrera_dbo.VisualizacionBarrera_VisualizacionBarrera_Id] FOREIGN KEY ([VisualizacionBarrera_Id]) REFERENCES [dbo].[VisualizacionBarrera] ([Id])
 );

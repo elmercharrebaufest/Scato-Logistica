@@ -7,6 +7,7 @@ namespace Molinos.Scato.Dominio
     {
         [Key]
         public virtual int Id { get; set; }
+        public virtual string NombreBarrera { get; set; }
         public virtual string CodigoDispositivoSensorArriba { get; set; }
         public virtual string CodigoDispositivoSensorAbajo { get; set; }
         public virtual string CodigoDispositivoSensorQuiebre { get; set; }

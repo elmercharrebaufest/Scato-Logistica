@@ -1,15 +1,18 @@
-﻿@{
+﻿@using Molinos.Scato.Web.Helpers
+
+@{
     ViewBag.Title = Textos.Barrera_Titulo;
 }
 @using Molinos.Scato.Dominio.Recursos
 
 <script src="~/scripts/knockout-2.2.1.js" type="text/javascript"></script>
+<script src="@Url.Script("~/scripts/barrera.js")" type="text/javascript"></script>
 <div class="container-fluid">
     <div class="titSecciones">@Textos.Administracion_Barrera</div>
 </div>
 
 <div class="container-fluid content grillaPad">
-    <div class="row">        
+    <div class="row">
         @Html.ActionLink(Textos.Barrera_Nuevo, "Crear", "Barrera", null, new { @class = "ajax-editar-link btn btn-primary pull-right" })
     </div>
     <div id="gridContainer" data-grid-url="@Url.Action("Index")">
