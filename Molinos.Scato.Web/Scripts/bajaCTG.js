@@ -21,15 +21,15 @@
     });
 
     if ($("#modalidadPantalla").val() == "AltaCTG") {
-        $("#CodigoCTG").change(function () {
+        $("#CodigoCTG").focusout(function () {
             ValidarCtgCpe()
         });
 
-        $("#NroOrden").change(function () {
+        $("#NroOrden").focusout(function () {
             ValidarCtgCpe()
         });
 
-        $("#Sucursal").change(function () {
+        $("#Sucursal").focusout(function () {
             ValidarCtgCpe()
         });
     }
@@ -41,7 +41,7 @@ function ValidarCtgCpe() {
     var ctg = $("#CodigoCTG").val();
     var cpe = $("#NroOrden").val();
     var sucursal = $("#Sucursal").val();
-    $("#dialogo-dardealta").prop('disabled', false);
+    $("#dialogo-dardealta").prop('disabled', true);
     if (ctg != "" || (cpe != "" && sucursal != "")) {
         $.getJSON(url, { ctg: ctg, cpe: cpe, sucursal: sucursal }, function (response) {
             if (!response.EsValido) {
@@ -50,8 +50,11 @@ function ValidarCtgCpe() {
                     mensajes.push(item.Mensaje);
                 })
                 MostrarAlertaError(mensajes.join("<br>"))
-                $("#dialogo-dardealta").prop('disabled', true);
+            } else {
+                $("#dialogo-dardealta").prop('disabled', false);
             }
         });
+    } else {
+        $("#dialogo-dardealta").prop('disabled', false);
     }
 }
