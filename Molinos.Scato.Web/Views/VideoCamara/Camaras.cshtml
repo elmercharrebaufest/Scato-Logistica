@@ -41,8 +41,8 @@
 
     .matriz-camaras {
         display: grid;
-        grid-template-columns: repeat(@columnas, 1fr);
-        grid-template-rows: repeat(@filas, 1fr);
+        grid-template-columns: repeat(@columnas, calc(100vw/@columnas));
+        grid-template-rows: repeat(@filas, calc(100vh/@filas));
     }
 
     .camara {
