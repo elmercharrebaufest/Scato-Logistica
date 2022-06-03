@@ -932,7 +932,7 @@ namespace Molinos.Scato.Web.Controllers
                 tipoComercialId = 4;
             }
             if (cargaDeCupo == null || string.IsNullOrEmpty(workflow)) { 
-                    ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
+                ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
                 return; }
             var puesto = servicio.ObtenerPuestoDeTrabajo(cargaDeCupo.PuestoDeTrabajoId);
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
@@ -1091,7 +1091,7 @@ namespace Molinos.Scato.Web.Controllers
                     if (resultadoActividad.HayErrores)
                     {
                         log.Debug(resultadoActividad.Errores.FirstOrDefault().Value);
-                    ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
+                        ModelState.AddModelError("avanceCpe", resultadoActividad.Errores.FirstOrDefault().Value);
                         return;
                     }
                     orden.Id = resultadoActividad.Id;

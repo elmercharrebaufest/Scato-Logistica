@@ -159,7 +159,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                 </div>
                 <br />
                 <div class="control-group sinMargen">
-                    <div style="width: 260px;">
+                    <div id="avance-cpe-check" style="width: 260px;" hidden>
                         @Html.Label(@Textos.ContingenciaAvanceCpe, new { @class = "control-label inline" })
                         @Html.CheckBox("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
                     </div>
