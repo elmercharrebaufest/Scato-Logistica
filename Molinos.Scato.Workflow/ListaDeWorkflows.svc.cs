@@ -411,6 +411,30 @@ namespace Molinos.Scato.Workflow
 
         private IEnumerable<InstanciaWorkflowDto> ObtenerWorkFlows()
         {
+            var instanceQueryExecuteArgsRunning = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Running,
+                InstanceCondition = InstanceCondition.Idle
+            };
+
+            var instanceQueryExecuteArgsException = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.Exception,
+            };
+
+            var instanceQueryExecuteArgsSuspended = new InstanceQueryExecuteArgs()
+            {
+                InstanceStatus = InstanceStatus.Suspended,
+                InstanceCondition = InstanceCondition.UserSuspension,
+            };
+
+            var resultadoFinal = new List<InstanciaWorkflowDto>();
+            var resultadoRunning = new List<InstanciaWorkflowDto>();
+            var resultadoException = new List<InstanciaWorkflowDto>();
+            var resultadoSuspended = new List<InstanciaWorkflowDto>();
+
+            // PARA RUNNING
             CreateInstanceQuery();
             var instanceQueryExecuteArgs = new InstanceQueryExecuteArgs { InstanceStatus = InstanceStatus.Running, InstanceCondition = InstanceCondition.Idle };
             waiter = new ManualResetEvent(false);

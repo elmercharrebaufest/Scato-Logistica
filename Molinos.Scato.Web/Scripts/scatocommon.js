@@ -359,7 +359,7 @@ function ActualizarEstadoServicios(mensaje) {
 $(document).ready(function () {
     /*Centrar la primera vez*/
     CentrarPosicionElemento();
-    /*Centrar por redimensión de pantalla*/
+    /*Centrar por redimensiÃ³n de pantalla*/
     $(window).resize(function (e) { e.preventDefault(); CentrarPosicionElemento(); });
 });
 
@@ -393,7 +393,7 @@ function ObtenerNombrePCPorActiveX() {
             }
         }
         nombre2 = nombre2.replace(' FIN', '');
-        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectó a traves de escritorio remoto
+        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectÃ³ a traves de escritorio remoto
             nombre = nombre2;
         $.cookie('NombrePc', nombre);
         if (nombre.length == 0) {
@@ -450,9 +450,8 @@ function ObtenerNombrePC() {
 
 function ObtenerPuestoDeTrabajo() {
     var cookiePuesto = $.cookie('PuestoDeTrabajoId');
-    var cookieNombrePc = $.cookie('NombrePc');
     try {
-        if (cookiePuesto != undefined && cookiePuesto.length > 0 && (cookiePuesto != '0' || (cookieNombrePc != undefined && cookieNombrePc.length > 0))) { //Ya existe el valor en la cookie
+        if (cookiePuesto != undefined && cookiePuesto.length > 0 && cookiePuesto != '0') { //Ya existe el valor en la cookie
             return;
         }
         var nombrePc = ObtenerNombrePC();

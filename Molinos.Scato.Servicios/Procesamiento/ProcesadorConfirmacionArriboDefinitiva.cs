@@ -18,13 +18,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly CpePortType serviceAfipCpe;
         private readonly IAccesoWsCtg accesoWsCtg;
+        private IServicioComandos servicioComandos;
 
         public ProcesadorConfirmacionArriboDefinitiva(IRepositorio repositorio, IConversor conversor, ILogger log,
-                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg)
+                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg, IServicioComandos servicioComandos)
             : base(repositorio, conversor, log)
         {
             this.accesoWsCtg = accesoWsCtg;
             this.serviceAfipCpe = serviceAfipCpe;
+            this.servicioComandos = servicioComandos;
         }
 
         public override Resultado Ejecutar(ConfirmarArriboDefinitivo comando)
@@ -130,7 +132,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Debug("Inicio la consulta");
                     // Realizo la consulta
                     var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEAutomotor(confirmarArriboRequest).respuesta;
-
+                    if(respuesta.pdf != null)
+                    {
+                        servicioComandos.Ejecutar(new GuardarImagenDescarga
+                        {
+                            NroCartaPorte = comando.Dto.NroCartaPorte,
+                            RutaFotoCP = comando.Dto.FotoRutaDestino,
+                            CodigoCentroSap = centro.CodigoSAP,
+                            Patente = recorrido.Patente,
+                            EsSustentable = recorrido.Establecimiento != null,
+                            Pdf = respuesta.pdf
+                        });
+                    } 
                     Log.Debug("Realizo la consulta ");
                 }
                 if (tipoCpe == 75)
@@ -165,7 +178,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Debug("Inicio la consulta");
                     // Realizo la consulta
                     var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEFerroviaria(confirmarArriboRequest).respuesta;
-
+                    if (respuesta.pdf != null)
+                    {
+                        servicioComandos.Ejecutar(new GuardarImagenDescarga
+                        {
+                            NroCartaPorte = comando.Dto.NroCartaPorte,
+                            RutaFotoCP = comando.Dto.FotoRutaDestino,
+                            CodigoCentroSap = centro.CodigoSAP,
+                            Patente = recorrido.Patente,
+                            EsSustentable = recorrido.Establecimiento != null,
+                            Pdf = respuesta.pdf
+                        });
+                    }
                     Log.Debug("Realizo la consulta ");
                 }
                 try

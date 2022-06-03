@@ -940,9 +940,14 @@ namespace Molinos.Scato.Web.Controllers
             if(recorrido?.Centro?.Id != 5 || recorrido?.TipoVehiculo == TipoVehiculo.Tren)
             {
                 var fotoSustentable = servicio.ObtenerFotoSustentable(recorrido.Centro.Id, recorrido.NumeroDocumentoIngreso, "sustentable");
-                if(fotoSustentable != null && !(fotos.Fotos.Where(f => f.Foto != fotoSustentable.Foto && f.Fecha != fotoSustentable.Fecha).ToList().Count > 0))
+                if(fotoSustentable != null && !fotos.Fotos.Where(f => f.Foto == fotoSustentable.Foto && f.Fecha == fotoSustentable.Fecha).Any())
                 {
                     fotos.Fotos.Add(fotoSustentable);
+                }
+                var fotoDescargada = servicio.ObtenerFotoDescargada(recorrido.Centro.Id, recorrido.NumeroDocumentoIngreso, "descargado", recorrido.EsSustentable);
+                if (fotoDescargada != null && !fotos.Fotos.Where(f => f.Foto == fotoDescargada.Foto && f.Fecha == fotoDescargada.Fecha).Any())
+                {
+                    fotos.Fotos.Add(fotoDescargada);
                 }
             }
             return View("Fotos", fotos);

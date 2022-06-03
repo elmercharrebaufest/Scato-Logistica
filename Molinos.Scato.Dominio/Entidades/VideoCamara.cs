@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public string Descripcion { get; set; }
         public PuestoDeTrabajo PuestoDeTrabajo { get; set; }
         public ActividadPorDispositivo ActividadPorDispositivo { get; set; }
+        public int? Posicion { get; set; }
     }
 }

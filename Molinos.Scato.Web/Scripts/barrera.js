@@ -1,6 +1,7 @@
-﻿function Sensor(id, CodigoDispositivoSensorArriba, CodigoDispositivoSensorAbajo, CodigoDispositivoSensorQuiebre, Barrera, BarreraBajar) {
+﻿function Sensor(id, CodigoDispositivoSensorArriba, CodigoDispositivoSensorAbajo, CodigoDispositivoSensorQuiebre, Barrera, BarreraBajar, NombreBarrera) {
     if (id == 0) {
         this.Id = id;
+        this.NombreBarrera = NombreBarrera;
         this.CodigoDispositivoSensorArriba = CodigoDispositivoSensorArriba;
         this.CodigoDispositivoSensorAbajo = CodigoDispositivoSensorAbajo;
         this.CodigoDispositivoSensorQuiebre = CodigoDispositivoSensorQuiebre;
@@ -11,6 +12,7 @@
     } else {
         //id trae el objeto que ya existia
         this.Id = id.Id;
+        this.NombreBarrera = id.NombreBarrera;
         this.CodigoDispositivoSensorArriba = id.CodigoDispositivoSensorArriba.toString();
         this.CodigoDispositivoSensorAbajo = id.CodigoDispositivoSensorAbajo.toString();
         this.CodigoDispositivoSensorQuiebre = id.CodigoDispositivoSensorQuiebre.toString();
@@ -26,6 +28,7 @@ function SensoresListViewModel() {
     var self = this;
     self.sensoresBarrera = ko.observableArray([]);
 
+    self.newNombreBarrera = ko.observable();
     self.newCodigoDispositivoSensorArriba = ko.observable();
     self.newCodigoDispositivoSensorAbajo = ko.observable();
     self.newCodigoDispositivoSensorQuiebre = ko.observable();
@@ -37,6 +40,7 @@ function SensoresListViewModel() {
         var mappedSensores = $.map(JSON.parse($("#sensoresBarreraPostBack").val()), function (item) { return new Sensor(item); });
 
         $.each(mappedSensores, function (index, value) {
+            value.NombreBarrera = value.NombreBarrera;
             value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
             value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
             value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
@@ -51,6 +55,7 @@ function SensoresListViewModel() {
             function (allData) {
                 var mappedSensores = $.map(allData, function (item) { return new Sensor(item); });
                 $.each(mappedSensores, function (index, value) {
+                    value.NombreBarrera = value.NombreBarrera;
                     value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
                     value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
                     value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
@@ -65,7 +70,7 @@ function SensoresListViewModel() {
 
     // Operations
     self.botonCrearSensor = function () {
-        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newCodigoDispositivoSensorQuiebre(), self.newBarrera(), self.newBarreraBajar()));
+        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newCodigoDispositivoSensorQuiebre(), self.newBarrera(), self.newBarreraBajar(), self.newNombreBarrera()));
     };
 
     self.removeSensorBarrera = function (sensor) {
@@ -73,23 +78,3 @@ function SensoresListViewModel() {
     };
 }
 
-$(document).ready(function () {
-
-    ko.applyBindings(new SensoresListViewModel(), document.getElementById('grilla'));
-
-    $('.form-horizontal').submit(function () {
-
-        var vm = ko.dataFor(document.getElementById('grilla'));
-        var sensoresBarrera = vm.sensoresBarrera();
-        $.each(sensoresBarrera, function (index, value) {
-            value.CodigoDispositivoSensorArriba = value.CodigoDispositivoSensorArriba;
-            value.CodigoDispositivoSensorAbajo = value.CodigoDispositivoSensorAbajo;
-            value.CodigoDispositivoSensorQuiebre = value.CodigoDispositivoSensorQuiebre;
-            value.Barrera = value.Barrera;
-            value.BarreraBajar = value.BarreraBajar;
-        });
-
-        $('#sensoresBarrera').val(ko.toJSON(sensoresBarrera));
-    });
-
-});

@@ -1397,3 +1397,24 @@ IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EficienciaCa
 BEGIN 
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EficienciaCalado', 'HorarioTurno', '{"HoraEntrada":"08:00","HoraSalida":"20:00"}', 5, GETDATE(), 'SCATO')
 END
+
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJVOL','MPSOJVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPTRPVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (13,'MPTRPVOL','MPTRPVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZVOL','MPMAZVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPGIRVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (5,'MPGIRVOL','MPGIRVOL',0)
+END

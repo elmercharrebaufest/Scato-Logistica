@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -4098,6 +4098,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AltaCTG_Titulo {
             get {
                 return ResourceManager.GetString("AltaCTG_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ya existe un registro para el CPE ingresado: Sucursal {0} - Número de Orden {1}.
+        /// </summary>
+        public static string AltaCTG_ValidarCPERepetido {
+            get {
+                return ResourceManager.GetString("AltaCTG_ValidarCPERepetido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ya existe un registro con el Código CTG ingresado: {0}.
+        /// </summary>
+        public static string AltaCTG_ValidarCTGRepetido {
+            get {
+                return ResourceManager.GetString("AltaCTG_ValidarCTGRepetido", resourceCulture);
             }
         }
         
@@ -10132,6 +10150,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avanza Automatico Cpe.
+        /// </summary>
+        public static string ContingenciaAvanceCpe {
+            get {
+                return ResourceManager.GetString("ContingenciaAvanceCpe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continuar.
         /// </summary>
         public static string Continuar {
@@ -15491,6 +15518,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Con Entregador.
+        /// </summary>
+        public static string FiltroEntregador_ConEntregador_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_ConEntregador_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sin Entregador.
         /// </summary>
         public static string FiltroEntregador_SinEntregador {
@@ -15500,11 +15536,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sin Entregador.
+        /// </summary>
+        public static string FiltroEntregador_SinEntregador_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_SinEntregador_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Todos.
         /// </summary>
         public static string FiltroEntregador_Todos {
             get {
                 return ResourceManager.GetString("FiltroEntregador_Todos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Todos.
+        /// </summary>
+        public static string FiltroEntregador_Todos_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("FiltroEntregador_Todos_Duplicate[1]", resourceCulture);
             }
         }
         
@@ -26697,6 +26751,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tolerancia.
+        /// </summary>
+        public static string StockTolerancia_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("StockTolerancia_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stock Utilizado.
         /// </summary>
         public static string StockUtilizado {
@@ -29501,6 +29564,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Workflow_TieneEntregador {
             get {
                 return ResourceManager.GetString("Workflow_TieneEntregador", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entregador.
+        /// </summary>
+        public static string Workflow_TieneEntregador_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("Workflow_TieneEntregador_Duplicate[1]", resourceCulture);
             }
         }
         

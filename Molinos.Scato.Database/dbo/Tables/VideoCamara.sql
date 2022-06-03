@@ -5,6 +5,7 @@
     [Directorio]                 NVARCHAR (100) NULL,
     [PuestoDeTrabajo_Id]         INT            NULL,
     [ActividadPorDispositivo_Id] INT            NULL,
+    [Posicion] INT NULL, 
     CONSTRAINT [PK_dbo.VideoCamara] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.VideoCamara_dbo.ActividadPorDispositivo_ActividadPorDispositivo_Id] FOREIGN KEY ([ActividadPorDispositivo_Id]) REFERENCES [dbo].[ActividadPorDispositivo] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_dbo.VideoCamara_dbo.PuestoDeTrabajo_PuestoDeTrabajo_Id] FOREIGN KEY ([PuestoDeTrabajo_Id]) REFERENCES [dbo].[PuestoDeTrabajo] ([Id])

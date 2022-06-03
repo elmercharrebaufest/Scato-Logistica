@@ -8,6 +8,7 @@
     var mostrarAlertaExitosa = (bool)(ViewBag.MostrarAlertaExitosa ?? false);
     var disponibilidad = ViewBag.Disponibilidad;
     var esCircuitoNoGranos = ViewBag.EsCircuitoNoGranosSinMaterial;
+    var avanzaAutomatico = (bool)ViewBag.AvanzaAutomatico;
 }
 <script src="@Url.Script("~/Scripts/cargaDeCupo.form.js")" type="text/javascript"></script>
 
@@ -142,6 +143,12 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
         <span>@Html.ViewData.ModelState["PuestoDeTrabajoId"].Errors.FirstOrDefault().ErrorMessage</span>
     </div>
 }
+@if (ViewData.ModelState["avanceCpe"] != null && ViewData.ModelState["avanceCpe"].Errors.Any())
+{
+    <div class="alert alert-error">
+        <span>@Html.ViewData.ModelState["avanceCpe"].Errors.FirstOrDefault().ErrorMessage</span>
+    </div>
+}
 
 <div class="row-fluid" style="margin-bottom:5px;">
     <div class="span8">
@@ -152,8 +159,12 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                 </div>
                 <br />
                 <div class="control-group sinMargen">
+                    <div id="avance-cpe-check" style="width: 260px;" hidden>
+                        @Html.Label(@Textos.ContingenciaAvanceCpe, new { @class = "control-label inline" })
+                        @Html.CheckBox("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
+                    </div>
                     <div style="width: 260px; display: inline-flex;">
-                        @*Esto es de no granos. Se comenta por el momento*@
+
                         <div style="width: 160px;">
                             @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
                             @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
