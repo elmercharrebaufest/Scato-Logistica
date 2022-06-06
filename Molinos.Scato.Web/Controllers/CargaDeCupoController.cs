@@ -183,6 +183,8 @@ namespace Molinos.Scato.Web.Controllers
             model.Patente = model.Patente.ToUpper();
             ViewBag.Materiales = servicio.ListarMaterialGranoPorCentro(datosUsuario.CentroId, model.CircuitoNoGranos)
                 .ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
+            ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
             ModelState.Remove("NumeroCartaPorte");
             ModelState.Remove("CTG");
             if (ModelState.IsValid)
