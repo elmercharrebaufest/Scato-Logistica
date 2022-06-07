@@ -1,8 +1,4 @@
-﻿using Molinos.Scato.Dominio.Consultas;
-using Molinos.Scato.Dominio.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -11,6 +7,7 @@ namespace Molinos.Scato.Dominio.Dto
         public MensajeEstandarDto()
         {
         }
+
         public MensajeEstandarDto(string key, string message, TipoDeMensajeDeRespuesta messageType = default(TipoDeMensajeDeRespuesta))
         {
             Key = key;

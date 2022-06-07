@@ -41,11 +41,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 if (File.Exists(comando.RutaFotoCP))
                 {
-                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroDocumento, comando.Patente) + "-sustentable.png";
+                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroDocumento, comando.Patente) + "-sustentable.jpeg";
                     var imagenCp = new Bitmap(comando.RutaFotoCP);
 
                     var imagenCpSustentable = DibujarSustentable(imagenCp);
-                    imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Png);
+                    imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
                     resultado.Path = Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto);
                 }
             }

@@ -9913,9 +9913,6 @@
   <data name="SensorPosicionSalida" xml:space="preserve">
     <value>Sensor Posicion Salida</value>
   </data>
-  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
-    <value>Omitir rechazados</value>
-  </data>
   <data name="Workflow_TieneEntregador" xml:space="preserve">
     <value>Entregador</value>
   </data>
@@ -9930,5 +9927,32 @@
   </data>
   <data name="StockTolerancia" xml:space="preserve">
     <value>Tolerancia</value>
+  </data>
+  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
+    <value>Omitir rechazados</value>
+  </data>
+  <data name="Workflow_TieneEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Entregador</value>
+  </data>
+  <data name="FiltroEntregador_Todos_Duplicate[1]" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="FiltroEntregador_ConEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Con Entregador</value>
+  </data>
+  <data name="FiltroEntregador_SinEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Sin Entregador</value>
+  </data>
+  <data name="StockTolerancia_Duplicate[1]" xml:space="preserve">
+    <value>Tolerancia</value>
+  </data>
+  <data name="ContingenciaAvanceCpe" xml:space="preserve">
+    <value>Avanza Automatico Cpe</value>
+  </data>
+  <data name="AltaCTG_ValidarCTGRepetido" xml:space="preserve">
+    <value>Ya existe un registro con el Código CTG ingresado: {0}</value>
+  </data>
+  <data name="AltaCTG_ValidarCPERepetido" xml:space="preserve">
+    <value>Ya existe un registro para el CPE ingresado: Sucursal {0} - Número de Orden {1}</value>
   </data>
 </root>

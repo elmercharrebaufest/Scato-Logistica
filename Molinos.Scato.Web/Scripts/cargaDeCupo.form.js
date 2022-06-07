@@ -277,6 +277,12 @@ $(document).ready(function () {
                         if (!data.Cpe.Cupo == null || !data.Cpe.Cupo == '') {
                             $("#Cupo").val(validacionLongitudCupoAFIP(data.Cpe.Cupo));
                         }
+                        if (!data.Cpe.RtteComercialCodigoSap == null || !data.Cpe.RtteComercialCodigoSap == '') {
+                            $("#RtteComercialCodigoSap").val(data.Cpe.RtteComercialCodigoSap);
+                        }
+                        if (!data.Cpe.TitularCartaPorteCodigoSap == null || !data.Cpe.TitularCartaPorteCodigoSap == '') {
+                            $("#TitularCartaPorteCodigoSap").val(data.Cpe.TitularCartaPorteCodigoSap);
+                        }
                     }
 
                     if (data.CodigoDeError == 4) {

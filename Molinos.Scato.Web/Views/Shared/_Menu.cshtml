@@ -1070,7 +1070,7 @@
                     <li class="dropdown menu-adminrepo" id="barreraHeader">
                         <div style="border: 1px solid #ccc; border-radius: 6px; text-align: center;">
                             <span id="@("barrera-"+sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
-                            <span style="display: block;font-size: .75em; font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif; margin-top: 5px;">@sensoresBarrera[0].Barrera</span>
+                            <span style="display: block;font-size: .75em; font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif; margin-top: 5px;">@sensoresBarrera[0].NombreBarrera</span>
                         </div>
                     </li>
                 }
@@ -1196,7 +1196,7 @@
                     {
                         <div class="row">
                             <div class="control-group" style="margin-left: 30px;">
-                                <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@item.Barrera</label>
+                                <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@item.NombreBarrera</label>
                                 <div class="controls">
                                     <span id="@("barrera-" + item.Id + "-" + item.Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                                     <div style="margin-left: 30px;">
@@ -1277,7 +1277,7 @@
             @if (Enumerable.Count(sensoresBarrera) > 0)
             {
                 <div class="control-group" style="margin-left: 30px;">
-                    <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@sensoresBarrera[0].Barrera</label>
+                    <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@sensoresBarrera[0].NombreBarrera</label>
                     <div class="controls">
                         <span id="@("barrera-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
                         <div>

@@ -93,7 +93,7 @@ namespace Molinos.Scato.Test.Controllers
             servComandoMock.Setup(s => s.Ejecutar(It.IsAny<ImprimirCartaPorteMesa>())).Returns(new Resultado());
             servRepositorioMock.Setup(x => x.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo("ImpresionCartaPorteMesa", 1, 0)).Returns(new DocumentoDeImpresionPorCentroDto());
             servRepositorioMock.Setup(s => s.ObtenerPuestoDeTrabajo(It.IsAny<int>())).Returns(new PuestoDeTrabajoDto { Id = 6 });
-            var result = target.Index(cargaDeCupo, "", datos) as ViewResult;
+            var result = target.Index(cargaDeCupo, "", false, datos) as ViewResult;
 
 
             Assert.NotNull(result);
@@ -108,7 +108,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(x => x.ListarMaterialesPorWorkflow(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<MaterialPorWorkflowDto>());
             servRepositorioMock.Setup(x => x.ListarPuestosDeTrabajoPorNombrePc(datos.NombrePc, datos.CentroId)).Returns(new List<PuestoDeTrabajoDto>());
             servRepositorioMock.Setup(s => s.ObtenerPuestoDeTrabajo(It.IsAny<int>())).Returns(new PuestoDeTrabajoDto { Id = 6 });
-            var result = target.Index(cargaDeCupo, "", datos) as ViewResult;
+            var result = target.Index(cargaDeCupo, "", false, datos) as ViewResult;
             Assert.AreEqual("Form", result.ViewName);
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(Textos.AsignacionTarjetaDeAcceso_TarjetaBloqueada));
@@ -121,7 +121,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorioMock.Setup(s => s.EsTarjetaEnRangoValido(It.IsAny<string>(), It.IsAny<int>())).Returns(false);
             servRepositorioMock.Setup(x => x.ListarPuestosDeTrabajoPorNombrePc(datos.NombrePc, datos.CentroId)).Returns(new List<PuestoDeTrabajoDto>());
             servRepositorioMock.Setup(s => s.ObtenerPuestoDeTrabajo(It.IsAny<int>())).Returns(new PuestoDeTrabajoDto { Id = 6 });
-            var result = target.Index(cargaDeCupo, "", datos) as ViewResult;
+            var result = target.Index(cargaDeCupo, "", false, datos) as ViewResult;
             Assert.AreEqual("Form", result.ViewName);
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango));
@@ -136,7 +136,7 @@ namespace Molinos.Scato.Test.Controllers
             listaMock.Setup(s => s.VerificarExistenciaDeWorkflowPorGuid(It.IsAny<Guid>())).Returns(true);
             servRepositorioMock.Setup(s => s.ObtenerRecorridoInstanceIdPorTarjetaDeAcceso(It.IsAny<string>(), It.IsAny<int>())).Returns(new Guid());
             servRepositorioMock.Setup(s => s.ObtenerPuestoDeTrabajo(It.IsAny<int>())).Returns(new PuestoDeTrabajoDto { Id = 6 });
-            var result = target.Index(cargaDeCupo, "", datos) as ViewResult;
+            var result = target.Index(cargaDeCupo, "", false, datos) as ViewResult;
             Assert.AreEqual("Form", result.ViewName);
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(Textos.ImpresionTarjetaDeAcceso_EnUso));
@@ -169,7 +169,7 @@ namespace Molinos.Scato.Test.Controllers
                             VideoCamaras = new List<VideoCamaraDto> { new VideoCamaraDto { Id = 1, Directorio = "directorio", Codigo = "2123" } }
                         });
             servOrquestador.Setup(s => s.Ejecutar(It.IsAny<EjecutarTomarFoto>())).Returns(new ResultadoEjecutar { Mensaje = new Mensaje { Codigo = 0 } });
-            var result = target.Index(cargaDeCupo, "", datos) as ViewResult;
+            var result = target.Index(cargaDeCupo, "", false, datos) as ViewResult;
             Assert.AreEqual("Form", result.ViewName);
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.First().Value.Errors.First().ErrorMessage, Is.EqualTo(Textos.AsignacionTarjetaDeAcceso_TarjetaSinRango));
