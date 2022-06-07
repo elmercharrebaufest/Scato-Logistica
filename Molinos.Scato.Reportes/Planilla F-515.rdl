@@ -211,7 +211,7 @@ AND (Recorrido.balanzabruto_id = @BalanzaBrutop or @BalanzaBrutop = 0)
 AND (Recorrido.balanzatara_id = @BalanzaTarap or @BalanzaTarap = 0)
 AND (Recorrido.centro_id = @CentroIdp or @CentroIdp = 0)
 AND (Recorrido.material_id = @Materialp or @Materialp = 0)
-AND (tp2.Id = @TipoPesadap or @TipoPesadap = 0)
+AND (tp2.Id = @TipoPesadap or @TipoPesadap = -1)
 
 AND (Recorrido.TipoComercial_Id = @TipoComercialp or @TipoComercialp = 0)
 AND (recorrido.workflow_id = @Workflowp or @Workflowp = 0)
