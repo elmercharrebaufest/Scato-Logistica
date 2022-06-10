@@ -74,7 +74,8 @@ namespace Molinos.Scato.Web.Controllers
                 FechaSalidaDesde = DateTime.Now.AddDays(-1),
                 FechaSalidaHasta = DateTime.Now,
                 TipoVehiculoInt = -1,
-                CentroId = datosUsuario.CentroId
+                CentroId = datosUsuario.CentroId,
+                TipoPesadaId = -1
             });
         }
 
