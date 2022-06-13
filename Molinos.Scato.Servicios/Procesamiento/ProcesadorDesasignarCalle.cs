@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(DesasignarCalle comando)
         {
+            Log.Debug($"DesasignarCalle Id : {comando.UltimaAsignacionId} -  InstanciaWorkflow : {comando.InstanciaWorkflow}");
             var asignaciones = Repositorio.Listar<CallePorRecorrido>(
                 x => x.FechaEgreso == null &&
                 x.Id != comando.UltimaAsignacionId &&
@@ -29,6 +31,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var asignacion in asignaciones)
                 {
+                    Log.Debug($"DesasignarCalle Asignacion : {asignacion.ToJson()} ");
                     asignacion.Recorrido = asignacion.Recorrido;
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
