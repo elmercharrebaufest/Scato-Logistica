@@ -3,6 +3,7 @@ using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var asignacion in asignaciones)
                 {
-                    Log.Debug($"DesasignarCalle Asignacion : {asignacion.Id} - Calle: {asignacion.Calle.Id} - {asignacion.Calle.TipoCalle} - CargaDeCupo: {asignacion.CargaDeCupo.Id} - Recorrido: {asignacion.Recorrido.Id}  ");
+                    Log.Debug($"DesasignarCalle Asignacion Json : {JsonConvert.SerializeObject(asignacion)}");
                     asignacion.Recorrido = asignacion.Recorrido;
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
