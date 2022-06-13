@@ -27,11 +27,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 x => x.FechaEgreso == null &&
                 x.Id != comando.UltimaAsignacionId &&
                 (x.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow || x.CargaDeCupo.Recorrido.InstanciaWorkflow == comando.InstanciaWorkflow));
+            Log.Debug($"Asignaciones : {asignaciones.Count}");
             if (asignaciones.Any())
             {
                 foreach (var asignacion in asignaciones)
                 {
-                    Log.Debug($"DesasignarCalle Asignacion : {asignacion.ToJson()} ");
+                    Log.Debug($"DesasignarCalle Asignacion : {asignacion.Id} - Calle: {asignacion.Calle.Id} - {asignacion.Calle.TipoCalle} - CargaDeCupo: {asignacion.CargaDeCupo.Id} - Recorrido: {asignacion.Recorrido.Id}  ");
                     asignacion.Recorrido = asignacion.Recorrido;
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
@@ -52,9 +53,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var materialId = asignacion?.Recorrido != null ? asignacion?.Recorrido?.Material?.Id ?? 0 : asignacion?.CargaDeCupo?.Material?.Id ?? 0;
             var puestosCalados = Repositorio.Listar<Calle>(x => x.TipoCalle == Dominio.Enums.TipoCalle.Calado && x.Material.Id == materialId && x.Automatica);
+            Log.Debug($"Puestos Calados : {(puestosCalados != null ? puestosCalados.Count : 0)}");
             if (puestosCalados.Any())
             {
                 var calle = administradorDeCalles.ObtenerSiguienteCalle(materialId);
+                Log.Debug($"Siguiente calle : {(calle != null ? calle.Nombre : "Calle nula")}");
                 if (calle != null)
                 {
                     calle.Bloqueada = true;
