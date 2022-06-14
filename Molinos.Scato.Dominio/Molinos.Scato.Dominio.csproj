@@ -1125,6 +1125,7 @@
     <Compile Include="Helpers\FileData.cs" />
     <Compile Include="Helpers\ExtensionesImage.cs" />
     <Compile Include="Helpers\FotoCamionHelper.cs" />
+    <Compile Include="Helpers\LoggerHelper.cs" />
     <Compile Include="ITipeable.cs" />
     <Compile Include="Dto\ActividadPorDispositivoDto.cs" />
     <Compile Include="Dto\AjusteDeCalidadDto.cs" />
