@@ -33,7 +33,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var asignacion in asignaciones)
                 {
-                    Log.Debug($"DesasignarCalle Asignacion Json : {JsonConvert.SerializeObject(asignacion)}");
+                    Log.Debug($"DesasignarCalle Asignacion Json : {JsonConvert.SerializeObject(asignacion, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })}");
                     asignacion.Recorrido = asignacion.Recorrido;
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
