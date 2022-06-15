@@ -7,9 +7,9 @@ namespace Molinos.Scato.Dominio.Helpers
     {
         public static void WriteLine(string message)
         {
-            using (StreamWriter outputFile = new StreamWriter(@"C:\ScatoLogs\logTemporal.txt"))
+            using (StreamWriter outputFile = new StreamWriter(@"C:\ScatoLogs\logTemporal.txt", true))
             {
-                outputFile.WriteLine(message);
+                outputFile.WriteLine($"{DateTime.Now} - {message}");
             }
         }
     }
