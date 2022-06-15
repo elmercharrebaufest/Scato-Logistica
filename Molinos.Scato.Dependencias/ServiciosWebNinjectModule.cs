@@ -42,7 +42,8 @@ namespace Molinos.Scato.Dependencias
             Bind<IAdministradorDeCalles, AdministradorDeCalles>().To<AdministradorDeCalles>().InScope(ctx => OperationContext.Current);
             
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
-            Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InSingletonScope();
+            Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InScope(ctx => OperationContext.Current);
+            Bind<ICache, Cache>().To<Cache>().InSingletonScope();
 
             this.BindChannelFactory<LoginCMS>("LoginCms");
             this.BindChannelFactory<CTGServicePortType>("CTGServiceHttpSoap11Endpoint");

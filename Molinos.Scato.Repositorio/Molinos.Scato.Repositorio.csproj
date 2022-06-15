@@ -58,6 +58,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="WebGrease">
@@ -155,10 +156,12 @@
     <Compile Include="Extensions\DataTableExtension.cs" />
     <Compile Include="Extensions\SqlBulkExtension.cs" />
     <Compile Include="IComando.cs" />
+    <Compile Include="ICache.cs" />
     <Compile Include="IConsultaEscalar.cs" />
     <Compile Include="IConsultaPaginada.cs" />
     <Compile Include="EntidadReferenciadaException.cs" />
     <Compile Include="IConsulta.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="RepositorioEF.cs" />
     <Compile Include="ScatoDbContext.cs" />
     <Compile Include="IRepositorio.cs" />
