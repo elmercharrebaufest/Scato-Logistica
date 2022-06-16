@@ -34,6 +34,11 @@ namespace Molinos.Scato.Servicios.Impl
             this.comandos = comandos;
             this.config = config;
             this.cache = cache;
+
+            if(cache.ObtenerTodos<ConcentradorDto>() == null || cache.ObtenerTodos<ConcentradorDto>().Count() == 0)
+            {
+                ActualizarPuestos();
+            }
         }
 
         public void ActualizarPuestos()
