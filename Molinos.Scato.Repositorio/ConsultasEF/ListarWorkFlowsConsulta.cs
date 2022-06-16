@@ -1,15 +1,13 @@
-﻿using System;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Objects;
-using System.Data.Objects.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Linq.Expressions;
-using Molinos.Scato.Dominio.Consultas;
+﻿using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -27,114 +25,161 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public ListaPaginada<InstanciaWorkflowDto> Ejecutar(DbContext contexto)
         {
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
-            var workflowsTipos = contexto.Set<Workflow>().Where(x => x.Centro.Id == filtro.CentroId).Select(x => x.Codigo);
 
-            var resultados = from x in contexto.Set<Recorrido>()
-                             join caracteristicasAnalizadas in contexto.Set<CaracteristicasAnalizadas>().DefaultIfEmpty() on x.Id equals caracteristicasAnalizadas.Recorrido.Id into caracteristicasAnalizadasJoined
-                             from caracteristicasAnalizadas in caracteristicasAnalizadasJoined.DefaultIfEmpty()
-                             where (x.Centro.Id == filtro.CentroId
-                    && ((filtro.Workflow != null && x.Workflow != null && x.Workflow.Codigo == filtro.Workflow) || filtro.Workflow == null)
-                    && (workflowsTipos.Any(y => y == x.Workflow.Codigo))
-                    && (filtro.TipoEstado == TipoEstado.Todos || (filtro.TipoEstado == TipoEstado.Si && x.Rechazado) || (filtro.TipoEstado == TipoEstado.No && !x.Rechazado))
-                    && (filtro.TipoDeSoja == TipoDeSoja.Todos || (filtro.TipoDeSoja == TipoDeSoja.Si && x.Establecimiento != null) || (filtro.TipoDeSoja == TipoDeSoja.No && x.Establecimiento == null))
-                    && ((filtro.ProximaAccion != null && contexto.Set<LogActividad>().Where( y => y.WorkflowInstanceId == x.InstanciaWorkflow).OrderByDescending(y => y.Id).FirstOrDefault().ActividadXaml == filtro.ProximaAccion) || filtro.ProximaAccion == null)
-                    && ((filtro.Patente != null && x.Patente.ToLower().Contains(filtro.Patente.ToLower())) || filtro.Patente == null)
-                    && ((filtro.TipoDocumentoDeIngreso != null && x.TipoDocumentoIngreso == filtro.TipoDocumentoDeIngreso) || filtro.TipoDocumentoDeIngreso == null)
-                    && ((filtro.NumeroDocumentoDeIngreso != null && x.NumeroDocumentoIngreso.Contains(filtro.NumeroDocumentoDeIngreso)) || filtro.NumeroDocumentoDeIngreso == null)
-                    && ((filtro.MaterialId.HasValue && x.Material.Id == filtro.MaterialId.Value) || filtro.MaterialId == null || filtro.MaterialId == 0)
-                    && ((filtro.Calidad != null && x.Calado.CalidadMaterial.Descripcion.ToLower() == filtro.Calidad.ToLower()) || filtro.Calidad == null)
-                    && ((filtro.TipoComercialId.HasValue && x.TipoComercial.Id == filtro.TipoComercialId) || filtro.TipoComercialId == null || filtro.TipoComercialId == 0)
-                    && ((filtro.SoloNoAsignados && x.Almacen == null) || !filtro.SoloNoAsignados)
-                    && ((filtro.SoloSinDescuentos && caracteristicasAnalizadas != null && caracteristicasAnalizadas.TieneDescuentos) || !filtro.SoloSinDescuentos)
-                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Baja || filtro.TipoDeProteina == TipoDeProteina.Media || (filtro.TipoDeProteina == TipoDeProteina.Alta && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaAlta))
-                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Baja || filtro.TipoDeProteina == TipoDeProteina.Alta || (filtro.TipoDeProteina == TipoDeProteina.Media && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaMedia))
+            var query = contexto.Set<Recorrido>().Where(q => q.Centro.Id == filtro.CentroId);
 
-                    && (filtro.TipoDeProteina == TipoDeProteina.Todos || filtro.TipoDeProteina == TipoDeProteina.Alta || filtro.TipoDeProteina == TipoDeProteina.Media || (filtro.TipoDeProteina == TipoDeProteina.Baja && caracteristicasAnalizadas != null && caracteristicasAnalizadas.EsProteinaBaja))  
-                    && ((filtro.TipoVehiculo != null && (filtro.TipoVehiculo == TipoVehiculo.Camiones && x.TipoVehiculo!= TipoVehiculo.Bitren && x.TipoVehiculo != TipoVehiculo.Tren && x.TipoVehiculo != TipoVehiculo.Vapor) ||
-                    x.TipoVehiculo == filtro.TipoVehiculo) || filtro.TipoVehiculo  == null)
-                    && (filtro.TipoMaterial == TipoMaterial.Todos || (filtro.TipoMaterial == TipoMaterial.Granos && x.Material.EsGrano) || (filtro.TipoMaterial == TipoMaterial.NoGranos && !x.Material.EsGrano))
-                    && (filtro.CalleId == null ||  x.CallePorRecorridos.Any(y=>y.FechaEgreso == null && filtro.CalleId == y.Calle.Id))
-                    && !x.Terminado)
-                    || (filtro.NumeroDeTarjeta != null && x.TarjetaDeAcceso == filtro.NumeroDeTarjeta)
-                                 select x;
+            if (string.IsNullOrWhiteSpace(filtro.NumeroDeTarjeta))
+            {
+                var workflowsTipos = contexto.Set<Workflow>().Where(x => x.Centro.Id == filtro.CentroId).Select(x => x.Codigo).ToList();
 
-            if (paginacion.OrdenarPor != null)
+                query = query.Where(q => workflowsTipos.Contains(q.Workflow.Codigo));
+
+                query = query.Where(q => q.Terminado != true);
+
+                if (!string.IsNullOrWhiteSpace(filtro.Workflow))
+                    query = query.Where(q => q.Workflow.Codigo == filtro.Workflow);
+
+                if (filtro.TipoEstado == TipoEstado.Si)
+                    query = query.Where(q => q.Rechazado == true);
+                else if (filtro.TipoEstado == TipoEstado.No)
+                    query = query.Where(q => q.Rechazado != true);
+
+                if (filtro.TipoDeSoja == TipoDeSoja.Si)
+                    query = query.Where(q => q.Establecimiento != null);
+                else if (filtro.TipoDeSoja == TipoDeSoja.No)
+                    query = query.Where(q => q.Establecimiento == null);
+
+                if (filtro.TipoDeSoja == TipoDeSoja.Si)
+                    query = query.Where(q => q.Establecimiento != null);
+                else if (filtro.TipoDeSoja == TipoDeSoja.No)
+                    query = query.Where(q => q.Establecimiento == null);
+
+                if (!string.IsNullOrWhiteSpace(filtro.ProximaAccion))
+                    query = query.Where(q => contexto.Set<LogActividad>().Where(y => y.WorkflowInstanceId == q.InstanciaWorkflow).OrderByDescending(y => y.Id).FirstOrDefault().ActividadXaml == filtro.ProximaAccion);
+
+                if (!string.IsNullOrWhiteSpace(filtro.Patente))
+                    query = query.Where(q => q.Patente.Contains(filtro.Patente));
+
+                if (filtro.TipoDocumentoDeIngreso.HasValue)
+                    query = query.Where(q => q.TipoDocumentoIngreso == filtro.TipoDocumentoDeIngreso);
+
+                if (!string.IsNullOrWhiteSpace(filtro.NumeroDocumentoDeIngreso))
+                    query = query.Where(q => q.NumeroDocumentoIngreso.Contains(filtro.NumeroDocumentoDeIngreso));
+
+                if (filtro.MaterialId.HasValue && filtro.MaterialId != 0)
+                    query = query.Where(q => q.Material.Id == filtro.MaterialId);
+
+                if (!string.IsNullOrWhiteSpace(filtro.Calidad))
+                    query = query.Where(q => q.Calado.CalidadMaterial.Descripcion.ToLower() == filtro.Calidad.ToLower());
+
+                if (filtro.TipoComercialId.HasValue && filtro.TipoComercialId != 0)
+                    query = query.Where(q => q.TipoComercial.Id == filtro.TipoComercialId);
+
+                if (filtro.SoloNoAsignados)
+                    query = query.Where(q => q.Almacen == null);
+
+                if (filtro.SoloSinDescuentos)
+                    query = query.Where(q => q.CaracteristicasAnalizadasList.FirstOrDefault().TieneDescuentos);
+
+                if (filtro.TipoDeProteina == TipoDeProteina.Alta)
+                    query = query.Where(q => q.CaracteristicasAnalizadasList.FirstOrDefault().EsProteinaAlta);
+                else if (filtro.TipoDeProteina == TipoDeProteina.Media)
+                    query = query.Where(q => q.CaracteristicasAnalizadasList.FirstOrDefault().EsProteinaMedia);
+                else if (filtro.TipoDeProteina == TipoDeProteina.Baja)
+                    query = query.Where(q => q.CaracteristicasAnalizadasList.FirstOrDefault().EsProteinaBaja);
+
+                if (filtro.TipoVehiculo.HasValue)
+                    query = query.Where(q => q.TipoVehiculo == filtro.TipoVehiculo);
+
+                if (filtro.TipoMaterial == TipoMaterial.Granos)
+                    query = query.Where(q => q.Material.EsGrano == true);
+                else if (filtro.TipoMaterial == TipoMaterial.NoGranos)
+                    query = query.Where(q => q.Material.EsGrano != true);
+
+                if (filtro.CalleId.HasValue)
+                    query = query.Where(q => q.CallePorRecorridos.Any(y => y.FechaEgreso == null && y.Calle.Id == filtro.CalleId));
+            }
+            else
+            {
+                query = query.Where(q => q.TarjetaDeAcceso == filtro.NumeroDeTarjeta);
+            }
+
+            if (!string.IsNullOrWhiteSpace(paginacion.OrdenarPor))
             {
                 if (paginacion.OrdenarPor == "Calle")
                 {
                     Expression<Func<Recorrido, string>> selectorOrden = x => x.CallePorRecorridos.FirstOrDefault(y => y.FechaEgreso == null).Calle.Nombre;
-                    resultados = paginacion.DireccionOrden == DirOrden.Asc
-                                     ? resultados.OrderBy(selectorOrden)
-                                     : resultados.OrderByDescending(selectorOrden);
+                    query = query = paginacion.DireccionOrden == DirOrden.Asc
+                                     ? query.OrderBy(selectorOrden)
+                                     : query.OrderByDescending(selectorOrden);
                 }
                 else
                 {
                     var selectorOrden = Expresiones.Propiedad<Recorrido>(paginacion.OrdenarPor);
-                    resultados = paginacion.DireccionOrden == DirOrden.Asc
-                                     ? resultados.OrderBy(selectorOrden)
-                                     : resultados.OrderByDescending(selectorOrden);
+                    query = query = paginacion.DireccionOrden == DirOrden.Asc
+                                     ? query.OrderBy(selectorOrden)
+                                     : query.OrderByDescending(selectorOrden);
                 }
             }
-            var itemsTotales = resultados.Count();
+            var itemsTotales = query.Count();
+            query = query.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 
-            resultados = resultados.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
+            var datos = query
+                .Select(x => new InstanciaWorkflowDto
+                {
+                    RecorridoId = x.Id,
+                    Id = x.InstanciaWorkflow,
+                    Material = x.Material.Descripcion,
+                    MaterialId = x.Material.Id,
+                    MaterialCodigoSap = x.Material.CodigoSAP,
+                    Transportista = x.Transportista != null ? x.Transportista.RazonSocial : string.Empty,
+                    TransportistaId = x.Transportista != null ? x.Transportista.Id : 0,
+                    Cuit = x.Chofer.Cuil,
+                    Calidad = x.Calado.CalidadMaterial != null ? x.Calado.CalidadMaterial.Descripcion : string.Empty,
+                    TipoDocumentoDeIngreso = x.TipoDocumentoIngreso,
+                    NumeroDocumentoDeIngreso = x.NumeroDocumentoIngreso,
+                    CentroId = x.Centro.Id,
+                    CaladoId = x.Calado != null ? x.Calado.Id : 0,
+                    Patente = x.Patente,
+                    FechaCreacion = x.FechaInicio,
+                    FechaCalado = x.Calado != null && x.Calado.FechaCreacion.HasValue ? x.Calado.FechaCreacion.Value : DateTime.MinValue,
+                    Centro = x.Centro.Descripcion,
+                    CentroCodigoSap = x.Centro.CodigoSAP,
+                    NumeroDeTarjeta = x.TarjetaDeAcceso,
+                    TipoComercial = x.TipoComercial.Descripcion,
+                    TipoComercialId = x.TipoComercial.Id,
+                    Workflow = x.Workflow.Descripcion,
+                    Codigo = x.Workflow.Codigo,
+                    EsSustentable = x.Establecimiento != null,
+                    FueAsignado = x.Almacen != null,
+                    Rechazado = x.Rechazado,
+                    TipoVehiculo = x.TipoVehiculo,
+                    PagaTicketMunicipal = x.PagaTicketMunicipal != null && x.PagaTicketMunicipal.Value,
+                    Calle = x.CallePorRecorridos.Where(o => o.FechaEgreso == null).Select(y => y.Calle.Nombre).FirstOrDefault()
+                }).ToList();
 
-            var pagina = resultados
-                .Include(x => x.CaracteristicasAnalizadasList)
-                .Include(x => x.Calado.CalidadMaterial)
-                .Include(x => x.Transportista)
-                .Include(x => x.Material)
-                .Include(x => x.Workflow)
-                .Include(x => x.Establecimiento)
-                .Include(x => x.TipoComercial)
-                .Include(x => x.Chofer)
-                .Include(x => x.Centro)
-                .Include(x => x.CallePorRecorridos)
-                .ToList().Select(x => new InstanciaWorkflowDto
+            LlenarDatosCaracteristicasAnalizadas(datos, contexto);
+
+            var result = new ListaPaginada<InstanciaWorkflowDto>(datos, paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
+            return result;
+        }
+
+        private void LlenarDatosCaracteristicasAnalizadas(List<InstanciaWorkflowDto> datos, DbContext contexto)
+        {
+            foreach (var dato in datos)
             {
-                Id = x.InstanciaWorkflow,
-                Material = x.Material.Descripcion,
-                MaterialId = x.Material.Id,
-                MaterialCodigoSap = x.Material.CodigoSAP,
-                Transportista = x.Transportista != null ? x.Transportista.RazonSocial : "",
-                TransportistaId = x.Transportista != null ? x.Transportista.Id : 0,
-                Cuit = x.Chofer.Cuil,
-                Calidad = x.Calado != null && x.Calado.CalidadMaterial != null ? x.Calado.CalidadMaterial.Descripcion : "",
-                TipoDocumentoDeIngreso = x.TipoDocumentoIngreso,
-                NumeroDocumentoDeIngreso = x.NumeroDocumentoIngreso,
-                CentroId = x.Centro.Id,
-                CaladoId = x.Calado != null ? x.Calado.Id : 0,
-                Patente = x.Patente,
-                FechaCreacion = x.FechaInicio,
-                FechaCalado = x.Calado != null && x.Calado.FechaCreacion.HasValue ? x.Calado.FechaCreacion.Value : DateTime.MinValue,
-                Centro = x.Centro.Descripcion,
-                CentroCodigoSap = x.Centro.CodigoSAP,
-                NumeroDeTarjeta = x.TarjetaDeAcceso,
-                TipoComercial = x.TipoComercial.Descripcion,
-                TipoComercialId = x.TipoComercial.Id,
-                Humedad = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.Humedad.HasValue ? x.CaracteristicasAnalizadas.Humedad.ToString() : "",
-                Workflow = x.Workflow.Descripcion,
-                Codigo = x.Workflow.Codigo,
-                EsSustentable = x.Establecimiento != null,
-                TieneDescuentos = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.TieneDescuentos,
-                FueAsignado = x.Almacen != null,
-                Rechazado = x.Rechazado,
-                PagaTicketMunicipal = x.PagaTicketMunicipal != null && x.PagaTicketMunicipal.Value,
-                EsHumedad = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsHumedad,
-                EsGranosVerdes = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsGranosVerdes,
-                EsGranosDañados = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsGranosDañados,
-                EsCuerposExtranos = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsCuerposExtranos,
-                EsProteinaBaja = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaBaja,
-                EsProteinaMedia = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaMedia,
-                EsProteinaAlta = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.EsProteinaAlta,
-                TieneInsectosVivos = x.CaracteristicasAnalizadas != null && x.CaracteristicasAnalizadas.TieneInsectosVivos,
-                TipoVehiculo = x.TipoVehiculo,
-                Calle = x.CallePorRecorridos.Where(y => y.FechaEgreso == null).FirstOrDefault()?.Calle?.Nombre
-                });
-
-
-
-            return new ListaPaginada<InstanciaWorkflowDto>(pagina.ToList(), paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
+                var caracteristicaAnalizada = contexto.Set<CaracteristicasAnalizadas>().FirstOrDefault(q => q.Recorrido.Id == dato.RecorridoId);
+                dato.TieneDescuentos = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.TieneDescuentos : false;
+                dato.Humedad = (caracteristicaAnalizada != null && caracteristicaAnalizada.Humedad.HasValue) ? caracteristicaAnalizada.Humedad.ToString() : string.Empty;
+                dato.EsHumedad = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsHumedad : false;
+                dato.EsGranosVerdes = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsGranosVerdes : false;
+                dato.EsGranosDañados = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsGranosDañados : false;
+                dato.EsCuerposExtranos = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsCuerposExtranos : false;
+                dato.EsProteinaBaja = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsProteinaBaja : false;
+                dato.EsProteinaMedia = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsProteinaMedia : false;
+                dato.EsProteinaAlta = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.EsProteinaAlta : false;
+                dato.TieneInsectosVivos = (caracteristicaAnalizada != null) ? caracteristicaAnalizada.TieneInsectosVivos : false;
+            }
         }
     }
 }
