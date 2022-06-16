@@ -22,7 +22,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             var calle = ObtenerCalleCircular(contexto);
             LoggerHelper.WriteLine("Calle Id: "+(calle != null ? calle.Id : 0));
-            if (calle == null) {
+            if (calle == null && ValidarCallesLlamadas(contexto)) {
                 LoggerHelper.WriteLine("No es circular");
                 calle = ObtenerCalle(contexto);
                 LoggerHelper.WriteLine("Calle Id: " + (calle != null ? calle.Id : 0));
@@ -35,7 +35,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             if (this.tipoCalle == TipoCalle.PreCalado)
             {
-                var ultimoCamion = ObtenerUltimoCamion(contexto);
+                var ultimoCamion = ObtenerUltimoCamion(contexto, true);
 
                 if (ultimoCamion != null)
                 {
@@ -43,7 +43,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                     if (centroInformaCircular != null)
                     {
-                        var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto);
+                        var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto, true);
 
                         if (camionesLlamadosPorCalado < (centroInformaCircular?.LimiteCamionesCalado ?? 8))
                         {
@@ -64,8 +64,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private Calle ObtenerCalle(DbContext contexto)
         {
-            var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto);
-            var ultimoCamion = ObtenerUltimoCamion(contexto);
+            var camionesLlamadosPorCalado = ObtenerCantidadCamionesLlamadosPorCalado(contexto, false);
+            var ultimoCamion = ObtenerUltimoCamion(contexto, false);
             if (ultimoCamion != null)
             {
                 var centro = contexto.Set<Centro>().FirstOrDefault(x => x.Id == ultimoCamion.Calle.CentroId);
@@ -84,8 +84,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                && x.Calle.Deshabilitada == false
                                && x.Calle.Bloqueada == false
                                && x.Calle.TipoCalle == tipoCalle
-                               && x.FechaIngeso < fechaLimite
-                               && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid))
+                               && x.FechaIngeso < fechaLimite)
                               .OrderBy(x => x.FechaIngeso)
                               .Select(q => q.Calle)
                               .FirstOrDefault();
@@ -94,23 +93,47 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             return null;
         }
 
-        private int ObtenerCantidadCamionesLlamadosPorCalado(DbContext contexto)
+        private int ObtenerCantidadCamionesLlamadosPorCalado(DbContext contexto, bool esCircular)
         {
-            return contexto.Set<CallePorRecorrido>()
-                .Count(x => x.FechaEgreso == null
+            var query = contexto.Set<CallePorRecorrido>()
+                .Where(x => x.FechaEgreso == null
                 && x.Calle.TipoCalle == tipoCalle
-                && x.Calle.FechaLLamada.HasValue &&
-                (x.Recorrido.Material.Id == materialid || x.CargaDeCupo.Material.Id == materialid));
+                && x.Calle.FechaLLamada.HasValue);
+            if(esCircular)
+            {
+                query = query.Where(x => x.Recorrido.Material.Id == materialid || x.CargaDeCupo.Material.Id == materialid);
+            }
+            return query.Count();
         }
 
-        private CallePorRecorrido ObtenerUltimoCamion(DbContext contexto)
+        private CallePorRecorrido ObtenerUltimoCamion(DbContext contexto, bool esCircular)
         {
-            return contexto.Set<CallePorRecorrido>()
-                            .Where(x => x.FechaEgreso == null
-                             && x.Calle.TipoCalle == tipoCalle
-                            && (x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid))
-                            .OrderBy(x => x.Id)
-                            .FirstOrDefault();
+            var query = contexto.Set<CallePorRecorrido>()
+                .Where(x => x.FechaEgreso == null
+                             && x.Calle.TipoCalle == tipoCalle);
+            if (esCircular)
+            {
+                query = query.Where(x => x.CargaDeCupo.Material.Id == materialid || x.Recorrido.Material.Id == materialid);
+            }
+            return query.OrderBy(x => x.Id).FirstOrDefault();
+        }
+
+        private bool ValidarCallesLlamadas(DbContext contexto)
+        {
+            var limiteCallesLlamadas = contexto.Set<ConfiguracionGeneral>()
+                                               .Where(x => x.Pantalla.Equals("EstadoDeCallePreCalado") && x.Nombre.Equals("LimiteFilasLlamadas"))
+                                               .Select(x => x.Valor)
+                                               .FirstOrDefault();
+
+            var callesLlamadas = contexto.Set<CallePorRecorrido>()
+                                        .Where(x => x.FechaEgreso == null && 
+                                                    x.Calle.TipoCalle == tipoCalle &&
+                                                    x.Calle.FechaLLamada != null)
+                                        .Select(x => x.Calle.Id)
+                                        .Distinct()
+                                        .Count();
+
+            return callesLlamadas < (limiteCallesLlamadas != null ? int.Parse(limiteCallesLlamadas) : 2);
         }
     }
 }
