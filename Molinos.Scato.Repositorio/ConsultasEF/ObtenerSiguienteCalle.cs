@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -21,11 +20,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public Calle Ejecutar(DbContext contexto)
         {
             var calle = ObtenerCalleCircular(contexto);
-            LoggerHelper.WriteLine("Calle Id: "+(calle != null ? calle.Id : 0));
             if (calle == null && ValidarCallesLlamadas(contexto)) {
-                LoggerHelper.WriteLine("No es circular");
                 calle = ObtenerCalle(contexto);
-                LoggerHelper.WriteLine("Calle Id: " + (calle != null ? calle.Id : 0));
             }
 
             return calle;
