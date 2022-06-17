@@ -36,7 +36,7 @@
   <setParameter name="MailSettings Smtp EnableSsl" value="false" />
   <setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
   <setParameter name="urlBaseCircularApp Config" value="https://testservices.appcircular.com/plantIntegration/" />
-  <setParameter name="apiTokenCircularApp Config" value="bnYYkHKgcsnYHXQ5HdeKvVSjKZxdJ3E9AmzG" />
+  <setParameter name="apiTokenCircularApp Config" value="8kWn2EBLeKrkL6qC7tmZKFcKNBnHKEnH74fz" />
   <setParameter name="SimularTurnoActivoCircular Config" value="true" />
   <setParameter name="PdfCpeDpiX Config" value="300" />
   <setParameter name="PdfCpeDpiY Config" value="300" />
