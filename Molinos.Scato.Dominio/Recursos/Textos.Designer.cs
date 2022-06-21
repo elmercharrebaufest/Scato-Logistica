@@ -28344,6 +28344,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transportista segundo tramo.
+        /// </summary>
+        public static string Transportista_Segundo_Tramo {
+            get {
+                return ResourceManager.GetString("Transportista_Segundo_Tramo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transportistas.
         /// </summary>
         public static string Transportista_Titulo {
