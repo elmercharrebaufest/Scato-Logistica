@@ -355,13 +355,14 @@ namespace Molinos.Scato.Servicios.Impl
         public void ActualizarBarreras(string nombrePc)
         {
             var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
-            foreach (var sensor in sensores)
+            if (sensores != null)
             {
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo });
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
+                foreach (var sensor in sensores)
+                {
+                    orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo });
+                    orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
+                }
             }
-
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Molinos.Scato.Web.Controllers
         
         public JsonResult MarcarLeidos(int? id)
         {
-            if (id != null)
+            if (id != null && id != 0)
             {
                 servicioComandos.Ejecutar(new ModificarNotificacion { Id = id.Value });
             }
