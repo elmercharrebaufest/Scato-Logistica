@@ -28,6 +28,14 @@ function Calle(item, context) {
         }
     };
 
+    self.LlamarPrecalado = function () {
+        if (!self.Llamada() && self.CamionesEnCalle() > 0
+            && self.TipoCalle == 1
+            && self.TiempoEnColaEnMinutos() >= minutosEsperaPrecalado) {
+            self.LLamar();
+        }
+    };
+
     self.LLamar = function () {
         $.blockUI({
             blockMsgClass: 'blocuiBox',
@@ -282,12 +290,27 @@ function EstadoDeCallesViewModel() {
                 //obtener si hay calado automatico
                 var caladoAutomatico = allData.calles.find(function (obj) { return obj.TipoCalle == 4 && obj.Automatica });
 
+                // Obtener filas calador
+                var filasCalador = allData.calles.filter(x => x.TipoCalle == 4 && x.Automatica);
+                // Agregar calles precalado que han sido llamadas a las filas calador según su material
+                $.each(filasCalador, function (key, value) {
+                    value.FilasPrecalado = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id);
+                    value.FilasPrecaladoLlamadas = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada);
+                });
+
                 ko.utils.arrayForEach(self.Calles(), function (calle) {
                     calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
                     calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
 
                     if (caladoAutomatico && calle.TipoCalle == 7)
                         calle.LlamarCircular();
+
+                    var filaCalador;
+                    $.each(filasCalador, function (key, value) {
+                        filaCalador = value.FilasPrecalado.filter(x => x.Id == calle.Id);
+                    });
+                    if (caladoAutomatico && calle.TipoCalle == 1 && filaCalador !== undefined && filaCalador.FilasPrecaladoLlamadas.length > limiteFilasLlamadasPrecalado)
+                        calle.LlamarPrecalado();
                 });
                 self.Materiales(allData.materiales);
                 

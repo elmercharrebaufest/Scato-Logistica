@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
                         asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
                     {
-                        LLamarSiguienteCallePreCalado(asignacion);
+                        //LLamarSiguienteCallePreCalado(asignacion);
                         LiberarFilaSiQuedaVacia(asignacion);
                     }
                 }

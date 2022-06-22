@@ -41,7 +41,13 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var materialesNoGranos = servicio.ObtenerMaterialNoGranoAsignableCalle();
-            ViewBag.MinutosEsperaCircular = this.servicio.ObtenerCentro(centroId).MinutosEsperaCircular ?? 20;
+            var centroDto = this.servicio.ObtenerCentro(centroId);
+            ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
+            ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
+
+            var limiteFilasPrecaladoLlamadas = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
+            ViewBag.LimiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadas != null ? int.Parse(limiteFilasPrecaladoLlamadas) : 3;
+
             return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos ? materialesNoGranos.Any(a => a.Id == x.MaterialId) && x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna : x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna).ToList());
         }
 
