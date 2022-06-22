@@ -119,7 +119,7 @@ function CargarGrilla(callback) {
 
     if ($("#filtroOrdenarPor").val() != null && $("#filtroOrdenarPor").val() != "") {
         var columnasSeparadas = columnas.split('|');
-        if (!columnasSeparadas.includes($("#filtroOrdenarPor").val())) { 
+        if (columnasSeparadas.filter(function (columna) { return columna == $("#filtroOrdenarPor").val() }).length == 0) {
             if (columnasSeparadas.length > 0) {
                 $("#filtroOrdenarPor").val(columnasSeparadas[0]);
             }
