@@ -1,5 +1,4 @@
-﻿
-using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Enums;
 using System;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -18,5 +17,25 @@ namespace Molinos.Scato.Dominio.Dto
         public bool AsignadoEnPuestoComando { get; set; }
         public TipoCalle TipoCalle { get; set; }
         public bool Escalable { get; set; }
+    }
+
+    public class CallePorRecorridoListadoCamionesDto
+    {
+        public int Id { get; set; }
+        public TipoCalidad? Calidad { get; set; }
+        public int? RecorridoMaterialId { get; set; }
+        public int? CargaCupoMaterialId { get; set; }
+        public string RecorridoMaterialDescripcion { get; set; }
+        public string CargaCupoMaterialDescripcion { get; set; }
+        public string RecorridoPatente { get; set; }
+        public string CargaDeCupoPatente { get; set; }
+        public string CargaDeCupoRecorridoPatente { get; set; }
+        public int CalleId { get; set; }
+        public DateTime FechaIngreso { get; set; }
+        public bool UltimoDeLaFila { get; set; }
+        public bool? Rechazado { get; set; }
+        public bool AsignadoEnPuestoComando { get; set; }
+        public TipoCalle TipoCalle { get; set; }
+        public TipoVehiculo? TipoVehiculo { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
@@ -20,10 +21,11 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly IServicioOrquestador orquestador;
         private readonly IServicioComandos comandos;
         private readonly IConfiguracionProvider config;
-        private IList<ConcentradorDto> puestos;
+        private readonly ICache cache;
+        //private IList<ConcentradorDto> puestos;
 
         public ServicioEstadoPuesto(ILogger log, IServicioRepositorio repositorio, IServicioNotificarUsuario notificar, 
-            IServicioOrquestador orquestador, IServicioComandos comandos, IConfiguracionProvider config)
+            IServicioOrquestador orquestador, IServicioComandos comandos, IConfiguracionProvider config, ICache cache)
         {
             this.log = log;
             this.repositorio = repositorio;
@@ -31,12 +33,17 @@ namespace Molinos.Scato.Servicios.Impl
             this.orquestador = orquestador;
             this.comandos = comandos;
             this.config = config;
-            
-            ActualizarPuestos();
+            this.cache = cache;
+
+            if(cache.ObtenerTodos<ConcentradorDto>() == null || cache.ObtenerTodos<ConcentradorDto>().Count() == 0)
+            {
+                ActualizarPuestos();
+            }
         }
 
         public void ActualizarPuestos()
         {
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             if (puestos != null)
             {
                 foreach (var puesto in puestos)
@@ -63,6 +70,7 @@ namespace Molinos.Scato.Servicios.Impl
                     }
                 }
             }
+            cache.RemoverTodos();
             puestos = new List<ConcentradorDto>();
             var listaDePuestos = repositorio.ListarPuestosDeBalanzasAutomaticas();
             
@@ -89,6 +97,7 @@ namespace Molinos.Scato.Servicios.Impl
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
                 }
 
+                cache.Agregar($"puesto:{puesto.PuestoId}",puesto);
                 puestos.Add(puesto);
             }
             log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
@@ -97,6 +106,7 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarCambioDeEstado(string sensor, string mensaje)
         {
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             var puesto = puestos.Where(x => x.Sensores.Any(y=>y.Codigo == sensor)).FirstOrDefault();
             if(puesto == null)
             {
@@ -150,6 +160,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void NotificarCambioDeEstado(string sensor, bool mensaje)
         {
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
@@ -198,7 +209,7 @@ namespace Molinos.Scato.Servicios.Impl
                     }
                 }
             }
-
+            
             var estadoBalanza = new EstadoSensoresBalanzaDto()
             {
                 PuestoId = puesto.PuestoId,
@@ -214,6 +225,9 @@ namespace Molinos.Scato.Servicios.Impl
                 Mensaje = estadoBalanza.ToJson(),
                 TipoAlerta = TipoAlerta.CambioEstadoBalanzas
             });
+            puesto.EstadoSensoresBalanzaDto = estadoBalanza;
+            cache.Remover($"puesto:{puesto.PuestoId}");
+            cache.Agregar($"puesto:{puesto.PuestoId}", puesto);
 
         }
 
@@ -227,7 +241,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ValidarEstadoPuesto(int puestoId)
         {
-            var puesto = puestos.Where(x => x.PuestoId == puestoId ).FirstOrDefault();
+            var puesto = cache.Obtener<ConcentradorDto>($"puesto:{puestoId}");
             var valido = true;
             if (puesto == null)
             {
@@ -289,11 +303,11 @@ namespace Molinos.Scato.Servicios.Impl
 
                     var sensoresArriba = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorArriba == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty) }).ToList();
 
                     var sensoresAbajo = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty) }).ToList();
 
                     var notificacionSensorBarrera = new EstadoSensoresBarreraDto
                     {
@@ -320,8 +334,8 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarEstado()
         {
             log.Debug($"Actualizando el estado de los puestos");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             var listaSensores = new List<string>();
-
             foreach (var puesto in puestos)
             {
                 listaSensores = puesto.Sensores.Select(x => x.Codigo).ToList();
@@ -335,19 +349,20 @@ namespace Molinos.Scato.Servicios.Impl
         //Para refactor por cache o base
         public IList<ConcentradorDto> ConsultarEstadoBarreras()
         {          
-            return puestos;
+            return cache.ObtenerTodos<ConcentradorDto>(); 
         }
 
         public void ActualizarBarreras(string nombrePc)
         {
             var sensores = repositorio.ListarSensoresBarrerasActivosPorNombreDePC(nombrePc);
-            foreach (var sensor in sensores)
+            if (sensores != null)
             {
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo });
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
-                orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
+                foreach (var sensor in sensores)
+                {
+                    orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorAbajo });
+                    orquestador.Ejecutar(new EjecutarNotificacionEstadoSensor { CodigoDispositivo = sensor.CodigoDispositivoSensorArriba });
+                }
             }
-
         }
     }
 }

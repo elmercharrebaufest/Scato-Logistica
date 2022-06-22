@@ -255,7 +255,9 @@ function mostrarAlertaPorPantalla(tipoAlerta, mensaje) {
 }
 
 function notificarLectura(id, grupo) {
-    $.getJSON($("#NotificacionesDropDown").data().marcarLeidosUrl, { id: id });
+    if (id > 0) {
+        $.getJSON($("#NotificacionesDropDown").data().marcarLeidosUrl, { id: id });
+    }
 }
 
 function notificarLecturaTodos(grupos) {

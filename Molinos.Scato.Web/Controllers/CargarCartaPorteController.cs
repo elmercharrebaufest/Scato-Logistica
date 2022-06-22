@@ -235,12 +235,12 @@ namespace Molinos.Scato.Web.Controllers
                 if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && orden.TransportistaTramo2Id != 0)
                 {
                     var transportistaTramo2Id = orden.TransportistaTramo2Id ?? 0;
-                    var resultadoTransportistaTramo2 = SetearTransportista(ref transportistaTramo2Id, orden.TipoComercialId, orden.EsTransportistaTramo2);
+                    var resultadoTransportistaTramo2 = SetearTransportista(ref transportistaTramo2Id, orden.TipoComercialId, orden.EsTransportistaTramo2,true);
                     orden.TransportistaTramo2Id = transportistaTramo2Id;
 
                     if (!resultadoTransportistaTramo2)
                     {
-                        log.Debug("No se pudo dar de alta o asociar el transportista2 a la CP");
+                        log.Debug("No se pudo dar de alta o asociar el transportista 2 a la CP");
                         SetearVista(workflowObj, datosUsuario.CentroId);
                         return View(orden);
                     }

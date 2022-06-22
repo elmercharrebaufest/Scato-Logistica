@@ -115,6 +115,16 @@ function CargarGrilla(callback) {
         + checkPatente + checkProximaEtapa + checkTransportista + checkWorkflow + checkfechaCreacion + checkFechaUltimaModificacion + checkCentro + checkMaterialId + checkTipoVehiculo + checkNumeroDeTarjeta + checkChoferDNI + checkChoferNombre + checkProcedencia + checkFoto + checkEntregador + checkProteina + checkAlmacenDestino + checkDifPeso;
     if (columnas[columnas.length - 1] === "|")
         columnas = columnas.slice(0, -1);
+
+
+    if ($("#filtroOrdenarPor").val() != null && $("#filtroOrdenarPor").val() != "") {
+        var columnasSeparadas = columnas.split('|');
+        if (!columnasSeparadas.includes($("#filtroOrdenarPor").val())) { 
+            if (columnasSeparadas.length > 0) {
+                $("#filtroOrdenarPor").val(columnasSeparadas[0]);
+            }
+        }
+    }
     
     //Agrego filtros
     url = UpdateQueryString("Columnas", columnas, url);
@@ -128,6 +138,8 @@ function CargarGrilla(callback) {
     url = UpdateQueryString("TiempoMaxEntreActividades", $("#filtroTiempoMaxEntreActividades").val(), url);
     url = UpdateQueryString("TipoMaterial", $("#filtroTipoMaterial").val(), url);
     url = UpdateQueryString("TieneEntregador", $("#filtroTieneEntregador").val(), url);
+  
+
 
     url = UpdateQueryString("OrdenarPor", $("#filtroOrdenarPor").val(), url);
     url = UpdateQueryString("DirOrden", $("#filtroDirOrden").val(), url);
