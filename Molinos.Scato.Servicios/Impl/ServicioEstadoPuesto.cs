@@ -303,11 +303,11 @@ namespace Molinos.Scato.Servicios.Impl
 
                     var sensoresArriba = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorArriba == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty) }).ToList();
 
                     var sensoresAbajo = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
-                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Dato") ? notificacion.Datos["Dato"] : string.Empty) }).ToList();
+                        .Select(s => new EstadoSensorDto { Id = s.Id, GrupoId = s.VisualizacionBarrera.Id, Barrera = s.Barrera, Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty) }).ToList();
 
                     var notificacionSensorBarrera = new EstadoSensoresBarreraDto
                     {
