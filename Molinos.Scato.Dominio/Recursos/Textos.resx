@@ -9955,4 +9955,7 @@
   <data name="AltaCTG_ValidarCPERepetido" xml:space="preserve">
     <value>Ya existe un registro para el CPE ingresado: Sucursal {0} - Número de Orden {1}</value>
   </data>
+  <data name="Transportista_Segundo_Tramo" xml:space="preserve">
+    <value>Transportista segundo tramo</value>
+  </data>
 </root>
