@@ -373,7 +373,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         var entregador = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteEntregador && x.Activo).LastOrDefault();
                         var patentes = cartaPorte?.Dominio?.Split(',');
                         var representanteRecibidor = Repositorio.Listar<Entregador>(x => x.Cuil.Replace("-", "") == cuitRepresentanteRecibidor && x.Activo).LastOrDefault();
-
+                        var transportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado);
                         var entidad = new Dominio.Entidades.CartaPorte
                         {
                             Id = cartaPorte.Id,
@@ -414,7 +414,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                            }
                         },
                             Destinatario = ObtenerProveedor(cartaPorte.CuitDestinatario.ToString(), resultado, Textos.CartaPorte_Destinatario, false, false, true),
-                            Transportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado),
+                            Transportista = transportista,
                             KmRecorrer = cartaPorte.KmRecorrer,
                             TarifaTonelada = (decimal)cartaPorte.Tarifa,
                             TarifaReferencia = (decimal)cartaPorte.TarifaReferencia,
@@ -440,6 +440,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.Cpe.TitularCartaPorte = titularCartaPorte != null ? titularCartaPorte.Descripcion : string.Empty;
                         resultado.Cpe.TipoVehiculo = TipoVehiculo.Camión;
                         resultado.Cpe.EstadoCpe = cartaPorteRequest.Estado;
+                        resultado.Cpe.EsTransportista = transportista != null; 
                     }
                 }
             }
