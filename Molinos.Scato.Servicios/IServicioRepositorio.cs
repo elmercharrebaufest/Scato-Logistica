@@ -2668,5 +2668,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ValidarAltaCPERepetida(string cpe, int sucursal);
+
+        [OperationContract]
+        MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo);
     }
 }

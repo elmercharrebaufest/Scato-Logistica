@@ -65,12 +65,23 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
-        public JsonResult LlamarCalle(int calleId)
+        public JsonResult LlamarCalle(int calleId, int calleCaladoId)
         {
-            var calle = servicio.ObtenerCalle(calleId);
-            calle.Bloqueada = true;
-            calle.FechaLLamada = DateTime.Now;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+            try
+            {
+                var calle = servicio.ObtenerCalle(calleId);
+                calle.Bloqueada = true;
+                calle.FechaLLamada = DateTime.Now;
+                if(calleCaladoId > 0 && (calle.TipoCalle == TipoCalle.PreCalado || calle.TipoCalle == TipoCalle.Circular))
+                {
+                    calle.CalleCaladoId = calleCaladoId;
+                }
+                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                EnviarMensajeLlamadoACartel(calle, calleCaladoId);
+            } catch (Exception e)
+            {
+                log.Error(e, $"No se pudo llamar la calle {calleId}");
+            }
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
@@ -177,6 +188,32 @@ namespace Molinos.Scato.WebMobile.Controllers
                    CalleId = calleId
                });
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado, int calleCaladoId)
+        {
+            try
+            {
+                var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc("LlamadoCallePrecaladoACalar", 5);
+                var mensajeCartel = servicio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoCallePrecaladoACalar);
+                var calleCalado = servicio.ObtenerCalle(calleCaladoId);
+                if(calleCalado != null && puestoDeTrabajo != null && mensajeCartel != null)
+                {
+                    servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                    {
+                        Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {calleCalado.Nombre}",
+                        PuestoDeTrabajoId = puestoDeTrabajo.Id,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = mensajeCartel.Trama,
+                        NumeroVariable = mensajeCartel.Variable,
+                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
         }
     }
 }
