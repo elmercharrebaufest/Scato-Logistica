@@ -54,5 +54,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Range(0, 9999999999999999, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public  decimal? RangoCaracteristicaCalidadMaximo { get; set; }
 
+        public int CalleCaladoId { get; set; }
+        public string CalleCaladoNombre { get; set; }
+
     }
 }

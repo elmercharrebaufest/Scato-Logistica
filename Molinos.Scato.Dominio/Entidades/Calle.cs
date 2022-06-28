@@ -34,5 +34,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual decimal? RangoCaracteristicaCalidadMaximo { get; set; }
 
         public virtual decimal? RangoCaracteristicaCalidadMinimo { get; set; }
+        public virtual Calle CalleCalado { get; set; }
     }
 }

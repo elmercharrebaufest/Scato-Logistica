@@ -9921,5 +9921,10 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return false;
         }
+
+        public MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo)
+        {
+            return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
+        }
     }
 }
