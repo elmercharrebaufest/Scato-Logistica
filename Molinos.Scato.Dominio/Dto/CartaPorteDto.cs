@@ -458,7 +458,7 @@ namespace Molinos.Scato.Dominio.Dto
             {
                 if (this.Cpe)
                 {
-                    return "000" + this.NroCartaPorte.Substring(Math.Max(0, this.NroCartaPorte.Length - 9));
+                    return "000" + this.NroCartaPorte.Trim().Substring(Math.Max(0, this.NroCartaPorte.Trim().Length - 9));
                 }
 
                 return this.NroCartaPorte;
