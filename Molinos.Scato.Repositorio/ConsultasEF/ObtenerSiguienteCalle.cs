@@ -129,7 +129,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                         .Distinct()
                                         .Count();
 
-            return callesLlamadas < (limiteCallesLlamadas != null ? int.Parse(limiteCallesLlamadas) : 2);
+            return callesLlamadas < (!string.IsNullOrEmpty(limiteCallesLlamadas) ? int.Parse(limiteCallesLlamadas) : 2);
         }
     }
 }
