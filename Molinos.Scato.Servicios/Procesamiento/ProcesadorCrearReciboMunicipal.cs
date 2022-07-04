@@ -25,10 +25,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearReciboMunicipal comando, Resultado resultado)
         {
-            var recibos = Repositorio.Listar<ReciboMunicipal>(e => e.FechaActivacion == comando.Dto.FechaActivacion && e.Ordenanza.Equals(comando.Dto.Ordenanza) && e.Centro.Id == comando.Dto.CentroId);
+            var recibos = Repositorio.Listar<ReciboMunicipal>(e => e.FechaActivacion == comando.Dto.FechaActivacion && e.Centro.Id == comando.Dto.CentroId);
             if (recibos.Any(r => r.TipoVehiculo == comando.Dto.TipoVehiculo))
             {
-                resultado.Error("Ordenanza", Textos.ReciboMunicipal_OrdenanzaExistente);
                 resultado.Error("FechaActivacion", Textos.ReciboMunicipal_OrdenanzaExistente);
                 resultado.Error("TipoVehiculoId", Textos.ReciboMunicipal_OrdenanzaExistente);
             }
