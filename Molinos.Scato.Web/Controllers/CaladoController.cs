@@ -14,9 +14,16 @@ using Molinos.Scato.Web.Models;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Dynamic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -213,6 +220,11 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ViewBag.EnvioDirectoACamara = string.Format(Textos.ProveedorRangoEnvioCamara);
             }
+            if (info.EnvioCamaraInase && recorrido.Material.CodigoSAP == configuracion.AppSettings["CodigoSapSemillaSoja"]
+                && recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren)
+            {
+                ViewBag.EnvioCamaraInase = string.Format(Textos.CaladoMuestraInase);
+            }
             log.Info("{0} - Fin - SetearVista", id);
             return recorrido;
         }
@@ -262,6 +274,8 @@ namespace Molinos.Scato.Web.Controllers
                 log.Debug("{0} - Calado - no hay errores, guardo la muestra de humedad", caladopantalla.WorkflowInstanceId);
                 GuardarMuestraDeHumedad(caladopantalla, datosUsuario);
                 GuardarMuestraDeNirs(caladopantalla, datosUsuario);
+                if(caladopantalla.MaterialId == 4 && caladopantalla.EnvioAInase)
+                    GuardarMuestraInase(caladopantalla, datosUsuario);
                 log.Debug("{0} - Fin - Calado", caladopantalla.WorkflowInstanceId);
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
@@ -571,6 +585,117 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             log.Info("{0} - Nirs Fin - GuardarMuestraDeNirs", caladopantalla.WorkflowInstanceId);
+        }
+
+        private void GuardarMuestraInase(CaladoPantallaDto caladopantalla, DatosUsuario datosUsuario)
+        {
+            log.Info("{0} - Calado GuardarMuestraDeInase", caladopantalla.WorkflowInstanceId);
+
+            servicioComandos.Ejecutar(new CrearMuestraDeInase
+            {
+                Dto = new MuestraDeInaseDto
+                {
+                    WorkflowInstanceId = caladopantalla.WorkflowInstanceId
+                }
+            });
+            log.Info("{0} - Inase - Muestra guardada", caladopantalla.WorkflowInstanceId);
+        }
+
+        [AllowAnonymous]
+        public JsonResult EnvioDeLoteAutomatico()
+        {
+            var result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            var lotes = servicio.ObtenerLotesMuestrasInase();
+
+            if(lotes.Count > 0 )
+            {
+                try
+                {
+                    foreach (var lote in lotes.GroupBy(x=>x.CentroId))
+                    {
+                        var datosMail = servicio.ObtenerConfiguracionMailInase(lote.Key);
+                        var resultado = EnviarMailLoteInase(lote.ToList(), datosMail, lote.Key);
+                        result.Data = resultado;
+                    }
+                    servicioComandos.Ejecutar(new ModificarMuestraDeInase() { Lista = lotes.Select(x=>x.Id).ToList()});
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "Error al generar el lote biotecnologia");
+                    result.Data = e.Message;
+                }
+            }
+
+            return result;
+        }
+        private string EnviarMailLoteInase(List<MuestraDeInaseDto> lote, IList<ConfiguracionGeneralDto> datosMail, int centroId)
+        {
+            var result = "El envio del lote fue Exitoso";
+
+            try
+            {
+                var smtpClient = new SmtpClient();
+                ServicePointManager.ServerCertificateValidationCallback = (s, certificate, chain, sslPolicyErrors) => true;
+                var message = new MailMessage();
+                var mailDestino = datosMail.Where(x => x.Nombre.Contains("MailDestino")).FirstOrDefault().Valor;
+                var destinatarios = datosMail.Where(x => x.Nombre.Contains("MailDestinatarios")).FirstOrDefault().Valor.Split(';');
+                var responsable = datosMail.Where(x => x.Nombre.Contains("Responsable")).FirstOrDefault().Valor;
+                var contacto = datosMail.Where(x => x.Nombre.Contains("Contacto")).FirstOrDefault().Valor;
+                var atencion = datosMail.Where(x => x.Nombre.Contains("Horario")).FirstOrDefault().Valor;
+                var centro = servicio.ObtenerCentro(centroId);
+                message.To.Add(mailDestino);
+                foreach (var address in destinatarios)
+                {
+                    message.CC.Add(new MailAddress(address));
+                }
+                message.Subject = " Resol 37/22 Muestra INASE para " + centro.Descripcion + " - " + DateTime.Now.Formatted();
+                message.Body = $"Se notifican muestras para su retiro. \n " +
+                    $"MOLINOSAGRO S.A. - " +
+                    $"{centro.Cuit} \n" +
+                    $"{centro.Planta} - {centro.Descripcion}" +
+                    $"{centro.Direccion} - {centro.LocalidadDesc} \n" +
+                    $"Cantidad de muestras para retirar: {lote.Count()}  \n" +
+                    $"Persona de contacto: {responsable} \n" +
+                    $"Contacto: {contacto} \n" +
+                    $"Horario de atencion: {atencion} \n";
+                log.Debug("Generando email de archivos de cámara para enviar a " + message.To.First().Address);
+                string str01;
+                var stringBuilder01 = new StringBuilder();
+                foreach (var item in lote)
+                {
+                    stringBuilder01.AppendLine(item.CartaPorte);
+                }
+                str01 = stringBuilder01.ToString();
+                if (str01.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        using (var writer = new StreamWriter(memoryStream, Encoding.GetEncoding(1252)))
+                        {
+                            writer.Write(str01);
+                            writer.Flush();
+                        }
+                        var archive = new MemoryStream(memoryStream.ToArray());
+                        archive.Seek(0, SeekOrigin.Begin);
+                        var ct = new ContentType(MediaTypeNames.Text.Plain);
+                        var attach = new Attachment(archive, ct);
+                        attach.ContentDisposition.FileName = "Solici01.txt";
+                        message.Attachments.Add(attach);
+                    }
+                }
+                log.Debug("Enviando email a " + message.To.First().Address);
+                smtpClient.Send(message);
+                log.Debug("Mail enviado a " + message.To.First().Address);
+            }
+            catch (Exception e)
+            {
+                log.Error(e.Message);
+                result = e.Message;
+            }
+
+            return result;
         }
     }
 }

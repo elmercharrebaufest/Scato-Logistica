@@ -2671,5 +2671,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo);
+        
+        [OperationContract]
+        IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase();
+
+        [OperationContract]
+        IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId);
     }
 }

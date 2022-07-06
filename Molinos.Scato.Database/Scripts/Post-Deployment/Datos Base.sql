@@ -405,6 +405,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 606) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ver Balanzas Pesada',1,607, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 608) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ver Revertir Rechazo Vagones',1,608, NULL); END
 
+IF NOT EXISTS (select 1 from Permiso where Codigo = 610) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Envío Muestra INASE',1,610, NULL); END
+
 --IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
@@ -1402,6 +1404,19 @@ END
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'LimiteFilasLlamadas' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'LimiteFilasLlamadas', '2', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MuestraInase' AND  Centro_Id IS NULL) 
+BEGIN INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) 
+VALUES	('MuestraInase', 'MailDestino', 'info@bolsatech.com.ar', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MuestraInase' AND  Centro_Id = 5) 
+BEGIN INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) 
+VALUES	('MuestraInase', 'MailDestinatarios', 'carlos.cortina@molinosagro.com.ar;sergio.schoeder@molinosagro.com.ar;sergio.schoeder@molinosagro.com.ar', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Responsable', 'Carlos Cortina', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Contacto', 'Email: carlos.cortina@molinosagro.com.ar', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Horario', 'L a V de 8 a 14hs', 5, GETDATE(), 'SCATO')
 END
 
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 

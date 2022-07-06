@@ -24,6 +24,7 @@
     [Mail]                   VARCHAR (45) NULL,
     [Activo]                 BIT          DEFAULT ((1)) NOT NULL,
     [EnvioCamaraDirecto]     BIT          DEFAULT ((0)) NOT NULL,
+    [EnvioCamaraInase]       BIT          DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_dbo.Proveedor] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Proveedor_dbo.Localidad_Localidad_Id] FOREIGN KEY ([Localidad_Id]) REFERENCES [dbo].[Localidad] ([Id]),
     CONSTRAINT [FK_dbo.Proveedor_dbo.Pais_Pais_Id] FOREIGN KEY ([Pais_Id]) REFERENCES [dbo].[Pais] ([Id]),

@@ -29,5 +29,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int MaterialId { get; set; }
         public int PuestoDeTrabajoId { get; set; }
         public int RecorridoId { get; set; }
+        public bool EnvioAInase{ get; set; }
     }
 }
