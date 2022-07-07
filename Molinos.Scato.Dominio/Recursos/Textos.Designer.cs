@@ -24721,7 +24721,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ya existe un Recibo Municipal con esta Ordenanza.
+        ///   Looks up a localized string similar to Ya existe un Recibo Municipal con esta Fecha y Tipo de vehiculo.
         /// </summary>
         public static string ReciboMunicipal_OrdenanzaExistente {
             get {

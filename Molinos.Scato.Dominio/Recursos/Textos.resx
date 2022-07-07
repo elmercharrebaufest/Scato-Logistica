@@ -8597,7 +8597,7 @@
     <value>Nuevo Recibo Municipal</value>
   </data>
   <data name="ReciboMunicipal_OrdenanzaExistente" xml:space="preserve">
-    <value>Ya existe un Recibo Municipal con esta Ordenanza</value>
+    <value>Ya existe un Recibo Municipal con esta Fecha y Tipo de vehiculo</value>
   </data>
   <data name="ReciboMunicipal_FechaActivacion" xml:space="preserve">
     <value>Fecha de Activación</value>
