@@ -157,7 +157,8 @@ namespace Molinos.Scato.Web.Controllers
                 CamionSeleccionadoAnalisisIntervalo = caladoEsObligatorio,
                 MaterialId = recorrido.Material.Id,
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                RecorridoId = recorrido.Id
+                RecorridoId = recorrido.Id,
+                EnvioAInase = recorrido.EnvioMuestraInase
             });
         }
 
@@ -224,6 +225,7 @@ namespace Molinos.Scato.Web.Controllers
                 && recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren)
             {
                 ViewBag.EnvioCamaraInase = string.Format(Textos.CaladoMuestraInase);
+                recorrido.EnvioMuestraInase = true;
             }
             log.Info("{0} - Fin - SetearVista", id);
             return recorrido;
@@ -617,7 +619,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         var datosMail = servicio.ObtenerConfiguracionMailInase(lote.Key);
                         var resultado = EnviarMailLoteInase(lote.ToList(), datosMail, lote.Key);
-                        result.Data = resultado;
+                        result.Data += resultado + "\n";
                     }
                     servicioComandos.Ejecutar(new ModificarMuestraDeInase() { Lista = lotes.Select(x=>x.Id).ToList()});
                 }
