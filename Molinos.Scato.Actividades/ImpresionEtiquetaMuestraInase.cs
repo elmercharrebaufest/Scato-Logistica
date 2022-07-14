@@ -29,8 +29,6 @@ namespace Molinos.Scato.Actividades
         public InArgument<int> PuestoDeTrabajoId { get; set; }
         [RequiredArgument]
         public InArgument<string> Material { get; set; }
-        [RequiredArgument]
-        public InArgument<TipoVehiculo> TipoVehiculo { get; set; }
 
 
         protected override Resultado Execute(CodeActivityContext context)
@@ -48,10 +46,15 @@ namespace Molinos.Scato.Actividades
             var nombreUsuario = NombreUsuario.Get<string>(context);
             var cantCopias = CantCopias.Get<int?>(context) ?? 1;
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
-            var tipoVehiculo = TipoVehiculo.Get<TipoVehiculo>(context);
 
             var material = Material.Get<string>(context);
+            var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(workflowId);
+            var proveedor = repositorio.ObtenerProveedorPorId(cartaPorte.TitularCartaPorteId);
 
+            if(!proveedor.EnvioCamaraInase || cartaPorte.MaterialId != 4)
+            {
+                return resultado;
+            }
             var logActividad = new LogActividadDto
             {
                 Actividad = "Impresion Etiqueta Muestra INASE",
@@ -72,7 +75,7 @@ namespace Molinos.Scato.Actividades
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
                 if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
 
-                var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(workflowId);
+                
                 var vehiculo = repositorio.ObtenerVehiculoPorGuid(workflowId);
 
                 
