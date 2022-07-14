@@ -2668,5 +2668,12 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ValidarAltaCPERepetida(string cpe, int sucursal);
+
+        
+        [OperationContract]
+        IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase();
+
+        [OperationContract]
+        IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId);
     }
 }

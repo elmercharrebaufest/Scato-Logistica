@@ -155,7 +155,12 @@
         @Html.ViewBag.EnvioDirectoACamara
     </div>
 }
-
+@if (ViewBag.EnvioCamaraInase != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        @Html.ViewBag.EnvioCamaraInase
+    </div>
+}
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
         <div id="calado">
@@ -217,6 +222,9 @@
                 @Html.HiddenFor(model => model.CicloDeCalado)
                 @Html.HiddenFor(model => model.CentroId)
                 @Html.HiddenFor(model => model.NumeroDocumentoIngreso)
+                @Html.HiddenFor(model => model.EnvioAInase)
+
+
                 if (humedimetro != null)
                 {
                     @Html.Hidden("HumedimetroId", humedimetro.Id)

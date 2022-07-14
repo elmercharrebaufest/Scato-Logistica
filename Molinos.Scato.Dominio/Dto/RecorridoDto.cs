@@ -110,5 +110,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EstablecimientoDemorado { get; set; }
         public bool VehiculoDemorado { get; set; }
         public bool TipoWorkFlowEgreso { get; set; }
+        public bool EnvioMuestraInase { get; set; }
     }
 }

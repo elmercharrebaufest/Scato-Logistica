@@ -66,6 +66,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string Mail { get; set; }
         public bool Activo { get; set; }
         public bool EnvioCamaraDirecto { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "Proveedor_ResolucionInase")]
+        public bool EnvioCamaraInase { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

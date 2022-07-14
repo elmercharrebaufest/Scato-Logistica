@@ -6082,6 +6082,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Se debe tomar la muestra para INASE.
+        /// </summary>
+        public static string CaladoMuestraInase {
+            get {
+                return ResourceManager.GetString("CaladoMuestraInase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calador.
         /// </summary>
         public static string Calador {
@@ -23846,6 +23855,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Envío Muestra INASE.
+        /// </summary>
+        public static string Proveedor_EnvioCamaraInase {
+            get {
+                return ResourceManager.GetString("Proveedor_EnvioCamaraInase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Proveedor Inválido.
         /// </summary>
         public static string Proveedor_Invalido {
@@ -23869,6 +23887,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Proveedor_NoEncontrado {
             get {
                 return ResourceManager.GetString("Proveedor_NoEncontrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resol 37/22 Muestra INASE.
+        /// </summary>
+        public static string Proveedor_ResolucionInase {
+            get {
+                return ResourceManager.GetString("Proveedor_ResolucionInase", resourceCulture);
             }
         }
         

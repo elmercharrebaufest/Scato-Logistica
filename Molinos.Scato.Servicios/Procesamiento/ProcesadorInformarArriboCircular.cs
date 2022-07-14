@@ -56,14 +56,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     resultado.TurnoActivo = respCircular.LlegoEnHorario;
 
+                    var simularTurnoActivoCircular = configuracion.AppSettings.Get("SimularTurnoActivoCircular");
+                    if (!string.IsNullOrEmpty(simularTurnoActivoCircular) && simularTurnoActivoCircular.ToUpper() == "TRUE")
+                    {
+                        resultado.TurnoActivo = true;
+                        respCircular.SacoTurnoConCircular = true;
+                    }
                     if (respCircular.SacoTurnoConCircular)
                     {
-                        var simularTurnoActivoCircular = configuracion.AppSettings.Get("SimularTurnoActivoCircular");
-                        if (!string.IsNullOrEmpty(simularTurnoActivoCircular) && simularTurnoActivoCircular.ToUpper() == "TRUE")
-                        {
-                            resultado.TurnoActivo = true;
-                        }
-
                         var cargaDeCupo = Repositorio.Obtener<CargaDeCupo>(x => x.NumeroCartaPorte == comando.CartaPorte || x.CTG == comando.CartaPorte);
                         cargaDeCupo.SacoTurnoConCircular = respCircular.SacoTurnoConCircular;
                         cargaDeCupo.LlegoEnHorario = resultado.TurnoActivo;

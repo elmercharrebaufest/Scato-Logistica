@@ -9958,4 +9958,13 @@
   <data name="Transportista_Segundo_Tramo" xml:space="preserve">
     <value>Transportista segundo tramo</value>
   </data>
+  <data name="Proveedor_ResolucionInase" xml:space="preserve">
+    <value>Resol 37/22 Muestra INASE</value>
+  </data>
+  <data name="CaladoMuestraInase" xml:space="preserve">
+    <value>Se debe tomar la muestra para INASE</value>
+  </data>
+  <data name="Proveedor_EnvioCamaraInase" xml:space="preserve">
+    <value>Envío Muestra INASE</value>
+  </data>
 </root>
