@@ -509,6 +509,8 @@
     <Build Include="dbo\Tables\SensorBarrera.sql" />
     <Build Include="dbo\Tables\ConfiguracionGeneral.sql" />
     <Build Include="dbo\Tables\ConfigSensores.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaMuestraInase.sql" />
+    <Build Include="dbo\Tables\MuestraDeInase.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

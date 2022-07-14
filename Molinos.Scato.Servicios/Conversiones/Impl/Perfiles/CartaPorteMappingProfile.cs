@@ -157,6 +157,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(t => t.RtteComercial, f => f.MapFrom(r => r.RtteComercial.Descripcion))
                   .ForMember(t => t.CTG, f => f.MapFrom(r => r.CTG))
                   .ForMember(t => t.EnvioDirectoCamara, f => f.MapFrom(r => (r.RtteComercial != null && r.RtteComercial.EnvioCamaraDirecto) || (r.RtteComercial == null && r.TitularCartaPorte.EnvioCamaraDirecto)))
+                  .ForMember(t => t.EnvioCamaraInase, f => f.MapFrom(r => (r.TitularCartaPorte != null && r.TitularCartaPorte.EnvioCamaraInase)))
                   .ForMember(t => t.Procedencia, f => f.MapFrom(r => r.Procedencia != null ? r.Procedencia.Descripcion : string.Empty));
         }
     }

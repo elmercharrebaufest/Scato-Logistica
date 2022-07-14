@@ -82,8 +82,24 @@
             @Html.HiddenFor(m => m.EnvioCamaraDirecto)
         </div>
     }
-</div>
 
+</div>
+@if (PermisosHelper.Is(PermisosScato.EnvioCamaraInase))
+{
+    <div class="control-group" style="display: inline-flex">
+        <div class="span4"></div>
+        <label class="checkbox" style="margin-left: 95px">
+            @Html.CheckBoxFor(m => m.EnvioCamaraInase)
+            <span class="helper">@Textos.Proveedor_ResolucionInase </span>
+        </label>
+    </div>
+}
+else
+{
+    <div>
+        @Html.HiddenFor(m => m.EnvioCamaraInase)
+    </div>
+}
 <table>
     <tr>
         <td style="width: 55%">
