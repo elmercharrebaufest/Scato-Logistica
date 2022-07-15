@@ -52,7 +52,7 @@ namespace Molinos.Scato.ModuloImpresor.Procesamiento
                 [TipoImpresion.GaritaSalida] = new GaritaSalidaEtiqueta(),
                 [TipoImpresion.ResumenHojaDeRuta] = new ResumenHojaDeRuta(),
                 [TipoImpresion.EtiquetaAuditoriaCamara] = new EtiquetaAuditoriaCamara(),
-                [TipoImpresion.EtiquetaImpresionInase] = new EtiquetaMuestraInase()
+                [TipoImpresion.EtiquetaMuestraInase] = new EtiquetaMuestraInase()
             };
         }
 
