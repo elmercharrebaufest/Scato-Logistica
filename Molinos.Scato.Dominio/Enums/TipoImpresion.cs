@@ -33,6 +33,6 @@
         ResumenHojaDeRuta = 27,
         EtiquetaAuditoriaCamara = 28,
         CartaDePorteElectronica = 29,
-        EtiquetaImpresionInase = 30
+        EtiquetaMuestraInase = 30
     }
 }
