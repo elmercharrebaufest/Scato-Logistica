@@ -1,11 +1,9 @@
-﻿using System;
-using System.Activities;
-using System.Globalization;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using System;
+using System.Activities;
 
 namespace Molinos.Scato.Actividades
 {
@@ -36,7 +34,6 @@ namespace Molinos.Scato.Actividades
             var servicio = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
             var resultado = new Resultado();
-
             var workflowId = WorkflowId.Get<Guid>(context);
             var centroId = CentroId.Get<int>(context);
 
@@ -72,10 +69,13 @@ namespace Molinos.Scato.Actividades
             }
             try
             {
-                var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
-
                 
+                var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
+                //LoggerHelper.WriteLine($"1. documento obtenido {documento}");
+                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
+                //LoggerHelper.WriteLine($"2. documento obtenido {documento.Id}");
+
+
                 var vehiculo = repositorio.ObtenerVehiculoPorGuid(workflowId);
 
                 
@@ -85,21 +85,25 @@ namespace Molinos.Scato.Actividades
                     Centro = documento.CentroDescripcion,
                     Codigo = codigo,
                     Patente = patente,
-                    NumeroCartaPorte = numeroCartaPorte,
+                    NumeroCartaPorte = cartaPorte.NroCartaPorte,
                     NombreUsuario = nombreUsuario,
                     WorkflowId = workflowId,
-                    CuitProductor = cartaPorte.TitularCartaPorteCuil,
+                    CuitProductor = proveedor.Cuil,
                     
                     Material = material,
                     
                 };
 
                 resultado = servicio.Ejecutar(new ImprimirMuestraInase { Dto = dto, CantidadCopias = cantCopias });
+                //LoggerHelper.WriteLine($"3. impresion correcta obtenido {dto.ToJson()}");
+                //LoggerHelper.WriteLine($"4. impresion correcta carta porte {cartaPorte.ToJson()}");
 
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("1", e.Message);
+                //LoggerHelper.WriteLine($"4. error excepcion. {e.Message}");
+
             }
 
             try

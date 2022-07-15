@@ -42,6 +42,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var entidad = Conversor.Convertir<ImpEtiquetaMuestraInaseDto, ImpEtiquetaMuestraInase>(comando.Dto);
                 entidad.FechaImpresion = DateTime.Now;
+                entidad.ProductorCuit = comando.Dto.CuitProductor;
+                entidad.Cpe = comando.Dto.NumeroCartaPorte;
                 entidad.TipoImpresion = TipoImpresion.IdentificacionMuestraAuditoria;
                 entidad.Codigo = comando.Dto.Codigo;
                 Repositorio.Agregar(entidad);
