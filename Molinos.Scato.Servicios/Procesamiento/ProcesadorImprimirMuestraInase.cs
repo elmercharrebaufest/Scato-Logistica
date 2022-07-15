@@ -44,7 +44,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 entidad.FechaImpresion = DateTime.Now;
                 entidad.ProductorCuit = comando.Dto.CuitProductor;
                 entidad.Cpe = comando.Dto.NumeroCartaPorte;
-                entidad.TipoImpresion = TipoImpresion.IdentificacionMuestraAuditoria;
+                entidad.TipoImpresion = TipoImpresion.EtiquetaImpresionInase;
                 entidad.Codigo = comando.Dto.Codigo;
                 Repositorio.Agregar(entidad);
                 Repositorio.GuardarCambios();

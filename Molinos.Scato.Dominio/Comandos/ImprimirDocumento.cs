@@ -35,6 +35,7 @@ namespace Molinos.Scato.Dominio.Comandos
     [KnownType(typeof(ImpGaritaSalidaDto))] 
     [KnownType(typeof(ImpResumenHojaDeRutaDto))] 
     [KnownType(typeof(ImpEtiquetaAuditoriaCamaraDto))]
+    [KnownType(typeof(ImpEtiquetaMuestraInaseDto))]
     public class ImprimirDocumento : Comando
     {
         public int Id { get; set; }
