@@ -51,7 +51,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 [TipoImpresion.CartaPorteUrenport] = () => new ImpCartaPorteUrenportDto(),
                 [TipoImpresion.GaritaSalida] = () => new ImpGaritaSalidaDto(),
                 [TipoImpresion.ResumenHojaDeRuta] = () => new ImpResumenHojaDeRutaDto(),
-                [TipoImpresion.EtiquetaAuditoriaCamara] = () => new ImpEtiquetaAuditoriaCamaraDto()
+                [TipoImpresion.EtiquetaAuditoriaCamara] = () => new ImpEtiquetaAuditoriaCamaraDto(),
+                [TipoImpresion.EtiquetaMuestraInase] = () => new ImpEtiquetaMuestraInaseDto()
             };
 
         }
