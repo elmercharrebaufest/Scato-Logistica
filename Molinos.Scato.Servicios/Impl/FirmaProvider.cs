@@ -42,7 +42,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             if (!cache.Existe("FirmaProvider:firma") || !cache.Existe("FirmaProvider:logo") || !cache.Existe("FirmaProvider:favicon"))
             {
-                cache.RemoverTodos();
+                cache.RemoverPorGrupo("FirmaProvider:");
                 var firmaCompleta = repositorio.ObtenerProyeccion((Firma x) => true, x => new { 
                     Firma = new FirmaDto
                     {
