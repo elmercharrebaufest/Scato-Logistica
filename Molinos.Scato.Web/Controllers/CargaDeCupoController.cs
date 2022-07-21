@@ -943,6 +943,7 @@ namespace Molinos.Scato.Web.Controllers
                 orden.Cpe.TipoComercialId = tipoComercialId;
                 orden.Cpe.Id = 0;
                 orden.Cpe.CEE = "99";
+                orden.Cpe.CTG = orden.Cpe.NroOrden.ToString().PadLeft(8, '0');
                 if (orden.Cpe.Vehiculos != null) orden.Cpe.Vehiculos.FirstOrDefault().Primero = true;
                 try
                 {
