@@ -52,7 +52,7 @@
 		}
 
 		// FIX DE FECHAS PARA SCATO
-		if (!isIE) { 
+		if (!!window.chrome) {
 			var observer = new MutationObserver(function (mutations) {
 				var changes = false;
 				mutations.forEach(function (mutation) {
