@@ -59,7 +59,7 @@ set @CuitMOA = '30715118773'
 set @CuitMRP = '30500858628'
 set @TipoCompraIdp = @TipoCompra
 set @CuitVicentin = '30500959629'
-set @CuitChivilcoy = '30-50085862-8'
+set @CuitChivilcoy = '30500858628'
 set @TipoDestinoIdp = @TipoDestino
 set @TipoSustentableIdp = @TipoSustentable
 
