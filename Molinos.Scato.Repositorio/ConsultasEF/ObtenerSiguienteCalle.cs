@@ -20,9 +20,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public Calle Ejecutar(DbContext contexto)
         {
             var calle = ObtenerCalleCircular(contexto);
-            if (calle == null && ValidarCallesLlamadas(contexto)) {
+            if (calle == null && ValidarCallesLlamadas(contexto))
                 calle = ObtenerCalle(contexto);
-            }
 
             return calle;
         }
@@ -95,7 +94,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 .Where(x => x.FechaEgreso == null
                 && x.Calle.TipoCalle == tipoCalle
                 && x.Calle.FechaLLamada.HasValue);
-            if(esCircular)
+            if (esCircular)
             {
                 query = query.Where(x => x.Recorrido.Material.Id == materialid || x.CargaDeCupo.Material.Id == materialid);
             }
@@ -105,7 +104,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private CallePorRecorrido ObtenerUltimoCamion(DbContext contexto, bool esCircular)
         {
             var query = contexto.Set<CallePorRecorrido>()
-                .Where(x => x.FechaEgreso == null
+                            .Where(x => x.FechaEgreso == null
                              && x.Calle.TipoCalle == tipoCalle);
             if (esCircular)
             {
@@ -122,7 +121,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                                .FirstOrDefault();
 
             var callesLlamadas = contexto.Set<CallePorRecorrido>()
-                                        .Where(x => x.FechaEgreso == null && 
+                                        .Where(x => x.FechaEgreso == null &&
                                                     x.Calle.TipoCalle == tipoCalle &&
                                                     x.Calle.FechaLLamada != null)
                                         .Select(x => x.Calle.Id)

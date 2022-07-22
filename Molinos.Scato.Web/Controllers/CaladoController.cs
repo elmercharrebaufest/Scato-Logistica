@@ -656,7 +656,7 @@ namespace Molinos.Scato.Web.Controllers
                 message.Body = $"Se notifican muestras para su retiro. \n " +
                     $"MOLINOSAGRO S.A. - " +
                     $"{centro.Cuit} \n" +
-                    $"{centro.Planta} - {centro.Descripcion}" +
+                    $"{centro.Planta} - {centro.Descripcion} " +
                     $"{centro.Direccion} - {centro.LocalidadDesc} \n" +
                     $"Cantidad de muestras para retirar: {lote.Count()}  \n" +
                     $"Persona de contacto: {responsable} \n" +
