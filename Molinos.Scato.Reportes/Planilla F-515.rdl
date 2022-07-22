@@ -202,7 +202,7 @@ AND
 (@Usuariop is null or Recorrido.Usuario = @Usuariop)
 AND
 Recorrido.Rechazado &lt;&gt; 1
-AND ((Recorrido.Terminado = -1) OR (Recorrido.Terminado = @RecorridosActivosp))
+AND ((@RecorridosActivosp = -1) OR (Recorrido.Terminado = @RecorridosActivosp))
 AND ((workflow.TipoDeWorkflow = 0 AND Recorrido.PesoTaraFecha IS NOT NULL)  or (workflow.TipoDeWorkflow = 1 AND Recorrido.PesoBrutoFecha IS NOT NULL))
 AND (@NivelDeDetallep = 1 or @NivelDeDetallep = 2 or (@NivelDeDetallep = 3 AND Recorrido.Establecimiento_Id IS NOT NULL) or (@NivelDeDetallep = 4 AND (CP.BocaDestino_Id = @BocaDestinop or @BocaDestinop = 0)))
 AND ((@TipoVehiculop = -1) OR (Recorrido.TipoVehiculo = @TipoVehiculop))
