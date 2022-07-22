@@ -68,6 +68,10 @@
 			function applyDateFix() {
 				let datePickers = document.getElementsByClassName('null');
 				[...datePickers].forEach((element, index, array) => {
+
+					if (element.nextElementSibling != null && element.nextElementSibling.type == 'image')
+						return true;
+
 					let elemVal = element.value;
 					if (elemVal != null && elemVal != "") {
 						if (!isValidDate(elemVal)) {
