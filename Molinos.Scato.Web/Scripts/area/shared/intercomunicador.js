@@ -261,6 +261,8 @@ IntercomunicadorDispositivoVM.prototype = {
                                         self.vm.mainModule.models.configuration.pcSpeak.addTrack(track, self.vm.mainModule.models.configuration.localStream);
                                     });
                                     self.vm.mainModule.models.configuration.request = null;
+                                    self.vm.mainModule.methods.deviceActivation(true);
+
                                 } else if (self.vm.mainModule.models.configuration.request.status == 409) {
                                     self.vm.mainModule.selectors.btnActivar.prop('checked', false);
                                     self.vm.mainModule.selectors.btnMicrofono.prop('disabled', true);
@@ -601,7 +603,6 @@ IntercomunicadorDispositivoVM.prototype = {
                         self.trace('Listo para recibir audio');
                         self.vm.mainModule.methods.signInSpeak();
                         self.vm.mainModule.methods.connectListen();
-                        self.vm.mainModule.methods.deviceActivation(true);
                     },
                     deactivateIntercomunicador: function () {
                         self.trace('Fin de recepcion');
@@ -636,7 +637,7 @@ IntercomunicadorDispositivoVM.prototype = {
         self.init();
     },
     trace: function (message) {
-        console.log(message);
+        //console.log(message);
         let self = this;
         self.vm.mainModule.models.configuration.debugLog.push(message);
     },
@@ -654,10 +655,6 @@ IntercomunicadorDispositivoVM.prototype = {
             self.vm.mainModule.models.configuration.retry = self.vm.mainModule.selectors.btnActivar.prop('checked');
             if (self.vm.mainModule.selectors.btnActivar.prop('checked')) {
                 self.vm.mainModule.methods.activateIntercomunicador();
-                //self.sleep(1000);
-                //self.vm.mainModule.methods.deactivateIntercomunicador();
-                //self.sleep(1000);
-                //self.vm.mainModule.methods.deviceActivation(true);
             } else {
                 self.vm.mainModule.methods.deactivateIntercomunicador();
             }
