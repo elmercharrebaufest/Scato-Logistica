@@ -131,6 +131,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             SelectListItem todos = new SelectListItem() { Value = "0", Text = "Todos" };
             SelectListItem todosNegativo = new SelectListItem() { Value = "-1", Text = "Todos" };
+            SelectListItem todosVehiculos = new SelectListItem() { Value = "-2", Text = "Todos" };
 
             var tiposDeVehiculo = Enum.GetValues(typeof(TipoVehiculo)).Cast<TipoVehiculo>().Select(v => new SelectListItem
             {
@@ -148,7 +149,7 @@ namespace Molinos.Scato.Web.Controllers
             var nivelDetalle = new List<SelectListItem>() { new SelectListItem { Text = "Detallado", Value = "1" }, new SelectListItem { Text = "Resumido", Value = "2" }, new SelectListItem { Text = "Detallado Sustentable", Value = "3" }, new SelectListItem { Text = "Detallado Con Boca Destino", Value = "4" } };
             var materiales = servicio.ListarMaterialesFiltroF515(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => string.IsNullOrEmpty(x.Descripcion) ? (string.IsNullOrEmpty(x.DescripcionCorta) ? "" : x.DescripcionCorta) : x.Descripcion);
 
-            tiposDeVehiculo.Insert(0, todosNegativo);
+            tiposDeVehiculo.Insert(0, todosVehiculos);
             tiposDeVehiculo.First().Selected = true;
             tipoComercial.Insert(0, todos);
             balanzas.Insert(0, todos);
