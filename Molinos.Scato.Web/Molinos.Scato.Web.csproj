@@ -883,6 +883,9 @@
     <Content Include="Content\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon.woff" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="ApplicationInsights.DEV.config" />
+    <Content Include="ApplicationInsights.QA.config" />
+    <Content Include="ApplicationInsights.PROD.config" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
