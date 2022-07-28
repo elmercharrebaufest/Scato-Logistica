@@ -882,7 +882,6 @@
     <Content Include="Content\fonts\icomoon.eot" />
     <Content Include="Content\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon.woff" />
-    <Content Include="ApplicationInsights.config" />
     <Content Include="ApplicationInsights.DEV.config" />
     <Content Include="ApplicationInsights.QA.config" />
     <Content Include="ApplicationInsights.PROD.config" />
