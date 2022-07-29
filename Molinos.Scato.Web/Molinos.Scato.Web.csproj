@@ -2440,6 +2440,22 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup Condition="$(Configuration)=='Jenkins'">
+    <FileToRename Include="$(ProjectDir)\ApplicationInsights.DEV.config" />
+  </ItemGroup>
+  <ItemGroup Condition="$(Configuration)=='PRD'">
+    <FileToRename Include="$(ProjectDir)\ApplicationInsights.PRD.config" />
+  </ItemGroup>
+
+  <Target Name="DoSthAfterPublish1" AfterTargets="Publish" Condition="$(Configuration)=='Jenkins'">
+    <Copy SourceFiles="@(FileToRename)" DestinationFiles="@(FileToRename->Replace('.DEV.config','.config'))"/>
+    <Move SourceFiles="$(ProjectDir)\ApplicationInsights.config" DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true"/>
+  </Target>
+
+  <Target Name="DoSthAfterPublish2" AfterTargets="Publish" Condition="$(Configuration)=='PRD'">
+    <Copy SourceFiles="@(FileToRename)" DestinationFiles="@(FileToRename->Replace('.PRD.config','.config'))"/>
+    <Move SourceFiles="$(ProjectDir)\ApplicationInsights.config" DestinationFolder="$(PublishDir)" OverwriteReadOnlyFiles="true"/>
+  </Target>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
