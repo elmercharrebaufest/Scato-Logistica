@@ -127,7 +127,7 @@ WHERE
 	  (WF.Id = @Workflowsp or @Workflowsp IS NULL) AND
 	  (ALM.Id = @Almacenp or @Almacenp IS NULL) AND
 	  (TC.Id = @TipoComercialp or @TipoComercialp IS NULL) AND
-	   RE.Rechazado = 0 AND
+	   RE.Rechazado = 0 AND RE.Terminado = 1 AND
 	  ((WF.TipoDeWorkflow = 0 AND RE.PesoTaraFecha IS NOT NULL AND RE.PesoTaraFecha &gt;= @FechaDesdep AND RE.PesoTaraFecha &lt;= @FechaHastap)
 	  or (WF.TipoDeWorkflow = 1 AND RE.PesoBrutoFecha IS NOT NULL AND RE.PesoBrutoFecha &gt;= @FechaDesdep AND RE.PesoBrutoFecha &lt;= @FechaHastap))  AND
 	 ( @ClienteIdp  IS NULL or (CASE RE.TipoDocumentoIngreso 
