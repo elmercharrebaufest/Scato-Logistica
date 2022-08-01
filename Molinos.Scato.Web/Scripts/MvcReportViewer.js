@@ -53,6 +53,7 @@
 
 		// FIX DE FECHAS PARA SCATO
 		if (!!window.chrome) {
+
 			var observer = new MutationObserver(function (mutations) {
 				var changes = false;
 				mutations.forEach(function (mutation) {
@@ -62,6 +63,7 @@
 					}
 				})
 			});
+
 			observer.observe($("#reportForm")[0], { childList: true, subtree: true });
 			applyDateFix();
 
@@ -72,17 +74,33 @@
 					if (element.nextElementSibling != null && element.nextElementSibling.type == 'image')
 						return true;
 
+					if (element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha") === -1)
+						return true;
+
+					let isDateTime = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha/Hora") !== -1;
+					let isDate = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha") !== -1;
+
 					let elemVal = element.value;
 					if (elemVal != null && elemVal != "") {
 						if (!isValidDate(elemVal)) {
-							let newElemVal = changeDateFormat(elemVal);
+							let newElemVal = "";
+
+							if (isDateTime)
+								newElemVal = changeDateTimeFormat(elemVal, true);
+							else if (isDate)
+								newElemVal = changeDateTimeFormat(elemVal, false);
+
 							element.value = newElemVal;
 						}
 					}
-					element.type = "date";
+
+					if (isDateTime)
+						element.type = "datetime-local";
+					else if (isDate)
+						element.type = "date";
+
 				});
 			}
-
 
 			function isValidDate(dateString) {
 				let regEx = /^\d{4}-\d{2}-\d{2}$/;
@@ -93,19 +111,29 @@
 				return d.toISOString().slice(0, 10) === dateString;
 			}
 
-			function changeDateFormat(date) {
-				date = date.split(" ")[0];
-				let dateArray = date.split('/');
+			function changeDateTimeFormat(date, showTime) {
+				var dateTimeArray = date.split(" ");
+				var newDate = dateTimeArray[0];
+				var newTime = "";
+				if (dateTimeArray.length > 1 && showTime === true) {
+					var timeArray = dateTimeArray[1].split(":");
+					newTime = " " + timeArray[0] + ":" + timeArray[1];
+				}
+				let dateArray = newDate.split('/');
 
 				for (var i = 0; i < dateArray.length; i++) {
 					if (dateArray[i].length < 2) {
 						dateArray[i] = "0" + dateArray[i];
 					}
 				}
+				if (dateArray.length > 1) {
+					const [day, month, year] = dateArray;
+					const result = [year, month, day].join('-');
+					return result + newTime;
+				} else {
+					return date;
+				}
 
-				const [day, month, year] = dateArray;
-				const result = [year, month, day].join('-');
-				return result;
 			}
 		}
 	});
