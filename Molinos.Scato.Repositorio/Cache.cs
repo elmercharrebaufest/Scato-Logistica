@@ -52,15 +52,16 @@ namespace Molinos.Scato.Repositorio
             if (Existe(clave)) cache.Remove(clave);
         }
 
-        public List<TEntidad> ObtenerPorGrupo<TEntidad>(string group) where TEntidad : class
+        public List<TEntidad> ObtenerTodos<TEntidad>() where TEntidad : class
         {
-            var claves = cache.Where(x => x.Key.StartsWith(group)).Select(kvp => kvp.Key).ToList();
+            var claves = cache.Select(kvp => kvp.Key).ToList();
             var items = new List<TEntidad>();
             if (claves != null)
             {
                 foreach (var clave in claves)
                 {
-                    items.Add((TEntidad)cache.Get(clave));
+                    if(cache.Get(clave) is TEntidad)
+                        items.Add((TEntidad)cache.Get(clave));
                 }
             }
             return items;
