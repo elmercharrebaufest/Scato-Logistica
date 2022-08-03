@@ -194,20 +194,24 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             try
             {
-                var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc("LlamadoCallePrecaladoACalar", 5);
+                var cartel = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "CartelLedCalador");
                 var mensajeCartel = servicio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoCallePrecaladoACalar);
                 var calleCalado = servicio.ObtenerCalle(calleCaladoId);
-                if(calleCalado != null && puestoDeTrabajo != null && mensajeCartel != null)
+                if(calleCalado != null && mensajeCartel != null && cartel != null)
                 {
-                    servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                    var callesDeCalador = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", calleCalado.Nombre);
+                    if(callesDeCalador != null && !string.IsNullOrEmpty(callesDeCalador.Valor) && !string.IsNullOrEmpty(cartel.Valor))
                     {
-                        Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {calleCalado.Nombre}",
-                        PuestoDeTrabajoId = puestoDeTrabajo.Id,
-                        NumeroPrograma = mensajeCartel.Programa,
-                        NumeroTrama = mensajeCartel.Trama,
-                        NumeroVariable = mensajeCartel.Variable,
-                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
-                    });
+                        servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                        {
+                            Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {callesDeCalador.Valor}",
+                            Codigo = cartel.Valor,
+                            NumeroPrograma = mensajeCartel.Programa,
+                            NumeroTrama = mensajeCartel.Trama,
+                            NumeroVariable = mensajeCartel.Variable,
+                            SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                        });
+                    }
                 }
             }
             catch (Exception e)
