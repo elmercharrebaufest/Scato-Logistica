@@ -210,6 +210,9 @@
     <Compile Include="Impresion\DocumentoImpresion.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Impresion\EtiquetaMuestraInase.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Impresion\EtiquetaPuerto.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -296,6 +299,7 @@
     <Compile Include="Procesamiento\IProcesadorComando.cs" />
     <Compile Include="Procesamiento\ProcesadorComando.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirAsignacionDeRuta.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaInase.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaAuditoriaCamara.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirFileGenerico.cs" />

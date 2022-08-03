@@ -157,6 +157,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 RepresentanteRecibidor = representanteRecibidor,
                                 FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
                         };
+                        cartaPorte.NroCartaPorte = cartaPorte.NroCartaPorte.Trim();
                         foreach (var vehiculo in vehiculos)
                         {
                             vehiculo.CartaPorte = cartaPorte;

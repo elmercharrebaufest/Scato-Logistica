@@ -19,6 +19,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Cupo { get; set; }
 
         public bool EnvioDirectoCamara { get; set; }
+        public bool EnvioCamaraInase { get; set; }
 
         public string Procedencia { get; set; }
     }

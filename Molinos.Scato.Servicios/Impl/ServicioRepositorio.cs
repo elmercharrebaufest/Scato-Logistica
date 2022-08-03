@@ -9926,5 +9926,13 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
         }
+        public IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase()
+        {
+            return Listar<MuestraDeInase, MuestraDeInaseDto>(x => !x.MuestraEnviada && !x.Recorrido.Rechazado);
+        }
+        public IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId)
+        {
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
+        }
     }
 }

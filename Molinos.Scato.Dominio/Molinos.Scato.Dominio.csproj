@@ -116,6 +116,7 @@
     <Compile Include="Comandos\ConfirmarArribo.cs" />
     <Compile Include="Comandos\CrearMotivosLimpieza.cs" />
     <Compile Include="Comandos\CrearLogCambioDeModalidadCalle.cs" />
+    <Compile Include="Comandos\CrearMuestraDeInase.cs" />
     <Compile Include="Comandos\CrearVisualizacionBarrera.cs" />
     <Compile Include="Comandos\EliminarCategoriaVehiculo.cs" />
     <Compile Include="Comandos\CrearRegistroInactividad.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Comandos\GuardarPlanillaDeTurnos.cs" />
     <Compile Include="Comandos\ImprimirEtiquetaPuerto.cs" />
     <Compile Include="Comandos\ImprimirFileGenerico.cs" />
+    <Compile Include="Comandos\ImprimirMuestraInase.cs" />
     <Compile Include="Comandos\InformarArriboCircular.cs" />
     <Compile Include="Comandos\InformarCaladoCircular.cs" />
     <Compile Include="Comandos\InformarPesadaCircular.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Comandos\ModificarDocumentoExterno.cs" />
     <Compile Include="Comandos\ModificarMaterialPorCentro.cs" />
     <Compile Include="Comandos\ModificarMotivosLimpieza.cs" />
+    <Compile Include="Comandos\ModificarMuestraDeInase.cs" />
     <Compile Include="Comandos\ModificarRecorridoDemora.cs" />
     <Compile Include="Comandos\AgregarMarcaSustentable.cs" />
     <Compile Include="Comandos\ModificarRecorridoEstablecimientoDemorado.cs" />
@@ -699,10 +702,12 @@
     <Compile Include="Dto\EficienciaCalado\EficienciaCaladoValoresDto.cs" />
     <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
     <Compile Include="Dto\HumedimetroRespuestaDto.cs" />
+    <Compile Include="Dto\ImpEtiquetaMuestraInaseDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />
     <Compile Include="Dto\EstadoIntercomunicadorDto.cs" />
+    <Compile Include="Dto\MuestraDeInaseDto.cs" />
     <Compile Include="Dto\RegistroInactividadDto.cs" />
     <Compile Include="Dto\MotivoInactividadDto.cs" />
     <Compile Include="Dto\ArriboCircularResponseDto.cs" />
@@ -965,6 +970,7 @@
     <Compile Include="Entidades\EquivalenciasCaracteristicasCpOtrosPuertos.cs" />
     <Compile Include="Entidades\EstadoBuque.cs" />
     <Compile Include="Entidades\ImpEtiquetaPuerto.cs" />
+    <Compile Include="Entidades\ImpEtiquetaMuestraInase.cs" />
     <Compile Include="Entidades\LlenadoMilimetroPorTanque.cs" />
     <Compile Include="Entidades\LogAfipCpe.cs" />
     <Compile Include="Entidades\LogCambioDeModalidadCalle.cs" />
@@ -993,6 +999,7 @@
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarque.cs" />
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarqueHistorico.cs" />
     <Compile Include="Entidades\ModuloDeCargaUmap.cs" />
+    <Compile Include="Entidades\MuestraDeInase.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />

@@ -5,6 +5,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -24,9 +25,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearReciboMunicipal comando, Resultado resultado)
         {
-            if (Repositorio.Existe<ReciboMunicipal>(e => e.FechaActivacion == comando.Dto.FechaActivacion && e.Centro.Id == comando.Dto.CentroId))
+            var recibos = Repositorio.Listar<ReciboMunicipal>(e => e.FechaActivacion == comando.Dto.FechaActivacion && e.Centro.Id == comando.Dto.CentroId);
+            if (recibos.Any(r => r.TipoVehiculo == comando.Dto.TipoVehiculo))
             {
-                resultado.Error("Descripcion", Textos.ReciboMunicipal_OrdenanzaExistente);
+                resultado.Error("FechaActivacion", Textos.ReciboMunicipal_OrdenanzaExistente);
+                resultado.Error("TipoVehiculoId", Textos.ReciboMunicipal_OrdenanzaExistente);
             }
         }
     }

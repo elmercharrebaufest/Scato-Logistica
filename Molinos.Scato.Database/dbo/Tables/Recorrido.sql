@@ -163,6 +163,17 @@ CREATE NONCLUSTERED INDEX [IX_Recorrido_TarjetaDeAcceso_Terminado]
 
 GO 
 
+CREATE NONCLUSTERED INDEX [IX_Centro_id_Terminado_incl_varios]
+    ON [dbo].[Recorrido] ([Centro_Id],[Terminado]) 
+    INCLUDE ([InstanciaWorkflow],[TipoDocumentoIngreso],[NumeroDocumentoIngreso],[Patente],[Workflow_Id],[Chofer_Id],[Transportista_Id],
+        [TipoComercial_Id],[Material_Id],[Almacen_Id],[Calado_Id],[FechaInicio],[Rechazado],[TarjetaDeAcceso],[Establecimiento_Id],[PagaTicketMunicipal],
+        [TipoVehiculo])
+
+
+
+GO
+
+
 CREATE TRIGGER [DELETE_Recorrido]
    ON dbo.[Recorrido]
    INSTEAD OF DELETE

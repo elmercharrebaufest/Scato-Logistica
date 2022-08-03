@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Impl
             this.config = config;
             this.cache = cache;
 
-            if(cache.ObtenerTodos<ConcentradorDto>() == null || cache.ObtenerTodos<ConcentradorDto>().Count() == 0)
+            if(cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:") == null || cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:").Count() == 0)
             {
                 ActualizarPuestos();
             }
@@ -43,7 +43,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void ActualizarPuestos()
         {
-            var puestos = cache.ObtenerTodos<ConcentradorDto>();
+            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
             if (puestos != null)
             {
                 foreach (var puesto in puestos)
@@ -70,7 +70,7 @@ namespace Molinos.Scato.Servicios.Impl
                     }
                 }
             }
-            cache.RemoverTodos();
+            cache.RemoverPorGrupo("Puesto:");
             puestos = new List<ConcentradorDto>();
             var listaDePuestos = repositorio.ListarPuestosDeBalanzasAutomaticas();
             
@@ -97,7 +97,7 @@ namespace Molinos.Scato.Servicios.Impl
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
                 }
 
-                cache.Agregar($"puesto:{puesto.PuestoId}",puesto);
+                cache.Agregar($"Puesto:{puesto.PuestoId}",puesto);
                 puestos.Add(puesto);
             }
             log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
@@ -106,7 +106,7 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarCambioDeEstado(string sensor, string mensaje)
         {
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
-            var puestos = cache.ObtenerTodos<ConcentradorDto>();
+            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
             var puesto = puestos.Where(x => x.Sensores.Any(y=>y.Codigo == sensor)).FirstOrDefault();
             if(puesto == null)
             {
@@ -160,7 +160,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void NotificarCambioDeEstado(string sensor, bool mensaje)
         {
-            var puestos = cache.ObtenerTodos<ConcentradorDto>();
+            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
@@ -226,8 +226,8 @@ namespace Molinos.Scato.Servicios.Impl
                 TipoAlerta = TipoAlerta.CambioEstadoBalanzas
             });
             puesto.EstadoSensoresBalanzaDto = estadoBalanza;
-            cache.Remover($"puesto:{puesto.PuestoId}");
-            cache.Agregar($"puesto:{puesto.PuestoId}", puesto);
+            cache.Remover($"Puesto:{puesto.PuestoId}");
+            cache.Agregar($"Puesto:{puesto.PuestoId}", puesto);
 
         }
 
@@ -241,7 +241,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ValidarEstadoPuesto(int puestoId)
         {
-            var puesto = cache.Obtener<ConcentradorDto>($"puesto:{puestoId}");
+            var puesto = cache.Obtener<ConcentradorDto>($"Puesto:{puestoId}");
             var valido = true;
             if (puesto == null)
             {
@@ -334,7 +334,7 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarEstado()
         {
             log.Debug($"Actualizando el estado de los puestos");
-            var puestos = cache.ObtenerTodos<ConcentradorDto>();
+            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
             var listaSensores = new List<string>();
             foreach (var puesto in puestos)
             {
@@ -349,7 +349,7 @@ namespace Molinos.Scato.Servicios.Impl
         //Para refactor por cache o base
         public IList<ConcentradorDto> ConsultarEstadoBarreras()
         {          
-            return cache.ObtenerTodos<ConcentradorDto>(); 
+            return cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:"); 
         }
 
         public void ActualizarBarreras(string nombrePc)

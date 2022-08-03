@@ -210,6 +210,7 @@ $(document).ready(function () {
     
     $("#botonaceptar").on('click', function () {
         $("#botonaceptar").attr("disabled", "disabled");
+        $('#orden-form').submit();
     });
 
     DesbloquearBoton();

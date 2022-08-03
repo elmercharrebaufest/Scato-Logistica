@@ -32,6 +32,7 @@
         GaritaSalida = 26,
         ResumenHojaDeRuta = 27,
         EtiquetaAuditoriaCamara = 28,
-        CartaDePorteElectronica = 29
+        CartaDePorteElectronica = 29,
+        EtiquetaMuestraInase = 30
     }
 }

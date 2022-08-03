@@ -178,6 +178,8 @@
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionGeneralMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadTipoDeActividadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaMuestraInaseMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestraDeInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MotivoInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
@@ -547,6 +549,7 @@
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeInase.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
@@ -561,6 +564,7 @@
     <Compile Include="Procesamiento\ProcesadorGuardarImagenDescarga.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirFileGenerico.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraInase.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarCaladoCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarPesadaCircular.cs" />
@@ -618,6 +622,7 @@
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaCamara.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRegistroInactividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMuestrasDeInase.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorNotificarLecturaCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerTickets.cs" />

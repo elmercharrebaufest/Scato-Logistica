@@ -8597,7 +8597,7 @@
     <value>Nuevo Recibo Municipal</value>
   </data>
   <data name="ReciboMunicipal_OrdenanzaExistente" xml:space="preserve">
-    <value>Ya existe un Recibo Municipal con esta Ordenanza</value>
+    <value>Ya existe un Recibo Municipal con esta Fecha y Tipo de vehiculo</value>
   </data>
   <data name="ReciboMunicipal_FechaActivacion" xml:space="preserve">
     <value>Fecha de Activación</value>
@@ -9957,5 +9957,14 @@
   </data>
   <data name="Transportista_Segundo_Tramo" xml:space="preserve">
     <value>Transportista segundo tramo</value>
+  </data>
+  <data name="Proveedor_ResolucionInase" xml:space="preserve">
+    <value>Resol 37/22 Muestra INASE</value>
+  </data>
+  <data name="CaladoMuestraInase" xml:space="preserve">
+    <value>Se debe tomar la muestra para INASE</value>
+  </data>
+  <data name="Proveedor_EnvioCamaraInase" xml:space="preserve">
+    <value>Envío Muestra INASE</value>
   </data>
 </root>
