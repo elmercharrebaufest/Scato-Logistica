@@ -194,18 +194,18 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             try
             {
-                var cartel = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "CartelLedCalador").Valor;
+                var cartel = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "CartelLedCalador");
                 var mensajeCartel = servicio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoCallePrecaladoACalar);
                 var calleCalado = servicio.ObtenerCalle(calleCaladoId);
-                if(calleCalado != null && mensajeCartel != null && !string.IsNullOrEmpty(cartel))
+                if(calleCalado != null && mensajeCartel != null && cartel != null)
                 {
                     var callesDeCalador = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", calleCalado.Nombre);
-                    if(callesDeCalador != null && !string.IsNullOrEmpty(callesDeCalador.Valor))
+                    if(callesDeCalador != null && !string.IsNullOrEmpty(callesDeCalador.Valor) && !string.IsNullOrEmpty(cartel.Valor))
                     {
                         servicioComandos.Ejecutar(new EnviarMensajeCarteLed
                         {
                             Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {callesDeCalador.Valor}",
-                            Codigo = cartel,
+                            Codigo = cartel.Valor,
                             NumeroPrograma = mensajeCartel.Programa,
                             NumeroTrama = mensajeCartel.Trama,
                             NumeroVariable = mensajeCartel.Variable,
