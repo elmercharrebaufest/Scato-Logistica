@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Impl
             this.config = config;
             this.cache = cache;
 
-            if(cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:") == null || cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:").Count() == 0)
+            if(cache.ObtenerTodos<ConcentradorDto>() == null || cache.ObtenerTodos<ConcentradorDto>().Count() == 0)
             {
                 ActualizarPuestos();
             }
@@ -43,7 +43,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void ActualizarPuestos()
         {
-            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             if (puestos != null)
             {
                 foreach (var puesto in puestos)
@@ -106,7 +106,7 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarCambioDeEstado(string sensor, string mensaje)
         {
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
-            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             var puesto = puestos.Where(x => x.Sensores.Any(y=>y.Codigo == sensor)).FirstOrDefault();
             if(puesto == null)
             {
@@ -160,7 +160,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void NotificarCambioDeEstado(string sensor, bool mensaje)
         {
-            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             log.Debug($"Procesando notificaciones para {sensor} estado {mensaje}");
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
@@ -334,7 +334,7 @@ namespace Molinos.Scato.Servicios.Impl
         public void NotificarEstado()
         {
             log.Debug($"Actualizando el estado de los puestos");
-            var puestos = cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:");
+            var puestos = cache.ObtenerTodos<ConcentradorDto>();
             var listaSensores = new List<string>();
             foreach (var puesto in puestos)
             {
@@ -349,7 +349,7 @@ namespace Molinos.Scato.Servicios.Impl
         //Para refactor por cache o base
         public IList<ConcentradorDto> ConsultarEstadoBarreras()
         {          
-            return cache.ObtenerPorGrupo<ConcentradorDto>("Puesto:"); 
+            return cache.ObtenerTodos<ConcentradorDto>(); 
         }
 
         public void ActualizarBarreras(string nombrePc)
