@@ -56,7 +56,7 @@ and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),
 (MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
 and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
 group by m.Descripcion,m.Id, Establecimiento_Id
-UNION
+UNION ALL
 --vagones
 SELECT CASE
 when m.id = 4 then 'Operativos de Vagones Soja'
@@ -79,7 +79,7 @@ and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),
 and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
 group by m.Descripcion,m.Id
 ) as Datos on datos.IngresoxD = m.Material
-where ingreso = 1
+where ingreso = 1 and Descripcion not in ('Aceite Cartamo alto oleico', 'BIODIESEL RENOVA', 'Operativos de Vagones')
 group by COALESCE(IngresoxD, m.Descripcion), m.Orden
 order by m.orden</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
