@@ -13,6 +13,8 @@ namespace Molinos.Scato.Dominio.Enums
         Calado = 4,
         RechazadosDemorados = 5,
         NoGranos = 6,
-        Circular = 7
+        Circular = 7,
+        PlantaNoGranos = 8,
+        EnTransito = 9
     }
 }

@@ -56,7 +56,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna);
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna && x.TipoCalle != TipoCalle.PlantaNoGranos);
             var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc })
                 .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc }))
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0).OrderBy(x=>x.MaterialId);

@@ -39,7 +39,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
-            return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna && !x.Deshabilitada).OrderByDescending(x=>x.Nombre).ToList());
+            return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => (x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito) && !x.Deshabilitada).OrderBy(x=>x.Posicion).ToList());
         }
 
         public JsonResult EstadoDeCalle()
@@ -47,7 +47,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna);
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito);
             var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc })
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0);
 
