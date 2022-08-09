@@ -255,7 +255,7 @@ $(document).ready(function () {
 function abrirModal() {
     self = this;
     $.ajax({
-        url: urlMoverRechazado,
+        url: urlMostrarDetalleCamion,
         data: {
             patente: self.Patente,
             calleId: self.CalleId

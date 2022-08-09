@@ -1,8 +1,7 @@
-﻿using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
-using Newtonsoft.Json;
+﻿using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
+using System.ComponentModel.DataAnnotations;
 using System;
-using System.Collections.Generic;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -11,8 +10,10 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string Patente { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "InfoPatenteDeCalle_CartaPorte")]
         public string CartaPorte { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "InfoPatenteDeCalle_NombreChofer")]
         public string NombreChofer { get; set; }
 
         public int? RecorridoId { get; set; }
@@ -31,7 +32,11 @@ namespace Molinos.Scato.Dominio.Dto
         public Guid? InstanceId { get; set; }
         public string Etapa { get; set; }
         public bool CalleNoGrano { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "InfoPatenteDeCalle_NombreWorkflow")]
         public string NombreWorkflow { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "InfoPatenteDeCalle_FechaIngreso")]
         public DateTime FechaIngreso { get; set; }
         public TipoDocumentoIngreso? TipoDocumento { get; set; }
         public string Cliente { get; set; }

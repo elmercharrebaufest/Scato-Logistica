@@ -9967,4 +9967,16 @@
   <data name="Proveedor_EnvioCamaraInase" xml:space="preserve">
     <value>Envío Muestra INASE</value>
   </data>
+  <data name="InfoPatenteDeCalle_CartaPorte" xml:space="preserve">
+    <value>Carta de Porte / Remito</value>
+  </data>
+  <data name="InfoPatenteDeCalle_FechaIngreso" xml:space="preserve">
+    <value>Fecha de Ingreso</value>
+  </data>
+  <data name="InfoPatenteDeCalle_NombreChofer" xml:space="preserve">
+    <value>Nombre de Chofer</value>
+  </data>
+  <data name="InfoPatenteDeCalle_NombreWorkflow" xml:space="preserve">
+    <value>Nombre de Workflow</value>
+  </data>
 </root>
