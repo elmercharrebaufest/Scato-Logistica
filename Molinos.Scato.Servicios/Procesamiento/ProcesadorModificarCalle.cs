@@ -20,6 +20,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Conversor.Convertir(comando.Dto, calle);
             calle.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             calle.CaracteristicaDeCalidad = Repositorio.Obtener<CaracteristicaDeCalidad>(comando.Dto.CaracteristicaDeCalidadId);
+            if (comando.Dto.CalleCaladoId > 0)
+            {
+                calle.CalleCalado = Repositorio.Obtener<Calle>(comando.Dto.CalleCaladoId);
+            }
         }
 
         protected override void Validar(ModificarCalle comando, Resultado resultado)

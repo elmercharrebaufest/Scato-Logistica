@@ -173,7 +173,11 @@ namespace Molinos.Scato.Web.Controllers
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
                     if (AvanceCpe)
+                    {
+                        servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });  
                         CargarCartaPorte(resultado.Id, datosUsuario);
+                        servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
+                    }
                     return View("Form");
                 }
             }
@@ -983,7 +987,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!Validar(orden, datosUsuario))
             {
                 log.Debug("No Válido");
-                ModelState.AddModelError("avanceCpe", $"No Válido");
+                //ModelState.AddModelError("avanceCpe", $"No Válido");
 
                 return;
             }
@@ -1057,7 +1061,8 @@ namespace Molinos.Scato.Web.Controllers
                     return;
                 }
 
-                if (!ValidarCupo(orden, datosUsuario, workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso))
+                if (!ValidarCupo(orden, datosUsuario, workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso) ||
+                    servicio.EsProveedorSustentable(orden.TitularCartaPorteId))
                 {
                     return;
                 }
@@ -1123,12 +1128,12 @@ namespace Molinos.Scato.Web.Controllers
             //si es MRP, no se valida el codigo de establecimiento
             if (codigoSapTitular == codigoSapMRP && (remitente == null || remitente.CodigoSap == codigoSapMRP || remitente.CodigoSap == codigoSapMolinosAgro))
             {
-                ModelState.AddModelError("", Textos.Error_CCPPCompra);
+                //ModelState.AddModelError("", Textos.Error_CCPPCompra);
                 return false;
             }
             else if ((codigoSapTitular == codigoSapMolinosAgro) && (remitente == null || (remitente.CodigoSap == codigoSapMolinosAgro)) && codigoEstablecimientoEsDeMolinos)
             {
-                ModelState.AddModelError("", Textos.Error_CCPPCompra);
+                //ModelState.AddModelError("", Textos.Error_CCPPCompra);
                 return false;
             }
             if (otroRecorridoDelChofer != null && !(orden.TipoVehiculo == TipoVehiculo.Tren))

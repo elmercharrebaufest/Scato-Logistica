@@ -9922,6 +9922,10 @@ namespace Molinos.Scato.Servicios.Impl
             return false;
         }
 
+        public MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo)
+        {
+            return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
+        }
         public IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase()
         {
             return Listar<MuestraDeInase, MuestraDeInaseDto>(x => !x.MuestraEnviada && !x.Recorrido.Rechazado);
@@ -9929,6 +9933,11 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId)
         {
             return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
+        }
+
+        public List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo()
+        {
+            return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
         }
     }
 }

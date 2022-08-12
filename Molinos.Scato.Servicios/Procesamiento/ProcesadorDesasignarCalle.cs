@@ -67,6 +67,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 asignacion.Calle.Bloqueada = false;
                 asignacion.Calle.FechaLLamada = null;
+                asignacion.Calle.CalleCalado = null;
             }
         }
     }

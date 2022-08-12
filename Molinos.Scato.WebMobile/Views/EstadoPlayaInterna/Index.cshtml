@@ -10,19 +10,14 @@
 @{
     ViewBag.Title = Textos.EstadoDeCallePlayaInterna;
     Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+    var pestanias = new[] { TipoCalle.PlayaInterna, TipoCalle.PlantaNoGranos };
 }
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
 
 <script>
-    urlEstadoDeCalles = '@Url.Action("EstadoDeCalle", "EstadoDeCalle")';
+    urlEstadoDeCalles = '@Url.Action("EstadoDeCalle", "EstadoPlayaInterna")';
     callesJson = '@Html.Raw(Model.ToJson())';
-    urlLLamarCalle = '@Url.Action("LlamarCalle", "EstadoDeCalle")';
-    urlCancelarLLamarCalle = '@Url.Action("CancelarLlamarCalle", "EstadoDeCalle")';
-    urlLLamarSiguienteCalle = '@Url.Action("LLamarSiguienteCalle", "EstadoDeCalle")';
-    urlLLamadoAutomaticoCalle = '@Url.Action("LLamadoAutomaticoCalle", "EstadoDeCalle")';
-    loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
-    urlMoverRechazado = '@Url.Action("MoverRechazado", "EstadoDeCalle")';
-    @*urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';*@
+    urlMostrarDetalleCamion = '@Url.Action("MostrarDetalleCamion", "EstadoPlayaInterna")';
 </script>
 <script type="text/javascript" src="~/Scripts/estadoPlayaInterna.js"></script>
 
@@ -30,10 +25,16 @@
     <li class="nav-item" data-bind="click: Recalcular">
         <a class="nav-link active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">@TipoCalle.PlayaInterna.DisplayEnum()</a>
     </li>
+    <li class="nav-item" data-bind="click: Recalcular">
+        <a class="nav-link" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playaInterna" role="tabpanel" aria-labelledby="playaInterna-tab">
         @Html.Partial("Calles", TipoCalle.PlayaInterna)
+    </div>
+    <div class="tab-pane fade show" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
+        @Html.Partial("Calles", TipoCalle.PlantaNoGranos)
     </div>
 </div>
 <div id="div-rechazo-mover"></div>

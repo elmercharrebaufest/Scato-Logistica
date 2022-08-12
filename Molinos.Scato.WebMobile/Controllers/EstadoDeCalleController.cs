@@ -56,7 +56,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna);
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna && x.TipoCalle != TipoCalle.PlantaNoGranos);
             var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc })
                 .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc }))
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0).OrderBy(x=>x.MaterialId);
@@ -65,12 +65,23 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
-        public JsonResult LlamarCalle(int calleId)
+        public JsonResult LlamarCalle(int calleId, int calleCaladoId)
         {
-            var calle = servicio.ObtenerCalle(calleId);
-            calle.Bloqueada = true;
-            calle.FechaLLamada = DateTime.Now;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+            try
+            {
+                var calle = servicio.ObtenerCalle(calleId);
+                calle.Bloqueada = true;
+                calle.FechaLLamada = DateTime.Now;
+                if(calleCaladoId > 0 && (calle.TipoCalle == TipoCalle.PreCalado || calle.TipoCalle == TipoCalle.Circular))
+                {
+                    calle.CalleCaladoId = calleCaladoId;
+                }
+                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                EnviarMensajeLlamadoACartel(calle, calleCaladoId);
+            } catch (Exception e)
+            {
+                log.Error(e, $"No se pudo llamar la calle {calleId}");
+            }
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
@@ -177,6 +188,36 @@ namespace Molinos.Scato.WebMobile.Controllers
                    CalleId = calleId
                });
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado, int calleCaladoId)
+        {
+            try
+            {
+                var cartel = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "CartelLedCalador");
+                var mensajeCartel = servicio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoCallePrecaladoACalar);
+                var calleCalado = servicio.ObtenerCalle(calleCaladoId);
+                if(calleCalado != null && mensajeCartel != null && cartel != null)
+                {
+                    var callesDeCalador = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", calleCalado.Nombre);
+                    if(callesDeCalador != null && !string.IsNullOrEmpty(callesDeCalador.Valor) && !string.IsNullOrEmpty(cartel.Valor))
+                    {
+                        servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                        {
+                            Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {callesDeCalador.Valor}",
+                            Codigo = cartel.Valor,
+                            NumeroPrograma = mensajeCartel.Programa,
+                            NumeroTrama = mensajeCartel.Trama,
+                            NumeroVariable = mensajeCartel.Variable,
+                            SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
         }
     }
 }
