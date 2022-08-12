@@ -66,6 +66,9 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(CargaDeCupoDto model, string imagenCartaPorte, bool AvanceCpe, DatosUsuario datosUsuario)
         {
+
+            log.Debug("CartaDePorte {0}, Tarjeta {1}, Centro {2}, Patente {3}", model.NumeroCartaPorte, model.Numero, datosUsuario.CentroId, model.Patente);
+
             if (model.CircuitoNoGranos)
             {
                 return RedirectToAction("IndexNoGranos", model);
@@ -947,6 +950,7 @@ namespace Molinos.Scato.Web.Controllers
                 orden.Cpe.TipoComercialId = tipoComercialId;
                 orden.Cpe.Id = 0;
                 orden.Cpe.CEE = "99";
+                orden.Cpe.CTG = orden.Cpe.NroOrden.ToString().PadLeft(8, '0');
                 if (orden.Cpe.Vehiculos != null) orden.Cpe.Vehiculos.FirstOrDefault().Primero = true;
                 try
                 {

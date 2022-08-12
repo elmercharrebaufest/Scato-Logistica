@@ -60,8 +60,8 @@
     <Report Include="Comparacion Calidad.rdl" />
     <Report Include="Consulta Datos de Vehiculos.rdl" />
     <Report Include="Detalle Muestra Auditoria.rdl" />
+    <Report Include="DetalleDeMovimientoIngreso.old.rdl" />
     <Report Include="DetalleDeMovimientoIngreso.rdl" />
-    <Report Include="DetalleDeMovimientoIngreso2.rdl" />
     <Report Include="Emision de Detalle de Lote.rdl" />
     <Report Include="Excepciones al Pago del Ticket Municipal.rdl" />
     <Report Include="Informe de Descarga.rdl" />

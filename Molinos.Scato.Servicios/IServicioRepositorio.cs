@@ -2677,5 +2677,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId);
+
+        [OperationContract]
+        List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo();
     }
 }

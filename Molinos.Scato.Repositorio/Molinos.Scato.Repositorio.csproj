@@ -85,6 +85,7 @@
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarCampaniaPorCuit.cs" />
+    <Compile Include="ConsultasEF\ListarMuestraInaseParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoEmbarques.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoCargas.cs" />
     <Compile Include="ConsultasEF\ListarDetalleMovimientoIngreso.cs" />

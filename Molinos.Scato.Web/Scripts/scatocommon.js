@@ -691,8 +691,6 @@ function NotificarCambioEstadoBarrera(mensaje) {
                 $("#barrera-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
                 $("#barrera-" + item.Barrera).removeClass("icon-barrera-cerrada");
                 $("#barrera-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
-                $("#barrera-supervisor-" + item.Id + "-" + item.Barrera).removeClass("icon-barrera-cerrada");
-                $("#barrera-supervisor-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
             }
         }
 

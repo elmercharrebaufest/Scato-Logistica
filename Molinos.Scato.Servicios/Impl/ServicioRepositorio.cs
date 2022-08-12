@@ -9934,5 +9934,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
         }
+
+        public List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo()
+        {
+            return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
+        }
     }
 }

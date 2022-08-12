@@ -11,6 +11,7 @@ using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Molinos.Scato.Web.Models.ArchivosTxt;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
 using System;
@@ -609,7 +610,7 @@ namespace Molinos.Scato.Web.Controllers
             var result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
-            var lotes = servicio.ObtenerLotesMuestrasInase();
+            var lotes = servicio.ObtenerMuestrasInaseParaArchivo();
 
             if(lotes.Count > 0 )
             {
@@ -667,7 +668,41 @@ namespace Molinos.Scato.Web.Controllers
                 var stringBuilder01 = new StringBuilder();
                 foreach (var item in lote)
                 {
-                    stringBuilder01.AppendLine(item.CartaPorte);
+                    stringBuilder01.AppendLine(TxtHelper.GetTxtDataRow(
+                        new MuestraInase
+                        {
+                            NombreProducto = item.MaterialDescripcion,
+                            CuitDestinatario = Convert.ToInt64(item.DestinatarioCuil?.Replace("-", "")),
+                            CuitRtteComercial = Convert.ToInt64((item.RtteComercialCuit ?? item.TitularCartaPorteCuil ?? "0").Replace("-", "")),
+                            CuitCorredor = Convert.ToInt64((item.CorredorCuil ?? "0").Replace("-", "")),
+                            CodigoPagador = 1,
+                            PesoNetoSeco = item.PesoNeto,
+                            Lacrada = "L",
+                            FechaDescarga = item.FechaDescarga,
+                            ServicioLacrado = "S",
+                            Patente = item.Patente,
+                            RtteComercial = item.TitularCartaPorte ?? "",
+                            CartaDePorte = item.CPE ?? false ? Convert.ToInt64(item.Sucursal + item.CTG) : Convert.ToInt64(item.CartaPorte?.Replace("-", "")),
+                            NumeroCTG = item.CPE ?? false ? Convert.ToInt64(item.CartaPorte?.Replace("-", "")) : Convert.ToInt64(item.CTG),
+                            CuitTitularCartaPorte = Convert.ToInt64((item.TitularCartaPorteCuil ?? "0").Replace("-", "")),
+                            TitularCartaPorte = item.TitularCartaPorte ?? "",
+                            Establecimiento = item.CodEstab ?? "",
+                            DireccionPostalDestino = item.Direccion ?? "",
+                            CodigoLocalidadONCCAProcedencia = Convert.ToInt32(item.ProcedenciaCodigoSap ?? "0"),
+                            CodigoLocalidadONCCADestino = Convert.ToInt32(item.LocalidadCodigoSap ?? "0"),
+                            TipoDeTransporte = item.TipoVehiculo == TipoVehiculo.Tren ? "V" : "C",
+                            CantidadVagones = item.TipoVehiculo == TipoVehiculo.Tren ? item.CantidadDeVagones : 0,
+                            IdentificadorVagon = item.Patente,
+                            CodigoPlantaONCCADestino = Convert.ToInt64(item.CodigoEstablecimiento ?? "0"),
+                            RazonSocialCorredor = item.Corredor ?? string.Empty,
+                            CuitIntermediario = Convert.ToInt64((item.IntermediarioCuit ?? "0").Replace("-", string.Empty)),
+                            RazonSocialIntermediario = item.Intermediario ?? string.Empty,
+                            CuitRepresentante = Convert.ToInt64((item.RtteComercialCuit ?? "0").Replace("-", string.Empty)),
+                            RazonSocialRepresentante = item.RtteComercial ?? string.Empty,
+                            Cosecha = Convert.ToInt64((item.Cosecha ?? "0").Replace("-", string.Empty)),
+                            CodigoProcedencia = Convert.ToInt32(item.ProcedenciaCodigoPostal ?? 0),
+                            SubCodigoProcedencia = Convert.ToInt32(item.ProcedenciaSubcodigoPostal ?? 0)
+                        }, typeof(MuestraInase).GetProperties()));
                 }
                 str01 = stringBuilder01.ToString();
                 if (str01.Length > 0)
