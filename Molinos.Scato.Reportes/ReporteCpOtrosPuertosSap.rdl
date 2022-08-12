@@ -263,10 +263,10 @@ SELECT DISTINCT
 	cp.DestinoPB Bruto,
 	cp.DestinoPT Tara,
 	cp.DestinoPN Neto,
-	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.MermaTotal) + (cp.NetoConvenido * 0.005)), 0) as INT)
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.MermaTotal) + (CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005)), 0) as INT)
 		 ELSE cp.MermaTotal 
 	END Merma,
-	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) - (cp.NetoConvenido * 0.005)), 0) as INT)
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) - (CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005)), 0) as INT)
 		 ELSE cp.NetoConvenido 
 	END NetoAplicado,
 	'' Clasificacion,
@@ -502,19 +502,19 @@ SELECT DISTINCT
 		 ELSE 0 
 	END MPGIRTIE,
 
-	CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((cp.NetoConvenido * 0.005), 0) as INT)
+	CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END MPSOJVOL,
 
-	CASE WHEN m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((cp.NetoConvenido * 0.005), 0) as INT)
+	CASE WHEN m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END MPMAZVOL,
 
-	CASE WHEN m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((cp.NetoConvenido * 0.005), 0) as INT)
+	CASE WHEN m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END MPTRPVOL,
 
-	CASE WHEN m.CodigoONCCA = 2 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((cp.NetoConvenido * 0.005), 0) as INT)
+	CASE WHEN m.CodigoONCCA = 2 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END MPGIRVOL
 
@@ -4700,7 +4700,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Sum(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Avg(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -5074,7 +5074,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Sum(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Avg(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -5686,7 +5686,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Sum(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Avg(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -6264,7 +6264,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Sum(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Avg(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
