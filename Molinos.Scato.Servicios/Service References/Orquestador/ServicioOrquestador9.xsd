@@ -1,51 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="ArrayOfstring">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="ArrayOfMeteorologicaDto">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MeteorologicaDto" nillable="true" type="tns:MeteorologicaDto" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
-  <xs:complexType name="ArrayOfKeyValueOfstringstring">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
-      </xs:appinfo>
-    </xs:annotation>
+  <xs:element name="ArrayOfMeteorologicaDto" nillable="true" type="tns:ArrayOfMeteorologicaDto" />
+  <xs:complexType name="MeteorologicaDto">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringstring">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="Key" nillable="true" type="xs:string" />
-            <xs:element name="Value" nillable="true" type="xs:string" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Detalle" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Imagenes" nillable="true" type="q2:ArrayOfbase64Binary" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfKeyValueOfstringstring" nillable="true" type="tns:ArrayOfKeyValueOfstringstring" />
-  <xs:complexType name="ArrayOfbase64Binary">
+  <xs:element name="MeteorologicaDto" nillable="true" type="tns:MeteorologicaDto" />
+  <xs:complexType name="ArrayOfDispositivoDto">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DispositivoDto" nillable="true" type="tns:DispositivoDto" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfbase64Binary" nillable="true" type="tns:ArrayOfbase64Binary" />
-  <xs:complexType name="ArrayOfKeyValueOfstringdecimal">
-    <xs:annotation>
-      <xs:appinfo>
-        <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
-      </xs:appinfo>
-    </xs:annotation>
+  <xs:element name="ArrayOfDispositivoDto" nillable="true" type="tns:ArrayOfDispositivoDto" />
+  <xs:complexType name="DispositivoDto">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringdecimal">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="Key" nillable="true" type="xs:string" />
-            <xs:element name="Value" type="xs:decimal" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element minOccurs="0" name="Activo" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ClaseDriver" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EsConcentrador" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EstadoCorrecto" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Sector" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfKeyValueOfstringdecimal" nillable="true" type="tns:ArrayOfKeyValueOfstringdecimal" />
+  <xs:element name="DispositivoDto" nillable="true" type="tns:DispositivoDto" />
+  <xs:complexType name="ArrayOfCamaraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CamaraDto" nillable="true" type="tns:CamaraDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCamaraDto" nillable="true" type="tns:ArrayOfCamaraDto" />
+  <xs:complexType name="CamaraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Url" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CamaraDto" nillable="true" type="tns:CamaraDto" />
+  <xs:complexType name="IntercomunicadorDispositivoBaseDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PuertoDeAudio" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Sensor" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IntercomunicadorDispositivoBaseDto" nillable="true" type="tns:IntercomunicadorDispositivoBaseDto" />
+  <xs:complexType name="GrupoBarreraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Activo" type="xs:boolean" />
+      <xs:element minOccurs="0" name="BarreraAbajo" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="BarreraAbajoId" type="xs:int" />
+      <xs:element minOccurs="0" name="BarreraArriba" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="BarreraArribaId" type="xs:int" />
+      <xs:element minOccurs="0" name="ClaseDriver" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="SensorAbajo" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="SensorAbajoId" type="xs:int" />
+      <xs:element minOccurs="0" name="SensorArriba" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="SensorArribaId" type="xs:int" />
+      <xs:element minOccurs="0" name="SensorPrimerCruce" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="SensorPrimerCruceId" type="xs:int" />
+      <xs:element minOccurs="0" name="SensorSegundoCruce" nillable="true" type="tns:DispositivoDto" />
+      <xs:element minOccurs="0" name="SensorSegundoCruceId" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
 </xs:schema>
