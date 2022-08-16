@@ -48,7 +48,14 @@ namespace Molinos.Scato.WebMobile.Controllers
             var limiteFilasPrecaladoLlamadas = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
             ViewBag.LimiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadas != null ? int.Parse(limiteFilasPrecaladoLlamadas) : 3;
 
-            return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos ? materialesNoGranos.Any(a => a.Id == x.MaterialId) && x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna : x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna).ToList());
+            return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos 
+                        ? materialesNoGranos.Any(a => a.Id == x.MaterialId) 
+                                && x.TipoCalle != TipoCalle.PlayaInterna 
+                                && x.TipoCalle != TipoCalle.EnTransito 
+                                && x.TipoCalle != TipoCalle.PlantaNoGranos 
+                        : x.TipoCalle != TipoCalle.PlayaInterna 
+                                && x.TipoCalle != TipoCalle.EnTransito 
+                                && x.TipoCalle != TipoCalle.PlantaNoGranos).ToList());
         }
 
         public JsonResult EstadoDeCalle()
@@ -56,10 +63,19 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != Dominio.Enums.TipoCalle.PlayaInterna && x.TipoCalle != TipoCalle.PlantaNoGranos);
-            var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc })
-                .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos).Select(x => new { x.MaterialId, x.MaterialDesc }))
-                .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0).OrderBy(x=>x.MaterialId);
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != TipoCalle.PlayaInterna 
+                                                                                && x.TipoCalle != TipoCalle.PlantaNoGranos 
+                                                                                && x.TipoCalle != TipoCalle.EnTransito);
+            var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos 
+                                                    && x.TipoCalle != TipoCalle.EnTransito 
+                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+                .Select(x => new { x.MaterialId, x.MaterialDesc })
+                .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos
+                                                    && x.TipoCalle != TipoCalle.EnTransito
+                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+                .Select(x => new { x.MaterialId, x.MaterialDesc }))
+                .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0)
+                .OrderBy(x=>x.MaterialId);
 
             return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);            
         }
