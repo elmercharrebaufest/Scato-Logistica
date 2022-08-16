@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Molinos.Scato.Dominio.Recursos;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {
     public class VisualizacionBarreraDto
     {
         public int Id { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Codigo { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Descripcion { get; set; }
         public int RolId { get; set; }
         public string RolDescripcion { get; set; }
