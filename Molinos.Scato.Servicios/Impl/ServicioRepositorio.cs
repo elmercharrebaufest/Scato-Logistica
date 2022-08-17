@@ -546,7 +546,7 @@ namespace Molinos.Scato.Servicios.Impl
                 var tipo = (TipoCalle)Enum.Parse(typeof(TipoCalle), tipoCalle);
                 return cantidad > 0 ? Listar<MaterialPorCentro, MaterialPorCentroDto>(
                                         m => m.Material.Activo && m.Centro.Id == centroId && m.Material.Descripcion.Contains(filtro)
-                                        && (tipo == TipoCalle.NoGranos ? !m.Material.EsGrano : m.Material.EsGrano), cantidad) :
+                                        && ((tipo == TipoCalle.NoGranos || tipo == TipoCalle.PlantaNoGranos) ? !m.Material.EsGrano : m.Material.EsGrano), cantidad) :
                                       Listar<MaterialPorCentro, MaterialPorCentroDto>(
                                         m => m.Material.Activo && m.Centro.Id == centroId && m.Material.Descripcion.Contains(filtro));
             }
