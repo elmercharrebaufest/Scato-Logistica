@@ -9979,4 +9979,7 @@
   <data name="InfoPatenteDeCalle_NombreWorkflow" xml:space="preserve">
     <value>Nombre de Workflow</value>
   </data>
+  <data name="PuestoDeTrabajo_GrupoBarrera" xml:space="preserve">
+    <value>Grupo Barrera</value>
+  </data>
 </root>

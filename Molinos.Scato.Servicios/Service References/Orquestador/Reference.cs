@@ -2235,6 +2235,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
             "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arreraResponse")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
+            "e")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
+            "e")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarGruposBarreraAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2518,6 +2526,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigo) {
             return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigo);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera() {
+            return base.Channel.ListarGruposBarrera();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarGruposBarreraAsync() {
+            return base.Channel.ListarGruposBarreraAsync();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IdentityModel.Services;
 using System.Linq;
 using System.Resources;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -234,6 +235,11 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
+                var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
+                if (!string.IsNullOrEmpty(puestoDeTrabajo.GrupoBarreraCodigo)) {
+                    Task.Run(() => servicioComandos.Ejecutar(new EjecutarGrupoBarrera { Codigo = puestoDeTrabajo.GrupoBarreraCodigo }))
+                        .ConfigureAwait(false);
+                }
             }
             catch (Exception e)
             {

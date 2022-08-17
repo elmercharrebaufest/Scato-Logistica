@@ -1363,6 +1363,9 @@
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

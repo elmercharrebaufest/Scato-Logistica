@@ -50,11 +50,10 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case "CambioEstadoSensor":
                         estadoPuesto.NotificarSensorBarrera(notificacion);
-
                         bool estado;
-
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
+                            repositorio.ActualizarDispositivoLog(notificacion.CodigoDispositivo, "EstadoSensor", estado.ToString());
                             estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, estado);
                         }
                         //else

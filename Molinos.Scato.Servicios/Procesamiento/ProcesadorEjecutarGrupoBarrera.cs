@@ -6,6 +6,7 @@ using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -28,75 +29,93 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var estadoSensorCruce = false;
             var inicioCruce = false;
             var terminoCruce = false;
+            var segundundosTranscurridos = 0;
             try
             {
                 var grupoBarrera = orquestador.ObtenerConfiguracionGrupoBarrera(comando.Codigo);
-                var segundundosTranscurridos = 0;
+                var dispositivoCodigoLista = new List<string>
+                {
+                    grupoBarrera.SensorAbajo.Codigo,
+                    grupoBarrera.SensorArriba.Codigo,
+                    grupoBarrera.SensorSegundoCruce.Codigo
+                };
 
-                var resultadoEjecutarAperturaBarrera = orquestador.Ejecutar(new EjecutarAperturaBarrera
-                {
-                    CodigoDispositivo = grupoBarrera.BarreraArriba.Codigo
-                });
+                //var resultadoEjecutarAperturaBarrera = orquestador.Ejecutar(new EjecutarAperturaBarrera
+                //{
+                //    CodigoDispositivo = grupoBarrera.BarreraArriba.Codigo
+                //});
 
-                if (resultadoEjecutarAperturaBarrera.Mensaje.Codigo != 0)
+                //if (resultadoEjecutarAperturaBarrera.Mensaje.Codigo != 0)
+                //{
+                //    Log.Error("Fallo la Apertura del dispositivo: {0}", resultadoEjecutarAperturaBarrera.Mensaje.Descripcion);
+                //}
+                //else
+                //{
+                do
                 {
-                    Log.Error("Fallo la Apertura del dispositivo: {0}", resultadoEjecutarAperturaBarrera.Mensaje.Descripcion);
-                }
-                else
-                {
-                    do
+                    var logEstadoSensor = Repositorio.Listar<LogDispositivo>(
+                        x => (x.NombreLog == "EstadoSensor" && dispositivoCodigoLista.Contains(x.CodigoDispositivo)));
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera contadorLog " + logEstadoSensor.Count());
+
+                    if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
                     {
-                        //var estadoSensorSegundoCruce = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = grupoBarrera.SensorSegundoCruce.Codigo }) as ResultadoEstadoSensor;
-                        //var estadoSensorAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = grupoBarrera.SensorAbajo.Codigo }) as ResultadoEstadoSensor;
-
-                        //if (estadoSensorAbajo.Mensaje) {
-                        //    barreraAbierta = false;
-                        //}
-
-                        //if (estadoSensorSegundoCruce.EstadoActivo) {
-                        //    tocoLaPuntaDelCamion = true;
-                        //}
-                        //else if (!estadoSensorSegundoCruce.EstadoActivo && tocoLaPuntaDelCamion)
-                        //{
-                        //    var resultadoEjecutarCierreBarrera = orquestador.Ejecutar(new EjecutarCierreBarrera
-                        //    {
-                        //        CodigoDispositivo = grupoBarrera.BarreraArriba.Codigo
-                        //    });
-                        //    camionPasoTramo = true;
-                        //}
-
-
-                        if (estadoSensorArriba == true && estadoSensorAbajo == false)
-                        {
-                            if (estadoSensorCruce == true && inicioCruce == false)
-                                inicioCruce = true;
-
-                            if (inicioCruce == true && estadoSensorCruce == false)
-                                terminoCruce = true;
-                        }
-
-                        if (inicioCruce = true && estadoSensorAbajo == true && estadoSensorArriba == false)
-                            terminoCruce = true;
-
-                        if (segundundosTranscurridos == 60)
-                            terminoCruce = true;
-
-                        System.Threading.Thread.Sleep(1000);
-                        segundundosTranscurridos++;
-
-                    } while (terminoCruce == false);
-
-
-                    if (terminoCruce == true && estadoSensorArriba == true)
-                    {
-                        var resultadoEjecutarCierreBarrera = orquestador.Ejecutar(new EjecutarCierreBarrera
-                        {
-                            CodigoDispositivo = grupoBarrera.BarreraArriba.Codigo
-                        });
+                        continue;
                     }
+
+                    var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorArriba.Codigo);
+                    var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorAbajo.Codigo);
+                    var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorSegundoCruce.Codigo);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera sensorArriba " + sensorArriba.Valor);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera sensorAbajo " + sensorAbajo.Valor);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera sensorCruze " + sensorSegundoCruce.Valor);
+
+                    bool.TryParse(sensorArriba.Valor, out estadoSensorArriba);
+
+                    bool.TryParse(sensorAbajo.Valor, out estadoSensorAbajo);
+
+                    bool.TryParse(sensorSegundoCruce.Valor, out estadoSensorCruce);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorArriba " + estadoSensorArriba);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorAbajo " + estadoSensorAbajo);
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorCruze " + estadoSensorCruce);
+
+                    if (estadoSensorArriba == true && estadoSensorAbajo == false)
+                    {
+                        if (estadoSensorCruce == true && inicioCruce == false)
+                            inicioCruce = true;
+
+                        if (inicioCruce == true && estadoSensorCruce == false)
+                            terminoCruce = true;
+                    }
+
+                    if (inicioCruce = true && estadoSensorAbajo == true && estadoSensorArriba == false)
+                        terminoCruce = true;
+
+                    if (segundundosTranscurridos == 60)
+                        terminoCruce = true;
+
+                    System.Threading.Thread.Sleep(1000);
+                    segundundosTranscurridos++;
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera segundos " + segundundosTranscurridos);
+                    Log.Info("ProcesadorEjecutatGrupoBarrera inicioCruce " + inicioCruce);
+                    Log.Info("ProcesadorEjecutatGrupoBarrera terminoCruce " + terminoCruce);
+                } while (terminoCruce == false);
+
+                if (terminoCruce == true && estadoSensorArriba == true)
+                {
+                    Log.Info("ProcesadorEjecutatGrupoBarrera Cerrar Barrera " + grupoBarrera.BarreraAbajo.Codigo);
+                    var resultadoEjecutarCierreBarrera = orquestador.Ejecutar(new EjecutarCierreBarrera
+                    {
+                        CodigoDispositivo = grupoBarrera.BarreraAbajo.Codigo
+                    });
                 }
-
-
             }
             catch (Exception)
             {

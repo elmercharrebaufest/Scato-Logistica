@@ -203,6 +203,12 @@
   <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListarGruposBarrera" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListarGruposBarreraResponse" />
+  </wsdl:message>
   <wsdl:portType name="IServicioOrquestador">
     <wsdl:operation name="Ejecutar">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/Ejecutar" message="tns:IServicioOrquestador_Ejecutar_InputMessage" />
@@ -331,6 +337,10 @@
     <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListarGruposBarrera">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" message="tns:IServicioOrquestador_ListarGruposBarrera_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraResponse" message="tns:IServicioOrquestador_ListarGruposBarrera_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

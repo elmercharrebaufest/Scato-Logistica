@@ -412,4 +412,16 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ListarGruposBarrera">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListarGruposBarreraResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarGruposBarreraResult" nillable="true" type="q34:ArrayOfDispositivoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

@@ -24179,6 +24179,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grupo Barrera.
+        /// </summary>
+        public static string PuestoDeTrabajo_GrupoBarrera {
+            get {
+                return ResourceManager.GetString("PuestoDeTrabajo_GrupoBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Imprime Tarjeta de Acceso.
         /// </summary>
         public static string PuestoDeTrabajo_ImprimeTarjetaDeAcceso {
