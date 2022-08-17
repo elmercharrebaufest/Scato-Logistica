@@ -9926,18 +9926,48 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
         }
+
         public IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase()
         {
             return Listar<MuestraDeInase, MuestraDeInaseDto>(x => !x.MuestraEnviada && !x.Recorrido.Rechazado);
         }
+
         public IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId)
         {
-            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId));
         }
 
         public List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo()
         {
             return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
+        }
+
+        public Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor)
+        {
+            var resultado = new Resultado();
+            try
+            {
+                log.Info("Se ejecuto el servicio ActualizarDispositivoLog " + codigo + "-" + nombre + "-" + valor);
+                var logDispositivo = repositorio.Obtener<LogDispositivo>(x => x.CodigoDispositivo == codigo && x.NombreLog == nombre);
+                if (logDispositivo == null)
+                {
+                    logDispositivo = new LogDispositivo
+                    {
+                        Id = -1,
+                        CodigoDispositivo = codigo,
+                        NombreLog = nombre
+                    };
+                }
+                logDispositivo.PuestoDeTrabajo_Id = 0;
+                logDispositivo.Fecha = DateTime.Now;
+                logDispositivo.Valor = valor;
+                repositorio.GuardarCambios();
+            }
+            catch (Exception e)
+            {
+                resultado.Error("Hubo un error", e.Message);
+            }
+            return resultado;
         }
     }
 }

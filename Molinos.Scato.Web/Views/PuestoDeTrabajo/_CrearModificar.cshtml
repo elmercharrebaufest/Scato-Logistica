@@ -12,6 +12,7 @@
     var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
     var configSensores = (IEnumerable<SelectListItem>)ViewBag.ConfigSensores;
     var intercomunicadores = (IEnumerable<SelectListItem>)ViewBag.Intercomunicadores;
+    var gruposBarrera = (IEnumerable<SelectListItem>)ViewBag.GruposBarrera;
     var visualizacionBarrera = (IEnumerable<SelectListItem>)ViewBag.VisualizacionBarrera;
 }
 <style>
@@ -221,6 +222,14 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(model => model.GrupoBarreraCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.GrupoBarreraCodigo, gruposBarrera, "")
+        @Html.ValidationMessageFor(model => model.GrupoBarreraCodigo)
     </div>
 </div>
 

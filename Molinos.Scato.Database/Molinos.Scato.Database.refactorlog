@@ -609,4 +609,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ErrorCacheoAfipCPE" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9b4a874e-e6d9-470b-b6e2-ecb7827dbf91" ChangeDateTime="08/15/2022 20:40:46">
+    <Property Name="ElementName" Value="[dbo].[LogDispositivo].[PuestroDeTrabajo_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogDispositivo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PuestoDeTrabajo_Id" />
+  </Operation>
 </Operations>

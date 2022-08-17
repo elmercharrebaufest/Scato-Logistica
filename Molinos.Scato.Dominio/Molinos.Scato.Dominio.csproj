@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Comandos\EjecutarGrupoBarrera.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />
     <Compile Include="Comandos\ActualizarEstadoPuerto.cs" />
     <Compile Include="Comandos\AutomatizacionEtapas.cs" />
@@ -975,6 +976,7 @@
     <Compile Include="Entidades\LlenadoMilimetroPorTanque.cs" />
     <Compile Include="Entidades\LogAfipCpe.cs" />
     <Compile Include="Entidades\LogCambioDeModalidadCalle.cs" />
+    <Compile Include="Entidades\LogDispositivo.cs" />
     <Compile Include="Entidades\MensajeCartelLed.cs" />
     <Compile Include="Entidades\ModuloDeCarga.cs" />
     <Compile Include="Entidades\ModuloDeCargaBalanzas.cs" />

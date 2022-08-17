@@ -9985,4 +9985,7 @@
   <data name="VisualizarVideoCamarasCalador2" xml:space="preserve">
     <value>Visualizar Video Cámaras Calador 2</value>
   </data>
+  <data name="PuestoDeTrabajo_GrupoBarrera" xml:space="preserve">
+    <value>Grupo Barrera</value>
+  </data>
 </root>
