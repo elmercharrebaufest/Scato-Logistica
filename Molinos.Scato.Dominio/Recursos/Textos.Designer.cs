@@ -29298,6 +29298,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visualizar Video Cámaras Calador 1.
+        /// </summary>
+        public static string VisualizarVideoCamarasCalador1 {
+            get {
+                return ResourceManager.GetString("VisualizarVideoCamarasCalador1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizar Video Cámaras Calador 2.
+        /// </summary>
+        public static string VisualizarVideoCamarasCalador2 {
+            get {
+                return ResourceManager.GetString("VisualizarVideoCamarasCalador2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visualizar Video Camaras Exportación.
         /// </summary>
         public static string VisualizarVideoCamarasExportacion {

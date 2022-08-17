@@ -552,6 +552,10 @@ namespace Molinos.Scato.Dominio.Seguridad
         AbmBarrera = 265,
         [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionEficienciaCalado")]
         AbmConfiguracionEficienciaCalado = 266,
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasCalador1")]
+        VisualizarVideoCamarasCalador1 = 267,
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasCalador2")]
+        VisualizarVideoCamarasCalador2 = 268,
 
         //Permisos Notificaciones
         Balanceros = 300,

@@ -32,5 +32,21 @@ namespace Molinos.Scato.Web.Helpers
         {
             return helper.Content(url + AssemblyVersionParams);
         }
+
+        public static string RelativeToAbsoluteHttp(this UrlHelper helper, string url, string query = "")
+        {
+            var absolutePath = VirtualPathUtility.ToAbsolute(url);
+            var builder = new UriBuilder(HttpContext.Current.Request.Url) { Path = absolutePath, Query = query};
+            var path = $"http://{builder.Host}{builder.Path}{builder.Query}";
+            return helper.Content(path);
+        }
+
+        public static string RelativeToAbsoluteHttps(this UrlHelper helper, string url, string query = "")
+        {
+            var absolutePath = VirtualPathUtility.ToAbsolute(url);
+            var builder = new UriBuilder(HttpContext.Current.Request.Url) { Path = absolutePath, Query = query };
+            var path = $"https://{builder.Host}{builder.Path}{builder.Query}";
+            return helper.Content(path);
+        }
     }
 }
