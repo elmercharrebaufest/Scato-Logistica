@@ -313,6 +313,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 261) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 264) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitor CPEs Cacheadas', 0, 264, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 265) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Barrera', 0, 265, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 266) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Eficiencia Calado', 0, 266, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 267) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 1', 0, 267, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 268) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 2', 0, 268, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 300) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanceros', 2, 300, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 301) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Administradores', 2, 301, NULL); END

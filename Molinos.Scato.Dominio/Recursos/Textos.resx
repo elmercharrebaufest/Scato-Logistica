@@ -9979,4 +9979,10 @@
   <data name="InfoPatenteDeCalle_NombreWorkflow" xml:space="preserve">
     <value>Nombre de Workflow</value>
   </data>
+  <data name="VisualizarVideoCamarasCalador1" xml:space="preserve">
+    <value>Visualizar Video Cámaras Calador 1</value>
+  </data>
+  <data name="VisualizarVideoCamarasCalador2" xml:space="preserve">
+    <value>Visualizar Video Cámaras Calador 2</value>
+  </data>
 </root>
