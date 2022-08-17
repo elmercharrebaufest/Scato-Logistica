@@ -42,7 +42,7 @@ function Calle(item, context) {
             message: '<h5>' + cargandoGif() + ' LLamando a ' + self.Nombre +'</h5>'
         });
 
-        $.getJSON(urlLLamarCalle, { calleId: self.Id},
+        $.getJSON(urlLLamarCalle, { calleId: self.Id, calleCaladoId: self.CalleCalado.Id },
             function () {
                 self.Llamada(true);
                 $.unblockUI();
@@ -295,7 +295,7 @@ function EstadoDeCallesViewModel() {
                 // Agregar calles precalado que han sido llamadas a las filas calador según su material
                 if (filasCalador != undefined && filasCalador != null && filasCalador.length > 0) {
                     $.each(filasCalador, function (key, value) {
-                        value.FilasPrecalado = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id);
+                        value.FilasPrecalado = allData.calles.filter(x => (x.TipoCalle == 1 || x.TipoCalle == 7) && x.MaterialId == value.MaterialId && x.Id != value.Id);
                         value.FilasPrecaladoLlamadas = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada);
                     });
                 }
@@ -304,22 +304,27 @@ function EstadoDeCallesViewModel() {
                     calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
                     calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
 
-                    if (caladoAutomatico && calle.TipoCalle == 7)
-                        calle.LlamarCircular();
-
-                    // Validar si existe calador para fila precalado
+                    // Validar si existe calador para fila precalado o circular
                     var filaCalador = null;
                     if (filasCalador != null && filasCalador.length > 0) {
+                        let menor = 9999;
                         $.each(filasCalador, function (key, value) {
-                            let encontrado = value.FilasPrecalado.find(x => x.Id == calle.Id);
-                            if (encontrado) {
-                                filaCalador = value
+                            if (value.FilasPrecalado.find(x => x.Id == calle.Id)
+                                && value.FilasPrecaladoLlamadas.length < menor) {
+                                filaCalador = value;
+                                menor = value.FilasPrecaladoLlamadas.length;
                             }
                         });
                     }
 
+                    if (caladoAutomatico && calle.TipoCalle == 7 && filaCalador != null) {
+                        calle.CalleCalado = filaCalador;
+                        calle.LlamarCircular();
+                    }
+
                     if (caladoAutomatico && calle.TipoCalle == 1 && filaCalador != null) {
                         if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+                            calle.CalleCalado = filaCalador;
                             calle.LlamarPrecalado();
                         }
                     }

@@ -511,6 +511,7 @@
     <Content Include="Views\EstadoPlayaInterna\Calles.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\Index.cshtml" />
     <Content Include="Views\EficienciaCalado\Index.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_DetalleCamion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

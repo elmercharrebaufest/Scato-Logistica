@@ -60,7 +60,8 @@ namespace Molinos.Scato.Repositorio
             {
                 foreach (var clave in claves)
                 {
-                    items.Add((TEntidad)cache.Get(clave));
+                    if(cache.Get(clave) is TEntidad)
+                        items.Add((TEntidad)cache.Get(clave));
                 }
             }
             return items;
@@ -69,6 +70,15 @@ namespace Molinos.Scato.Repositorio
         public void RemoverTodos()
         {
             var claves = cache.Select(kvp => kvp.Key).ToList();
+            foreach (var clave in claves)
+            {
+                Remover(clave);
+            }
+        }
+
+        public void RemoverPorGrupo(string group)
+        {
+            var claves = cache.Where(x => x.Key.StartsWith(group)).Select(kvp => kvp.Key).ToList();
             foreach (var clave in claves)
             {
                 Remover(clave);

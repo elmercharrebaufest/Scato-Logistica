@@ -314,3 +314,27 @@ div.card.parpadeo {
     margin-top: 5px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
+
+.bg-EnTransito {
+    background: #f2f3f8;
+}
+
+.bg-AceiteSj {
+    background: #92d050;
+}
+
+.bg-AceiteG {
+    background: #8faadc;
+}
+
+.bg-PelletG {
+    background: #f8cbad;
+}
+
+.bg-Lecitina {
+    background: #c9c9c9;
+}
+
+.bg-Salida {
+    background: #f2f3f8;
+}

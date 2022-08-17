@@ -70,7 +70,7 @@ namespace Molinos.Scato.Servicios.Impl
                     }
                 }
             }
-            cache.RemoverTodos();
+            cache.RemoverPorGrupo("Puesto:");
             puestos = new List<ConcentradorDto>();
             var listaDePuestos = repositorio.ListarPuestosDeBalanzasAutomaticas();
             
@@ -97,7 +97,7 @@ namespace Molinos.Scato.Servicios.Impl
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
                 }
 
-                cache.Agregar($"puesto:{puesto.PuestoId}",puesto);
+                cache.Agregar($"Puesto:{puesto.PuestoId}",puesto);
                 puestos.Add(puesto);
             }
             log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
@@ -226,8 +226,8 @@ namespace Molinos.Scato.Servicios.Impl
                 TipoAlerta = TipoAlerta.CambioEstadoBalanzas
             });
             puesto.EstadoSensoresBalanzaDto = estadoBalanza;
-            cache.Remover($"puesto:{puesto.PuestoId}");
-            cache.Agregar($"puesto:{puesto.PuestoId}", puesto);
+            cache.Remover($"Puesto:{puesto.PuestoId}");
+            cache.Agregar($"Puesto:{puesto.PuestoId}", puesto);
 
         }
 
@@ -241,7 +241,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ValidarEstadoPuesto(int puestoId)
         {
-            var puesto = cache.Obtener<ConcentradorDto>($"puesto:{puestoId}");
+            var puesto = cache.Obtener<ConcentradorDto>($"Puesto:{puestoId}");
             var valido = true;
             if (puesto == null)
             {

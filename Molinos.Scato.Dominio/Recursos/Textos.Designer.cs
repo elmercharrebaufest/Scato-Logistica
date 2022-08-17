@@ -16904,6 +16904,42 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carta de Porte / Remito.
+        /// </summary>
+        public static string InfoPatenteDeCalle_CartaPorte {
+            get {
+                return ResourceManager.GetString("InfoPatenteDeCalle_CartaPorte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha de Ingreso.
+        /// </summary>
+        public static string InfoPatenteDeCalle_FechaIngreso {
+            get {
+                return ResourceManager.GetString("InfoPatenteDeCalle_FechaIngreso", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nombre de Chofer.
+        /// </summary>
+        public static string InfoPatenteDeCalle_NombreChofer {
+            get {
+                return ResourceManager.GetString("InfoPatenteDeCalle_NombreChofer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nombre de Workflow.
+        /// </summary>
+        public static string InfoPatenteDeCalle_NombreWorkflow {
+            get {
+                return ResourceManager.GetString("InfoPatenteDeCalle_NombreWorkflow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Informar Arribos a Circular.
         /// </summary>
         public static string InformarCircular {

@@ -8,5 +8,6 @@ namespace Molinos.Scato.Dominio.Enums
         public const string BalanzaAvanzarCamion = "BalanzaAvanzarCamion";
         public const string BalanzaRetrocederCamion = "BalanzaRetrocederCamion";
         public const string GaritaIngresoAsignarCalle = "GaritaIngresoAsignarCalle";
+        public const string LlamadoCallePrecaladoACalar = "LlamadoCallePrecaladoACalar";
     }
 }

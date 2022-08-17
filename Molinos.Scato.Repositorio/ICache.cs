@@ -11,5 +11,6 @@ namespace Molinos.Scato.Repositorio
         TEntidad Agregar<TEntidad>(string clave, TEntidad entidad, DateTimeOffset? tiempoDeExpiracion = null) where TEntidad : class;
         List<TEntidad> ObtenerTodos<TEntidad>() where TEntidad : class;
         void RemoverTodos();
+        void RemoverPorGrupo(string group);
     }
 }

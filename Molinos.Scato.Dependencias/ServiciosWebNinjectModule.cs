@@ -34,7 +34,7 @@ namespace Molinos.Scato.Dependencias
             Bind<ICalculadoraDescuento, CalculadoraDescuento>().To<CalculadoraDescuento>().InScope(ctx => OperationContext.Current);
             Bind<IConfiguracionProvider, ConfiguracionProvider>().To<ConfiguracionProvider>().InSingletonScope();
             Bind<IAccesoWsCtg, AccesoWsCtg>().To<AccesoWsCtg>();
-            Bind<IFirmaProvider, FirmaProvider>().To<FirmaProvider>().InSingletonScope();
+            Bind<IFirmaProvider, FirmaProvider>().To<FirmaProvider>().InScope(ctx => OperationContext.Current);
             Bind<IServicioImpresorFactory, ServicioImpresorFactory>().To<ServicioImpresorFactory>().InSingletonScope();
             Bind<IServicioMercadoPago, ServicioMercadoPago>().To<ServicioMercadoPago>().InScope(ctx => OperationContext.Current);
             Bind<IServicioCircular, ServicioCircular>().To<ServicioCircular>().InScope(ctx => OperationContext.Current);

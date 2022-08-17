@@ -546,7 +546,7 @@ namespace Molinos.Scato.Servicios.Impl
                 var tipo = (TipoCalle)Enum.Parse(typeof(TipoCalle), tipoCalle);
                 return cantidad > 0 ? Listar<MaterialPorCentro, MaterialPorCentroDto>(
                                         m => m.Material.Activo && m.Centro.Id == centroId && m.Material.Descripcion.Contains(filtro)
-                                        && (tipo == TipoCalle.NoGranos ? !m.Material.EsGrano : m.Material.EsGrano), cantidad) :
+                                        && ((tipo == TipoCalle.NoGranos || tipo == TipoCalle.PlantaNoGranos) ? !m.Material.EsGrano : m.Material.EsGrano), cantidad) :
                                       Listar<MaterialPorCentro, MaterialPorCentroDto>(
                                         m => m.Material.Activo && m.Centro.Id == centroId && m.Material.Descripcion.Contains(filtro));
             }
@@ -9922,6 +9922,10 @@ namespace Molinos.Scato.Servicios.Impl
             return false;
         }
 
+        public MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo)
+        {
+            return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
+        }
         public IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase()
         {
             return Listar<MuestraDeInase, MuestraDeInaseDto>(x => !x.MuestraEnviada && !x.Recorrido.Rechazado);
@@ -9929,6 +9933,11 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId)
         {
             return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
+        }
+
+        public List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo()
+        {
+            return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
         }
     }
 }

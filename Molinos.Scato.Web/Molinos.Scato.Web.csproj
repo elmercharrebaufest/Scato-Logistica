@@ -661,6 +661,7 @@
     <Compile Include="Helpers\ZPLImageConveter.cs" />
     <Compile Include="Models\ArchivosTxt\BahiaBlanca.cs" />
     <Compile Include="Models\ArchivosTxt\ListadoCamiones.cs" />
+    <Compile Include="Models\ArchivosTxt\MuestraInase.cs" />
     <Compile Include="Models\ArchivosTxt\OnccaRecibidas.cs" />
     <Compile Include="Models\ArchivosTxt\OnccaEmitidas.cs" />
     <Compile Include="Models\ArchivosTxt\Rosario02.cs" />
@@ -882,6 +883,8 @@
     <Content Include="Content\fonts\icomoon.eot" />
     <Content Include="Content\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon.woff" />
+    <Content Include="ApplicationInsights.QA.config" />
+    <Content Include="ApplicationInsights.PRD.config" />
     <Content Include="ApplicationInsights.config" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />

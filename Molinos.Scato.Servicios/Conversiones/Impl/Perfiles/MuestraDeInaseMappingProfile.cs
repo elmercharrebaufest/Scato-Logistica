@@ -17,7 +17,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.RecorridoId, f => f.MapFrom(r => r.Recorrido.Id))
                 .ForMember(t => t.WorkflowInstanceId, f => f.MapFrom(r => r.Recorrido.InstanciaWorkflow))
                 .ForMember(t => t.CartaPorte, f => f.MapFrom(r => r.Recorrido.NumeroDocumentoIngreso));
-            Mapper.CreateMap<MuestraDeNirsDto, MuestraDeNirs>();
+            Mapper.CreateMap<MuestraDeInaseDto, MuestraDeInase>();
         }
     }
 }

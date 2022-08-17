@@ -1171,6 +1171,7 @@ END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaLimpiarCartelLed') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaLimpiarCartelLed', 1, '', '01', '01', '00', 0, 'Se limpia el cartel', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaAvanzarCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaAvanzarCamion', 1, 'Avance, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaRetrocederCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaRetrocederCamion', 1, 'Retroceda, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePrecaladoACalar') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePrecaladoACalar', 1, 'asignado a', '01', '01', '00', 0, '', 1) END
 
 GO
 GO
@@ -1416,6 +1417,21 @@ VALUES	('MuestraInase', 'MailDestinatarios', 'carlos.cortina@molinosagro.com.ar;
 		('MuestraInase', 'Responsable', 'Carlos Cortina', 5, GETDATE(), 'SCATO'),
 		('MuestraInase', 'Contacto', 'Email: carlos.cortina@molinosagro.com.ar', 5, GETDATE(), 'SCATO'),
 		('MuestraInase', 'Horario', 'L a V de 8 a 14hs', 5, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'CartelLedCalador' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'CartelLedCalador', '', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'Calador 1' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'Calador 1', 'Calle 1 o 2', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'Calador 2' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'Calador 2', 'Calle 3 o 4', NULL, GETDATE(), 'SCATO')
 END
 
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
