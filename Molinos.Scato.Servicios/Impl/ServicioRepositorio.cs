@@ -9947,6 +9947,7 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = new Resultado();
             try
             {
+                log.Info("Se ejecuto el servicio ActualizarDispositivoLog " + codigo + "-" + nombre + "-" + valor);
                 var logDispositivo = repositorio.Obtener<LogDispositivo>(x => x.CodigoDispositivo == codigo && x.NombreLog == nombre);
                 if (logDispositivo == null)
                 {
