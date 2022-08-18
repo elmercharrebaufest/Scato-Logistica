@@ -53,10 +53,21 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 //{
                 do
                 {
+                    System.Threading.Thread.Sleep(1000);
+                    segundundosTranscurridos++;
+
+                    Log.Info("ProcesadorEjecutatGrupoBarrera segundos " + segundundosTranscurridos);
+                    if (segundundosTranscurridos == 60) {  
+                        Log.Info("ProcesadorEjecutatGrupoBarrera paso 60 segundos" );
+                        break;
+                    }
+
                     var logEstadoSensor = Repositorio.Listar<LogDispositivo>(
                         x => (x.NombreLog == "EstadoSensor" && dispositivoCodigoLista.Contains(x.CodigoDispositivo)));
 
-                    Log.Info("ProcesadorEjecutatGrupoBarrera contadorLog " + logEstadoSensor.Count());
+                    Log.Info("ProcesadorEjecutatGrupoBarrera logEstadoSensor " + logEstadoSensor.Count());
+                    Log.Info("ProcesadorEjecutatGrupoBarrera dispositivoCodigoLista " + dispositivoCodigoLista.Count());
+                  
 
                     if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
                     {
@@ -97,12 +108,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (inicioCruce = true && estadoSensorAbajo == true && estadoSensorArriba == false)
                         terminoCruce = true;
 
-                    if (segundundosTranscurridos == 60)
-                        terminoCruce = true;
-
-                    System.Threading.Thread.Sleep(1000);
-                    segundundosTranscurridos++;
-
+                  
                     Log.Info("ProcesadorEjecutatGrupoBarrera segundos " + segundundosTranscurridos);
                     Log.Info("ProcesadorEjecutatGrupoBarrera inicioCruce " + inicioCruce);
                     Log.Info("ProcesadorEjecutatGrupoBarrera terminoCruce " + terminoCruce);
