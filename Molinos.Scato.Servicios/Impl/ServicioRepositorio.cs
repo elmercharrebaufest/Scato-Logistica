@@ -9957,6 +9957,7 @@ namespace Molinos.Scato.Servicios.Impl
                         CodigoDispositivo = codigo,
                         NombreLog = nombre
                     };
+                    repositorio.Agregar(logDispositivo);
                 }
                 logDispositivo.PuestoDeTrabajo_Id = 0;
                 logDispositivo.Fecha = DateTime.Now;
