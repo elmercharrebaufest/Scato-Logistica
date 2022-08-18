@@ -9947,10 +9947,11 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = new Resultado();
             try
             {
-                log.Info("Se ejecuto el servicio ActualizarDispositivoLog " + codigo + "-" + nombre + "-" + valor);
+                log.Info("Se ejecutara el servicio ActualizarDispositivoLog " + codigo + "-" + nombre + "-" + valor);
                 var logDispositivo = repositorio.Obtener<LogDispositivo>(x => x.CodigoDispositivo == codigo && x.NombreLog == nombre);
                 if (logDispositivo == null)
                 {
+                    log.Info("Se ejecuto el servicio ActualizarDispositivoLog para crear");
                     logDispositivo = new LogDispositivo
                     {
                         Id = -1,
@@ -9963,9 +9964,11 @@ namespace Molinos.Scato.Servicios.Impl
                 logDispositivo.Fecha = DateTime.Now;
                 logDispositivo.Valor = valor;
                 repositorio.GuardarCambios();
+                log.Info("Se ejecuto el servicio ActualizarDispositivoLog");
             }
             catch (Exception e)
             {
+                log.Info("Error en el servicio ActualizarDispositivoLog " + e.Message);
                 resultado.Error("Hubo un error", e.Message);
             }
             return resultado;
