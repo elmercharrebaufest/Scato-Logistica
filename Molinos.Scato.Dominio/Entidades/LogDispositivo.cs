@@ -10,8 +10,6 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual DateTime Fecha { get; set; }
 
-        public int PuestoDeTrabajo_Id { get; set; }
-
         public string CodigoDispositivo { get; set; }
 
         public string NombreLog { get; set; }

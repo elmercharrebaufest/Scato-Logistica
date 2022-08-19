@@ -1,9 +1,9 @@
 ﻿CREATE TABLE [dbo].[LogDispositivo]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT IDENTITY (1, 1) NOT NULL,
 	[Fecha] DATETIME NOT NULL, 
-    [PuestoDeTrabajo_Id] INT NOT NULL, 
     [CodigoDispositivo] NVARCHAR(50) NOT NULL, 
     [NombreLog] NVARCHAR(50) NOT NULL, 
     [Valor] NVARCHAR(200) NULL,
+    CONSTRAINT [PK_dbo.LogDispositivo] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
 )
