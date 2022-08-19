@@ -9954,12 +9954,12 @@ namespace Molinos.Scato.Servicios.Impl
                     log.Info("Se ejecuto el servicio ActualizarDispositivoLog para crear");
                     logDispositivo = new LogDispositivo
                     {
+                        Id = -1,
                         CodigoDispositivo = codigo,
                         NombreLog = nombre
                     };
                     repositorio.Agregar(logDispositivo);
                 }
-                logDispositivo.PuestoDeTrabajo_Id = 0;
                 logDispositivo.Fecha = DateTime.Now;
                 logDispositivo.Valor = valor;
                 repositorio.GuardarCambios();
