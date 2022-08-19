@@ -237,8 +237,11 @@ namespace Molinos.Scato.Web.Controllers
                 orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
                 var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
                 if (!string.IsNullOrEmpty(puestoDeTrabajo.GrupoBarreraCodigo)) {
+                    log.Info("Se va a llamar el proceso EjecutarGrupoBarrera");
                     Task.Run(() => servicioComandos.Ejecutar(new EjecutarGrupoBarrera { Codigo = puestoDeTrabajo.GrupoBarreraCodigo }))
                         .ConfigureAwait(false);
+                    log.Info("Se llamo el proceso EjecutarGrupoBarrera");
+
                 }
             }
             catch (Exception e)

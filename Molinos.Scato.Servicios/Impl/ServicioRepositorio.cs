@@ -9969,6 +9969,7 @@ namespace Molinos.Scato.Servicios.Impl
             catch (Exception e)
             {
                 log.Info("Error en el servicio ActualizarDispositivoLog " + e.Message);
+                log.Info("InnerException en el servicio ActualizarDispositivoLog " + e.InnerException.Message);
                 resultado.Error("Hubo un error", e.Message);
             }
             return resultado;
