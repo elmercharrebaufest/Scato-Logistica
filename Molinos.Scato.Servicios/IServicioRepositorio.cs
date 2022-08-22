@@ -2625,19 +2625,19 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
-        
+
         [OperationContract]
         ConfigSensoresDto ObtenerConfiguracionSensores(int id);
-        
+
         [OperationContract]
-        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId);
-        
+        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion, int centroId);
+
         [OperationContract]
         IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
 
         [OperationContract]
         IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId);
-        
+
         [OperationContract]
         List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta);
 
@@ -2655,14 +2655,16 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta);
+
         [OperationContract]
         IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
+
         [OperationContract]
         bool AvanzaCpe(int centroId);
-        
+
         [OperationContract]
         FotoDto ObtenerFotoDescargada(int centroId, string numeroDocumento, string actividad, bool esSustentable);
-        
+
         [OperationContract]
         bool ValidarAltaCTGRepetida(string ctg);
 
@@ -2671,7 +2673,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo);
-        
+
         [OperationContract]
         IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase();
 
@@ -2683,5 +2685,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor);
+
+        [OperationContract]
+        List<LogDispositivoDto> ObtenerLogDispositivosPorNombreYCodigos(string nombre, List<string> codigos);
     }
 }

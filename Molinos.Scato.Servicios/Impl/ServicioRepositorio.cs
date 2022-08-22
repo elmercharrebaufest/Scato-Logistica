@@ -9973,5 +9973,10 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return resultado;
         }
+
+        public List<LogDispositivoDto> ObtenerLogDispositivosPorNombreYCodigos(string nombre,List<string>codigos) {
+            var result = Listar<LogDispositivo, LogDispositivoDto>(x => x.NombreLog == nombre && codigos.Contains(x.CodigoDispositivo));
+            return result.ToList();
+        }
     }
 }
