@@ -46,6 +46,11 @@ namespace Molinos.Scato.Servicios.Impl
                 return repositorio.ObtenerConsultaEscalar(new ObtenerCalleNoGranos(TipoCalle.NoGranos, material));
             }
 
+            if (tipoCalle == TipoCalle.PlantaNoGranos || tipoCalle == TipoCalle.EnTransito)
+            {
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePlantaNoGranos(tipoCalle, material));
+            }
+
             return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(tipoCalle, material));
         }
 

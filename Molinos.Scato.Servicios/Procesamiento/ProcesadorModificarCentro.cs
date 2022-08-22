@@ -17,7 +17,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void ModificarEntidad(ModificarCentro comando)
         {
             var centroEditado = Repositorio.Obtener<Centro>(comando.Dto.Id);
+            var avanzaCpeOriginal = centroEditado.AvanzaCpe;
             Conversor.Convertir(comando.Dto, centroEditado);
+            centroEditado.AvanzaCpe = avanzaCpeOriginal;
             centroEditado.CamaraDefault = Repositorio.Obtener<Camara>(comando.Dto.CamaraId);
             centroEditado.Provincia = Repositorio.Obtener<Provincia>(comando.Dto.ProvinciaId);
             centroEditado.Localidad = Repositorio.Obtener<Localidad>(comando.Dto.LocalidadId);
