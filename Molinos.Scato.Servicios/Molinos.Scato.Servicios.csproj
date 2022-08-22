@@ -318,6 +318,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\VisualizacionBarreraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZE7550TransmisionASapMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\PinchazosPorCaladaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LogDispositivoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZonaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\SubZonaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ProveedorExcluidoIntactaMappingProfile.cs" />
