@@ -128,13 +128,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     });
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.Error("ProcesadorEjecutatGrupoBarrera error " + ex.Message);
                 resultado.Error("", Textos.Observacion_ErrorEnLaCarga);
-            }
-            if (!resultado.HayErrores)
-            {
-                Repositorio.GuardarCambios();
             }
             return resultado;
         }
