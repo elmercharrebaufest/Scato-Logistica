@@ -77,11 +77,6 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(225, datosUsuario.CentroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             var centro = servicio.ObtenerCentro(datosUsuario.CentroId);
             ViewBag.AvanzaAutomatico = centro.AvanzaCpe;
-            if (centro.AvanzaCpe != AvanceCpe)
-            {
-                centro.AvanzaCpe = AvanceCpe;
-                servicioComandos.Ejecutar(new ModificarCentro { Dto = centro, Usuario = datosUsuario.NombreUsuario });
-            }
 
             ModelState.Remove("MaterialId");
             ModelState.Remove("Especial");
