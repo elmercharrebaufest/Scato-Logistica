@@ -14,11 +14,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
     public class ProcesadorEjecutarGrupoBarrera : ProcesadorComando<EjecutarGrupoBarrera>
     {
         private readonly IServicioOrquestador orquestador;
+        private readonly IServicioRepositorio servicioRepositorio;
 
-        public ProcesadorEjecutarGrupoBarrera(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioOrquestador orquestador)
+        public ProcesadorEjecutarGrupoBarrera(IRepositorio repositorio, IConversor conversor, ILogger log
+            , IServicioOrquestador orquestador,IServicioRepositorio servicioRepositorio)
             : base(repositorio, conversor, log)
         {
             this.orquestador = orquestador;
+            this.servicioRepositorio = servicioRepositorio;
         }
 
         public override Resultado Ejecutar(EjecutarGrupoBarrera comando)
@@ -53,6 +56,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 //{
                 do
                 {
+
+
+
                     System.Threading.Thread.Sleep(1000);
                     segundundosTranscurridos++;
 
@@ -62,8 +68,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         break;
                     }
 
-                    var logEstadoSensor = Repositorio.Listar<LogDispositivo>(
-                        x => (x.NombreLog == "EstadoSensor" && dispositivoCodigoLista.Contains(x.CodigoDispositivo)));
+                    var logEstadoSensor = servicioRepositorio.ObtenerLogDispositivosPorNombreYCodigos("EstadoSensor", dispositivoCodigoLista);
 
                     Log.Info("ProcesadorEjecutatGrupoBarrera logEstadoSensor " + logEstadoSensor.Count());
                     Log.Info("ProcesadorEjecutatGrupoBarrera dispositivoCodigoLista " + dispositivoCodigoLista.Count());
