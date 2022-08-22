@@ -2685,8 +2685,5 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor);
-
-        [OperationContract]
-        List<LogDispositivoDto> ObtenerLogDispositivosPorNombreYCodigos(string nombre, List<string> codigos);
     }
 }

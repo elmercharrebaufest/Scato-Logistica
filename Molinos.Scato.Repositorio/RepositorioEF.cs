@@ -107,6 +107,16 @@ namespace Molinos.Scato.Repositorio
             return resultado.ToList();
         }
 
+        public IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class
+        {
+            IQueryable<TEntidad> resultado = Set<TEntidad>();
+            if (filtro != null)
+            {
+                resultado = resultado.Where(filtro).AsNoTracking();
+            }
+            return resultado.ToList();
+        }
+
         public IList<TEntidad> Listar<TEntidad>(IEnumerable<Expression<Func<TEntidad, object>>> includes, Expression<Func<TEntidad, bool>> filtro) where TEntidad : class
         {
             IQueryable<TEntidad> resultado = Set<TEntidad>();

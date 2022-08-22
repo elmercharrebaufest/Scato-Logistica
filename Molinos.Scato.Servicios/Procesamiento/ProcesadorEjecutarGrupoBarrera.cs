@@ -14,14 +14,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
     public class ProcesadorEjecutarGrupoBarrera : ProcesadorComando<EjecutarGrupoBarrera>
     {
         private readonly IServicioOrquestador orquestador;
-        private readonly IServicioRepositorio servicioRepositorio;
 
         public ProcesadorEjecutarGrupoBarrera(IRepositorio repositorio, IConversor conversor, ILogger log
-            , IServicioOrquestador orquestador,IServicioRepositorio servicioRepositorio)
+            , IServicioOrquestador orquestador)
             : base(repositorio, conversor, log)
         {
             this.orquestador = orquestador;
-            this.servicioRepositorio = servicioRepositorio;
         }
 
         public override Resultado Ejecutar(EjecutarGrupoBarrera comando)
@@ -35,7 +33,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var segundundosTranscurridos = 0;
             try
             {
+                Log.Info("ProcesadorEjecutatGrupoBarrera Iniciado");
                 var grupoBarrera = orquestador.ObtenerConfiguracionGrupoBarrera(comando.Codigo);
+
                 var dispositivoCodigoLista = new List<string>
                 {
                     grupoBarrera.SensorAbajo.Codigo,
@@ -43,45 +43,37 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     grupoBarrera.SensorSegundoCruce.Codigo
                 };
 
-                //var resultadoEjecutarAperturaBarrera = orquestador.Ejecutar(new EjecutarAperturaBarrera
+                //var dispositivoCodigoLista = new List<string>
                 //{
-                //    CodigoDispositivo = grupoBarrera.BarreraArriba.Codigo
-                //});
+                //    "P6GIROENTRADA",
+                //    "P6GIROSALIDA",
+                //    "P6FORZADOSALIDA"
+                //};
 
-                //if (resultadoEjecutarAperturaBarrera.Mensaje.Codigo != 0)
-                //{
-                //    Log.Error("Fallo la Apertura del dispositivo: {0}", resultadoEjecutarAperturaBarrera.Mensaje.Descripcion);
-                //}
-                //else
-                //{
                 do
                 {
-
-
-
                     System.Threading.Thread.Sleep(1000);
+
                     segundundosTranscurridos++;
 
                     Log.Info("ProcesadorEjecutatGrupoBarrera segundos " + segundundosTranscurridos);
-                    if (segundundosTranscurridos == 60) {  
-                        Log.Info("ProcesadorEjecutatGrupoBarrera paso 60 segundos" );
+                    if (segundundosTranscurridos == 60)
+                    {
+                        Log.Info("ProcesadorEjecutatGrupoBarrera el procesi fue abortado por que paso 60 segundos");
                         break;
                     }
 
-                    var logEstadoSensor = servicioRepositorio.ObtenerLogDispositivosPorNombreYCodigos("EstadoSensor", dispositivoCodigoLista);
-
-                    Log.Info("ProcesadorEjecutatGrupoBarrera logEstadoSensor " + logEstadoSensor.Count());
-                    Log.Info("ProcesadorEjecutatGrupoBarrera dispositivoCodigoLista " + dispositivoCodigoLista.Count());
-                  
+                    var logEstadoSensor = Repositorio.ListarNoTracking<LogDispositivo>(
+                      x => (x.NombreLog == "EstadoSensor" && dispositivoCodigoLista.Contains(x.CodigoDispositivo)));
 
                     if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
                     {
                         continue;
                     }
 
-                    var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorArriba.Codigo);
-                    var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorAbajo.Codigo);
-                    var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorSegundoCruce.Codigo);
+                    var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == "P6GIROENTRADA");
+                    var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == "P6GIROSALIDA");
+                    var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == "P6FORZADOSALIDA");
 
                     Log.Info("ProcesadorEjecutatGrupoBarrera sensorArriba " + sensorArriba.Valor);
 
@@ -95,12 +87,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     bool.TryParse(sensorSegundoCruce.Valor, out estadoSensorCruce);
 
-                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorArriba " + estadoSensorArriba);
-
-                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorAbajo " + estadoSensorAbajo);
-
-                    Log.Info("ProcesadorEjecutatGrupoBarrera EstadoSensorCruze " + estadoSensorCruce);
-
                     if (estadoSensorArriba == true && estadoSensorAbajo == false)
                     {
                         if (estadoSensorCruce == true && inicioCruce == false)
@@ -113,10 +99,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     if (inicioCruce = true && estadoSensorAbajo == true && estadoSensorArriba == false)
                         terminoCruce = true;
 
-                  
-                    Log.Info("ProcesadorEjecutatGrupoBarrera segundos " + segundundosTranscurridos);
+                    Log.Info("ProcesadorEjecutatGrupoBarrera -------------------------- " + inicioCruce);
                     Log.Info("ProcesadorEjecutatGrupoBarrera inicioCruce " + inicioCruce);
                     Log.Info("ProcesadorEjecutatGrupoBarrera terminoCruce " + terminoCruce);
+                    Log.Info("ProcesadorEjecutatGrupoBarrera -------------------------- " + inicioCruce);
                 } while (terminoCruce == false);
 
                 if (terminoCruce == true && estadoSensorArriba == true)

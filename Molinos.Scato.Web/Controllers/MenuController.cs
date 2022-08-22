@@ -6,6 +6,7 @@ using System.IdentityModel.Services;
 using System.Linq;
 using System.Resources;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -237,11 +238,7 @@ namespace Molinos.Scato.Web.Controllers
                 orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
                 var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
                 if (!string.IsNullOrEmpty(puestoDeTrabajo.GrupoBarreraCodigo)) {
-                    log.Info("Se va a llamar el proceso EjecutarGrupoBarrera");
-                    Task.Run(() => servicioComandos.Ejecutar(new EjecutarGrupoBarrera { Codigo = puestoDeTrabajo.GrupoBarreraCodigo }))
-                        .ConfigureAwait(false);
-                    log.Info("Se llamo el proceso EjecutarGrupoBarrera");
-
+                    HostingEnvironment.QueueBackgroundWorkItem(clt => servicioComandos.Ejecutar(new EjecutarGrupoBarrera { Codigo = puestoDeTrabajo.GrupoBarreraCodigo }));
                 }
             }
             catch (Exception e)
@@ -262,6 +259,14 @@ namespace Molinos.Scato.Web.Controllers
         {
             servicioEstado.ActualizarBarreras(datosUsuario.NombrePc);
 
+        }
+
+        private void EjecutarCerradoAutomaticoDeBarrera(int puestoId) {
+            var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
+            if (!string.IsNullOrEmpty(puestoDeTrabajo.GrupoBarreraCodigo))
+            {
+                HostingEnvironment.QueueBackgroundWorkItem(clt => servicioComandos.Ejecutar(new EjecutarGrupoBarrera { Codigo = puestoDeTrabajo.GrupoBarreraCodigo }));
+            }
         }
     }
 }
