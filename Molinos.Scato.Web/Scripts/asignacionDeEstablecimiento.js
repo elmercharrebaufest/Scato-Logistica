@@ -18,8 +18,8 @@
     });
 });
 rechazar = false;
-function MostrarOcultarBtnRechazado(valor) {
-    if (valor) {
+function MostrarOcultarBtnRechazado(data) {
+    if (data.establecimientoEsIgualAProcedencia) {
         $('#BotonAceptar').attr('disabled', false);
         $('#BotonAceptar').show();
         $('#errorProcedenciaLocalidad').hide();
@@ -27,6 +27,7 @@ function MostrarOcultarBtnRechazado(valor) {
     } else {
         $('#BotonAceptar').attr('disabled', true);
         $('#BotonAceptar').hide();
+        $('#errorProcedenciaLocalidad:first-child').text(data.errorMessage);
         $('#errorProcedenciaLocalidad').show();
         rechazar = true;
     }

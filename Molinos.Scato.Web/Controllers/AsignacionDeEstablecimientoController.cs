@@ -15,6 +15,8 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
@@ -135,6 +137,8 @@ namespace Molinos.Scato.Web.Controllers
             var instance = new Guid(instanceId);
             var cartaPorte = servicio.ObtenerCartaPortePorInstanceId(instance);
             var establecimiento = establecimientoId != "" ? servicio.ObtenerEstablecimiento(Convert.ToInt32(establecimientoId)) : null;
+            var establecimientoEsIgualAProcedencia = false;
+            var errorMessageEstablecimiento = "";
 
             if (establecimiento != null)
             {
@@ -144,11 +148,23 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     return Json(true, JsonRequestBehavior.AllowGet);
                 }
+            }            
+
+            if (establecimientoId != "-1" && !String.IsNullOrEmpty(establecimientoId) && cartaPorte != null && establecimiento != null)
+            {
+                establecimientoEsIgualAProcedencia = establecimiento.LocalidadId == cartaPorte.ProcedenciaId;
+                errorMessageEstablecimiento = Textos.ProcedenciaDistintaAEstablecimiento.Replace("{0}", establecimiento.Localidad).Replace("{1}", establecimiento.LocalidadCodigoAfip);
+            }
+            else
+            {
+                establecimientoEsIgualAProcedencia = true;
             }
 
-            return establecimientoId != "-1" && !String.IsNullOrEmpty(establecimientoId) && cartaPorte != null && establecimiento != null
-                   ? Json(establecimiento.LocalidadId == cartaPorte.ProcedenciaId, JsonRequestBehavior.AllowGet)
-                   : Json(true, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                establecimientoEsIgualAProcedencia = establecimientoEsIgualAProcedencia,
+                errorMessage = errorMessageEstablecimiento
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [DatosUsuario]
