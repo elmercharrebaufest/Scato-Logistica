@@ -6854,7 +6854,7 @@
     <value>Los siguientes campos no fueron editados</value>
   </data>
   <data name="ProcedenciaDistintaAEstablecimiento" xml:space="preserve">
-    <value>La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte</value>
+    <value>La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte - La localidad que corresponde al establecimiento seleccionado es {0} código {1}.</value>
   </data>
   <data name="ModificarTransmisionSap_Error" xml:space="preserve">
     <value>La transmisión que intenta modificar no está en estado de Error</value>
