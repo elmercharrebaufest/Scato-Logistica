@@ -23792,7 +23792,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte.
+        ///   Looks up a localized string similar to La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte - La localidad que corresponde al establecimiento seleccionado es {0} código {1}..
         /// </summary>
         public static string ProcedenciaDistintaAEstablecimiento {
             get {
