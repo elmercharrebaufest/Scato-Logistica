@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace Molinos.Scato.Dominio.Entidades
+namespace Molinos.Scato.Dominio.Dto
 {
-    public class LogDispositivo : IIdentificable
+    public class LogDispositivoDto
     {
-        [Key]
         public int Id { get; set; }
         public virtual DateTime Fecha { get; set; }
         public string CodigoDispositivo { get; set; }

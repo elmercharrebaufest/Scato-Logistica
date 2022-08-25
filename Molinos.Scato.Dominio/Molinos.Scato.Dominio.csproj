@@ -89,7 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
-    <Compile Include="Comandos\EjecutarGrupoBarrera.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />
     <Compile Include="Comandos\ActualizarEstadoPuerto.cs" />
     <Compile Include="Comandos\AutomatizacionEtapas.cs" />
@@ -705,6 +704,7 @@
     <Compile Include="Dto\EstadoSensoresBarreraDto.cs" />
     <Compile Include="Dto\HumedimetroRespuestaDto.cs" />
     <Compile Include="Dto\ImpEtiquetaMuestraInaseDto.cs" />
+    <Compile Include="Dto\LogDispositivoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaFiltroDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaResultadoDto.cs" />
     <Compile Include="Dto\MonitorCPECacheada\MonitorCPECacheadaListadoDto.cs" />

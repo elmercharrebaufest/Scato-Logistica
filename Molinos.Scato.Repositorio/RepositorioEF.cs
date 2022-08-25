@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Repositorio.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using Molinos.Scato.Dominio.Consultas;
-using Molinos.Scato.Repositorio.Extensions;
 
 namespace Molinos.Scato.Repositorio
 {
@@ -107,16 +107,6 @@ namespace Molinos.Scato.Repositorio
             return resultado.ToList();
         }
 
-        public IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class
-        {
-            IQueryable<TEntidad> resultado = Set<TEntidad>();
-            if (filtro != null)
-            {
-                resultado = resultado.Where(filtro).AsNoTracking();
-            }
-            return resultado.ToList();
-        }
-
         public IList<TEntidad> Listar<TEntidad>(IEnumerable<Expression<Func<TEntidad, object>>> includes, Expression<Func<TEntidad, bool>> filtro) where TEntidad : class
         {
             IQueryable<TEntidad> resultado = Set<TEntidad>();
@@ -138,6 +128,26 @@ namespace Molinos.Scato.Repositorio
             if (filtro != null)
             {
                 resultado = resultado.Where(filtro);
+            }
+            return resultado.Select(proyeccion).ToList();
+        }
+
+        public IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class
+        {
+            IQueryable<TEntidad> resultado = Set<TEntidad>();
+            if (filtro != null)
+            {
+                resultado = resultado.Where(filtro).AsNoTracking();
+            }
+            return resultado.ToList();
+        }
+
+        public IList<TProyeccion> ListarNoTracking<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class
+        {
+            IQueryable<TEntidad> resultado = Set<TEntidad>();
+            if (filtro != null)
+            {
+                resultado = resultado.Where(filtro).AsNoTracking();
             }
             return resultado.Select(proyeccion).ToList();
         }
@@ -189,7 +199,6 @@ namespace Molinos.Scato.Repositorio
                                  : proyecciones.OrderByDescending(selectorOrden);
             }
 
-
             proyecciones = proyecciones.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 
             return new ListaPaginada<TProyeccion>(proyecciones.ToList(), paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
@@ -213,7 +222,6 @@ namespace Molinos.Scato.Repositorio
                                  : resultados.OrderByDescending(selectorOrden);
             }
 
-
             resultados = resultados.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 
             return new ListaPaginada<TEntidad>(resultados.ToList(), paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
@@ -236,7 +244,6 @@ namespace Molinos.Scato.Repositorio
                                  ? resultados.OrderBy(selectorOrden)
                                  : resultados.OrderByDescending(selectorOrden);
             }
-
 
             resultados = resultados.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 
@@ -368,33 +375,31 @@ namespace Molinos.Scato.Repositorio
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
+		            begin
+		                  declare @NewSeqValue int
 		                  set NOCOUNT ON
                           SET TRANSACTION ISOLATION LEVEL READ COMMITTED
-		                  insert into GeneradorNumeroDocumento (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroDocumento WITH (READPAST) 
-		            select @NewSeqValue 
+		                  insert into GeneradorNumeroDocumento (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroDocumento WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroMuestraAuditoriaGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroMuestraAuditoria (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroMuestraAuditoria WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroMuestraAuditoria (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroMuestraAuditoria WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroDeTicketGenerado(int puestoDeTrabajoId, bool pagoConMercadoPago)
@@ -405,194 +410,181 @@ namespace Molinos.Scato.Repositorio
             }
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroDeTicket2 (PuestoDeTrabajo_Id,pagoConMercadoPago) values (" + puestoDeTrabajoId + "," + (pagoConMercadoPago ? 1 : 0) + @") 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroDeTicket2 (PuestoDeTrabajo_Id,pagoConMercadoPago) values (" + puestoDeTrabajoId + "," + (pagoConMercadoPago ? 1 : 0) + @")
 
                             SELECT @NewSeqValue = ISNULL(MAX([Id]),0)
 		                    FROM GeneradorNumeroDeTicket2
 		                    WHERE [PuestoDeTrabajo_Id] = " + puestoDeTrabajoId + @" AND [PagoConMercadoPago] = " + (pagoConMercadoPago ? 1 : 0) + @"
 
-
-                          delete from GeneradorNumeroDeTicket2 WITH (READPAST) WHERE [PuestoDeTrabajo_Id] = " + puestoDeTrabajoId + "AND [PagoConMercadoPago] = " + (pagoConMercadoPago ? 1 : 0) + @" and id <> @NewSeqValue  
-		            select @NewSeqValue 
+                          delete from GeneradorNumeroDeTicket2 WITH (READPAST) WHERE [PuestoDeTrabajo_Id] = " + puestoDeTrabajoId + "AND [PagoConMercadoPago] = " + (pagoConMercadoPago ? 1 : 0) + @" and id <> @NewSeqValue
+		            select @NewSeqValue
 		            end"
                 ).First();
-
         }
 
         public int ObtenerNumeroDeTicketImportacionGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroDeTicketImportacion (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroDeTicketImportacion WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroDeTicketImportacion (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroDeTicketImportacion WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerSecuenciaEnvioACamara()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorSecuenciaEnvioACamara (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorSecuenciaEnvioACamara WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorSecuenciaEnvioACamara (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorSecuenciaEnvioACamara WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroDocumentoFasonGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroDocumentoFason (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroDocumentoFason WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroDocumentoFason (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroDocumentoFason WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroOrdenDeDescargaGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroOrdenDeDescarga (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroOrdenDeDescarga WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroOrdenDeDescarga (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroOrdenDeDescarga WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroOrdenEntrePlantasGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroOrdenEntrePlantas (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroOrdenEntrePlantas WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroOrdenEntrePlantas (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroOrdenEntrePlantas WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroOrdenDeDescargaFasonGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroOrdenDeDescargaFason (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroOrdenDeDescargaFason WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroOrdenDeDescargaFason (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroOrdenDeDescargaFason WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroHojaDeRutaGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroHojaDeRuta (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroHojaDeRuta WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroHojaDeRuta (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroHojaDeRuta WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroRemitoGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroRemito (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroRemito WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroRemito (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroRemito WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroOrdenDeCargaContenedorGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorNumeroOrdenDeCargaContenedor (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroOrdenDeCargaContenedor WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorNumeroOrdenDeCargaContenedor (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroOrdenDeCargaContenedor WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroDeControlDeCargaGenerado()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
-		                  declare @NewSeqValue int 
-		                  set NOCOUNT ON 
-		                  insert into GeneradorControlDeCarga (SeqVal) values ('a') 
-		                  set @NewSeqValue = scope_identity() 
-		                  delete from GeneradorNumeroControlDeCarga WITH (READPAST) 
-		            select @NewSeqValue 
+		            begin
+		                  declare @NewSeqValue int
+		                  set NOCOUNT ON
+		                  insert into GeneradorControlDeCarga (SeqVal) values ('a')
+		                  set @NewSeqValue = scope_identity()
+		                  delete from GeneradorNumeroControlDeCarga WITH (READPAST)
+		            select @NewSeqValue
 		            end "
                 ).First();
-
         }
 
         public int ObtenerNumeroAleatorio()
         {
             return context.Database.SqlQuery<int>(
                 @"
-		            begin 
+		            begin
 		                  declare @Value int;
-                          set @Value = CAST(RAND(CAST(NEWID() AS varbinary)) * 100 AS INT) 
-		            select @Value 
+                          set @Value = CAST(RAND(CAST(NEWID() AS varbinary)) * 100 AS INT)
+		            select @Value
 		            end "
                 ).First();
-
         }
 
         public int ObtenerSequenciaCPENroCTG()

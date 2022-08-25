@@ -401,14 +401,14 @@
   <xs:element name="ObtenerConfiguracionGrupoBarrera">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="codigo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codigoSegundoCruce" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ObtenerConfiguracionGrupoBarreraResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraResult" nillable="true" type="q33:GrupoBarreraDto" />
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraResult" nillable="true" type="q33:ArrayOfGrupoBarreraDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

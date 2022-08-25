@@ -2,8 +2,10 @@
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios.Behavior;
+using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -15,13 +17,16 @@ namespace Molinos.Scato.Servicios.Impl
         private readonly ILogger log;
         private readonly IServicioRepositorio repositorio;
         private readonly IServicioEstadoPuesto estadoPuesto;
+        private readonly IServicioOrquestador servicioOrquestador;
 
-        public ServicioSuscriptor(IServicioComandos servicioComandos, ILogger log, IServicioRepositorio repositorio, IServicioEstadoPuesto estadoPuesto)
+        public ServicioSuscriptor(IServicioComandos servicioComandos, ILogger log
+            , IServicioRepositorio repositorio, IServicioEstadoPuesto estadoPuesto, IServicioOrquestador servicioOrquestador)
         {
             this.servicioComandos = servicioComandos;
             this.log = log;
             this.repositorio = repositorio;
             this.estadoPuesto = estadoPuesto;
+            this.servicioOrquestador = servicioOrquestador;
         }
 
         public void Recibir(NotificacionEvento notificacion)
@@ -54,7 +59,9 @@ namespace Molinos.Scato.Servicios.Impl
                         log.Info("CambioEstadoSensor " + notificacion.Datos["Mensaje"]);
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
-                            repositorio.ActualizarDispositivoLog(notificacion.CodigoDispositivo, "EstadoSensor", estado.ToString());
+                            log.Info("Entro a cambio de estado de sensor");
+                            repositorio.ActualizarDispositivoLog(notificacion.CodigoDispositivo, "EstadoSensor", estado.ToString(),false);
+                            EjecutarCierreDeBarreraAutomatica(notificacion.CodigoDispositivo);
                             estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, estado);
                         }
                         //else
@@ -103,6 +110,64 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var puesto = repositorio.ObtenerPuestoDeTrabajoPorDispositivo(dispositivo);
             servicioComandos.Ejecutar(new NotificarLecturaCPE { PuestoId = puesto.Id, CentroId = puesto.CentroId, NroCtg = ctg });
+        }
+
+        private void EjecutarCierreDeBarreraAutomatica(string codigoSensor)
+        {
+            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarrera(codigoSensor);
+
+            if (configuraciones.Length == 0)
+                return;
+
+            var gruposBarrera = configuraciones.Select(q => q.AgrupadorCodigo).ToList();
+            var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarrera).Distinct();
+            foreach (var grupo in gruposEnUso)
+            {
+                var grupoBarrera = configuraciones.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
+
+                var dispositivoCodigoLista = new List<string>
+                {
+                    grupoBarrera.SensorArribaCodigo,
+                    grupoBarrera.SensorAbajoCodigo,
+                    grupoBarrera.SensorSegundoCruceCodigo
+                };
+
+                var logEstadoSensor = repositorio.ObtenerLogDispositivos(dispositivoCodigoLista);
+
+                if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
+                    return;
+
+
+                var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorArribaCodigo);
+                var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorAbajoCodigo);
+                var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorSegundoCruceCodigo);
+
+                var estadoSensorArriba = false;
+                var estadoSensorAbajo = false;
+                var estadoSensorCruce = false;
+                var estadoSensorCruceAnterior = false;
+
+                if (bool.TryParse(sensorArriba.ValorActual, out estadoSensorArriba)
+                    && bool.TryParse(sensorAbajo.ValorActual, out estadoSensorAbajo)
+                    && bool.TryParse(sensorSegundoCruce.ValorActual, out estadoSensorCruce))
+                {
+                    if (bool.TryParse(sensorSegundoCruce.ValorAnterior, out estadoSensorCruceAnterior))
+                    {
+                        if (estadoSensorArriba == true && estadoSensorAbajo == false)
+                        {
+                            if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
+                            {
+                                log.Info("Se ejecuto cierrere de barrera automatico");
+                                var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarCierreBarrera
+                                {
+                                    CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
+                                });
+                                repositorio.ActualizarDispositivoLog(grupoBarrera.SensorSegundoCruceCodigo, "EstadoSensor", "", true);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

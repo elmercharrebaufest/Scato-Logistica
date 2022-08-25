@@ -9942,7 +9942,7 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
         }
 
-        public Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor)
+        public Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor, bool limpiarLog)
         {
             var resultado = new Resultado();
             try
@@ -9951,28 +9951,55 @@ namespace Molinos.Scato.Servicios.Impl
                 var logDispositivo = repositorio.Obtener<LogDispositivo>(x => x.CodigoDispositivo == codigo && x.NombreLog == nombre);
                 if (logDispositivo == null)
                 {
-                    log.Info("Se ejecuto el servicio ActualizarDispositivoLog para crear");
                     logDispositivo = new LogDispositivo
                     {
                         Id = -1,
                         CodigoDispositivo = codigo,
-                        NombreLog = nombre
+                        NombreLog = nombre,
                     };
                     repositorio.Agregar(logDispositivo);
                 }
                 logDispositivo.Fecha = DateTime.Now;
-                logDispositivo.Valor = valor;
+                var valorAnterior = logDispositivo.ValorActual;
+
+                if (limpiarLog == true)
+                {
+                    logDispositivo.ValorAnterior = null;
+                    logDispositivo.ValorActual = null;
+                }
+                else if (valorAnterior != valor)
+                {
+                    logDispositivo.ValorAnterior = valorAnterior;
+                    logDispositivo.ValorActual = valor;
+                }
+
                 repositorio.GuardarCambios();
-                log.Info("Se ejecuto el servicio ActualizarDispositivoLog");
             }
             catch (Exception e)
             {
-                log.Info("Error en el servicio ActualizarDispositivoLog " + e.Message);
-                log.Info("InnerException en el servicio ActualizarDispositivoLog " + e.InnerException.Message);
                 resultado.Error("Hubo un error", e.Message);
             }
             return resultado;
         }
 
+        public List<string> ObtenerGruposBarreraEnUso(List<string> codigos)
+        {
+            return repositorio.Listar<PuestoDeTrabajo, string>(x => x.GrupoBarreraCodigo, x => codigos.Contains(x.GrupoBarreraCodigo)).ToList();
+        }
+
+        public List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos)
+        {
+            var respuesta = repositorio.ListarNoTracking<LogDispositivo, LogDispositivoDto>(x => new LogDispositivoDto
+            {
+                Id = x.Id,
+                Fecha = x.Fecha,
+                CodigoDispositivo = x.CodigoDispositivo,
+                NombreLog = x.NombreLog,
+                ValorAnterior = x.ValorAnterior,
+                ValorActual = x.ValorActual,
+            }, x => codigos.Contains(x.CodigoDispositivo)).ToList();
+
+            return respuesta;
+        }
     }
 }

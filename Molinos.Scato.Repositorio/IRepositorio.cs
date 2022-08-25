@@ -75,11 +75,13 @@ namespace Molinos.Scato.Repositorio
         /// <returns>Todas las entidades que cumplen con la condicion</returns>
         IList<TEntidad> Listar<TEntidad>(Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
 
-        IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class;
-
         IList<TEntidad> Listar<TEntidad>(IEnumerable<Expression<Func<TEntidad, object>>> includes, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
 
         IList<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
+
+        IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class;
+
+        IList<TProyeccion> ListarNoTracking<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
 
         List<TProyeccion> ListarDistintos<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, int maxResultados) where TEntidad : class;
 

@@ -2684,6 +2684,12 @@ namespace Molinos.Scato.Servicios
         List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo();
 
         [OperationContract]
-        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor);
+        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor,bool limpiarLogs);
+
+        [OperationContract]
+        List<string> ObtenerGruposBarreraEnUso(List<string> codigos);
+
+        [OperationContract]
+        List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos);
     }
 }
