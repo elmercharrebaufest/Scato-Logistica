@@ -1701,55 +1701,31 @@ namespace Molinos.Scato.Servicios.Orquestador {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool ActivoField;
+        private string AgrupadorClaseDriverField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto BarreraAbajoField;
+        private string AgrupadorCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int BarreraAbajoIdField;
+        private string BarreraAbajoCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto BarreraArribaField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int BarreraArribaIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ClaseDriverField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string CodigoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescripcionField;
+        private string BarreraArribaCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorAbajoField;
+        private string SensorAbajoCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SensorAbajoIdField;
+        private string SensorArribaCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorArribaField;
+        private string SensorPrimerCruceCodigoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SensorArribaIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorPrimerCruceField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SensorPrimerCruceIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorSegundoCruceField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SensorSegundoCruceIdField;
+        private string SensorSegundoCruceCodigoField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -1762,105 +1738,53 @@ namespace Molinos.Scato.Servicios.Orquestador {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Activo {
+        public string AgrupadorClaseDriver {
             get {
-                return this.ActivoField;
+                return this.AgrupadorClaseDriverField;
             }
             set {
-                if ((this.ActivoField.Equals(value) != true)) {
-                    this.ActivoField = value;
-                    this.RaisePropertyChanged("Activo");
+                if ((object.ReferenceEquals(this.AgrupadorClaseDriverField, value) != true)) {
+                    this.AgrupadorClaseDriverField = value;
+                    this.RaisePropertyChanged("AgrupadorClaseDriver");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto BarreraAbajo {
+        public string AgrupadorCodigo {
             get {
-                return this.BarreraAbajoField;
+                return this.AgrupadorCodigoField;
             }
             set {
-                if ((object.ReferenceEquals(this.BarreraAbajoField, value) != true)) {
-                    this.BarreraAbajoField = value;
-                    this.RaisePropertyChanged("BarreraAbajo");
+                if ((object.ReferenceEquals(this.AgrupadorCodigoField, value) != true)) {
+                    this.AgrupadorCodigoField = value;
+                    this.RaisePropertyChanged("AgrupadorCodigo");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int BarreraAbajoId {
+        public string BarreraAbajoCodigo {
             get {
-                return this.BarreraAbajoIdField;
+                return this.BarreraAbajoCodigoField;
             }
             set {
-                if ((this.BarreraAbajoIdField.Equals(value) != true)) {
-                    this.BarreraAbajoIdField = value;
-                    this.RaisePropertyChanged("BarreraAbajoId");
+                if ((object.ReferenceEquals(this.BarreraAbajoCodigoField, value) != true)) {
+                    this.BarreraAbajoCodigoField = value;
+                    this.RaisePropertyChanged("BarreraAbajoCodigo");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto BarreraArriba {
+        public string BarreraArribaCodigo {
             get {
-                return this.BarreraArribaField;
+                return this.BarreraArribaCodigoField;
             }
             set {
-                if ((object.ReferenceEquals(this.BarreraArribaField, value) != true)) {
-                    this.BarreraArribaField = value;
-                    this.RaisePropertyChanged("BarreraArriba");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int BarreraArribaId {
-            get {
-                return this.BarreraArribaIdField;
-            }
-            set {
-                if ((this.BarreraArribaIdField.Equals(value) != true)) {
-                    this.BarreraArribaIdField = value;
-                    this.RaisePropertyChanged("BarreraArribaId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ClaseDriver {
-            get {
-                return this.ClaseDriverField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ClaseDriverField, value) != true)) {
-                    this.ClaseDriverField = value;
-                    this.RaisePropertyChanged("ClaseDriver");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Codigo {
-            get {
-                return this.CodigoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
-                    this.CodigoField = value;
-                    this.RaisePropertyChanged("Codigo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Descripcion {
-            get {
-                return this.DescripcionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescripcionField, value) != true)) {
-                    this.DescripcionField = value;
-                    this.RaisePropertyChanged("Descripcion");
+                if ((object.ReferenceEquals(this.BarreraArribaCodigoField, value) != true)) {
+                    this.BarreraArribaCodigoField = value;
+                    this.RaisePropertyChanged("BarreraArribaCodigo");
                 }
             }
         }
@@ -1879,105 +1803,53 @@ namespace Molinos.Scato.Servicios.Orquestador {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorAbajo {
+        public string SensorAbajoCodigo {
             get {
-                return this.SensorAbajoField;
+                return this.SensorAbajoCodigoField;
             }
             set {
-                if ((object.ReferenceEquals(this.SensorAbajoField, value) != true)) {
-                    this.SensorAbajoField = value;
-                    this.RaisePropertyChanged("SensorAbajo");
+                if ((object.ReferenceEquals(this.SensorAbajoCodigoField, value) != true)) {
+                    this.SensorAbajoCodigoField = value;
+                    this.RaisePropertyChanged("SensorAbajoCodigo");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SensorAbajoId {
+        public string SensorArribaCodigo {
             get {
-                return this.SensorAbajoIdField;
+                return this.SensorArribaCodigoField;
             }
             set {
-                if ((this.SensorAbajoIdField.Equals(value) != true)) {
-                    this.SensorAbajoIdField = value;
-                    this.RaisePropertyChanged("SensorAbajoId");
+                if ((object.ReferenceEquals(this.SensorArribaCodigoField, value) != true)) {
+                    this.SensorArribaCodigoField = value;
+                    this.RaisePropertyChanged("SensorArribaCodigo");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorArriba {
+        public string SensorPrimerCruceCodigo {
             get {
-                return this.SensorArribaField;
+                return this.SensorPrimerCruceCodigoField;
             }
             set {
-                if ((object.ReferenceEquals(this.SensorArribaField, value) != true)) {
-                    this.SensorArribaField = value;
-                    this.RaisePropertyChanged("SensorArriba");
+                if ((object.ReferenceEquals(this.SensorPrimerCruceCodigoField, value) != true)) {
+                    this.SensorPrimerCruceCodigoField = value;
+                    this.RaisePropertyChanged("SensorPrimerCruceCodigo");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SensorArribaId {
+        public string SensorSegundoCruceCodigo {
             get {
-                return this.SensorArribaIdField;
+                return this.SensorSegundoCruceCodigoField;
             }
             set {
-                if ((this.SensorArribaIdField.Equals(value) != true)) {
-                    this.SensorArribaIdField = value;
-                    this.RaisePropertyChanged("SensorArribaId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorPrimerCruce {
-            get {
-                return this.SensorPrimerCruceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SensorPrimerCruceField, value) != true)) {
-                    this.SensorPrimerCruceField = value;
-                    this.RaisePropertyChanged("SensorPrimerCruce");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SensorPrimerCruceId {
-            get {
-                return this.SensorPrimerCruceIdField;
-            }
-            set {
-                if ((this.SensorPrimerCruceIdField.Equals(value) != true)) {
-                    this.SensorPrimerCruceIdField = value;
-                    this.RaisePropertyChanged("SensorPrimerCruceId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Molinos.Scato.Servicios.Orquestador.DispositivoDto SensorSegundoCruce {
-            get {
-                return this.SensorSegundoCruceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SensorSegundoCruceField, value) != true)) {
-                    this.SensorSegundoCruceField = value;
-                    this.RaisePropertyChanged("SensorSegundoCruce");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SensorSegundoCruceId {
-            get {
-                return this.SensorSegundoCruceIdField;
-            }
-            set {
-                if ((this.SensorSegundoCruceIdField.Equals(value) != true)) {
-                    this.SensorSegundoCruceIdField = value;
-                    this.RaisePropertyChanged("SensorSegundoCruceId");
+                if ((object.ReferenceEquals(this.SensorSegundoCruceCodigoField, value) != true)) {
+                    this.SensorSegundoCruceCodigoField = value;
+                    this.RaisePropertyChanged("SensorSegundoCruceCodigo");
                 }
             }
         }
@@ -2229,12 +2101,12 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arreraResponse")]
-        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigo);
+        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarrera(string codigoSegundoCruce);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arreraResponse")]
-        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigo);
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraAsync(string codigoSegundoCruce);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
             "e")]
@@ -2520,12 +2392,12 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.ListarTagsAsync();
         }
         
-        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigo) {
-            return base.Channel.ObtenerConfiguracionGrupoBarrera(codigo);
+        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarrera(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarrera(codigoSegundoCruce);
         }
         
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigo) {
-            return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigo);
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraAsync(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigoSegundoCruce);
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera() {

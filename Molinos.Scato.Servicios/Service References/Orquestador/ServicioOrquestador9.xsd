@@ -55,25 +55,23 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="IntercomunicadorDispositivoBaseDto" nillable="true" type="tns:IntercomunicadorDispositivoBaseDto" />
+  <xs:complexType name="ArrayOfGrupoBarreraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGrupoBarreraDto" nillable="true" type="tns:ArrayOfGrupoBarreraDto" />
   <xs:complexType name="GrupoBarreraDto">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Activo" type="xs:boolean" />
-      <xs:element minOccurs="0" name="BarreraAbajo" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="BarreraAbajoId" type="xs:int" />
-      <xs:element minOccurs="0" name="BarreraArriba" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="BarreraArribaId" type="xs:int" />
-      <xs:element minOccurs="0" name="ClaseDriver" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Codigo" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AgrupadorClaseDriver" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AgrupadorCodigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BarreraAbajoCodigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BarreraArribaCodigo" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="SensorAbajo" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="SensorAbajoId" type="xs:int" />
-      <xs:element minOccurs="0" name="SensorArriba" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="SensorArribaId" type="xs:int" />
-      <xs:element minOccurs="0" name="SensorPrimerCruce" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="SensorPrimerCruceId" type="xs:int" />
-      <xs:element minOccurs="0" name="SensorSegundoCruce" nillable="true" type="tns:DispositivoDto" />
-      <xs:element minOccurs="0" name="SensorSegundoCruceId" type="xs:int" />
+      <xs:element minOccurs="0" name="SensorAbajoCodigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SensorArribaCodigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SensorPrimerCruceCodigo" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SensorSegundoCruceCodigo" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
