@@ -165,11 +165,12 @@ namespace Molinos.Scato.Servicios.Impl
                         {
                             if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
                             {
-                                log.Info("Se ejecuto cierrere de barrera automatico");
+                                log.Info("Se ejecutara cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
                                 var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
                                 {
                                     CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
                                 });
+                                log.Info("Se ejecuto cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
                                 repositorio.ActualizarDispositivoLog(grupoBarrera.SensorSegundoCruceCodigo, "EstadoSensor", "", true);
                             }
                         }
