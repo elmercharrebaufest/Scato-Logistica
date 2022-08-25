@@ -251,9 +251,9 @@ namespace Molinos.Scato.Servicios.Impl
             log.Debug($"Se encontro puesto Id {puesto.PuestoId}");
             var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
             var estadoEntradaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaArriba }) as ResultadoEstadoSensor;
-            var estadoEntradaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaArriba }) as ResultadoEstadoSensor;
+            var estadoEntradaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaAbajo }) as ResultadoEstadoSensor;
             var estadoSalidaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaArriba }) as ResultadoEstadoSensor;
-            var estadoSalidaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaArriba }) as ResultadoEstadoSensor;
+            var estadoSalidaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaAbajo }) as ResultadoEstadoSensor;
             if(!estadoEntradaAbajo.EstadoActivo && estadoEntradaArriba.EstadoActivo 
                 && !estadoSalidaAbajo.EstadoActivo && estadoSalidaArriba.EstadoActivo)
             {
