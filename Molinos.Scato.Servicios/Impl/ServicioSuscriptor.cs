@@ -158,7 +158,7 @@ namespace Molinos.Scato.Servicios.Impl
                             if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
                             {
                                 log.Info("Se ejecuto cierrere de barrera automatico");
-                                var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarCierreBarrera
+                                var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
                                 {
                                     CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
                                 });
