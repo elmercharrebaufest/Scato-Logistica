@@ -88,7 +88,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 else if (filtro.TipoDeProteina == TipoDeProteina.Baja)
                     query = query.Where(q => q.CaracteristicasAnalizadasList.FirstOrDefault().EsProteinaBaja);
 
-                if (filtro.TipoVehiculo.HasValue)
+                if (filtro.TipoVehiculo == TipoVehiculo.Camiones)
+                    query = query.Where(q => q.TipoVehiculo == TipoVehiculo.Camión || q.TipoVehiculo == TipoVehiculo.CamiónC || q.TipoVehiculo == TipoVehiculo.CamiónD || q.TipoVehiculo == TipoVehiculo.CamiónE);
+                else if (filtro.TipoVehiculo.HasValue)
                     query = query.Where(q => q.TipoVehiculo == filtro.TipoVehiculo);
 
                 if (filtro.TipoMaterial == TipoMaterial.Granos)
