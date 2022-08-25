@@ -95,6 +95,7 @@
                             var especial = "";
                             if (data.model.Especial && data.model.MaterialId == 4) {
                                 especial = " Sustentable";
+                                SetearFotoCP(data.PdfImageSustentableBase64 ? "" : "error", data.PdfImageSustentableBase64, $("#CodigoCamaraCPDir").val(), true);
                             }
                             else if (data.model.Especial) {
                                 especial = " Especial";
@@ -110,9 +111,6 @@
                             $("#Camara").val(data.model.Camara);
                             if ($("#cupoValidation").text() === '') {
                                 $("#btnAceptar").focus();
-                            }
-                            if (data.model.Especial) {
-                                SetearFotoCP(data.PdfImageSustentableBase64 ? "" : "error", data.PdfImageSustentableBase64, $("#CodigoCamaraCPDir").val(), true);
                             }
                         }
                     },
