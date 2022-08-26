@@ -52,22 +52,28 @@ namespace Molinos.Scato.Web.Controllers
                 log.Debug("Obteniendo carta de porte redespacho nro {0} workflow {1}", numero, workflow);
                 var cartaPorteResponse = servicio.ObtenerCartaPorteRedespachoPorNumero(numero, datosUsuario.CentroId, workflow, tipoVehiculo, cpe, consultactg);
 
-                var respuestaAFIP = servicioComandos.Ejecutar(new ConsultarAFIP
+                if (cartaPorteResponse.CartaPorte != null)
                 {
-                    CentroId = datosUsuario.CentroId,
-                    TipoVehiculoId = tipoVehiculo,
-                    NumeroCartaPorte = numero,
-                }) as ResultadoConsultarAFIP;
+                    var respuestaAFIP = servicioComandos.Ejecutar(new ConsultarAFIP
+                    {
+                        CentroId = datosUsuario.CentroId,
+                        TipoVehiculoId = tipoVehiculo,
+                        CTG = cartaPorteResponse.CartaPorte.CTG,
+                    }) as ResultadoConsultarAFIP;
 
-                if (!respuestaAFIP.HayErrores)
-                {
-                    if (respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse.CartaPorte != null)
+                    if (!respuestaAFIP.HayErrores && respuestaAFIP?.TarifaReferencia != null)
                     {
                         log.Debug("Se uso la Tarifa Referencia de AFIP {0} para el Numero Carta Porte {1}", respuestaAFIP.TarifaReferencia, numero);
                         cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
                     }
+                    else if (respuestaAFIP.HayErrores)
+                    {
+                        foreach (var item in respuestaAFIP.Errores)
+                        {
+                            log.Error(item.Key + " - " + item.Value);
+                        }
+                    }
                 }
-
                 return Json(cartaPorteResponse, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
