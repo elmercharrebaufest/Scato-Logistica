@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -48,11 +49,21 @@ namespace Molinos.Scato.Web.Controllers
                 if (!esIngreso)
                 {
                     log.Debug("Obteniendo carta de porte nro {0} workflow {1}", numero, workflow);
-                    return 
-                        ObtenerCartaPorte(numero, workflow, datosUsuario);
+                    return ObtenerCartaPorte(numero, workflow, datosUsuario);
                 }
                 log.Debug("Obteniendo carta de porte redespacho nro {0} workflow {1}", numero, workflow);
                 var cartaPorteResponse = servicio.ObtenerCartaPorteRedespachoPorNumero(numero, datosUsuario.CentroId, workflow, tipoVehiculo, cpe, consultactg);
+
+                var respuestaAFIP = servicioComandos.Ejecutar(new ConsultarAFIP
+                {
+                    CentroId = datosUsuario.CentroId,
+                    TipoVehiculoId = tipoVehiculo,
+                    NumeroCartaPorte = numero,
+                }) as ResultadoConsultarAFIP;
+
+                if(respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse != null)
+                    cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
+
                 return Json(cartaPorteResponse, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
