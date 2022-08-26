@@ -93,6 +93,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Log.Error("Error al consutar AFIP " + ex.Message);
                 resultado.Errores.Add(comando.NumeroCartaPorte, "Error al consutar AFIP");
+                return resultado;
             }
         }
 
