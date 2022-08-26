@@ -27,7 +27,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultado = new ResultadoConsultarAFIP();
             try
             {
-
                 /////////////
                 System.Net.ServicePointManager.ServerCertificateValidationCallback =
                     ((sender, certificate, chain, sslPolicyErrors) => true);
@@ -41,12 +40,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-
-
-
                 if (tipoCpe == 74 || tipoCpe == 274)
                 {
-
                     var request = new ConsultarAutomotorSolicitud()
                     {
                         nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
@@ -57,7 +52,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         auth = auth,
                         solicitud = request
-
                     });
 
                     if (responseCp?.respuesta?.transporte != null)
@@ -65,7 +59,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         resultado.TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia);
                     }
                     return resultado;
-
                 }
                 else
                 {
@@ -87,7 +80,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
                 }
                 return resultado;
-
             }
             catch (Exception ex)
             {
@@ -96,7 +88,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 return resultado;
             }
         }
-
 
         private short ObtenerTipoCpe(int tipoVehiculo)
         {
@@ -109,9 +100,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 case Dominio.Enums.TipoVehiculo.CamiónE:
                 case Dominio.Enums.TipoVehiculo.Bitren:
                     return 74;
+
                 case Dominio.Enums.TipoVehiculo.Tren:
                 case Dominio.Enums.TipoVehiculo.Vapor:
                     return 75;
+
                 default:
                     return 74;
             }

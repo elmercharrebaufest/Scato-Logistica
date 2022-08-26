@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -13,17 +11,17 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
     [Autorizacion(PermisosScato.ActividadIngresarCartaPorteRedespacho)]
     public class IngresarCartaPorteRedespachoController : CargarCartaPorteController
     {
-
         public IngresarCartaPorteRedespachoController(ILogger log, IServicioRepositorio servicio, IServicioActividadFactory<ICargarCartaPorteService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, IFirmaProvider configuracion, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador)
             : base(log, servicio, factory, servicioComandos, workflows, configuracion, servicioSap, servicioOrquestador)
         {
-
         }
 
         [DatosUsuario]
@@ -35,7 +33,7 @@ namespace Molinos.Scato.Web.Controllers
 
         protected override void SetearVista(WorkflowDto workflow, int centroId)
         {
-            base.SetearVista(workflow,centroId);
+            base.SetearVista(workflow, centroId);
             ViewBag.DeshabilitarTitular = false;
             ViewBag.DeshabilitarDestinatario = true;
             ViewBag.DeshabilitarEntregador = false;
@@ -61,8 +59,14 @@ namespace Molinos.Scato.Web.Controllers
                     NumeroCartaPorte = numero,
                 }) as ResultadoConsultarAFIP;
 
-                if(respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse.CartaPorte != null)
-                    cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
+                if (!respuestaAFIP.HayErrores)
+                {
+                    if (respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse.CartaPorte != null)
+                    {
+                        log.Debug("Se uso la Tarifa Referencia de AFIP {0} para el Numero Carta Porte {1}", respuestaAFIP.TarifaReferencia, numero);
+                        cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
+                    }
+                }
 
                 return Json(cartaPorteResponse, JsonRequestBehavior.AllowGet);
             }
@@ -80,7 +84,6 @@ namespace Molinos.Scato.Web.Controllers
 
         protected override bool Validar(CartaPorteDto orden, DatosUsuario usuario)
         {
-
             if (orden.TipoDeWorkflow == TipoDeWorkflow.Egreso && !servicio.ProcedenciaYCodigoValido(usuario.CentroId, orden.CodEstab, orden.ProcedenciaId))
             {
                 ModelState.AddModelError("", Textos.Error_ProcedenciaInvalida);
@@ -93,7 +96,7 @@ namespace Molinos.Scato.Web.Controllers
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var remitente = servicio.ObtenerProveedor(orden.RtteComercialId);
 
-            if ((codigoSapTitular != codigoSapMolinos && codigoSapTitular != "50085862") && (remitente == null || ( remitente != null && (remitente.CodigoSap !=codigoSapMolinos && remitente.CodigoSap != "50085862"))))
+            if ((codigoSapTitular != codigoSapMolinos && codigoSapTitular != "50085862") && (remitente == null || (remitente != null && (remitente.CodigoSap != codigoSapMolinos && remitente.CodigoSap != "50085862"))))
             {
                 ModelState.AddModelError("", Textos.Error_CCPPRedespacho);
                 return false;
@@ -111,12 +114,12 @@ namespace Molinos.Scato.Web.Controllers
         protected override ControlRecorridoDto GenerarControlRecorrido(DatosUsuario usuario)
         {
             return new ControlRecorridoDto
-                {
-                    Actividad = Textos.ActIngresarCartaPorteRedespacho,
-                    ActividadXaml = "IngresarCartaPorteRedespacho",
-                    PuestoDeTrabajoId = usuario.PuestoDeTrabajoId,
-                    NombreUsuario = usuario.NombreUsuario
-                };
+            {
+                Actividad = Textos.ActIngresarCartaPorteRedespacho,
+                ActividadXaml = "IngresarCartaPorteRedespacho",
+                PuestoDeTrabajoId = usuario.PuestoDeTrabajoId,
+                NombreUsuario = usuario.NombreUsuario
+            };
         }
     }
 }
