@@ -24,65 +24,76 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(ConsultarAFIP comando)
         {
-            /////////////
-            System.Net.ServicePointManager.ServerCertificateValidationCallback =
-                ((sender, certificate, chain, sslPolicyErrors) => true);
-            //////////////
-          
-            var centro = Repositorio.Obtener<Centro>(comando.CentroId);
-            var tipoCpe = ObtenerTipoCpe(comando.TipoVehiculoId);
-            var authResultado = new Resultado();
-            var cuitRepresentado = centro.Cuit != null ? centro.Cuit.Replace("-", string.Empty) : string.Empty;
-            var auth = accesoWsCtg.ObtenerAuth(cuitRepresentado, authResultado);
-
-            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-
-
             var resultado = new ResultadoConsultarAFIP();
-
-            if (tipoCpe == 74 || tipoCpe == 274)
+            try
             {
 
-                var request = new ConsultarAutomotorSolicitud()
-                {
-                    nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
-                    nroCTGSpecified = true
-                };
+                /////////////
+                System.Net.ServicePointManager.ServerCertificateValidationCallback =
+                    ((sender, certificate, chain, sslPolicyErrors) => true);
+                //////////////
 
-                var responseCp = serviceAfipCpe.consultarCPEAutomotor(new consultarCPEAutomotorRequest()
-                {
-                    auth = auth,
-                    solicitud = request
+                var centro = Repositorio.Obtener<Centro>(comando.CentroId);
+                var tipoCpe = ObtenerTipoCpe(comando.TipoVehiculoId);
+                var authResultado = new Resultado();
+                var cuitRepresentado = centro.Cuit != null ? centro.Cuit.Replace("-", string.Empty) : string.Empty;
+                var auth = accesoWsCtg.ObtenerAuth(cuitRepresentado, authResultado);
 
-                });
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-                if (responseCp?.respuesta?.transporte != null)
+
+
+
+                if (tipoCpe == 74 || tipoCpe == 274)
                 {
-                    resultado.TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia);
+
+                    var request = new ConsultarAutomotorSolicitud()
+                    {
+                        nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
+                        nroCTGSpecified = true
+                    };
+
+                    var responseCp = serviceAfipCpe.consultarCPEAutomotor(new consultarCPEAutomotorRequest()
+                    {
+                        auth = auth,
+                        solicitud = request
+
+                    });
+
+                    if (responseCp?.respuesta?.transporte != null)
+                    {
+                        resultado.TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia);
+                    }
+                    return resultado;
+
+                }
+                else
+                {
+                    var request = new ConsultarFerroviariaSolicitud()
+                    {
+                        nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
+                        nroCTGSpecified = true
+                    };
+
+                    var responseCp = serviceAfipCpe.consultarCPEFerroviaria(new consultarCPEFerroviariaRequest()
+                    {
+                        auth = auth,
+                        solicitud = request
+                    });
+
+                    if (responseCp?.respuesta?.transporte != null)
+                    {
+                        resultado.TarifaReferencia = null;
+                    }
                 }
                 return resultado;
 
             }
-            else
+            catch (Exception ex)
             {
-                var request = new ConsultarFerroviariaSolicitud()
-                {
-                    nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
-                    nroCTGSpecified = true
-                };
-
-                var responseCp = serviceAfipCpe.consultarCPEFerroviaria(new consultarCPEFerroviariaRequest()
-                {
-                    auth = auth,
-                    solicitud = request
-                });
-
-                if (responseCp?.respuesta?.transporte != null)
-                {
-                    resultado.TarifaReferencia = null;
-                }
+                Log.Error("Error al consutar AFIP " + ex.Message);
+                resultado.Errores.Add(comando.NumeroCartaPorte, "Error al consutar AFIP");
             }
-            return resultado;
         }
 
 
