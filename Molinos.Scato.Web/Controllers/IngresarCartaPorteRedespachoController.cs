@@ -61,7 +61,7 @@ namespace Molinos.Scato.Web.Controllers
                     NumeroCartaPorte = numero,
                 }) as ResultadoConsultarAFIP;
 
-                if(respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse != null)
+                if(respuestaAFIP?.TarifaReferencia != null && cartaPorteResponse.CartaPorte != null)
                     cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
 
                 return Json(cartaPorteResponse, JsonRequestBehavior.AllowGet);
