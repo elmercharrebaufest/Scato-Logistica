@@ -5218,11 +5218,11 @@ ORDER BY ord</CommandText>
     </ReportParameter>
     <ReportParameter Name="FechaDesde">
       <DataType>DateTime</DataType>
-      <Prompt>Fecha Desde</Prompt>
+      <Prompt>Fecha/Hora Desde</Prompt>
     </ReportParameter>
     <ReportParameter Name="FechaHasta">
       <DataType>DateTime</DataType>
-      <Prompt>Fecha Hasta</Prompt>
+      <Prompt>Fecha/Hora Hasta</Prompt>
     </ReportParameter>
     <ReportParameter Name="Material">
       <DataType>Integer</DataType>

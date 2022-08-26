@@ -170,7 +170,7 @@ namespace Molinos.Scato.Web.Controllers
                     if (AvanceCpe)
                     {
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });  
-                        CargarCartaPorte(resultado.Id, datosUsuario);
+                        CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte);
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                     }
                     return View("Form");
@@ -358,6 +358,16 @@ namespace Molinos.Scato.Web.Controllers
             //model.FechaSap = "2021-02-28";
             //model.Especial = true;
             //model.Camara = "Fabrica";
+            //if (model.Especial && !String.IsNullOrEmpty(imagen))
+            //{
+            //    imagen = imagen.Replace("data:image/jpg;base64,", string.Empty);
+            //    var imagenSustentable = Convert.FromBase64String(imagen);
+            //    imagenSustentable = DibujarSelloSustentable(imagenSustentable);
+            //    if (imagenSustentable != null)
+            //    {
+            //        pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imagenSustentable));
+            //    }
+            //}
             //return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
 
             if (servicio.CupoConsumido(cupo, datosUsuario.CentroId))
@@ -917,7 +927,7 @@ namespace Molinos.Scato.Web.Controllers
             return null;
         }
 
-        private void CargarCartaPorte(int id, DatosUsuario datosUsuario)
+        private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
@@ -937,7 +947,8 @@ namespace Molinos.Scato.Web.Controllers
             }
             if (cargaDeCupo == null || string.IsNullOrEmpty(workflow)) { 
                 ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
-                return; }
+                return; 
+            }
             var puesto = servicio.ObtenerPuestoDeTrabajo(cargaDeCupo.PuestoDeTrabajoId);
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
             if (orden != null && orden.Cpe != null)
@@ -946,10 +957,34 @@ namespace Molinos.Scato.Web.Controllers
                 orden.Cpe.Id = 0;
                 orden.Cpe.CEE = "99";
                 orden.Cpe.CTG = orden.Cpe.NroOrden.ToString().PadLeft(8, '0');
-                if (orden.Cpe.Vehiculos != null) orden.Cpe.Vehiculos.FirstOrDefault().Primero = true;
+                if (orden.Cpe.Vehiculos != null && orden.Cpe.Vehiculos.Count > 0)
+                {
+                    orden.Cpe.Vehiculos.FirstOrDefault().Primero = true;
+                    var vehiculo = orden.Cpe.Vehiculos.FirstOrDefault();
+                    var respuestaCnrt = ObtenerTipoVehiculoPorPatente(vehiculo.Patente, vehiculo.PatenteAcoplado, workflow, datosUsuario, vehiculo.PatenteAcoplado2);
+                    // Queda en Pendiente si CNRT no devuelve respuesta o devuelve errores
+                    if (respuestaCnrt == null || respuestaCnrt.HayErrores)
+                    {
+                        log.Debug($"No se obtuvo respuesta del CNRT con la patente {vehiculo.Patente}");
+                        return;
+                    }
+                    // Queda en Pendiente si supera el Peso Bruto Maximo según el tipo de vehiculo
+                    var pesoMaximoPorTipoVehiculo = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(datosUsuario.CentroId)
+                                                            .Where(x => x.TipoVehiculo == (respuestaCnrt.Categoria ?? TipoVehiculo.Camión))
+                                                            .Select(x => orden.Cpe.TipoDeWorkflow == TipoDeWorkflow.Ingreso 
+                                                                        ? x.PesoMaxIngreso 
+                                                                        : x.PesoMaxEgreso)
+                                                            .FirstOrDefault();
+                    if (vehiculo.PesoBrutoOrigen > pesoMaximoPorTipoVehiculo)
+                    {
+                        log.Debug($"La CP {orden.Cpe.NroCartaPorte} superó el peso bruto máximo permitido");
+                        return;
+                    }
+                }
                 try
                 {
-                    CargarAutomaticaCartaPorte(workflow, puesto.NombrePuesto, "", "", orden.Cpe, datosUsuario);
+                    var path = cargaDeCupo.FotoRutaDestino != null && cargaDeCupo.FotoRutaDestino.Contains("temp") ? Path.GetDirectoryName(cargaDeCupo.FotoRutaDestino).Replace("temp", "") : "";
+                    CargarAutomaticaCartaPorte(workflow, path, imagenCpBase64, "", orden.Cpe, datosUsuario, cargaDeCupo.Especial);
                 }
                 catch (Exception e)
                 {
@@ -958,7 +993,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void CargarAutomaticaCartaPorte(string workflow, string puestoDeTrabajo, string fotoMesaDigitalizacion1, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario)
+        private void CargarAutomaticaCartaPorte(string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario, bool esEspecial = false)
         {
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
@@ -1059,6 +1094,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (!ValidarCupo(orden, datosUsuario, workflowObj.TipoDeWorkflow == TipoDeWorkflow.Ingreso) ||
                     servicio.EsProveedorSustentable(orden.TitularCartaPorteId))
                 {
+                    log.Debug($"La {orden.NroCartaPorte} se queda en pendiente por tener establecimiento asociado al titular de Carta de Porte");
                     return;
                 }
 
@@ -1077,8 +1113,14 @@ namespace Molinos.Scato.Web.Controllers
                     vehiculo.NumeroVehiculo = i++;
                 }
                 var fecha = DateTime.Now;
-                var cupo = servicio.ObtenerCupoPorCupoSap(orden.Cupo); // TODO Optimizar consulta del cupo para determinar si es especial
-
+                if (!string.IsNullOrEmpty(path) && !string.IsNullOrEmpty(imagenCpBase64))
+                {
+                    orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenCpBase64, orden, path, datosUsuario, DateTime.Now);
+                    if (esEspecial)
+                    {
+                        orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, DateTime.Now);
+                    }
+                }
                 var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
                 var servicioWf = factory.CrearServicio(workflowDefinicionId);
                 var instanceIds = new List<Guid>();
@@ -1372,6 +1414,24 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(e, "No se pudo obtener el tipo de vehiculo por patente {0}", patente);
                 throw;
             }
+        }
+
+        private string GuardarfotoMesaDigitalizacionSelloSustentable(CartaPorteDto orden, DatosUsuario datosUsuario, DateTime fecha, string numCtg = null)
+        {
+            if (!string.IsNullOrEmpty(orden.FotoRutaDestino))
+            {
+                log.Debug($"GuardarfotoMesaDigitalizacionSustentable {orden.FotoRutaDestino} {fecha}");
+                var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                {
+                    RutaFotoCP = orden.FotoRutaDestino,
+                    CodigoCentroSap = datosUsuario.CentroCodigoSap,
+                    NroDocumento = orden.NroCartaPorte,
+                    Patente = orden.Patente,
+                    SoloDibujar = false
+                }) as ResultadoGuardarFoto;
+                return resultadoSustentable != null ? resultadoSustentable.Path : null;
+            }
+            return null;
         }
     }
 }

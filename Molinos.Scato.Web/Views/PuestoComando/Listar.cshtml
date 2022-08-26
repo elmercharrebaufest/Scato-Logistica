@@ -22,6 +22,10 @@
     {
         columnas.Add(grid.Columna("Patente", Textos.Camion_Patente, x => Html.Raw(x.Patente + (x.TipoVehiculo == TipoVehiculo.Tren ? " <i class=\"fa fa-train\">" : " " ))));
     }
+    if (Model.Columnas.Contains("TipoVehiculo"))
+    {
+        columnas.Add(grid.Columna("TipoVehiculo", Textos.Workflow_TipoVehiculo));
+    }
     if (Model.Columnas.Contains("Workflow"))
     {
         columnas.Add(grid.Columna("Workflow", Textos.Workflow));

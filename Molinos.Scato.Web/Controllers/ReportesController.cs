@@ -132,6 +132,12 @@ namespace Molinos.Scato.Web.Controllers
             SelectListItem todos = new SelectListItem() { Value = "0", Text = "Todos" };
             SelectListItem todosNegativo = new SelectListItem() { Value = "-1", Text = "Todos" };
             SelectListItem todosVehiculos = new SelectListItem() { Value = "-2", Text = "Todos" };
+            var materialesGranosNoGranosInsumos = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value = "-1", Text = "Granos" },
+                new SelectListItem() { Value = "-2", Text = "No Granos" },
+                new SelectListItem() { Value = "-3", Text = "Insumos" }
+            };
 
             var tiposDeVehiculo = Enum.GetValues(typeof(TipoVehiculo)).Cast<TipoVehiculo>().Select(v => new SelectListItem
             {
@@ -157,6 +163,7 @@ namespace Molinos.Scato.Web.Controllers
             workflows.Insert(0, todos);
             bocasDestino.Insert(0, todos);
             materiales.Insert(0, todos);
+            materiales.InsertRange(1, materialesGranosNoGranosInsumos);
 
             return new
             {

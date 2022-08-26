@@ -262,7 +262,7 @@ function LlenarCartaPorteRedespacho(cartaPorte) {
     var patente = cartaPorte.Vehiculos[0]["Patente"];
     var acoplado = cartaPorte.Vehiculos[0]["PatenteAcoplado"];
     var acoplado2 = cartaPorte.Vehiculos[0]["PatenteAcoplado2"];
-    if (cartaPorte.Vehiculos.length > 0 && patente != '' && acoplado != '' && acoplado2 != '') {
+    if (cartaPorte.Vehiculos.length > 0 && patente != '' && acoplado != '') {
         flag = true;
         ActualizarTipoVehiculo(patente, acoplado, acoplado2, function () { BlockUI(" consulta de tipo de vehiculo por patente"); }, function () { $.unblockUI(); });
     }
