@@ -5,6 +5,7 @@ using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -42,50 +43,67 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 if (tipoCpe == 74 || tipoCpe == 274)
                 {
-                    var request = new ConsultarAutomotorSolicitud()
-                    {
-                        nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
-                        nroCTGSpecified = true
-                    };
-
-                    var responseCp = serviceAfipCpe.consultarCPEAutomotor(new consultarCPEAutomotorRequest()
-                    {
-                        auth = auth,
-                        solicitud = request
-                    });
-
-                    if (responseCp?.respuesta?.transporte != null)
-                    {
-                        resultado.TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia);
-                    }
-                    return resultado;
+                    ConsultaAutomotorSolicitud(comando, auth, resultado);
                 }
                 else
                 {
-                    var request = new ConsultarFerroviariaSolicitud()
-                    {
-                        nroCTG = Convert.ToInt64(comando.NumeroCartaPorte),
-                        nroCTGSpecified = true
-                    };
-
-                    var responseCp = serviceAfipCpe.consultarCPEFerroviaria(new consultarCPEFerroviariaRequest()
-                    {
-                        auth = auth,
-                        solicitud = request
-                    });
-
-                    if (responseCp?.respuesta?.transporte != null)
-                    {
-                        resultado.TarifaReferencia = null;
-                    }
+                    ConsultaFerroviariaSolicitud(comando, auth, resultado);
                 }
+
                 return resultado;
             }
             catch (Exception ex)
             {
-                Log.Error("Error al consutar AFIP " + ex.Message);
-                resultado.Errores.Add(comando.NumeroCartaPorte, "Error al consutar AFIP");
+                resultado.Errores.Add("Excepcion AFIP", "Error al consultar AFIP: " + ex.Message);
                 return resultado;
+            }
+        }
+
+        private void ConsultaAutomotorSolicitud(ConsultarAFIP comando, Auth auth, ResultadoConsultarAFIP resultado)
+        {
+            var request = new ConsultarAutomotorSolicitud()
+            {
+                nroCTG = Convert.ToInt64(comando.CTG),
+                nroCTGSpecified = true
+            };
+
+            var responseCp = serviceAfipCpe.consultarCPEAutomotor(new consultarCPEAutomotorRequest()
+            {
+                auth = auth,
+                solicitud = request
+            });
+
+            if (responseCp != null && responseCp?.respuesta?.errores?.Length > 0)
+            {
+                resultado.Errores.Add(responseCp?.respuesta?.errores?.FirstOrDefault()?.codigo, responseCp?.respuesta?.errores?.FirstOrDefault()?.descripcion);
+            }
+            else if (responseCp?.respuesta?.transporte != null)
+            {
+                resultado.TarifaReferencia = Convert.ToDouble(responseCp.respuesta.transporte.tarifaReferencia);
+            }
+        }
+
+        private void ConsultaFerroviariaSolicitud(ConsultarAFIP comando, Auth auth, ResultadoConsultarAFIP resultado)
+        {
+            var request = new ConsultarFerroviariaSolicitud()
+            {
+                nroCTG = Convert.ToInt64(comando.CTG),
+                nroCTGSpecified = true
+            };
+
+            var responseCp = serviceAfipCpe.consultarCPEFerroviaria(new consultarCPEFerroviariaRequest()
+            {
+                auth = auth,
+                solicitud = request
+            });
+
+            if (responseCp != null && responseCp?.respuesta?.errores?.Length > 0)
+            {
+                resultado.Errores.Add(responseCp?.respuesta?.errores?.FirstOrDefault()?.codigo, responseCp?.respuesta?.errores?.FirstOrDefault()?.descripcion);
+            }
+            else if (responseCp?.respuesta?.transporte != null)
+            {
+                resultado.TarifaReferencia = null;
             }
         }
 
