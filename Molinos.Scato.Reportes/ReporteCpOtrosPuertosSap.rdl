@@ -502,6 +502,14 @@ SELECT DISTINCT
 		 ELSE 0 
 	END MPGIRTIE,
 
+    CASE WHEN ecc.CodigoSap = 'MPSOJINV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJINV,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZINV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZINV,
+
 	CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
 		 ELSE 0 
 	END MPSOJVOL,
@@ -986,9 +994,17 @@ AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentabl
           <DataField>MPGIRTIE</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
+        <Field Name="MPSOJINV">
+          <DataField>MPSOJINV</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
         <Field Name="MPSOJVOL">
           <DataField>MPSOJVOL</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MPMAZINV">
+          <DataField>MPMAZINV</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="MPMAZVOL">
           <DataField>MPMAZVOL</DataField>
@@ -4740,7 +4756,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=IIF(Avg(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -4763,6 +4779,7 @@ ORDER BY ord</CommandText>
                             <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -4797,7 +4814,6 @@ ORDER BY ord</CommandText>
                             <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -5149,7 +5165,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=IIF(Avg(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
