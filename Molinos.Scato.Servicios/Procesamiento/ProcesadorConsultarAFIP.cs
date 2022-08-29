@@ -63,7 +63,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var request = new ConsultarAutomotorSolicitud()
             {
-                nroCTG = Convert.ToInt64(comando.CTG),
+                nroCTG = Convert.ToInt64(comando.NumeroCartaOrden),
                 nroCTGSpecified = true
             };
 
@@ -87,7 +87,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var request = new ConsultarFerroviariaSolicitud()
             {
-                nroCTG = Convert.ToInt64(comando.CTG),
+                nroCTG = Convert.ToInt64(comando.NumeroCartaOrden),
                 nroCTGSpecified = true
             };
 
