@@ -4,6 +4,6 @@
     {
         public int CentroId { get; set; }
         public int TipoVehiculoId { get; set; }
-        public string CTG { get; set; }
+        public string NumeroCartaOrden { get; set; }
     }
 }
