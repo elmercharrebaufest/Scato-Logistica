@@ -2691,5 +2691,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos);
+        
+        [OperationContract]
+        ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ListaPaginada<MuestraDeInaseDto> ListarMuestrasPorLoteInase(int loteId, Paginacion paginacion);
+
+        [OperationContract]
+        string ObtenerNumeroLoteInase(int loteId);
+
+        [OperationContract]
+        LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
+using System.Globalization;
 
 namespace Molinos.Scato.Actividades
 {
@@ -75,10 +77,21 @@ namespace Molinos.Scato.Actividades
                 if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
                 //LoggerHelper.WriteLine($"2. documento obtenido {documento.Id}");
 
-
+                var camara = repositorio.ObtenerCamaraPorMaterialPorCentro(workflowId);
                 var vehiculo = repositorio.ObtenerVehiculoPorGuid(workflowId);
+                if (camara != null && vehiculo != null)
+                {
+                    var convCentro = repositorio.ObtenerConversionCentro(camara.Id, centroId);
+                    var codigoDeCamara = convCentro != null ? convCentro.CodigoCamara : "";
+                    numeroCartaPorte = camara.FormatoDeArchivo == CamaraFormatoDeArchivo.BahiaBlanca
+                   ? numeroCartaPorte.Substring(numeroCartaPorte.Length - 10)
+                   : (camara.FormatoDeArchivo == CamaraFormatoDeArchivo.Rosario ?
+                    codigoDeCamara.Substring(0, codigoDeCamara.Length > 3 ? 3 : codigoDeCamara.Length) :
+                    codigoDeCamara.Substring(0, codigoDeCamara.Length > 2 ? 2 : codigoDeCamara.Length)) +
+                     vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
+                     numeroCartaPorte.Substring(numeroCartaPorte.Length - 10);
+                }
 
-                
                 var dto = new ImpEtiquetaMuestraInaseDto
                 {
                     Impresora = documento.ImpresoraDireccion ?? "",
@@ -89,7 +102,7 @@ namespace Molinos.Scato.Actividades
                     NombreUsuario = nombreUsuario,
                     WorkflowId = workflowId,
                     CuitProductor = proveedor.Cuil,
-                    
+                    NroMuestra = numeroCartaPorte,
                     Material = material,
                     
                 };

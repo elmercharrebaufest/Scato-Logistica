@@ -16,5 +16,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string Codigo { get; set; }
         public string Patente { get; set; }
         public string NombreUsuario { get; set; }
+        public string NroMuestra { get; set; }
     }
 }

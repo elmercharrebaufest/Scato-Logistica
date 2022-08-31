@@ -736,5 +736,7 @@ namespace Molinos.Scato.Dominio.Seguridad
         AbmConfiguracionSensores = 609,
         [Display(ResourceType = typeof(Textos), Name = "Proveedor_EnvioCamaraInase")]
         EnvioCamaraInase = 610,
+        [Display(ResourceType = typeof(Textos), Name = "ArmarLoteInase")]
+        ArmarLoteInase = 611,
     }
 }

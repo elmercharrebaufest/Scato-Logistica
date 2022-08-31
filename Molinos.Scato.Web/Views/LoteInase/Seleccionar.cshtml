@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.LoteInaseDto
+@{
+    Layout = null;
+    var loteId = (int) ViewBag.LoteId;
+    var numeroLote = (string)ViewBag.NumeroDeLote;
+}
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dialogo-editar-guardar").addClass("hide");
+        $("#dialogo-editar").css("width", '80%');
+    });
+</script>*@
+@using (Ajax.BeginForm("Seleccionar", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", data_dialogo_titulo = Textos.Lote_Ver + ": " + numeroLote}))
+{
+    <div id="gridContainer">
+        @Html.Partial("ListarMuestas")
+        @Html.ActionLink(Textos.Lote_EmitirListado, "ImprimirLote", "LoteInase", new  {loteId} , new {@class = "btn", style="align:right"})
+        @Html.ActionLink(Textos.Lote_GenerarArchivo, "GenerarArchivos", "LoteInase", new  {loteId, vista = "BuscarLote"} , new {@class = "btn", style="align:right"})
+    </div>
+}

@@ -1,13 +1,12 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
 @using Molinos.Scato.Web.Seguridad
-@model Molinos.Scato.Dominio.Dto.BuscarLoteDto
+@model Molinos.Scato.Dominio.Dto.FiltroLoteInaseDto
 @{
     ViewBag.Title = Textos.BuscarLote_Titulo;
-    var camaras = (IEnumerable<SelectListItem>)ViewBag.camaras;
 }
-
-
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
 <ul class="nav nav-tabs">
     @if (PermisosHelper.Is(PermisosScato.ArmarLote))
     {
@@ -17,7 +16,7 @@
     }
     @if (PermisosHelper.Is(PermisosScato.BuscarLote))
     {
-        <li class="active">
+        <li >
             @Html.ActionLink(Textos.BuscarLote_Titulo, "BuscarLote", "Lote")
         </li>
     }
@@ -28,17 +27,17 @@
         </li>
     }
     @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
-    {
-        <li>
-            @Html.ActionLink(Textos.ArmarLoteBiotecnologia, "Index", "LoteBiotecnologia")
-        </li>
-    }
+        {
+            <li>
+                @Html.ActionLink(Textos.ArmarLoteBiotecnologia, "Index", "LoteBiotecnologia")
+            </li>
+        }
     @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
-    {
-        <li>
-            @Html.ActionLink(Textos.BuscarLoteBiotecnologia, "BuscarLote", "LoteBiotecnologia")
-        </li>
-    }
+        {
+            <li>
+                @Html.ActionLink(Textos.BuscarLoteBiotecnologia, "BuscarLote", "LoteBiotecnologia")
+            </li>
+        }
     @if (PermisosHelper.Is(PermisosScato.ArmarLoteAuditoria))
     {
         <li>
@@ -47,7 +46,7 @@
     }
     @if (PermisosHelper.Is(PermisosScato.ArmarLoteInase))
     {
-        <li>
+        <li class="active">
             @Html.ActionLink(Textos.BuscarLoteInase, "BuscarLote", "LoteInase")
         </li>
     }
@@ -71,13 +70,9 @@
                         <div style="margin-top: -25px; margin-left: 70px;">
                             @Html.EditorFor(model => model.FechaHasta)
                         </div>
-                        @Html.Label(Textos.Camara)
-                        <div style="margin-top: -25px; margin-left: 70px;">
-                            @Html.DropDownListFor(model => model.CamaraId, camaras,Textos.Default_Camara, new { id = "camaraDropDown" })
-                        </div>
                     </div>
                 </fieldset>
-                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left; margin-left: 5px; height: 114px; margin-bottom: 5px;">
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left; margin-left: 5px; height: 152px; margin-bottom: 5px;">
                     <div style="float: left;">
                         @Html.Label(Textos.Lote_NroLote)
                         <div style="margin-top: -25px; margin-left: 70px;">
