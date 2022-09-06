@@ -9997,4 +9997,7 @@
   <data name="Lote_FechaEnvio" xml:space="preserve">
     <value>Fecha Envío</value>
   </data>
+  <data name="Material_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
 </root>

@@ -124,5 +124,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Material_EsInsumo")]
         public bool EsInsumo { get; set; }
         public bool EsAsignableCalle { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "Material_Color")]
+        public string Color { get; set; }
     }
 }

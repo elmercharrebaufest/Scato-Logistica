@@ -19355,6 +19355,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Material_Color {
+            get {
+                return ResourceManager.GetString("Material_Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Es Commodity.
         /// </summary>
         public static string Material_Commodity {

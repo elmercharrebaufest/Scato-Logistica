@@ -693,6 +693,7 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />
     <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
     <Compile Include="Constantes.cs" />

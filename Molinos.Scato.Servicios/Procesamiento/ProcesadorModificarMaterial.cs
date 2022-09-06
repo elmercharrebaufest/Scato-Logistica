@@ -51,6 +51,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             materialEditado.Oleico = comando.Dto.Oleico;
             materialEditado.EsGrano = comando.Dto.EsGrano;
             materialEditado.EsInsumo = comando.Dto.EsInsumo;
+            materialEditado.Color = comando.Dto.Color;
 
             if (comando.Dto.VariedadId.HasValue)
             {

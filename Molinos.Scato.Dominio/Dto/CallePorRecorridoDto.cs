@@ -17,6 +17,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool AsignadoEnPuestoComando { get; set; }
         public TipoCalle TipoCalle { get; set; }
         public bool Escalable { get; set; }
+        public string Color { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -37,5 +38,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool AsignadoEnPuestoComando { get; set; }
         public TipoCalle TipoCalle { get; set; }
         public TipoVehiculo? TipoVehiculo { get; set; }
+        public string Color { get; set; }
     }
 }
