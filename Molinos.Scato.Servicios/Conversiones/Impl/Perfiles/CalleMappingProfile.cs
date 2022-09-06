@@ -17,7 +17,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(t => t.CaracteristicaDeCalidadDesc, f => f.MapFrom(r => r.CaracteristicaDeCalidad.DescripcionCorta))
                 .ForMember(t => t.CalleCaladoId, f => f.MapFrom(r => r.CalleCalado.Id))
                 .ForMember(t => t.CalleCaladoNombre, f => f.MapFrom(r => r.CalleCalado.Nombre))
-                .ForMember(t => t.Color, f => f.MapFrom(r => r.Material.Color));
+                .ForMember(t => t.ColorFondo, f => f.MapFrom(r => r.Material.ColorFondo))
+                .ForMember(t => t.ColorTexto, f => f.MapFrom(r => r.Material.ColorTexto));
 
             Mapper.CreateMap<CalleDto, Calle>();
         }

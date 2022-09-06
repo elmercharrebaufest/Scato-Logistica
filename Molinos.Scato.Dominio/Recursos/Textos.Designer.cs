@@ -19355,11 +19355,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Color.
+        ///   Looks up a localized string similar to Color de fondo.
         /// </summary>
-        public static string Material_Color {
+        public static string Material_ColorFondo {
             get {
-                return ResourceManager.GetString("Material_Color", resourceCulture);
+                return ResourceManager.GetString("Material_ColorFondo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color de texto.
+        /// </summary>
+        public static string Material_ColorTexto {
+            get {
+                return ResourceManager.GetString("Material_ColorTexto", resourceCulture);
             }
         }
         

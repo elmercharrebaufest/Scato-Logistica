@@ -24,7 +24,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int CalleId { get; set; }
         public string CalleDesc { get; set; }
-        public string Color { get; set; }
+        public string ColorFondo { get; set; }
+        public string ColorTexto { get; set; }
         public int LimiteDeCamiones { get; set; }
         public bool Bloqueada { get; set; }
         public List<CamionPlantaDto> Camiones { get; set; }
@@ -36,7 +37,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string Patente { get; set; }
         public bool Escalable { get; set; }
         public bool UltimoDeLaFila { get; set; }
-        public string Color { get; set; }
+        public string ColorFondo { get; set; }
+        public string ColorTexto { get; set; }
         public bool? Rechazado { get; set; }
         public TipoCalidad? Calidad { get; set; }
         public int CalleId { get; set; }

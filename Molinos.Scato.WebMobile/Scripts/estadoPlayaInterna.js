@@ -23,12 +23,10 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
     var self = this;
     self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
-    //self.TipoCalle = tipoCalle;
-    console.log(tiposCallesPlanta);
     let calles = [];
     // Agregar calles al array
-    $.each(tiposCallesPlanta, function (index, tipoCallePlanta) {
-        $.each(tipoCallePlanta.Calles, function (index2, calle) {
+    $.each(tiposCallesPlanta, function (indexTipoCallePlanta, tipoCallePlanta) {
+        $.each(tipoCallePlanta.Calles, function (indexCalle, calle) {
             calles.push(calle);
         })
     })
@@ -44,15 +42,22 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
 
     setInterval(() => {
         if ($(".tabPanelEstadoPlayaInterna.active").data().calle == tipoCalle) {
-            let tiposCallesPlanta2 = actualizarCalles(tipoCalle);
-            let calles2 = [];
+            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalle);
+            let callesNuevas = [];
             // Agregar calles al array del observable
-            $.each(tiposCallesPlanta2, function (index, tipoCallePlanta2) {
-                $.each(tipoCallePlanta2.Calles, function (index2, calle2) {
-                    calles2.push(calle2);
+            $.each(tiposCallesNuevasPlanta, function (index, tipoCalleNuevaPlanta) {
+                $.each(tipoCalleNuevaPlanta.Calles, function (index2, calleNueva) {
+                    if (self.PatenteBuscada()) {
+                        let patenteBuscada = self.PatenteBuscada();
+                        if (calleNueva.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
+                            callesNuevas.push(calleNueva);
+                        }
+                    } else {
+                        callesNuevas.push(calleNueva);
+                    }
                 })
             })
-            self.Calles(calles2);
+            self.Calles(callesNuevas);
         }
     }, 4000)
 }

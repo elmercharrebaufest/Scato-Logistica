@@ -99,7 +99,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     CalleId = calle.Id,
                     CalleDesc = calle.Nombre,
-                    Color = calle.Color ?? "#000",
+                    ColorFondo = calle.ColorFondo ?? "#000",
+                    ColorTexto = calle.ColorTexto ?? "#fff",
                     LimiteDeCamiones = calle.CantidadDeCamiones,
                     Bloqueada = calle.Bloqueada
                 };
@@ -113,7 +114,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                         Patente = camion.Patente,
                         Escalable = camion.Escalable,
                         UltimoDeLaFila = camion.UltimoDeLaFila,
-                        Color = camion.Color ?? "#000",
+                        ColorFondo = camion.ColorFondo ?? "#000",
+                        ColorTexto = camion.ColorTexto ?? "#fff",
                         CalleId = camion.CalleId,
                         Rechazado = camion.Rechazado,
                         FechaIngreso = camion.FechaIngeso
