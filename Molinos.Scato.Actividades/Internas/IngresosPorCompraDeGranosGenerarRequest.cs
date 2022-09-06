@@ -258,7 +258,7 @@ namespace Molinos.Scato.Actividades.Internas
                                         TRANSPORTISTA = cartaPorte?.TransportistaCUIT?.Replace("-", "") ?? string.Empty,
                                         VARIEDAD = cartaPorte?.Variedad,
                                         CORREDOR = cartaPorte.Cpe ? string.IsNullOrEmpty(corredorSAP) ? string.Empty : PadProveedor(corredorSAP) : PadProveedor(cartaPorte?.CorredorCodigoSap),
-                                        NETO_DESCONTADO = ((int)decimal.Round(kilosNetosDescontados)).ToString(CultureInfo.InvariantCulture),
+                                        NETO_DESCONTADO = ((int)decimal.Round(kilosNetosDescontados,MidpointRounding.AwayFromZero)).ToString(CultureInfo.InvariantCulture),
                                         CUENTAORDEN = firmasCuit.Any(x => x == cartaPorte.DestinatarioCuil) ? (rtteComercialSAP != null ? PadProveedor(rtteComercialSAP ): string.Empty ): PadProveedor(cartaPorte.DestinatarioCodigoSap),
                                         HORA_BRUTO = fechaPesoBruto.ToString("HHmmss", CultureInfo.InvariantCulture),
                                         HORA_CALADO = calado.FechaCreacion.Value.ToString("HHmmss", CultureInfo.InvariantCulture),
