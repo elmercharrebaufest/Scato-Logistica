@@ -1456,3 +1456,13 @@ IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE Co
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (5,'MPGIRVOL','MPGIRVOL',0)
 END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJINV','MPSOJINV',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZINV','MPMAZINV',0)
+END
