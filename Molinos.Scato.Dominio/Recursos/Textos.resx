@@ -9988,4 +9988,16 @@
   <data name="PuestoDeTrabajo_GrupoBarrera" xml:space="preserve">
     <value>Grupo Barrera</value>
   </data>
+  <data name="ArmarLoteInase" xml:space="preserve">
+    <value>Armar Lote de Inase</value>
+  </data>
+  <data name="BuscarLoteInase" xml:space="preserve">
+    <value>Buscar Lote Inase</value>
+  </data>
+  <data name="Lote_FechaEnvio" xml:space="preserve">
+    <value>Fecha Envío</value>
+  </data>
+  <data name="Material_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
 </root>

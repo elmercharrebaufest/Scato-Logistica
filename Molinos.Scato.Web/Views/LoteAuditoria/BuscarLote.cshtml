@@ -50,6 +50,12 @@
             @Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")
         </li>
     }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteInase))
+    {
+        <li>
+            @Html.ActionLink(Textos.BuscarLoteInase, "BuscarLote", "LoteInase")
+        </li>
+    }
 </ul>
 <div class="container">
     <div class="titSecciones">@Textos.BuscarLote_Titulo</div>

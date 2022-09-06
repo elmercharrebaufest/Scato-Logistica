@@ -10001,5 +10001,50 @@ namespace Molinos.Scato.Servicios.Impl
 
             return respuesta;
         }
+        
+        public ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion)
+        {
+            Expression<Func<LoteInase, bool>> expresionFiltro;
+            filtro.FechaDesde = filtro.FechaDesde ?? new DateTime(1970, 1, 1);
+            filtro.FechaHasta = filtro.FechaHasta ?? DateTime.MaxValue;
+            if (filtro.LoteId > 0)
+            {
+                expresionFiltro = (x => x.Id == filtro.LoteId);
+            }
+            else if (filtro.NroLote != null)
+            {
+                expresionFiltro = (x => x.NumeroDeLote == filtro.NroLote);
+            }
+            else
+            {
+                expresionFiltro = (x => 
+                    x.Fecha <= filtro.FechaHasta && x.Fecha >= filtro.FechaDesde
+                    && x.Centro.Id == filtro.CentroId);
+            }
+
+            return Listar<LoteInase, LoteInaseDto>(expresionFiltro, paginacion);
+        }
+
+        public ListaPaginada<MuestraDeInaseDto> ListarMuestrasPorLoteInase(int loteId, Paginacion paginacion)
+        {
+            return repositorio.ListarConsultaPaginada(new ListarMuestraDeInaseParaImpresionConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId, paginacion));
+        }
+
+        public string ObtenerNumeroLoteInase(int loteId)
+        {
+            return repositorio.ObtenerProyeccion<LoteInase, string>(x => x.Id == loteId, x => x.NumeroDeLote);
+        }
+
+        public LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId)
+        {
+            var lotedto = repositorio.ObtenerProyeccion<LoteInase, LoteInaseDto>(x => x.Id == loteId, lote => new LoteInaseDto
+            {
+                Id = lote.Id,
+                CentroId = lote.Centro.Id,
+                NumeroDeLote = lote.NumeroDeLote,
+            });
+            lotedto.Muestras = repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId));
+            return lotedto;
+        }
     }
 }

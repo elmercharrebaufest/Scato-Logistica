@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -4318,6 +4318,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Armar Lote de Inase.
+        /// </summary>
+        public static string ArmarLoteInase {
+            get {
+                return ResourceManager.GetString("ArmarLoteInase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;strong&gt;Hoy:&lt;/strong&gt; Camiones ingresados con cupo de hoy.&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Vencido:&lt;/strong&gt; Camiones ingresados con cupo de ayer.&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Futuro:&lt;/strong&gt; Camiones ingresados con cupo de mañana.&lt;br/&gt;&lt;br/&gt;&lt;strong&gt;Sin Cupo:&lt;/strong&gt; Camiones ingresados sin cupo..
         /// </summary>
         public static string Arribados {
@@ -5655,6 +5664,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string BuscarLoteBiotecnologia {
             get {
                 return ResourceManager.GetString("BuscarLoteBiotecnologia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Buscar Lote Inase.
+        /// </summary>
+        public static string BuscarLoteInase {
+            get {
+                return ResourceManager.GetString("BuscarLoteInase", resourceCulture);
             }
         }
         
@@ -18740,6 +18758,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fecha Envío.
+        /// </summary>
+        public static string Lote_FechaEnvio {
+            get {
+                return ResourceManager.GetString("Lote_FechaEnvio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha Muestra Desde.
         /// </summary>
         public static string Lote_FechaMuestraDesde {
@@ -19324,6 +19351,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Material_CodigoSAPNoExiste {
             get {
                 return ResourceManager.GetString("Material_CodigoSAPNoExiste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string Material_Color {
+            get {
+                return ResourceManager.GetString("Material_Color", resourceCulture);
             }
         }
         

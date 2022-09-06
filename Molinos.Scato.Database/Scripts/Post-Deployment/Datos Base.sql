@@ -296,6 +296,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 247) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 248) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EmbarquesPorBuques', 1, 248, 'Embarques por Buques'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 262) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pinchazos por Calada', 0, 262, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 263) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion', 0, 263, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 611) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Armar Lote de Inase', 0, 611, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 249) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalle', 1, 249, 'Estado De Calle'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 250) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalleLlamar', 1, 250, 'Estado De Calle - Llamar'); END

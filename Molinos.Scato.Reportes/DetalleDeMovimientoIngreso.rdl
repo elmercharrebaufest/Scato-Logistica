@@ -169,8 +169,8 @@ left join (
 	where w.TipoDeWorkflow = 1 and  r.Centro_Id = @CentroId
 	and r.PesoBrutoFecha  is not null and terminado = 1 and Rechazado = 0
 	and ((MONTH(@fecha) &gt; 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-	(MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1))
-	and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59')
+	(MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
+	and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59'
 	and Ingreso = 0
 	group by mt.Descripcion, r.Material_Id, 
 	case when w.Id = 220 then 1 else 0 end,

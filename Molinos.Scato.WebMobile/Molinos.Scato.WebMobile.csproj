@@ -512,6 +512,10 @@
     <Content Include="Views\EstadoPlayaInterna\Index.cshtml" />
     <Content Include="Views\EficienciaCalado\Index.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_DetalleCamion.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesBody.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesGranos.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesHeader.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

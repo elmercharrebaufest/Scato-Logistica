@@ -10,5 +10,6 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public int Id { get; set; }
         public string Descripcion { get; set; }
+        public int? IdRelacionado { get; set; }
     }
 }

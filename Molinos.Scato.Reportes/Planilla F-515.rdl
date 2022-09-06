@@ -80,8 +80,7 @@
             <Value>=Parameters!BocaDestino.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @Materialp table(Value nvarchar(max))
-DECLARE @FechaIngresoDesdep DATETIME,
+        <CommandText>DECLARE @FechaIngresoDesdep DATETIME,
 		@FechaIngresoHastap DATETIME, 
 		@FechaSalidaDesdep DATETIME,
 		@FechaSalidaHastap DATETIME,
@@ -94,6 +93,7 @@ DECLARE @FechaIngresoDesdep DATETIME,
 		@BalanzaBrutop INT,
 		@BalanzaTarap INT,
 		@CentroIdp INT,
+		@Materialp INT,
 		@TipoPesadap INT,
 		@TipoComercialp INT,
 		@TitularCPp INT,
@@ -109,6 +109,7 @@ SET		@FechaSalidaDesdep = @FechaSalidaDesde
 SET		@FechaSalidaHastap = @FechaSalidaHasta
 SET		@Patentep = @Patente
 SET		@Usuariop = @Usuario
+SET		@Materialp = @Material
 SET		@RecorridosActivosp = @RecorridosActivos
 SET		@NivelDeDetallep = @NivelDeDetalle
 SET		@TipoVehiculop = @TipoVehiculo
@@ -124,11 +125,6 @@ SET		@Entregadorp = @Entregador
 SET		@AlmacenOrigenp = @AlmacenOrigen
 SET		@AlmacenDestinop = @AlmacenDestino
 SET		@BocaDestinop = @BocaDestino
-
-IF EXISTS (SELECT value FROM  [dbo].[FnSplit](@Material,',') WHERE Value = '-1') BEGIN Insert into @Materialp Select Id From [material] Where Esgrano = 1 END
-IF EXISTS (SELECT value FROM [dbo].[FnSplit](@Material,',') WHERE  Value = '-2') BEGIN Insert into @Materialp Select Id From [material] Where EsGrano = 0 and EsInsumo = 0 END
-IF EXISTS (SELECT value FROM  [dbo].[FnSplit](@Material,',') WHERE Value = '-3') BEGIN Insert into @Materialp Select Id From [material] Where EsInsumo = 1 END
-IF EXISTS (SELECT value FROM  [dbo].[FnSplit](@Material,',') WHERE Value not in('-1','-2','-3')) BEGIN Insert into @Materialp select Value from [dbo].[FnSplit](@Material,',')  END
 
 SELECT ISNULL(tv.descripcion,'Camión') AS 'TipoVehiculo',
        tipocomercial.descripcion AS TipoComercial,
@@ -214,7 +210,7 @@ AND (Recorrido.Workflow_Id = @Workflowp or @Workflowp = 0)
 AND (Recorrido.balanzabruto_id = @BalanzaBrutop or @BalanzaBrutop = 0)
 AND (Recorrido.balanzatara_id = @BalanzaTarap or @BalanzaTarap = 0)
 AND (Recorrido.centro_id = @CentroIdp or @CentroIdp = 0)
-AND (Recorrido.Material_Id in (select value from @Materialp))
+AND ((@Materialp = -1 AND Material.Esgrano = 1) OR (@Materialp = -2 AND Material.EsGrano = 0 AND Material.EsInsumo = 0) OR (@Materialp = -3 AND Material.EsInsumo = 1) OR (@Materialp = Recorrido.Material_Id) OR (@Materialp = 0))
 AND (tp2.Id = @TipoPesadap or @TipoPesadap = -1)
 
 AND (Recorrido.TipoComercial_Id = @TipoComercialp or @TipoComercialp = 0)
