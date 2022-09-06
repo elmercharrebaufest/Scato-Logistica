@@ -4756,7 +4756,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Avg(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Sum(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -5165,7 +5165,7 @@ ORDER BY ord</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Avg(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Value>=IIF(Sum(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
