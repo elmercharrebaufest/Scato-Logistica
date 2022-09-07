@@ -57,6 +57,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int CalleCaladoId { get; set; }
         public string CalleCaladoNombre { get; set; }
         public int? Posicion { get; set; }
-
+        public string ColorFondo { get; set; }
+        public string ColorTexto { get; set; }
     }
 }
