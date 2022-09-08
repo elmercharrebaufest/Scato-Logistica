@@ -10003,4 +10003,7 @@
   <data name="Material_ColorTexto" xml:space="preserve">
     <value>Color de texto</value>
   </data>
+  <data name="Workflow_SalidaMercaderiaConSAP" xml:space="preserve">
+    <value>IngresarCartaPorteRedespachoMercaderia</value>
+  </data>
 </root>
