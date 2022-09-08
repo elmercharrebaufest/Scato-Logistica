@@ -75,6 +75,7 @@ set @FechaHastap =@FechaHasta
 
 INSERT INTO @Caracteristicap select Value from [dbo].[FnSplit](@Caracteristica,',')
 
+SELECT * INTO #Temp FROM(
 SELECT 
 	R.NumeroDocumentoIngreso,
 	M.[Descripcion] as 'Material',
@@ -99,21 +100,22 @@ SELECT
 	almacen.[Descripcion] as 'Almacén Origen',   
 	almacen.[Descripcion] as 'Almacén Destino',
 		 TC.Descripcion as 'Tipo Comercial',
-		 (CASE
+		 ISNULL(CASE
 			WHEN APC.DescuentoEnKg IS NULL 
 			THEN CPC.DescuentoEnKg
 			ELSE APC.DescuentoEnKg
-			END) as 'Descuento',
+			END,0) as 'Descuento',
 		CDCM.Descripcion as 'Caracteristica',
 		R.Id as 'RecorridoId',
 		R.Patente as 'Patente',
-		(CASE
+		ISNULL(CASE
 			WHEN APC.ValorAnalisis IS NULL 
 			THEN CPC.ValorCalado
 			ELSE APC.ValorAnalisis
-			END) as 'Valor',
+			END,0) as 'Valor',
 		CDC.UnidadDeMedida as 'Unidad',
-        R.Centro_Id As CentroId
+        R.Centro_Id As CentroId,
+        0 AS 'DescuentoParcial'
 	
 FROM Recorrido R WITH (NOLOCK)
 
@@ -129,8 +131,8 @@ INNER JOIN [Workflow] W WITH (NOLOCK)
 INNER JOIN [TipoComercial] TC WITH (NOLOCK)
 	ON R.[TipoComercial_Id] = TC.[Id]
 
-	INNER JOIN dbo.Calado C WITH (NOLOCK)
-ON C.Id = R.Calado_Id
+INNER JOIN dbo.Calado C WITH (NOLOCK)
+    ON C.Id = R.Calado_Id
 	
 LEFT JOIN Almacen WITH (NOLOCK)
 	ON R.[Almacen_Id] = Almacen.[Id]
@@ -144,14 +146,21 @@ LEFT JOIN balanza AS balanzaTara WITH (NOLOCK)
 LEFT JOIN dbo.vehiculo V WITH (NOLOCK)
 	ON R.vehiculo_id = V.id 
 
-INNER JOIN MaterialPorCentro Mpc WITH(NOLOCK) on Mpc.Material_Id = r.material_Id and Mpc.centro_id = r.centro_id 
-	LEFT JOIN CaracteristicaDeCalidad CDC WITH(NOLOCK) on CDC.MaterialPorCentro_id = Mpc.id and (r.calado_id is not null or r.AnalisisdeCalidad_id is not null)
-	FULL OUTER JOIN CaladoPorCaracteristica CPC WITH(NOLOCK) on CPC.Calado_Id = R.Calado_Id and CPC.CaracteristicaDeCalidad_Id = CDC.id
-	FULL OUTER JOIN AnalisisPorCaracteristica APC WITH(NOLOCK) on APC.AnalisisDeCalidad_Id = R.AnalisisDeCalidad_Id and APC.CaracteristicaDeCalidad_Id = CDC.id
-	LEFT JOIN CaracteristicaDeCalidadMaestro CDCM WITH(NOLOCK) on CDCM.Id = CDC.CaracteristicaDeCalidadMaestro_Id
+INNER JOIN MaterialPorCentro Mpc WITH(NOLOCK) 
+    ON Mpc.Material_Id = r.material_Id and Mpc.centro_id = r.centro_id 
 
-WHERE 
-((@TipoVehiculop IS NULL) OR (R.TipoVehiculo = @TipoVehiculop))
+LEFT JOIN CaracteristicaDeCalidad CDC WITH(NOLOCK) 
+    ON CDC.MaterialPorCentro_id = Mpc.id and (r.calado_id IS NOT NULL OR r.AnalisisdeCalidad_id IS NOT NULL)
+
+FULL OUTER JOIN CaladoPorCaracteristica CPC WITH(NOLOCK) 
+    ON CPC.Calado_Id = R.Calado_Id AND CPC.CaracteristicaDeCalidad_Id = CDC.id
+
+FULL OUTER JOIN AnalisisPorCaracteristica APC WITH(NOLOCK) 
+    ON APC.AnalisisDeCalidad_Id = R.AnalisisDeCalidad_Id AND APC.CaracteristicaDeCalidad_Id = CDC.id
+
+LEFT JOIN CaracteristicaDeCalidadMaestro CDCM WITH(NOLOCK) 
+    ON CDCM.Id = CDC.CaracteristicaDeCalidadMaestro_Id
+    WHERE  ((@TipoVehiculop IS NULL) OR (R.TipoVehiculo = @TipoVehiculop))
 
 AND (@TipoReportep = 1 or @TipoReportep = 3 or ((@TipoReportep = 2 or @TipoReportep = 4) and
 	(CCA.EsHumedad = 1 or 
@@ -201,7 +210,12 @@ AND (CASE @MostrarSoloCaladop
 				WHEN 0  THEN ( R.PesoTaraFecha)
 				WHEN 1  THEN ( R.PesoBrutoFecha)
 				END)
-		END ) &lt;= @FechaHastap</CommandText>
+		END ) &lt;= @FechaHastap) AS X
+
+
+
+UPDATE #Temp  SET DescuentoParcial = (SELECT SUM(ROUND(b.Descuento, 0)) FROM #Temp b WHERE b.NumeroDocumentoIngreso = #Temp.NumeroDocumentoIngreso)
+SELECT * from #Temp ORDER BY NumeroDocumentoIngreso</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -267,6 +281,10 @@ AND (CASE @MostrarSoloCaladop
         </Field>
         <Field Name="Kilos_Netos_Calc">
           <Value>=Fields!Kilos_Netos.Value / Parameters!Caracteristica.Value.Length</Value>
+        </Field>
+        <Field Name="DescuentoParcial">
+          <DataField>DescuentoParcial</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -866,7 +884,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Fields!Kilos_Netos.Value - Iif(IsNumeric(Fields!Descuento.Value), Fields!Descuento.Value, 0), 0)</Value>
+                                  <Value>=FormatNumber(Round(Fields!Kilos_Netos.Value,System.MidpointRounding.AwayFromZero) - Fields!DescuentoParcial.Value, 0)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                   </Style>
@@ -951,7 +969,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(Fields!Kilos_Netos_Calc.Value - Fields!Descuento.Value), 0)</Value>
+                                  <Value>=FormatNumber(Sum(Fields!Kilos_Netos_Calc.Value) - Sum(Round(Fields!Descuento.Value,System.MidpointRounding.AwayFromZero)), 0)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1039,7 +1057,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>="KG: " &amp; FormatNumber(Sum(Fields!Kilos_Netos_Calc.Value - Fields!Descuento.Value), 0)</Value>
+                                  <Value>="KG: " &amp; FormatNumber(Sum(Fields!Kilos_Netos_Calc.Value) - Sum(Round(Fields!Descuento.Value,System.MidpointRounding.AwayFromZero)), 0)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1064,6 +1082,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
