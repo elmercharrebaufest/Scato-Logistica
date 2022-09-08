@@ -255,7 +255,7 @@ namespace Molinos.Scato.Actividades.Internas
                                         TIPODOCHOFER = cartaPorte?.Chofer?.TipoDocumentoIdentidadCodigoSap,
                                         TIPO_COMERCIAL = cartaPorte?.TipoComercialCodigoSap,
                                         TIP_VEHI = cartaPorte?.TipoVehiculo == TipoVehiculo.Tren ? "T" : "C",
-                                        TRANSPORTISTA = cartaPorte.IntermediarioFleteCuil?.Replace("-", "") ?? (cartaPorte?.TransportistaCUIT?.Replace("-", "") ?? string.Empty),
+                                        TRANSPORTISTA = cartaPorte?.IntermediarioFleteCuil?.Replace("-", "") ?? (cartaPorte?.TransportistaCUIT?.Replace("-", "") ?? string.Empty),
                                         VARIEDAD = cartaPorte?.Variedad,
                                         CORREDOR = cartaPorte.Cpe ? string.IsNullOrEmpty(corredorSAP) ? string.Empty : PadProveedor(corredorSAP) : PadProveedor(cartaPorte?.CorredorCodigoSap),
                                         NETO_DESCONTADO = ((int)decimal.Round(kilosNetosDescontados,MidpointRounding.AwayFromZero)).ToString(CultureInfo.InvariantCulture),
