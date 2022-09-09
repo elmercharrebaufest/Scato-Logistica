@@ -115,7 +115,7 @@ SELECT
 			END,0) as 'Valor',
 		CDC.UnidadDeMedida as 'Unidad',
         R.Centro_Id As CentroId,
-        0 AS 'DescuentoParcial'
+        APC.DescuentoEnKg AS 'DescuentoParcial'
 	
 FROM Recorrido R WITH (NOLOCK)
 
@@ -284,7 +284,7 @@ SELECT * from #Temp ORDER BY NumeroDocumentoIngreso</CommandText>
         </Field>
         <Field Name="DescuentoParcial">
           <DataField>DescuentoParcial</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -969,7 +969,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(Round(Fields!Kilos_Netos_Calc.Value,System.MidpointRounding.AwayFromZero)) - Sum(Round(Fields!Descuento.Value,System.MidpointRounding.AwayFromZero)), 0)</Value>
+                                  <Value>=FormatNumber(Round(Sum(Fields!Kilos_Netos_Calc.Value),System.MidpointRounding.AwayFromZero) - Round(Sum(Fields!Descuento.Value),System.MidpointRounding.AwayFromZero), 0)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -1057,7 +1057,7 @@ WHERE Centro.Id = @CentroId</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>="KG: " &amp; FormatNumber(Sum(Round(Fields!Kilos_Netos_Calc.Value,System.MidpointRounding.AwayFromZero)) - Sum(Round(Fields!Descuento.Value,System.MidpointRounding.AwayFromZero)), 0)</Value>
+                                  <Value>="KG: " &amp; FormatNumber(Round(Sum(Fields!Kilos_Netos_Calc.Value),System.MidpointRounding.AwayFromZero) - Round(Sum(Fields!Descuento.Value),System.MidpointRounding.AwayFromZero), 0)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
