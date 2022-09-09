@@ -63,7 +63,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var centroReceptorId = CentroReceptorId.Get<int>(context);
                 var claseExp = ClaseExp.Get<string>(context);
                 var transportistaId = TransportistaId.Get<int>(context);
-                
+
                 var lote = Lote.Get<string>(context);
                 var fechaContab = FechaContab.Get<DateTime>(context);
                 var fechaDoc = FechaDoc.Get<DateTime>(context);
@@ -104,35 +104,23 @@ namespace Molinos.Scato.Actividades.Internas
                 var factorConversion = material != null ? material.FactorConversion : null;
 
                 var nroDocumento = NroDocumento.Get<string>(context);
-                nroDocumento = cartaPorte?.Cpe?? false ? nroDocumento.PadLeft(12, '0') : nroDocumento;
+                nroDocumento = cartaPorte?.Cpe ?? false ? nroDocumento.PadLeft(12, '0') : nroDocumento;
                 nroDocumento = nroDocumento != null && nroDocumento.IndexOf("-", StringComparison.Ordinal) == -1 ? nroDocumento.Substring(0, 4) + "-" + nroDocumento.Substring(4, 8) : nroDocumento;
-              
-                request = new Mov975Request(new Mov975
-                {
-                    AlmEmisor = almacenEmisorSap,
-                    AlmReceptor = almacenReceptorSap,
-                    Cantidad = factorConversion == null ? cantidad.ToString(CultureInfo.InvariantCulture) : (cantidad / factorConversion.Value).ToString(CultureInfo.InvariantCulture),
-                    CentroEmisor = centroEmisorSap,
-                    CentroReceptor = centroReceptorSap,
-                    ClaseExpedicion = claseExp,
-                    CUITTransp = transportista.Cuit.Replace("-", string.Empty),
-                    NombreTransportista = transportista.RazonSocial.Truncate(35),
-                    NroDocumento = nroDocumento, //Si es CPE se envia el nro de CTG sin formato caso contrario NroCartaPorte formateado.
-                    Lote = lote,
-                    FechaContab = fechaContab.ToString("yyyy-MM-dd"),
-                    FechaDoc = fechaDoc.ToString("yyyy-MM-dd"),
-                    Kilometros = Convert.ToDecimal(kilometros),
-                    Material = materialeSap,
-                    DocChofer = chofer.NumeroDeDocumento.Replace("-", string.Empty),
-                    NombreChofer = chofer.NombreCompleto,
-                    Patente1 = patente,
-                    Patente2 = patenteAcoplado,
-                    Precinto1 = precintonum1,
-                    Precinto2 = precintonum2,
-                    TipoDoc = chofer.TipoDocumentoIdentidadCodigoSap,
-                    UniMed = unindadDeMedida
-                });
 
+                if (!string.IsNullOrEmpty(cartaPorte?.IntermediarioFleteCuil) && !string.IsNullOrEmpty(transportista?.Cuit))
+                {
+                    request = SetMov975Request(cantidad, claseExp, lote, fechaContab, fechaDoc, kilometros, patente, patenteAcoplado,
+                        chofer, almacenEmisorSap, almacenReceptorSap, centroEmisorSap, centroReceptorSap, materialeSap,
+                        unindadDeMedida, precintonum1, precintonum2, factorConversion, nroDocumento,
+                        cartaPorte?.IntermediarioFleteCuil?.Replace("-", ""), cartaPorte?.IntermediarioFlete);
+                } 
+                else
+                {
+                    request = SetMov975Request(cantidad, claseExp, lote, fechaContab, fechaDoc, kilometros, patente, patenteAcoplado,
+                        chofer, almacenEmisorSap, almacenReceptorSap, centroEmisorSap, centroReceptorSap, materialeSap,
+                        unindadDeMedida, precintonum1, precintonum2, factorConversion, nroDocumento,
+                        transportista.Cuit.Replace("-", ""), transportista.RazonSocial.Truncate(35));
+                }
 
                 try
                 {
@@ -140,22 +128,22 @@ namespace Molinos.Scato.Actividades.Internas
                     {
                         var srv = context.GetExtension<IServicioComandos>();
                         srv.Ejecutar(new CrearControlRecorrido
+                        {
+                            Dto = new ControlRecorridoDto
                             {
-                                Dto = new ControlRecorridoDto
-                                    {
-                                        Actividad = "SalidaDeOrigenEnRedespachosGenerarRequest",
-                                        Fecha = DateTime.Now,
-                                        Comentario = request.ToXml(),
-                                        NombreUsuario = "",
-                                        WorkflowInstanceId = context.WorkflowInstanceId,
-                                    }
-                            });
+                                Actividad = "SalidaDeOrigenEnRedespachosGenerarRequest",
+                                Fecha = DateTime.Now,
+                                Comentario = request.ToXml(),
+                                NombreUsuario = "",
+                                WorkflowInstanceId = context.WorkflowInstanceId,
+                            }
+                        });
                     }
                 }
                 catch
                 {
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -164,6 +152,39 @@ namespace Molinos.Scato.Actividades.Internas
             }
             Request.Set(context, request);
             Resultado.Set(context, resultado);
+        }
+
+        private static Mov975Request SetMov975Request(int cantidad, string claseExp, string lote, DateTime fechaContab, DateTime fechaDoc,
+            int kilometros, string patente, string patenteAcoplado, ChoferDto chofer, string almacenEmisorSap,
+            string almacenReceptorSap, string centroEmisorSap, string centroReceptorSap, string materialeSap, string unindadDeMedida,
+            string precintonum1, string precintonum2, decimal? factorConversion, string nroDocumento,
+            string transportistaCuit, string transportistaNombre)
+        {
+            return new Mov975Request(new Mov975
+            {
+                AlmEmisor = almacenEmisorSap,
+                AlmReceptor = almacenReceptorSap,
+                Cantidad = factorConversion == null ? cantidad.ToString(CultureInfo.InvariantCulture) : (cantidad / factorConversion.Value).ToString(CultureInfo.InvariantCulture),
+                CentroEmisor = centroEmisorSap,
+                CentroReceptor = centroReceptorSap,
+                ClaseExpedicion = claseExp,
+                CUITTransp = transportistaCuit,
+                NombreTransportista = transportistaNombre,
+                NroDocumento = nroDocumento, //Si es CPE se envia el nro de CTG sin formato caso contrario NroCartaPorte formateado.
+                Lote = lote,
+                FechaContab = fechaContab.ToString("yyyy-MM-dd"),
+                FechaDoc = fechaDoc.ToString("yyyy-MM-dd"),
+                Kilometros = Convert.ToDecimal(kilometros),
+                Material = materialeSap,
+                DocChofer = chofer.NumeroDeDocumento.Replace("-", string.Empty),
+                NombreChofer = chofer.NombreCompleto,
+                Patente1 = patente,
+                Patente2 = patenteAcoplado,
+                Precinto1 = precintonum1,
+                Precinto2 = precintonum2,
+                TipoDoc = chofer.TipoDocumentoIdentidadCodigoSap,
+                UniMed = unindadDeMedida
+            });
         }
     }
 }
