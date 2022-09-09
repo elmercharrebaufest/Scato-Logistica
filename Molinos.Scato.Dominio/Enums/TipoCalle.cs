@@ -15,6 +15,7 @@ namespace Molinos.Scato.Dominio.Enums
         NoGranos = 6,
         Circular = 7,
         PlantaNoGranos = 8,
-        EnTransito = 9
+        EnTransito = 9,
+        SalidaNoGranos = 10
     }
 }

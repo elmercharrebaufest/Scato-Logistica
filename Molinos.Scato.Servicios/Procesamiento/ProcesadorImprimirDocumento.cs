@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -19,6 +21,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly IFirmaProvider firmaProvider;
         private readonly IServicioImpresion servicioImpresion;
+        private readonly IServicioRepositorio servicioRepositorio;
         private static Dictionary<TipoImpresion, DtoExpression> dtos;
         delegate object DtoExpression();
         private void Inicializar()
@@ -57,9 +60,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         }
 
-        public ProcesadorImprimirDocumento(IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresion servicioImpresion)
+        public ProcesadorImprimirDocumento(IServicioRepositorio servicioRepositorio, IRepositorio repositorio, IConversor conversor, ILogger log, IFirmaProvider firmaProvider, IServicioImpresion servicioImpresion)
             : base(repositorio, conversor, log)
         {
+            this.servicioRepositorio = servicioRepositorio;
             this.firmaProvider = firmaProvider;
             this.servicioImpresion = servicioImpresion;
         }
@@ -78,46 +82,97 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 .MakeGenericMethod(documento.GetType(), documentoDto.GetType()).Invoke(null, new [] { documento, documentoDto, Conversor });
             Log.Debug("Se convirtio el archivo a su tipo original {0} {1}", documento.GetType(), documentoDto.GetType());
 
-            if (documento.TipoImpresion == TipoImpresion.ImpresionGenerica)
+            switch(documento.TipoImpresion)
             {
-                Log.Debug("Tipo de impresion: Impresion Generica");
-                var formato = Repositorio.Obtener<DocumentoDeImpresionPorCentro>(x => x.DocumentoDeImpresion.Codigo == documento.Codigo && x.Centro.Id == comando.CentroId).FormatoDeImpresion;
-                Log.Debug("Se intento obtener el Documento de impresion por centro");
-                if (formato == null)
-                {
-                    Log.Debug("El Documento de impresion por centro no existe");
-                    resultado.Errores.Add("", string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado,documento.Codigo));
-                    return resultado;
-                }
-                Log.Debug("El Documento de impresion por centro existe");
-                var formatoDto = Conversor.Convertir<FormatoDeImpresion, FormatoDeImpresionDto>(formato);
-                Log.Debug("Se convirtio el formato de impresion");
-                Log.Debug("Se va a enviar la impresion a la impresora {0}", documento.TipoImpresion);
-                comando.Dto = documentoDto;
-                comando.Direccion = impresora.Direccion;
-                comando.Formato = formatoDto;
-                comando.TipoImpresion = documento.TipoImpresion;
-                resultado = servicioImpresion.Ejecutar(comando);
+                case TipoImpresion.ImpresionGenerica:
+                    Log.Debug("Tipo de impresion: Impresion Generica");
+                    var formato = Repositorio.Obtener<DocumentoDeImpresionPorCentro>(x => x.DocumentoDeImpresion.Codigo == documento.Codigo && x.Centro.Id == comando.CentroId).FormatoDeImpresion;
+                    Log.Debug("Se intento obtener el Documento de impresion por centro");
+                    if (formato == null)
+                    {
+                        Log.Debug("El Documento de impresion por centro no existe");
+                        resultado.Errores.Add("", string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, documento.Codigo));
+                        return resultado;
+                    }
+                    Log.Debug("El Documento de impresion por centro existe");
+                    var formatoDto = Conversor.Convertir<FormatoDeImpresion, FormatoDeImpresionDto>(formato);
+                    Log.Debug("Se convirtio el formato de impresion");
+                    Log.Debug("Se va a enviar la impresion a la impresora {0}", documento.TipoImpresion);
+                    comando.Dto = documentoDto;
+                    comando.Direccion = impresora.Direccion;
+                    comando.Formato = formatoDto;
+                    comando.TipoImpresion = documento.TipoImpresion;
+                    resultado = servicioImpresion.Ejecutar(comando);
 
-                Log.Debug("Se envio exitosamente la impresion");
-            }
-            else
-            {
-                Log.Debug("Se va a enviar la impresion a la impresora {0}", impresora.Direccion);
-                var firma = firmaProvider.ObtenerFirmaSinLogo();
-                comando.Dto = documentoDto;
-                comando.Direccion = impresora.Direccion;
-                comando.TipoImpresion = documento.TipoImpresion;
-                comando.Firma = firma;
-                resultado = servicioImpresion.Ejecutar(comando);
-                Log.Debug("Se envio exitosamente la impresion");
-            }            
+                    Log.Debug("Se envio exitosamente la impresion");
+                    break;
+                case TipoImpresion.EtiquetaMuestraInase:
+                    Log.Debug("Se va a enviar la impresion de Inase a la impresora {0}", impresora.Direccion);
+                    var firmaInase = firmaProvider.ObtenerFirmaSinLogo();
+                    if (documento.WorkflowId != null)
+                    {
+                        comando.Dto = ObtenerDatosEtiquetaMuestraInase(documento.WorkflowId.Value);
+                        comando.Direccion = impresora.Direccion;
+                        comando.TipoImpresion = documento.TipoImpresion;
+                        comando.Firma = firmaInase;
+                        resultado = servicioImpresion.Ejecutar(comando);
+                        Log.Debug("Se envio exitosamente la impresion de Inase");
+                    } else
+                    {
+                        Log.Debug("No se envió la impresion de Inase porque no se tiene Workflow");
+                    }
+
+                    break;
+                default:
+                    Log.Debug("Se va a enviar la impresion a la impresora {0}", impresora.Direccion);
+                    var firma = firmaProvider.ObtenerFirmaSinLogo();
+                    comando.Dto = documentoDto;
+                    comando.Direccion = impresora.Direccion;
+                    comando.TipoImpresion = documento.TipoImpresion;
+                    comando.Firma = firma;
+                    resultado = servicioImpresion.Ejecutar(comando);
+                    Log.Debug("Se envio exitosamente la impresion");
+                    break;
+            }      
             return resultado;
         }
 
         public static void Convertir<T, Tdto>(T documento, Tdto documentoDto, IConversor conversor)
         {
             conversor.Convertir(documento, documentoDto);
+        }
+
+        private ImpEtiquetaMuestraInaseDto ObtenerDatosEtiquetaMuestraInase(Guid workflowId)
+        {
+            var centroId = servicioRepositorio.ObtenerCentroIdPorInstanceId(workflowId);
+            var cartaPorte = servicioRepositorio.ObtenerCartaPortePorInstanceId(workflowId);
+            var numeroCartaPorte = cartaPorte.NroCartaPorte;
+            var proveedor = servicioRepositorio.ObtenerProveedorPorId(cartaPorte.TitularCartaPorteId);
+            var camara = servicioRepositorio.ObtenerCamaraPorMaterialPorCentro(workflowId);
+            var vehiculo = servicioRepositorio.ObtenerVehiculoPorGuid(workflowId);
+            if (camara != null && vehiculo != null)
+            {
+                var convCentro = servicioRepositorio.ObtenerConversionCentro(camara.Id, centroId);
+                var codigoDeCamara = convCentro != null ? convCentro.CodigoCamara : "";
+                numeroCartaPorte = camara.FormatoDeArchivo == CamaraFormatoDeArchivo.BahiaBlanca
+               ? numeroCartaPorte.Substring(numeroCartaPorte.Length - 10)
+               : (camara.FormatoDeArchivo == CamaraFormatoDeArchivo.Rosario ?
+                codigoDeCamara.Substring(0, codigoDeCamara.Length > 3 ? 3 : codigoDeCamara.Length) :
+                codigoDeCamara.Substring(0, codigoDeCamara.Length > 2 ? 2 : codigoDeCamara.Length)) +
+                 vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
+                 numeroCartaPorte.Substring(numeroCartaPorte.Length - 10);
+            }
+
+            var dto = new ImpEtiquetaMuestraInaseDto
+            {
+                NumeroCartaPorte = cartaPorte.NroCartaPorte,
+                WorkflowId = workflowId,
+                CuitProductor = proveedor.Cuil,
+                NroMuestra = numeroCartaPorte,
+                Material = cartaPorte.Material,
+                Patente = cartaPorte.Patente
+            };
+            return dto;
         }
     }
 } 

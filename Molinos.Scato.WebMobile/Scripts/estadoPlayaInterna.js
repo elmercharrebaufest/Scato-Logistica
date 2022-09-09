@@ -1,256 +1,90 @@
-﻿function Calle(item, context) {
-    var self = this;
-    self.Nombre = item.Nombre;
-    self.TipoCalle = item.TipoCalle;
-    self.CantidadDeCamiones = item.CantidadDeCamiones;
-    self.Id = item.Id;
-    self.FechaLLamada = item.FechaLLamada;
-    self.Deshabilitada = ko.observable(item.Deshabilitada);
-    self.Llamada = ko.observable(item.Bloqueada);
-    self.Automatica = ko.observable(item.Automatica); //para calles de calado
-    self.MaterialId = ko.observable(item.MaterialId.toString()); //solo trae valor para calles de calado
-    self.MaterialDesc = ko.observable(item.MaterialDesc);
-    self.CamionesEnCalle = ko.observable(0);
-    var posiciones = [];
-    for (var i = 0; i < self.CantidadDeCamiones; i++) {
-        posiciones.push(new Camion({ Id: 0, Patente: '', MaterialId: null }, self));
-    }
-    self.Posiciones = ko.observableArray(posiciones);
-    self.Bloqueada = ko.computed(function () {
-        return self.Llamada() && self.CamionesEnCalle() > 0;
-    });
-
-    self.TiempoEnCola = ko.computed(function () {
-        return self.Posiciones().length > 0 ? self.Posiciones()[0].TiempoEnCola : "";
-    });
-    self.CargarCamiones = function (camiones) {
-        if (self.Llamada() && camiones.length == 0) {
-            self.Llamada(false);
-        }
-        var posiciones = [];
-        $.each(camiones, function (key, value) {
-            posiciones.push(new Camion(value, self));
-            self.MaterialId(value.MaterialId);
-        });
-        posiciones = posiciones.sort(function (a, b) { return a.Id - b.Id; });
-        self.CamionesEnCalle(camiones.length);
-        if (camiones.length < self.CantidadDeCamiones) {
-            for (var i = camiones.length; i < self.CantidadDeCamiones; i++) {
-                posiciones.push(new Camion({ Id: 0, Patente: '', MaterialId: null }, self));
-            }
-        }
-        self.Posiciones(posiciones);
-    };
-    self.Actualizar = function (itemActualizado) {
-        if (itemActualizado && itemActualizado.length > 0) {
-            self.Deshabilitada(itemActualizado[0].Deshabilitada);
-            self.FechaLLamada = itemActualizado[0].FechaLLamada;
-            self.Llamada(itemActualizado[0].Bloqueada);
-            if (self.TipoCalle == 4) { //Si no es calle calado, el material se actualiza al traer los camiones
-                self.Automatica(itemActualizado[0].Automatica);
-            }
-        }
-    }
-    switch (item.MaterialId) {
-        case 4: self.Color = "bg-soja"
-            break;
-        case 386: self.Color = "bg-maiz"
-            break;
-        case 13: self.Color = "bg-naranja"
-            break;
-        case 5: self.Color = "bg-warning"
-            break;
-        case 81223: self.Color = "bg-harina"
-            break;
-        case 63750: self.Color = "bg-pellet"
-            break;
-        case 63734: self.Color = "bg-AceiteSj"
-            break;
-        case 63691: self.Color = "bg-AceiteG"
-            break;
-        case 172798: self.Color = "bg-PelletG"
-            break;
-        case 63746: self.Color = "bg-Lecitina"
-            break;
-        default: self.Color = "bg-vacio"
-            break;
-    }
-    self.Icon = (item.TipoCalidad == 2 ? "fas fa-tint" : item.TipoCalidad == 3 ? "fas fa-vial" : item.TipoCalidad == 1 ? "fas fa-clipboard-check" : "");
-
-
+﻿function EstadoPlayaInternaDeCallesVM(config) {
+    this.containerId = config.containerId;
+    this.vmData = config.vmData;
+    this.tipoCalle = config.tipo;
 }
 
-function Camion(item, calle) {
-    var self = this;
-    self.Id = item.Id;
-    self.Patente = item.Patente;
-    self.MaterialId = item.MaterialId;
-    self.Calidad = item.Calidad;
-    self.CalleId = item.CalleId;
-    self.UltimoDeLaFila = item.UltimoDeLaFila;
-    self.AsignadoEnPuestoComando = item.AsignadoEnPuestoComando;
-    self.Calle = calle;
-    //
-    self.TiempoEnCola = null;
-    if (item.FechaIngeso) {
+EstadoPlayaInternaDeCallesVM.prototype = {
+    onReady: function () {
+        let self = this;
+        self.vm = {
+            mainModule: {},
+        };
 
-        var fechaActual = Date.now();
-        var fechaInicioDeCola = new Date(parseInt(item.FechaIngeso.substr(6)));
-
-        let diffMilli = fechaActual - fechaInicioDeCola;
-        let secondsInMilli = 1000;
-        let minutesInMilli = secondsInMilli * 60;
-        let hoursInMilli = minutesInMilli * 60;
-        //let daysInMilli = hoursInMilli * 24;
-
-        //let diffDays = Math.floor(different / daysInMilli);
-        //diffMilli = diffMilli % daysInMilli;
-
-        let diffHrs = Math.floor(diffMilli / hoursInMilli);
-        diffMilli = diffMilli % hoursInMilli;
-
-        let diffMins = Math.floor(diffMilli / minutesInMilli);
-        diffMilli = diffMilli % minutesInMilli;
-
-        diffHrs = (diffHrs < 10) ? "0" + diffHrs : diffHrs;
-        diffMins = (diffMins < 10) ? "0" + diffMins : diffMins;
-
-        self.TiempoEnCola = diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
-    }
-
-    self.Icon = item.Rechazado ? "fas fa-times-circle" : (item.Calidad == 2 ? "fas fa-tint" : item.Calidad == 3 ? "fas fa-vial" : item.Calidad == 1 ? "fas fa-clipboard-check" : "");
-
-    switch (item.MaterialId) {
-        case 4: self.Color = "bg-soja"
-            break;
-        case 386: self.Color = "bg-maiz"
-            break;
-        case 13: self.Color = "bg-naranja"
-            break;
-        case 5: self.Color = "bg-warning"
-            break;
-        case 81223: self.Color = "bg-harina"
-            break;
-        case 63750: self.Color = "bg-pellet"
-            break;
-        case 63734: self.Color = "bg-AceiteSj"
-            break;
-        case 63691: self.Color = "bg-AceiteG"
-            break;
-        case 172798: self.Color = "bg-PelletG"
-            break;
-        case 63746: self.Color = "bg-Lecitina"
-            break;
-        default: self.Color = "bg-vacio"
-            break;
+        self.init();
+    },
+    init: function () {
+        let self = this;
+        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle), $("#" + self.containerId)[0]);
     }
 }
 
-function EstadoDeCallesViewModel() {
+function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
     var self = this;
+    self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
-    self.Materiales = ko.observableArray([]);
-    self.PatenteBuscada = ko.observable('');
-    self.PatenteBuscada = ko.observable('');
-    self.dummy = ko.observable();
+    let calles = [];
+    // Agregar calles al array
+    $.each(tiposCallesPlanta, function (indexTipoCallePlanta, tipoCallePlanta) {
+        $.each(tipoCallePlanta.Calles, function (indexCalle, calle) {
+            calles.push(calle);
+        })
+    })
 
-    var calles = jQuery.parseJSON(callesJson);
-    var mappedcalles = $.map(calles, function (item) {
-        return new Calle(item, self);
+    self.Calles(calles);
+
+    self.TiempoEnCola = function (item) {
+        if (item.Camiones.length > 0) {
+            return calcularTiempoEnCola(item.Camiones[0].FechaIngreso)
+        }
+        return "";
+    };
+
+    setInterval(() => {
+        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == tipoCalle) {
+            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalle);
+            let callesNuevas = [];
+            // Agregar calles al array del observable
+            $.each(tiposCallesNuevasPlanta, function (index, tipoCalleNuevaPlanta) {
+                $.each(tipoCalleNuevaPlanta.Calles, function (index2, calleNueva) {
+                    if (self.PatenteBuscada()) {
+                        let patenteBuscada = self.PatenteBuscada();
+                        if (calleNueva.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
+                            callesNuevas.push(calleNueva);
+                        }
+                    } else {
+                        callesNuevas.push(calleNueva);
+                    }
+                })
+            })
+            self.Calles(callesNuevas);
+        }
+    }, 4000)
+}
+
+function obtenerClaseIcono(rechazado, calidad) {
+    let icon = rechazado ? "fas fa-times-circle" : (calidad == 2 ? "fas fa-tint" : calidad == 3 ? "fas fa-vial" : calidad == 1 ? "fas fa-clipboard-check" : "");
+    return icon;
+}
+
+function actualizarCalles(tipo) {
+    let calles;
+    $.ajax({
+        url: urlEstadoDeCalles+"?tiposCalleStr="+tipo,
+        type: 'GET',
+        contentType: 'application/json;',
+        dataType: 'json',
+        async: false,
+        success: function (allData) {
+            calles = allData;
+        },
+        error: function (data) {
+        },
+        complete: function (data) {
+        }
     });
-    self.Calles(mappedcalles);
-    self.CallesFiltradas = function (tipoCalle, tipoCalle2) {
-        return ko.utils.arrayFilter(self.Calles(), function (customer) {
-            if (self.PatenteBuscada()) {
-                var patenteBuscada = self.PatenteBuscada();
-                return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2) && customer.Posiciones().filter(function (obj) { return obj.Patente.includes(patenteBuscada); }).length > 0;
-            }
-            return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2);
-        });
-    };
-    self.CallesLLamadas = function (tipoCalle, tipoCalle2, materialId) {
-        self.dummy();
-        var array = ko.utils.arrayFilter(self.Calles(), function (customer) {
-            return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2) && (!materialId || materialId == customer.MaterialId()) && customer.Llamada();
-        });
-        return array.sort(function (a, b) { return a.FechaLLamada != null && b.FechaLLamada != null ? new Date(parseInt(a.FechaLLamada.substr(6))) - new Date(parseInt(b.FechaLLamada.substr(6))) : 1; });
-    };
-    self.UltimosCamiones = function (tipoCalle, tipoCalle2) {
-        var camiones = [];
-        self.dummy();
-        ko.utils.arrayForEach(self.Calles(), function (calle) {
-            if (calle.TipoCalle == tipoCalle || calle.TipoCalle == tipoCalle2) {
-                camiones = camiones.concat(calle.Posiciones());
-            }
-        });
-
-        return camiones
-            .sort(function (a, b) { return b.Id - a.Id; })
-            .slice(0, 5);
-    };
-    self.sumarCamiones = function (tipoCalle, materialId = null) {
-        var count = 0;
-        self.dummy();
-        ko.utils.arrayForEach(self.Calles(), function (calle) {
-            if (materialId == null && calle.TipoCalle == tipoCalle) {
-                count += calle.CamionesEnCalle();
-            } else if (calle.MaterialId() == materialId && calle.TipoCalle == tipoCalle) {
-                count += calle.CamionesEnCalle();
-            }
-        });
-        return count;
-    };
-    self.Recalcular = function () {
-        self.dummy.notifySubscribers();
-    }; 
-    self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(0, 4); });
-    self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(0, 386); });
-    self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(0, 13); });
-    self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(0, 5); });
-
-    // No Granos
-    self.CantidadEnTransito = ko.computed(function () { return self.sumarCamiones(9); });
-    self.CantidadHarina = ko.computed(function () { return self.sumarCamiones(8, 81223); });
-    self.CantidadPelletS = ko.computed(function () { return self.sumarCamiones(8, 63750); });
-    self.CantidadAceiteSj = ko.computed(function () { return self.sumarCamiones(8, 63734); });
-    self.CantidadAceiteG = ko.computed(function () { return self.sumarCamiones(8, 63691); });
-    self.CantidadPelletG = ko.computed(function () { return self.sumarCamiones(8, 172798); });
-    self.CantidadLecitina = ko.computed(function () { return self.sumarCamiones(8, 63746); });
-
-    self.ListarCamiones = function () {
-        $.ajax({
-            url: urlEstadoDeCalles,
-            type: 'POST',
-            contentType: 'application/json;',
-            dataType: 'json',
-            success: function (allData) {
-                ko.utils.arrayForEach(self.Calles(), function (calle) {
-                    calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
-                    calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
-                });
-                self.Materiales(allData.materiales);
-                
-            },
-            error: function (data) {
-                setTimeout(recargar, 2000);
-            },
-            complete: function (data) {
-                self.Recalcular();
-                setTimeout(self.ListarCamiones, 4000);
-            }
-        });
-    };
-    self.ListarCamiones();
+    return calles;
 }
-
-var recargar = function () {
-    window.location.reload(true);
-}
-
-$(document).ready(function () {
-    ko.applyBindings(new EstadoDeCallesViewModel());
- 
-});
 
 function abrirModal() {
     self = this;
@@ -271,21 +105,24 @@ function abrirModal() {
     });
 }
 
-function ConfirmarEnviarAFilaRechazado() {
-    $.ajax({
-        url: urlConfirmarRechazado,
-        data: {
-            instanciaWorflow: $('#InstanciaWorflow').val()
-           
-        },
-        type: "POST",
-        success: function (result) {
-            $("#modal-rechazo-mover").modal("hide");
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    });
-}
+function calcularTiempoEnCola(fechaIngeso) {
+    var fechaActual = Date.now();
+    var fechaInicioDeCola = new Date(parseInt(fechaIngeso.substr(6)));
 
+    let diffMilli = fechaActual - fechaInicioDeCola;
+    let secondsInMilli = 1000;
+    let minutesInMilli = secondsInMilli * 60;
+    let hoursInMilli = minutesInMilli * 60;
+
+    let diffHrs = Math.floor(diffMilli / hoursInMilli);
+    diffMilli = diffMilli % hoursInMilli;
+
+    let diffMins = Math.floor(diffMilli / minutesInMilli);
+    diffMilli = diffMilli % minutesInMilli;
+
+    diffHrs = (diffHrs < 10) ? "0" + diffHrs : diffHrs;
+    diffMins = (diffMins < 10) ? "0" + diffMins : diffMins;
+
+    return diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
+}
 

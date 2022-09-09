@@ -19,17 +19,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         public Calle Ejecutar(DbContext contexto)
         {
             Calle calle = ObtenerCalle(contexto, materialId);
-            if(calle == null)
-            {
-                calle = ObtenerCalle(contexto);
-            }
             return calle;
         }
 
         private Calle ObtenerCalle(DbContext contexto, int? material = null)
         {
-            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && (x.Material.Id == material || material == null))
-                                              .OrderByDescending(x => x.Id)
+            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && (x.Material.Id == material || x.Material == null))
+                                              .OrderByDescending(x => x.Material.Id)
                                               .FirstOrDefault();
         }
     }

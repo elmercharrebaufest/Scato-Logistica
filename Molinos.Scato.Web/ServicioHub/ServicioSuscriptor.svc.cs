@@ -476,7 +476,7 @@ namespace Molinos.Scato.Web.ServicioHub
                     {
                         lecturaPuestoDeTrabajo.MensajeError = "Patente no reconocida";
                         var lecturas = servicio.ObtenerLogLecturasPorTarjeta(lecturaPuestoDeTrabajo.NumeroDeTarjeta);
-                        if(lecturas != null && lecturas.Count >= 1)
+                        if (lecturas != null && lecturas.Count >= 1)
                         {
                             recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault().PatenteLeida;
                         }
@@ -491,7 +491,7 @@ namespace Molinos.Scato.Web.ServicioHub
                             break;
                         var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
                         Thread.Sleep(tiempoDeCiclo);
-                    }                 
+                    }
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, resultado.ProximaActividad);
                     var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
@@ -795,5 +795,6 @@ namespace Molinos.Scato.Web.ServicioHub
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
         }
+
     }
 }

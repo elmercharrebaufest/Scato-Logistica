@@ -511,6 +511,8 @@
     <Build Include="dbo\Tables\ConfigSensores.sql" />
     <Build Include="dbo\Tables\ImpEtiquetaMuestraInase.sql" />
     <Build Include="dbo\Tables\MuestraDeInase.sql" />
+    <Build Include="dbo\Tables\LogDispositivo.sql" />
+    <Build Include="dbo\Tables\LoteInase.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

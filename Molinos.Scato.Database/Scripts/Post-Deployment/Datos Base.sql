@@ -296,6 +296,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 247) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 248) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EmbarquesPorBuques', 1, 248, 'Embarques por Buques'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 262) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pinchazos por Calada', 0, 262, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 263) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion', 0, 263, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 611) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Armar Lote de Inase', 0, 611, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 249) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalle', 1, 249, 'Estado De Calle'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 250) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalleLlamar', 1, 250, 'Estado De Calle - Llamar'); END
@@ -313,6 +314,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 261) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 264) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitor CPEs Cacheadas', 0, 264, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 265) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Barrera', 0, 265, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 266) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Eficiencia Calado', 0, 266, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 267) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 1', 0, 267, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 268) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 2', 0, 268, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 300) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanceros', 2, 300, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 301) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Administradores', 2, 301, NULL); END
@@ -1452,4 +1455,14 @@ END
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPGIRVOL') 
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (5,'MPGIRVOL','MPGIRVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJINV','MPSOJINV',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZINV','MPMAZINV',0)
 END

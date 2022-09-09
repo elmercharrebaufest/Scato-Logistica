@@ -135,6 +135,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_Concentrador")]
         public string Concentrador { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_GrupoBarrera")]
+        public string GrupoBarreraCodigo { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "PuestoDeTrabajo_Intercomunicador")]
         public string IntercomunicadorCodigo { get; set; }

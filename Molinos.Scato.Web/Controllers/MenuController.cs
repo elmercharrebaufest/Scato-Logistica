@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.IdentityModel.Services;
-using System.Linq;
-using System.Resources;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
@@ -15,6 +7,14 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IdentityModel.Services;
+using System.Linq;
+using System.Resources;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -36,11 +36,12 @@ namespace Molinos.Scato.Web.Controllers
 
         [DatosUsuario]
         public ActionResult Menu(DatosUsuario datosUsuario)
-        {            
+        {
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
 
             #region VisualizacionBarreras
+
             var puestoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
             if (puestoTrabajo?.VisualizacionBarrera_Id is null)
             {
@@ -79,7 +80,8 @@ namespace Molinos.Scato.Web.Controllers
             barreraSupervisor.AddRange(puestoTrabajo?.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
             ViewBag.BarrerasSupervisor = barreraSupervisor;
             ViewBag.PuestoId = puestoTrabajo?.Id;
-            #endregion
+
+            #endregion VisualizacionBarreras
 
             var rm = new ResourceManager(typeof(Textos));
             ViewBag.Idiomas = CultureInfo.GetCultures(CultureTypes.AllCultures).Select(x => x).Where(x => ResourceManagerExist(rm, x)).ToSelectList(x => x.LCID.ToString(CultureInfo.InvariantCulture), x => x.NativeName.Split('(')[0]);
@@ -88,7 +90,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Mantenimiento = EstaEnMantenimiento();
             return PartialView("_Menu");
         }
-        
+
         public JsonResult MarcarLeidos(int? id)
         {
             if (id != null && id != 0)
@@ -114,8 +116,8 @@ namespace Molinos.Scato.Web.Controllers
 
         public JsonResult EliminarNotificacion(int id)
         {
-            servicioComandos.Ejecutar(new EliminarNotificacion {Id = id});
-            return Json(new {}, JsonRequestBehavior.AllowGet);
+            servicioComandos.Ejecutar(new EliminarNotificacion { Id = id });
+            return Json(new { }, JsonRequestBehavior.AllowGet);
         }
 
         [DatosUsuario]
@@ -165,12 +167,12 @@ namespace Molinos.Scato.Web.Controllers
             var culture = CultureInfo.GetCultureInfo(lcid);
             SessionManager.CurrentCulture = culture;
             //
-            // Cache the new current culture into the user HTTP session. 
+            // Cache the new current culture into the user HTTP session.
             //
             var cookie = new CookieUsuario();
             cookie.ActualizarValor("CurrentCulture", lcid.ToString(CultureInfo.InvariantCulture));
             //
-            // Redirect to the same page from where the request was made! 
+            // Redirect to the same page from where the request was made!
             //
             return Redirect(Request.UrlReferrer.ToString());
         }
@@ -178,11 +180,10 @@ namespace Molinos.Scato.Web.Controllers
         [AjaxOnly]
         public void BorrarPermisosCookie()
         {
-            if (FederatedAuthentication.SessionAuthenticationModule != null )
+            if (FederatedAuthentication.SessionAuthenticationModule != null)
             {
                 FederatedAuthentication.SessionAuthenticationModule.DeleteSessionTokenCookie();
             }
-            
         }
 
         private bool EstaEnMantenimiento()
@@ -214,6 +215,7 @@ namespace Molinos.Scato.Web.Controllers
                 return false;
             }
         }
+
         public void ActualizarCookiePermisos()
         {
             var cookie = new CookieUsuario();
@@ -238,7 +240,7 @@ namespace Molinos.Scato.Web.Controllers
             catch (Exception e)
             {
                 log.Error(e, $"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera : {codigo}");
-                return Json($"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera", JsonRequestBehavior.AllowGet);          
+                return Json($"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera", JsonRequestBehavior.AllowGet);
             }
             if (!string.IsNullOrEmpty(motivo))
             {
@@ -252,8 +254,6 @@ namespace Molinos.Scato.Web.Controllers
         public void ActualizarEstadoBarreras(DatosUsuario datosUsuario)
         {
             servicioEstado.ActualizarBarreras(datosUsuario.NombrePc);
-
         }
     }
 }
-

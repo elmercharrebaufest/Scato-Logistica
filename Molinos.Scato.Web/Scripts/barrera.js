@@ -70,7 +70,7 @@ function SensoresListViewModel() {
 
     // Operations
     self.botonCrearSensor = function () {
-        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newCodigoDispositivoSensorQuiebre(), self.newBarrera(), self.newBarreraBajar(), self.newNombreBarrera()));
+        self.sensoresBarrera.push(new Sensor(0, self.newCodigoDispositivoSensorArriba(), self.newCodigoDispositivoSensorAbajo(), self.newCodigoDispositivoSensorQuiebre(), self.newBarrera(), self.newBarreraBajar(), (self.newNombreBarrera() ?? "")));
     };
 
     self.removeSensorBarrera = function (sensor) {

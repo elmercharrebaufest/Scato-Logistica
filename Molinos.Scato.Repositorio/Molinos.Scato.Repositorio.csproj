@@ -82,6 +82,7 @@
     <Compile Include="ConsultasEF\ListarDatosDeWorkflowsPendientesConsulta.cs" />
     <Compile Include="ConsultasEF\ListarEficienciaCalado.cs" />
     <Compile Include="ConsultasEF\ListarEstadoDeCalle.cs" />
+    <Compile Include="ConsultasEF\ListarMuestraDeInaseParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarCampaniaPorCuit.cs" />

@@ -189,6 +189,18 @@
                     @Html.ValidationMessageFor(model => model.EsInsumo)
                 </div>
             </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.ColorFondo, new { @class = "control-label" })
+                <div class="controls">
+                    <input type="color" name="ColorFondo" value="@Model.ColorFondo" style="height:25px; width:50px;" />
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.ColorTexto, new { @class = "control-label" })
+                <div class="controls">
+                    <input type="color" name="ColorTexto" value="@Model.ColorTexto" style="height:25px; width:50px;" />
+                </div>
+            </div>
         </div>
         <div class="span6">
             

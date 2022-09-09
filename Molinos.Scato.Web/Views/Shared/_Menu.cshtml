@@ -190,6 +190,10 @@
                                         {
                                             <li>@Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")</li>
                                         }
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLoteInase))
+                                        {
+                                            <li>@Html.ActionLink(Textos.BuscarLoteInase, "BuscarLote", "LoteInase")</li>
+                                        }
                                     </ul>
                                 </li>
                             </ul>
@@ -248,6 +252,14 @@
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasExportacion))
                                         {
                                             <li>@Html.ActionLink(Textos.VisualizarVideoCamarasExportacion, "Index", "VideoCamara", new { nombrePc = "PuestoExportacionVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasCalador1))
+                                        {
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=Calador1VC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasCalador1</a></li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasCalador2))
+                                        {
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=Calador2VC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasCalador2</a></li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.AbmBarrera))
                                         {
