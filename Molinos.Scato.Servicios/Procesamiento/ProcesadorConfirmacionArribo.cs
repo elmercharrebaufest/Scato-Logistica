@@ -181,15 +181,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "No se pudo hacer la baja de CTG del codigo {0}", comando.Dto.NroCartaPorte);
                 resultado.Errores.Add("CodigoDeBaja", Textos.Error_Generico);
             }
-
-           Repositorio.Agregar(
-              new BajaCTG
-              {
-                  CartaPorte = Repositorio.Obtener<Dominio.Entidades.CartaPorte>(comando.Dto.Id),
-                  CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorConfirmacionArribo" : null,
-                  Fecha = DateTime.Now,
-                  WorkflowId = comando.WorkflowId
-              });
+            var bajaCtg = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == comando.WorkflowId);
+            if (bajaCtg == null)
+            {
+                Repositorio.Agregar(
+                  new BajaCTG
+                  {
+                      CartaPorte = Repositorio.Obtener<Dominio.Entidades.CartaPorte>(comando.Dto.Id),
+                      CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorConfirmacionArribo" : null,
+                      Fecha = DateTime.Now,
+                      WorkflowId = comando.WorkflowId
+                  });
+            }
+            else {
+                bajaCtg.CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorConfirmacionArribo" : null;
+                bajaCtg.Fecha = DateTime.Now;
+            }
 
             Repositorio.GuardarCambios();
 
