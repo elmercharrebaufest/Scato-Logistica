@@ -151,7 +151,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Errores.Add(response.respuesta.errores.FirstOrDefault().codigo, response.respuesta.errores.FirstOrDefault().descripcion);
                     Log.Error("Error en la Confirmacion: {0}", response.respuesta.errores.FirstOrDefault().descripcion);
                 }
-                else if (response.respuesta != null)
+                else if (response.respuesta != null && !resultado.HayErrores)
                 {
                     //Si no hay errores, registro la baja del CTG
                     var datos = response.respuesta.cabecera;
@@ -163,6 +163,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 Respuesta= response.respuesta.ToXml(),
                                 Fecha = DateTime.Now,
                         });
+
                     Log.Debug("Baja de ctg {0} procesada correctamente", comando.Dto.NroCartaPorte);
                 }
                 else
@@ -180,10 +181,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "No se pudo hacer la baja de CTG del codigo {0}", comando.Dto.NroCartaPorte);
                 resultado.Errores.Add("CodigoDeBaja", Textos.Error_Generico);
             }
-            if (!resultado.HayErrores)
-            {
-                Repositorio.GuardarCambios();
-            }
+
+           Repositorio.Agregar(
+              new BajaCTG
+              {
+                  CartaPorte = Repositorio.Obtener<Dominio.Entidades.CartaPorte>(comando.Dto.Id),
+                  CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorConfirmacionArribo" : null,
+                  Fecha = DateTime.Now,
+                  WorkflowId = comando.WorkflowId
+              });
+
+            Repositorio.GuardarCambios();
+
             return resultado;
         }
 
