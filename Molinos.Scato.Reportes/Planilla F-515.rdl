@@ -109,6 +109,7 @@ SET		@FechaSalidaDesdep = @FechaSalidaDesde
 SET		@FechaSalidaHastap = @FechaSalidaHasta
 SET		@Patentep = @Patente
 SET		@Usuariop = @Usuario
+SET		@Materialp = @Material
 SET		@RecorridosActivosp = @RecorridosActivos
 SET		@NivelDeDetallep = @NivelDeDetalle
 SET		@TipoVehiculop = @TipoVehiculo
@@ -116,7 +117,6 @@ SET		@Workflowp = @Workflow
 SET		@BalanzaBrutop = @BalanzaBruto
 SET		@BalanzaTarap =@BalanzaTara
 SET		@CentroIdp = @CentroId
-SET		@Materialp = @Material
 SET		@TipoPesadap = @TipoPesada
 SET		@TipoComercialp = @TipoComercial
 SET		@TitularCPp = @TitularCP
@@ -210,7 +210,7 @@ AND (Recorrido.Workflow_Id = @Workflowp or @Workflowp = 0)
 AND (Recorrido.balanzabruto_id = @BalanzaBrutop or @BalanzaBrutop = 0)
 AND (Recorrido.balanzatara_id = @BalanzaTarap or @BalanzaTarap = 0)
 AND (Recorrido.centro_id = @CentroIdp or @CentroIdp = 0)
-AND (Recorrido.material_id = @Materialp or @Materialp = 0)
+AND ((@Materialp = -1 AND Material.Esgrano = 1) OR (@Materialp = -2 AND Material.EsGrano = 0 AND Material.EsInsumo = 0) OR (@Materialp = -3 AND Material.EsInsumo = 1) OR (@Materialp = Recorrido.Material_Id) OR (@Materialp = 0))
 AND (tp2.Id = @TipoPesadap or @TipoPesadap = -1)
 
 AND (Recorrido.TipoComercial_Id = @TipoComercialp or @TipoComercialp = 0)

@@ -1,0 +1,13 @@
+﻿<div class="row" style="display:flex; justify-content:end;">
+    <div class="input-sm">
+        <input data-bind="value: PatenteBuscada, valueUpdate: 'afterkeydown'" class="form-control" type="text" placeholder="Buscar Patente" aria-label="Buscar Patente" oninput="this.value = this.value.toUpperCase()">
+    </div>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist" data-bind="foreach: Calles">
+        <li class="nav-item tagmaterial">
+            <div class="nav-link nav-material" data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }">
+                <span data-bind="text: CalleDesc"></span>(<strong data-bind="text: Camiones.length"></strong>)
+            </div>
+        </li>
+    </ul>
+</div>

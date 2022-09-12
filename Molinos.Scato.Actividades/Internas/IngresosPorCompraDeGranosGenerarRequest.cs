@@ -1,3 +1,9 @@
+using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Helpers;
+using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.ServiciosSap;
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -5,12 +11,6 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
-using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.ServiciosSap;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -18,32 +18,46 @@ namespace Molinos.Scato.Actividades.Internas
     {
         [RequiredArgument]
         public InArgument<CartaPorteDto> CartaPorte { get; set; }
+
         [RequiredArgument]
         public InArgument<CaladoDto> Calado { get; set; }
+
         [RequiredArgument]
         public InArgument<VehiculoDto> Vehiculo { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaEgreso { get; set; }
+
         [RequiredArgument]
         public InArgument<int> PesoTara { get; set; }
+
         [RequiredArgument]
         public InArgument<int> PesoBruto { get; set; }
+
         [RequiredArgument]
         public InArgument<int> PesoNeto { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaPesoTara { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaPesoBruto { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaPesoNeto { get; set; }
+
         [RequiredArgument]
         public InArgument<int> CamaraId { get; set; }
+
         [RequiredArgument]
         public InArgument<bool> CamionRechazado { get; set; }
+
         [RequiredArgument]
         public InArgument<int> CentroId { get; set; }
+
         [RequiredArgument]
         public InArgument<Guid> InstanceId { get; set; }
+
         public OutArgument<Resultado> ResultadoRequest { get; set; }
         public OutArgument<Fill_Z1000Request> Request { get; set; }
         public OutArgument<Resultado> Resultado { get; set; }
@@ -88,8 +102,8 @@ namespace Molinos.Scato.Actividades.Internas
                 calado = srvRepositorio.ObtenerCaladoPorGuid(instanceId);
                 var carAnalizadas = srvRepositorio.ObtenerAnalisisDeCalidadPorCaladoId(calado.Id);
                 var material = srvRepositorio.ObtenerMaterialPorCentro(centro.Id, cartaPorte.MaterialId);
-                var caracteristicasDeCAlidad = srvRepositorio.ListarCaracteristicasDeCalidadPorMaterial(cartaPorte.MaterialId,centro.Id);
-                var kilosNetosDescontados = pesoNeto - srvRepositorio.TotalKilosDescuentos(calado, carAnalizadas, pesoNeto);
+                var caracteristicasDeCAlidad = srvRepositorio.ListarCaracteristicasDeCalidadPorMaterial(cartaPorte.MaterialId, centro.Id);
+                var kilosNetosDescontados = decimal.Round(pesoNeto, MidpointRounding.AwayFromZero) - decimal.Round(srvRepositorio.TotalKilosDescuentos(calado, carAnalizadas, pesoNeto), MidpointRounding.AwayFromZero);
                 var random = srvRepositorio.ObtenerNumeroAleatorio();
 
                 var firmasCuit = srvRepositorio.ListarCuitfirmas();
@@ -98,14 +112,14 @@ namespace Molinos.Scato.Actividades.Internas
                 var muestraEnvioACamara = srvRepositorio.ObtenerUltimaMuestraEnvioACamaraPorCaladoId(calado.Id);
                 var chofer = cartaPorte.Chofer.Apellido + " " + cartaPorte.Chofer.Nombre;
                 var cuitDestinatario = cartaPorte?.DestinatarioCuil != null ? cartaPorte.DestinatarioCuil?.Replace("-", "") : string.Empty;
-                var clasificacion = string.IsNullOrEmpty( cartaPorte?.TipoCategoria) ? string.Empty : cartaPorte?.TipoCategoria;
+                var clasificacion = string.IsNullOrEmpty(cartaPorte?.TipoCategoria) ? string.Empty : cartaPorte?.TipoCategoria;
 
                 if (muestraEnvioACamara != null)
                 {
                     muestraEnvioACamara.TieneAnalisisInterno = tieneAnalisisInterno;
                     servicioComandos.Ejecutar(new ModificarEnvioACamara() { Dto = muestraEnvioACamara });
                 }
-                
+
                 var destinatarioCTG = srvRepositorio.ObtenerDestinatarioCTGporGuid(instanceId);
                 var codigoSAPMOA = "71511877";
                 var codigoSAPMRP = "9950085862";
@@ -132,16 +146,55 @@ namespace Molinos.Scato.Actividades.Internas
                 var esProductor = clasificacion.ToUpper().Trim().Equals("PRODUCTOR");
                 var esOperador = clasificacion.ToUpper().Trim().Equals("OPERADOR");
 
-              if (!esDestinatarioMOA)
+                if (!esDestinatarioMOA)
                 {
                     corredorSAP = string.Empty;
-                } else
+                }
+                else
+                {
+                    if (esProductor)
                     {
-                        if(esProductor)
+                        if (string.IsNullOrEmpty(remitentesDeVentaComercial))
+                        {
+                            if (!string.IsNullOrEmpty(cartaPorte.CorredorCodigoSap))
+                            {
+                                corredorSAP = cartaPorte.CorredorCodigoSap;
+                            }
+                            else
+                            {
+                                corredorSAP = string.Empty;
+                            }
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(cartaPorte.CorredorVendedorSecundarioCodigoSap))
+                            {
+                                corredorSAP = cartaPorte.CorredorVendedorSecundarioCodigoSap;
+                            }
+                            else
+                            {
+                                corredorSAP = string.Empty;
+                            }
+                        }
+                    }
+                    else if (esOperador)
+                    {
+                        if (string.IsNullOrEmpty(cartaPorte.IntermediarioCodigoSap))
+                        {
+                            if (!string.IsNullOrEmpty(cartaPorte.CorredorVendedorSecundarioCodigoSap))
+                            {
+                                corredorSAP = cartaPorte.CorredorVendedorSecundarioCodigoSap;
+                            }
+                            else
+                            {
+                                corredorSAP = string.Empty;
+                            }
+                        }
+                        else
                         {
                             if (string.IsNullOrEmpty(remitentesDeVentaComercial))
                             {
-                                if(!string.IsNullOrEmpty(cartaPorte.CorredorCodigoSap))
+                                if (!string.IsNullOrEmpty(cartaPorte.CorredorCodigoSap))
                                 {
                                     corredorSAP = cartaPorte.CorredorCodigoSap;
                                 }
@@ -149,7 +202,6 @@ namespace Molinos.Scato.Actividades.Internas
                                 {
                                     corredorSAP = string.Empty;
                                 }
-
                             }
                             else
                             {
@@ -162,47 +214,9 @@ namespace Molinos.Scato.Actividades.Internas
                                     corredorSAP = string.Empty;
                                 }
                             }
-
-                        } else if(esOperador)
-                        {
-                            if (string.IsNullOrEmpty(cartaPorte.IntermediarioCodigoSap))
-                            {
-                                if(!string.IsNullOrEmpty(cartaPorte.CorredorVendedorSecundarioCodigoSap))
-                                {
-                                    corredorSAP = cartaPorte.CorredorVendedorSecundarioCodigoSap;
-                                }
-                                else
-                                {
-                                    corredorSAP = string.Empty;
-                                }
-                            } else
-                            {
-                                if (string.IsNullOrEmpty(remitentesDeVentaComercial))
-                                {
-                                    if (!string.IsNullOrEmpty(cartaPorte.CorredorCodigoSap))
-                                    {
-                                        corredorSAP = cartaPorte.CorredorCodigoSap;
-                                    }
-                                    else
-                                    {
-                                        corredorSAP = string.Empty;
-                                    }
-
-                                }
-                                else
-                                {
-                                    if (!string.IsNullOrEmpty(cartaPorte.CorredorVendedorSecundarioCodigoSap))
-                                    {
-                                        corredorSAP = cartaPorte.CorredorVendedorSecundarioCodigoSap;
-                                    }
-                                    else
-                                    {
-                                        corredorSAP = string.Empty;
-                                    }
-                                }
-                            }
-                        } 
+                        }
                     }
+                }
 
                 var data = new Fill_Z1000
                 {
@@ -255,10 +269,10 @@ namespace Molinos.Scato.Actividades.Internas
                                         TIPODOCHOFER = cartaPorte?.Chofer?.TipoDocumentoIdentidadCodigoSap,
                                         TIPO_COMERCIAL = cartaPorte?.TipoComercialCodigoSap,
                                         TIP_VEHI = cartaPorte?.TipoVehiculo == TipoVehiculo.Tren ? "T" : "C",
-                                        TRANSPORTISTA = cartaPorte?.TransportistaCUIT?.Replace("-", "") ?? string.Empty,
+                                        TRANSPORTISTA = cartaPorte?.IntermediarioFleteCuil?.Replace("-", "") ?? (cartaPorte?.TransportistaCUIT?.Replace("-", "") ?? string.Empty),
                                         VARIEDAD = cartaPorte?.Variedad,
                                         CORREDOR = cartaPorte.Cpe ? string.IsNullOrEmpty(corredorSAP) ? string.Empty : PadProveedor(corredorSAP) : PadProveedor(cartaPorte?.CorredorCodigoSap),
-                                        NETO_DESCONTADO = ((int)decimal.Round(kilosNetosDescontados)).ToString(CultureInfo.InvariantCulture),
+                                        NETO_DESCONTADO = ((int)kilosNetosDescontados).ToString(CultureInfo.InvariantCulture),
                                         CUENTAORDEN = firmasCuit.Any(x => x == cartaPorte.DestinatarioCuil) ? (rtteComercialSAP != null ? PadProveedor(rtteComercialSAP ): string.Empty ): PadProveedor(cartaPorte.DestinatarioCodigoSap),
                                         HORA_BRUTO = fechaPesoBruto.ToString("HHmmss", CultureInfo.InvariantCulture),
                                         HORA_CALADO = calado.FechaCreacion.Value.ToString("HHmmss", CultureInfo.InvariantCulture),
@@ -277,7 +291,7 @@ namespace Molinos.Scato.Actividades.Internas
                                         CUIT_SOLICITANTE = cartaPorte.Cpe ? cartaPorte.TitularCartaPorteCuil?.Replace("-", "") ?? string.Empty : string.Empty //CPE
                                     }
                             },
-                        CuentaYOrden = new[]
+                    CuentaYOrden = new[]
                             {
                                 new ZMPES0180
                                     {
@@ -287,26 +301,25 @@ namespace Molinos.Scato.Actividades.Internas
                                         CUENTA_ORDEN = string.Empty
                                     }
                             }
-                        
-                    };
-       
+                };
+
                 var lista = new List<ZMPES0020>();
 
                 foreach (var cal in calado.CaladosPorCaracteristica.Where(x => x.EnviaASap).ToList())
                 {
                     lista.Add(new ZMPES0020
-                        {
-                            CARACTERISTICA = cal.CaracteristicaCodigoSap,
-                            DESCKILOS = cal.DescuentoEnKg.ToString(CultureInfo.InvariantCulture),
-                            DESCPORC = cal.DescuentoEnPorcentaje.ToString(CultureInfo.InvariantCulture),
-                            ENTRADA_O_SALIDA = cartaPorte.TipoComercialSentido,
-                            NUMCARPOR = cartaPorte.NroCartaPorteSAP, //CPE
-                            SECUENCIA = cartaPorte.Cpe ? cartaPorte.SecuenciaSap : vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture), //CPE
-                            TIPO_MUEST = cal.TipoDeAnalisis == TipoAnalisis.Calado ? "C" : "I",
-                            RESULTADO = cal.ValorCalado.HasValue ? cal.ValorCalado.Value.ToString(CultureInfo.InvariantCulture) : null
-                        });
+                    {
+                        CARACTERISTICA = cal.CaracteristicaCodigoSap,
+                        DESCKILOS = cal.DescuentoEnKg.ToString(CultureInfo.InvariantCulture),
+                        DESCPORC = cal.DescuentoEnPorcentaje.ToString(CultureInfo.InvariantCulture),
+                        ENTRADA_O_SALIDA = cartaPorte.TipoComercialSentido,
+                        NUMCARPOR = cartaPorte.NroCartaPorteSAP, //CPE
+                        SECUENCIA = cartaPorte.Cpe ? cartaPorte.SecuenciaSap : vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture), //CPE
+                        TIPO_MUEST = cal.TipoDeAnalisis == TipoAnalisis.Calado ? "C" : "I",
+                        RESULTADO = cal.ValorCalado.HasValue ? cal.ValorCalado.Value.ToString(CultureInfo.InvariantCulture) : null
+                    });
                 }
-                
+
                 if (carAnalizadas != null)
                 {
                     foreach (var ana in carAnalizadas.CaracteristicasAnalizadas.Where(x => x.EnviaASap).ToList())
@@ -321,21 +334,20 @@ namespace Molinos.Scato.Actividades.Internas
                                 caracteristica.TIPO_MUEST = ana.TipoDeAnalisis == TipoAnalisis.Calado ? "C" : "I";
                                 caracteristica.RESULTADO = ana.ValorAnalisis.Value.ToString(CultureInfo.InvariantCulture);
                             }
-                                
                         }
                         else
                         {
                             lista.Add(new ZMPES0020
-                                {
-                                    CARACTERISTICA = ana.CaracteristicaCodigoSap,
-                                    DESCKILOS = ana.DescuentoEnKg.ToString(CultureInfo.InvariantCulture),
-                                    DESCPORC = ana.DescuentoEnPorcentaje.ToString(CultureInfo.InvariantCulture),
-                                    ENTRADA_O_SALIDA = cartaPorte.TipoComercialSentido,
-                                    NUMCARPOR = cartaPorte.NroCartaPorteSAP, //CPE
-                                    SECUENCIA = cartaPorte.Cpe ? cartaPorte.SecuenciaSap : vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture), //CPE
+                            {
+                                CARACTERISTICA = ana.CaracteristicaCodigoSap,
+                                DESCKILOS = ana.DescuentoEnKg.ToString(CultureInfo.InvariantCulture),
+                                DESCPORC = ana.DescuentoEnPorcentaje.ToString(CultureInfo.InvariantCulture),
+                                ENTRADA_O_SALIDA = cartaPorte.TipoComercialSentido,
+                                NUMCARPOR = cartaPorte.NroCartaPorteSAP, //CPE
+                                SECUENCIA = cartaPorte.Cpe ? cartaPorte.SecuenciaSap : vehiculo.NumeroVehiculo.ToString(CultureInfo.InvariantCulture), //CPE
                                 TIPO_MUEST = ana.TipoDeAnalisis == TipoAnalisis.Calado ? "C" : "I",
-                                    RESULTADO = ana.ValorAnalisis.HasValue ? ana.ValorAnalisis.Value.ToString(CultureInfo.InvariantCulture) : null
-                                });
+                                RESULTADO = ana.ValorAnalisis.HasValue ? ana.ValorAnalisis.Value.ToString(CultureInfo.InvariantCulture) : null
+                            });
                         }
                     }
                 }
@@ -357,7 +369,6 @@ namespace Molinos.Scato.Actividades.Internas
                                 TIPO_MUEST = "I",
                                 RESULTADO = "0"
                             });
-
                         }
                     }
                 }
@@ -366,50 +377,50 @@ namespace Molinos.Scato.Actividades.Internas
                 {
                     var CTGAfip =
                         new ZMPES0510
-                            {
-                                CANJEREMITCOM = destinatarioCTG.CanjeRemito,
-                                CCPP = destinatarioCTG.NumeroCCPP,
-                                COSECHA = cartaPorteElectronica != null && cartaPorteElectronica.Cosecha.HasValue ? cartaPorteElectronica.Cosecha.Value.ToString().Insert(2, "-") : destinatarioCTG.Cosecha,
-                                CTG = destinatarioCTG.CTG,
-                                CUIT_CANJEADOR = destinatarioCTG.CuitCanjeador,
-                                CUIT_DESTINATARI = destinatarioCTG.CuitDestinatario,
-                                CUIT_DESTINO = destinatarioCTG.CuitDestino,
-                                ESPECIE = destinatarioCTG.Especie,
-                                ESTABLECIMIENTO = destinatarioCTG.Establecimiento,
-                                ESTADO = destinatarioCTG.Estado,
-                                FE_HR_CONF = destinatarioCTG.FechaConf,
-                                PESO_NETO_CARGA = destinatarioCTG.PesoNetoCarga,
-                                SOLICITANTE = destinatarioCTG.Solicitante,
-                                COD_CUPO = destinatarioCTG.Cupo
-                            };
+                        {
+                            CANJEREMITCOM = destinatarioCTG.CanjeRemito,
+                            CCPP = destinatarioCTG.NumeroCCPP,
+                            COSECHA = cartaPorteElectronica != null && cartaPorteElectronica.Cosecha.HasValue ? cartaPorteElectronica.Cosecha.Value.ToString().Insert(2, "-") : destinatarioCTG.Cosecha,
+                            CTG = destinatarioCTG.CTG,
+                            CUIT_CANJEADOR = destinatarioCTG.CuitCanjeador,
+                            CUIT_DESTINATARI = destinatarioCTG.CuitDestinatario,
+                            CUIT_DESTINO = destinatarioCTG.CuitDestino,
+                            ESPECIE = destinatarioCTG.Especie,
+                            ESTABLECIMIENTO = destinatarioCTG.Establecimiento,
+                            ESTADO = destinatarioCTG.Estado,
+                            FE_HR_CONF = destinatarioCTG.FechaConf,
+                            PESO_NETO_CARGA = destinatarioCTG.PesoNetoCarga,
+                            SOLICITANTE = destinatarioCTG.Solicitante,
+                            COD_CUPO = destinatarioCTG.Cupo
+                        };
 
                     data.CTGAfip = new[]
                         {
                             CTGAfip
                         };
                 }
-                else if(cartaPorte.Cpe)
+                else if (cartaPorte.Cpe)
                 {
                     //Detalle de CTG
                     var bajaCTG = srvRepositorio.ObtenerBajaCTG(cartaPorte.Id);
-                        var CTGAfip = 
-                             new ZMPES0510
-                             {
-                                 CANJEREMITCOM = string.Empty,
-                                 CCPP = cartaPorte.CpeSap,
-                                 COSECHA = cartaPorteElectronica != null && cartaPorteElectronica.Cosecha.HasValue ? cartaPorteElectronica.Cosecha.Value.ToString().Insert(2, "-") : cartaPorte?.Cosecha,
-                                 CTG = cartaPorte.NroCartaPorte.PadLeft(12, '0'), 
-                                 CUIT_CANJEADOR = cartaPorte.RtteComercialVentaSecundario2Cuil?.Replace("-", ""),
-                                 CUIT_DESTINATARI =cartaPorte.DestinatarioCuil?.Replace("-", ""),
-                                 CUIT_DESTINO = cartaPorte.DestinoCuit?.Replace("-", ""),
-                                 ESPECIE = cartaPorte?.MaterialCodigoSap,
-                                 ESTABLECIMIENTO =cartaPorte.CodEstab,
-                                 ESTADO =!string.IsNullOrEmpty(bajaCTG?.CodigoDeBaja) && string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmado" : (! string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmación Definitiva" : "Activo"), 
-                                 FE_HR_CONF =fechaEgreso != null ? fechaEgreso.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) : string.Empty,
-                                 PESO_NETO_CARGA = pesoNeto,
-                                 SOLICITANTE = cartaPorte.TitularCartaPorteCuil?.Replace("-", ""),
-                                 COD_CUPO = cartaPorte.Cupo
-                             };
+                    var CTGAfip =
+                         new ZMPES0510
+                         {
+                             CANJEREMITCOM = string.Empty,
+                             CCPP = cartaPorte.CpeSap,
+                             COSECHA = cartaPorteElectronica != null && cartaPorteElectronica.Cosecha.HasValue ? cartaPorteElectronica.Cosecha.Value.ToString().Insert(2, "-") : cartaPorte?.Cosecha,
+                             CTG = cartaPorte.NroCartaPorte.PadLeft(12, '0'),
+                             CUIT_CANJEADOR = cartaPorte.RtteComercialVentaSecundario2Cuil?.Replace("-", ""),
+                             CUIT_DESTINATARI = cartaPorte.DestinatarioCuil?.Replace("-", ""),
+                             CUIT_DESTINO = cartaPorte.DestinoCuit?.Replace("-", ""),
+                             ESPECIE = cartaPorte?.MaterialCodigoSap,
+                             ESTABLECIMIENTO = cartaPorte.CodEstab,
+                             ESTADO = !string.IsNullOrEmpty(bajaCTG?.CodigoDeBaja) && string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmado" : (!string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmación Definitiva" : "Activo"),
+                             FE_HR_CONF = fechaEgreso != null ? fechaEgreso.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) : string.Empty,
+                             PESO_NETO_CARGA = pesoNeto,
+                             SOLICITANTE = cartaPorte.TitularCartaPorteCuil?.Replace("-", ""),
+                             COD_CUPO = cartaPorte.Cupo
+                         };
 
                     data.CTGAfip = new[]
                         {
@@ -420,10 +431,9 @@ namespace Molinos.Scato.Actividades.Internas
                 {
                     data.CTGAfip = new ZMPES0510[0];
                 }
-                
+
                 data.RecepcionesYDespachosII = lista.ToArray();
                 request = new Fill_Z1000Request(data);
-
 
                 try
                 {
@@ -431,33 +441,31 @@ namespace Molinos.Scato.Actividades.Internas
                     {
                         var srv = context.GetExtension<IServicioComandos>();
                         srv.Ejecutar(new CrearControlRecorrido
+                        {
+                            Dto = new ControlRecorridoDto
                             {
-                                Dto = new ControlRecorridoDto
-                                    {
-                                        Actividad = "IngresosPorCompraDeGranosGenerarRequest",
-                                        Fecha = DateTime.Now,
-                                        Comentario = request.ToXml(),
-                                        NombreUsuario = "",
-                                        WorkflowInstanceId = context.WorkflowInstanceId,
-                                    }
-                            });
+                                Actividad = "IngresosPorCompraDeGranosGenerarRequest",
+                                Fecha = DateTime.Now,
+                                Comentario = request.ToXml(),
+                                NombreUsuario = "",
+                                WorkflowInstanceId = context.WorkflowInstanceId,
+                            }
+                        });
                     }
                 }
                 catch (Exception e)
                 {
                     resultado.Errores.Add("ControlRecorrido", "ULTIMO " + e.Message);
                 }
-                
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("", e.ToString());
-
             }
-            Request.Set(context,request);
+            Request.Set(context, request);
             Resultado.Set(context, resultado);
         }
-        
+
         private string PadProveedor(string codigoSap)
         {
             if (String.IsNullOrEmpty(codigoSap))

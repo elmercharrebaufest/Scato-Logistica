@@ -9926,18 +9926,125 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
         }
+
         public IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase()
         {
             return Listar<MuestraDeInase, MuestraDeInaseDto>(x => !x.MuestraEnviada && !x.Recorrido.Rechazado);
         }
+
         public IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId)
         {
-            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x =>  x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId) );
+            return Listar<ConfiguracionGeneral, ConfiguracionGeneralDto>(x => x.Pantalla == "MuestraInase" && (x.CentroId == null || x.CentroId == centroId));
         }
 
         public List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo()
         {
             return repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP));
+        }
+
+        public Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor, bool limpiarLog)
+        {
+            var resultado = new Resultado();
+            try
+            {
+                log.Info("Se ejecutara el servicio ActualizarDispositivoLog " + codigo + "-" + nombre + "-" + valor);
+                var logDispositivo = repositorio.Obtener<LogDispositivo>(x => x.CodigoDispositivo == codigo && x.NombreLog == nombre);
+                if (logDispositivo == null)
+                {
+                    logDispositivo = new LogDispositivo
+                    {
+                        Id = -1,
+                        CodigoDispositivo = codigo,
+                        NombreLog = nombre,
+                    };
+                    repositorio.Agregar(logDispositivo);
+                }
+                logDispositivo.Fecha = DateTime.Now;
+                var valorAnterior = logDispositivo.ValorActual;
+
+                if (limpiarLog == true)
+                {
+                    logDispositivo.ValorAnterior = null;
+                    logDispositivo.ValorActual = null;
+                }
+                else if (valorAnterior != valor)
+                {
+                    logDispositivo.ValorAnterior = valorAnterior;
+                    logDispositivo.ValorActual = valor;
+                }
+
+                repositorio.GuardarCambios();
+            }
+            catch (Exception e)
+            {
+                resultado.Error("Hubo un error", e.Message);
+            }
+            return resultado;
+        }
+
+        public List<string> ObtenerGruposBarreraEnUso(List<string> codigos)
+        {
+            return repositorio.Listar<PuestoDeTrabajo, string>(x => x.GrupoBarreraCodigo, x => codigos.Contains(x.GrupoBarreraCodigo)).ToList();
+        }
+
+        public List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos)
+        {
+            var respuesta = repositorio.ListarNoTracking<LogDispositivo, LogDispositivoDto>(x => new LogDispositivoDto
+            {
+                Id = x.Id,
+                Fecha = x.Fecha,
+                CodigoDispositivo = x.CodigoDispositivo,
+                NombreLog = x.NombreLog,
+                ValorAnterior = x.ValorAnterior,
+                ValorActual = x.ValorActual,
+            }, x => codigos.Contains(x.CodigoDispositivo)).ToList();
+
+            return respuesta;
+        }
+        
+        public ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion)
+        {
+            Expression<Func<LoteInase, bool>> expresionFiltro;
+            filtro.FechaDesde = filtro.FechaDesde ?? new DateTime(1970, 1, 1);
+            filtro.FechaHasta = filtro.FechaHasta ?? DateTime.MaxValue;
+            if (filtro.LoteId > 0)
+            {
+                expresionFiltro = (x => x.Id == filtro.LoteId);
+            }
+            else if (filtro.NroLote != null)
+            {
+                expresionFiltro = (x => x.NumeroDeLote == filtro.NroLote);
+            }
+            else
+            {
+                expresionFiltro = (x => 
+                    x.Fecha <= filtro.FechaHasta && x.Fecha >= filtro.FechaDesde
+                    && x.Centro.Id == filtro.CentroId);
+            }
+
+            return Listar<LoteInase, LoteInaseDto>(expresionFiltro, paginacion);
+        }
+
+        public ListaPaginada<MuestraDeInaseDto> ListarMuestrasPorLoteInase(int loteId, Paginacion paginacion)
+        {
+            return repositorio.ListarConsultaPaginada(new ListarMuestraDeInaseParaImpresionConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId, paginacion));
+        }
+
+        public string ObtenerNumeroLoteInase(int loteId)
+        {
+            return repositorio.ObtenerProyeccion<LoteInase, string>(x => x.Id == loteId, x => x.NumeroDeLote);
+        }
+
+        public LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId)
+        {
+            var lotedto = repositorio.ObtenerProyeccion<LoteInase, LoteInaseDto>(x => x.Id == loteId, lote => new LoteInaseDto
+            {
+                Id = lote.Id,
+                CentroId = lote.Centro.Id,
+                NumeroDeLote = lote.NumeroDeLote,
+            });
+            lotedto.Muestras = repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId));
+            return lotedto;
         }
     }
 }

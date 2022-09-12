@@ -609,4 +609,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ErrorCacheoAfipCPE" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9b4a874e-e6d9-470b-b6e2-ecb7827dbf91" ChangeDateTime="08/15/2022 20:40:46">
+    <Property Name="ElementName" Value="[dbo].[LogDispositivo].[PuestroDeTrabajo_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogDispositivo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PuestoDeTrabajo_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="290f8694-c1ac-4c87-91c1-71b6f791395e" ChangeDateTime="08/24/2022 15:10:11">
+    <Property Name="ElementName" Value="[dbo].[LogDispositivo].[Valor]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogDispositivo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ValorAnterior" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f014e20f-fb49-4be9-b320-2ea5bc03728f" ChangeDateTime="09/06/2022 20:55:32">
+    <Property Name="ElementName" Value="[dbo].[Material].[Color]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Material]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ColorFondo" />
+  </Operation>
 </Operations>

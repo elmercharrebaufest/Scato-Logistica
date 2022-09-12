@@ -380,6 +380,7 @@
     <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
     <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
+    <Compile Include="Controllers\LoteInaseController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
@@ -2366,6 +2367,10 @@
     <Content Include="Views\ConfiguracionEficienciaCalado\Listar.cshtml" />
     <Content Include="Views\ConfiguracionEficienciaCalado\Modificar.cshtml" />
     <Content Include="Views\ConfiguracionEficienciaCalado\HorarioDeTurno.cshtml" />
+    <Content Include="Views\LoteInase\BuscarLote.cshtml" />
+    <Content Include="Views\LoteInase\Listar.cshtml" />
+    <Content Include="Views\LoteInase\ListarMuestas.cshtml" />
+    <Content Include="Views\LoteInase\Seleccionar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

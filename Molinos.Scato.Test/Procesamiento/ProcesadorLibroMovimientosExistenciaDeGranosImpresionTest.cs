@@ -13,6 +13,7 @@ namespace Molinos.Scato.Test.Procesamiento
     public class ProcesadorLibroMovimientosExistenciaDeGranosImpresionTest
     {
         private ProcesadorImprimirDocumento target;
+        private Mock<IServicioRepositorio> servicioRepositorioMock;
         private Mock<IRepositorio> repositorioMock;
         private Mock<IConversor> conversorMock;
         private Mock<IFirmaProvider> firmaProvider;
@@ -21,12 +22,13 @@ namespace Molinos.Scato.Test.Procesamiento
         [SetUp]
         public void SetUp()
         {
+            servicioRepositorioMock = new Mock<IServicioRepositorio>();
             repositorioMock = new Mock<IRepositorio>();
             conversorMock = new Mock<IConversor>();
             firmaProvider = new Mock<IFirmaProvider>();
             servicioImpresion = new Mock<IServicioImpresion>();
 
-            target = new ProcesadorImprimirDocumento(repositorioMock.Object, conversorMock.Object, new NullLogger(), firmaProvider.Object, servicioImpresion.Object);
+            target = new ProcesadorImprimirDocumento(servicioRepositorioMock.Object, repositorioMock.Object, conversorMock.Object, new NullLogger(), firmaProvider.Object, servicioImpresion.Object);
         }
 
         [Test]

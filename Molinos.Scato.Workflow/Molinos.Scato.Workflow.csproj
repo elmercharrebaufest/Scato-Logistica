@@ -285,6 +285,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ApplicationInsights.config" />
+    <Content Include="ApplicationInsights.QA.config" />
+    <Content Include="ApplicationInsights.PRD.config" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

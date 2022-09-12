@@ -1,0 +1,27 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Helpers;
+@model List<TipoCallePlantaDto>
+
+@{ 
+    var model = Model.Where(c => c.TipoCalle == TipoCalle.PlayaInterna).ToList();
+}
+
+<script>
+    let estadoPlayaInternaDeCallesGranosConfig = {
+        containerId: "playaInterna",
+        tipo: "0",
+        vmData: @Html.Raw(model.ToJson()),
+    };
+
+    let estadoPlayaInternaDeCallesGranosVM = new EstadoPlayaInternaDeCallesVM(estadoPlayaInternaDeCallesGranosConfig);
+
+    $(function () {
+        (estadoPlayaInternaDeCallesGranosVM).onReady();
+    });
+</script>
+
+@Html.Partial("_CallesHeader")
+@Html.Partial("_CallesBody")

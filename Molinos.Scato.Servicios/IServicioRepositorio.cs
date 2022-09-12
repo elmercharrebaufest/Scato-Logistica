@@ -2625,19 +2625,19 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
-        
+
         [OperationContract]
         ConfigSensoresDto ObtenerConfiguracionSensores(int id);
-        
+
         [OperationContract]
-        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion,int centroId);
-        
+        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion, int centroId);
+
         [OperationContract]
         IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
 
         [OperationContract]
         IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId);
-        
+
         [OperationContract]
         List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta);
 
@@ -2655,14 +2655,16 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta);
+
         [OperationContract]
         IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
+
         [OperationContract]
         bool AvanzaCpe(int centroId);
-        
+
         [OperationContract]
         FotoDto ObtenerFotoDescargada(int centroId, string numeroDocumento, string actividad, bool esSustentable);
-        
+
         [OperationContract]
         bool ValidarAltaCTGRepetida(string ctg);
 
@@ -2671,7 +2673,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo);
-        
+
         [OperationContract]
         IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase();
 
@@ -2680,5 +2682,26 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo();
+
+        [OperationContract]
+        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor,bool limpiarLogs);
+
+        [OperationContract]
+        List<string> ObtenerGruposBarreraEnUso(List<string> codigos);
+
+        [OperationContract]
+        List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos);
+        
+        [OperationContract]
+        ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ListaPaginada<MuestraDeInaseDto> ListarMuestrasPorLoteInase(int loteId, Paginacion paginacion);
+
+        [OperationContract]
+        string ObtenerNumeroLoteInase(int loteId);
+
+        [OperationContract]
+        LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId);
     }
 }

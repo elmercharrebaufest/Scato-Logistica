@@ -37,7 +37,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   Rechazado = x.Recorrido.Rechazado,
                                   AsignadoEnPuestoComando = x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
-                                  TipoVehiculo = x.Recorrido.TipoVehiculo
+                                  TipoVehiculo = x.Recorrido.TipoVehiculo,
+                                  ColorFondo = x.Recorrido.Material.ColorFondo,
+                                  ColorTexto = x.Recorrido.Material.ColorTexto
                               }).ToList();
 
             var resultado = new List<CallePorRecorridoDto>();
@@ -59,7 +61,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     TipoCalle = item.TipoCalle,
                     Escalable = item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
-                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE
+                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
+                    ColorFondo = item.ColorFondo,
+                    ColorTexto = item.ColorTexto
                 };
 
                 resultado.Add(callePorRecorrido);
