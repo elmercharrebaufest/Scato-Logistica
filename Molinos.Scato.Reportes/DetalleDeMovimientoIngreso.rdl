@@ -149,6 +149,7 @@ left join (
 			when r.Material_Id = 63746 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Lecitina  de Soja Venta'
 			when r.Material_Id = 63746 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Lecitina de Soja EXPORTACION'
 			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1   and ocif.cliente_id = 60324 then 'Aceite Santa Clara'
+			when r.Material_Id = 63734 and (case when w.Id = 67 or w.Id = 66 then 1 else 0 end) = 1   and ocif.cliente_id = 59498 then 'Aceite Soja Crudo Patagonia Bioenergia'
 			when r.Material_Id = 63734 and (case when w.Id = 65  then 1 else 0 end) = 1  and ocf.Cliente_Id is not null then 'Aceite Venta a 3ros'
 			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1  and ocif.cliente_id &lt;&gt; 60324 then 'Aceite Soja Crudo Retiro Fazon con 3°'
 			else mt.Descripcion end 
@@ -178,6 +179,7 @@ left join (
 	case when w.Id != 220 then 1 else 0 end,
 	case when w.Id = 67  then 1 else 0 end,
 	case when w.Id = 65  then 1 else 0 end,
+	case when w.Id = 67 or w.Id = 66 then 1 else 0 end,
 	ocif.cliente_id, ocf.Cliente_Id)as Datos on Datos.EgresoxD = mt.Descripcion
 where Ingreso = 0
 group by mt.Descripcion, mt.Orden
