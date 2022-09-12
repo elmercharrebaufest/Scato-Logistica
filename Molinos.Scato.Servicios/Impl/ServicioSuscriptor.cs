@@ -59,7 +59,6 @@ namespace Molinos.Scato.Servicios.Impl
                     case "CambioEstadoSensor":
                         estadoPuesto.NotificarSensorBarrera(notificacion);
                         bool estado;
-                        log.Info("CambioEstadoSensor " + notificacion.Datos["Mensaje"]);
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
                             var simularTurnoActivoCircular = configuracion.AppSettings.Get("ActivarCierreAutomaticoDeBarrera");
