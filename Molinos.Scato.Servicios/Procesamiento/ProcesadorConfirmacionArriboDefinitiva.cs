@@ -280,7 +280,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         }
 
         private void UpdateBajaCTGDefinitiva(Guid workFlowId) {
-            var bajaCtg = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == workFlowId);
+            var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == workFlowId, x => x.Fecha);
             if (bajaCtg != null)
             {
                 if(string.IsNullOrEmpty(bajaCtg.CodigoDeBajaDefinitivo))

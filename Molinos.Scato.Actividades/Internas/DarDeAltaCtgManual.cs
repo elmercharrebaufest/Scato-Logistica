@@ -35,7 +35,7 @@ namespace Molinos.Scato.Actividades.Internas
                         CartaPorteId = orden.Id,
                         CodigoCTG = codigoCTG.Trim(),
                         TarifaReferencia = tarifaReferencia,
-                        Fecha = DateTime.UtcNow,
+                        Fecha = DateTime.Now,
                         WorkflowId = workflowId,
                         Sucursal = sucursal.Trim(),
                         NroOrden = nroOrden.Trim(),

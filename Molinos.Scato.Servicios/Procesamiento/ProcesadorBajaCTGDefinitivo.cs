@@ -99,7 +99,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 else
                 {
                     //Si no hay errores, registro la baja del CTG
-                    var bajaCtg = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == comando.WorkflowId);
+                    var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == comando.WorkflowId, x => x.Fecha);
                     if (bajaCtg != null)
                     {
                         bajaCtg.CodigoDeBajaDefinitivo = response.response != null ? response.response.detalle : response.ToString();

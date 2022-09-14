@@ -181,7 +181,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "No se pudo hacer la baja de CTG del codigo {0}", comando.Dto.NroCartaPorte);
                 resultado.Errores.Add("CodigoDeBaja", Textos.Error_Generico);
             }
-            var bajaCtg = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == comando.WorkflowId);
+            var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == comando.WorkflowId, x => x.Fecha);
             if (bajaCtg == null)
             {
                 Repositorio.Agregar(

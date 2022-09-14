@@ -17,18 +17,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override BajaCTG CrearEntidad(CrearBajaCTG comando)
         {
-            var baja = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == comando.Dto.WorkflowId);
-
-            if (baja == null)
-            {
-                baja = Conversor.Convertir<BajaCTGDto, BajaCTG>(comando.Dto);
-            }
-            else
-            {
-                baja.CodigoDeBaja = comando.Dto.CodigoDeBaja;
-                baja.Fecha = DateTime.Now;
-            }
-
+            var baja = Conversor.Convertir<BajaCTGDto, BajaCTG>(comando.Dto);
             baja.CartaPorte = Repositorio.Obtener<CartaPorte>(x => x.Id == comando.Dto.CartaPorteId);
             return baja;
         }
