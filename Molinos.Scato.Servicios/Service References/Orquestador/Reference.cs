@@ -2101,12 +2101,22 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arreraResponse")]
-        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarrera(string codigoSegundoCruce);
+        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigoGrupoBarrera);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
             "arreraResponse")]
-        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraAsync(string codigoSegundoCruce);
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigoGrupoBarrera);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruce", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruceResponse")]
+        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarreraPorSegundoCruce(string codigoSegundoCruce);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruce", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruceResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(string codigoSegundoCruce);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
             "e")]
@@ -2392,12 +2402,20 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.ListarTagsAsync();
         }
         
-        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarrera(string codigoSegundoCruce) {
-            return base.Channel.ObtenerConfiguracionGrupoBarrera(codigoSegundoCruce);
+        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigoGrupoBarrera) {
+            return base.Channel.ObtenerConfiguracionGrupoBarrera(codigoGrupoBarrera);
         }
         
-        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraAsync(string codigoSegundoCruce) {
-            return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigoSegundoCruce);
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigoGrupoBarrera) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigoGrupoBarrera);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarreraPorSegundoCruce(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(codigoSegundoCruce);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(codigoSegundoCruce);
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera() {

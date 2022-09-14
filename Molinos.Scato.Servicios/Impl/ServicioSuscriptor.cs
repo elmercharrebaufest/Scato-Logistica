@@ -122,7 +122,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void EjecutarCierreDeBarreraAutomatica(string codigoSensor)
         {
-            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarrera(codigoSensor);
+            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(codigoSensor);
 
             if (configuraciones.Length == 0)
                 return;
