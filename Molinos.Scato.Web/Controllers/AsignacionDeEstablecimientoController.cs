@@ -146,7 +146,11 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (codigoEstablecimiento > Constantes.AsignacionDeEstablecimientoRangos.Desde && codigoEstablecimiento < Constantes.AsignacionDeEstablecimientoRangos.Hasta)
                 {
-                    return Json(true, JsonRequestBehavior.AllowGet);
+                    return Json(new
+                    {
+                        establecimientoEsIgualAProcedencia = true,
+                        errorMessage = string.Empty
+                    }, JsonRequestBehavior.AllowGet);
                 }
             }            
 
