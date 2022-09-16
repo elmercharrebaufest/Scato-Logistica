@@ -79,61 +79,24 @@
 
 					let isDateTime = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha/Hora") !== -1;
 					let isDate = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha") !== -1;
-
-					let elemVal = element.value;
-					if (elemVal != null && elemVal != "") {
-						if (!isValidDate(elemVal)) {
-							let newElemVal = "";
-
-							if (isDateTime)
-								newElemVal = changeDateTimeFormat(elemVal, true);
-							else if (isDate)
-								newElemVal = changeDateTimeFormat(elemVal, false);
-
-							element.value = newElemVal;
-						}
+					
+					if (isDateTime) {
+						$('#' + element.id).datetimepicker({
+							format: 'dd/mm/yyyy hh:ii:ss',
+							autoclose: true,
+						});
+					} else if (isDate) {
+						$('#' + element.id).datetimepicker({
+							format: 'dd/mm/yyyy 00:00:00',
+							autoclose: true,
+							minView: 2
+						});
 					}
 
-					if (isDateTime)
-						element.type = "datetime-local";
-					else if (isDate)
-						element.type = "date";
-
+					$('#' + element.id).attr("placeholder", "dd/mm/aaaa hh:mm:ss");
+					$('#' + element.id).attr("readonly", "readonly");
+					$('#' + element.id).attr("autocomplete", "off");
 				});
-			}
-
-			function isValidDate(dateString) {
-				let regEx = /^\d{4}-\d{2}-\d{2}$/;
-				if (!dateString.match(regEx)) return false;
-				let d = new Date(dateString);
-				let dNum = d.getTime();
-				if (!dNum && dNum !== 0) return false;
-				return d.toISOString().slice(0, 10) === dateString;
-			}
-
-			function changeDateTimeFormat(date, showTime) {
-				var dateTimeArray = date.split(" ");
-				var newDate = dateTimeArray[0];
-				var newTime = "";
-				if (dateTimeArray.length > 1 && showTime === true) {
-					var timeArray = dateTimeArray[1].split(":");
-					newTime = " " + timeArray[0] + ":" + timeArray[1];
-				}
-				let dateArray = newDate.split('/');
-
-				for (var i = 0; i < dateArray.length; i++) {
-					if (dateArray[i].length < 2) {
-						dateArray[i] = "0" + dateArray[i];
-					}
-				}
-				if (dateArray.length > 1) {
-					const [day, month, year] = dateArray;
-					const result = [year, month, day].join('-');
-					return result + newTime;
-				} else {
-					return date;
-				}
-
 			}
 		}
 	});
