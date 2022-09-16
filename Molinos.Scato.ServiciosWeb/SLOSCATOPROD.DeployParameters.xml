@@ -5,7 +5,7 @@
 
   <setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
   <setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gvicsapa3.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://sapprgap.molinosagro.ad:8080/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
   <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
   <!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoor.molinos.com.ar:8081/ServicioOrquestador" />-->
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
