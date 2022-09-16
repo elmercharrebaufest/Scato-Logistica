@@ -6,7 +6,7 @@
   <setParameter name="ServicioComandos Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
   <setParameter name="FirmaProvider Service Endpoint Address" value="http://localhost/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
   <setParameter name="ServicioNotificarUsuario Service Endpoint Address" value="http://localhost/Scato.web/ServicioHub/ServicioNotificarUsuario.svc" />
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gvicsapa3.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://sapprgap.molinosagro.ad:8080/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
    <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="UrlBaseWorkflow Config" value="http://localhost/Scato.workflow/xaml/" />
   <setParameter name="Impresora Key" value="\\vicfsp02\PVicSiste010" />
