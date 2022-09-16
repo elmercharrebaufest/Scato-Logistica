@@ -10,7 +10,7 @@
     <script type="text/javascript" src="https://scato.molinosagro.com.ar/Scato.web/Scripts/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="https://scato.molinosagro.com.ar/Scato.web/Scripts/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="https://scato.molinosagro.com.ar/Scato.web/Scripts/bootstrap-datetimepicker.js"></script>
-	<type="text/css" href="https://scato.molinosagro.com.ar/Scato.web/Content/bootstrap-datetimepicker.css" rel="stylesheet"/>
+	<link type="text/css" href="https://scato.molinosagro.com.ar/Scato.web/Content/bootstrap-datetimepicker.css" rel="stylesheet"/>
 </head>
 <body>
     <form id="reportForm" runat="server">
