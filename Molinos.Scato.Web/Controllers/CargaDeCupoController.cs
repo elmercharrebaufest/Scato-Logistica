@@ -389,7 +389,7 @@ namespace Molinos.Scato.Web.Controllers
                             IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = cupo } }
                         }
                     });
-
+                    log.Debug(response.ToXml());
                     var respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
 
                     if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && codigosDeCentroSap.Length > 1)
