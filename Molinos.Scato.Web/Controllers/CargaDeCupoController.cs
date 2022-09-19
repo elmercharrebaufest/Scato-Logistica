@@ -391,7 +391,6 @@ namespace Molinos.Scato.Web.Controllers
                     });
                     log.Debug(response.ToXml());
                     var respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
-
                     if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && codigosDeCentroSap.Length > 1)
                     {
                         response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
