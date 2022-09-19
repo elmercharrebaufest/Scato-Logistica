@@ -2,89 +2,86 @@
 
 @model Molinos.Scato.Dominio.Dto.InfoPatenteDeCalleDto
 
-@if (Model.TipoCalle == TipoCalle.EnTransito || Model.TipoCalle == TipoCalle.PlantaNoGranos || Model.TipoCalle == TipoCalle.SalidaNoGranos)
-{
-    <div id="modal-rechazo-mover" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Información del Vehiculo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="dialogo-confirmar-body">
-                    <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
-                        <legend class="reset-this redo-legend">Información</legend>
-                        <div class="row">
-                            <div class="control-group col-4">
-                                @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
-                                <div id="div-patente" class="controls">
-                                    @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
-                                </div>
-                            </div>
-                            <div id="div-nomchofer" class="control-group col-4">
-                                @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
-                                <div class="controls">
-                                    @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
-                                </div>
-                            </div>
-                            <div id="div-cartaporte" class="control-group col-4">
-                                @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
-                                <div class="controls">
-                                    @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
-                                </div>
+<div id="modal-rechazo-mover" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Información del Vehiculo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="dialogo-confirmar-body">
+                <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                    <legend class="reset-this redo-legend">Información</legend>
+                    <div class="row">
+                        <div class="control-group col-4">
+                            @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                            <div id="div-patente" class="controls">
+                                @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
                             </div>
                         </div>
-                        <hr />
-                        <div class="row">
-                            <div class="control-group col-4">
-                                @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
-                                <div id="div-patente" class="controls">
-                                    @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
-                                </div>
-                            </div>
-                            <div id="div-nomchofer" class="control-group col-4">
-                                @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
-                                <div class="controls">
-                                    @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
-                                </div>
-                            </div>
-                            <div id="div-cartaporte" class="control-group col-4">
-                                @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
-                                <div class="controls">
-                                    @{var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");}
-                                    @Html.DisplayFor(model => fecha, new { @class = "input-large" })
-                                </div>
+                        <div id="div-nomchofer" class="control-group col-4">
+                            @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
                             </div>
                         </div>
-                        <hr />
-                        <div class="row">
-                            <div class="control-group col-4">
-                                @Html.LabelFor(model => model.Material, new { @class = "control-label" })
-                                <div id="div-patente" class="controls">
-                                    @Html.DisplayFor(model => model.Material, new { @class = "input-medium" })
-                                </div>
-                            </div>
-                            <div id="div-nomchofer" class="control-group col-4">
-                                @Html.LabelFor(model => model.NombreWorkflow, new { @class = "control-label" })
-                                <div class="controls">
-                                    @Html.DisplayFor(model => model.NombreWorkflow, new { @class = "input-large" })
-                                </div>
-                            </div>
-                            <div id="div-nomchofer" class="control-group col-4">
-                                @Html.LabelFor(model => model.Cliente, new { @class = "control-label" })
-                                <div class="controls">
-                                    @Html.DisplayFor(model => model.Cliente, new { @class = "input-large" })
-                                </div>
+                        <div id="div-cartaporte" class="control-group col-4">
+                            @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
                             </div>
                         </div>
-                    </fieldset>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="control-group col-4">
+                            @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
+                            <div id="div-patente" class="controls">
+                                @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                            </div>
+                        </div>
+                        <div id="div-nomchofer" class="control-group col-4">
+                            @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
+                            </div>
+                        </div>
+                        <div id="div-cartaporte" class="control-group col-4">
+                            @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
+                            <div class="controls">
+                                @{var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");}
+                                @Html.DisplayFor(model => fecha, new { @class = "input-large" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="control-group col-4">
+                            @Html.LabelFor(model => model.Material, new { @class = "control-label" })
+                            <div id="div-patente" class="controls">
+                                @Html.DisplayFor(model => model.Material, new { @class = "input-medium" })
+                            </div>
+                        </div>
+                        <div id="div-nomchofer" class="control-group col-4">
+                            @Html.LabelFor(model => model.NombreWorkflow, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.NombreWorkflow, new { @class = "input-large" })
+                            </div>
+                        </div>
+                        <div id="div-nomchofer" class="control-group col-4">
+                            @Html.LabelFor(model => model.Cliente, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Cliente, new { @class = "input-large" })
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
-}
+</div>

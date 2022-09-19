@@ -1,7 +1,5 @@
-﻿<div class="row" style="display:flex; justify-content:end;">
-    <div class="input-sm">
-        <input data-bind="value: PatenteBuscada, valueUpdate: 'afterkeydown'" class="form-control" type="text" placeholder="Buscar Patente" aria-label="Buscar Patente" oninput="this.value = this.value.toUpperCase()">
-    </div>
+﻿
+    @Html.Partial("_BuscadorPatente")
 
     <ul class="nav nav-tabs" id="myTab" role="tablist" data-bind="foreach: Calles">
         <li class="nav-item tagmaterial">
@@ -10,4 +8,3 @@
             </div>
         </li>
     </ul>
-</div>
