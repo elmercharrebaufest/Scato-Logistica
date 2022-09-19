@@ -46,8 +46,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos);
-            var materiales = camiones.Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos)
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos || x.TipoCalle == TipoCalle.EsperaAduanaNoGranos);
+            var materiales = camiones.Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos || x.TipoCalle == TipoCalle.EsperaAduanaNoGranos)
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0);
 
@@ -81,7 +81,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => (x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => (x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos || x.TipoCalle == TipoCalle.EsperaAduanaNoGranos) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
             var tipoCallePlantaLista = new List<TipoCallePlantaDto>();
 
             foreach (var calle in calles)

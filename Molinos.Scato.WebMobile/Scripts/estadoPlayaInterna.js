@@ -15,23 +15,17 @@ EstadoPlayaInternaDeCallesVM.prototype = {
     },
     init: function () {
         let self = this;
-        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle), $("#" + self.containerId)[0]);
+        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle, self.containerId), $("#" + self.containerId)[0]);
     }
 }
 
-function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
+function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,containerId) {
     var self = this;
     self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
-    let calles = [];
-    // Agregar calles al array
-    $.each(tiposCallesPlanta, function (indexTipoCallePlanta, tipoCallePlanta) {
-        $.each(tipoCallePlanta.Calles, function (indexCalle, calle) {
-            calles.push(calle);
-        })
-    })
 
-    self.Calles(calles);
+    let callesOrdenadas = reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, null);
+    self.Calles(callesOrdenadas);
 
     self.TiempoEnCola = function (item) {
         if (item.Camiones.length > 0) {
@@ -41,25 +35,37 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
     };
 
     setInterval(() => {
-        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == tipoCalle) {
-            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalle);
-            let callesNuevas = [];
-            // Agregar calles al array del observable
-            $.each(tiposCallesNuevasPlanta, function (index, tipoCalleNuevaPlanta) {
-                $.each(tipoCalleNuevaPlanta.Calles, function (index2, calleNueva) {
-                    if (self.PatenteBuscada()) {
-                        let patenteBuscada = self.PatenteBuscada();
-                        if (calleNueva.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
-                            callesNuevas.push(calleNueva);
-                        }
-                    } else {
-                        callesNuevas.push(calleNueva);
-                    }
-                })
-            })
+        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == containerId) {
+            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalleEnUso);
+            let callesNuevas = reordernarCalles(tiposCallesNuevasPlanta, tipoCalleEnUso, self.PatenteBuscada());
             self.Calles(callesNuevas);
         }
     }, 4000)
+}
+
+function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
+    let calles = [];
+    let callesAgrupadas = [];
+    let tipoCalleEnUsoArray = tipoCalleEnUso.split(",");
+
+    $.each(tipoCalleEnUsoArray, function (index, data) {
+        var callesPorGrupo = tiposCallesPlanta.filter(tipoCalles => tipoCalles.TipoCalle == data);
+        callesAgrupadas.push(...callesPorGrupo);
+    })
+
+    $.each(callesAgrupadas, function (index, data) {
+        $.each(data.Calles, function (indexCalle, calle) {
+            if (patenteBuscada) {
+                if (calle.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
+                    calles.push(calle);
+                }
+            } else {
+                calles.push(calle);
+            }
+        })
+    })
+
+    return calles;
 }
 
 function obtenerClaseIcono(rechazado, calidad) {

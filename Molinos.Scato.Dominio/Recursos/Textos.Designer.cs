@@ -27714,6 +27714,114 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calado.
+        /// </summary>
+        public static string TipoCalleCalado {
+            get {
+                return ResourceManager.GetString("TipoCalleCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Circular.
+        /// </summary>
+        public static string TipoCalleCircular {
+            get {
+                return ResourceManager.GetString("TipoCalleCircular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calle En Transito.
+        /// </summary>
+        public static string TipoCalleEnTransito {
+            get {
+                return ResourceManager.GetString("TipoCalleEnTransito", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Espera Aduana No Granos.
+        /// </summary>
+        public static string TipoCalleEsperaAduanaNoGranos {
+            get {
+                return ResourceManager.GetString("TipoCalleEsperaAduanaNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Granos.
+        /// </summary>
+        public static string TipoCalleNoGranos {
+            get {
+                return ResourceManager.GetString("TipoCalleNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planta No Granos.
+        /// </summary>
+        public static string TipoCallePlantaNoGranos {
+            get {
+                return ResourceManager.GetString("TipoCallePlantaNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playa Interna.
+        /// </summary>
+        public static string TipoCallePlayaInterna {
+            get {
+                return ResourceManager.GetString("TipoCallePlayaInterna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post Calado.
+        /// </summary>
+        public static string TipoCallePostCalado {
+            get {
+                return ResourceManager.GetString("TipoCallePostCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pre Calado.
+        /// </summary>
+        public static string TipoCallePreCalado {
+            get {
+                return ResourceManager.GetString("TipoCallePreCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Re Calado.
+        /// </summary>
+        public static string TipoCalleReCalado {
+            get {
+                return ResourceManager.GetString("TipoCalleReCalado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rechazados Demorados.
+        /// </summary>
+        public static string TipoCalleRechazadosDemorados {
+            get {
+                return ResourceManager.GetString("TipoCalleRechazadosDemorados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salida No Granos.
+        /// </summary>
+        public static string TipoCalleSalidaNoGranos {
+            get {
+                return ResourceManager.GetString("TipoCalleSalidaNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo de Característica.
         /// </summary>
         public static string TipoCaracteristica {
