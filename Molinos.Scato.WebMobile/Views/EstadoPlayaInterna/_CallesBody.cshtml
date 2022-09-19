@@ -11,9 +11,9 @@
                                         <span style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle"><strong data-bind="text: $root.TiempoEnCola($data)"></strong></span>
                                     </div>
                                 </div>
-                                <p class="fw-bold mb-0 cart-title sinbordetb" data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }">
+                                <p class="fw-bold mb-0 cart-title sinbordetb px-1" data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }">
                                     <strong data-bind="text: CalleDesc"></strong>
-                                    <small style="float: right;position:absolute" data-bind="text: Camiones.length + '/' + LimiteDeCamiones"></small>
+                                    <sup data-bind="text: Camiones.length + '/' + LimiteDeCamiones"></sup>
                                 </p>
                                 <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada }">
                                     <div class="col">
