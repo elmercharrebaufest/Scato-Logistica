@@ -9402,11 +9402,6 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Proveedor, ProveedorDto>(x => x.Id == Id);
         }
 
-        public CargaDeCupoDto ObtenerCupoRecorridoId(int id)
-        {
-            return Obtener<CargaDeCupo, CargaDeCupoDto>(x => x.Recorrido.Id == id);
-        }
-
         public IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoPorCodigoLectorQR(string Codigo)
         {
             return Listar<PuestoDeTrabajo, PuestoDeTrabajoDto>(x => x.LectorQr == Codigo);
@@ -10045,6 +10040,16 @@ namespace Molinos.Scato.Servicios.Impl
             });
             lotedto.Muestras = repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId));
             return lotedto;
+        }
+
+        public bool EsCupoReingresado(string cupo, string nroCartaPorte, int centroId)
+        {
+            return repositorio.Existe<CargaDeCupo>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado);
+        }
+
+        public CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId)
+        {
+            return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado, x => x.Id);
         }
     }
 }

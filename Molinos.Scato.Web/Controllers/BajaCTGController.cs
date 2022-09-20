@@ -35,7 +35,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(Guid id)
         {
             var recorrido = servicio.ObtenerDatosDeInstanciaAltaCTGPorGuid(id);
-            var cargaCupo = servicio.ObtenerCupoRecorridoId(recorrido.Id);
+            var cargaCupo = servicio.ObtenerCupoPorRecorrido(recorrido.Id);
             bool esCPE = cargaCupo is null ? servicio.ObtenerCartaDePortePorrecorrido(recorrido.Id)?.Cpe ?? false : cargaCupo?.CPE ?? false;
             var dto = new BajaCTGDto
                 {
