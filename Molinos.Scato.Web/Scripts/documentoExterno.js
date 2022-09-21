@@ -94,14 +94,13 @@ function UploadCpsViewModel(urlUpload, urlGetNrosCp) {
         self.showCorrectos(false);
         self.useFilename(false);
 
+        var cp11 = /^\d{11}$/;
         var cp12 = /^\d{12}$/;
-        var cp9 = /^\d{9}$/;
 
         $.each(imagesToUpload, function (index, image) {
-            var nombre = image.name.split('.')[0];
-            var nroCp = cp12.test(nombre) || cp9.test(nombre) ? nombre : "";
-
-            self.cps.push(ko.observable({ filename: image.name, nroCp: ko.observable(""), imageRaw: image, imageLoaded: ko.observable(false), nroCpArchivo: nroCp, image: null }));
+           var nombre = image.name.split('.')[0];
+           var nroCp = cp11.test(nombre) || cp12.test(nombre) ? nombre : "";
+           self.cps.push(ko.observable({ filename: image.name, nroCp: ko.observable(""), imageRaw: image, imageLoaded: ko.observable(false), nroCpArchivo: nroCp, image: null }));
         });
 
         self.uploadImages();
@@ -131,7 +130,7 @@ function UploadCpsViewModel(urlUpload, urlGetNrosCp) {
                         var loadImage = function () {
                             var reader = new FileReader();
                             reader.onload = function (e) {
-                                if (cp.imageRaw.type == 'image/jpeg') {
+                                if (cp.imageRaw.type == 'image/jpeg' || cp.imageRaw.type == 'image/png') {
                                     cp.image = e.target.result;
                                 } else if (cp.imageRaw.type == 'image/tiff') {
                                     cp.image = null;
@@ -146,7 +145,7 @@ function UploadCpsViewModel(urlUpload, urlGetNrosCp) {
                                 self.imagesLoaded(self.imagesLoaded() + 1);
                             }
 
-                            if (cp.imageRaw.type == 'image/jpeg') {
+                            if (cp.imageRaw.type == 'image/jpeg' || cp.imageRaw.type == 'image/png') {
                                 reader.readAsDataURL(cp.imageRaw);
                             } else if (cp.imageRaw.type == 'image/tiff') {
                                 reader.readAsArrayBuffer(cp.imageRaw);
@@ -155,7 +154,6 @@ function UploadCpsViewModel(urlUpload, urlGetNrosCp) {
 
                         loadImage();
                     });
-
                     self.loadCpsFromFilename();
                 }
 
@@ -180,7 +178,6 @@ function UploadCpsViewModel(urlUpload, urlGetNrosCp) {
     }
 
     self.loadCpsFromFilename = function () {
-        
         if (self.useFilename()) {
             $.each(self.cps(), function (i, c) {
                 var cp = c();

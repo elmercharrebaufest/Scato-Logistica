@@ -29,12 +29,11 @@
     .hasNroCp,
     .hasNotNroCp {
         position: absolute;
-        top: 20px;
+        top: 0px;
         bottom: 0;
-        left: 20px;
+        left: 0px;
+        min-width: 162px;
         right: 0;
-        width: 162px;
-        height: 224px;
         background-color: rgba(0,255,0,0.4);
         border-radius: 4px;
     }
@@ -56,18 +55,19 @@
         justify-content: flex-start;
     }
 
-    .imglist li {
-        width: 150px;
-        padding: 20px;
-        display: inline-block;
-        position: relative;
-    }
+        .imglist li {
+            width: 150px;
+            padding: 20px;
+            display: inline-block;
+            position: relative;
+        }
 
     @@media (min-width: 768px) {
-      .imglist li {
-        width: 33.3%;
-      }
+        .imglist li {
+            width: 33.3%;
+        }
     }
+
     @@media (min-width: 992px) {
         .imglist li {
             width: 150px;
@@ -88,10 +88,9 @@
     .imglist li a i {
         position: absolute;
         cursor: pointer;
-        bottom: 25px;
-        right: 15px;
+        bottom: 5px;
+        right: 0px;
     }
-
 </style>
 <script src="~/Scripts/interact.min.js"></script>
 <script src="~/Scripts/draggable_background.js"></script>
@@ -150,9 +149,10 @@
         </div>
         <div class="well well-small" style="max-height: 500px; overflow-y:auto">
             <ul class="imglist" data-bind="foreach: cpsShow">
-                <li class="">
+                <li class="" style="text-align: center; padding-right: 0px; padding-left: 0px; padding-bottom: 0px; padding-top: 0px; margin-right: 20px; margin-bottom: 10px; ">
+                    <span type="text" readonly="readonly" data-bind="text: nroCp()"></span>
                     <a href="#" data-bind="click: $parent.showPopup">
-                        <div data-bind="css: { 'hasNroCp' : nroCp().length > 0, 'hasNotNroCp': nroCp().length == 0}"></div>
+                        <div data-bind="css: { 'hasNroCp' : nroCp().length > 0, 'hasNotNroCp': nroCp().length == 0}">  </div>
                         <img data-bind="attr:{ src: image }">
                         <i class="icon-trash" data-bind="click: $parent.quitarCp, css: {'icon-white': nroCp().length == 0}"></i>
                     </a>
@@ -182,7 +182,7 @@
 <div class="modal hide" id="dialogo-cp" data-backdrop="static">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h5 data-bind="text: filename" ></h5>
+        <h5 data-bind="text: filename"></h5>
     </div>
     <div class="modal-body">
         <div style="max-height: 500px; max-width:900px;">
