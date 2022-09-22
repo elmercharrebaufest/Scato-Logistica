@@ -36,6 +36,21 @@
                     </div>
                     <hr />
                     <div class="row">
+                        <div id="div-descripcionAlmacen" class="control-group col-8">
+                            @Html.LabelFor(model => model.DescripcionAlmacen, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.DescripcionAlmacen, new { @class = "input-large" })
+                            </div>
+                        </div>
+                        <div id="div-tipoVehiculo" class="control-group col-4">
+                            @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.TipoVehiculo, new { @class = "input-large" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
                         <div class="control-group col-4">
                             @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
                             <div id="div-patente" class="controls">

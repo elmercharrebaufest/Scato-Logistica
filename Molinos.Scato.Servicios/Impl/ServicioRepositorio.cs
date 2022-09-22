@@ -8924,7 +8924,9 @@ namespace Molinos.Scato.Servicios.Impl
                  NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : "",
                  FechaIngreso = x.FechaIngeso,
                  TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
-                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : ""
+                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : "",
+                 TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
+                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : ""
              });
             var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
