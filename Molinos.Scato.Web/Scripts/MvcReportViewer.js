@@ -79,24 +79,44 @@
 
 					let isDateTime = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha/Hora") !== -1;
 					let isDate = element.parentElement.parentElement.previousElementSibling.firstChild.textContent.indexOf("Fecha") !== -1;
-					
+
 					if (isDateTime) {
+						$('#' + element.id).attr("placeholder", "dd/mm/aaaa hh:mm:ss");
 						$('#' + element.id).datetimepicker({
 							format: 'dd/mm/yyyy hh:ii:ss',
 							autoclose: true,
 						});
 					} else if (isDate) {
+						$('#' + element.id).attr("placeholder", "dd/mm/aaaa");
 						$('#' + element.id).datetimepicker({
-							format: 'dd/mm/yyyy 00:00:00',
+							format: 'dd/mm/yyyy hh:ii:ss',
 							autoclose: true,
 							minView: 2
 						});
+						element.value = obtainDateOnly(element.value);
+
+						$(element).on('hide', function (e) {
+							var ele = this;
+							ele.value = obtainDateOnly(ele.value);
+						})
 					}
 
-					$('#' + element.id).attr("placeholder", "dd/mm/aaaa hh:mm:ss");
+
 					$('#' + element.id).attr("readonly", "readonly");
 					$('#' + element.id).attr("autocomplete", "off");
 				});
+			}
+
+			function obtainDateOnly(fulldate) {
+				if (fulldate != "" && fulldate != null) {
+					var dateArray = fulldate.split(" ");
+					if (dateArray.length > 1) {
+						fulldate = dateArray[0] + " 00:00:00";
+					} else {
+						fulldate = fulldate + " 00:00:00"
+					}
+				}
+				return fulldate;
 			}
 		}
 	});
