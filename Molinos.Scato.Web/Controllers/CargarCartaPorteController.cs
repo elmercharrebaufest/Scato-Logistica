@@ -429,13 +429,13 @@ namespace Molinos.Scato.Web.Controllers
 
                     var errorCode = cartaPorteResponse.HayErrores ? cartaPorteResponse.Errores.Keys.First() : "3";
                     var errorMsg = cartaPorteResponse.Errores.Values.FirstOrDefault();
-                    var estadoPermiteIngresar = new List<string> { "AC", "CF", "CO" };
-
-                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
+                    var estadoCPE = cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim();
+                    
+                    if (!cartaPorteResponse.HayErrores && !EstadosCPEdeAFIP.Validos.Contains(estadoCPE))
                     {
-                        if (new List<string> { "AN", "RE" }.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
+                        if (EstadosCPEdeAFIP.Bloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
                         {
-                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {(cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim() == "AN" ? "ANULADO" : "RECHAZADO")}";
+                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {EstadosCPEdeAFIP.Descripciones[estadoCPE]}";
                             errorCode = "5";
                         }
                         else

@@ -23,7 +23,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-
+using System.Collections.ObjectModel;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -825,13 +825,12 @@ namespace Molinos.Scato.Web.Controllers
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+
         [DatosUsuario]
         public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
         {
             try
-            {
-                var estadoErroresBloqueantes = new List<string> { "AN", "RE" };
-                var estadoPermiteIngresar = new List<string> { "AC", "CF", "CO" };
+            {                
                 log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
                 var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = numeroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaMinima = true }) as ResultadoCartaPorteElectronica;
                 log.Debug(cartaPorteResponse.HayErrores ? "Error al obtener carta de porte CTG-CPE en carga de Cupo. {0}: " + cartaPorteResponse.Errores.Values.First() : "Devolviendo carta de porte en carga de Cupo. CTG-CPE {0}", numeroCtg);
@@ -842,11 +841,12 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (errorCode != "2")
                 {
-                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
+                    if (!cartaPorteResponse.HayErrores && !EstadosCPEdeAFIP.Validos.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
-                        if (estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim()))
+                        var estadoCPE = cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim();
+                        if (EstadosCPEdeAFIP.Bloqueantes.Any(a => a == estadoCPE))
                         {
-                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {(cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim() == "AN" ? "ANULADO" : "RECHAZADO")}";
+                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {EstadosCPEdeAFIP.Descripciones[estadoCPE]}";
                             errorCode = "5";
                         }
                         else
@@ -876,7 +876,7 @@ namespace Molinos.Scato.Web.Controllers
                     }
                     else
                     {
-                        if (!estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
+                        if (!EstadosCPEdeAFIP.Bloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
                         {
                             var cartaPorteImagen = servicioComandos.Ejecutar(new ConsultarImagenCpe { NroCtg = numeroCtg }) as ResultadoConsultarImagenCpe;
                             if (cartaPorteImagen.HayErrores)
