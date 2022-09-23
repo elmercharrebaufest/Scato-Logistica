@@ -7620,7 +7620,7 @@ namespace Molinos.Scato.Servicios.Impl
                             foreach (var subpath in subpaths)
                             {
                                 var puestoDeTrabajoFecha = carpeta + "\\" + subpath + "\\";
-                                log.Debug("Ruta-File:" + puestoDeTrabajoFecha);
+                                log.Debug("Ruta-File 1:" + puestoDeTrabajoFecha);
                                 if (Directory.Exists(puestoDeTrabajoFecha))
                                 {
                                     var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
@@ -7638,6 +7638,7 @@ namespace Molinos.Scato.Servicios.Impl
                         foreach (var subpath in subpaths)
                         {
                             var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
+                            log.Debug("Ruta-File 2:" + puestoDeTrabajoFecha);
                             if (Directory.Exists(puestoDeTrabajoFecha))
                             {
                                 var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
