@@ -7605,9 +7605,9 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = new List<FileData>();
             try
             {
-                foreach (var puestoDeTrabajo in Directory.GetDirectories(path))
+                foreach (var directoriosBusqueda in Directory.GetDirectories(path))
                 {
-                    if (directorios != null && directorios.Any() && !directorios.Any(t => new Uri(t).LocalPath == new Uri(puestoDeTrabajo).LocalPath))
+                    if (directorios != null && directorios.Any() && !directorios.Any(t => new Uri(t).LocalPath == new Uri(directoriosBusqueda).LocalPath))
                     {
                         continue;
                     }
@@ -7615,15 +7615,15 @@ namespace Molinos.Scato.Servicios.Impl
                     //Modificacion Multiples Paths - Mejora en Acopios (Pergamino)
                     if (!string.IsNullOrEmpty(fotosPath))
                     {
-                        foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
+                        foreach (var carpeta in Directory.GetDirectories(directoriosBusqueda))
                         {
                             foreach (var subpath in subpaths)
                             {
-                                var puestoDeTrabajoFecha = carpeta + "\\" + subpath + "\\";
-                                log.Debug("Ruta-File 1:" + puestoDeTrabajoFecha);
-                                if (Directory.Exists(puestoDeTrabajoFecha))
+                                var pathBusqueda = carpeta + "\\" + subpath + "\\";
+                                //log.Debug("Ruta-File 1:" + pathBusqueda);
+                                if (Directory.Exists(pathBusqueda))
                                 {
-                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                    var filesInDir = FastDirectoryEnumerator.GetFiles(pathBusqueda, fileName + "*.*", SearchOption.AllDirectories);
                                     if (filesInDir.Any() && obtenerPrimera)
                                     {
                                         return new List<FileData> { filesInDir.First() };
@@ -7637,11 +7637,11 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         foreach (var subpath in subpaths)
                         {
-                            var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
-                            log.Debug("Ruta-File 2:" + puestoDeTrabajoFecha);
-                            if (Directory.Exists(puestoDeTrabajoFecha))
+                            var pathBusqueda = directoriosBusqueda + "\\" + subpath + "\\";
+                            //log.Debug("Ruta-File 2:" + pathBusqueda);
+                            if (Directory.Exists(pathBusqueda))
                             {
-                                var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                var filesInDir = FastDirectoryEnumerator.GetFiles(pathBusqueda, fileName + "*.*", SearchOption.AllDirectories);
                                 if (filesInDir.Any() && obtenerPrimera)
                                 {
                                     return new List<FileData> { filesInDir.First() };
