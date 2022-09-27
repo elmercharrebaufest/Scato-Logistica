@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -27732,11 +27732,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calle En Transito.
+        ///   Looks up a localized string similar to En Tránsito No Granos.
         /// </summary>
         public static string TipoCalleEnTransito {
             get {
                 return ResourceManager.GetString("TipoCalleEnTransito", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to En Tránsito Granos.
+        /// </summary>
+        public static string TipoCalleEnTransitoGranos {
+            get {
+                return ResourceManager.GetString("TipoCalleEnTransitoGranos", resourceCulture);
             }
         }
         
@@ -27786,6 +27795,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pre Balanza Granos.
+        /// </summary>
+        public static string TipoCallePreBalanzaGranos {
+            get {
+                return ResourceManager.GetString("TipoCallePreBalanzaGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pre Calado.
         /// </summary>
         public static string TipoCallePreCalado {
@@ -27809,6 +27827,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string TipoCalleRechazadosDemorados {
             get {
                 return ResourceManager.GetString("TipoCalleRechazadosDemorados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Salida Granos.
+        /// </summary>
+        public static string TipoCalleSalidaGranos {
+            get {
+                return ResourceManager.GetString("TipoCalleSalidaGranos", resourceCulture);
             }
         }
         

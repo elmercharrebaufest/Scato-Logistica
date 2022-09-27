@@ -10034,12 +10034,21 @@
     <value>Planta No Granos</value>
   </data>
   <data name="TipoCalleEnTransito" xml:space="preserve">
-    <value>Calle En Transito</value>
+    <value>En Tránsito No Granos</value>
   </data>
   <data name="TipoCalleSalidaNoGranos" xml:space="preserve">
     <value>Salida No Granos</value>
   </data>
   <data name="TipoCalleEsperaAduanaNoGranos" xml:space="preserve">
     <value>Espera Aduana No Granos</value>
+  </data>
+  <data name="TipoCalleEnTransitoGranos" xml:space="preserve">
+    <value>En Tránsito Granos</value>
+  </data>
+  <data name="TipoCallePreBalanzaGranos" xml:space="preserve">
+    <value>Pre Balanza Granos</value>
+  </data>
+  <data name="TipoCalleSalidaGranos" xml:space="preserve">
+    <value>Salida Granos</value>
   </data>
 </root>

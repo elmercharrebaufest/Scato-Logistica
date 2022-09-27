@@ -6,7 +6,7 @@
 @model List<TipoCallePlantaDto>
 
 @{
-    var model = Model.Where(c => c.TipoCalle != TipoCalle.PlayaInterna).ToList();
+    var model = Model.Where(c => c.TipoCalle == TipoCalle.EnTransito || c.TipoCalle == TipoCalle.PlantaNoGranos || c.TipoCalle == TipoCalle.EsperaAduanaNoGranos || c.TipoCalle == TipoCalle.SalidaNoGranos).ToList();
 }
 
 <script>

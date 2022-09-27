@@ -29,7 +29,12 @@ namespace Molinos.Scato.Dominio.Enums
         [Display(ResourceType = typeof(Textos), Name = "TipoCalleSalidaNoGranos")]
         SalidaNoGranos = 10,
         [Display(ResourceType = typeof(Textos), Name = "TipoCalleEsperaAduanaNoGranos")]
-        EsperaAduanaNoGranos = 11
-
+        EsperaAduanaNoGranos = 11,
+        [Display(ResourceType = typeof(Textos), Name = "TipoCalleEnTransitoGranos")]
+        EnTransitoGranos = 12,
+        [Display(ResourceType = typeof(Textos), Name = "TipoCallePreBalanzaGranos")]
+        PreBalanzaGranos = 13,
+        [Display(ResourceType = typeof(Textos), Name = "TipoCalleSalidaGranos")]
+        SalidaGranos = 14
     }
 }

@@ -23,6 +23,7 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,c
     var self = this;
     self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
+    self.dummy = ko.observable();
 
     let callesOrdenadas = reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, null);
     self.Calles(callesOrdenadas);
@@ -41,6 +42,20 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,c
             self.Calles(callesNuevas);
         }
     }, 4000)
+
+    self.sumarCamiones = function (materialId) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == materialId ? total + 1 : total, 0);
+        });
+        return count;
+    };
+
+    self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(4); });
+    self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
+    self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
+    self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
 }
 
 function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
@@ -49,7 +64,11 @@ function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
     let tipoCalleEnUsoArray = tipoCalleEnUso.split(",");
 
     $.each(tipoCalleEnUsoArray, function (index, data) {
-        var callesPorGrupo = tiposCallesPlanta.filter(tipoCalles => tipoCalles.TipoCalle == data);
+        let callesPorGrupo = tiposCallesPlanta.filter(tipoCalles => tipoCalles.TipoCalle == data);
+        if (callesPorGrupo.length > 0 && callesPorGrupo[0].Calles.length > 0) {
+            callesPorGrupo[0].Calles[0].EsPrimero = true;
+            callesPorGrupo[0].Calles[callesPorGrupo[0].Calles.length - 1].EsUltimo = true;
+        }
         callesAgrupadas.push(...callesPorGrupo);
     })
 
@@ -102,8 +121,10 @@ function abrirModal() {
         },
         type: "POST",
         success: function (result) {
-            $("#div-rechazo-mover").html(result);
-            $("#modal-rechazo-mover").modal("show");
+            $(".modal-backdrop").remove()
+            $(".detalleCamionModal").remove()
+            $("#detalleCamion").html(result);
+            $("#detalleCamionModal").modal("show");
         },
         error: function (error) {
             console.log(error);
@@ -132,3 +153,6 @@ function calcularTiempoEnCola(fechaIngeso) {
     return diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
 }
 
+function obtenerClaseEscalable(escalable) {
+    return escalable ? "fas fa-truck" : "";
+}

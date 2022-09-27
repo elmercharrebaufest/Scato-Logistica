@@ -2706,5 +2706,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId);
+
+        [OperationContract]
+        CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
     }
 }
