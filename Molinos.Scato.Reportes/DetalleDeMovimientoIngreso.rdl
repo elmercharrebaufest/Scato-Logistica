@@ -20,68 +20,70 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
-select COALESCE(IngresoxD, m.Descripcion) as IngresoxD,
-SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
-SUM(COALESCE(TonsxD, 0)) as TonsxD,
-SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
-SUM(COALESCE(TonsxM, 0)) as TonsxM,
-SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
-SUM(COALESCE(TonsxA, 0)) as TonsxA
-from MaterialReporteDeMovimientos m
-left join (
---camiones
-SELECT CASE
-when m.id = 4 and Establecimiento_Id is not null then 'Soja Sustentable'
-when m.id = 4 and Establecimiento_Id is null then 'Soja'
-else m.Descripcion end
-as 'IngresoxD',
-sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
+					select COALESCE(IngresoxD, m.Descripcion) as IngresoxD,
+					SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
+					SUM(COALESCE(TonsxD, 0)) as TonsxD,
+					SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
+					SUM(COALESCE(TonsxM, 0)) as TonsxM,
+					SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
+					SUM(COALESCE(TonsxA, 0)) as TonsxA
+					from MaterialReporteDeMovimientos m
+					left join (
+					--camiones
+					SELECT CASE
+					when m.id = 4 and Establecimiento_Id is not null then 'Soja Sustentable'
+					when m.id = 4 and Establecimiento_Id is null then 'Soja'
+					else m.Descripcion end
+					as 'IngresoxD',
+					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
 
-cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
-sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
-cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
-count(*) as 'CantidadxA',
-cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
-join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
+					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
+					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
+					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
+					count(*) as 'CantidadxA',
+					cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
 
 
 
-where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
-and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
-and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-group by m.Descripcion,m.Id, Establecimiento_Id
-UNION ALL
---vagones
-SELECT CASE
-when m.id = 4 then 'Operativos de Vagones Soja'
-when m.id = 13 then 'Operativos de Vagones Trigo'
-when m.id = 386 then 'Operativos de Vagones Maiz'
-else m.Descripcion end
-as 'IngresoxD',
-sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
-cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
-sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
-cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
-count(*) as 'CantidadxA',cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
-join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo = 1 and r.Material_Id in (4,13,386)
-where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
-and r.PesoTaraFecha  is not null and terminado = 1 and Rechazado = 0
-and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-group by m.Descripcion,m.Id
-) as Datos on datos.IngresoxD = m.Material
-where ingreso = 1 and Descripcion not in ('Aceite Cartamo alto oleico', 'BIODIESEL RENOVA', 'Operativos de Vagones')
-group by COALESCE(IngresoxD, m.Descripcion), m.Orden
-order by m.orden</CommandText>
+					where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
+					and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
+					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
+					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
+					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
+					group by m.Descripcion,m.Id, Establecimiento_Id
+					UNION ALL
+					--vagones
+					SELECT CASE
+					when m.id = 4 then 'Operativos de Vagones Soja'
+					when m.id = 13 then 'Operativos de Vagones Trigo'
+					when m.id = 386 then 'Operativos de Vagones Maiz'
+					else m.Descripcion end
+					as 'IngresoxD',
+					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
+					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
+					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
+					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
+					count(*) as 'CantidadxA',cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo = 1 and r.Material_Id in (4,13,386)
+					where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
+					and r.PesoTaraFecha  is not null and terminado = 1 and Rechazado = 0
+					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
+					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
+					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
+					group by m.Descripcion,m.Id
+					) as Datos on datos.IngresoxD = m.Material
+					where ingreso = 1 and Descripcion not in ('Aceite Cartamo alto oleico', 'BIODIESEL RENOVA', 'Operativos de Vagones')
+					group by COALESCE(IngresoxD, m.Descripcion), m.Orden
+					order by m.orden
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -126,64 +128,66 @@ order by m.orden</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
 
-select mt.Descripcion as EgresoxD,  
-SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
-SUM(COALESCE(TonsxD, 0)) as TonsxD,
-SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
-SUM(COALESCE(TonsxM, 0)) as TonsxM,
-SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
-SUM(COALESCE(TonsxA, 0)) as TonsxA
-from MaterialReporteDeMovimientos mt
-left join (
-	SELECT 
-		case 
-			when r.Material_Id = 81223 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Harina High Pro Venta'
-			when r.Material_Id = 81223 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Harina High Pro EXPORTACION'
-			when r.Material_Id = 63750 and (case when w.Id != 220 then 0 else 1 end) = 0 then 'Pecaso Venta'
-			when r.Material_Id = 63750 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Pecaso EXPORTACION'
-			when r.Material_Id = 63734 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Aceite Venta a 3ros'
-			when r.Material_Id = 63734 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'ACEITE CRUDO DE SOJA EXPORTACION'
-			when r.Material_Id = 63746 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Lecitina  de Soja Venta'
-			when r.Material_Id = 63746 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Lecitina de Soja EXPORTACION'
-			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1   and ocif.cliente_id = 60324 then 'Aceite Santa Clara'
-			when r.Material_Id = 63734 and (case when w.Id = 67 or w.Id = 66 then 1 else 0 end) = 1   and ocif.cliente_id = 59498 then 'Aceite Soja Crudo Patagonia Bioenergia'
-			when r.Material_Id = 63734 and (case when w.Id = 65  then 1 else 0 end) = 1  and ocf.Cliente_Id is not null then 'Aceite Venta a 3ros'
-			when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1  and ocif.cliente_id &lt;&gt; 60324 then 'Aceite Soja Crudo Retiro Fazon con 3°'
-			else mt.Descripcion end 
-			as 'EgresoxD',
-		  sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end  ) as 'CantidadxD',
-		cast(((sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2)) AS 'TonsxD',
-		 sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end  ) as 'CantidadxM',
-		cast (((sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;=  @fecha + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2))AS 'TonsxM',
-		count(*) as CantidadxA,
-		cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-	FROM [Recorrido] as r WITH(NOLOCK)
-	inner join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id 
-	inner join Material as m WITH(NOLOCK) on m.Id = r.Material_Id
-	inner join MaterialReporteDeMovimientos mt on mt.Material like '%'+m.Descripcion +'%'
-	inner join TipoComercial as tc WITH(NOLOCK) on tc.Id = r.TipoComercial_Id
-	left join OrdenCargaInternaFason as ocif on ocif.Recorrido_Id = r.Id  
-	left join OrdenCargaFas as ocf on ocf.Recorrido_Id = r.Id 
-	where w.TipoDeWorkflow = 1 and  r.Centro_Id = @CentroId
-	and r.PesoBrutoFecha  is not null and terminado = 1 and Rechazado = 0
-	and ((MONTH(@fecha) &gt; 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-	(MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-	and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59'
-	and Ingreso = 0
-	group by mt.Descripcion, r.Material_Id, 
-	case when w.Id = 220 then 1 else 0 end,
-	case when w.Id != 220 then 0 else 1 end,
-	case when w.Id != 220 then 1 else 0 end,
-	case when w.Id = 67  then 1 else 0 end,
-	case when w.Id = 65  then 1 else 0 end,
-	case when w.Id = 67 or w.Id = 66 then 1 else 0 end,
-	ocif.cliente_id, ocf.Cliente_Id)as Datos on Datos.EgresoxD = mt.Descripcion
-where Ingreso = 0
-group by mt.Descripcion, mt.Orden
-order by mt.Orden</CommandText>
+					select mt.Descripcion as EgresoxD,
+					SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
+					SUM(COALESCE(TonsxD, 0)) as TonsxD,
+					SUM(COALESCE(CantidadxM, 0)) as CantidadxM,
+					SUM(COALESCE(TonsxM, 0)) as TonsxM,
+					SUM(COALESCE(CantidadxA, 0)) as CantidadxA,
+					SUM(COALESCE(TonsxA, 0)) as TonsxA
+					from MaterialReporteDeMovimientos mt
+					left join (
+					SELECT
+					case
+					when r.Material_Id = 81223 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Harina High Pro Venta'
+					when r.Material_Id = 81223 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Harina High Pro EXPORTACION'
+					when r.Material_Id = 63750 and (case when w.Id != 220 then 0 else 1 end) = 0 then 'Pecaso Venta'
+					when r.Material_Id = 63750 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Pecaso EXPORTACION'
+					when r.Material_Id = 63734 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Aceite Venta a 3ros'
+					when r.Material_Id = 63734 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'ACEITE CRUDO DE SOJA EXPORTACION'
+					when r.Material_Id = 63746 and (case when w.Id != 220 then 1 else 0 end) = 0 then 'Lecitina  de Soja Venta'
+					when r.Material_Id = 63746 and (case when w.Id = 220  then 1 else 0 end) = 1 then 'Lecitina de Soja EXPORTACION'
+					when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1   and ocif.cliente_id = 60324 then 'Aceite Santa Clara'
+					when r.Material_Id = 63734 and (case when w.Id = 67 or w.Id = 66 then 1 else 0 end) = 1   and ocif.cliente_id = 59498 then 'Aceite Soja Crudo Patagonia Bioenergia'
+					when r.Material_Id = 63734 and (case when w.Id = 65  then 1 else 0 end) = 1  and ocf.Cliente_Id is not null then 'Aceite Venta a 3ros'
+					when r.Material_Id = 63734 and (case when w.Id = 67  then 1 else 0 end) = 1  and ocif.cliente_id &lt;&gt; 60324 then 'Aceite Soja Crudo Retiro Fazon con 3°'
+					else mt.Descripcion end
+					as 'EgresoxD',
+					sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end  ) as 'CantidadxD',
+					cast(((sum(case when r.PesoBrutoFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.PesoBrutoFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2)) AS 'TonsxD',
+					sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end  ) as 'CantidadxM',
+					cast (((sum(case when r.PesoBrutoFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoBrutoFecha  &lt;=  @fecha + '23:59:59' then cast( r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000)  as numeric(18,2))AS 'TonsxM',
+					count(*) as CantidadxA,
+					cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
+					FROM [Recorrido] as r WITH(NOLOCK)
+					inner join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+					inner join Material as m WITH(NOLOCK) on m.Id = r.Material_Id
+					inner join MaterialReporteDeMovimientos mt on mt.Material like '%'+m.Descripcion +'%'
+					inner join TipoComercial as tc WITH(NOLOCK) on tc.Id = r.TipoComercial_Id
+					left join OrdenCargaInternaFason as ocif on ocif.Recorrido_Id = r.Id
+					left join OrdenCargaFas as ocf on ocf.Recorrido_Id = r.Id
+					where w.TipoDeWorkflow = 1 and  r.Centro_Id = @CentroId
+					and r.PesoBrutoFecha  is not null and terminado = 1 and Rechazado = 0
+					and ((MONTH(@fecha) &gt; 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
+					(MONTH(@fecha) &lt;= 3 and r.PesoBrutoFecha  &gt; DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
+					and r.PesoBrutoFecha  &lt;= @fecha+'23:59:59'
+					and Ingreso = 0
+					group by mt.Descripcion, r.Material_Id,
+					case when w.Id = 220 then 1 else 0 end,
+					case when w.Id != 220 then 0 else 1 end,
+					case when w.Id != 220 then 1 else 0 end,
+					case when w.Id = 67  then 1 else 0 end,
+					case when w.Id = 65  then 1 else 0 end,
+					case when w.Id = 67 or w.Id = 66 then 1 else 0 end,
+					ocif.cliente_id, ocf.Cliente_Id)as Datos on Datos.EgresoxD = mt.Descripcion
+					where Ingreso = 0
+					group by mt.Descripcion, mt.Orden
+					order by mt.Orden
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -228,71 +232,73 @@ order by mt.Orden</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
-SELECT CASE 
-	WHEN m.CodigoSAP = '50866' THEN 'Cargas Harina HI-PRO'
-	WHEN m.CodigoSAP = '99704' THEN 'Cargas Pecaso'
-	ELSE m.Descripcion
-	END as Operacion,
-isnull((
-select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 7', 'SIL 7', 'Silo 7')
-where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId  
-and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null 
-and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
-group by a.Descripcion
-), 0) as Celda7,
-isnull((
-select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 20')
-where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId  
-and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null 
-and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
-group by a.Descripcion
-), 0) as Celda20,
-isnull((
-select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 23')
-where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId  
-and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null 
-and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
-group by a.Descripcion
-), 0) as Celda23,
-isnull((
-select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('Celda 30')
-where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId  
-and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null 
-and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
-group by a.Descripcion
-), 0) as Celda30,
-isnull((
-select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
-FROM [Recorrido] as r WITH(NOLOCK)
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('No Productivo')
-where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId  
-and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null 
-and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
-group by a.Descripcion
-), 0) as NoProductivo
-FROM Material m 
-WHERE m.CodigoSAP in ('99704', '50866')
-order by 1</CommandText>
+					SELECT CASE
+					WHEN m.CodigoSAP = '50866' THEN 'Cargas Harina HI-PRO'
+					WHEN m.CodigoSAP = '99704' THEN 'Cargas Pecaso'
+					ELSE m.Descripcion
+					END as Operacion,
+					isnull((
+					select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 7', 'SIL 7', 'Silo 7')
+					where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId
+					and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null
+					and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
+					group by a.Descripcion
+					), 0) as Celda7,
+					isnull((
+					select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 20')
+					where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId
+					and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null
+					and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
+					group by a.Descripcion
+					), 0) as Celda20,
+					isnull((
+					select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('SILO 23')
+					where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId
+					and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null
+					and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
+					group by a.Descripcion
+					), 0) as Celda23,
+					isnull((
+					select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('Celda 30')
+					where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId
+					and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null
+					and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
+					group by a.Descripcion
+					), 0) as Celda30,
+					isnull((
+					select cast(sum(cast(r.PesoBruto-r.PesoTara as numeric(18,2)))/1000  as numeric(18,2))as Toneladas
+					FROM [Recorrido] as r WITH(NOLOCK)
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id and r.Material_Id = m.Id
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id and a.Descripcion in ('No Productivo')
+					where w.TipoDeWorkflow = 1 and r.Centro_Id = @CentroId
+					and terminado = 1 and Rechazado = 0 and r.FechaEgreso is not null
+					and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:50'
+					group by a.Descripcion
+					), 0) as NoProductivo
+					FROM Material m
+					WHERE m.CodigoSAP in ('99704', '50866')
+					order by 1
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -333,16 +339,18 @@ order by 1</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
 
-select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id 
-join Material as m WITH(NOLOCK) on m.Id = r.material_id 
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id 
-where w.TipoDeWorkflow = 0  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
-and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-group by a.Descripcion , m.descripcion</CommandText>
+					select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id
+					join Material as m WITH(NOLOCK) on m.Id = r.material_id
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+					where w.TipoDeWorkflow = 0  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
+					and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
+					group by a.Descripcion , m.descripcion
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -379,16 +387,18 @@ group by a.Descripcion , m.descripcion</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
 
-select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
-join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id 
-join Material as m WITH(NOLOCK) on m.Id = r.material_id
-join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id 
-where w.TipoDeWorkflow = 1  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
-and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-group by a.Descripcion , m.descripcion</CommandText>
+					select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
+					join Almacen as a WITH(NOLOCK) on a.Id = r.Almacen_Id
+					join Material as m WITH(NOLOCK) on m.Id = r.material_id
+					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
+					where w.TipoDeWorkflow = 1  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
+					and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
+					group by a.Descripcion , m.descripcion
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -425,13 +435,15 @@ group by a.Descripcion , m.descripcion</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;   
+        <CommandText>
+					DECLARE @fecha datetime = @FechaHoy;
 
-select count(*) as Total 
-FROM [Recorrido] as r WITH(NOLOCK)
-where    r.FechaInicio &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' 
-	and r.FechaInicio &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-	and terminado = 1 and Rechazado = 0  and r.Centro_Id = @CentroId</CommandText>
+					select count(*) as Total
+					FROM [Recorrido] as r WITH(NOLOCK)
+					where    r.FechaInicio &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
+					and r.FechaInicio &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
+					and terminado = 1 and Rechazado = 0  and r.Centro_Id = @CentroId
+				</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -449,12 +461,14 @@ where    r.FechaInicio &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT Centro.CodigoSap as CentroSapp,
-              Centro.Descripcion as CentroDescripcion
+        <CommandText>
+					SELECT Centro.CodigoSap as CentroSapp,
+					Centro.Descripcion as CentroDescripcion
 
-FROM [Centro] as Centro WITH (NOLOCK)
+					FROM [Centro] as Centro WITH (NOLOCK)
 
-WHERE Centro.Id = @CentroId</CommandText>
+					WHERE Centro.Id = @CentroId
+				</CommandText>
       </Query>
       <Fields>
         <Field Name="CentroSapp">
@@ -490,7 +504,7 @@ WHERE Centro.Id = @CentroId</CommandText>
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy; 
+        <CommandText>DECLARE @fecha datetime = @FechaHoy;
 select COALESCE(DescargaSoja, m.Descripcion) as DescargaSoja,  
 COALESCE(CantCamiones, 0) as CantCamiones,
 COALESCE(CantTrenes, 0) as CantTrenes,
@@ -498,21 +512,23 @@ COALESCE(ToneladasCamiones, 0) as ToneladasCamiones,
 COALESCE(ToneladasTren, 0) as ToneladasTren
 from AlmacenReporteDeMovimientos m
 left join (
-  SELECT 
+  SELECT
   ar.Descripcion as DescargaSoja,
-  m.descripcion AS Material, 
-  count(CASE WHEN TipoVehiculo != 1 THEN 1 ELSE NULL END) AS CantCamiones, 
-  count(CASE WHEN TipoVehiculo = 1 THEN 1 ELSE NULL END) AS CantTrenes, 
-  cast(sum(cast(CASE WHEN r.TipoVehiculo != 1 THEN r.PesoBruto - r.PesoTara ELSE 0 END AS numeric(18,2))) / 1000 AS numeric(18, 2)) AS ToneladasCamiones, 
+  m.descripcion AS Material,
+  count(CASE WHEN TipoVehiculo != 1 THEN 1 ELSE NULL END) AS CantCamiones,
+  count(CASE WHEN TipoVehiculo = 1 THEN 1 ELSE NULL END) AS CantTrenes,
+  cast(sum(cast(CASE WHEN r.TipoVehiculo != 1 THEN r.PesoBruto - r.PesoTara ELSE 0 END AS numeric(18,2))) / 1000 AS numeric(18, 2)) AS ToneladasCamiones,
   cast(sum(cast(CASE WHEN r.TipoVehiculo = 1 THEN r.PesoBruto - r.PesoTara ELSE 0 END AS numeric(18, 2))) / 1000 AS numeric(18, 2)) AS ToneladasTren
   FROM [Recorrido] AS r WITH (NOLOCK) jOIN
   Workflow AS w WITH (NOLOCK) ON r.Workflow_Id = w.Id JOIN
   Almacen AS a WITH (NOLOCK) ON a.Id = r.Almacen_Id JOIN
   Material AS m WITH (NOLOCK) ON m.Id = r.material_id right join
   AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion
-  WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND 
+  WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND
   r.PesoTaraFecha &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' AND r.PesoTaraFecha &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-  GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Almacen
+  GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Descripcion
+
+
 
 order by orden</CommandText>
       </Query>
@@ -544,47 +560,6 @@ order by orden</CommandText>
     <ReportSection>
       <Body>
         <ReportItems>
-          <Textbox Name="Textbox27">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Detalle de Movimiento de Ingresos:</Value>
-                    <Style>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style>
-                      <FontSize>12pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=FormatDateTime(Parameters!FechaHoy.Value, DateFormat.ShortDate)</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox27</rd:DefaultName>
-            <Top>36pt</Top>
-            <Height>12pt</Height>
-            <Width>16cm</Width>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Textbox Name="Textbox32">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -605,7 +580,6 @@ order by orden</CommandText>
             <rd:DefaultName>Textbox27</rd:DefaultName>
             <Height>12pt</Height>
             <Width>16cm</Width>
-            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -637,39 +611,7 @@ order by orden</CommandText>
             <Top>12pt</Top>
             <Height>12pt</Height>
             <Width>16cm</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox34">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
-                      <FontSize>12pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox27</rd:DefaultName>
-            <Top>24pt</Top>
-            <Height>12pt</Height>
-            <Width>16cm</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1948,45 +1890,13 @@ order by orden</CommandText>
             <Top>60pt</Top>
             <Height>1.69332cm</Height>
             <Width>16cm</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
           </Tablix>
-          <Textbox Name="Textbox35">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
-                      <FontSize>12pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox27</rd:DefaultName>
-            <Top>48pt</Top>
-            <Height>12pt</Height>
-            <Width>16cm</Width>
-            <ZIndex>5</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Tablix Name="tbEgreso">
             <TablixBody>
               <TablixColumns>
@@ -3397,7 +3307,7 @@ order by orden</CommandText>
             <Top>132pt</Top>
             <Height>1.69332cm</Height>
             <Width>16cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4430,7 +4340,7 @@ order by orden</CommandText>
             <Top>180pt</Top>
             <Height>1.26999cm</Height>
             <Width>14cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5234,7 +5144,7 @@ order by orden</CommandText>
             <Top>228pt</Top>
             <Height>1.26999cm</Height>
             <Width>12cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5261,7 +5171,7 @@ order by orden</CommandText>
             <Top>216pt</Top>
             <Height>12pt</Height>
             <Width>16cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5272,6 +5182,107 @@ order by orden</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Tablix Name="Tablix4">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>2cm</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.6cm</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=FormatDateTime(Parameters!FechaHoy.Value, DateFormat.ShortDate)</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>8cm</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox2">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>Detalle de Movimiento de Ingresos:</Value>
+                                <Style>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox2</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>None</Style>
+                          </Border>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet1</DataSetName>
+            <Top>1.19944cm</Top>
+            <Left>0cm</Left>
+            <Height>0.6cm</Height>
+            <Width>10cm</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
         </ReportItems>
         <Height>26.1924cm</Height>
         <Style>
@@ -5350,20 +5361,22 @@ order by orden</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Public Shared Value as Integer=0
+  <Code>
+		Public Shared Value as Integer=0
 
-Public Shared Function Reset()
-     value= 0
-End Function
+		Public Shared Function Reset()
+		value= 0
+		End Function
 
-Public Shared Function GetValue(Item as Integer) as Integer
-     value= value + Item
-     return Item
-End Function
+		Public Shared Function GetValue(Item as Integer) as Integer
+		value= value + Item
+		return Item
+		End Function
 
-Public Shared Function GetTotal()
-     return value
-End Function</Code>
+		Public Shared Function GetTotal()
+		return value
+		End Function
+	</Code>
   <Language>=Parameters!Language.Value</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
