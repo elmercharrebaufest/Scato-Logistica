@@ -364,6 +364,8 @@ function abrirModal() {
         },
         type: "POST",
         success: function (result) {
+            $(".modal-backdrop").remove();
+            $("#modal-rechazo-mover").remove();
             $("#div-rechazo-mover").html(result);
             $("#modal-rechazo-mover").modal("show");
         },
