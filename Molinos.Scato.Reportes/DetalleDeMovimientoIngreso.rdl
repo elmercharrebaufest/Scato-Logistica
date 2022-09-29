@@ -5202,8 +5202,11 @@ order by orden</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatDateTime(Parameters!FechaHoy.Value, DateFormat.ShortDate)</Value>
-                                  <Style />
+                                  <Value>=CDate(Parameters!FechaHoy.Value)</Value>
+                                  <Style>
+                                    <Format>dd/MM/yyyy</Format>
+                                    <Language>es-AR</Language>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -5221,6 +5224,7 @@ order by orden</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

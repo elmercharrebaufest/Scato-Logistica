@@ -320,7 +320,7 @@ function RecetearbalanzadaAutomatica(id) {
             PesoBrutoOrigen: "0",
             PesoNetoOrigen: "0"
         });
-        $(".btn-balanza").attr("disabled", true);
+        $(".btn-balanza:not(.tomarPeso)").attr("disabled", true);
     }
 }
 
