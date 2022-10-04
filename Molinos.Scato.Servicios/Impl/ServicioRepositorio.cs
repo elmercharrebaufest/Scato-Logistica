@@ -10054,5 +10054,18 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado, x => x.Id);
         }
+
+        public List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos()
+        {
+            var puestosDeTrabajo = repositorio.Listar<PuestosDeCargaDescarga, PuestoDeTrabajo>(x => x.PuestoDeTrabajo, x => x.PuestoDeTrabajo != null);
+            var hidraulicas = puestosDeTrabajo.Where(x => x.VisualizacionBarrera != null).Select(x => x.VisualizacionBarrera.Id).ToList();
+            var barrerasActivas = puestosDeTrabajo.Where(x => x.VisualizacionBarrera != null && hidraulicas.Contains(x.VisualizacionBarrera.Id) && !x.VisualizacionBarrera.Deshabilitada).Select(x => x.VisualizacionBarrera.Id).ToList();
+            var sensores = Listar<SensorBarrera, SensorBarreraDto>(x => barrerasActivas.Contains(x.VisualizacionBarrera.Id)).ToList();
+            foreach (var sensor in sensores)
+            {
+                sensor.PuestoDeTrabajoId = puestosDeTrabajo.FirstOrDefault(x => x.VisualizacionBarrera != null && x.VisualizacionBarrera.Id == sensor.VisualizacionBarrera.Id)?.Id;
+            }
+            return sensores;
+        }
     }
 }

@@ -58,6 +58,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case "CambioEstadoSensor":
                         estadoPuesto.NotificarSensorBarrera(notificacion);
+                        estadoPuesto.NotificarSensorBarreraHidraulicas(notificacion);
                         bool estado;
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
@@ -72,10 +73,6 @@ namespace Molinos.Scato.Servicios.Impl
 
                             estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, estado);
                         }
-                        //else
-                        //{
-                        //    estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, notificacion.Datos["Mensaje"]);
-                        //}
                         break;
 
                     case "LecturaCPE":
@@ -122,60 +119,60 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void EjecutarCierreDeBarreraAutomatica(string codigoSensor)
         {
-            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(codigoSensor);
+            //var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(codigoSensor);
 
-            if (configuraciones.Length == 0)
-                return;
+            //if (configuraciones.Length == 0)
+            //    return;
 
-            var gruposBarrera = configuraciones.Select(q => q.AgrupadorCodigo).ToList();
-            var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarrera).Distinct();
-            foreach (var grupo in gruposEnUso)
-            {
-                var grupoBarrera = configuraciones.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
+            //var gruposBarrera = configuraciones.Select(q => q.AgrupadorCodigo).ToList();
+            //var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarrera).Distinct();
+            //foreach (var grupo in gruposEnUso)
+            //{
+            //    var grupoBarrera = configuraciones.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
 
-                var dispositivoCodigoLista = new List<string>
-                {
-                    grupoBarrera.SensorArribaCodigo,
-                    grupoBarrera.SensorAbajoCodigo,
-                    grupoBarrera.SensorSegundoCruceCodigo
-                };
+            //    var dispositivoCodigoLista = new List<string>
+            //    {
+            //        grupoBarrera.SensorArribaCodigo,
+            //        grupoBarrera.SensorAbajoCodigo,
+            //        grupoBarrera.SensorSegundoCruceCodigo
+            //    };
 
-                var logEstadoSensor = repositorio.ObtenerLogDispositivos(dispositivoCodigoLista);
+            //    var logEstadoSensor = repositorio.ObtenerLogDispositivos(dispositivoCodigoLista);
 
-                if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
-                    return;
+            //    if (logEstadoSensor.Count() < dispositivoCodigoLista.Count)
+            //        return;
 
-                var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorArribaCodigo);
-                var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorAbajoCodigo);
-                var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorSegundoCruceCodigo);
+            //    var sensorArriba = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorArribaCodigo);
+            //    var sensorAbajo = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorAbajoCodigo);
+            //    var sensorSegundoCruce = logEstadoSensor.FirstOrDefault(q => q.CodigoDispositivo == grupoBarrera.SensorSegundoCruceCodigo);
 
-                var estadoSensorArriba = false;
-                var estadoSensorAbajo = false;
-                var estadoSensorCruce = false;
-                var estadoSensorCruceAnterior = false;
+            //    var estadoSensorArriba = false;
+            //    var estadoSensorAbajo = false;
+            //    var estadoSensorCruce = false;
+            //    var estadoSensorCruceAnterior = false;
 
-                if (bool.TryParse(sensorArriba.ValorActual, out estadoSensorArriba)
-                    && bool.TryParse(sensorAbajo.ValorActual, out estadoSensorAbajo)
-                    && bool.TryParse(sensorSegundoCruce.ValorActual, out estadoSensorCruce))
-                {
-                    if (bool.TryParse(sensorSegundoCruce.ValorAnterior, out estadoSensorCruceAnterior))
-                    {
-                        if (estadoSensorArriba == true && estadoSensorAbajo == false)
-                        {
-                            if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
-                            {
-                                log.Info("Se ejecutara cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
-                                var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
-                                {
-                                    CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
-                                });
-                                log.Info("Se ejecuto cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
-                                repositorio.ActualizarDispositivoLog(grupoBarrera.SensorSegundoCruceCodigo, "EstadoSensor", "", true);
-                            }
-                        }
-                    }
-                }
-            }
+            //    if (bool.TryParse(sensorArriba.ValorActual, out estadoSensorArriba)
+            //        && bool.TryParse(sensorAbajo.ValorActual, out estadoSensorAbajo)
+            //        && bool.TryParse(sensorSegundoCruce.ValorActual, out estadoSensorCruce))
+            //    {
+            //        if (bool.TryParse(sensorSegundoCruce.ValorAnterior, out estadoSensorCruceAnterior))
+            //        {
+            //            if (estadoSensorArriba == true && estadoSensorAbajo == false)
+            //            {
+            //                if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
+            //                {
+            //                    log.Info("Se ejecutara cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
+            //                    var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
+            //                    {
+            //                        CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
+            //                    });
+            //                    log.Info("Se ejecuto cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
+            //                    repositorio.ActualizarDispositivoLog(grupoBarrera.SensorSegundoCruceCodigo, "EstadoSensor", "", true);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
     }
 }

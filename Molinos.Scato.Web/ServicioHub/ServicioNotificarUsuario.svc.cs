@@ -31,7 +31,8 @@ namespace Molinos.Scato.Web.ServicioHub
                 notificacion.Hora = DateTime.Now;
                 if(notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.NotificacionEstadoWeb 
                     && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBalanzas
-                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBarrera)
+                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBarrera
+                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBarreraHidraulica)
                 {
                     var resultado = servicioComandos.Ejecutar(new CrearNotificacion { Dto = notificacion }) as ResultadoCrear;
                     if (resultado != null)

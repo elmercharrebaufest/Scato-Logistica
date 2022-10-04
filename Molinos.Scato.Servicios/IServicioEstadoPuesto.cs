@@ -22,5 +22,8 @@ namespace Molinos.Scato.Servicios
         IList<ConcentradorDto> ConsultarEstadoBarreras();
         [OperationContract]
         void ActualizarBarreras(string nombrePc);
+
+        [OperationContract]
+        void NotificarSensorBarreraHidraulicas(NotificacionEvento notificacion);
     }
 }

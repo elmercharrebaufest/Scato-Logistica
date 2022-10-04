@@ -2709,5 +2709,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
+        
+        [OperationContract]
+        List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos();
     }
 }

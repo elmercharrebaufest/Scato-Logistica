@@ -367,35 +367,35 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ResuscribirGrupoBarrera()
         {
-            var configuraciones = orquestador.ListarGruposBarrera();
-            var gruposBarreraCodigos = configuraciones.Select(q => q.Codigo).ToList();
-            var grupoBarreraActivas = new List<GrupoBarreraDto>();
-            foreach (var grupoBarrera in gruposBarreraCodigos)
-            {
-                var grupoBarreraDatos = orquestador.ObtenerConfiguracionGrupoBarrera(grupoBarrera);
-                grupoBarreraActivas.Add(grupoBarreraDatos);
-                try
-                {
-                    CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
+            //var configuraciones = orquestador.ListarGruposBarrera();
+            //var gruposBarreraCodigos = configuraciones.Select(q => q.Codigo).ToList();
+            //var grupoBarreraActivas = new List<GrupoBarreraDto>();
+            //foreach (var grupoBarrera in gruposBarreraCodigos)
+            //{
+            //    var grupoBarreraDatos = orquestador.ObtenerConfiguracionGrupoBarrera(grupoBarrera);
+            //    grupoBarreraActivas.Add(grupoBarreraDatos);
+            //    try
+            //    {
+            //        CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
 
-                    CancelarSuscripcion(grupoBarreraDatos.SensorArribaCodigo);
+            //        CancelarSuscripcion(grupoBarreraDatos.SensorArribaCodigo);
 
-                    CancelarSuscripcion(grupoBarreraDatos.SensorSegundoCruceCodigo);
-                }
-                catch (Exception e)
-                {
-                    log.Error(e, "No se pudo cancelar la suscripción para el el grupo {0}.", grupoBarreraDatos.AgrupadorCodigo);
-                }
-            }
+            //        CancelarSuscripcion(grupoBarreraDatos.SensorSegundoCruceCodigo);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        log.Error(e, "No se pudo cancelar la suscripción para el el grupo {0}.", grupoBarreraDatos.AgrupadorCodigo);
+            //    }
+            //}
 
-            var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarreraCodigos).Distinct();
-            foreach (var grupo in gruposEnUso)
-            {
-                var grupoBarreraASuscribir = grupoBarreraActivas.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
-                comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorArribaCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-                comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorAbajoCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-                comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorSegundoCruceCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-            }
+            //var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarreraCodigos).Distinct();
+            //foreach (var grupo in gruposEnUso)
+            //{
+            //    var grupoBarreraASuscribir = grupoBarreraActivas.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
+            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorArribaCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorAbajoCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorSegundoCruceCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+            //}
         }
 
         private void CancelarSuscripcion(string codigoSensor)
@@ -410,6 +410,58 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 log.Error("No se pudo cancelar la suscripción para el lector {0}. Mensaje: {1}-{2}", codigoSensor,
                     resultadoCancelacion.Mensaje.Codigo, resultadoCancelacion.Mensaje.Descripcion);
+            }
+        }
+
+        public void NotificarSensorBarreraHidraulicas(NotificacionEvento notificacion)
+        {
+            log.Debug($"Procesando notificaciones para {notificacion?.CodigoDispositivo} CodigoEvento {notificacion?.CodigoEvento}");
+            var sensor = notificacion?.CodigoDispositivo ?? string.Empty;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(sensor))
+                {
+                    var listadoSensores = repositorio.ListarSensoresBarrerasHidraulicasActivos();
+
+                    var sensoresArriba = listadoSensores
+                        .Where(w => w.CodigoDispositivoSensorArriba == sensor)
+                        .Select(s => new EstadoSensorDto { 
+                            Id = s.Id, 
+                            GrupoId = s.VisualizacionBarrera.Id, 
+                            Barrera = s.Barrera, 
+                            Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty),
+                            PuestoDeTrabajoId = s.PuestoDeTrabajoId
+                        }).ToList();
+
+                    var sensoresAbajo = listadoSensores
+                        .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
+                        .Select(s => new EstadoSensorDto { 
+                            Id = s.Id, 
+                            GrupoId = s.VisualizacionBarrera.Id, 
+                            Barrera = s.Barrera, 
+                            Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty),
+                            PuestoDeTrabajoId = s.PuestoDeTrabajoId
+                        }).ToList();
+
+                    var notificacionSensorBarrera = new EstadoSensoresBarreraDto
+                    {
+                        Dispositivo = sensor,
+                        SensoresArriba = sensoresArriba,
+                        SensoresAbajo = sensoresAbajo
+                    };
+
+                    notificar.Notificar(new NotificacionDto
+                    {
+                        Grupo = Dominio.Constantes.NotificacionGrupos.SensoresBarreraHidraulica,
+                        Mensaje = notificacionSensorBarrera.ToJson(),
+                        TipoAlerta = TipoAlerta.CambioEstadoBarreraHidraulica
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error("Notificar cambio sensor vagones error no controlado sensor: {0}, detalle del error : {1}", sensor, e);
             }
         }
     }

@@ -11,6 +11,7 @@
         public struct NotificacionGrupos
         {
             public const string Intercomunicador = "Intercomunicador";
+            public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
         }
 
         public struct Entidad
