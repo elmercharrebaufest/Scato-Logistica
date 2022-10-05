@@ -272,10 +272,10 @@ SELECT DISTINCT
 	'' Clasificacion,
 	'' InterFlete,
 	'' Cupo,
-	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
-										   when m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
-										   when m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
-										   when m.CodigoONCCA = 2  AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 2  AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
 										   when m.CodigoONCCA = 23 AND ccp.Valor &gt; 13.5 THEN 13.5 --soja
 										   when m.CodigoONCCA = 19 AND ccp.Valor &gt; 14.5 THEN 14.5 --maiz
 										   when m.CodigoONCCA = 15 AND ccp.Valor &gt; 14 THEN 14 --trigo
@@ -4779,7 +4779,6 @@ ORDER BY ord</CommandText>
                             <PaddingBottom>1pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -11729,7 +11728,7 @@ ORDER BY ord</CommandText>
                                                                                                                                                                                                                                                                       <Paragraph>
                                                                                                                                                                                                                                                                         <TextRuns>
                                                                                                                                                                                                                                                                           <TextRun>
-                                                                                                                                                                                                                                                                            <Value>=IIF(Sum(Fields!Humedad.Value, "NroCartaPorte") &gt; 0, Round(Sum(Fields!Humedad.Value, "NroCartaPorte"),1),"")</Value>
+                                                                                                                                                                                                                                                                            <Value>=IIF(Max(Fields!Humedad.Value, "NroCartaPorte") &gt; 0, Round(Max(Fields!Humedad.Value, "NroCartaPorte"),1),"")</Value>
                                                                                                                                                                                                                                                                             <Style>
                                                                                                                                                                                                                                                                               <FontFamily>Arial</FontFamily>
                                                                                                                                                                                                                                                                               <FontSize>8pt</FontSize>
@@ -11753,6 +11752,7 @@ ORDER BY ord</CommandText>
                                                                                                                                                                                                                                                                       <PaddingBottom>1pt</PaddingBottom>
                                                                                                                                                                                                                                                                     </Style>
                                                                                                                                                                                                                                                                   </Textbox>
+                                                                                                                                                                                                                                                                  <rd:Selected>true</rd:Selected>
                                                                                                                                                                                                                                                                 </CellContents>
                                                                                                                                                                                                                                                               </TablixHeader>
                                                                                                                                                                                                                                                               <TablixMembers>
