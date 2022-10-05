@@ -32,7 +32,7 @@ namespace Molinos.Scato.Dominio.Enums
             {"DD", "DESCARGADO EN DESTINO" },
         });
 
-        public static IReadOnlyList<string> Validos = new List<string> { "AC", "CF", };
+        public static IReadOnlyList<string> Validos = new List<string> { "AC", "CF" };
         public static IReadOnlyList<string> Bloqueantes = new List<string> { "AN", "RE", "CO", "DE", "CN", "BR", "PA", "AP", "DD" };
     }
 }
