@@ -312,6 +312,13 @@
                 @Html.ValidationMessageFor(model => model.ToleranciaPatenteLeida)
             </div>
         </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Planta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Planta, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.Planta)
+            </div>
+        </div>
     </div>
 </div>
 

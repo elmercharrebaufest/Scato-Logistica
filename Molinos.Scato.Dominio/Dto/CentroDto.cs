@@ -251,6 +251,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int? MinutosEsperaCircular { get; set; }
         public int? Sucursal { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         public int? Planta { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "ContingenciaAfipCpe")]
