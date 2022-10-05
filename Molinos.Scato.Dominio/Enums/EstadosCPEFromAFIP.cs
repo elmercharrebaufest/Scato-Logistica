@@ -1,10 +1,5 @@
-﻿using Molinos.Scato.Dominio.Entidades;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Dominio.Enums
 {
@@ -28,7 +23,7 @@ namespace Molinos.Scato.Dominio.Enums
             {"CF", "ACTIVO CON CONFIRMACION DE ARRIBO" },
             {"AN", "ANULADO" },
             {"RE", "RECHAZADO" },
-            {"CO", "ACTIVO CON CONTINGECIA" },
+            {"CO", "ACTIVO CON CONTINGENCIA" },
             {"DE", "DESACTIVADO" },
             {"CN", "CONFIRMADO" },
             {"BR", "BORRADOR" },
@@ -37,7 +32,7 @@ namespace Molinos.Scato.Dominio.Enums
             {"DD", "DESCARGADO EN DESTINO" },
         });
 
-        public static IReadOnlyList<string> Validos = new List<string> {"AC", "CF",};
-        public static IReadOnlyList<string> Bloqueantes = new List<string> { "AN", "RE", "CO" };
+        public static IReadOnlyList<string> Validos = new List<string> { "AC", "CF", };
+        public static IReadOnlyList<string> Bloqueantes = new List<string> { "AN", "RE", "CO", "DE", "CN", "BR", "PA", "AP", "DD" };
     }
 }
