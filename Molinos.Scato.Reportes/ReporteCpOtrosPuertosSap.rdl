@@ -124,6 +124,8 @@ SELECT DISTINCT
 	CASE
 		WHEN  cp.DestinatarioCuit NOT IN(@CuitMOA,@CuitMRP)
 		THEN NULL
+		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP) AND cp.DestinoCuit = @CuitChivilcoy
+		THEN cp.CuitCorredorVentaSecundaria
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -185,6 +187,8 @@ SELECT DISTINCT
 	CASE
 		WHEN  cp.DestinatarioCuit NOT IN(@CuitMOA,@CuitMRP)
 		THEN NULL
+		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP) AND cp.DestinoCuit = @CuitChivilcoy
+		THEN cp.RazonSocialCorredorVentaSecundaria
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -11752,7 +11756,6 @@ ORDER BY ord</CommandText>
                                                                                                                                                                                                                                                                       <PaddingBottom>1pt</PaddingBottom>
                                                                                                                                                                                                                                                                     </Style>
                                                                                                                                                                                                                                                                   </Textbox>
-                                                                                                                                                                                                                                                                  <rd:Selected>true</rd:Selected>
                                                                                                                                                                                                                                                                 </CellContents>
                                                                                                                                                                                                                                                               </TablixHeader>
                                                                                                                                                                                                                                                               <TablixMembers>
