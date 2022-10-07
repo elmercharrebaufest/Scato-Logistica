@@ -8929,6 +8929,12 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
                  DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : ""
              });
+
+            if (camion == null)
+            {
+                return new InfoPatenteDeCalleDto();
+            }
+
             var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
             camion.Cliente = camion.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas ?
