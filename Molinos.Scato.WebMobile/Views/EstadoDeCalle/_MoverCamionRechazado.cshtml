@@ -61,6 +61,22 @@
                         </div>
                         <hr />
                         <div class="row">
+                            <div id="div-descripcionAlmacen" class="control-group col-8">
+                                @Html.LabelFor(model => model.DescripcionAlmacen, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.DescripcionAlmacen, new { @class = "input-large" })
+                                </div>
+                            </div>
+                            <div id="div-tipoVehiculo" class="control-group col-4">
+                                @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.TipoVehiculo, new { @class = "input-large" })
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="row">
                             <div class="control-group col-4">
                                 @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
                                 <div id="div-patente" class="controls">
@@ -76,7 +92,9 @@
                             <div id="div-cartaporte" class="control-group col-4">
                                 @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
                                 <div class="controls">
-                                    @{var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");}
+                                    @{
+                                        var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");
+                                    }
                                     @Html.DisplayFor(model => fecha, new { @class = "input-large" })
                                 </div>
                             </div>
@@ -109,7 +127,8 @@
             else
             {
                 <div class="modal-header">
-                    @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleMoverRechazado) && Model.Rechazado && Model.TipoCalle == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
+                    @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleMoverRechazado) && Model.Rechazado && Model.TipoCalle
+                   == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
                     {
 
                         <h5 class="modal-title">Confirmar Mover a Rechazado</h5>
@@ -124,7 +143,8 @@
                 </div>
                 <div class="modal-body" id="dialogo-confirmar-body">
 
-                    @if (Model.PermisoReasignarCallePostCalado && Model.TipoCalle == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
+                    @if (Model.PermisoReasignarCallePostCalado && Model.TipoCalle ==
+                   Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
                     {
                         <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
                             <legend class="reset-this redo-legend">Información</legend>
@@ -171,11 +191,13 @@
                             <div class="control-group">
                                 @Html.Label("Tipo de Calle", new { @class = "control-label" })
                                 <div class="">
-                                    @Html.DropDownListFor(model => model.CalleId, callesPostCalado, new { @class = "selec-calle", id = "calleId" })
+                                    @Html.DropDownListFor(model => model.CalleId, callesPostCalado, new { @class =
+                            "selec-calle", id = "calleId" })
                                 </div>
                             </div>
                             <div class="botones-carta-porte centered" style="padding-top: 20px; padding-bottom: 10px;">
-                                <button id="Boton-AceptarReasignacionCalle" class="btn btn-primary aceptar-carga-porte" type="button" style="width: 100%;">Reasignar Camión</button>
+                                <button id="Boton-AceptarReasignacionCalle" class="btn btn-primary aceptar-carga-porte"
+                            type="button" style="width: 100%;">Reasignar Camión</button>
                             </div>
                         </fieldset>
                     }
@@ -247,7 +269,8 @@
             </div>
 
             <div class="modal-footer">
-                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">Confirmar</button>
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction"
+                    value="">Confirmar</button>
                 <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">Cancelar</button>
             </div>
         </div>

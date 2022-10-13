@@ -89,7 +89,8 @@ function Autorefresco(intervalo) {
 $('[data-toggle="tooltip"]').tooltip();
 
 function copia_portapapeles(data) {
-   window.clipboardData.setData("Text", data);
+    navigator.clipboard.writeText(data);
+    alert("Texto copiado.");
 }
 
 function CargarGrilla() {

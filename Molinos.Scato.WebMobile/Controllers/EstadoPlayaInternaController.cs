@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -20,6 +21,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         private readonly IServicioRepositorio servicio;
         private readonly ILogger log;
         private IConfiguracionProvider configuracion;
+        private List<TipoCalle> listaCalles;
 
         public EstadoPlayaInternaController(
             ILogger log,
@@ -33,6 +35,16 @@ namespace Molinos.Scato.WebMobile.Controllers
             this.servicio = servicio;
             this.configuracion = configuracion;
             this.servicioComandos = servicioComandos;
+            this.listaCalles = new List<TipoCalle> {
+                TipoCalle.PlayaInterna, 
+                TipoCalle.PlantaNoGranos, 
+                TipoCalle.EnTransito,
+                TipoCalle.SalidaNoGranos,
+                TipoCalle.EsperaAduanaNoGranos,
+                TipoCalle.EnTransitoGranos,
+                TipoCalle.PreBalanzaGranos,
+                TipoCalle.SalidaGranos
+            };
         }
 
         public ActionResult Index()
@@ -46,8 +58,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos);
-            var materiales = camiones.Where(x => x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos)
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle));
+            var materiales = camiones.Where(x => listaCalles.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0);
 
@@ -81,7 +93,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => (x.TipoCalle == TipoCalle.PlayaInterna || x.TipoCalle == TipoCalle.PlantaNoGranos || x.TipoCalle == TipoCalle.EnTransito || x.TipoCalle == TipoCalle.SalidaNoGranos) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
             var tipoCallePlantaLista = new List<TipoCallePlantaDto>();
 
             foreach (var calle in calles)
@@ -102,7 +114,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                     ColorFondo = calle.ColorFondo ?? "#000",
                     ColorTexto = calle.ColorTexto ?? "#fff",
                     LimiteDeCamiones = calle.CantidadDeCamiones,
-                    Bloqueada = calle.Bloqueada
+                    Bloqueada = calle.Bloqueada,
+                    EsPrimero = false,
+                    EsUltimo = false
                 };
                 tipoCallePlanta.Calles.Add(callePlanta);
 
@@ -118,12 +132,33 @@ namespace Molinos.Scato.WebMobile.Controllers
                         ColorTexto = camion.ColorTexto ?? "#fff",
                         CalleId = camion.CalleId,
                         Rechazado = camion.Rechazado,
-                        FechaIngreso = camion.FechaIngeso
+                        FechaIngreso = camion.FechaIngeso,
+                        MaterialId = camion.MaterialId,
+                        Calidad = camion.Calidad
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }
+                if(calle.TipoCalle == TipoCalle.PreBalanzaGranos && calle.Bloqueada && callePlanta.Camiones.Count == 0)
+                {
+                    DesbloquearCalle(calle.Id);
+                }
             }
             return tipoCallePlantaLista;
+        }
+
+        private void DesbloquearCalle(int calleId)
+        {
+            try
+            {
+                var calle = servicio.ObtenerCalle(calleId);
+                calle.Bloqueada = false;
+                calle.FechaLLamada = null;
+                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "Error al desbloquear calle PreBalanzaGranos");
+            }
         }
     }
 }

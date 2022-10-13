@@ -73,12 +73,12 @@
             $("#validation-cupo").removeClass("alert-info");
             $("#validation-cupo").removeClass("alert-error");
             var cupo = $('#Cupo').val();
-            let imagen = $('#ImagenCartaPorte').val();
             if (/^MOL[0-9]{4}\/[0-9]{8}$/.test(cupo) && !$('#checkSinCupo').is(':checked')) {
                 BlockCupos($("#ValidandoCupo").val());
                 var request = {
                     cupo: cupo,
-                    imagen: imagen
+                    imagen: $('#ImagenCartaPorte').val(),
+                    nroCartaPorte: $('#CTG').val()
                 }
                 $.ajax({
                     type: 'POST',

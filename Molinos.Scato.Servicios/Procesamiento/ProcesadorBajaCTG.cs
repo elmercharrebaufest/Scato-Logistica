@@ -108,16 +108,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 else if (response.response != null)
                 {
-                    //Si no hay errores, registro la baja del CTG
-                    var datos = response.response.datosResponse;
-                    Repositorio.Agregar(
-                        new BajaCTG
-                            {
-                                CartaPorte = Repositorio.Obtener<CartaPorte>(comando.Dto.Id),
-                                CodigoDeBaja = datos != null ? datos.codigoOperacion.ToString(CultureInfo.InvariantCulture) : "ya está confirmado",
-                                Fecha = datos != null && !string.IsNullOrEmpty(datos.fechaHora) ? DateTime.Parse(datos.fechaHora) : DateTime.Now,
-                                WorkflowId = comando.WorkflowId
-                            });
                     Log.Debug("Baja de ctg {0} procesada correctamente", comando.Dto.CTG);
                 }
                 else
@@ -135,10 +125,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(e, "No se pudo hacer la baja de CTG del codigo {0}", comando.Dto.CTG);
                 resultado.Errores.Add("CodigoDeBaja", Textos.Error_Generico);
             }
-            if (!resultado.HayErrores)
+            var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == comando.WorkflowId, x => x.Fecha);
+            if (bajaCtg == null)
             {
-                Repositorio.GuardarCambios();
+                Repositorio.Agregar(
+                  new BajaCTG
+                  {
+                      CartaPorte = Repositorio.Obtener<Dominio.Entidades.CartaPorte>(comando.Dto.Id),
+                      CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorBajaCTG" : null,
+                      Fecha = DateTime.Now,
+                      WorkflowId = comando.WorkflowId
+                  });
             }
+            else
+            {
+                bajaCtg.CodigoDeBaja = (!resultado.HayErrores) ? "ProcesadorBajaCTG" : null;
+                bajaCtg.Fecha = DateTime.Now;
+            }
+
+            Repositorio.GuardarCambios();
+
             return resultado;
         }
     }

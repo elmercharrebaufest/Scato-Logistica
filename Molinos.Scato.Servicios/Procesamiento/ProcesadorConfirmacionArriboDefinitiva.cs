@@ -87,6 +87,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (consulta?.respuesta?.cabecera?.estado == "CN")
                     {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
                         return resultado;
                     }
                 }
@@ -104,6 +105,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (consulta?.respuesta?.cabecera?.estado == "CN")
                     {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
                         return resultado;
                     }
                 }
@@ -206,6 +208,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         });
                         Repositorio.GuardarCambios();
                     }
+                   
+                    UpdateBajaCTGDefinitiva(comando.WorkflowId);
+
                 }
                 catch (Exception e)
                 {
@@ -272,6 +277,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 default:
                     return 74;
             }
+        }
+
+        private void UpdateBajaCTGDefinitiva(Guid workFlowId) {
+            var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == workFlowId, x => x.Fecha);
+            if (bajaCtg != null)
+            {
+                if(string.IsNullOrEmpty(bajaCtg.CodigoDeBajaDefinitivo))
+                    bajaCtg.CodigoDeBajaDefinitivo = "ProcesadorConfirmacionArriboDefinitivo";
+            }
+            Repositorio.GuardarCambios();
         }
     }
 }

@@ -7,7 +7,7 @@
         return false;
     });
 
-    $("#cancelar").on("click", function() {
+    $("#regresar").on("click", function () {
         window.location = $("#urlIndex").val();
     });
 

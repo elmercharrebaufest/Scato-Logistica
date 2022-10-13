@@ -15,23 +15,18 @@ EstadoPlayaInternaDeCallesVM.prototype = {
     },
     init: function () {
         let self = this;
-        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle), $("#" + self.containerId)[0]);
+        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle, self.containerId), $("#" + self.containerId)[0]);
     }
 }
 
-function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
+function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,containerId) {
     var self = this;
     self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
-    let calles = [];
-    // Agregar calles al array
-    $.each(tiposCallesPlanta, function (indexTipoCallePlanta, tipoCallePlanta) {
-        $.each(tipoCallePlanta.Calles, function (indexCalle, calle) {
-            calles.push(calle);
-        })
-    })
+    self.dummy = ko.observable();
 
-    self.Calles(calles);
+    let callesOrdenadas = reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, null);
+    self.Calles(callesOrdenadas);
 
     self.TiempoEnCola = function (item) {
         if (item.Camiones.length > 0) {
@@ -41,25 +36,55 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalle) {
     };
 
     setInterval(() => {
-        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == tipoCalle) {
-            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalle);
-            let callesNuevas = [];
-            // Agregar calles al array del observable
-            $.each(tiposCallesNuevasPlanta, function (index, tipoCalleNuevaPlanta) {
-                $.each(tipoCalleNuevaPlanta.Calles, function (index2, calleNueva) {
-                    if (self.PatenteBuscada()) {
-                        let patenteBuscada = self.PatenteBuscada();
-                        if (calleNueva.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
-                            callesNuevas.push(calleNueva);
-                        }
-                    } else {
-                        callesNuevas.push(calleNueva);
-                    }
-                })
-            })
+        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == containerId) {
+            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalleEnUso);
+            let callesNuevas = reordernarCalles(tiposCallesNuevasPlanta, tipoCalleEnUso, self.PatenteBuscada());
             self.Calles(callesNuevas);
         }
     }, 4000)
+
+    self.sumarCamiones = function (materialId) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == materialId ? total + 1 : total, 0);
+        });
+        return count;
+    };
+
+    self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(4); });
+    self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
+    self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
+    self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
+}
+
+function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
+    let calles = [];
+    let callesAgrupadas = [];
+    let tipoCalleEnUsoArray = tipoCalleEnUso.split(",");
+
+    $.each(tipoCalleEnUsoArray, function (index, data) {
+        let callesPorGrupo = tiposCallesPlanta.filter(tipoCalles => tipoCalles.TipoCalle == data);
+        if (callesPorGrupo.length > 0 && callesPorGrupo[0].Calles.length > 0) {
+            callesPorGrupo[0].Calles[0].EsPrimero = true;
+            callesPorGrupo[0].Calles[callesPorGrupo[0].Calles.length - 1].EsUltimo = true;
+        }
+        callesAgrupadas.push(...callesPorGrupo);
+    })
+
+    $.each(callesAgrupadas, function (index, data) {
+        $.each(data.Calles, function (indexCalle, calle) {
+            if (patenteBuscada) {
+                if (calle.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
+                    calles.push(calle);
+                }
+            } else {
+                calles.push(calle);
+            }
+        })
+    })
+
+    return calles;
 }
 
 function obtenerClaseIcono(rechazado, calidad) {
@@ -96,8 +121,10 @@ function abrirModal() {
         },
         type: "POST",
         success: function (result) {
-            $("#div-rechazo-mover").html(result);
-            $("#modal-rechazo-mover").modal("show");
+            $(".modal-backdrop").remove()
+            $(".detalleCamionModal").remove()
+            $("#detalleCamion").html(result);
+            $("#detalleCamionModal").modal("show");
         },
         error: function (error) {
             console.log(error);
@@ -126,3 +153,6 @@ function calcularTiempoEnCola(fechaIngeso) {
     return diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
 }
 
+function obtenerClaseEscalable(escalable) {
+    return escalable ? "fas fa-truck" : "";
+}

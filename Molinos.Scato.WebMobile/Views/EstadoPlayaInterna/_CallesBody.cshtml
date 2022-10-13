@@ -1,27 +1,28 @@
 ﻿<div class="content">
     <div class="container-fluid">
-        <div class="row callesfiltradas" data-bind="foreach: Calles, css: {'centrarCalles' : Calles.length <= 5}">
-            <div class="col" style="min-width:14ch!important; max-width:20ch!important">
+        <div class="row callesfiltradas" data-bind="foreach: Calles, css: {'centrarCalles' : Calles().length <= 5}" style="margin-right: -10px; margin-left: -10px;">
+            <div class="col" style="min-width:18ch!important; max-width:20ch!important; margin:0px;" data-bind="css: { 'bg-primero': EsPrimero, 'bg-ultimo': EsUltimo }">
                 <div class="sinbordetb row row-card-no-pd" data-bind="css: { 'bg-calle-llena': Camiones.length - LimiteDeCamiones > 0}">
                     <div class="col sinbordetb">
                         <div class="card card-stats sinbordetb">
                             <div class="card-body sinbordetb">
                                 <div class="row fw-bold mb-0 cart-title sinbordetb">
                                     <div class="col">
-                                        <span style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle"><strong data-bind="text: $root.TiempoEnCola($data)"></strong></span>
+                                        <button disabled style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle"><strong data-bind="text: $root.TiempoEnCola($data)"></strong></button>
                                     </div>
                                 </div>
                                 <p class="fw-bold mb-0 cart-title sinbordetb px-1" data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }">
                                     <strong data-bind="text: CalleDesc"></strong>
                                     <sup data-bind="text: Camiones.length + '/' + LimiteDeCamiones"></sup>
                                 </p>
-                                <div class="row borde-grafico" data-bind="css: { 'bg-success': Bloqueada }">
+                                <div class="row borde-grafico" @*data-bind="css: { 'bg-success': Bloqueada }"*@>
                                     <div class="col">
                                         <div data-bind="foreach: Camiones">
                                             <div data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }" class="card" style="max-width: 100%; padding-top:4px; padding-bottom:4px;">
-                                                <div class="card-header text-center" style="padding: 0px; height: 18px; cursor:pointer;">
+                                                <div class="card-header" style="display:flex; justify-content:center; gap: 5px; align-items:center; padding: 0 0.5rem; height: 18px; cursor:pointer;" data-bind="click: abrirModal">
+                                                    <i data-bind="attr: {'class': obtenerClaseEscalable(Escalable)}"></i>
                                                     <i data-bind="attr: {'class': obtenerClaseIcono(Rechazado, Calidad)}"></i>
-                                                    <strong data-bind="text: Patente, click: abrirModal"></strong>
+                                                    <strong data-bind="text: Patente"></strong>
                                                 </div>
                                             </div>
                                         </div>

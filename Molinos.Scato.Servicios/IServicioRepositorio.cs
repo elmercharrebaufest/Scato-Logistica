@@ -2531,9 +2531,6 @@ namespace Molinos.Scato.Servicios
         ProveedorDto ObtenerProveedorPorId(int Id);
 
         [OperationContract]
-        CargaDeCupoDto ObtenerCupoRecorridoId(int id);
-
-        [OperationContract]
         IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoPorCodigoLectorQR(string Codigo);
 
         [OperationContract]
@@ -2703,5 +2700,15 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId);
+
+        [OperationContract]
+        bool EsCupoReingresado(string cupo, string nroCartaPorte, int centroId);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId);
+
+        [OperationContract]
+        CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
+        
     }
 }

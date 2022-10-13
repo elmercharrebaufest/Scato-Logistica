@@ -10006,4 +10006,49 @@
   <data name="Workflow_SalidaMercaderiaConSAP" xml:space="preserve">
     <value>IngresarCartaPorteRedespachoMercaderia</value>
   </data>
+  <data name="TipoCallePlayaInterna" xml:space="preserve">
+    <value>Playa Interna</value>
+  </data>
+  <data name="TipoCallePreCalado" xml:space="preserve">
+    <value>Pre Calado</value>
+  </data>
+  <data name="TipoCallePostCalado" xml:space="preserve">
+    <value>Post Calado</value>
+  </data>
+  <data name="TipoCalleReCalado" xml:space="preserve">
+    <value>Re Calado</value>
+  </data>
+  <data name="TipoCalleCalado" xml:space="preserve">
+    <value>Calado</value>
+  </data>
+  <data name="TipoCalleRechazadosDemorados" xml:space="preserve">
+    <value>Rechazados Demorados</value>
+  </data>
+  <data name="TipoCalleNoGranos" xml:space="preserve">
+    <value>No Granos</value>
+  </data>
+  <data name="TipoCalleCircular" xml:space="preserve">
+    <value>Circular</value>
+  </data>
+  <data name="TipoCallePlantaNoGranos" xml:space="preserve">
+    <value>Planta No Granos</value>
+  </data>
+  <data name="TipoCalleEnTransito" xml:space="preserve">
+    <value>En Tránsito No Granos</value>
+  </data>
+  <data name="TipoCalleSalidaNoGranos" xml:space="preserve">
+    <value>Salida No Granos</value>
+  </data>
+  <data name="TipoCalleEsperaAduanaNoGranos" xml:space="preserve">
+    <value>Espera Aduana No Granos</value>
+  </data>
+  <data name="TipoCalleEnTransitoGranos" xml:space="preserve">
+    <value>En Tránsito Granos</value>
+  </data>
+  <data name="TipoCallePreBalanzaGranos" xml:space="preserve">
+    <value>Pre Balanza Granos</value>
+  </data>
+  <data name="TipoCalleSalidaGranos" xml:space="preserve">
+    <value>Salida Granos</value>
+  </data>
 </root>

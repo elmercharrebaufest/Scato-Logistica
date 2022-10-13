@@ -7605,9 +7605,9 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = new List<FileData>();
             try
             {
-                foreach (var puestoDeTrabajo in Directory.GetDirectories(path))
+                foreach (var directoriosBusqueda in Directory.GetDirectories(path))
                 {
-                    if (directorios != null && directorios.Any() && !directorios.Any(t => new Uri(t).LocalPath == new Uri(puestoDeTrabajo).LocalPath))
+                    if (directorios != null && directorios.Any() && !directorios.Any(t => new Uri(t).LocalPath == new Uri(directoriosBusqueda).LocalPath))
                     {
                         continue;
                     }
@@ -7615,15 +7615,15 @@ namespace Molinos.Scato.Servicios.Impl
                     //Modificacion Multiples Paths - Mejora en Acopios (Pergamino)
                     if (!string.IsNullOrEmpty(fotosPath))
                     {
-                        foreach (var carpeta in Directory.GetDirectories(puestoDeTrabajo))
+                        foreach (var carpeta in Directory.GetDirectories(directoriosBusqueda))
                         {
                             foreach (var subpath in subpaths)
                             {
-                                var puestoDeTrabajoFecha = carpeta + "\\" + subpath + "\\";
-                                log.Debug("Ruta-File:" + puestoDeTrabajoFecha);
-                                if (Directory.Exists(puestoDeTrabajoFecha))
+                                var pathBusqueda = carpeta + "\\" + subpath + "\\";
+                                //log.Debug("Ruta-File 1:" + pathBusqueda);
+                                if (Directory.Exists(pathBusqueda))
                                 {
-                                    var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                    var filesInDir = FastDirectoryEnumerator.GetFiles(pathBusqueda, fileName + "*.*", SearchOption.AllDirectories);
                                     if (filesInDir.Any() && obtenerPrimera)
                                     {
                                         return new List<FileData> { filesInDir.First() };
@@ -7637,10 +7637,11 @@ namespace Molinos.Scato.Servicios.Impl
                     {
                         foreach (var subpath in subpaths)
                         {
-                            var puestoDeTrabajoFecha = puestoDeTrabajo + "\\" + subpath + "\\";
-                            if (Directory.Exists(puestoDeTrabajoFecha))
+                            var pathBusqueda = directoriosBusqueda + "\\" + subpath + "\\";
+                            //log.Debug("Ruta-File 2:" + pathBusqueda);
+                            if (Directory.Exists(pathBusqueda))
                             {
-                                var filesInDir = FastDirectoryEnumerator.GetFiles(puestoDeTrabajoFecha, fileName + "*.*", SearchOption.AllDirectories);
+                                var filesInDir = FastDirectoryEnumerator.GetFiles(pathBusqueda, fileName + "*.*", SearchOption.AllDirectories);
                                 if (filesInDir.Any() && obtenerPrimera)
                                 {
                                     return new List<FileData> { filesInDir.First() };
@@ -8924,7 +8925,9 @@ namespace Molinos.Scato.Servicios.Impl
                  NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : "",
                  FechaIngreso = x.FechaIngeso,
                  TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
-                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : ""
+                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : "",
+                 TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
+                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : ""
              });
             var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
@@ -9400,11 +9403,6 @@ namespace Molinos.Scato.Servicios.Impl
         public ProveedorDto ObtenerProveedorPorId(int Id)
         {
             return Obtener<Proveedor, ProveedorDto>(x => x.Id == Id);
-        }
-
-        public CargaDeCupoDto ObtenerCupoRecorridoId(int id)
-        {
-            return Obtener<CargaDeCupo, CargaDeCupoDto>(x => x.Recorrido.Id == id);
         }
 
         public IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoPorCodigoLectorQR(string Codigo)
@@ -10045,6 +10043,16 @@ namespace Molinos.Scato.Servicios.Impl
             });
             lotedto.Muestras = repositorio.ListarConsulta(new ListarMuestraInaseParaArchivoConsulta(firmaProvider.ObtenerFirmaSinLogo().CodigoSAP, loteId));
             return lotedto;
+        }
+
+        public bool EsCupoReingresado(string cupo, string nroCartaPorte, int centroId)
+        {
+            return repositorio.Existe<CargaDeCupo>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado);
+        }
+
+        public CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId)
+        {
+            return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado, x => x.Id);
         }
     }
 }

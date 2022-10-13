@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
-    public class ObtenerCallePlantaNoGranos : IConsultaEscalar<Calle>
+    public class ObtenerCallePorTipoYMaterial : IConsultaEscalar<Calle>
     {
         private TipoCalle tipoCalle;
         private int materialId;
 
-        public ObtenerCallePlantaNoGranos(TipoCalle tipoCalle, Material material)
+        public ObtenerCallePorTipoYMaterial(TipoCalle tipoCalle, Material material)
         {
             this.tipoCalle = tipoCalle;
             this.materialId = material != null ? material.Id : 0;
@@ -18,13 +18,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public Calle Ejecutar(DbContext contexto)
         {
-            Calle calle = ObtenerCalle(contexto, materialId);
+            Calle calle = ObtenerCalle(contexto);
             return calle;
         }
 
-        private Calle ObtenerCalle(DbContext contexto, int? material = null)
+        private Calle ObtenerCalle(DbContext contexto)
         {
-            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && (x.Material.Id == material || x.Material == null))
+            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && (x.Material.Id == materialId || x.Material == null))
                                               .OrderByDescending(x => x.Material.Id)
                                               .FirstOrDefault();
         }

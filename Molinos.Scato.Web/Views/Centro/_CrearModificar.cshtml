@@ -312,6 +312,13 @@
                 @Html.ValidationMessageFor(model => model.ToleranciaPatenteLeida)
             </div>
         </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Planta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Planta, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.Planta)
+            </div>
+        </div>
     </div>
 </div>
 
@@ -421,5 +428,5 @@
 </div>
 <div class="row right">
     <button type="submit" id="aceptar" class="btn btn-primary">@Textos.Aceptar</button>
-    <button type="button" id="cancelar" class="btn">@Textos.Cancelar</button>
+    <button type="button" id="regresar" class="btn">@Textos.Cancelar</button>
 </div>

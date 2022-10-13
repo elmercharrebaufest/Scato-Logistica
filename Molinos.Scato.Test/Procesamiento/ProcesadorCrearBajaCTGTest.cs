@@ -29,7 +29,7 @@ namespace Molinos.Scato.Test.Procesamiento
                 {
                     Id = 1,
                     CodigoDeBaja = "a",
-                    Fecha = DateTime.UtcNow,
+                    Fecha = DateTime.Now,
                     CartaPorteId = 10,
                 };
         }

@@ -41,5 +41,11 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoDocumentoIngreso? TipoDocumento { get; set; }
         public string Cliente { get; set; }
         public string Material { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Tipo_Vehiculo")]
+        public TipoVehiculo? TipoVehiculo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "DescripcionAlmacen")]
+        public string DescripcionAlmacen { get; set; }
     }
 }

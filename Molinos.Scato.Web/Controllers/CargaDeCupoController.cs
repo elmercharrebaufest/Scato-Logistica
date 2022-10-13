@@ -23,7 +23,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-
+using System.Collections.ObjectModel;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -345,7 +345,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ValidarCupoEnSap(string cupo, string imagen, DatosUsuario datosUsuario)
+        public JsonResult ValidarCupoEnSap(string cupo, string imagen, string nroCartaPorte, DatosUsuario datosUsuario)
         {
             var model = new CargaDeCupoDto();
             var pdfSustentableString = string.Empty;
@@ -374,76 +374,97 @@ namespace Molinos.Scato.Web.Controllers
             {
                 return Json(new { error = Textos.CupoConsumido }, JsonRequestBehavior.AllowGet);
             }
-            else
+
+            try
             {
-                try
+                var codigosDeCentroSap = servicio.ObtenerCodigoDeCentroPorId(datosUsuario.CentroId);
+                log.Debug("ValidarCupoEnSap cupo: {0}, centro: {1}", cupo, string.Join(",", codigosDeCentroSap));
+                var esEspecial = false;
+                var response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
                 {
-                    var codigosDeCentroSap = servicio.ObtenerCodigoDeCentroPorId(datosUsuario.CentroId);
-                    log.Debug("ValidarCupoEnSap cupo: {0}, centro: {1}", cupo, string.Join(",", codigosDeCentroSap));
-                    var esEspecial = false;
-                    var response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
+                    Z_SDMF_RFC_Z2100 = new Z_SDMF_RFC_Z2100()
+                    {
+                        IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[0] } },
+                        IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = cupo } }
+                    }
+                });
+                log.Debug(response.ToXml());
+                var respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
+                if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && codigosDeCentroSap.Length > 1)
+                {
+                    response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
                     {
                         Z_SDMF_RFC_Z2100 = new Z_SDMF_RFC_Z2100()
                         {
-                            IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[0] } },
+                            IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[1] } },
                             IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = cupo } }
                         }
                     });
-
-                    var respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
-
-                    if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && codigosDeCentroSap.Length > 1)
-                    {
-                        response = servicioSap.Z_SDMF_RFC_Z2100(new Z_SDMF_RFC_Z2100Request
-                        {
-                            Z_SDMF_RFC_Z2100 = new Z_SDMF_RFC_Z2100()
-                            {
-                                IM_CENTRO = new ZMPES5210[] { new ZMPES5210 { CENTRO = codigosDeCentroSap[1] } },
-                                IM_CODIGO = new ZMPES5200[] { new ZMPES5200 { CODIGO = cupo } }
-                            }
-                        });
-                        respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
-                        esEspecial = true;
-                    }
-
-                    if (respuesta != null && respuesta.MENSAJE != Textos.RespuestaSap_NoValido)
-                    {
-                        log.Debug("ValidarCupoEnSap Respuesta {0}: {1}", cupo, respuesta.ToXml());
-                        var material = servicio.ObtenerMaterialIdYDescripcionPorCodigoSap(respuesta.MATERIAL.TrimStart(new[] { '0' }));
-                        if (material.MaterialId == 0)
-                        {
-                            ModelState.AddModelError("Cupo", string.Format(Textos.Material_CodigoSAPNoExiste, respuesta.MATERIAL));
-                            return Json(new { error = string.Format(Textos.Material_CodigoSAPNoExiste, respuesta.MATERIAL) }, JsonRequestBehavior.AllowGet);
-                        }
-                        model.MaterialId = material.MaterialId;
-                        model.RespuestaSap = respuesta.MENSAJE;
-                        model.ProveedorDescripcion = respuesta.DESCPROV;
-                        model.ProveedorCuit = respuesta.CUIT;
-                        model.MaterialDescripcion = material.Descripcion;
-                        model.FechaSap = respuesta.FECHA;
-                        model.Especial = esEspecial;
-                        model.Camara = respuesta.CALIDAD;
-
-                        if (model.Especial && !String.IsNullOrEmpty(imagen))
-                        {
-                            imagen = imagen.Replace("data:image/jpg;base64,", string.Empty);
-                            var imagenSustentable = Convert.FromBase64String(imagen);
-                            imagenSustentable = DibujarSelloSustentable(imagenSustentable);
-                            if (imagenSustentable != null)
-                            {
-                                pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imagenSustentable));
-                            }
-                        }
-                        return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
-                    }
-                    log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", cupo);
-                    return Json(new { error = respuesta.MENSAJE }, JsonRequestBehavior.AllowGet);
+                    respuesta = response.Z_SDMF_RFC_Z2100Response.EX_CUPOS.FirstOrDefault();
+                    esEspecial = true;
                 }
-                catch (Exception e)
+
+                if (respuesta != null && respuesta.MENSAJE != Textos.RespuestaSap_NoValido)
                 {
+                    log.Debug("ValidarCupoEnSap Respuesta {0}: {1}", cupo, respuesta.ToXml());
+                    var material = servicio.ObtenerMaterialIdYDescripcionPorCodigoSap(respuesta.MATERIAL.TrimStart(new[] { '0' }));
+                    if (material.MaterialId == 0)
+                    {
+                        ModelState.AddModelError("Cupo", string.Format(Textos.Material_CodigoSAPNoExiste, respuesta.MATERIAL));
+                        return Json(new { error = string.Format(Textos.Material_CodigoSAPNoExiste, respuesta.MATERIAL) }, JsonRequestBehavior.AllowGet);
+                    }
+                    model.MaterialId = material.MaterialId;
+                    model.RespuestaSap = respuesta.MENSAJE;
+                    model.ProveedorDescripcion = respuesta.DESCPROV;
+                    model.ProveedorCuit = respuesta.CUIT;
+                    model.MaterialDescripcion = material.Descripcion;
+                    model.FechaSap = respuesta.FECHA;
+                    model.Especial = esEspecial;
+                    model.Camara = respuesta.CALIDAD;
+
+                    if (model.Especial && !String.IsNullOrEmpty(imagen))
+                    {
+                        imagen = imagen.Replace("data:image/jpg;base64,", string.Empty);
+                        var imagenSustentable = Convert.FromBase64String(imagen);
+                        imagenSustentable = DibujarSelloSustentable(imagenSustentable);
+                        if (imagenSustentable != null)
+                        {
+                            pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imagenSustentable));
+                        }
+                    }
+                    return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (respuesta != null && respuesta.MENSAJE == Textos.RespuestaSap_NoValido && servicio.EsCupoReingresado(cupo, nroCartaPorte, datosUsuario.CentroId))
+                {
+                    model = servicio.ObtenerCupoReingresado(cupo, nroCartaPorte, datosUsuario.CentroId);
+                    model.RespuestaSap = "Cupo a reingresar";
+                    var cartaPorte = servicio.ObtenerCartaPortePorCentroYNumero(nroCartaPorte, datosUsuario.CentroId);
+                    if(cartaPorte != null)
+                    {
+                        model.ProveedorCuit = cartaPorte.TitularCartaPorteCuil;
+                        model.ProveedorDescripcion = cartaPorte.TitularCartaPorte;
+                    }
+                    if (model.Especial && !String.IsNullOrEmpty(imagen))
+                    {
+                        imagen = imagen.Replace("data:image/jpg;base64,", string.Empty);
+                        var imagenSustentable = Convert.FromBase64String(imagen);
+                        imagenSustentable = DibujarSelloSustentable(imagenSustentable);
+                        if (imagenSustentable != null)
+                        {
+                            pdfSustentableString = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(imagenSustentable));
+                        }
+                    }
+                    return Json(new { model, PdfImageSustentableBase64 = pdfSustentableString }, JsonRequestBehavior.AllowGet);
+                }
+
+                log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", cupo);
+                return Json(new { error = respuesta.MENSAJE }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
                     log.Error(e, "Error al validar cupo en SAP: ");
                     return Json(new { error = Textos.Error_GenericoSap }, JsonRequestBehavior.AllowGet);
-                }
             }
         }
 
@@ -804,13 +825,12 @@ namespace Molinos.Scato.Web.Controllers
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
+
         [DatosUsuario]
         public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
         {
             try
-            {
-                var estadoErroresBloqueantes = new List<string> { "AN", "RE" };
-                var estadoPermiteIngresar = new List<string> { "AC", "CF", "CO" };
+            {                
                 log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
                 var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = numeroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaMinima = true }) as ResultadoCartaPorteElectronica;
                 log.Debug(cartaPorteResponse.HayErrores ? "Error al obtener carta de porte CTG-CPE en carga de Cupo. {0}: " + cartaPorteResponse.Errores.Values.First() : "Devolviendo carta de porte en carga de Cupo. CTG-CPE {0}", numeroCtg);
@@ -821,11 +841,12 @@ namespace Molinos.Scato.Web.Controllers
 
                 if (errorCode != "2")
                 {
-                    if (!cartaPorteResponse.HayErrores && !estadoPermiteIngresar.Contains(cartaPorteResponse.Cpe.EstadoCpe))
+                    if (!cartaPorteResponse.HayErrores && !EstadosCPEdeAFIP.Validos.Contains(cartaPorteResponse.Cpe.EstadoCpe))
                     {
-                        if (estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim()))
+                        var estadoCPE = cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim();
+                        if (EstadosCPEdeAFIP.Bloqueantes.Any(a => a == estadoCPE))
                         {
-                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {(cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim() == "AN" ? "ANULADO" : "RECHAZADO")}";
+                            errorMsg = $"El CTG {numeroCtg} se encuentra en estado {EstadosCPEdeAFIP.Descripciones[estadoCPE]}";
                             errorCode = "5";
                         }
                         else
@@ -855,7 +876,7 @@ namespace Molinos.Scato.Web.Controllers
                     }
                     else
                     {
-                        if (!estadoErroresBloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
+                        if (!EstadosCPEdeAFIP.Bloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
                         {
                             var cartaPorteImagen = servicioComandos.Ejecutar(new ConsultarImagenCpe { NroCtg = numeroCtg }) as ResultadoConsultarImagenCpe;
                             if (cartaPorteImagen.HayErrores)

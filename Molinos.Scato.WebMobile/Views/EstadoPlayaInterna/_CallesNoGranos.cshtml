@@ -6,13 +6,13 @@
 @model List<TipoCallePlantaDto>
 
 @{
-    var model = Model.Where(c => c.TipoCalle != TipoCalle.PlayaInterna).ToList();
+    var model = Model.Where(c => c.TipoCalle == TipoCalle.EnTransito || c.TipoCalle == TipoCalle.PlantaNoGranos || c.TipoCalle == TipoCalle.EsperaAduanaNoGranos || c.TipoCalle == TipoCalle.SalidaNoGranos).ToList();
 }
 
 <script>
     let estadoPlayaInternaDeCallesNoGranosConfig = {
         containerId: "plantaNoGranos",
-        tipo: "8,9,10",
+        tipo: "9,8,11,10",
         vmData: @Html.Raw(model.ToJson()),
     };
 
