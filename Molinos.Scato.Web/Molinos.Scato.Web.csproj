@@ -1945,7 +1945,7 @@
     <Content Include="Views\MotivoQuiebreBarrera\Index.cshtml" />
     <Content Include="Views\MotivoQuiebreBarrera\Listar.cshtml" />
     <Content Include="Views\MotivoQuiebreBarrera\Modificar.cshtml" />
-    <Content Include="Views\PuestoComando\Asignar.cshtml" />
+    <Content Include="Views\PuestoComando\_Asignar.cshtml" />
     <Content Include="Views\ImprimirTarjetaDeAcceso\Index.cshtml" />
     <Content Include="Views\PuestoComando\ConfigurarTabla.cshtml" />
     <Content Include="Views\ReasignacionDeTarjeta\Index.cshtml" />

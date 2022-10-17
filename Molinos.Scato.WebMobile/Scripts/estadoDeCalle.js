@@ -142,7 +142,7 @@ function Calle(item, context) {
         }
     }
 
-    self.Color = item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId > 0 ? "bg-dark" : (self.TipoCalle == 1 ? 'bg-vacio' : "");
+    self.Color = item.MaterialId == 63734 ? "bg-AceiteSj" : item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId > 0 ? "bg-dark" : (self.TipoCalle == 1 ? 'bg-vacio' : "");
     self.Icon = (item.TipoCalidad == 2 ? "fas fa-tint" : item.TipoCalidad == 3 ? "fas fa-vial" : item.TipoCalidad == 1 ? "fas fa-clipboard-check" : "");
 
 
@@ -208,7 +208,7 @@ function Camion(item, calle) {
         self.TiempoEnCola = diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
     }
     self.Icon = item.Rechazado ? "fas fa-times-circle" : (item.Calidad == 2 ? "fas fa-tint" : item.Calidad == 3 ? "fas fa-vial" : item.Calidad == 1 ? "fas fa-clipboard-check" : "");
-    self.Color = item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
+    self.Color = item.MaterialId == 63734 ? "bg-AceiteSj" : item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
     self.Escalable = item.Escalable ? "fas fa-truck" : "";
 }
 
@@ -279,6 +279,7 @@ function EstadoDeCallesViewModel() {
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
     self.CantidadHarina = ko.computed(function () { return self.sumarCamiones(81223); });
     self.CantidadPellet = ko.computed(function () { return self.sumarCamiones(63750); });
+    self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
 
     self.ListarCamiones = function () { 
         $.ajax({

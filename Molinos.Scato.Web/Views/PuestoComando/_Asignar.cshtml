@@ -37,6 +37,8 @@
         @Html.HiddenFor(model => model.MaterialId)
         @Html.HiddenFor(model => model.SonSustentables)
         @Html.Hidden("balanzasObligatorias", (bool)ViewBag.BalanzasObligatorias)
+
+        <span class="alert-error">@Html.ValidationMessageFor(model => model.Error)</span>
         <div class="control-group">
             @Html.LabelFor(model => model.CalleId, new { @class = "control-label" })
             <div class="controls">
@@ -94,12 +96,12 @@
             </div>
         </div>
         @*<div class="control-group">
-            @Html.LabelFor(model => model.CorrespondeCaladoEnPlanta, new { @class = "control-label" })
-            <div class="controls">
-                @Html.CheckBoxFor(model => model.CorrespondeCaladoEnPlanta)
-                @Html.ValidationMessageFor(model => model.CorrespondeCaladoEnPlanta)
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.CorrespondeCaladoEnPlanta, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.CorrespondeCaladoEnPlanta)
+                    @Html.ValidationMessageFor(model => model.CorrespondeCaladoEnPlanta)
+                </div>
+            </div>*@
         <div class="control-group" data-requerido="@String.Format(Textos.Error_Requerido,Textos.PuestoComando_Hidraulicas)">
             @Html.LabelFor(model => model.HidraulicasId, new { @class = "control-label" })
             <div class="controls">

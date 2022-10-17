@@ -18,6 +18,8 @@ using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using Molinos.Scato.Web.Seguridad;
 using Molinos.Scato.Dominio;
+using Molinos.Scato.Servicios.Orquestador;
+using Molinos.Scato.Servicios.Procesamiento;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -70,8 +72,9 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult Asignar(string instanceIds, DatosUsuario datosUsuario)
+        public ActionResult ValidarAsignar(string instanceIds)
         {
+            var respuesta = new RespuestaEstandarDto<AsignacionDto>();
             log.Debug("Obteniendo asignacion puesto comando para : {0}", instanceIds);
             var asignacion = servicio.ObtenerAsignacionDePuestoComando(instanceIds);
             asignacion.InstanceIds = instanceIds;
@@ -87,12 +90,23 @@ namespace Molinos.Scato.Web.Controllers
             }
             if (asignacion.FalloWF)
             {
-                asignacion.Error = "No es posible asignar un Puesto de Comando para las siguientes patentes porque el Workflow falló:";
-                log.Error("Asignar Puesto Comando - Workflow falló para las patentes: {0}", string.Join(",", asignacion.patentesInvalidas.ToArray()));
+                var mensaje = string.Format(@"No es posible asignar un Puesto de Comando para las siguientes patentes porque el Workflow falló: {0}", string.Join(",", asignacion.patentesInvalidas));
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            else {
+                respuesta.Data = asignacion;
             }
 
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [DatosUsuario]
+        [HttpPost]
+        public ActionResult MostrarAsignar(AsignacionDto asignacion, DatosUsuario datosUsuario)
+        {
             SetearVista(datosUsuario, asignacion.MaterialId, asignacion.SonSustentables, asignacion.SustentableMixto);
-            return View(asignacion);
+            return View("_Asignar",asignacion);
         }
 
         [DatosUsuario]
@@ -129,12 +143,13 @@ namespace Molinos.Scato.Web.Controllers
 
             }
             SetearVista(datosUsuario, model.MaterialId, model.SonSustentables, true);
-            return View(model);
+            return View("_Asignar",model);
         }
 
         private void AvanzarWorkflow(ResultadoPuestoComando resultado, DatosUsuario datosUsuario)
         {
             var camionesAceptados = new List<DatosDeWorkflowDto>();
+            var patentesFallidas = new List<string>();
             log.Debug("Inicio Asignacion Puesto Comando sin errores");
             foreach (
                 var workflow in
@@ -167,10 +182,13 @@ namespace Molinos.Scato.Web.Controllers
                 catch (Exception e)
                 {
                     log.Error(e, "Fallo la asignación del workflow {0}", workflow.InstanciaWorkflow);
-                    ModelState.AddModelError(workflow.Patente,
-                                                String.Format("Fallo la Asignación de {0} en el Workflow",
-                                                            workflow.Patente));
+                    patentesFallidas.Add(workflow.Patente);
                 }
+            }
+            if (patentesFallidas.Count > 0)
+            {
+                ModelState.AddModelError("Error", String.Format("Fallo la Asignación de las patentes {0} en el Workflow, pero las demás se procesaron correctamente.",
+                                                            string.Join(",", patentesFallidas)));
             }
             ImprimirResumenHojaDeRuta(camionesAceptados, datosUsuario);
         }
