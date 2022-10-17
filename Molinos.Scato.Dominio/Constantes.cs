@@ -2,6 +2,11 @@
 {
     public static class Constantes
     {
+        public struct ValoresPorDefecto
+        {
+            public const string CupoGenerico = "MOL1111/11111111";
+        }
+
         public struct IntercomunicadorDireccion
         {
             public const string HaciaLaWeb = "2web";

@@ -167,7 +167,8 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.Clear();
                     ViewBag.MostrarAlertaExitosa = true;
-                    if (AvanceCpe)
+
+                    if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model))
                     {
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });  
                         CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte);
@@ -1453,6 +1454,17 @@ namespace Molinos.Scato.Web.Controllers
                 return resultadoSustentable != null ? resultadoSustentable.Path : null;
             }
             return null;
+        }
+
+        private bool EsCupoValidoParaAvanceAutomatico(CargaDeCupoDto model) {
+            bool esValido = true;
+
+            if (model.Especial && model.MaterialId == 4) // CUPO SUSTENTABLE
+                esValido = false;
+            else if (model.SinCupo && model.Cupo == Constantes.ValoresPorDefecto.CupoGenerico) // CUPO GENERICO
+                esValido = false;
+
+            return esValido;
         }
     }
 }
