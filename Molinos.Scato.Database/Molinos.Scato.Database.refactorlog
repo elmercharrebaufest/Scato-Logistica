@@ -630,4 +630,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ColorFondo" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="5e059e74-cc01-4bfb-b9bf-343afac3bff5" ChangeDateTime="10/18/2022 19:35:23">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[CodigoDispositivo]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Camara" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d096a0e5-bcc0-4b08-9e35-b3c919ced204" ChangeDateTime="10/18/2022 19:37:38">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoUrl]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FotoPath" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9a35db49-a488-4f34-b759-9e175082e72f" ChangeDateTime="10/18/2022 20:31:22">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoPath]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FotoRuta" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6b744c08-ffe4-4369-a647-43d70bcc7811" ChangeDateTime="10/18/2022 20:31:46">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoFileName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Motivo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1308a5a2-ff83-4a02-b5bd-a2ab035d2796" ChangeDateTime="10/18/2022 20:32:14">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[Camara]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CodigoDispositivo" />
+  </Operation>
 </Operations>

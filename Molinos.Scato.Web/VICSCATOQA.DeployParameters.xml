@@ -38,4 +38,5 @@
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
 	<setParameter name="ICWebServerUrl Config" value="https://gsloscatoqa01.molinosagro.ad:8889/rtc" />
 	<setParameter name="ICWSServerUrl Config" value="wss://gsloscatoqa01.molinosagro.ad:8889/rtc" />
+	<setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\FotosLogAlpr" />
 </parameters>

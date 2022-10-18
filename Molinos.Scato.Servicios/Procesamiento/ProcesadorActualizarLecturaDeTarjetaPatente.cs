@@ -50,7 +50,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 CantidadDeDiferencias = diferencia,
                 ExisteOtroCamionEnPlanta = existeOtroCamionEnPlanta,
                 ReconocimientoExitoso = reconocimientoExitoso,
-                Tarjeta = comando.Lectura
+                Tarjeta = comando.Lectura,
+                Certeza = comando.Certeza,
+                CodigoDispositivo = comando.CodigoDispositivo,
+                FotoRuta = comando.FotoRuta,
             };
             Repositorio.Agregar(log);
             Repositorio.GuardarCambios();
