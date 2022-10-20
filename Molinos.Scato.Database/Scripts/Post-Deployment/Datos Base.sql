@@ -1437,6 +1437,16 @@ BEGIN
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'Calador 2', 'Calle 3 o 4', NULL, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PreLote' AND  Nombre = 'HorarioNocturnoDesde' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PreLote', 'HorarioNocturnoDesde', '11', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PreLote' AND  Nombre = 'HorarioNocturnoHasta' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PreLote', 'HorarioNocturnoHasta', '7', NULL, GETDATE(), 'SCATO')
+END
+
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJVOL','MPSOJVOL',0)

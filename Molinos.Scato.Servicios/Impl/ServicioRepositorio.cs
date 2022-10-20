@@ -29,6 +29,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
 using System.ServiceModel.Configuration;
+using static NPOI.HSSF.Util.HSSFColor;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -3815,9 +3816,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Contar<Notificacion>(x => grupos.Contains(x.Grupo) && x.Leido == false);
         }
 
-        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId)
+        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote)
         {
-            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true));
+            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true,incluirPreLote: incluirPreLote));
         }
 
         public IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId)
@@ -10072,6 +10073,11 @@ namespace Molinos.Scato.Servicios.Impl
                 sensor.PuestoDeTrabajoId = puestosDeTrabajo.FirstOrDefault(x => x.VisualizacionBarrera != null && x.VisualizacionBarrera.Id == sensor.VisualizacionBarrera.Id)?.Id;
             }
             return sensores;
+        }
+
+        public CaladoDto ObtenerCaladoPorId(int id)
+        {
+            return Obtener<Calado, CaladoDto>(x => x.Id == id);
         }
     }
 }

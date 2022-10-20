@@ -111,7 +111,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     TipoDocumento = recorrido.TipoDocumentoIngreso,
                     NroDocumento = recorrido.NumeroDocumentoIngreso,
                     Centro = Repositorio.Obtener<Centro>(recorrido.Centro.Id),
-                    HuboExcepcion = comando.Dto.HuboExcepcion
+                    HuboExcepcion = comando.Dto.HuboExcepcion,
+                    EsPreLote = comando.Dto.EsPreLote
                 };
         }
         protected override void Validar(CrearEnvioACamara comando, Resultado resultado)

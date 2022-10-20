@@ -993,7 +993,7 @@ namespace Molinos.Scato.Servicios
         NotificacionesDto ObtenerNotificaciones(string grupos, bool listarSobre, bool mostrarAlerta, bool contar);
 
         [OperationContract]
-        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId);
+        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote);
 
         [OperationContract]
         IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId);
@@ -2712,5 +2712,8 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos();
+
+        [OperationContract]
+        CaladoDto ObtenerCaladoPorId(int id);
     }
 }

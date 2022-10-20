@@ -17,15 +17,17 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private readonly int loteId;
         private readonly bool listarRechazadosYNoTerminados;
         private readonly bool soloPendientes;
+        private readonly bool incluirPreLote;
         private readonly Paginacion paginacion;
 
-        public ListarMuestraEnvioACamaraConsulta(int centroId, string numeroDeMuestra = "", int loteId = 0, bool listarRechazadosYNoTerminados = false, bool soloPendientes = false, Paginacion paginacion = null)
+        public ListarMuestraEnvioACamaraConsulta(int centroId, string numeroDeMuestra = "", int loteId = 0,bool incluirPreLote = false, bool listarRechazadosYNoTerminados = false, bool soloPendientes = false, Paginacion paginacion = null)
         {
             this.centroId = centroId;
             this.numeroDeMuestra = numeroDeMuestra;
             this.loteId = loteId;
             this.listarRechazadosYNoTerminados = listarRechazadosYNoTerminados;
             this.soloPendientes = soloPendientes;
+            this.incluirPreLote = incluirPreLote;
             this.paginacion = paginacion;
         }
 
@@ -43,8 +45,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                              from remito in remitoJoined.DefaultIfEmpty()
 
                              where
-                                 (loteId > 0 && muestra.Lote.Id == loteId) ||
-                                 (loteId == 0 && (muestra.EstadoMuestra == EstadoMuestra.Pendiente || !soloPendientes) && (rec.Terminado || listarRechazadosYNoTerminados) &&
+                                 (loteId > 0 && muestra.Lote.Id == loteId)
+                                 || (incluirPreLote && muestra.EsPreLote == true && rec.Centro.Id == centroId && !rec.Rechazado && rec.Terminado)
+                                 || (loteId == 0 && (muestra.EstadoMuestra == EstadoMuestra.Pendiente || !soloPendientes) && (rec.Terminado || listarRechazadosYNoTerminados) &&
                                  rec.Centro.Id == centroId && (!rec.Rechazado || listarRechazadosYNoTerminados))
                              orderby muestra.Id descending
                              select new MuestraEnvioACamaraDto
@@ -66,7 +69,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Vendedor = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.Destinatario.Descripcion : "",
                                      Corredor = rec.Vehiculo != null ? rec.Vehiculo.CartaPorte.Corredor.Descripcion : "",
                                      Localidad = rec.Vehiculo != null? rec.Vehiculo.CartaPorte.Procedencia.Descripcion : (remito != null ? remito.Procedencia.Descripcion : ""),
-                                     
                                      Patente = rec.Patente,
                                      WorkflowInstanceId = rec.InstanciaWorkflow,
                                      EstadoMuestra = muestra.EstadoMuestra,

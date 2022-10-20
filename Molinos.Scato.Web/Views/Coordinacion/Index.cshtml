@@ -48,12 +48,12 @@
     </div>
 }
 
-        @if ((bool)ViewBag.EsAceptable && caracteristicasMensajes.Any())
-        {
-            <div class="alert alert-warning">
-                @string.Format(Textos.VehiculoConAdvertencia,String.Join(", ", caracteristicasMensajes.Select(x => x.Caracteristica)))
-            </div>
-        }
+@if ((bool)ViewBag.EsAceptable && caracteristicasMensajes.Any())
+{
+    <div class="alert alert-warning">
+        @string.Format(Textos.VehiculoConAdvertencia, String.Join(", ", caracteristicasMensajes.Select(x => x.Caracteristica)))
+    </div>
+}
 
 <div class="">
     <div class="">
@@ -170,6 +170,7 @@
     @Html.Hidden("codigoWf", Model.Workflow.Codigo)
     @Html.Hidden("instanceId", Model.InstanciaWorkflow)
     @Html.Hidden("workflowDefinicionId", Model.WorkflowDefinicionId)
+    @Html.Hidden("caladoId", Model.Calado.Id)
     <div class="modal hide fade" id="dialogo-confirmar">
         @* ReSharper restore Mvc.ActionNotResolved *@
         <div class="modal-header">

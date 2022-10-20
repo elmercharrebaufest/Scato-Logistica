@@ -56,6 +56,7 @@
             {
                 public const string EficienciaCalado = "EficienciaCalado";
                 public const string AFIP = "AFIP";
+                public const string PreLote = "PreLote";
             }
 
             public struct EficienciaCalado
@@ -67,6 +68,12 @@
             public struct AFIP
             {
                 public const string ConsultasParalelas = "ConsultasParalelas";
+            }
+
+            public struct PreLote
+            {
+                public const string HorarioNocturnoDesde = "HorarioNocturnoDesde";
+                public const string HorarioNocturnoHasta = "HorarioNocturnoHasta";
             }
         }
     }

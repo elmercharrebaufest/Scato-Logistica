@@ -47,7 +47,7 @@ namespace Molinos.Scato.Test.Controllers
             instanceId = Guid.NewGuid();
             log = new NullLogger();
             servworkflows = new Mock<IListaDeWorkflows>();
-            target = new CoordinacionController(log, servRepositorio.Object, factory.Object, configuracion.Object, servworkflows.Object);
+            target = new CoordinacionController(log, servRepositorio.Object, factory.Object, configuracion.Object, servworkflows.Object, servcomandos.Object);
 
             centro = new CentroDto { HorarioDesde = 12, HorarioHasta = 13 };
 
@@ -185,7 +185,7 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void Aceptar()
         {
-            var result = target.Aceptar("W", 1, instanceId, new DatosUsuario()) as RedirectToRouteResult;
+            var result = target.Aceptar("W", 1, instanceId,1, new DatosUsuario()) as RedirectToRouteResult;
             Assert.NotNull(result);
             Assert.AreEqual(result.RouteValues["action"], "Index");
             Assert.AreEqual(result.RouteValues["controller"], "ListaDeCamiones");
@@ -200,7 +200,7 @@ namespace Molinos.Scato.Test.Controllers
                 s =>
                 s.Coordinacion(It.IsAny<Guid>(), It.IsAny<DecisionCoordinacion>(), It.IsAny<ControlRecorridoDto>(),
                                It.IsAny<MuestraEnvioACamaraDto>())).Returns(resultado);
-            var result = target.Aceptar("W", 1, instanceId, new DatosUsuario()) as RedirectToRouteResult;
+            var result = target.Aceptar("W", 1, instanceId,1, new DatosUsuario()) as RedirectToRouteResult;
             Assert.NotNull(result);
             Assert.AreEqual(target.ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage,"error");
             Assert.AreEqual(result.RouteValues["action"], "Index");

@@ -98,7 +98,7 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void TestListarPendientes()
         {
-            servRepositorioMock.Setup(s => s.ListarMuestraEnvioACamaraSinLote(It.IsAny<int>())).Returns(new List<MuestraEnvioACamaraDto>());
+            servRepositorioMock.Setup(s => s.ListarMuestraEnvioACamaraSinLote(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<MuestraEnvioACamaraDto>());
             var result = target.ListarPendientes(new DatosUsuario { CentroId = 3 });
             Assert.That(result, Is.Not.Null.Or.Empty);
         }
