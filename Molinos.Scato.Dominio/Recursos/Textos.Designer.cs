@@ -1303,7 +1303,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En Espera HB4.
+        ///   Looks up a localized string similar to Pendiente Análisis HB4.
         /// </summary>
         public static string ActEnEsperaHB4 {
             get {

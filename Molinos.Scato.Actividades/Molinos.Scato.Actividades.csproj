@@ -86,6 +86,7 @@
     <Compile Include="EnviarMensajeV3.cs" />
     <Compile Include="ImpresionEtiquetaMuestraInase.cs" />
     <Compile Include="ImpresionGenericaFile.cs" />
+    <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
     <Compile Include="Internas\InformarEstadoCaladoCircular.cs" />
     <Compile Include="Internas\VerificarEsPuestoAutomatico.cs" />
