@@ -164,7 +164,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult ObtenerMuestra(string numeroDeMuestra, int camaraId, DatosUsuario datosUsuario)
         {
-            var muestra = servicio.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(numeroDeMuestra, datosUsuario.CentroId);
+            var muestra = servicio.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(numeroDeMuestra, datosUsuario.CentroId,true);
             if (muestra != null && muestra.MuestraEnvioACamara != null)
             {
                 if (muestra.MuestraEnvioACamara.EstadoMuestra == EstadoMuestra.Enviada)

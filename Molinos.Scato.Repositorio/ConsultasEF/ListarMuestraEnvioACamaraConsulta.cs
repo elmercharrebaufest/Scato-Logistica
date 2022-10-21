@@ -46,9 +46,11 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
                              where
                                  (loteId > 0 && muestra.Lote.Id == loteId)
-                                 || (incluirPreLote && muestra.EsPreLote == true && rec.Centro.Id == centroId && !rec.Rechazado && rec.Terminado)
-                                 || (loteId == 0 && (muestra.EstadoMuestra == EstadoMuestra.Pendiente || !soloPendientes) && (rec.Terminado || listarRechazadosYNoTerminados) &&
-                                 rec.Centro.Id == centroId && (!rec.Rechazado || listarRechazadosYNoTerminados))
+                                 || (loteId == 0 && rec.Centro.Id == centroId
+                                 && (muestra.EsPreLote == incluirPreLote || muestra.EsPreLote == null)
+                                 && (muestra.EstadoMuestra == EstadoMuestra.Pendiente || !soloPendientes)
+                                 && (rec.Terminado || listarRechazadosYNoTerminados)
+                                 && (!rec.Rechazado || listarRechazadosYNoTerminados))
                              orderby muestra.Id descending
                              select new MuestraEnvioACamaraDto
                                  {

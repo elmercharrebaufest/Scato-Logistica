@@ -975,7 +975,7 @@ namespace Molinos.Scato.Servicios
         MuestraEnvioACamaraDto ObtenerMuestraEnvioACamaraPorNumero(int centroId, string nroMuestra);
 
         [OperationContract]
-        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId);
+        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote);
 
         [OperationContract]
         string ObtenerNumeroMuestraEnvioACamara(int muestraId);

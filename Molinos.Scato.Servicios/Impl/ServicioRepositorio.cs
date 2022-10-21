@@ -3700,9 +3700,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true)).LastOrDefault();
         }
 
-        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId)
+        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote = false)
         {
-            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true)).LastOrDefault();
+            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true,incluirPreLote: incluirPreLote)).LastOrDefault();
             var recorrido = muestra == null ? null :
                 repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == muestra.WorkflowInstanceId,
                                               x =>
