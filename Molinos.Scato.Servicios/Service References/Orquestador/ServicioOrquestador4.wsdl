@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://orquestador.molinos.com.ar" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://orquestador.molinos.com.ar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://orquestador.molinos.com.ar" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="http://orquestador.molinos.com.ar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://orquestador.molinos.com.ar/Imports">
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd0" namespace="http://orquestador.molinos.com.ar" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
-      <xsd:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd0" namespace="http://orquestador.molinos.com.ar" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Enums" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados" />
+      <xsd:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServicioOrquestador_Ejecutar_InputMessage">
@@ -203,6 +203,12 @@
   <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruce" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" />
+  </wsdl:message>
   <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarGruposBarrera" />
   </wsdl:message>
@@ -337,6 +343,10 @@
     <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruce" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ListarGruposBarrera">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" message="tns:IServicioOrquestador_ListarGruposBarrera_InputMessage" />

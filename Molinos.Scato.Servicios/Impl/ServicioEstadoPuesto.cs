@@ -74,6 +74,7 @@ namespace Molinos.Scato.Servicios.Impl
             puestos = new List<ConcentradorDto>();
             var listaDePuestos = repositorio.ListarPuestosDeBalanzasAutomaticas();
 
+            var sensoresSuscritos = new List<string>();
             foreach (var p in listaDePuestos.Where(x => x.ConfigSensores != null))
             {
                 var puesto = new ConcentradorDto()
@@ -95,14 +96,15 @@ namespace Molinos.Scato.Servicios.Impl
                 foreach (var sensor in puesto.Sensores)
                 {
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = sensor.Codigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+                    sensoresSuscritos.Add(sensor.Codigo);
                 }
 
                 cache.Agregar($"Puesto:{puesto.PuestoId}", puesto);
                 puestos.Add(puesto);
             }
-            log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
 
-            ResuscribirGrupoBarrera();
+            log.Debug($"Total de puestos automaticos con sensores= {puestos.Count}");
+            ResuscribirGrupoBarrera(sensoresSuscritos);
         }
 
         public void NotificarCambioDeEstado(string sensor, string mensaje)
@@ -365,37 +367,41 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        private void ResuscribirGrupoBarrera()
+        private void ResuscribirGrupoBarrera(List<string> sensoresSuscritos)
         {
-            //var configuraciones = orquestador.ListarGruposBarrera();
-            //var gruposBarreraCodigos = configuraciones.Select(q => q.Codigo).ToList();
-            //var grupoBarreraActivas = new List<GrupoBarreraDto>();
-            //foreach (var grupoBarrera in gruposBarreraCodigos)
-            //{
-            //    var grupoBarreraDatos = orquestador.ObtenerConfiguracionGrupoBarrera(grupoBarrera);
-            //    grupoBarreraActivas.Add(grupoBarreraDatos);
-            //    try
-            //    {
-            //        CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
+            var configuraciones = orquestador.ListarGruposBarrera();
+            var gruposBarreraCodigos = configuraciones.Select(q => q.Codigo).ToList();
+            var grupoBarreraActivas = new List<GrupoBarreraDto>();
+            foreach (var grupoBarrera in gruposBarreraCodigos)
+            {
+                var grupoBarreraDatos = orquestador.ObtenerConfiguracionGrupoBarrera(grupoBarrera);
+                grupoBarreraActivas.Add(grupoBarreraDatos);
+                try
+                {
+                    if (!sensoresSuscritos.Contains(grupoBarreraDatos.SensorAbajoCodigo))
+                        CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
+                    if (!sensoresSuscritos.Contains(grupoBarreraDatos.SensorAbajoCodigo))
+                        CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
+                    if (!sensoresSuscritos.Contains(grupoBarreraDatos.SensorAbajoCodigo))
+                        CancelarSuscripcion(grupoBarreraDatos.SensorAbajoCodigo);
+                }
+                catch (Exception e)
+                {
+                    log.Error(e, "No se pudo cancelar la suscripción para el el grupo {0}.", grupoBarreraDatos.AgrupadorCodigo);
+                }
+            }
 
-            //        CancelarSuscripcion(grupoBarreraDatos.SensorArribaCodigo);
-
-            //        CancelarSuscripcion(grupoBarreraDatos.SensorSegundoCruceCodigo);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        log.Error(e, "No se pudo cancelar la suscripción para el el grupo {0}.", grupoBarreraDatos.AgrupadorCodigo);
-            //    }
-            //}
-
-            //var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarreraCodigos).Distinct();
-            //foreach (var grupo in gruposEnUso)
-            //{
-            //    var grupoBarreraASuscribir = grupoBarreraActivas.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
-            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorArribaCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorAbajoCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-            //    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorSegundoCruceCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
-            //}
+            var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarreraCodigos).Distinct();
+            foreach (var grupo in gruposEnUso)
+            {
+                var grupoBarreraASuscribir = grupoBarreraActivas.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
+                if (!sensoresSuscritos.Contains(grupoBarreraASuscribir.SensorArribaCodigo))
+                    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorArribaCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+                if (!sensoresSuscritos.Contains(grupoBarreraASuscribir.SensorAbajoCodigo))
+                    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorAbajoCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+                if (!sensoresSuscritos.Contains(grupoBarreraASuscribir.SensorSegundoCruceCodigo))
+                    comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorSegundoCruceCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
+            }
         }
 
         private void CancelarSuscripcion(string codigoSensor)
@@ -426,20 +432,22 @@ namespace Molinos.Scato.Servicios.Impl
 
                     var sensoresArriba = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorArriba == sensor)
-                        .Select(s => new EstadoSensorDto { 
-                            Id = s.Id, 
-                            GrupoId = s.VisualizacionBarrera.Id, 
-                            Barrera = s.Barrera, 
+                        .Select(s => new EstadoSensorDto
+                        {
+                            Id = s.Id,
+                            GrupoId = s.VisualizacionBarrera.Id,
+                            Barrera = s.Barrera,
                             Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty),
                             PuestoDeTrabajoId = s.PuestoDeTrabajoId
                         }).ToList();
 
                     var sensoresAbajo = listadoSensores
                         .Where(w => w.CodigoDispositivoSensorAbajo == sensor)
-                        .Select(s => new EstadoSensorDto { 
-                            Id = s.Id, 
-                            GrupoId = s.VisualizacionBarrera.Id, 
-                            Barrera = s.Barrera, 
+                        .Select(s => new EstadoSensorDto
+                        {
+                            Id = s.Id,
+                            GrupoId = s.VisualizacionBarrera.Id,
+                            Barrera = s.Barrera,
                             Estado = bool.Parse(notificacion.Datos.ContainsKey("Mensaje") ? notificacion.Datos["Mensaje"] : string.Empty),
                             PuestoDeTrabajoId = s.PuestoDeTrabajoId
                         }).ToList();

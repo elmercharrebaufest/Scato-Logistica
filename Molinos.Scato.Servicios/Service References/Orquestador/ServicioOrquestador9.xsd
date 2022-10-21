@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://nbpe00059:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://ragnarok:8080/ServicioOrquestador?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="ArrayOfMeteorologicaDto">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="MeteorologicaDto" nillable="true" type="tns:MeteorologicaDto" />
@@ -55,12 +55,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="IntercomunicadorDispositivoBaseDto" nillable="true" type="tns:IntercomunicadorDispositivoBaseDto" />
-  <xs:complexType name="ArrayOfGrupoBarreraDto">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfGrupoBarreraDto" nillable="true" type="tns:ArrayOfGrupoBarreraDto" />
   <xs:complexType name="GrupoBarreraDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="AgrupadorClaseDriver" nillable="true" type="xs:string" />
@@ -75,4 +69,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
+  <xs:complexType name="ArrayOfGrupoBarreraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGrupoBarreraDto" nillable="true" type="tns:ArrayOfGrupoBarreraDto" />
 </xs:schema>
