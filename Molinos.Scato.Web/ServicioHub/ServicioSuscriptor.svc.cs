@@ -812,19 +812,15 @@ namespace Molinos.Scato.Web.ServicioHub
             try
             {
                 var baseUrl = ConfigurationManager.AppSettings["FotosPathLogALPR"];
-                var yearPath = DateTime.Today.ToString("yyyy");
-                var monthPath = DateTime.Today.ToString("MM");
-                var dayPath = DateTime.Today.ToString("dd");
-                using (var ms = new MemoryStream(imagen))
-                {
-                    Bitmap imagenBitmap = new Bitmap(ms);
-                    imagenBitmap.Save(Path.Combine(baseUrl, yearPath, monthPath, dayPath, fileName), ImageFormat.Jpeg);
-                }
-                return Path.Combine(yearPath, monthPath, dayPath, fileName);
+                var subpath = Path.Combine(DateTime.Today.ToString("yyyy"), DateTime.Today.ToString("MM"), DateTime.Today.ToString("dd"));
+                var fullPath = Path.Combine(baseUrl, subpath, (fileName + ".jpeg"));
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+                File.WriteAllBytes(fullPath, imagen);
+                return Path.Combine(subpath, (fileName + ".jpeg"));
             }
             catch (Exception ex)
             {
-                log.Error("Error al guardar log imagen ALPR", ex.Message);
+                log.Error(ex, "Error al guardar log imagen ALPR");
             }
             return null;
         }

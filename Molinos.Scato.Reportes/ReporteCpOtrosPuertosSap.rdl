@@ -561,7 +561,8 @@ AND (@AlmacenIdp = '0' OR @AlmacenIdp = cp.Planta)
 AND (@TipoCompraIdp = '0' OR (@TipoCompraIdp = '1' AND cp.TitularCuit != @CuitMOA OR @TipoCompraIdp = '2' AND cp.TitularCuit = @CuitMOA))
 AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))
 AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentable = 1 OR @TipoSustentableIdp = '2' AND (cp.EsSustentable = 0 OR cp.EsSustentable is null)))
-AND (@TipoVehiculoIdp = 0 OR (@TipoVehiculoIdp = 1 AND cp.NroCartaPorte LIKE '1%') OR (@TipoVehiculoIdp = 2 AND cp.NroCartaPorte LIKE '2%'))</CommandText>
+AND (@TipoVehiculoIdp = 0 OR (@TipoVehiculoIdp = 1 AND cp.NroCartaPorte LIKE '1%') OR (@TipoVehiculoIdp = 2 AND cp.NroCartaPorte LIKE '2%'))
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
