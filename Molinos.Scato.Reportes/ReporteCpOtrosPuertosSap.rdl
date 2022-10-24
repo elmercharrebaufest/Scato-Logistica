@@ -37,6 +37,10 @@
           <QueryParameter Name="@TipoSustentable">
             <Value>=Parameters!TipoSustentable.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@TipoVehiculo">
+            <Value>=Parameters!TipoVehiculo.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
+          </QueryParameter>
         </QueryParameters>
         <CommandText>declare 
 @FechaDesdep datetime, 
@@ -49,7 +53,8 @@
 @CuitVicentin varchar(11),
 @CuitChivilcoy varchar(13),
 @TipoDestinoIdp varchar(1),
-@TipoSustentableIdp varchar(1)
+@TipoSustentableIdp varchar(1),
+@TipoVehiculoIdp int
 
 set @FechaDesdep = @FechaDesde
 set @FechaHastap = @FechaHasta
@@ -62,12 +67,21 @@ set @CuitVicentin = '30500959629'
 set @CuitChivilcoy = '30500858628'
 set @TipoDestinoIdp = @TipoDestino
 set @TipoSustentableIdp = @TipoSustentable
+set @TipoVehiculoIdp = @TipoVehiculo
 
 SELECT DISTINCT
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 4, 1) Pref,
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 5, 8) NroCartaPorte,
-	'A' TipoTransporte,
-	0 NroVagon,
+	CASE 
+		WHEN cp.NroCartaPorte LIKE '2%' THEN 'F' 
+		WHEN cp.NroCartaPorte LIKE '1%' THEN 'A' 
+		ELSE ''
+	END TipoTransporte,
+	CASE 
+		WHEN cp.NroCartaPorte LIKE '2%' THEN 2 
+		WHEN cp.NroCartaPorte LIKE '1%' THEN 0 
+		ELSE ''
+	END NroVagon,
 	cp.FechaCarga FechaCartaPorte,
 	cp.FechaVencimiento  FechaVencimiento,
 	CASE WHEN cp.CEE = 'null' THEN NULL ELSE cp.CEE END CEE,
@@ -546,7 +560,8 @@ AND cp.Material_Id = @MaterialIdp
 AND (@AlmacenIdp = '0' OR @AlmacenIdp = cp.Planta)
 AND (@TipoCompraIdp = '0' OR (@TipoCompraIdp = '1' AND cp.TitularCuit != @CuitMOA OR @TipoCompraIdp = '2' AND cp.TitularCuit = @CuitMOA))
 AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))
-AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentable = 1 OR @TipoSustentableIdp = '2' AND (cp.EsSustentable = 0 OR cp.EsSustentable is null)))</CommandText>
+AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentable = 1 OR @TipoSustentableIdp = '2' AND (cp.EsSustentable = 0 OR cp.EsSustentable is null)))
+AND (@TipoVehiculoIdp = 0 OR (@TipoVehiculoIdp = 1 AND cp.NroCartaPorte LIKE '1%') OR (@TipoVehiculoIdp = 2 AND cp.NroCartaPorte LIKE '2%'))</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -11756,7 +11771,6 @@ ORDER BY ord</CommandText>
                                                                                                                                                                                                                                                                       <PaddingBottom>1pt</PaddingBottom>
                                                                                                                                                                                                                                                                     </Style>
                                                                                                                                                                                                                                                                   </Textbox>
-                                                                                                                                                                                                                                                                  <rd:Selected>true</rd:Selected>
                                                                                                                                                                                                                                                                 </CellContents>
                                                                                                                                                                                                                                                               </TablixHeader>
                                                                                                                                                                                                                                                               <TablixMembers>
@@ -12048,11 +12062,37 @@ ORDER BY ord</CommandText>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="TipoVehiculo">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Tipo Vehiculo</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>0</Value>
+            <Label>Todos</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>1</Value>
+            <Label>Camiones</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2</Value>
+            <Label>Vagones</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+      <UsedInQuery>False</UsedInQuery>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>3</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -12095,9 +12135,14 @@ ORDER BY ord</CommandText>
           <ParameterName>TipoDestino</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>2</ColumnIndex>
-          <RowIndex>2</RowIndex>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
           <ParameterName>TipoSustentable</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>TipoVehiculo</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
