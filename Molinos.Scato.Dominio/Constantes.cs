@@ -76,5 +76,10 @@
                 public const string HorarioNocturnoHasta = "HorarioNocturnoHasta";
             }
         }
+
+        public struct EtapaWorkflow
+        {
+            public const string Visteo = "Visteo";
+        }
     }
 }

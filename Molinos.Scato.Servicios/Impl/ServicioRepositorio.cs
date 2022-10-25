@@ -8920,7 +8920,7 @@ namespace Molinos.Scato.Servicios.Impl
                  MaterialId = x.Recorrido != null ? x.Recorrido.Material.Id : x.CargaDeCupo.Material.Id,
                  CaladoId = x.Recorrido != null ? x.Recorrido.Calado.Id : (int?)null,
                  Tarjeta = x.Recorrido != null ? x.Recorrido.TarjetaDeAcceso : x.CargaDeCupo != null ? x.CargaDeCupo.Numero : null,
-                 InstanceId = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : (Guid?)null,
+                 WorkflowDefinicionId = x.Recorrido != null ? x.Recorrido.WorkflowDefinicion.Id : (int?)null,
                  CalidadCamion = x.Recorrido != null && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() == null ? TipoCalidad.Desconocida : x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad,
                  CalleNoGrano = x.Calle.TipoCalle == TipoCalle.NoGranos,
                  NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : "",
@@ -8936,7 +8936,7 @@ namespace Molinos.Scato.Servicios.Impl
                 return new InfoPatenteDeCalleDto();
             }
 
-            var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
+            var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanciaWorflow).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
             camion.Cliente = camion.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas ?
                 repositorio.ObtenerProyeccion<OrdenCargaFas, string>(x => x.Recorrido.Id == camion.RecorridoId, x => x.Cliente.Descripcion) : "";

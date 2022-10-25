@@ -29,7 +29,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? CaladoId { get; set; }
         public TipoCalidad CalidadCamion { get; set; }
         public string Tarjeta { get; set; }
-        public Guid? InstanceId { get; set; }
+        public int? WorkflowDefinicionId { get; set; }
         public string Etapa { get; set; }
         public bool CalleNoGrano { get; set; }
 

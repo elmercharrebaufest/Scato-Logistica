@@ -1,0 +1,47 @@
+@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+@using Molinos.Scato.WebMobile.Helpers;
+
+@{
+    ViewBag.Title = Textos.VerificacionCamionRechazado_Titulo;
+    Layout = null;
+}
+
+@Html.HiddenFor(model => model.WorkflowInstanceId)
+@Html.HiddenFor(model => model.NombreUsuario)
+@Html.HiddenFor(model => model.Actividad)
+@Html.HiddenFor(model => model.ActividadXaml)
+<div class="modal fade" id="dialogo-rechazar">
+    <div class="modal-dialog modal-dialog-centered" >
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title "><strong>@Textos.VerificacionCamionRechazado_Titulo</strong></h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="dialogo-cerear-body">
+                <div class="d-flex align-items-start flex-column">
+                    <div class="row">
+                        <div class="col-12">
+                            @Textos.VerificacionCamionRechazado_VehiculoRechazado
+                        </div>
+                    </div>
+                    <div class="row mt-auto p-2">
+                        <div class="col-12">
+                            @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new {style = "width:300px"  })
+                        </div>
+                    </div>
+                    <div class="row mt-auto p-2">
+                        <div class="col-12">
+                            @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new {style = "width:270px;height:30px" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-noGranos-rechazar" type="button" class="btn btn-outline-dark" onclick="enCondiciones(false)">@Textos.Rechazar</button>
+                <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
