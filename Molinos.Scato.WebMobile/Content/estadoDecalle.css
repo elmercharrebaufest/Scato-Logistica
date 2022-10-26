@@ -279,6 +279,7 @@ div.card.parpadeo {
     border: 2px solid red;
     color: red;
     border-radius:5px;
+    position: relative;
 }
 
 .bg-harina {

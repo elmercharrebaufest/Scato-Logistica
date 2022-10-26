@@ -1,7 +1,21 @@
-﻿.bg-primero {
+﻿.color-fondo {
+    background-color: lightgray;
+}
+
+.bg-primero {
     margin-left: 15px !important;
 }
 
 .bg-ultimo {
     margin-right: 15px !important;
+}
+
+.row-borde {
+    margin-left: -11.5px !important;
+    margin-right: -11.5px !important;
+}
+
+.col-borde {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
