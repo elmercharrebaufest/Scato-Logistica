@@ -76,6 +76,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      EstadoMuestra = muestra.EstadoMuestra,
                                      TieneAnalisisInterno = muestra.TieneAnalisisInterno,
                                      CamaraDesc = muestra.Camara.Descripcion,
+                                     EsPreLote = muestra.EsPreLote
                                  }).Distinct();
 
             if (!String.IsNullOrEmpty(numeroDeMuestra))
