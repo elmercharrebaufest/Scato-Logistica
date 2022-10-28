@@ -1,28 +1,24 @@
-var enCondiciones;
-
-$(document).on('click', '#btn-noGranos-no', function () {
+function rechazo() {
     $("#modal-rechazo-mover").modal('hide');
-    var href = urlVisteoRechazoMobile + "?"
-        + "instanciaWorflow=" + $("#InstanciaWorflow").val()
-        + "&workflowDefinicionId=" + $("#WorkflowDefinicionId").val();
-    $.get(href, cargarDialogoRechazar);
-});
 
-$(document).on('click', '.dialogo-rechazar-cerrar', function () {
-    $("#dialogo-rechazar").modal('hide');
-    $(".modal-backdrop").remove();
-    $("#mensajeRechazar").html("");
-});
+    var href = urlVisteoRechazoMobile + "?"
+    + "instanciaWorflow=" + $("#InstanciaWorflow").val()
+    + "&workflowDefinicionId=" + $("#WorkflowDefinicionId").val();
+    $.get(href, cargarDialogoRechazar);
+}
 
 function enCondiciones(confirmRechazar) {
-    debugger;
     esValido = confirmRechazar;
     confirmacionVisteo();
 }
 
 function cargarDialogoRechazar(data) {
+
     $("#mensajeRechazar").html(data);
-    $('#dialogo-rechazar').modal({});
+    $('#dialogo-rechazar').modal({
+        keyboard: false,
+        backdrop: 'static'
+    });
 }
 
 function confirmacionVisteo() {
@@ -49,8 +45,8 @@ function confirmacionVisteo() {
             MostrarAlertaError();
         },
         complete: function () {
-            $("#dialogo-rechazar").modal('hide');
             document.getElementById("modalConfirmarVisteo").close();
+            $("#dialogo-rechazar").modal('hide');
         }
     });
 }

@@ -11,15 +11,16 @@
 @Html.HiddenFor(model => model.NombreUsuario)
 @Html.HiddenFor(model => model.Actividad)
 @Html.HiddenFor(model => model.ActividadXaml)
-<div class="modal fade" id="dialogo-rechazar">
+
+<div class="modal" id="dialogo-rechazar">
     <div class="modal-dialog modal-dialog-centered" >
         <div class="modal-content">
             <div class="modal-header alert-danger">
                 <h5 class="modal-title "><strong>@Textos.VerificacionCamionRechazado_Titulo</strong></h5>
-                <button type="button" class="close" data-dismiss="modal"
+                <button type="button" class="close dialogo-rechazar-cerrar" data-dismiss="modal"
                     aria-hidden="true">&times;</button>
             </div>
-            <div class="modal-body" id="dialogo-cerear-body">
+            <div class="modal-body" id="dialogo-body">
                 <div class="d-flex align-items-start flex-column">
                     <div class="row">
                         <div class="col-12">
@@ -40,7 +41,7 @@
             </div>
             <div class="modal-footer">
                 <button id="btn-noGranos-rechazar" type="button" class="btn btn-outline-dark" onclick="enCondiciones(false)">@Textos.Rechazar</button>
-                <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
             </div>
         </div>
     </div>

@@ -267,7 +267,7 @@
                     <div class="centered">
                         @Textos.VehiculoEnCondiciones_Pregunta:
                         <button id="btn-noGranos-confirm" onclick="modalConfirmarVisteo.showModal()" class="btn btn-primary rechazar">@Textos.Si</button>
-                        <button id="btn-noGranos-no" class="btn btn-outline-dark rechazar-boton no-rechazar">@Textos.No</button>
+                        <button id="btn-noGranos-no" onclick="rechazo()" class="btn btn-outline-dark rechazar-boton no-rechazar">@Textos.No</button>
                     </div>
                 }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
