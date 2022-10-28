@@ -179,7 +179,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     return Json(new { MuestraId = -3 }, JsonRequestBehavior.AllowGet);
                 }
-                if (muestra.MuestraEnvioACamara.CamaraId != camaraId)
+                if (muestra.MuestraEnvioACamara.CamaraId != camaraId && muestra.MuestraEnvioACamara.EsPreLote != true)
                 {
                     return Json(new { MuestraId = -4 }, JsonRequestBehavior.AllowGet);
                 }
