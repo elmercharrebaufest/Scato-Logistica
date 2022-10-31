@@ -1,11 +1,11 @@
 ﻿<div class="content">
     <div class="container-fluid" >
         <div class="row callesfiltradas" data-bind="foreach: Calles, css: {'centrarCalles' : Calles().length <= 5}" style="margin-right: -10px; margin-left: -10px;">
-            <div class="col-borde" style="min-width:18ch!important; max-width:20ch!important; margin:0px;" data-bind="css: { 'bg-primero': EsPrimero, 'bg-ultimo': EsUltimo }">
+            <div class="col-borde" style="min-width:18ch!important; max-width:20ch!important; margin:0px;" data-bind="css: { 'bg-primero': EsPrimero, 'bg-ultimo': EsUltimo, 'color-fondo': !EsPrimero && !EsUltimo}">
                 <div class="sinbordetb row row-card-no-pd"  data-bind="css: { 'bg-calle-llena': Camiones.length - LimiteDeCamiones > 0}">
-                    <div class="col sinbordetb">
+                    <div class="col sinbordetb-borde">
                         <div class="card card-stats sinbordetb">
-                            <div class="card-body sinbordetb">
+                            <div class="card-body sinbordetb-borde">
                                 <div class="row fw-bold mb-0 cart-title sinbordetb">
                                     <div class="col">
                                         <button disabled style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle"><strong data-bind="text: $root.TiempoEnCola($data)"></strong></button>
