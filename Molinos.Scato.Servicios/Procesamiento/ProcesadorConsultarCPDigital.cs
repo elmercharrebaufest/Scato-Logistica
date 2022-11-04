@@ -561,6 +561,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Sucursal = cartaPorte.Sucursal,
                     Cpe = true,
                     EstadoCpe = cartaPorte.Estado,
+                    TitularCartaPorteCodigoSap = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_TitularCartaPorte, false, false, true).CodigoSap,
                     Vehiculos = new List<VehiculoDto>() {
                         new VehiculoDto {
                             Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
