@@ -155,10 +155,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                     comando.Dto.FotoRutaSustentable = resultadoSustentable.Path;
                                     ((ResultadoCrear)resultado).PathSustentable = resultadoSustentable.Path;
                                 }
-                            }
-                            else
-                            {
-                                resultado.Error("ResultadoSustentable", "No se pudo guardar la foto CP con sello sustentable");
+                                else
+                                {
+                                    resultado.Error("ResultadoSustentable", "No se pudo guardar la foto CP con sello sustentable");
+                                }
                             }
                         }
                         else
