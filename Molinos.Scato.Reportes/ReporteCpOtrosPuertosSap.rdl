@@ -9664,7 +9664,7 @@ ORDER BY ord</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Sum(Fields!NroVagon.Value)</Value>
+                                                <Value>=Fields!NroVagon.Value</Value>
                                                 <Style>
                                                   <FontFamily>Arial</FontFamily>
                                                   <FontSize>8pt</FontSize>
@@ -9688,6 +9688,7 @@ ORDER BY ord</CommandText>
                                           <PaddingBottom>1pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
+                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixHeader>
                                   <TablixMembers>
