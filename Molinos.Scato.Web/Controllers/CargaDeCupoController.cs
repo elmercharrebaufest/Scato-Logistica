@@ -1,5 +1,5 @@
-﻿using Molinos.Scato.Actividades.Servicios;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
+using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -23,7 +23,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using System.Collections.ObjectModel;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -39,8 +38,8 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IFirmaProvider firma;
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
 
-        public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, 
-            IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador, 
+        public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
+            IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
             IServicioActividadFactory<ICargarCartaPorteService> factory)
             : base(servicio)
@@ -66,7 +65,6 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(CargaDeCupoDto model, string imagenCartaPorte, bool AvanceCpe, DatosUsuario datosUsuario)
         {
-
             log.Debug("CartaDePorte {0}, Tarjeta {1}, Centro {2}, Patente {3}", model.NumeroCartaPorte, model.Numero, datosUsuario.CentroId, model.Patente);
 
             if (model.CircuitoNoGranos)
@@ -154,7 +152,7 @@ namespace Molinos.Scato.Web.Controllers
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
                         AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
-                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                        log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
                         AperturaDeBarrera(codigoBarrera);
                     }
                     if (model.ImprimeTarjetaDeAcceso)
@@ -170,7 +168,7 @@ namespace Molinos.Scato.Web.Controllers
 
                     if (AvanceCpe && EsCupoValidoParaAvanceAutomatico(model))
                     {
-                        servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });  
+                        servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = true });
                         CargarCartaPorte(resultado.Id, datosUsuario, model.ImagenCartaPorte);
                         servicioComandos.Ejecutar(new SetearProgresoCargaDeCupo() { Id = resultado.Id, EnProgresoAutomatico = false });
                     }
@@ -261,7 +259,7 @@ namespace Molinos.Scato.Web.Controllers
                         model.MaterialId = 0;
                     }
 
-                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : { codigoBarrera} y Patente : {model.Patente}");
+                    log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
                     AperturaDeBarrera(codigoBarrera);
                 }
 
@@ -441,7 +439,7 @@ namespace Molinos.Scato.Web.Controllers
                     model = servicio.ObtenerCupoReingresado(cupo, nroCartaPorte, datosUsuario.CentroId);
                     model.RespuestaSap = "Cupo a reingresar";
                     var cartaPorte = servicio.ObtenerCartaPortePorCentroYNumero(nroCartaPorte, datosUsuario.CentroId);
-                    if(cartaPorte != null)
+                    if (cartaPorte != null)
                     {
                         model.ProveedorCuit = cartaPorte.TitularCartaPorteCuil;
                         model.ProveedorDescripcion = cartaPorte.TitularCartaPorte;
@@ -464,8 +462,8 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception e)
             {
-                    log.Error(e, "Error al validar cupo en SAP: ");
-                    return Json(new { error = Textos.Error_GenericoSap }, JsonRequestBehavior.AllowGet);
+                log.Error(e, "Error al validar cupo en SAP: ");
+                return Json(new { error = Textos.Error_GenericoSap }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -826,12 +824,11 @@ namespace Molinos.Scato.Web.Controllers
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 
-
         [DatosUsuario]
         public JsonResult ObtenerCPE(DatosUsuario datosUsuario, long numeroCtg, string tarjeta = "", bool esEpecial = false)
         {
             try
-            {                
+            {
                 log.Debug("Obteniendo CTG {0} en carga de Cupo.", numeroCtg);
                 var cartaPorteResponse = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = numeroCtg, Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, ConsultaMinima = true }) as ResultadoCartaPorteElectronica;
                 log.Debug(cartaPorteResponse.HayErrores ? "Error al obtener carta de porte CTG-CPE en carga de Cupo. {0}: " + cartaPorteResponse.Errores.Values.First() : "Devolviendo carta de porte en carga de Cupo. CTG-CPE {0}", numeroCtg);
@@ -967,9 +964,10 @@ namespace Molinos.Scato.Web.Controllers
                 workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
                 tipoComercialId = 4;
             }
-            if (cargaDeCupo == null || string.IsNullOrEmpty(workflow)) { 
+            if (cargaDeCupo == null || string.IsNullOrEmpty(workflow))
+            {
                 ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
-                return; 
+                return;
             }
             var puesto = servicio.ObtenerPuestoDeTrabajo(cargaDeCupo.PuestoDeTrabajoId);
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
@@ -993,8 +991,8 @@ namespace Molinos.Scato.Web.Controllers
                     // Queda en Pendiente si supera el Peso Bruto Maximo según el tipo de vehiculo
                     var pesoMaximoPorTipoVehiculo = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(datosUsuario.CentroId)
                                                             .Where(x => x.TipoVehiculo == (respuestaCnrt.Categoria ?? TipoVehiculo.Camión))
-                                                            .Select(x => orden.Cpe.TipoDeWorkflow == TipoDeWorkflow.Ingreso 
-                                                                        ? x.PesoMaxIngreso 
+                                                            .Select(x => orden.Cpe.TipoDeWorkflow == TipoDeWorkflow.Ingreso
+                                                                        ? x.PesoMaxIngreso
                                                                         : x.PesoMaxEgreso)
                                                             .FirstOrDefault();
                     if (vehiculo.PesoBrutoOrigen > pesoMaximoPorTipoVehiculo)
@@ -1081,14 +1079,14 @@ namespace Molinos.Scato.Web.Controllers
                     if (vehiculos.Any(vehiculo => vehiculo.PesoBrutoOrigen > tipoComercial.PesoMaximoDocumentoIngreso))
                     {
                         log.Debug("El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
-                    ModelState.AddModelError("avanceCpe", "El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
+                        ModelState.AddModelError("avanceCpe", "El Tipo comercial tiene configurado un peso maximo en ingreso y fue excedido");
                         return;
 
                         //return View(orden);
                     }
                 }
                 var tipoVehiculo = ObtenerTipoVehiculoPorPatente(vehiculos.FirstOrDefault().Patente, vehiculos.FirstOrDefault().PatenteAcoplado, workflow, datosUsuario, vehiculos.FirstOrDefault().PatenteAcoplado2);
-                if(tipoVehiculo != null && tipoVehiculo.HayErrores)
+                if (tipoVehiculo != null && tipoVehiculo.HayErrores)
                 {
                     log.Debug("Fallo validacion tipo vehiculo");
                     ModelState.AddModelError("avanceCpe", "Fallo validacion tipo vehiculo");
@@ -1167,10 +1165,7 @@ namespace Molinos.Scato.Web.Controllers
                     orden.Id = resultadoActividad.Id;
                     instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
                 }
-
-               
             }
-          
         }
 
         protected virtual bool Validar(CartaPorteDto orden, DatosUsuario usuario)
@@ -1211,7 +1206,7 @@ namespace Molinos.Scato.Web.Controllers
                 return true;
             }
             var resultado = servicio.ValidarCupo(orden.Cupo, usuario.CentroId, orden.NroCartaPorte);
-           
+
             if (resultado.Valido && !resultado.YaAsignado)
             {
                 return true;
@@ -1322,10 +1317,10 @@ namespace Molinos.Scato.Web.Controllers
 
         protected bool SetearChofer(ChoferDto choferDto)
         {
-            if (!ModelState.IsValid|| choferDto == null)
+            if (!ModelState.IsValid || choferDto == null)
             {
                 return false;
-            }            
+            }
             log.Info("SetearChofer para el chofer con el CUIL: " + choferDto.Cuil);
             var chofer = servicio.BuscarChoferes(new ChoferFiltro { Cuil = choferDto.Cuil }).FirstOrDefault();
             if (chofer != null) //Chofer existente
@@ -1456,7 +1451,8 @@ namespace Molinos.Scato.Web.Controllers
             return null;
         }
 
-        private bool EsCupoValidoParaAvanceAutomatico(CargaDeCupoDto model) {
+        private bool EsCupoValidoParaAvanceAutomatico(CargaDeCupoDto model)
+        {
             bool esValido = true;
 
             if (model.Especial && model.MaterialId == 4) // CUPO SUSTENTABLE
