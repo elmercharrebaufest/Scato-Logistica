@@ -401,14 +401,28 @@
   <xs:element name="ObtenerConfiguracionGrupoBarrera">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="codigoSegundoCruce" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codigoGrupoBarrera" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ObtenerConfiguracionGrupoBarreraResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraResult" nillable="true" type="q33:ArrayOfGrupoBarreraDto" />
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraResult" nillable="true" type="q33:GrupoBarreraDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="codigoSegundoCruce" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ObtenerConfiguracionGrupoBarreraPorSegundoCruceResult" nillable="true" type="q34:ArrayOfGrupoBarreraDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -420,7 +434,7 @@
   <xs:element name="ListarGruposBarreraResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarGruposBarreraResult" nillable="true" type="q34:ArrayOfDispositivoDto" />
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos" minOccurs="0" name="ListarGruposBarreraResult" nillable="true" type="q35:ArrayOfDispositivoDto" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

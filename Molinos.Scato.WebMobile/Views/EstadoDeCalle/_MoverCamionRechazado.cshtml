@@ -1,29 +1,44 @@
 ﻿@using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio
+@using Molinos.Scato.WebMobile.Helpers;
+
 
 @model Molinos.Scato.Dominio.Dto.InfoPatenteDeCalleDto
 @{
     var callesPostCalado = ((IEnumerable<SelectListItem>)ViewBag.CallesPostCalado) ?? new List<SelectListItem>();
 }
 
+<script src="@Url.Script("~/Scripts/visteo.js")" type="text/javascript"></script>
+
+
 <script>
     urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';
     urlConfirmarReasignacionCalle = '@Url.Action("ConfirmarReasignacionCalle", "EstadoDeCalle")';
+    urlVisteoMobile = '@Url.Action("Index", "VisteoMobile")';    
+    urlVisteoRechazoMobile = '@Url.Action("RechazarNoGranos", "VisteoMobile")';  
+
+
     $(document).ready(function () {
-        $('#Boton-ConfirmarFilaRechazado').click(ConfirmarEnviarAFilaRechazado);
-        $('#Boton-AceptarReasignacionCalle').click(function () {
-            AceptarReasignacionCalle();
-        });
-        $('#dialogo-confirmar-confirmar').click(function () {
-            ConfirmarReasignacionCalle();
-        });
-        $('#dialogo-confirmar-cancelar').click(function () {
-            CancelarReasignacionCalle();
-        });
+    $('#Boton-ConfirmarFilaRechazado').click(ConfirmarEnviarAFilaRechazado);
+    $('#Boton-AceptarReasignacionCalle').click(function () {
+        AceptarReasignacionCalle();
+    });
+    $('#dialogo-confirmar-confirmar').click(function () {
+        ConfirmarReasignacionCalle();
+    });
+    $('#dialogo-confirmar-cancelar').click(function () {
+        CancelarReasignacionCalle();
     });
 
+});  
+
 </script>
+
+@Html.HiddenFor(model => model.InstanciaWorflow)
+@Html.HiddenFor(model => model.WorkflowDefinicionId)
 
 <div id="modal-rechazo-mover" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -246,13 +261,22 @@
                 </div>
                 @Html.HiddenFor(model => model.RecorridoId)
                 @Html.HiddenFor(model => model.CalleId)
-                @Html.HiddenFor(model => model.InstanciaWorflow)
             }
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-around">
+                @if (Model.CalleNoGrano && Model.Etapa == Constantes.EtapaWorkflow.Visteo){
+                    <div class="centered">
+                        @Textos.VehiculoEnCondiciones_Pregunta:
+                        <button id="btn-noGranos-confirm" onclick="modalConfirmarVisteo.showModal()" class="btn btn-primary rechazar">@Textos.Si</button>
+                        <button id="btn-noGranos-no" onclick="rechazo()" class="btn btn-outline-dark rechazar-boton no-rechazar">@Textos.No</button>
+                    </div>
+                }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
+
+<div id="mensajeRechazar">
 </div>
 
 <div id="dialogo-confirmar" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -276,3 +300,14 @@
         </div>
     </div>
 </div>
+
+<dialog id="modalConfirmarVisteo">
+    <h4>@Textos.Confirmacion</h4>
+    <p>
+        ¿Está seguro de que el vehiculo está en condiciones?
+    </p>
+    <div>
+        <button type="button" id="btn-noGranos-confirm" onclick="enCondiciones(true)" class="btn btn-warning">Confirmar</button>
+        <button class="btn" onclick="modalConfirmarVisteo.close()">Cerrar</button>
+    </div>
+</dialog>

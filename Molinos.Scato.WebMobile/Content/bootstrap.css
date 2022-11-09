@@ -5752,6 +5752,10 @@ a.close.disabled {
   margin-right: .25rem;
 }
 
+.centered {
+    text-align: center !important;
+}
+
 .modal-scrollbar-measure {
   position: absolute;
   top: -9999px;

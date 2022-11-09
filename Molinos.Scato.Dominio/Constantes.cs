@@ -2,6 +2,11 @@
 {
     public static class Constantes
     {
+        public struct ValoresPorDefecto
+        {
+            public const string CupoGenerico = "MOL1111/11111111";
+        }
+
         public struct IntercomunicadorDireccion
         {
             public const string HaciaLaWeb = "2web";
@@ -11,6 +16,7 @@
         public struct NotificacionGrupos
         {
             public const string Intercomunicador = "Intercomunicador";
+            public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
         }
 
         public struct Entidad
@@ -50,6 +56,7 @@
             {
                 public const string EficienciaCalado = "EficienciaCalado";
                 public const string AFIP = "AFIP";
+                public const string PreLote = "PreLote";
             }
 
             public struct EficienciaCalado
@@ -62,6 +69,17 @@
             {
                 public const string ConsultasParalelas = "ConsultasParalelas";
             }
+
+            public struct PreLote
+            {
+                public const string HorarioNocturnoDesde = "HorarioNocturnoDesde";
+                public const string HorarioNocturnoHasta = "HorarioNocturnoHasta";
+            }
+        }
+
+        public struct EtapaWorkflow
+        {
+            public const string Visteo = "Visteo";
         }
     }
 }

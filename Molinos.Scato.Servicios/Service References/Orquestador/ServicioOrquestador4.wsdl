@@ -203,6 +203,12 @@
   <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage">
     <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraResponse" />
   </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruce" />
+  </wsdl:message>
+  <wsdl:message name="IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" />
+  </wsdl:message>
   <wsdl:message name="IServicioOrquestador_ListarGruposBarrera_InputMessage">
     <wsdl:part name="parameters" element="tns:ListarGruposBarrera" />
   </wsdl:message>
@@ -337,6 +343,10 @@
     <wsdl:operation name="ObtenerConfiguracionGrupoBarrera">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarrera" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_InputMessage" />
       <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarrera_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerConfiguracionGrupoBarreraPorSegundoCruce">
+      <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruce" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_InputMessage" />
+      <wsdl:output wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoBarreraPorSegundoCruceResponse" message="tns:IServicioOrquestador_ObtenerConfiguracionGrupoBarreraPorSegundoCruce_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ListarGruposBarrera">
       <wsdl:input wsaw:Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera" message="tns:IServicioOrquestador_ListarGruposBarrera_InputMessage" />

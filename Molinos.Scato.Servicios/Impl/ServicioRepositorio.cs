@@ -29,6 +29,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
 using System.ServiceModel.Configuration;
+using static NPOI.HSSF.Util.HSSFColor;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -3699,9 +3700,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true)).LastOrDefault();
         }
 
-        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId)
+        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote = false)
         {
-            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true)).LastOrDefault();
+            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true,incluirPreLote: incluirPreLote)).LastOrDefault();
             var recorrido = muestra == null ? null :
                 repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == muestra.WorkflowInstanceId,
                                               x =>
@@ -3815,9 +3816,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Contar<Notificacion>(x => grupos.Contains(x.Grupo) && x.Leido == false);
         }
 
-        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId)
+        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote)
         {
-            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true));
+            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true,incluirPreLote: incluirPreLote));
         }
 
         public IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId)
@@ -8919,7 +8920,7 @@ namespace Molinos.Scato.Servicios.Impl
                  MaterialId = x.Recorrido != null ? x.Recorrido.Material.Id : x.CargaDeCupo.Material.Id,
                  CaladoId = x.Recorrido != null ? x.Recorrido.Calado.Id : (int?)null,
                  Tarjeta = x.Recorrido != null ? x.Recorrido.TarjetaDeAcceso : x.CargaDeCupo != null ? x.CargaDeCupo.Numero : null,
-                 InstanceId = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : (Guid?)null,
+                 WorkflowDefinicionId = x.Recorrido != null ? x.Recorrido.WorkflowDefinicion.Id : (int?)null,
                  CalidadCamion = x.Recorrido != null && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() == null ? TipoCalidad.Desconocida : x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad,
                  CalleNoGrano = x.Calle.TipoCalle == TipoCalle.NoGranos,
                  NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : "",
@@ -8935,7 +8936,7 @@ namespace Molinos.Scato.Servicios.Impl
                 return new InfoPatenteDeCalleDto();
             }
 
-            var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanceId).OrderBy(x => x.Fecha).LastOrDefault();
+            var actividad = repositorio.Listar<LogActividad>(x => x.WorkflowInstanceId == camion.InstanciaWorflow).OrderBy(x => x.Fecha).LastOrDefault();
             camion.Etapa = actividad != null ? actividad.Actividad : "";
             camion.Cliente = camion.TipoDocumento == TipoDocumentoIngreso.OrdenCargaFas ?
                 repositorio.ObtenerProyeccion<OrdenCargaFas, string>(x => x.Recorrido.Id == camion.RecorridoId, x => x.Cliente.Descripcion) : "";
@@ -10059,6 +10060,24 @@ namespace Molinos.Scato.Servicios.Impl
         public CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId)
         {
             return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.Cupo == cupo && x.CTG == nroCartaPorte && x.Centro.Id == centroId && !x.SinCupo && x.Recorrido.Rechazado && x.Recorrido.Terminado, x => x.Id);
+        }
+
+        public List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos()
+        {
+            var puestosDeTrabajo = repositorio.Listar<PuestosDeCargaDescarga, PuestoDeTrabajo>(x => x.PuestoDeTrabajo, x => x.PuestoDeTrabajo != null);
+            var hidraulicas = puestosDeTrabajo.Where(x => x.VisualizacionBarrera != null).Select(x => x.VisualizacionBarrera.Id).ToList();
+            var barrerasActivas = puestosDeTrabajo.Where(x => x.VisualizacionBarrera != null && hidraulicas.Contains(x.VisualizacionBarrera.Id) && !x.VisualizacionBarrera.Deshabilitada).Select(x => x.VisualizacionBarrera.Id).ToList();
+            var sensores = Listar<SensorBarrera, SensorBarreraDto>(x => barrerasActivas.Contains(x.VisualizacionBarrera.Id)).ToList();
+            foreach (var sensor in sensores)
+            {
+                sensor.PuestoDeTrabajoId = puestosDeTrabajo.FirstOrDefault(x => x.VisualizacionBarrera != null && x.VisualizacionBarrera.Id == sensor.VisualizacionBarrera.Id)?.Id;
+            }
+            return sensores;
+        }
+
+        public CaladoDto ObtenerCaladoPorId(int id)
+        {
+            return Obtener<Calado, CaladoDto>(x => x.Id == id);
         }
     }
 }

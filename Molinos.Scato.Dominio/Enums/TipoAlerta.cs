@@ -15,6 +15,7 @@
         CartaPorte = 9,
         CambioEstadoBalanzas = 10,
         CambioEstadoSemaforo = 11,
-        CambioEstadoBarrera = 12
+        CambioEstadoBarrera = 12,
+        CambioEstadoBarreraHidraulica = 13
     }
 }

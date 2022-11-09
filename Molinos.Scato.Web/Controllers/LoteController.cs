@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -27,6 +13,20 @@ using Molinos.Scato.Web.Models.ArchivosTxt;
 using Molinos.Scato.Web.Models.ArchivosXml;
 using Molinos.Scato.Web.PDF;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -37,7 +37,7 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IConfiguracionProvider configuracion;
         private readonly IFirmaProvider firmaProvider;
 
-        public LoteController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IConfiguracionProvider configuracion,IFirmaProvider firmaProvider)
+        public LoteController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IConfiguracionProvider configuracion, IFirmaProvider firmaProvider)
             : base(servicio)
         {
             this.log = log;
@@ -45,6 +45,7 @@ namespace Molinos.Scato.Web.Controllers
             this.configuracion = configuracion;
             this.firmaProvider = firmaProvider;
         }
+
         [DatosUsuario]
         [Autorizacion(PermisosScato.ArmarLote)]
         public ActionResult Index(DatosUsuario datosUsuario)
@@ -92,6 +93,34 @@ namespace Molinos.Scato.Web.Controllers
                 if (resultado != null)
                 {
                     lote = servicio.ObtenerLoteParaArchivo(resultado.Id);
+                    foreach (var muestra in lote.Muestras)
+                    {
+                        if (muestra.EsPreLote == true)
+                        {
+                            var documento = servicio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo("LoteACamara", muestra.CentroId, datosUsuario.PuestoDeTrabajoId);
+                            //if (documento == null) { throw new Exception(string.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, "LoteACamara")); }
+
+                            if (documento != null)
+                            {
+                                var calado = servicio.ObtenerCaladoPorId(muestra.CaladoId);
+                                var precintos = servicio.ListarPrecintos(muestra.WorkflowInstanceId);
+                                var dto = new ImpIdentificacionEnvioLoteACamaraDto
+                                {
+                                    Impresora = documento.ImpresoraDireccion ?? "",
+                                    Centro = documento.CentroDescripcion,
+                                    Codigo = "LoteACamara",
+                                    NumeroDeOrden = muestra.NroDocumento,
+                                    Patente = muestra.Patente,
+                                    FechaCalado = calado.FechaCreacion.HasValue ? calado.FechaCreacion.Value : DateTime.MinValue,
+                                    NumeroDeMuestra = muestra.NroMuestra,
+                                    Precinto = precintos.Count == 0 ? " – S/N" : (String.Join(";", precintos.Select(x => x.Detalle))),
+                                    WorkflowId = muestra.WorkflowInstanceId,
+                                };
+
+                                var resultadoComando = servicioComandos.Ejecutar(new ImprimirEnvioLoteACamara { Dto = dto, CantidadCopias = 1 });
+                            }
+                        }
+                    }
                 }
                 TempData["Alerta"] = Textos.Lote_OK;
                 TempData["TipoAlerta"] = TipoAlerta.Exito;
@@ -119,7 +148,7 @@ namespace Molinos.Scato.Web.Controllers
                         TempData["TipoAlerta"] = TipoAlerta.Advertencia;
                     }
                 }
-                return RedirectToAction("LoteCreado", "Lote", new { loteId = lote.Id, numeroLote = lote.NumeroDeLote});
+                return RedirectToAction("LoteCreado", "Lote", new { loteId = lote.Id, numeroLote = lote.NumeroDeLote });
             }
             ModelState.AddModelError("numeroDeMuestra", Textos.Lote_NoHayMuestras);
             SetearVista();
@@ -135,7 +164,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult ObtenerMuestra(string numeroDeMuestra, int camaraId, DatosUsuario datosUsuario)
         {
-            var muestra = servicio.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(numeroDeMuestra, datosUsuario.CentroId);
+            var muestra = servicio.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(numeroDeMuestra, datosUsuario.CentroId,true);
             if (muestra != null && muestra.MuestraEnvioACamara != null)
             {
                 if (muestra.MuestraEnvioACamara.EstadoMuestra == EstadoMuestra.Enviada)
@@ -150,7 +179,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     return Json(new { MuestraId = -3 }, JsonRequestBehavior.AllowGet);
                 }
-                if (muestra.MuestraEnvioACamara.CamaraId != camaraId)
+                if (muestra.MuestraEnvioACamara.CamaraId != camaraId && muestra.MuestraEnvioACamara.EsPreLote != true)
                 {
                     return Json(new { MuestraId = -4 }, JsonRequestBehavior.AllowGet);
                 }
@@ -176,7 +205,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult ListarPendientes(DatosUsuario datosUsuario)
         {
-            var pendientes = servicio.ListarMuestraEnvioACamaraSinLote(datosUsuario.CentroId) ?? new List<MuestraEnvioACamaraDto>();
+            var pendientes = servicio.ListarMuestraEnvioACamaraSinLote(datosUsuario.CentroId, true) ?? new List<MuestraEnvioACamaraDto>();
             var generadorExcel = new ExcelMuestrasPendientesReporte();
             var resultado = new ResultadoPrevisualizar();
             generadorExcel.GenerarArchivo(resultado, pendientes.ToList());
@@ -235,7 +264,6 @@ namespace Molinos.Scato.Web.Controllers
                         .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
             ViewBag.Camaras = camaras;
         }
-
 
         private void EnviarArchivoRosarioPorEmail(LoteDto loteDto)
         {
@@ -375,7 +403,7 @@ namespace Molinos.Scato.Web.Controllers
         [Autorizacion(PermisosScato.BuscarLote)]
         public ActionResult Seleccionar(int id, string ordenarPor = "Id", DirOrden dirOrden = DirOrden.Asc)
         {
-            ViewBag.Items = servicio.ListarMuestrasPorLote(id, new Paginacion(ordenarPor,dirOrden));
+            ViewBag.Items = servicio.ListarMuestrasPorLote(id, new Paginacion(ordenarPor, dirOrden));
             ViewBag.NumeroDeLote = servicio.ObtenerNumeroLote(id);
             ViewBag.LoteId = id;
             return View();
@@ -384,7 +412,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult ImprimirLote(int loteId)
         {
             var lote = servicio.ObtenerLoteParaArchivo(loteId);
-           
+
             if (lote == null)
             {
                 TempData["Alerta"] = Textos.Lote_ErrorInvalido;
@@ -426,7 +454,7 @@ namespace Molinos.Scato.Web.Controllers
             ListarConsulta(new BuscarLoteDto { NroLote = loteDto.NumeroDeLote }, 1, "Id", DirOrden.Asc);
             return View(vista);
         }
-        
+
         public ActionResult DescargarBuenosAires(LoteDto loteDto, DatosUsuario datosUsuario)
         {
             log.Info("Se comienza la generación de archivos para la cámara " + loteDto.CamaraFormatoDeArchivo);
@@ -526,75 +554,75 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var muestra = loteDto.Muestras[index];
                 var solicitud = new Solicitud
-                    {
-                        TipoSolicitud = 2,
-                        Producto = Convert.ToInt32(muestra.MaterialCodigoCamara ?? "0"),
-                        ClientesSolicitudes = new List<ClienteSolicitud>()
-                    };
+                {
+                    TipoSolicitud = 2,
+                    Producto = Convert.ToInt32(muestra.MaterialCodigoCamara ?? "0"),
+                    ClientesSolicitudes = new List<ClienteSolicitud>()
+                };
                 if (!String.IsNullOrEmpty(muestra.TitularCartaPorteCuil))
                 {
                     solicitud.ClientesSolicitudes.Add(new ClienteSolicitud
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.TitularCartaPorteCuil.Replace("-", ""),
-                            RolCliente = 2
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.TitularCartaPorteCuil.Replace("-", ""),
+                        RolCliente = 2
+                    });
                     clientes.Add(new Cliente
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.TitularCartaPorteCuil.Replace("-", ""),
-                            Nombre = muestra.TitularCartaPorte,
-                            Mail = muestra.TitularCartaPorteMail
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.TitularCartaPorteCuil.Replace("-", ""),
+                        Nombre = muestra.TitularCartaPorte,
+                        Mail = muestra.TitularCartaPorteMail
+                    });
                 }
                 if (!String.IsNullOrEmpty(muestra.Destinatario) &&
                     muestra.Destinatario != proveedorDeFirma.Descripcion)
                 {
                     solicitud.ClientesSolicitudes.Add(new ClienteSolicitud
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.DestinatarioCuil.Replace("-", ""),
-                            RolCliente = 4,
-                            PagaEnsayos = true
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.DestinatarioCuil.Replace("-", ""),
+                        RolCliente = 4,
+                        PagaEnsayos = true
+                    });
                     clientes.Add(new Cliente
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.DestinatarioCuil.Replace("-", ""),
-                            Nombre = muestra.Destinatario,
-                            Mail = muestra.DestinatarioMail
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.DestinatarioCuil.Replace("-", ""),
+                        Nombre = muestra.Destinatario,
+                        Mail = muestra.DestinatarioMail
+                    });
                 }
                 if (!String.IsNullOrEmpty(muestra.CorredorCuil))
                 {
                     solicitud.ClientesSolicitudes.Add(new ClienteSolicitud
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.CorredorCuil.Replace("-", ""),
-                            RolCliente = 3
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.CorredorCuil.Replace("-", ""),
+                        RolCliente = 3
+                    });
                     clientes.Add(new Cliente
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.CorredorCuil.Replace("-", ""),
-                            Nombre = muestra.Corredor
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.CorredorCuil.Replace("-", ""),
+                        Nombre = muestra.Corredor
+                    });
                 }
                 if (!String.IsNullOrEmpty(muestra.RtteComercialCuit))
                 {
                     solicitud.ClientesSolicitudes.Add(new ClienteSolicitud
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.RtteComercialCuit.Replace("-", ""),
-                            RolCliente = 3
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.RtteComercialCuit.Replace("-", ""),
+                        RolCliente = 3
+                    });
                     clientes.Add(new Cliente
-                        {
-                            TipoCod = "U",
-                            CodigoCliente = muestra.RtteComercialCuit.Replace("-", ""),
-                            Nombre = muestra.RtteComercial,
-                            Mail = muestra.RtteComercialMail
-                        });
+                    {
+                        TipoCod = "U",
+                        CodigoCliente = muestra.RtteComercialCuit.Replace("-", ""),
+                        Nombre = muestra.RtteComercial,
+                        Mail = muestra.RtteComercialMail
+                    });
                 }
                 solicitud.Muestras = new List<Muestra>
                     {
@@ -616,21 +644,20 @@ namespace Molinos.Scato.Web.Controllers
                 solicitudes.Add(solicitud);
             }
             presentacion.Solicitudes = solicitudes;
-                presentacion.Clientes =
-                    clientes.GroupBy(e => new {codigo = e.CodigoCliente}).Select(g => g.First()).ToList();
-                presentacion.Resumen = new Resumen
-                    {
-                        TotalKilosReal = solicitudes.Sum(s => s.Muestras.Sum(t => t.KilajeReal)),
-                        TotalKilosEnsayo = solicitudes.Sum(s => s.Muestras.Sum(t => t.KilajeEnsayo)),
-                        CantidadSolicitudes = solicitudes.Count,
-                        CantidadMuestras = solicitudes.Count,
-                        CantidadClientes = presentacion.Clientes.Count,
-                        FechaEnvioCamara = DateTime.Now,
-                        OrigenArchivoSolicitudes = Convert.ToInt32(centro.NumeroOrigenCamaraBsAs ?? "0"),
-                        CentroDeEnsayos = 1,
-                        NroSecArchivoSolicitudes = loteDto.Id
-                    };
-            
+            presentacion.Clientes =
+                clientes.GroupBy(e => new { codigo = e.CodigoCliente }).Select(g => g.First()).ToList();
+            presentacion.Resumen = new Resumen
+            {
+                TotalKilosReal = solicitudes.Sum(s => s.Muestras.Sum(t => t.KilajeReal)),
+                TotalKilosEnsayo = solicitudes.Sum(s => s.Muestras.Sum(t => t.KilajeEnsayo)),
+                CantidadSolicitudes = solicitudes.Count,
+                CantidadMuestras = solicitudes.Count,
+                CantidadClientes = presentacion.Clientes.Count,
+                FechaEnvioCamara = DateTime.Now,
+                OrigenArchivoSolicitudes = Convert.ToInt32(centro.NumeroOrigenCamaraBsAs ?? "0"),
+                CentroDeEnsayos = 1,
+                NroSecArchivoSolicitudes = loteDto.Id
+            };
 
             return presentacion;
         }
@@ -646,104 +673,103 @@ namespace Molinos.Scato.Web.Controllers
 
             foreach (var muestra in loteDto.Muestras)
             {
-                    log.Info("Se comienza a procesar el archivo 01 ");
-                    stringBuilder01.AppendLine(
-                        TxtHelper.GetTxtDataRow(
-                            new Rosario01
-                            {
-                                NumeroMuestra = muestra.NroMuestra,
-                                NombreProducto = muestra.Material,
-                                CodigoProducto = Convert.ToInt32( muestra.MaterialCodigoCamara ?? "0"),
-                                CuitDestinatario = Convert.ToInt64(firma.Cuit.Replace("-", "")),
-                                CuitRtteComercial = Convert.ToInt64((muestra.RtteComercialCuit ?? muestra.TitularCartaPorteCuil ?? "0").Replace("-", "")),
-                                CuitCorredor = Convert.ToInt64((muestra.CorredorCuil ?? "0").Replace("-", "")),
-                                CodigoPagador = 1,
-                                CodigoPuerto = muestra.CentroCodigoCamara != null ? (muestra.CentroCodigoCamara.Length > 3 ? Convert.ToInt32(muestra.CentroCodigoCamara.Substring(0, 3)) : Convert.ToInt32(muestra.CentroCodigoCamara)) : 0,
-                                PesoNetoSeco = muestra.PesoNeto ?? 0,
-                                Lacrada = "L",
-                                FechaDescarga = muestra.PesoNetoFecha,
-                                CodigoGrupo = Convert.ToInt32(muestra.GrupoCodigoCamara ?? "0"),
-                                ServicioLacrado = "S",
-                                Patente = muestra.Patente,
-                                RtteComercial = muestra.TitularCartaPorte ?? "",
-                                CartaDePorte = muestra.CPE ?? false? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : Convert.ToInt64(muestra.NroCartaPorte),
-                                NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
-                                CuitTitularCartaPorte = Convert.ToInt64((muestra.TitularCartaPorteCuil ?? "0").Replace("-", "")),
-                                TitularCartaPorte = muestra.TitularCartaPorte ?? "",
-                                TecnologiaDeclarada = muestra.CodigoTecnologia ?? "00",
-                                Establecimiento = muestra.CodEstab ?? "",
-                                DireccionPostalDestino = muestra.Direccion ?? "",
-                                CodigoLocalidadONCCAProcedencia = Convert.ToInt32(muestra.ProcedenciaCodigoSap ?? "0"),
-                                CodigoLocalidadONCCADestino = Convert.ToInt32(muestra.LocalidadCodigoSap ?? "0"),
-                                TipoDeTransporte = muestra.TipoVehiculo == TipoVehiculo.Tren ? "V" : "C",
-                                CantidadVagones = muestra.TipoVehiculo == TipoVehiculo.Tren ? muestra.CantidadVehiculos : 0,
-                                IdentificadorVagon = muestra.Patente,
-                                CodigoPlantaONCCADestino = Convert.ToInt64(muestra.CentroDestinoCodigoEstablecimiento ?? "0"),
-                                RazonSocialCorredor = muestra.Corredor ?? string.Empty,
-                                CuitIntermediario = Convert.ToInt64((muestra.IntermediarioCuit ?? "0").Replace("-", string.Empty)),
-                                RazonSocialIntermediario = muestra.Intermediario ?? string.Empty,
-                                CuitRepresentante = Convert.ToInt64((muestra.RtteComercialCuit ?? "0").Replace("-", string.Empty)),
-                                RazonSocialRepresentante = muestra.RtteComercial ?? string.Empty,
-                                Cosecha = Convert.ToInt64((muestra.Cosecha ?? "0").Replace("-", string.Empty)),
-                                CodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaCodigoPostal ?? 0),
-                                SubCodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaSubcodigoPostal ?? 0),
-                            }, typeof(Rosario01).GetProperties()));
+                log.Info("Se comienza a procesar el archivo 01 ");
+                stringBuilder01.AppendLine(
+                    TxtHelper.GetTxtDataRow(
+                        new Rosario01
+                        {
+                            NumeroMuestra = muestra.NroMuestra,
+                            NombreProducto = muestra.Material,
+                            CodigoProducto = Convert.ToInt32(muestra.MaterialCodigoCamara ?? "0"),
+                            CuitDestinatario = Convert.ToInt64(firma.Cuit.Replace("-", "")),
+                            CuitRtteComercial = Convert.ToInt64((muestra.RtteComercialCuit ?? muestra.TitularCartaPorteCuil ?? "0").Replace("-", "")),
+                            CuitCorredor = Convert.ToInt64((muestra.CorredorCuil ?? "0").Replace("-", "")),
+                            CodigoPagador = 1,
+                            CodigoPuerto = muestra.CentroCodigoCamara != null ? (muestra.CentroCodigoCamara.Length > 3 ? Convert.ToInt32(muestra.CentroCodigoCamara.Substring(0, 3)) : Convert.ToInt32(muestra.CentroCodigoCamara)) : 0,
+                            PesoNetoSeco = muestra.PesoNeto ?? 0,
+                            Lacrada = "L",
+                            FechaDescarga = muestra.PesoNetoFecha,
+                            CodigoGrupo = Convert.ToInt32(muestra.GrupoCodigoCamara ?? "0"),
+                            ServicioLacrado = "S",
+                            Patente = muestra.Patente,
+                            RtteComercial = muestra.TitularCartaPorte ?? "",
+                            CartaDePorte = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : Convert.ToInt64(muestra.NroCartaPorte),
+                            NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
+                            CuitTitularCartaPorte = Convert.ToInt64((muestra.TitularCartaPorteCuil ?? "0").Replace("-", "")),
+                            TitularCartaPorte = muestra.TitularCartaPorte ?? "",
+                            TecnologiaDeclarada = muestra.CodigoTecnologia ?? "00",
+                            Establecimiento = muestra.CodEstab ?? "",
+                            DireccionPostalDestino = muestra.Direccion ?? "",
+                            CodigoLocalidadONCCAProcedencia = Convert.ToInt32(muestra.ProcedenciaCodigoSap ?? "0"),
+                            CodigoLocalidadONCCADestino = Convert.ToInt32(muestra.LocalidadCodigoSap ?? "0"),
+                            TipoDeTransporte = muestra.TipoVehiculo == TipoVehiculo.Tren ? "V" : "C",
+                            CantidadVagones = muestra.TipoVehiculo == TipoVehiculo.Tren ? muestra.CantidadVehiculos : 0,
+                            IdentificadorVagon = muestra.Patente,
+                            CodigoPlantaONCCADestino = Convert.ToInt64(muestra.CentroDestinoCodigoEstablecimiento ?? "0"),
+                            RazonSocialCorredor = muestra.Corredor ?? string.Empty,
+                            CuitIntermediario = Convert.ToInt64((muestra.IntermediarioCuit ?? "0").Replace("-", string.Empty)),
+                            RazonSocialIntermediario = muestra.Intermediario ?? string.Empty,
+                            CuitRepresentante = Convert.ToInt64((muestra.RtteComercialCuit ?? "0").Replace("-", string.Empty)),
+                            RazonSocialRepresentante = muestra.RtteComercial ?? string.Empty,
+                            Cosecha = Convert.ToInt64((muestra.Cosecha ?? "0").Replace("-", string.Empty)),
+                            CodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaCodigoPostal ?? 0),
+                            SubCodigoProcedencia = Convert.ToInt32(muestra.ProcedenciaSubcodigoPostal ?? 0),
+                        }, typeof(Rosario01).GetProperties()));
 
-                    if (Convert.ToInt64(muestra.GrupoCodigoCamara ?? "0") == 0)
+                if (Convert.ToInt64(muestra.GrupoCodigoCamara ?? "0") == 0)
+                {
+                    foreach (var caracteristica in muestra.Caracteristicas)
                     {
-                        foreach (var caracteristica in muestra.Caracteristicas)
+                        log.Info("Se almacena una entrada para la característica " + caracteristica.Descripcion);
+                        var codigoEnsayo = 0;
+                        if (!string.IsNullOrEmpty(caracteristica.CodigoCamara))
                         {
-                            log.Info("Se almacena una entrada para la característica " + caracteristica.Descripcion);
-                            var codigoEnsayo = 0;
-                            if (!string.IsNullOrEmpty(caracteristica.CodigoCamara))
-                            {
-                                int.TryParse(caracteristica.CodigoCamara, out codigoEnsayo);
-                            }
-                            stringBuilder02.AppendLine(
-                                TxtHelper.GetTxtDataRow(
-                                    new Rosario02
-                                    {
-                                        NumeroMuestra = muestra.NroMuestra,
-                                        CodigoTiposEnsayo = (caracteristica.Ensayo ?? " ").Substring(0, 1),
-                                        CodigoEnsayo = codigoEnsayo,
-                                    }, typeof(Rosario02).GetProperties()));
+                            int.TryParse(caracteristica.CodigoCamara, out codigoEnsayo);
                         }
-                    }
-
-                    if ((!String.IsNullOrEmpty(muestra.DestinatarioCodigoSap) && muestra.DestinatarioCodigoSap != firma.CodigoSAP) || (muestra.DestinatarioCodigoSap == firma.CodigoSAP && muestra.RtteComercial != null))
-                    {
-                        log.Info("Se procesa último archivo con destinatario {0} y Rtte Comercial {1}", muestra.Destinatario, muestra.RtteComercial);
-
-                        if (muestra.DestinatarioCodigoSap != firma.CodigoSAP)
-                        {
-                            var cuentaOrden = muestra.DestinatarioCuil ?? "0";
-
-                            stringBuilder03.AppendLine(
-                                TxtHelper.GetTxtDataRow(
-                                    new Rosario03
-                                    {
-                                        CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
-                                        DescripcionCuentaOrden = muestra.Destinatario,
-                                        NumeroMuestra = muestra.NroMuestra
-                                    }, typeof(Rosario03).GetProperties()));
-                        }
-
-                        if (!String.IsNullOrEmpty(muestra.RtteComercial))
-                        {
-                            var cuentaOrden = muestra.RtteComercialCuit ?? "0";
-
-                            stringBuilder03.AppendLine(
-                                TxtHelper.GetTxtDataRow(
-                                    new Rosario03
-                                    {
-                                        CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
-                                        DescripcionCuentaOrden = muestra.RtteComercial,
-                                        NumeroMuestra = muestra.NroMuestra
-                                    }, typeof(Rosario03).GetProperties()));
-                        }
+                        stringBuilder02.AppendLine(
+                            TxtHelper.GetTxtDataRow(
+                                new Rosario02
+                                {
+                                    NumeroMuestra = muestra.NroMuestra,
+                                    CodigoTiposEnsayo = (caracteristica.Ensayo ?? " ").Substring(0, 1),
+                                    CodigoEnsayo = codigoEnsayo,
+                                }, typeof(Rosario02).GetProperties()));
                     }
                 }
-            
+
+                if ((!String.IsNullOrEmpty(muestra.DestinatarioCodigoSap) && muestra.DestinatarioCodigoSap != firma.CodigoSAP) || (muestra.DestinatarioCodigoSap == firma.CodigoSAP && muestra.RtteComercial != null))
+                {
+                    log.Info("Se procesa último archivo con destinatario {0} y Rtte Comercial {1}", muestra.Destinatario, muestra.RtteComercial);
+
+                    if (muestra.DestinatarioCodigoSap != firma.CodigoSAP)
+                    {
+                        var cuentaOrden = muestra.DestinatarioCuil ?? "0";
+
+                        stringBuilder03.AppendLine(
+                            TxtHelper.GetTxtDataRow(
+                                new Rosario03
+                                {
+                                    CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
+                                    DescripcionCuentaOrden = muestra.Destinatario,
+                                    NumeroMuestra = muestra.NroMuestra
+                                }, typeof(Rosario03).GetProperties()));
+                    }
+
+                    if (!String.IsNullOrEmpty(muestra.RtteComercial))
+                    {
+                        var cuentaOrden = muestra.RtteComercialCuit ?? "0";
+
+                        stringBuilder03.AppendLine(
+                            TxtHelper.GetTxtDataRow(
+                                new Rosario03
+                                {
+                                    CuentaOrden = Convert.ToInt64(cuentaOrden.Replace("-", "")),
+                                    DescripcionCuentaOrden = muestra.RtteComercial,
+                                    NumeroMuestra = muestra.NroMuestra
+                                }, typeof(Rosario03).GetProperties()));
+                    }
+                }
+            }
 
             archivo01 = stringBuilder01.ToString();
             archivo02 = stringBuilder02.ToString();
@@ -759,31 +785,30 @@ namespace Molinos.Scato.Web.Controllers
 
             foreach (var muestra in loteDto.Muestras)
             {
-                    log.Info("Se comienza a procesar el archivo");
-                    stringBuilder01.AppendLine(
-                        TxtHelper.GetTxtDataRow(
-                            new BahiaBlanca
-                            {
-                                AñoFechaDescarga = muestra.FechaCartaPorte.Year,
-                                MesFechaDescarga = muestra.FechaCartaPorte.Month,
-                                DiaFechaDescarga = muestra.FechaCartaPorte.Day,
-                                CodigoProducto = Convert.ToInt64(muestra.MaterialCodigoCamara ?? "0"),
-                                Cosecha = Convert.ToInt32((muestra.Cosecha ?? "00").Substring(0, 2)),
-                                Kilos = muestra.PesoNeto.HasValue ? muestra.PesoNeto.Value : 0,
-                                NombreCorredor = muestra.Corredor ?? "",
-                                NombreEntregador = muestra.Entregador ?? "",
-                                NombreExportador = nombreExportador,
-                                NombreVendedor = muestra.TitularCartaPorte ?? "",
-                                NombreProcedencia = muestra.Procedencia ?? "",
-                                TipoTrans = muestra.TipoVehiculo.ToString().Substring(0, 1),
-                                NumeroMuestra = Convert.ToInt64(muestra.NroMuestra),
-                                NroVagon = muestra.TipoVehiculo == TipoVehiculo.Tren ? muestra.NumeroVehiculo : 0,
-                                NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
-                                CPE = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : 0,
-                                CartaDePorte = muestra.CPE ?? false ? 0 : Convert.ToInt64(muestra.NroCartaPorte),
-                            }, typeof(BahiaBlanca).GetProperties()));
-                }
-            
+                log.Info("Se comienza a procesar el archivo");
+                stringBuilder01.AppendLine(
+                    TxtHelper.GetTxtDataRow(
+                        new BahiaBlanca
+                        {
+                            AñoFechaDescarga = muestra.FechaCartaPorte.Year,
+                            MesFechaDescarga = muestra.FechaCartaPorte.Month,
+                            DiaFechaDescarga = muestra.FechaCartaPorte.Day,
+                            CodigoProducto = Convert.ToInt64(muestra.MaterialCodigoCamara ?? "0"),
+                            Cosecha = Convert.ToInt32((muestra.Cosecha ?? "00").Substring(0, 2)),
+                            Kilos = muestra.PesoNeto.HasValue ? muestra.PesoNeto.Value : 0,
+                            NombreCorredor = muestra.Corredor ?? "",
+                            NombreEntregador = muestra.Entregador ?? "",
+                            NombreExportador = nombreExportador,
+                            NombreVendedor = muestra.TitularCartaPorte ?? "",
+                            NombreProcedencia = muestra.Procedencia ?? "",
+                            TipoTrans = muestra.TipoVehiculo.ToString().Substring(0, 1),
+                            NumeroMuestra = Convert.ToInt64(muestra.NroMuestra),
+                            NroVagon = muestra.TipoVehiculo == TipoVehiculo.Tren ? muestra.NumeroVehiculo : 0,
+                            NumeroCTG = muestra.CPE ?? false ? Convert.ToInt64(muestra.NroCartaPorte) : Convert.ToInt64(muestra.CTG),
+                            CPE = muestra.CPE ?? false ? Convert.ToInt64(muestra.Sucursal + muestra.CTG) : 0,
+                            CartaDePorte = muestra.CPE ?? false ? 0 : Convert.ToInt64(muestra.NroCartaPorte),
+                        }, typeof(BahiaBlanca).GetProperties()));
+            }
 
             archivo = stringBuilder01.ToString();
         }
@@ -791,12 +816,11 @@ namespace Molinos.Scato.Web.Controllers
         [AllowAnonymous]
         public JsonResult EnvioDeLoteAutomatico(int centroId, int camaraId, string mail)
         {
-
             var result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             var centro = servicio.ObtenerCentro(centroId);
             var nroLote = centro.Descripcion.Replace(" ", "").Substring(0, 4).ToUpper() + servicio.ObtenerNumeroDocumentoGenerado().ToString(CultureInfo.InvariantCulture).PadLeft(6, '0');
-            var pendientes = servicio.ListarMuestraEnvioACamaraSinLote(centroId) ?? new List<MuestraEnvioACamaraDto>();
+            var pendientes = servicio.ListarMuestraEnvioACamaraSinLote(centroId, false) ?? new List<MuestraEnvioACamaraDto>();
             if (!pendientes.Any())
             {
                 result.Data = Textos.LoteBiotecnologia_NoHayMuestrasPendientes;
@@ -812,7 +836,7 @@ namespace Molinos.Scato.Web.Controllers
             };
             try
             {
-                var resultado = servicioComandos.Ejecutar( new CrearLote { Dto = lote }) as ResultadoCrear;
+                var resultado = servicioComandos.Ejecutar(new CrearLote { Dto = lote }) as ResultadoCrear;
 
                 if (resultado != null && resultado.HayErrores)
                 {
@@ -825,7 +849,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         lote.CamaraEmail = mail;
                     }
-                    
+
                     if (lote.CamaraFormatoDeArchivo == CamaraFormatoDeArchivo.Rosario)
                     {
                         EnviarArchivoRosarioPorEmail(lote);
@@ -838,7 +862,6 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         EnviarArchivoBahiaBlancaPorEmail(lote);
                     }
-                
                 }
             }
             catch (Exception e)
@@ -849,6 +872,5 @@ namespace Molinos.Scato.Web.Controllers
 
             return result;
         }
-
     }
 }

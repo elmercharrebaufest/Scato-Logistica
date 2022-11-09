@@ -22,16 +22,16 @@
     <MetadataSource Address="http://localhost:8080/ServicioOrquestador" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ServicioOrquestador3.wsdl" MetadataType="Wsdl" ID="f9ec98ef-c602-4d52-ab2b-8f827fdd2909" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?wsdl" />
-    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="a4d38b0c-cd9c-4ed0-b046-203d29d578d2" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd5" />
-    <MetadataFile FileName="ServicioOrquestador8.xsd" MetadataType="Schema" ID="e5991226-4f42-426b-b48d-6d476c0fa6f3" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd4" />
-    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="43d039df-f634-4497-b5b8-670832cd9650" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?disco" />
-    <MetadataFile FileName="ServicioOrquestador9.xsd" MetadataType="Schema" ID="1859a423-f4f6-40eb-a388-97c11a22fd3b" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd6" />
-    <MetadataFile FileName="ServicioOrquestador10.xsd" MetadataType="Schema" ID="4e0c2199-085e-4cbf-9819-f4d2f48f1dd0" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd1" />
-    <MetadataFile FileName="ServicioOrquestador11.xsd" MetadataType="Schema" ID="974a248c-1e8c-4431-a164-fc51fb159d58" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd0" />
-    <MetadataFile FileName="ServicioOrquestador12.xsd" MetadataType="Schema" ID="0dedddb5-ef81-4e5a-bc38-bb485c95d7c3" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd3" />
-    <MetadataFile FileName="ServicioOrquestador13.xsd" MetadataType="Schema" ID="55de5e19-725c-406d-aa51-550a21997422" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd2" />
-    <MetadataFile FileName="ServicioOrquestador4.wsdl" MetadataType="Wsdl" ID="f56d531b-8072-42a1-99fb-181ca69c1a71" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?wsdl=wsdl0" />
+    <MetadataFile FileName="ServicioOrquestador3.wsdl" MetadataType="Wsdl" ID="fd4047eb-dcef-4f39-aafe-937820b71c95" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?wsdl" />
+    <MetadataFile FileName="ServicioOrquestador7.xsd" MetadataType="Schema" ID="34d58ad3-bbdb-475f-a036-142d8738c705" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd5" />
+    <MetadataFile FileName="ServicioOrquestador8.xsd" MetadataType="Schema" ID="3e79b3fd-061f-410b-9c73-b6cdd6b8c3bb" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd4" />
+    <MetadataFile FileName="ServicioOrquestador1.disco" MetadataType="Disco" ID="734ef115-a316-4725-a087-1a2dfaa6c5ed" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?disco" />
+    <MetadataFile FileName="ServicioOrquestador9.xsd" MetadataType="Schema" ID="5d5f356a-5d38-436b-bfa8-5e55244f4078" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd6" />
+    <MetadataFile FileName="ServicioOrquestador10.xsd" MetadataType="Schema" ID="de2b61df-31a4-485c-9766-1f3106a05962" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd1" />
+    <MetadataFile FileName="ServicioOrquestador11.xsd" MetadataType="Schema" ID="744dd583-3c24-48b5-b7ca-38b513d1833b" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd0" />
+    <MetadataFile FileName="ServicioOrquestador12.xsd" MetadataType="Schema" ID="d1ffa7b1-177c-47c5-b48d-78af9c3321dc" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd3" />
+    <MetadataFile FileName="ServicioOrquestador13.xsd" MetadataType="Schema" ID="691a4e95-871b-4c53-92f9-65efbeeb2697" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?xsd=xsd2" />
+    <MetadataFile FileName="ServicioOrquestador4.wsdl" MetadataType="Wsdl" ID="11a27dc0-f181-48cc-9dad-641175dbc4ca" SourceId="1" SourceUrl="http://ragnarok:8080/ServicioOrquestador?wsdl=wsdl0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

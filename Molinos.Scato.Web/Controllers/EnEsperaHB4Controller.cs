@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -12,53 +13,59 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
 {
-    [Autorizacion(PermisosScato.ActividadEnEsperaIndianapolis)]
+    [Autorizacion(PermisosScato.EnEsperaHB4)]
     public class EnEsperaHB4Controller : BaseController
     {
-        private readonly IServicioActividadFactory<IEjecutarService> factory;
-        private readonly ILogger log;
+        private readonly IServicioActividadFactory<IEnEsperaHB4Service> factory;
+        private ILogger log;
 
-        public EnEsperaHB4Controller(ILogger log, IServicioActividadFactory<IEjecutarService> factory, IServicioRepositorio servicio)
+        public EnEsperaHB4Controller(ILogger log, IServicioActividadFactory<IEnEsperaHB4Service> factory, IServicioRepositorio servicio)
             : base(servicio)
         {
             this.factory = factory;
             this.log = log;
         }
 
-        [DatosUsuario]
         public ActionResult Index(Guid id)
         {
             var recorrido = servicio.ObtenerRecorridoPorGuid(id);
-
-            ViewBag.TipoDocumentoIngreso = recorrido.TipoDocumentoIngreso;
-            ViewBag.NumeroDocumentoIngreso = recorrido.NumeroDocumentoIngreso;
-            ViewBag.Patente = recorrido.Patente;
-            ViewBag.Workflow = recorrido.Workflow.Codigo;
-            ViewBag.WorkflowDefinicionId = recorrido.WorkflowDefinicionId;
-            var observacion = new ObservacionRDto { WorkflowInstanceId = id };
-
-            return View(observacion);
+            return View(recorrido);
         }
 
-        [HttpPost]
         [DatosUsuario]
-        public ActionResult Index(ObservacionRDto observacion, string workflow, int workflowDefinicionId, DatosUsuario datosUsuario)
+        [HttpPost]
+        public JsonResult Index(Guid workflowInstance, int workflowDefinicionId, DatosUsuario datosUsuario)
         {
-            var controlRecorrido = new ControlRecorridoDto
+            var response = new RespuestaEstandarDto();
+            try
             {
-                Actividad = Textos.ActEnEsperaHB4,
-                ActividadXaml = "EnEsperaHB4",
-                WorkflowInstanceId = observacion.WorkflowInstanceId,
-                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                NombreUsuario = datosUsuario.NombreUsuario,
-                Decision = observacion.Rechazado,
-                Comentario = observacion.Observaciones
-            };
+                var controlRecorrido = new ControlRecorridoDto
+                {
+                    WorkflowInstanceId = workflowInstance,
+                    NombreUsuario = datosUsuario.NombreUsuario,
+                    Actividad = Textos.ActEnEsperaHB4,
+                    ActividadXaml = "EnEsperaHB4",
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId
+                };
 
-            var service = factory.CrearServicio(workflowDefinicionId);
-            service.Ejecutar(observacion.WorkflowInstanceId, controlRecorrido);
-            return RedirectToAction("Index", "ListaDeCamiones");
+                var service = factory.CrearServicio(workflowDefinicionId);
+
+                var resultado = service.EnEsperaHB4(controlRecorrido, workflowInstance);
+                if (resultado.HayErrores)
+                {
+                    foreach (var item in resultado.Errores)
+                    {
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error al avanzar de etapa Pendiente Analisis HB4 para el workflow {workflowInstance}";
+                log.Error(ex, errorMessage);
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(response);
         }
-
     }
 }

@@ -376,26 +376,8 @@ function abrirModal() {
     });
 }
 
-function ConfirmarEnviarAFilaRechazado() {
-    $.ajax({
-        url: urlConfirmarRechazado,
-        data: {
-            instanciaWorflow: $('#InstanciaWorflow').val()
-           
-        },
-        type: "POST",
-        success: function (result) {
-            $("#modal-rechazo-mover").modal("hide");
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    });
-}
-
-function AceptarReasignacionCalle() {
-    $("#modal-rechazo-mover").modal("hide");
-    $("#dialogo-confirmar").modal('show');
+function CancelarReasignacionCalle() {
+    $("#dialogo-confirmar").modal('hide');
 }
 
 function ConfirmarReasignacionCalle() {
@@ -418,6 +400,28 @@ function ConfirmarReasignacionCalle() {
     });
 }
 
-function CancelarReasignacionCalle() {
-    $("#dialogo-confirmar").modal('hide');
+function AceptarReasignacionCalle() {
+    $("#modal-rechazo-mover").modal("hide");
+    $("#dialogo-confirmar").modal('show');
 }
+
+function ConfirmarEnviarAFilaRechazado() {
+    $.ajax({
+        url: urlConfirmarRechazado,
+        data: {
+            instanciaWorflow: $('#InstanciaWorflow').val()
+           
+        },
+        type: "POST",
+        success: function (result) {
+            $("#modal-rechazo-mover").modal("hide");
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+}
+
+
+
+

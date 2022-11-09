@@ -12,5 +12,6 @@
         public VisualizacionBarreraDto VisualizacionBarrera { get; set; }
         public bool _destroy { get; set; }
         public bool EsNuevo { get; set; }
+        public int? PuestoDeTrabajoId { get; set; }
     }
 }

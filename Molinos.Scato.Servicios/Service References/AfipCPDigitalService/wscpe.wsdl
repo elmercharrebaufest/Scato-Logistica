@@ -1933,7 +1933,7 @@
   </wsdl:binding>
   <wsdl:service name="CpeService">
     <wsdl:port name="CpeEndPoint" binding="tns:wscpeSOAP">
-      <soap:address location="https://fwshomo.afip.gov.ar/wscpe/services/soap" />
+      <soap:address location="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -113,6 +113,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      Cosecha = muestra.CartaPorte != null ? muestra.CartaPorte.Cosecha : remito.Cosecha,
                                      ProcedenciaCodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.CodigoPostal : remito.Procedencia.CodigoPostal != null ? remito.Procedencia.CodigoPostal : 0 ,
                                      ProcedenciaSubcodigoPostal = muestra.CartaPorte != null ? muestra.CartaPorte.Procedencia.SubcodigoPostal : remito.Procedencia.SubcodigoPostal != null ? remito.Procedencia.SubcodigoPostal : 0,
+                                     EsPreLote = muestra.EsPreLote,
                                  Caracteristicas =
                                          muestra.CaracteristicasDeCalidad.Select(
                                              x =>

@@ -55,12 +55,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="IntercomunicadorDispositivoBaseDto" nillable="true" type="tns:IntercomunicadorDispositivoBaseDto" />
-  <xs:complexType name="ArrayOfGrupoBarreraDto">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfGrupoBarreraDto" nillable="true" type="tns:ArrayOfGrupoBarreraDto" />
   <xs:complexType name="GrupoBarreraDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="AgrupadorClaseDriver" nillable="true" type="xs:string" />
@@ -75,4 +69,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
+  <xs:complexType name="ArrayOfGrupoBarreraDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoBarreraDto" nillable="true" type="tns:GrupoBarreraDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGrupoBarreraDto" nillable="true" type="tns:ArrayOfGrupoBarreraDto" />
 </xs:schema>

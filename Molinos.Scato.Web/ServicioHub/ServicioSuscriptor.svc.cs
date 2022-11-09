@@ -13,7 +13,10 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 
@@ -312,6 +315,11 @@ namespace Molinos.Scato.Web.ServicioHub
                         var resultadoConPatente = resultado as ResultadoObtenerPatente;
                         if (resultadoConPatente != null)
                         {
+                            var fotoRuta = string.Empty;
+                            if(!fotoTemporal)
+                            {
+                                fotoRuta = GuardarFotoLogALPR(resultadoConPatente.Imagen, fileName);
+                            }
                             lecturaPuestoDeTrabajo.PatenteLeida = resultadoConPatente.Patente;
                             lecturaPuestoDeTrabajo.OcrActivo = true;
                             var resultadoPatente = comandos.Ejecutar(
@@ -320,7 +328,10 @@ namespace Molinos.Scato.Web.ServicioHub
                                     PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
                                     Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta,
                                     PatenteLeida = resultadoConPatente.Patente,
-                                    Patente = patente
+                                    Patente = patente,
+                                    Certeza = resultadoConPatente.Confianza,
+                                    CodigoDispositivo = videoCamara.Codigo,
+                                    FotoRuta = fotoRuta
                                 });
                             if (!resultadoPatente.HayErrores)
                             {
@@ -794,6 +805,24 @@ namespace Molinos.Scato.Web.ServicioHub
             };
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
+        }
+
+        private string GuardarFotoLogALPR(byte[] imagen, string fileName)
+        {
+            try
+            {
+                var baseUrl = ConfigurationManager.AppSettings["FotosPathLogALPR"];
+                var subpath = Path.Combine(DateTime.Today.ToString("yyyy"), DateTime.Today.ToString("MM"), DateTime.Today.ToString("dd"));
+                var fullPath = Path.Combine(baseUrl, subpath, (fileName + ".jpeg"));
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+                File.WriteAllBytes(fullPath, imagen);
+                return Path.Combine(subpath, (fileName + ".jpeg"));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error al guardar log imagen ALPR");
+            }
+            return null;
         }
 
     }

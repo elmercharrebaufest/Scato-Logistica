@@ -58,24 +58,19 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case "CambioEstadoSensor":
                         estadoPuesto.NotificarSensorBarrera(notificacion);
+                        estadoPuesto.NotificarSensorBarreraHidraulicas(notificacion);
                         bool estado;
                         if (bool.TryParse(notificacion.Datos["Mensaje"], out estado))
                         {
-                            var simularTurnoActivoCircular = configuracion.AppSettings.Get("ActivarCierreAutomaticoDeBarrera");
+                            var cierreAutomaticoBarreraActivo = configuracion.AppSettings.Get("ActivarCierreAutomaticoDeBarrera");
 
-                            if (simularTurnoActivoCircular.ToUpper() == "TRUE")
+                            if (cierreAutomaticoBarreraActivo.ToUpper() == "TRUE")
                             {
-                                log.Info("Entro a cambio de estado de sensor");
-                                repositorio.ActualizarDispositivoLog(notificacion.CodigoDispositivo, "EstadoSensor", estado.ToString(), false);
-                                EjecutarCierreDeBarreraAutomatica(notificacion.CodigoDispositivo);
+                                EjecutarCierreDeBarreraAutomatica(notificacion, estado);
                             }
 
                             estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, estado);
                         }
-                        //else
-                        //{
-                        //    estadoPuesto.NotificarCambioDeEstado(notificacion.CodigoDispositivo, notificacion.Datos["Mensaje"]);
-                        //}
                         break;
 
                     case "LecturaCPE":
@@ -120,12 +115,13 @@ namespace Molinos.Scato.Servicios.Impl
             servicioComandos.Ejecutar(new NotificarLecturaCPE { PuestoId = puesto.Id, CentroId = puesto.CentroId, NroCtg = ctg });
         }
 
-        private void EjecutarCierreDeBarreraAutomatica(string codigoSensor)
+        private void EjecutarCierreDeBarreraAutomatica(NotificacionEvento notificacion, bool estado)
         {
-            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarrera(codigoSensor);
-
+            var configuraciones = servicioOrquestador.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(notificacion.CodigoDispositivo);
             if (configuraciones.Length == 0)
                 return;
+
+            repositorio.ActualizarDispositivoLog(notificacion.CodigoDispositivo, "EstadoSensor", estado.ToString(), false);
 
             var gruposBarrera = configuraciones.Select(q => q.AgrupadorCodigo).ToList();
             var gruposEnUso = repositorio.ObtenerGruposBarreraEnUso(gruposBarrera).Distinct();
@@ -164,12 +160,12 @@ namespace Molinos.Scato.Servicios.Impl
                         {
                             if (estadoSensorCruceAnterior == true && estadoSensorCruce == false)
                             {
-                                log.Info("Se ejecutara cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
+                                //log.Debug("Se ejecutara cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
                                 var resultadoEjecutarCierreBarrera = servicioOrquestador.Ejecutar(new EjecutarAperturaBarrera
                                 {
                                     CodigoDispositivo = grupoBarrera.BarreraAbajoCodigo
                                 });
-                                log.Info("Se ejecuto cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
+                                //log.Debug("Se ejecuto cierre de barrera automatico con el codigo: " + grupoBarrera.BarreraAbajoCodigo);
                                 repositorio.ActualizarDispositivoLog(grupoBarrera.SensorSegundoCruceCodigo, "EstadoSensor", "", true);
                             }
                         }

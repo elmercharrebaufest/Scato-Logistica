@@ -17,6 +17,7 @@
     [Centro_Id]            INT           NULL,
     [GeneroMicroMuestras]  BIT           DEFAULT ((0)) NOT NULL,
     [HuboExcepcion]        BIT           DEFAULT ((0)) NOT NULL,
+    [EsPreLote] BIT NULL, 
     CONSTRAINT [PK_dbo.MuestraEnvioACamara] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.MuestraEnvioACamara_dbo.Calado_Calado_Id] FOREIGN KEY ([Calado_Id]) REFERENCES [dbo].[Calado] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_dbo.MuestraEnvioACamara_dbo.Camara_Camara_Id] FOREIGN KEY ([Camara_Id]) REFERENCES [dbo].[Camara] ([Id]),

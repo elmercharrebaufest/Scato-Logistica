@@ -24,8 +24,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private Calle ObtenerCalle(DbContext contexto)
         {
-            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && (x.Material.Id == materialId || x.Material == null))
-                                              .OrderByDescending(x => x.Material.Id)
+            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle 
+                                               && !x.Deshabilitada
+                                               && (x.Material.Id == materialId || x.Material == null))
                                               .FirstOrDefault();
         }
     }

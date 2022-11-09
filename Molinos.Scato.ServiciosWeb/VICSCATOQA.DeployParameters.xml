@@ -11,7 +11,7 @@
   <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8001/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
-  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wscpe/services/soap" />
+  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
   <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 
   <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />

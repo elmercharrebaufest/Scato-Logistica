@@ -140,23 +140,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             comando.Dto.FotoRutaDestino = path.Path;
                             ((ResultadoCrear)resultado).Mensaje = path.Path;
-
-                            var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                            if(comando.Dto.Especial)
                             {
-                                RutaFotoCP = comando.Dto.FotoRutaDestino,
-                                CodigoCentroSap = comando.Dto.CentroCodigoSap,
-                                NroDocumento = comando.Dto.CTG,
-                                Patente = comando.Dto.Patente,
-                                SoloDibujar = false
-                            }) as ResultadoGuardarFoto;
-                            if (resultadoSustentable != null && !string.IsNullOrEmpty(resultadoSustentable.Path))
-                            {
-                                comando.Dto.FotoRutaSustentable = resultadoSustentable.Path;
-                                ((ResultadoCrear)resultado).PathSustentable = resultadoSustentable.Path;
-                            }
-                            else
-                            {
-                                resultado.Error("ResultadoSustentable", "No se pudo guardar la foto CP con sello sustentable");
+                                var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+                                {
+                                    RutaFotoCP = comando.Dto.FotoRutaDestino,
+                                    CodigoCentroSap = comando.Dto.CentroCodigoSap,
+                                    NroDocumento = comando.Dto.CTG,
+                                    Patente = comando.Dto.Patente,
+                                    SoloDibujar = false
+                                }) as ResultadoGuardarFoto;
+                                if (resultadoSustentable != null && !string.IsNullOrEmpty(resultadoSustentable.Path))
+                                {
+                                    comando.Dto.FotoRutaSustentable = resultadoSustentable.Path;
+                                    ((ResultadoCrear)resultado).PathSustentable = resultadoSustentable.Path;
+                                }
+                                else
+                                {
+                                    resultado.Error("ResultadoSustentable", "No se pudo guardar la foto CP con sello sustentable");
+                                }
                             }
                         }
                         else

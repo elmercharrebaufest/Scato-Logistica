@@ -15,5 +15,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int GrupoId { get; set; }
         public string Barrera { get; set; }
         public bool Estado { get; set; }
+        public int? PuestoDeTrabajoId { get; set; }
     }
 }

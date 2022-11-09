@@ -550,7 +550,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (consultaMinima)
             {
                 var material = Repositorio.Obtener<Material>(x => x.CodigoEspecie == cartaPorte.Material && x.Activo);
-                return new CartaPorteDto
+                var cp = new CartaPorteDto
                 {
                     NroOrden = cartaPorte.NroOrden,
                     Cupo = cartaPorte.CodigoTurno,
@@ -561,6 +561,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Sucursal = cartaPorte.Sucursal,
                     Cpe = true,
                     EstadoCpe = cartaPorte.Estado,
+                    TitularCartaPorteCodigoSap = ObtenerProveedor(cartaPorte.CuitOrigen.ToString(), resultado, Textos.CartaPorte_TitularCartaPorte, false, false, true).CodigoSap,
+                    EsTransportista = ObtenerTransportista(cartaPorte.CuitTransportista.ToString(), resultado) != null,
                     Vehiculos = new List<VehiculoDto>() {
                         new VehiculoDto {
                             Patente = cartaPorte?.Dominio?.Split(',')?.FirstOrDefault(),
@@ -568,6 +570,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                     }
                 };
+                return cp;
             }
             var localidad = cartaPorte.Localidad.Value.ToString();
             var provincia = cartaPorte.Provincia.Value.ToString();
@@ -657,6 +660,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cpe.TitularCartaPorteId = titularCartaPorte != null ? titularCartaPorte.Id : default(int);
             cpe.TitularCartaPorte = titularCartaPorte != null ? titularCartaPorte.Descripcion : string.Empty;
             cpe.EstadoCpe = cartaPorte.Estado;
+            cpe.EsTransportista = cpe.TransportistaId != null;
 
             return cpe;
         }

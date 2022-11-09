@@ -207,6 +207,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\VisteoMobileController.cs" />
     <Compile Include="Filtros\DateTimeModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -214,6 +215,7 @@
     <Compile Include="Helpers\ClaimData.cs" />
     <Compile Include="Helpers\ExtensionesInt.cs" />
     <Compile Include="Helpers\ExtensionesModelState.cs" />
+    <Compile Include="Helpers\ExtensionesSelectList.cs" />
     <Compile Include="Helpers\ExtensionesUrl.cs" />
     <Compile Include="Helpers\FormattingHtmlHelper.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
@@ -428,6 +430,7 @@
     <Content Include="Scripts\graficoCamionesHora.js" />
     <Content Include="Content\panels.less" />
     <Content Include="Scripts\graficoEficienciaHidraulicas.js" />
+    <Content Include="Scripts\visteo.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />

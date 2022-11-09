@@ -975,7 +975,7 @@ namespace Molinos.Scato.Servicios
         MuestraEnvioACamaraDto ObtenerMuestraEnvioACamaraPorNumero(int centroId, string nroMuestra);
 
         [OperationContract]
-        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId);
+        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote);
 
         [OperationContract]
         string ObtenerNumeroMuestraEnvioACamara(int muestraId);
@@ -993,7 +993,7 @@ namespace Molinos.Scato.Servicios
         NotificacionesDto ObtenerNotificaciones(string grupos, bool listarSobre, bool mostrarAlerta, bool contar);
 
         [OperationContract]
-        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId);
+        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote);
 
         [OperationContract]
         IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId);
@@ -2710,5 +2710,10 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
         
+        [OperationContract]
+        List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos();
+
+        [OperationContract]
+        CaladoDto ObtenerCaladoPorId(int id);
     }
 }

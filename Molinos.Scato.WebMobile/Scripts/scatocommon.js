@@ -27,6 +27,65 @@ function makeColorGradient(frequency1, frequency2, frequency3,
     return list;
 }
 
+$(document).ready(function () {
+    /*Centrar la primera vez*/
+    CentrarPosicionElemento();
+    /*Centrar por redimensión de pantalla*/
+    $(window).resize(function (e) { e.preventDefault(); CentrarPosicionElemento(); });
+});
+
+function CentrarPosicionElemento() {
+    $('.centro-pantalla').css({
+        position: 'fixed',
+        left: ($(window).width() - $('.centro-pantalla').outerWidth()) / 2,
+        top: ($(window).height() - $('.centro-pantalla').outerHeight()) / 3
+    });
+}
+
+function MostrarAlertaError(data) {
+
+    if (data != null) {
+        $("#alertaError span").html(data);
+    } else {
+        $("#alertaError span").html($("#alertaError").data().mensaje);
+    }
+    $("#alertaError").show();
+    $("#alertaError").delay(500).addClass("in");
+}
+
+function MostrarAlertaAdvertencia(data) {
+    if (data != null) {
+        $("#alertaAdvertencia span").html(data);
+    } else {
+        $("#alertaAdvertencia span").html($("#alertaAdvertencia").data().mensaje);
+    }
+    $("#alertaAdvertencia").show();
+    $("#alertaAdvertencia").delay(500).addClass("in");
+
+}
+
+function MostrarAlertaExitosa(data, delay) {
+    if (data != null) {
+        $("#alertaExitosa").html(data);
+    }
+    $("#alertaExitosa").show();
+    $("#alertaExitosa").delay(500).addClass("in").fadeOut(delay ? delay : 2500);
+}
+
+function MostrarAlertaInfo(data) {
+    if (data != null) {
+        $("#alertaInfo span").html(data);
+    }
+    $("#alertaInfo").show();
+    $("#alertaInfo").delay(500).addClass("in").fadeOut(10000);
+}
+
+function MostrarAlertaCancelada() {
+    $("#alertaCancelada").show();
+    $("#alertaCancelada").delay(500).addClass("in").fadeOut(2000);
+}
+
+
 function obtenerColoresParaGraficos(cantidad) {
     return makeColorGradient(2.4, 2.4, 2.4, 0, 2, 4, 128, 127, cantidad);
 }
