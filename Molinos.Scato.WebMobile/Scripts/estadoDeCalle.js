@@ -42,6 +42,15 @@ function Calle(item, context) {
             message: '<h5>' + cargandoGif() + ' LLamando a ' + self.Nombre +'</h5>'
         });
 
+        if(self.TipoCalle == 2){
+            $.getJSON(urlLLamarCallePostCalado, { calleId: self.Id },
+                function () {
+                    self.Llamada(true);
+                    $.unblockUI();
+                }
+            );
+        }
+
         $.getJSON(urlLLamarCalle, { calleId: self.Id, calleCaladoId: self.CalleCalado.Id },
             function () {
                 self.Llamada(true);
