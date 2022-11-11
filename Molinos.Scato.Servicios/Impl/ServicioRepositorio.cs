@@ -10079,5 +10079,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<Calado, CaladoDto>(x => x.Id == id);
         }
+
+        public CargaDeCupoDto ObtenerCargaDeCupoPorGuid(Guid instanceId)
+        {
+            return Obtener<CargaDeCupo, CargaDeCupoDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
+        }
     }
 }

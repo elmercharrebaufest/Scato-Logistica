@@ -131,7 +131,6 @@ namespace Molinos.Scato.Web.Controllers
                 model.CentroId = datosUsuario.CentroId;
                 model.CentroCodigoSap = datosUsuario.CentroCodigoSap;
                 model.Patente = model.Patente.ToUpper();
-                //var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupo { Dto = model, EsGarita = true }) as ResultadoCrear;
                 var resultado = servicioComandos.Ejecutar(new CrearCargaDeCupo { Dto = model, EsGarita = true }) as ResultadoCrear;
                 if (resultado.HayErrores)
                 {
@@ -1005,7 +1004,7 @@ namespace Molinos.Scato.Web.Controllers
                 try
                 {
                     var path = cargaDeCupo.FotoRutaDestino != null && cargaDeCupo.FotoRutaDestino.Contains("temp") ? Path.GetDirectoryName(cargaDeCupo.FotoRutaDestino).Replace("temp", "") : "";
-                    CargarAutomaticaCartaPorte(workflow, path, imagenCpBase64, "", orden.Cpe, datosUsuario, cargaDeCupo.Especial);
+                    CargarAutomaticaCartaPorte(cargaDeCupo, workflow, path, imagenCpBase64, "", orden.Cpe, datosUsuario);
                 }
                 catch (Exception e)
                 {
@@ -1014,7 +1013,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void CargarAutomaticaCartaPorte(string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario, bool esEspecial = false)
+        private void CargarAutomaticaCartaPorte(CargaDeCupoDto cargaDeCupo, string workflow, string path, string imagenCpBase64, string fotoMesaDigitalizacion2, CartaPorteDto orden, DatosUsuario datosUsuario)
         {
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
@@ -1127,7 +1126,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (!string.IsNullOrEmpty(path) && !string.IsNullOrEmpty(imagenCpBase64))
                 {
                     orden.FotoRutaDestino = GuardarfotoMesaDigitalizacion(imagenCpBase64, orden, path, datosUsuario, DateTime.Now);
-                    if (esEspecial)
+                    if (cargaDeCupo.Especial)
                     {
                         orden.FotoRutaSustentable = GuardarfotoMesaDigitalizacionSelloSustentable(orden, datosUsuario, DateTime.Now);
                     }
@@ -1155,6 +1154,11 @@ namespace Molinos.Scato.Web.Controllers
                     }
                     orden.Id = resultadoActividad.Id;
                     instanceIds.Add(resultadoActividad.InstanciaWorkflowId);
+                }
+                if(ModelState.IsValid)
+                {
+                    cargaDeCupo.IngresoAvanceCPEAutomatico = true;
+                    servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
                 }
             }
         }

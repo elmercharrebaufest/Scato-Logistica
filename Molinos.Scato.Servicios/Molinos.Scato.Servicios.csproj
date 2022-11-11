@@ -530,6 +530,7 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLoteInase.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />

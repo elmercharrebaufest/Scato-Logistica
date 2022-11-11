@@ -75,5 +75,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_PatenteAcoplado")]
         public string PatenteAcoplado { get; set; }
         public string FotoRutaSustentable { get; set; }
+        public bool IngresoAvanceCPEAutomatico { get; set; }
     }
 }

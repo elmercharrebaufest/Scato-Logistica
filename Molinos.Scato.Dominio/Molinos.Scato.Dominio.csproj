@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
+    <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ResultadoConsultarAFIP.cs" />
     <Compile Include="Comandos\CrearLoteInase.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />

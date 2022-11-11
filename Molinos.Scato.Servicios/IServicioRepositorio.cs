@@ -2715,5 +2715,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CaladoDto ObtenerCaladoPorId(int id);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCargaDeCupoPorGuid(Guid instanceId);
     }
 }
