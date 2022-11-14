@@ -23,7 +23,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ModificarCargaDeCupo comando)
         {
             var cupo = Repositorio.Obtener<CargaDeCupo>(comando.Dto.Id);
-            Conversor.Convertir(comando.Dto, cupo);
+            cupo.IngresoAvanceCPEAutomatico = comando.Dto.IngresoAvanceCPEAutomatico;
             Repositorio.GuardarCambios();
             return new Resultado();
         }

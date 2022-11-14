@@ -1135,6 +1135,12 @@ namespace Molinos.Scato.Web.Controllers
                 var servicioWf = factory.CrearServicio(workflowDefinicionId);
                 var instanceIds = new List<Guid>();
 
+                if (ModelState.IsValid)
+                {
+                    cargaDeCupo.IngresoAvanceCPEAutomatico = true;
+                    servicioComandos.Ejecutar(new ModificarCargaDeCupo { Dto = cargaDeCupo });
+                }
+
                 log.Info("CargarCartaPorte: Iniciando carga de workflow/s para los/el vehiculo/s: " + orden.VehiculoJson);
                 foreach (var vehiculo in vehiculos)
                 {
