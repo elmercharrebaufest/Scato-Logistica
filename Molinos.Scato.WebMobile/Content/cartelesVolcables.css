@@ -1,0 +1,31 @@
+.bg-Llamando {
+    background-color: #c58907 !important;
+}
+
+.bg-Ocupado {
+    background-color: #f93c1b !important;
+}
+
+.bg-Disponible {
+    background-color: #0aa812 !important;
+}
+
+.bg-Inhabilitado {
+    background-color: #b8b1ae !important;
+}
+
+.text-color-Llamando {
+    color: #c58907 !important;
+}
+
+.text-color-Ocupado {
+    color: #f93c1b !important;
+}
+
+.text-color-Disponible {
+    color: #0aa812 !important;
+}
+
+.text-color-Inhabilitado {
+    color: #b8b1ae !important;
+}

@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -14420,11 +14420,56 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disponible.
+        /// </summary>
+        public static string EstadoHidraulica_Disponible {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Disponible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inhabilitado.
+        /// </summary>
+        public static string EstadoHidraulica_Inhabilitado {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Inhabilitado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Llamando.
+        /// </summary>
+        public static string EstadoHidraulica_Llamando {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Llamando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocupado.
+        /// </summary>
+        public static string EstadoHidraulica_Ocupado {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Ocupado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Estado De Planta.
         /// </summary>
         public static string EstadoPlanta {
             get {
                 return ResourceManager.GetString("EstadoPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Llamado automático de hidraulicas.
+        /// </summary>
+        public static string EstadoVolcadoras_Titulo {
+            get {
+                return ResourceManager.GetString("EstadoVolcadoras_Titulo", resourceCulture);
             }
         }
         
@@ -24445,6 +24490,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_VisualizacionBarrera {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_VisualizacionBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor de bajada.
+        /// </summary>
+        public static string PuestosDeCargaDescarga_CodigoSensorBajada {
+            get {
+                return ResourceManager.GetString("PuestosDeCargaDescarga_CodigoSensorBajada", resourceCulture);
             }
         }
         

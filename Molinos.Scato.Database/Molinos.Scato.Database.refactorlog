@@ -665,4 +665,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CodigoDispositivo" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e470065c-1c90-4783-8f92-922a25323cf4" ChangeDateTime="10/31/2022 19:37:29">
+    <Property Name="ElementName" Value="[dbo].[LlamadoAutomaticoHidraulica].[FechaUltModificacion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LlamadoAutomaticoHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FechaUltimaModificacion" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="30a25a2f-5127-491e-976d-f65f591c4be2" ChangeDateTime="10/31/2022 19:39:09">
+    <Property Name="ElementName" Value="[dbo].[LlamadoAutomaticoHidraulica].[FechaUltimaModificacion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LlamadoAutomaticoHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UltimaPatenteLlamada" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0b991b39-fe42-4b89-84b2-19258bc760c6" ChangeDateTime="11/08/2022 15:58:52">
+    <Property Name="ElementName" Value="[dbo].[ConfiguracionCalleHidraulica].[CodigoGrupoHidraulicaAutomatica]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfiguracionCalleHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CodigoSensorCamaraALPR" />
+  </Operation>
 </Operations>

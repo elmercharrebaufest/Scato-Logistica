@@ -2718,5 +2718,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCargaDeCupoPorGuid(Guid instanceId);
+        
+        [OperationContract]
+        List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasPorEstado(EstadoHidraulica estado);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(string codigoSensor);
+
+        [OperationContract]
+        List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasAutomatizadas();
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerHidraulicaPorSensorBajada(string codigoSensorBajada);
     }
 }

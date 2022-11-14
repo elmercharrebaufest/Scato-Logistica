@@ -32,6 +32,8 @@
         public struct CodigosEventos
         {
             public const string CambioEstadoIntercomunicador = "CambioEstadoIntercomunicador";
+            public const string CambioEstadoSensorCamaraALPR = "CambioEstadoSensorCamaraALPR";
+            public const string CambioEstadoSensorGeneral = "CambioEstadoSensorGeneral";
         }
 
         public struct AFIPCodigoDeError

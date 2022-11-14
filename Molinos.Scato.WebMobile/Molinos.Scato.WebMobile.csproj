@@ -208,6 +208,7 @@
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\VisteoMobileController.cs" />
+    <Compile Include="Controllers\EstadoVolcadorasController.cs" />
     <Compile Include="Filtros\DateTimeModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -520,6 +521,7 @@
     <Content Include="Views\EstadoPlayaInterna\_CallesHeader.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_BuscadorPatente.cshtml" />
+    <Content Include="Views\EstadoVolcadoras\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

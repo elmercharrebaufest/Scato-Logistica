@@ -10084,5 +10084,25 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CargaDeCupo, CargaDeCupoDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
         }
+        
+        public List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasPorEstado(EstadoHidraulica estado)
+        {
+            return Listar<LlamadoAutomaticoHidraulica, LlamadoAutomaticoHidraulicaDto>(x => x.Estado == estado).ToList();
+        }
+
+        public ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(string codigoSensor)
+        {
+            return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(x => x.CodigoSensorCamaraALPR == codigoSensor);
+        }
+
+        public List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasAutomatizadas()
+        {
+            return Listar<LlamadoAutomaticoHidraulica, LlamadoAutomaticoHidraulicaDto>().ToList();
+        }
+
+        public PuestosDeCargaDescargaDto ObtenerHidraulicaPorSensorBajada(string codigoSensorBajada)
+        {
+            return Obtener<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(x => x.CodigoSensorBajada == codigoSensorBajada);
+        }
     }
 }

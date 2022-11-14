@@ -30,5 +30,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsEspecial { get; set; }
 
         public int CentroId { get; set; }
+        public string CodigoSensorBajada { get; set; }
     }
 }

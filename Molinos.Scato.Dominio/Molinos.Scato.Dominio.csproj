@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ResultadoConsultarAFIP.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Comandos\ResultadoLeerNumeroCartaPorte.cs" />
     <Compile Include="Comandos\ResultadoPagarMercadoPago.cs" />
     <Compile Include="Comandos\SincronizarResultadosCamara.cs" />
+    <Compile Include="Comandos\CancelarSuscripcionDispositivos.cs" />
     <Compile Include="Comandos\SuscribirDispositivos.cs" />
     <Compile Include="Comandos\ValidarStock.cs" />
     <Compile Include="Comandos\ActualizarStock.cs" />
@@ -694,6 +696,9 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Dto\LlamadoAutomaticoHidraulica\ConfiguracionCalleHidraulicaDto.cs" />
+    <Compile Include="Dto\LlamadoAutomaticoHidraulica\CamionHidraulicaDto.cs" />
+    <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />
     <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
@@ -962,6 +967,8 @@
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
     <Compile Include="Entidades\ATAPuerto.cs" />
+    <Compile Include="Entidades\ConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Entidades\LlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Entidades\CaracteristicasCartaPorteOtrosPuertos.cs" />
     <Compile Include="Entidades\CargaComercialHistorico.cs" />
     <Compile Include="Entidades\CartaPorteElectronica.cs" />
@@ -1120,8 +1127,10 @@
     <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
+    <Compile Include="Enums\EstadoHidraulica.cs" />
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />
     <Compile Include="Enums\FiltroEntregador.cs" />
+    <Compile Include="Enums\TipoAccionSensor.cs" />
     <Compile Include="Enums\TipoDeMensajeDeRespuesta.cs" />
     <Compile Include="Enums\CaracteristicasCalidad.cs" />
     <Compile Include="Enums\CodigoMensajeCartelLed.cs" />
@@ -1662,6 +1671,7 @@
     <None Include="Resources\DescuentosDeCalidadMailEsp.txt" />
     <None Include="Resources\DiferenciaPesoOrigenMailEsp.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\packages\Magick.NET-Q16-x64.11.1.2\build\net20\Magick.NET-Q16-x64.targets" Condition="Exists('..\packages\Magick.NET-Q16-x64.11.1.2\build\net20\Magick.NET-Q16-x64.targets')" />

@@ -10051,4 +10051,22 @@
   <data name="TipoCalleSalidaGranos" xml:space="preserve">
     <value>Salida Granos</value>
   </data>
+  <data name="EstadoHidraulica_Disponible" xml:space="preserve">
+    <value>Disponible</value>
+  </data>
+  <data name="EstadoHidraulica_Inhabilitado" xml:space="preserve">
+    <value>Inhabilitado</value>
+  </data>
+  <data name="EstadoHidraulica_Llamando" xml:space="preserve">
+    <value>Llamando</value>
+  </data>
+  <data name="EstadoHidraulica_Ocupado" xml:space="preserve">
+    <value>Ocupado</value>
+  </data>
+  <data name="PuestosDeCargaDescarga_CodigoSensorBajada" xml:space="preserve">
+    <value>Sensor de bajada</value>
+  </data>
+  <data name="EstadoVolcadoras_Titulo" xml:space="preserve">
+    <value>Llamado automático de hidraulicas</value>
+  </data>
 </root>
