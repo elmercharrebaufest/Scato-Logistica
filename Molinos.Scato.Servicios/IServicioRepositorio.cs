@@ -2730,5 +2730,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         PuestosDeCargaDescargaDto ObtenerHidraulicaPorSensorBajada(string codigoSensorBajada);
+
+        [OperationContract]
+        RecorridoDto ObtenerRecorridoActivoPorPatente(string patente);
     }
 }

@@ -80,25 +80,31 @@ namespace Molinos.Scato.Servicios.Impl
                         break;
 
                     case CodigosEventos.CambioEstadoSensorCamaraALPR:
+                        log.Debug($"Evento : CambioEstadoSensorCamaraALPR 1");
                         var patente = notificacion.Datos["Patente"];
                         var hidraulicasDisponibles = repositorio.ListarHidraulicasPorEstado(EstadoHidraulica.Disponible);
                         if (!hidraulicasDisponibles.Any())
                             break;
-
+                        log.Debug($"Evento : CambioEstadoSensorCamaraALPR 2");
                         var hidraulicasDiponsibleId = hidraulicasDisponibles.Select(x => x.HidraulicaId).ToList();
                         var datosDeCamion = ObtenerDatosPorPatente(patente);
+                        if (datosDeCamion == null)
+                            break;
+                        log.Debug($"Evento : CambioEstadoSensorCamaraALPR 3");
                         var hidraulicaAsignadaId = datosDeCamion.HidraulicasId.FirstOrDefault(x => hidraulicasDiponsibleId.Contains(x));
                         if (hidraulicaAsignadaId == 0)
                             break;
-
+                        log.Debug($"Evento : CambioEstadoSensorCamaraALPR 4");
                         var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
                         var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
                         EnviarMensajeACartel(configuracionCalle.CodigoCartel, $"{patente} dirigirse a {nombreHidraulicaAsignada}");
                         ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente);
+                        log.Debug($"Evento : CambioEstadoSensorCamaraALPR 5");
                         break;
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
-                        if(notificacion.Datos["Accion"] == TipoAccionSensor.CamionCruzo.ToString())
+                        log.Debug($"Evento : CambioEstadoSensorGeneral");
+                        if (notificacion.Datos["Accion"] == TipoAccionSensor.CamionCruzo.ToString())
                         {
                             var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
                             EnviarMensajeACartel(configuracionCalleHidraulica.CodigoCartel, string.Empty);
@@ -209,7 +215,24 @@ namespace Molinos.Scato.Servicios.Impl
         
         private CamionHidraulicaDto ObtenerDatosPorPatente(string patente)
         {
-            return null;
+            CamionHidraulicaDto datosCamion = null;
+            try
+            {
+                var recorrido = repositorio.ObtenerRecorridoActivoPorPatente(patente);
+                if(recorrido != null)
+                {
+                    datosCamion = new CamionHidraulicaDto()
+                    {
+                        Patente = patente,
+                        HidraulicasId = recorrido.HidraulicasId
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se obtener datos por patente {0}", patente);
+            }
+            return datosCamion;
         }
 
         private void EnviarMensajeACartel(string codigoCartel, string mensaje)
