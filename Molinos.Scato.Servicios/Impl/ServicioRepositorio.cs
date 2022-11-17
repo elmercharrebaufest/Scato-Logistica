@@ -10109,5 +10109,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<Recorrido, RecorridoDto>(x => x.Patente == patente && !x.Terminado);
         }
+
+        public ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(string codigoSensor)
+        {
+            return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(x => x.CodigoSensorCirculacion == codigoSensor);
+        }
     }
 }

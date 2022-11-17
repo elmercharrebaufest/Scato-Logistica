@@ -2733,5 +2733,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         RecorridoDto ObtenerRecorridoActivoPorPatente(string patente);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(string codigoSensor);
     }
 }

@@ -104,15 +104,19 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
                         log.Debug($"Evento : CambioEstadoSensorGeneral");
-                        if (notificacion.Datos["Accion"] == TipoAccionSensor.CamionCruzo.ToString())
+                        if(Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
                         {
-                            var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
-                            EnviarMensajeACartel(configuracionCalleHidraulica.CodigoCartel, string.Empty);
-                        } else if(notificacion.Datos["Accion"] == TipoAccionSensor.HidraulicaBajo.ToString())
-                        {
-                            var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
-                            ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty);
-
+                            switch (tipoAccion)
+                            {
+                                case TipoAccionSensor.CamionCruzo:
+                                    var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(notificacion.CodigoDispositivo);
+                                    EnviarMensajeACartel(configuracionCalleHidraulica.CodigoCartel, string.Empty);
+                                    break;
+                                case TipoAccionSensor.HidraulicaBajo:
+                                    var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
+                                    ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty);
+                                    break;
+                            }
                         }
                         break;
                 }

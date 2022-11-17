@@ -7,5 +7,6 @@
         public string CalleNombre { get; set; }
         public string CodigoCartel { get; set; }
         public string CodigoSensorCamaraALPR { get; set; }
+        public string CodigoSensorCirculacion { get; set; }
     }
 }
