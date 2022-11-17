@@ -24,7 +24,7 @@ namespace Molinos.Scato.Actividades.Internas
         public InArgument<int> TransportistaId { get; set; }
 
         [RequiredArgument]
-        public InArgument<int> IntermediarioId { get; set; }
+        public InArgument<int> IntermediarioFleteId { get; set; }
 
         public OutArgument<bool> Existe { get; set; }
 
@@ -41,7 +41,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var centroDestino = srvRepositorio.ObtenerCentro(CentroDestinoId.Get(context));
                 var material = srvRepositorio.ObtenerMaterial(MaterialId.Get(context));
                 var transportista = srvRepositorio.ObtenerTransportista(TransportistaId.Get(context));
-                var intermediario = srvRepositorio.ObtenerProveedor(IntermediarioId.Get(context));
+                var intermediarioFlete = srvRepositorio.ObtenerProveedor(IntermediarioFleteId.Get(context));
 
                 var respuesta =
                     servicioSap.VerifPedTrasladoRedespacho(new VerifPedTrasladoRedespachoRequest
@@ -51,7 +51,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 CentroDestino = centroDestino.CodigoSAP,
                                 CentroEmisor = centroEmisor.CodigoSAP,
                                 Material = material.CodigoSAP,
-                                Transportista = intermediario != null ? intermediario.Cuil.Replace("-", "") : transportista.Cuit.Replace("-", "")
+                                Transportista = intermediarioFlete != null ? intermediarioFlete.Cuil.Replace("-", "") : transportista.Cuit.Replace("-", "")
                             }
                     });
                 Existe.Set(context, respuesta.VerifPedTrasladoRedespachoResponse.Planificado == "X");

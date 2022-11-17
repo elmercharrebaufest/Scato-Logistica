@@ -63,7 +63,7 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="puestoDeTrabajoId" Type="InOutArgument(x:Int32)" />
-    <x:Property Name="intermediarioId" Type="InArgument(x:Int32)" />
+    <x:Property Name="intermediarioFleteId" Type="InArgument(x:Int32)" />
   </x:Members>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
   <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.ExistePedidoDeTraslado_1</sap2010:WorkflowViewState.IdRef>
@@ -147,11 +147,11 @@
                   <mca:CSharpReference x:TypeArguments="x:Boolean">existePedidoTraslado</mca:CSharpReference>
                 </OutArgument>
               </local:VerificarPedidoDeTrasladoEnSAP.Existe>
-              <local:VerificarPedidoDeTrasladoEnSAP.IntermediarioId>
+              <local:VerificarPedidoDeTrasladoEnSAP.IntermediarioFleteId>
                 <InArgument x:TypeArguments="x:Int32">
-                  <mca:CSharpValue x:TypeArguments="x:Int32">intermediarioId</mca:CSharpValue>
+                  <mca:CSharpValue x:TypeArguments="x:Int32">intermediarioFleteId</mca:CSharpValue>
                 </InArgument>
-              </local:VerificarPedidoDeTrasladoEnSAP.IntermediarioId>
+              </local:VerificarPedidoDeTrasladoEnSAP.IntermediarioFleteId>
               <local:VerificarPedidoDeTrasladoEnSAP.MaterialId>
                 <InArgument x:TypeArguments="x:Int32">
                   <mca:CSharpValue x:TypeArguments="x:Int32">materialId</mca:CSharpValue>
@@ -365,7 +365,7 @@
     <x:Reference>__ReferenceID11</x:Reference>
     <x:Reference>__ReferenceID12</x:Reference>
     <x:Reference>__ReferenceID13</x:Reference>
-    <sads:DebugSymbol.Symbol>d1RDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xFeGlzdGVQZWRpZG9EZVRyYXNsYWRvLnhhbWwscQPxAg8CAQF1C3XoAgIBAn0JgwEeAwGzA4YBDaoBNAMByQKuAROuAWYDAboCzgEXzgFqAwGrAtsBHYkCKAMBzQGNAiONAnsDAb4BlAIlqQI+AwGPAawCKbICQAIBf7UCLbsCRgIBb74CMckCSAIBUNIBGdgBMgIBQLIBFbgBLgIBMLsBGcYBMAIBEYABD4AB4wEDAbQDkwETkwFuAwGkA4kBE4kBXwMBlQOYAROYAV8DAYYDjgETjgFYAwH3AqcBE6cBXwMB6AKiAROiAWgDAdkCnQETnQFaAwHKAtwBH/ABKwMBjALxAR+BAjgDAd4BggIfiAItAwHOAaECK6ECvwEDAa8BlwIrlwJwAwGgAZwCK5wCWgMBnwGmAiumAnYDAZABrwIvrwJ1AwGAAbgCM7gCzQICAXDBAjfBApUBAgFgxgI3xgKNAQIBUdUBH9UBpAICAUG1ARu1AbUCAgExvgEfvgF9AgEhwwEfwwF1AgES5wEl5wF5AwGcAu0BJe0BiwEDAY0C9AEl9AGDAQMB/QH5ASX5AXgDAe4B/gEl/gF6AwHfAYUCJYUCcgMBzwE=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1RDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xFeGlzdGVQZWRpZG9EZVRyYXNsYWRvLnhhbWwscQPxAg8CAQF1C3XoAgIBAn0JgwEeAwGzA4YBDaoBNAMByQKuAROuAWYDAboCzgEXzgFqAwGrAtsBHYkCKAMBzQGNAiONAnsDAb4BlAIlqQI+AwGPAawCKbICQAIBf7UCLbsCRgIBb74CMckCSAIBUNIBGdgBMgIBQLIBFbgBLgIBMLsBGcYBMAIBEYABD4AB4wEDAbQDkwETkwFuAwGkA4kBE4kBXwMBlQOOAROOAVgDAYYDpwETpwFfAwH3ApgBE5gBZAMB6AKiAROiAWgDAdkCnQETnQFaAwHKAtwBH/ABKwMBjALxAR+BAjgDAd4BggIfiAItAwHOAaECK6ECvwEDAa8BlwIrlwJwAwGgAZwCK5wCWgMBnwGmAiumAnYDAZABrwIvrwJ1AwGAAbgCM7gCzQICAXDBAjfBApUBAgFgxgI3xgKNAQIBUdUBH9UBpAICAUG1ARu1AbUCAgExvgEfvgF9AgEhwwEfwwF1AgES5wEl5wF5AwGcAu0BJe0BiwEDAY0C9AEl9AGDAQMB/QH5ASX5AXgDAe4B/gEl/gF6AwHfAYUCJYUCcgMBzwE=</sads:DebugSymbol.Symbol>
   </Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
