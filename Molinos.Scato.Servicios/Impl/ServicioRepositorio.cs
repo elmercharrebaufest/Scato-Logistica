@@ -29,7 +29,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
 using System.ServiceModel.Configuration;
-using static NPOI.HSSF.Util.HSSFColor;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
@@ -3700,9 +3699,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true)).LastOrDefault();
         }
 
-        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote = false)
+        public MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId, bool incluirPreLote = false)
         {
-            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true,incluirPreLote: incluirPreLote)).LastOrDefault();
+            var muestra = repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, nroMuestra, listarRechazadosYNoTerminados: true, incluirPreLote: incluirPreLote)).LastOrDefault();
             var recorrido = muestra == null ? null :
                 repositorio.ObtenerProyeccion((Recorrido x) => x.InstanciaWorkflow == muestra.WorkflowInstanceId,
                                               x =>
@@ -3816,9 +3815,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Contar<Notificacion>(x => grupos.Contains(x.Grupo) && x.Leido == false);
         }
 
-        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote)
+        public IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId, bool incluirPreLote)
         {
-            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true,incluirPreLote: incluirPreLote));
+            return repositorio.ListarConsulta(new ListarMuestraEnvioACamaraConsulta(centroId, soloPendientes: true, incluirPreLote: incluirPreLote));
         }
 
         public IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId)
@@ -10006,7 +10005,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             return respuesta;
         }
-        
+
         public ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion)
         {
             Expression<Func<LoteInase, bool>> expresionFiltro;
@@ -10022,7 +10021,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             else
             {
-                expresionFiltro = (x => 
+                expresionFiltro = (x =>
                     x.Fecha <= filtro.FechaHasta && x.Fecha >= filtro.FechaDesde
                     && x.Centro.Id == filtro.CentroId);
             }
@@ -10084,7 +10083,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CargaDeCupo, CargaDeCupoDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
         }
-        
+
         public List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasPorEstado(EstadoHidraulica estado)
         {
             return Listar<LlamadoAutomaticoHidraulica, LlamadoAutomaticoHidraulicaDto>(x => x.Estado == estado).ToList();
@@ -10113,6 +10112,12 @@ namespace Molinos.Scato.Servicios.Impl
         public ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(string codigoSensor)
         {
             return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(x => x.CodigoSensorCirculacion == codigoSensor);
+        }
+
+        public PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId)
+        {
+            var resultado = ObtenerPrimero<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(x => x.PuestoDeTrabajo.Id == puestoDeTrabajoId);
+            return resultado;
         }
     }
 }

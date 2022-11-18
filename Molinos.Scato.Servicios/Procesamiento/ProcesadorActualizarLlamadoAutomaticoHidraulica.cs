@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -22,7 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ActualizarLlamadoAutomaticoHidraulica comando)
         {
             var resultado = new Resultado();
-            var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(comando.Id);
+            var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(q => q.Hidraulica.Id == comando.Id);
             hidraulica.Estado = comando.Estado;
             hidraulica.UltimaPatenteLlamada = comando.Patente;
             hidraulica.FechaUltimaModificacionEstado = DateTime.Now;
@@ -30,6 +28,4 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
     }
-
-
 }

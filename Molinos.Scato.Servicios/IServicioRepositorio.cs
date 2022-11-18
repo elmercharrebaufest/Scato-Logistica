@@ -975,7 +975,7 @@ namespace Molinos.Scato.Servicios
         MuestraEnvioACamaraDto ObtenerMuestraEnvioACamaraPorNumero(int centroId, string nroMuestra);
 
         [OperationContract]
-        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId,bool incluirPreLote);
+        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId, bool incluirPreLote);
 
         [OperationContract]
         string ObtenerNumeroMuestraEnvioACamara(int muestraId);
@@ -993,7 +993,7 @@ namespace Molinos.Scato.Servicios
         NotificacionesDto ObtenerNotificaciones(string grupos, bool listarSobre, bool mostrarAlerta, bool contar);
 
         [OperationContract]
-        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId,bool incluirPreLote);
+        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId, bool incluirPreLote);
 
         [OperationContract]
         IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId);
@@ -2681,14 +2681,14 @@ namespace Molinos.Scato.Servicios
         List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo();
 
         [OperationContract]
-        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor,bool limpiarLogs);
+        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor, bool limpiarLogs);
 
         [OperationContract]
         List<string> ObtenerGruposBarreraEnUso(List<string> codigos);
 
         [OperationContract]
         List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos);
-        
+
         [OperationContract]
         ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion);
 
@@ -2709,7 +2709,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
-        
+
         [OperationContract]
         List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos();
 
@@ -2718,7 +2718,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCargaDeCupoPorGuid(Guid instanceId);
-        
+
         [OperationContract]
         List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasPorEstado(EstadoHidraulica estado);
 
@@ -2736,5 +2736,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(string codigoSensor);
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId);
     }
 }
