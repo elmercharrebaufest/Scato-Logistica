@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -9597,6 +9597,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ConfigSensores_Titulo {
             get {
                 return ResourceManager.GetString("ConfigSensores_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuracion de calle hidráulica.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuración.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica_Titulo {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica_Titulo", resourceCulture);
             }
         }
         

@@ -7,5 +7,8 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public string Patente { get; set; }
         public List<int> HidraulicasId { get; set; }
+        public int RecorridoId { get; set; }
+        public DateTime? FechaLlegadaACalleHidraulica { get; set; }
+        public string CodigoCartel { get; set; }
     }
 }

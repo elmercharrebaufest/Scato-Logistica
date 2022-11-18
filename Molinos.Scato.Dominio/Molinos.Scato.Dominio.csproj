@@ -89,8 +89,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Comandos\ActualizarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
+    <Compile Include="Comandos\CrearConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ResultadoConsultarAFIP.cs" />
     <Compile Include="Comandos\CrearLoteInase.cs" />

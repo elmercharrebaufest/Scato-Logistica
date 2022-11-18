@@ -36,9 +36,9 @@
                             <h6 id="patente-@hidraulica.Id" class="card-subtitle mb-5"></h6>
                             <div class="mt-3 d-flex justify-content-between">
                                 <button id="habilitado-@hidraulica.Id" disabled type="button" class="btn btn-primary"
-                                onclick="OpenModal(true)">Habilitar</button>
+                                onclick="OpenModal(true, '@hidraulica.Id')">Habilitar</button>
                                 <button id="deshabilitado-@hidraulica.Id" disabled type="button" class="btn btn-secondary"
-                                onclick="OpenModal(false)">Deshabilitar</button>
+                                onclick="OpenModal(false, '@hidraulica.Id')">Deshabilitar</button>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <dialog id="modalConfirmarHabilitarDeshabilitar">
+        <dialog id="modalConfirmarHabilitarDeshabilitar-@hidraulica.Id">
             <h4>@Textos.Confirmacion</h4>
             <p>
                 ¿Confirma el cambio de estado?

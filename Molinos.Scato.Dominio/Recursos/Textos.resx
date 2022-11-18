@@ -10069,4 +10069,10 @@
   <data name="EstadoVolcadoras_Titulo" xml:space="preserve">
     <value>Llamado automático de hidraulicas</value>
   </data>
+  <data name="Configuracion_CalleHidraulica" xml:space="preserve">
+    <value>Configuracion de calle hidráulica</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_Titulo" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
 </root>

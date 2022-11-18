@@ -376,6 +376,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />
     <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
@@ -2373,6 +2374,11 @@
     <Content Include="Views\LoteInase\ListarMuestas.cshtml" />
     <Content Include="Views\LoteInase\Seleccionar.cshtml" />
     <Content Include="Views\EnEsperaHB4\Index.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Index.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\_CrearModificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

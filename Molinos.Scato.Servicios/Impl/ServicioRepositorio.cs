@@ -10119,5 +10119,27 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = ObtenerPrimero<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(x => x.PuestoDeTrabajo.Id == puestoDeTrabajoId);
             return resultado;
         }
+        
+        public ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica( Paginacion paginacion)
+        {
+            Expression<Func<ConfiguracionCalleHidraulica, bool>> expresionFiltro = null;
+
+            return Listar<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(expresionFiltro, paginacion);
+        }
+
+        public ConfiguracionCalleHidraulicaDto ObtenerCalleHidraulica(int id)
+        {
+            return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(id);
+    	}
+
+        public List<ConfiguracionCalleHidraulicaDto> ListarConfiguracionCallesHidraulica()
+        {
+            return Listar<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>().ToList();
+        }
+
+        public CallePorRecorridoDto ObtenerCallePorRecorridoActivoPorRecorridoIdYTipo(int recorridoId, TipoCalle tipoCalle)
+        {
+            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == tipoCalle);
+        }
     }
 }

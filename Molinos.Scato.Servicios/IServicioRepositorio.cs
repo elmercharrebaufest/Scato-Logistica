@@ -2739,5 +2739,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId);
+        
+        [OperationContract]
+        ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica(Paginacion paginacion);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerCalleHidraulica(int id);
+
+        [OperationContract]
+        List<ConfiguracionCalleHidraulicaDto> ListarConfiguracionCallesHidraulica();
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerCallePorRecorridoActivoPorRecorridoIdYTipo(int recorridoId, TipoCalle tipocalle);
     }
 }

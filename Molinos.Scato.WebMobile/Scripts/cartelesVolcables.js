@@ -101,9 +101,9 @@ function ActualizarHidraulicas() {
     return hidraulicas;
 }
 
-function OpenModal(estado){
+function OpenModal(estado, id){
     habilitadoDeshabilitado = estado;
-    document.getElementById('modalConfirmarHabilitarDeshabilitar').showModal();
+    document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).showModal();
 }
 
 function CambiarEstado(id, patente, nombre) {
@@ -123,6 +123,9 @@ function CambiarEstado(id, patente, nombre) {
         },
         error: function (data) {
             MostrarAlertaError();
+        },
+        complete: function(){
+            document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).close();
         }
     });
 

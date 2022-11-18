@@ -115,6 +115,42 @@ namespace Molinos.Scato.Servicios.Impl
                                 case TipoAccionSensor.HidraulicaBajo:
                                     var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
                                     ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty);
+                                    var callesHidraulicas = repositorio.ListarConfiguracionCallesHidraulica();
+                                    var primerosCamiones = new List<CamionHidraulicaDto>();
+                                    foreach (var calleHidraulica in callesHidraulicas)
+                                    {
+                                        var resultado = servicioOrquestador.Ejecutar(
+                                            new EjecutarTomarFoto
+                                            {
+                                                CodigoDispositivo = calleHidraulica.CodigoSensorCamaraALPR,
+                                                FilePath = string.Empty,
+                                                SubPath = string.Empty,
+                                                FileName = string.Empty
+                                            }) as ResultadoObtenerPatente;
+                                        if (string.IsNullOrEmpty(resultado.Patente))
+                                            continue;
+
+                                        var datosCamion = ObtenerDatosPorPatente(resultado.Patente);
+                                        if (datosCamion == null)
+                                            continue;
+
+                                        var callePorRecorrido = repositorio.ObtenerCallePorRecorridoActivoPorRecorridoIdYTipo(datosCamion.RecorridoId, TipoCalle.PlayaInterna);
+                                        if (callePorRecorrido == null)
+                                            continue;
+
+                                        if (datosCamion.HidraulicasId.Contains(hidraulica.Id))
+                                            continue;
+
+                                        datosCamion.FechaLlegadaACalleHidraulica = callePorRecorrido.FechaIngeso;
+                                        primerosCamiones.Add(datosCamion);
+                                    }
+
+                                    if (primerosCamiones.Count > 0)
+                                    {
+                                        var camionLlamado = primerosCamiones.OrderBy(x => x.FechaLlegadaACalleHidraulica).FirstOrDefault();
+                                        EnviarMensajeACartel(camionLlamado.CodigoCartel, $"{camionLlamado.Patente} dirigirse a {hidraulica.Nombre}");
+                                        ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Llamando, camionLlamado.Patente);
+                                    }
                                     break;
                             }
                         }
@@ -228,7 +264,8 @@ namespace Molinos.Scato.Servicios.Impl
                     datosCamion = new CamionHidraulicaDto()
                     {
                         Patente = patente,
-                        HidraulicasId = recorrido.HidraulicasId
+                        HidraulicasId = recorrido.HidraulicasId,
+                        RecorridoId = recorrido.Id
                     };
                 }
             }

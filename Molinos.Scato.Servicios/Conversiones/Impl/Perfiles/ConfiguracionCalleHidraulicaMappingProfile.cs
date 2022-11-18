@@ -8,7 +8,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
     {
         public override string ProfileName
         {
-            get { return "ConfiguracionCalleHidraulica"; }
+            get { return "ConfiguracionCalleHidraulicaMappingProfile"; }
         }
         protected override void Configure()
         {
