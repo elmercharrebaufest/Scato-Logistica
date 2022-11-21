@@ -38,13 +38,15 @@ namespace Molinos.Scato.Actividades.Internas
                 {
                     var recorrido = servicio.ObtenerRecorridoPorGuid(instanceId);
                     var puestoDeCargaDescarga = servicio.ObtenerPuestoDeCargaDescargaPorPuestoId(puestoId);
-
-                    servicioComando.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica
+                    if(puestoDeCargaDescarga != null)
                     {
-                        Id = puestoDeCargaDescarga.Id,
-                        Estado = EstadoHidraulica.Ocupado,
-                        Patente = recorrido.Patente
-                    });
+                        servicioComando.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica
+                        {
+                            Id = puestoDeCargaDescarga.Id,
+                            Estado = EstadoHidraulica.Ocupado,
+                            Patente = recorrido.Patente
+                        });
+                    }
                 }
             }
             catch (Exception e)
