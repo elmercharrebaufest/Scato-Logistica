@@ -19,8 +19,13 @@ function ActualizarInfoHidraulica(hidraulica) {
         $(`#tiempo-${hidraulica.Id}`).html(CalcularTiempoEnCola(hidraulica.FechaUltimaModificacionEstado));
         $(`#estado-${hidraulica.Id}`).text(Object.keys(EstadoHidraulica).find(key => EstadoHidraulica[key] === hidraulica.Estado));
         Coloreado(hidraulica.Estado, hidraulica.Id);
-        $(`#patente-${hidraulica.Id}`).text(hidraulica.UltimaPatenteLlamada);
         $(`#nombre-${hidraulica.Id}`).text(hidraulica.HidraulicaNombre);
+        if (hidraulica.UltimaPatenteLlamada && hidraulica.UltimaPatenteLlamada.length > 0) {
+            $(`#patente-${hidraulica.Id}`).text(hidraulica.UltimaPatenteLlamada);
+        } else {
+            $(`#patente-${hidraulica.Id}`).text("-");
+            $(`#patente-${hidraulica.Id}`).addClass("text-white");
+        }
     }
 }
 
@@ -79,8 +84,8 @@ function CalcularTiempoEnCola(fechaIngeso) {
 function Inicializador(id) {
     $('#tiempo-' + id).removeClass();
     $('#estado-' + id).removeClass();
-    $('#tiempo-' + id).addClass("card-header text-white font-weight-bold");
-    $('#estado-' + id).addClass("card-subtitle mb-4 font-weight-bold");
+    $('#patente-' + id).removeClass();
+    $('#tiempo-' + id).addClass("hidraulica__tiempo");
 }
 
 function ActualizarHidraulicas() {
@@ -106,7 +111,7 @@ function OpenModal(estado, id){
     document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).showModal();
 }
 
-function CambiarEstado(id, patente, nombre) {
+function CambiarEstado(id, nombre) {
     let nuevoEstado = habilitadoDeshabilitado ? EstadoHidraulica.Disponible : EstadoHidraulica.Inhabilitado;
     $.ajax({
         url: urlEstado,
@@ -114,7 +119,6 @@ function CambiarEstado(id, patente, nombre) {
         data: {
             nuevoEstado: nuevoEstado,
             id: id,
-            patente: patente,
             nombre: nombre
         },
         async: false,

@@ -1,12 +1,8 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using Ninject.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
@@ -40,11 +36,11 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         [HttpPost]
-        public ActionResult CambiarEstado(int nuevoEstado, int id, string patente, string nombre)
+        public ActionResult CambiarEstado(int nuevoEstado, int id, string nombre)
         {
             try
             {
-                servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica { Id = id, Estado = (EstadoHidraulica)nuevoEstado, Patente = patente });
+                servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica { Id = id, Estado = (EstadoHidraulica)nuevoEstado, Patente = string.Empty });
             }
             catch (Exception e)
             {

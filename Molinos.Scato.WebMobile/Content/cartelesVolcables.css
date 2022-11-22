@@ -29,3 +29,52 @@
 .text-color-Inhabilitado {
     color: #b8b1ae !important;
 }
+
+.hidraulicas {
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.hidraulicas__tittle {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.hidraulicas__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.hidraulica {
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.hidraulica__tiempo {
+    padding: 0.5rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.hidraulica h6 {
+    margin: 1rem 0;
+}
+
+.hidraulica__nombre {
+    font-weight: bold;
+}
+
+.hidraulica__buttons {
+    margin: 2rem 0;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2rem;
+}

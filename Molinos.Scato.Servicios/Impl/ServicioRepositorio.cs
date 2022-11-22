@@ -10131,15 +10131,5 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(id);
     	}
-
-        public List<ConfiguracionCalleHidraulicaDto> ListarConfiguracionCallesHidraulica()
-        {
-            return Listar<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>().ToList();
-        }
-
-        public CallePorRecorridoDto ObtenerCallePorRecorridoActivoPorRecorridoIdYTipo(int recorridoId, TipoCalle tipoCalle)
-        {
-            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == tipoCalle);
-        }
     }
 }
