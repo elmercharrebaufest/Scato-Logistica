@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -85,7 +86,47 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult MostrarDetalleCamion(string patente, int calleId)
         {
             var model = servicio.ObtenerInfoPatente(patente, calleId);
+            var calle = servicio.ObtenerCalle(calleId);
+            if(model.RecorridoId != null && calle.TipoCalle == TipoCalle.SalidaNoGranos)
+            {
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                model.CorrespondeConfirmarCargaDescarga = !servicio.ExisteConfirmacionCargaDescargaDeRecorrido(model.RecorridoId ?? 0) && servicio.TienePermiso(usuario.Value, PermisosScato.ConfirmacionCargaDescarga);
+            }
             return PartialView("_DetalleCamion", model);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmarCargaDescarga(Guid workflowInstance, int recorridoId)
+        {
+            var response = new RespuestaEstandarDto();
+            try
+            {
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                var confirmacion = new ConfirmacionCargaDescargaDto()
+                {
+                    RecorridoId = recorridoId,
+                    WorkflowInstanceId = workflowInstance,
+                    NombreUsuario = usuario.Value
+                };
+                var resultado = servicioComandos.Ejecutar(new CrearConfirmacionCargaDescarga
+                {
+                    Dto = confirmacion
+                });
+                if (resultado.HayErrores)
+                {
+                    foreach (var item in resultado.Errores)
+                    {
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error al confirmar Carga/Descarga para el workflow {workflowInstance}";
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+
         }
 
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()

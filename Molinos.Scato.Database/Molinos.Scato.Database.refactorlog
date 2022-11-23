@@ -686,4 +686,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CodigoSensorCamaraALPR" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="acd5ca91-601c-4722-b9b1-cae20e643c76" ChangeDateTime="11/23/2022 16:45:25">
+    <Property Name="ElementName" Value="[dbo].[ConfirmacionCargaDescarga].[Lote_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfirmacionCargaDescarga]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Recorrido_Id" />
+  </Operation>
 </Operations>

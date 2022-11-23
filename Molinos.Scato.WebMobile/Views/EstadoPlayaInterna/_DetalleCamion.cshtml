@@ -1,4 +1,6 @@
-﻿@using Molinos.Scato.Dominio.Enums
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
 
 @model Molinos.Scato.Dominio.Dto.InfoPatenteDeCalleDto
 
@@ -92,6 +94,19 @@
                             </div>
                         </div>
                     </div>
+                    @if (Model.CorrespondeConfirmarCargaDescarga)
+                    {
+                        <div class="row">
+                            <div class="control-group col-4">
+                                <button id="btnConfirmarCargaDescarga"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        onclick="modalConfirmarCargaDescarga.showModal()">
+                                    Confirmar Carga/Descarga
+                                </button>
+                            </div>
+                        </div>
+                    }
                 </fieldset>
             </div>
             <div class="modal-footer">
@@ -100,3 +115,16 @@
         </div>
     </div>
 </div>
+
+@Html.HiddenFor(model => model.InstanciaWorflow)
+@Html.HiddenFor(model => model.RecorridoId)
+<dialog id="modalConfirmarCargaDescarga" class="dialogCargaDescarga">
+    <h4 class="dialogCargaDescarga__titulo">@Textos.Confirmacion</h4>
+    <p class="dialogCargaDescarga__descripcion">
+        ¿Está seguro que desea confirmar la carga/descarga ?
+    </p>
+    <div class="dialogCargaDescarga__botones">
+        <button id="btnConfirmarCargaDescarga" class="btn btn-warning" onclick="ConfirmarCargaDescarga()">Confirmar</button>
+        <button class="btn" onclick="modalConfirmarCargaDescarga.close()">Cerrar</button>
+    </div>
+</dialog>

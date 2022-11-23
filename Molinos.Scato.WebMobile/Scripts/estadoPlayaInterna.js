@@ -156,3 +156,53 @@ function calcularTiempoEnCola(fechaIngeso) {
 function obtenerClaseEscalable(escalable) {
     return escalable ? "fas fa-truck" : "";
 }
+
+function ConfirmarCargaDescarga() {
+    DeshabilitarBotonVisual("btnConfirmarCargaDescarga")
+    $.ajax({
+        type: 'POST',
+        url: urlConfirmarCargaDescarga,
+        dataType: 'json',
+        data: {
+            workflowInstance: $('#InstanciaWorflow').val(),
+            recorridoId: $('#RecorridoId').val()
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("Se proceso correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+                HabilitarBotonVisual("btnConfirmarCargaDescarga")
+            }
+        },
+        error: function (error) {
+            HabilitarBotonVisual("btnConfirmarCargaDescarga")
+        },
+        complete: function () {
+            document.getElementById('modalConfirmarCargaDescarga').close();
+            $.unblockUI();
+        }
+    });
+}
+
+function MostrarRespuestaMensajes(response) {
+    response.Mensajes.forEach(function (item, index, array) {
+        if (item.TipoDeMensaje === 2) {
+            MostrarAlertaError(item.Mensaje);
+        } else if (item.TipoDeMensaje === 1) {
+            MostrarAlertaAdvertencia(item.Mensaje);
+        }
+    })
+}
+
+function DeshabilitarBotonVisual(id) {
+    $("#" + id).attr('disabled', true);
+    $("#" + id).removeClass('btn-primary');
+    $("#" + id).addClass('btn-secondary');
+}
+
+function HabilitarBotonVisual(id) {
+    $("#" + id).attr('disabled', false);
+    $("#" + id).removeClass('btn-secondary');
+    $("#" + id).addClass('btn-primary');
+}

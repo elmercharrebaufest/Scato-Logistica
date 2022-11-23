@@ -82,6 +82,7 @@
         public struct EtapaWorkflow
         {
             public const string Visteo = "Visteo";
+            public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
         }
     }
 }

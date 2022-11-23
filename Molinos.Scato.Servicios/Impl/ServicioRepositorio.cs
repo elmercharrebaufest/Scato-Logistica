@@ -10131,5 +10131,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(id);
     	}
+
+        public bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId)
+        {
+            return repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId);
+        }
     }
 }

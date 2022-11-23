@@ -2745,5 +2745,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         ConfiguracionCalleHidraulicaDto ObtenerCalleHidraulica(int id);
+
+        [OperationContract]
+        bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId);
     }
 }

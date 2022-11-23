@@ -10075,4 +10075,7 @@
   <data name="Configuracion_CalleHidraulica_Titulo" xml:space="preserve">
     <value>Configuración</value>
   </data>
+  <data name="ConfirmacionCargaDescarga" xml:space="preserve">
+    <value>Confirmación de Carga/Descarga</value>
+  </data>
 </root>
