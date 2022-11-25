@@ -533,8 +533,8 @@
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
-    <Compile Include="Procesamiento\ProcesadorActualizarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarLlamadoAutomaticoHidraulica.cs" />

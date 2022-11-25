@@ -11,12 +11,7 @@
 {
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Id)
-    <div class="control-group">
-        @Html.LabelFor(model => model.CalleNombre, new {@class = "control-label"})
-        <div class="controls">
-            @Html.TextBoxFor(model => model.CalleNombre, new {@class = "input-medium", @readonly = "readonly"})
-            @Html.ValidationMessageFor(model => model.CalleNombre)
-        </div>
-    </div>
+
+    
     @Html.Partial("_CrearModificar", Model)
 }

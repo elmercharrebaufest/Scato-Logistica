@@ -10,12 +10,6 @@
 
 @using (Ajax.BeginForm("Crear", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Hidraulica_Crear }))
 {
-    <div class="control-group">
-        @Html.LabelFor(model => model.Codigo, new {@class = "control-label"})
-        <div class="controls">
-            @Html.TextBoxFor(model => model.Codigo, new {@class = "input-medium"})
-            @Html.ValidationMessageFor(model => model.Codigo)
-        </div>
-    </div>
+  
     @Html.Partial("_CrearModificar", Model)           
 }

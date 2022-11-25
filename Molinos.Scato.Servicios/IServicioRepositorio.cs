@@ -2748,5 +2748,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId);
+        
+        [OperationContract]
+        IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
     }
 }

@@ -9610,11 +9610,47 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código Cartel.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica_CodigoCartel {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica_CodigoCartel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuración.
         /// </summary>
         public static string Configuracion_CalleHidraulica_Titulo {
             get {
                 return ResourceManager.GetString("Configuracion_CalleHidraulica_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Cámara.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoCamara {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoCamara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Sensor.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoSensor {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Sensor Circulación.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoSensorCirculacion {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoSensorCirculacion", resourceCulture);
             }
         }
         

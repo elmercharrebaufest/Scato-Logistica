@@ -10078,4 +10078,16 @@
   <data name="ConfirmacionCargaDescarga" xml:space="preserve">
     <value>Confirmación de Carga/Descarga</value>
   </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoCamara" xml:space="preserve">
+    <value>Código Cámara</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensor" xml:space="preserve">
+    <value>Código Sensor</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensorCirculacion" xml:space="preserve">
+    <value>Código Sensor Circulación</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_CodigoCartel" xml:space="preserve">
+    <value>Código Cartel</value>
+  </data>
 </root>

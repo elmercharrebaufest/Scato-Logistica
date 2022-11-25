@@ -1,41 +1,42 @@
 @model Molinos.Scato.Dominio.Dto.ConfiguracionCalleHidraulicaDto
 @{
-    var puestosDeTrabajo = (IEnumerable<SelectListItem>)ViewBag.PuestosDeTrabajo;
     var sensoresBajada = (IEnumerable<SelectListItem>)ViewBag.SensoresBajada;
+    var lectoresQr = (IEnumerable<SelectListItem>)ViewBag.lectoresQr;
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
 }
 
 <div class="control-group">
-    @Html.LabelFor(model => model.Nombre, new {@class = "control-label"})
+    @Html.LabelFor(model => model.CalleId, new {@class = "control-label"})
     <div class="controls">
-        @Html.TextBoxFor(model => model.Nombre, new {@class = "input-large"})
-        @Html.ValidationMessageFor(model => model.Nombre)
+        @Html.DropDownListFor(model => model.CalleId, calles, new { @class = "control input-medium" })
+        @Html.ValidationMessageFor(m => m.CalleId)
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(model => model.PuestoDeTrabajoId, new {@class = "control-label"})
+    @Html.LabelFor(model => model.CodigoCartel, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.PuestoDeTrabajoId, puestosDeTrabajo, new {@class = "input-large"})
-        @Html.ValidationMessageFor(model => model.PuestoDeTrabajoId)
+        @Html.DropDownListFor(model => model.CodigoCartel, lectoresQr, string.Empty)
+        @Html.ValidationMessageFor(model => model.CodigoCartel)
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(model => model.CodigoSensorBajada, new { @class = "control-label" })
+    @Html.LabelFor(model => model.CodigoSensorCamaraALPR, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.CodigoSensorBajada, sensoresBajada, string.Empty)
-        @Html.ValidationMessageFor(model => model.CodigoSensorBajada)
+        @Html.DropDownListFor(model => model.CodigoSensorCamaraALPR, sensoresBajada, string.Empty)
+        @Html.ValidationMessageFor(model => model.CodigoSensorCamaraALPR)
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(m => m.EsSojaSustentable, new {@class = "control-label"})
+    @Html.LabelFor(model => model.CodigoSensorCirculacion, new {@class = "control-label"})
     <div class="controls">
-        @Html.CheckBoxFor(m => m.EsSojaSustentable, new {@class = "control"})
-        @Html.ValidationMessageFor(m => m.EsSojaSustentable)
+        @Html.DropDownListFor(model => model.CodigoSensorCirculacion, sensoresBajada, string.Empty)
+        @Html.ValidationMessageFor(model => model.CodigoSensorCirculacion)
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(m => m.EsEspecial, new { @class = "control-label" })
+    @Html.LabelFor(model => model.CodigoCamaraALPR, new { @class = "control-label" })
     <div class="controls">
-        @Html.CheckBoxFor(m => m.EsEspecial, new { @class = "control" })
-        @Html.ValidationMessageFor(m => m.EsEspecial)
+        @Html.DropDownListFor(model => model.CodigoCamaraALPR, sensoresBajada, string.Empty)
+        @Html.ValidationMessageFor(model => model.CodigoCamaraALPR)
     </div>
 </div>

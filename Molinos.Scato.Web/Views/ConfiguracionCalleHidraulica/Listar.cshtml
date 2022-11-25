@@ -11,10 +11,9 @@
     @Html.Grilla(items,
         grilla => grilla.Columns(
         grilla.ColumnaEliminarModificar(Html, "ConfiguracionCalleHidraulica"),
-        grilla.Columna("CalleNombre", "Calle"),
-        grilla.Columna("CodigoCartel", "Codigo cartel"),
-        grilla.Columna("CodigoSensorCamaraALPR", "Codigo sensor"),
-        grilla.Columna("CodigoSensorCirculacion", "Codigo sensor circulacion"),
-        grilla.Columna("CodigoCamaraALPR", "Codigo camara")
-
+        grilla.Columna("CalleNombre", @Textos.Calle),
+        grilla.Columna("CodigoCartel", @Textos.Configuracion_CalleHidraulica_CodigoCartel),
+        grilla.Columna("CodigoSensorCamaraALPR", @Textos.ConfiguracionCalleHidraulica_CodigoSensor),
+        grilla.Columna("CodigoSensorCirculacion", @Textos.ConfiguracionCalleHidraulica_CodigoSensorCirculacion),
+        grilla.Columna("CodigoCamaraALPR", @Textos.ConfiguracionCalleHidraulica_CodigoCamara)
     ))

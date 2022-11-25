@@ -10136,5 +10136,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId);
         }
+
+        public IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo)
+        {
+            return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo);
+        }
     }
 }
