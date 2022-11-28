@@ -7,10 +7,11 @@ let EstadoHidraulica = {
 
 let habilitadoDeshabilitado;
 
+$body = $("body");
+
 $(function () {
     setInterval(() => {
-        let hidraulicas = ActualizarHidraulicas();
-        hidraulicas.map(hidraulica => ActualizarInfoHidraulica(hidraulica))
+        ObtenerHidraulicas();
     }, 4000)
 });
 
@@ -111,7 +112,18 @@ function OpenModal(estado, id){
     document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).showModal();
 }
 
+function Cerrar(id){
+    document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).close();
+}
+
+function ObtenerHidraulicas(){
+    let hidraulicas = ActualizarHidraulicas();
+    hidraulicas.map(hidraulica => ActualizarInfoHidraulica(hidraulica));
+}
+
 function CambiarEstado(id, nombre) {
+    Cerrar(id);
+    $body.addClass("loading");
     let nuevoEstado = habilitadoDeshabilitado ? EstadoHidraulica.Disponible : EstadoHidraulica.Inhabilitado;
     $.ajax({
         url: urlEstado,
@@ -121,16 +133,16 @@ function CambiarEstado(id, nombre) {
             id: id,
             nombre: nombre
         },
-        async: false,
+        async: true,
         success: function (data) {
             MostrarAlertaExitosa();
+            ObtenerHidraulicas();
+            $body.removeClass("loading");
         },
         error: function (data) {
             MostrarAlertaError();
+            $body.removeClass("loading");
         },
-        complete: function(){
-            document.getElementById('modalConfirmarHabilitarDeshabilitar-' + id).close();
-        }
     });
 
 }
