@@ -23,36 +23,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultado = new Resultado();
             Validar(resultado, comando.Dto.RecorridoId);
             if(resultado.HayErrores)
-            {
                 return resultado;
-            }
 
             try
             {
                 var confirmacion = new ConfirmacionCargaDescarga()
                 {
-                    NombreUsuario = comando.Dto.NombreUsuario,
-                    FechaConfirmacion = DateTime.Now,
-                    Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.Dto.RecorridoId)
+                    FechaCreacion = DateTime.Now,
+                    Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.Dto.RecorridoId),
+                    Confirmado = comando.Dto.Confirmado,
+                    PendienteConfirmacion = comando.Dto.PendienteConfirmacion
                 };
                 Repositorio.Agregar(confirmacion);
                 Repositorio.GuardarCambios();
-
-                var controlRecorrido = new ControlRecorridoDto()
-                {
-                    WorkflowInstanceId = comando.Dto.WorkflowInstanceId,
-                    Actividad = EtapaWorkflow.ConfirmacionCargaDescarga,
-                    ActividadXaml = EtapaWorkflow.ConfirmacionCargaDescarga,
-                    NombreUsuario = comando.Dto.NombreUsuario
-                };
-                resultado = servicioComandos.Ejecutar(new CrearControlRecorrido
-                {
-                    Dto = controlRecorrido
-                });
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"Ocurrió un error al registrar la confirmación carga/descarga al workflow {comando.Dto.WorkflowInstanceId}");
+                Log.Error(ex, $"Ocurrió un error al registrar la confirmación carga/descarga al workflow");
                 resultado.Error("confirmacion", "Ocurrió un error al registrar la confirmación carga/descarga al recorrido");
             }
             return resultado;

@@ -10134,7 +10134,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId)
         {
-            return repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId);
+            return repositorio.Existe<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == recorridoId && !x.Confirmado && x.PendienteConfirmacion);
         }
 
         public IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo)

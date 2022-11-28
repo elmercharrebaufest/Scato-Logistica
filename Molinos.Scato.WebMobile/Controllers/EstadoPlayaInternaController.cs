@@ -86,11 +86,10 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult MostrarDetalleCamion(string patente, int calleId)
         {
             var model = servicio.ObtenerInfoPatente(patente, calleId);
-            var calle = servicio.ObtenerCalle(calleId);
-            if(model.RecorridoId != null && calle.TipoCalle == TipoCalle.SalidaNoGranos)
+            if(model.RecorridoId != null)
             {
                 var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
-                model.CorrespondeConfirmarCargaDescarga = !servicio.ExisteConfirmacionCargaDescargaDeRecorrido(model.RecorridoId ?? 0) && servicio.TienePermiso(usuario.Value, PermisosScato.ConfirmacionCargaDescarga);
+                model.CorrespondeConfirmarCargaDescarga = servicio.ExisteConfirmacionCargaDescargaDeRecorrido(model.RecorridoId ?? 0) && servicio.TienePermiso(usuario.Value, PermisosScato.ConfirmacionCargaDescarga);
             }
             return PartialView("_DetalleCamion", model);
         }
@@ -105,13 +104,31 @@ namespace Molinos.Scato.WebMobile.Controllers
                 var confirmacion = new ConfirmacionCargaDescargaDto()
                 {
                     RecorridoId = recorridoId,
-                    WorkflowInstanceId = workflowInstance,
+                    FechaConfirmacion = DateTime.Now,
+                    Confirmado = true,
+                    PendienteConfirmacion = false,
                     NombreUsuario = usuario.Value
                 };
-                var resultado = servicioComandos.Ejecutar(new CrearConfirmacionCargaDescarga
+                var resultado = servicioComandos.Ejecutar(new ActualizarConfirmacionCargaDescarga
                 {
                     Dto = confirmacion
                 });
+
+                if(!resultado.HayErrores)
+                {
+                    var controlRecorrido = new ControlRecorridoDto()
+                    {
+                        WorkflowInstanceId = workflowInstance,
+                        Actividad = EtapaWorkflow.ConfirmacionCargaDescarga,
+                        ActividadXaml = EtapaWorkflow.ConfirmacionCargaDescarga,
+                        NombreUsuario = usuario.Value
+                    };
+                    resultado = servicioComandos.Ejecutar(new CrearControlRecorrido
+                    {
+                        Dto = controlRecorrido
+                    });
+                }
+
                 if (resultado.HayErrores)
                 {
                     foreach (var item in resultado.Errores)

@@ -7,9 +7,11 @@ namespace Molinos.Scato.Dominio.Dto
     {
         [DataMember]
         public int Id { get; set; }
-        public string NombreUsuario { get; set; }
-        public DateTime FechaConfirmacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
         public int RecorridoId { get; set; }
-        public Guid WorkflowInstanceId { get; set; }
+        public string NombreUsuario { get; set; }
+        public DateTime? FechaConfirmacion { get; set; }
+        public bool Confirmado { get; set; }
+        public bool PendienteConfirmacion { get; set; }
     }
 }

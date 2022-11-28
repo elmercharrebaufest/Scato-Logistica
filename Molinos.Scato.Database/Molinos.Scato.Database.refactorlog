@@ -693,4 +693,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Recorrido_Id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="8b169238-d5d4-4cd0-ab6b-4b7c3f62a77a" ChangeDateTime="11/25/2022 20:31:53">
+    <Property Name="ElementName" Value="[dbo].[ConfirmacionCargaDescarga].[EstaConfirmado]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfirmacionCargaDescarga]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Confirmado" />
+  </Operation>
 </Operations>
