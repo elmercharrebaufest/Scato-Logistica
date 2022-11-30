@@ -622,6 +622,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.ConfiguracionEficienciaCalado_Titulo, "Index", "ConfiguracionEficienciaCalado")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionCalleHidraulica))
+                                {
+                                    <li>@Html.ActionLink(Textos.Configuracion_CalleHidraulica, "Index", "ConfiguracionCalleHidraulica")</li>
+                                }
                             </ul>
                         </li>
 

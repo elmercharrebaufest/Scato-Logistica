@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
@@ -12,12 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
 {
+    [Autorizacion(PermisosScato.AbmConfiguracionCalleHidraulica)]
     public class ConfiguracionCalleHidraulicaController : BaseController
     {
         private readonly ILogger log;
@@ -157,8 +158,9 @@ namespace Molinos.Scato.Web.Controllers
         private void SetearVista(ConfiguracionCalleHidraulicaDto calleHidraulica = null )
         {
             ViewBag.SensoresBajada = servicioOrquestador.ListarSensores().ToSelectList(x => x.Codigo, x => x.Descripcion);
-            ViewBag.LectoresQr = servicioOrquestador.ListarLectoresQr().ToSelectList(x => x.Codigo, x => x.Descripcion);
+            ViewBag.Carteles = servicioOrquestador.ListarCartelesLed().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.Calles = servicio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString(), Selected = calleHidraulica != null ? calleHidraulica.CalleId == x.Id : false });
+            ViewBag.Camaras = servicioOrquestador.ListarCamaras().ToSelectList(x => x.Codigo, x => x.Descripcion);
         }
     }
 }

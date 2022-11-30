@@ -1,8 +1,9 @@
 @model Molinos.Scato.Dominio.Dto.ConfiguracionCalleHidraulicaDto
 @{
     var sensoresBajada = (IEnumerable<SelectListItem>)ViewBag.SensoresBajada;
-    var lectoresQr = (IEnumerable<SelectListItem>)ViewBag.lectoresQr;
     var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+    var carteles = (IEnumerable<SelectListItem>)ViewBag.Carteles;
+    var camaras = (IEnumerable<SelectListItem>)ViewBag.Camaras;
 }
 
 <div class="control-group">
@@ -15,7 +16,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.CodigoCartel, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.CodigoCartel, lectoresQr, string.Empty)
+        @Html.DropDownListFor(model => model.CodigoCartel, carteles, string.Empty)
         @Html.ValidationMessageFor(model => model.CodigoCartel)
     </div>
 </div>
@@ -36,7 +37,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.CodigoCamaraALPR, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.CodigoCamaraALPR, sensoresBajada, string.Empty)
+        @Html.DropDownListFor(model => model.CodigoCamaraALPR, camaras, string.Empty)
         @Html.ValidationMessageFor(model => model.CodigoCamaraALPR)
     </div>
 </div>
