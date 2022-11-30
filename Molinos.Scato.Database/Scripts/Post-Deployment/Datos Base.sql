@@ -1177,6 +1177,7 @@ IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaAva
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaRetrocederCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaRetrocederCamion', 1, 'Retroceda, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePrecaladoACalar') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePrecaladoACalar', 1, 'asignado a', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePostcalado') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePostcalado', 1, 'Avance a garita de salida - ', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoAutomaticoVolcadoras') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoAutomaticoVolcadoras', 1, '', '01', '01', '00', 0, '', 1) END
 
 GO
 GO

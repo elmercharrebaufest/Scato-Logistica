@@ -77,7 +77,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (primerosCamiones.Count > 0)
             {
                 var camionLlamado = primerosCamiones.OrderBy(x => x.FechaLlegadaACalleHidraulica).FirstOrDefault();
-                EnviarMensajeACartel(camionLlamado.CodigoCartel, $"{camionLlamado.Patente} dirigirse a {hidraulica.Hidraulica.Nombre}");
+                EnviarMensajeACartel(camionLlamado.CodigoCartel, $"{camionLlamado.Patente} avance a {hidraulica.Hidraulica.Nombre}");
                 hidraulica.Estado = EstadoHidraulica.Llamando;
                 hidraulica.UltimaPatenteLlamada = camionLlamado.Patente;
             }
@@ -87,16 +87,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
+                var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
                     servicioComandos.Ejecutar(new EnviarMensajeCarteLed
                     {
                         Mensaje = mensaje,
                         Codigo = codigoCartel,
-                        NumeroPrograma = "01",
-                        NumeroTrama = "01",
-                        NumeroVariable = "00",
-                        SegundosDeEspera = 0
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = mensajeCartel.Trama,
+                        NumeroVariable = mensajeCartel.Variable,
+                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
                     });
                 }
             }
