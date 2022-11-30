@@ -179,7 +179,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarTodasLasCallesPorRecorrido(x.Id).Count() == 0).ToList();
                 }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarTodasLasCallesPorRecorrido(c.Id).Count() < c.CantidadDeCamiones );
-            ViewBag.CallesPostCalado = callesDisponibles.Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
+            ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
             
             return PartialView("_MoverCamionRechazado", model);
         }
