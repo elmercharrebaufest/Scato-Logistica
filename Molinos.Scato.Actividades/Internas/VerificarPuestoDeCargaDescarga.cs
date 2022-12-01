@@ -4,6 +4,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -46,6 +47,18 @@ namespace Molinos.Scato.Actividades.Internas
                             Estado = EstadoHidraulica.Ocupado,
                             Patente = recorrido.Patente
                         });
+
+                        // Se liberan hidraulicas que llamaron incorrectamente a una misma patente, el cual ya se encuentra en otra hidraulica
+                        var hidraulicasPorLiberar = servicio.ListarHidraulicasPorEstado(EstadoHidraulica.Llamando).Where(x => x.UltimaPatenteLlamada == recorrido.Patente);
+                        foreach (var hidraulica in hidraulicasPorLiberar)
+                        {
+                            servicioComando.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica
+                            {
+                                Id = hidraulica.HidraulicaId,
+                                Estado = EstadoHidraulica.Disponible,
+                                Patente = string.Empty
+                            });
+                        }
                     }
                 }
             }

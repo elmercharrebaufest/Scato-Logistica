@@ -59,6 +59,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (resultado == null || string.IsNullOrEmpty(resultado.Patente))
                     continue;
 
+                var hidraulicas = Repositorio.Listar<LlamadoAutomaticoHidraulica>(x => x.UltimaPatenteLlamada == resultado.Patente);
+                if (hidraulicas.Any())
+                    continue;
+
                 var datosCamion = ObtenerDatosPorPatente(resultado.Patente);
                 if (datosCamion == null)
                     continue;
