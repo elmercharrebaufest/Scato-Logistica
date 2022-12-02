@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
@@ -7,6 +8,7 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -75,6 +77,45 @@ namespace Molinos.Scato.Servicios.Impl
 
                     case "LecturaCPE":
                         LecturaCartaPorteElectronica(notificacion.CodigoDispositivo, int.Parse(notificacion.Datos["QR"]));
+                        break;
+
+                    case CodigosEventos.CambioEstadoSensorCamaraALPR:
+                        var patente = notificacion.Datos["Patente"];
+                        var hidraulicasDisponibles = repositorio.ListarHidraulicasPorEstado(EstadoHidraulica.Disponible);
+                        if (!hidraulicasDisponibles.Any())
+                            break;
+
+                        var hidraulicasDiponsibleId = hidraulicasDisponibles.Select(x => x.HidraulicaId).ToList();
+                        var datosDeCamion = ObtenerDatosPorPatente(patente);
+                        if (datosDeCamion == null)
+                            break;
+
+                        var hidraulicaAsignadaId = datosDeCamion.HidraulicasId.FirstOrDefault(x => hidraulicasDiponsibleId.Contains(x));
+                        if (hidraulicaAsignadaId == 0)
+                            break;
+
+                        var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
+                        var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
+                        EnviarMensajeACartel(configuracionCalle.CodigoCartel, $"{patente} avance a {nombreHidraulicaAsignada}");
+                        ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente);
+                        break;
+
+                    case CodigosEventos.CambioEstadoSensorGeneral:
+                        if(Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
+                        {
+                            switch (tipoAccion)
+                            {
+                                case TipoAccionSensor.CamionCruzo:
+                                    var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(notificacion.CodigoDispositivo);
+                                    EnviarMensajeACartel(configuracionCalleHidraulica.CodigoCartel, "PARE");
+                                    break;
+
+                                case TipoAccionSensor.HidraulicaBajo:
+                                    var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
+                                    ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty);
+                                    break;
+                            }
+                        }
                         break;
                 }
             }
@@ -171,6 +212,70 @@ namespace Molinos.Scato.Servicios.Impl
                         }
                     }
                 }
+            }
+        }
+        
+        private CamionHidraulicaDto ObtenerDatosPorPatente(string patente)
+        {
+            CamionHidraulicaDto datosCamion = null;
+            try
+            {
+                var recorrido = repositorio.ObtenerRecorridoActivoPorPatente(patente);
+                if(recorrido != null)
+                {
+                    datosCamion = new CamionHidraulicaDto()
+                    {
+                        Patente = patente,
+                        HidraulicasId = recorrido.HidraulicasId,
+                        RecorridoId = recorrido.Id
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se obtener datos por patente {0}", patente);
+            }
+            return datosCamion;
+        }
+
+        private void EnviarMensajeACartel(string codigoCartel, string mensaje)
+        {
+            try
+            {
+                var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
+                if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
+                {
+                    servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                    {
+                        Mensaje = mensaje,
+                        Codigo = codigoCartel,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = mensajeCartel.Trama,
+                        NumeroVariable = mensajeCartel.Variable,
+                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
+        }
+
+        private void ActualizarEstadoHidraulica(int hidraulicaId, EstadoHidraulica nuevoEstado, string patenteLlamada)
+        {
+            try
+            {
+                servicioComandos.Ejecutar(new ActualizarLlamadoAutomaticoHidraulica
+                {
+                    Id = hidraulicaId,
+                    Estado = nuevoEstado,
+                    Patente = patenteLlamada
+                });
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo actualizar el estado de hidraulica");
             }
         }
     }

@@ -208,6 +208,7 @@
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\VisteoMobileController.cs" />
+    <Compile Include="Controllers\EstadoVolcadorasController.cs" />
     <Compile Include="Filtros\DateTimeModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,10 +222,12 @@
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\cartelesVolcables.css" />
     <Content Include="Content\eficienciaCalado.css" />
     <Content Include="Content\estadoPlayaInterna.css" />
     <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
+    <Content Include="Scripts\cartelesVolcables.js" />
     <Content Include="Scripts\estadoPlayaInterna.js" />
     <Content Include="Scripts\knockout-fast-foreach.min.js" />
     <Compile Include="Seguridad\FixedWsFederationAuthenticationModule.cs" />
@@ -520,6 +523,7 @@
     <Content Include="Views\EstadoPlayaInterna\_CallesHeader.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_BuscadorPatente.cshtml" />
+    <Content Include="Views\EstadoVolcadoras\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -170,6 +170,8 @@
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionCalleHidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LlamadoAutomaticoHidraulicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfigSensoresMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
@@ -530,6 +532,13 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLoteInase.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
@@ -638,6 +647,7 @@
     <Compile Include="Procesamiento\ProcesadorLiberarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcalado.cs" />
     <Compile Include="Procesamiento\ProcesadorSincronizarResultadosCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCancelarSuscripcionDispositivos.cs" />
     <Compile Include="Procesamiento\ProcesadorSuscribirDispositivos.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarStock.cs" />

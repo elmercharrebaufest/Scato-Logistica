@@ -7,6 +7,7 @@ using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Controllers;
 using Molinos.Scato.Web.Models;
 using Moq;
@@ -21,6 +22,7 @@ namespace Molinos.Scato.Test.Controllers
         private PuestosDeCargaDescargaController target;
         private Mock<IServicioRepositorio> servRepositorioMock;
         private Mock<IServicioComandos> servComandosMock;
+        private Mock<IServicioOrquestador> servOrquestadorMock;
         private List<PuestosDeCargaDescargaDto> hidraulicaDto;
 
         [SetUp]
@@ -28,7 +30,8 @@ namespace Molinos.Scato.Test.Controllers
         {
             servRepositorioMock = new Mock<IServicioRepositorio>();
             servComandosMock = new Mock<IServicioComandos>();
-            target = new PuestosDeCargaDescargaController(null, servRepositorioMock.Object, servComandosMock.Object);
+            servOrquestadorMock = new Mock<IServicioOrquestador>();
+            target = new PuestosDeCargaDescargaController(null, servRepositorioMock.Object, servComandosMock.Object, servOrquestadorMock.Object);
 
             hidraulicaDto = new List<PuestosDeCargaDescargaDto>
                 {
@@ -103,7 +106,7 @@ namespace Molinos.Scato.Test.Controllers
             var result = target.Crear(hidraulicaDto[0], datosUsuario) as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
 
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.NotNull(result);
             Assert.AreEqual(result.Content, expectedResult.Content);
         }
@@ -123,7 +126,7 @@ namespace Molinos.Scato.Test.Controllers
 
             var result = target.Crear(hidraulicaDto[0], datosUsuario) as ViewResult;
 
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.NotNull(result.Model);
             Assert.AreEqual(target.ModelState.IsValid, false);
             Assert.IsNull(result.View);
@@ -172,7 +175,7 @@ namespace Molinos.Scato.Test.Controllers
 
             var result = target.Modificar(tipoDto, datosUsuario) as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.NotNull(result);
             Assert.AreEqual(result.Content, expectedResult.Content);
         }
@@ -201,7 +204,7 @@ namespace Molinos.Scato.Test.Controllers
 
             var result = target.Modificar(tipoDto, datosUsuario) as ViewResult;
 
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.NotNull(result.Model);
             Assert.IsNull(result.View);
             Assert.AreEqual(target.ModelState.IsValid, false);
@@ -224,7 +227,7 @@ namespace Molinos.Scato.Test.Controllers
 
             var actual = target.Eliminar(0) as ContentResult;
 
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.NotNull(actual);
         }
 
@@ -247,7 +250,7 @@ namespace Molinos.Scato.Test.Controllers
 
             var actual = target.Eliminar(0) as ContentResult;
 
-            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
+            servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Dominio.Comandos.Comando>()), Times.Exactly(1));
             Assert.That(actual.Content, Is.EqualTo("error"));
         }
     }

@@ -179,10 +179,30 @@ namespace Molinos.Scato.WebMobile.Controllers
                     calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarTodasLasCallesPorRecorrido(x.Id).Count() == 0).ToList();
                 }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarTodasLasCallesPorRecorrido(c.Id).Count() < c.CantidadDeCamiones );
-            ViewBag.CallesPostCalado = callesDisponibles.Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
+            ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
             
             return PartialView("_MoverCamionRechazado", model);
         }
+
+        [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
+        public JsonResult LlamarCallePostCalado(int calleId)
+        {
+            try
+            {
+                var calle = servicio.ObtenerCalle(calleId);
+                calle.Bloqueada = true;
+                calle.FechaLLamada = DateTime.Now;
+          
+                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                EnviarMensajeLlamadoACartelPostCalado(calle);
+            }
+            catch (Exception e)
+            {
+                log.Error(e, $"No se pudo llamar la calle {calleId}");
+            }
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult ConfirmarRechazado(Guid instanciaWorflow)
         {
@@ -221,6 +241,34 @@ namespace Molinos.Scato.WebMobile.Controllers
                         servicioComandos.Ejecutar(new EnviarMensajeCarteLed
                         {
                             Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {callesDeCalador.Valor}",
+                            Codigo = cartel.Valor,
+                            NumeroPrograma = mensajeCartel.Programa,
+                            NumeroTrama = mensajeCartel.Trama,
+                            NumeroVariable = mensajeCartel.Variable,
+                            SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
+        }
+
+        private void EnviarMensajeLlamadoACartelPostCalado(CalleDto callePostCalado)
+        {
+            try
+            {
+                var cartel = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePostCalado", "CartelLedPostCalado");
+                var mensajeCartel = servicio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoCallePostcalado);
+                if (mensajeCartel != null && cartel != null)
+                {
+                    if (!string.IsNullOrEmpty(cartel.Valor))
+                    {
+                        servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                        {
+                            Mensaje = $"{mensajeCartel.Mensaje} {callePostCalado.Nombre}",
                             Codigo = cartel.Valor,
                             NumeroPrograma = mensajeCartel.Programa,
                             NumeroTrama = mensajeCartel.Trama,

@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -27,10 +28,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             hidraulica.EsSojaSustentable = comando.Dto.EsSojaSustentable;
             hidraulica.EsEspecial = comando.Dto.EsEspecial;
+            hidraulica.CodigoSensorBajada = comando.Dto.CodigoSensorBajada;
         }
 
         protected override void Validar(ModificarPuestosDeCargaDescarga comando, Resultado resultado)
         {
+            if (Repositorio.Existe<PuestosDeCargaDescarga>(e => e.CodigoSensorBajada == comando.Dto.CodigoSensorBajada && (comando.Dto.Id == 0 || e.Id != comando.Dto.Id)))
+            {
+                resultado.Error("CodigoSensorBajada", string.Format(Textos.Error_Existente, Textos.PuestosDeCargaDescarga_CodigoSensorBajada));
+            }
         }
     }
 }

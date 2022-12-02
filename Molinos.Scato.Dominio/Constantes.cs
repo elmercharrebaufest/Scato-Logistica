@@ -32,6 +32,10 @@
         public struct CodigosEventos
         {
             public const string CambioEstadoIntercomunicador = "CambioEstadoIntercomunicador";
+            public const string CambioEstadoSensorCamaraALPR = "CambioEstadoSensorCamaraALPR";
+            public const string CambioEstadoSensorGeneral = "CambioEstadoSensorGeneral";
+            public const string CambioEstadoSensorCirculacion = "CambioEstadoSensorCirculacion";
+            public const string CambioEstadoCamaraALPR = "CambioEstadoCamaraALPR";
         }
 
         public struct AFIPCodigoDeError
@@ -80,6 +84,7 @@
         public struct EtapaWorkflow
         {
             public const string Visteo = "Visteo";
+            public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
         }
     }
 }

@@ -141,6 +141,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 98) BEGIN INSERT INTO [Permi
 IF NOT EXISTS (select 1 from Permiso where Codigo = 99) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('CP Otros Puertos', 0, 99, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 604) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Categoria Camiones',0,604, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 609) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Sensores',0,609, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 701) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Calle Hidraulica',0,701, NULL); END
+
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 100) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Descuentos Entregador', 1, 100, 'AutorizarDescuentosEntregador'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 101) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Transportista Inhabilitado', 1, 101, 'AutorizarTransportistaInhabilitado'); END
@@ -409,6 +411,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 608) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ver Revertir Rechazo Vagones',1,608, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 610) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Envío Muestra INASE',1,610, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 612) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Confirmación Carga/Descarga', 1, 612, NULL); END
 
 --IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
@@ -1175,6 +1178,8 @@ IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaLim
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaAvanzarCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaAvanzarCamion', 1, 'Avance, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaRetrocederCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaRetrocederCamion', 1, 'Retroceda, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePrecaladoACalar') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePrecaladoACalar', 1, 'asignado a', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePostcalado') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePostcalado', 1, 'Avance a garita de salida - ', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoAutomaticoVolcadoras') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoAutomaticoVolcadoras', 1, '', '01', '01', '00', 0, '', 1) END
 
 GO
 GO
@@ -1445,6 +1450,11 @@ END
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PreLote' AND  Nombre = 'HorarioNocturnoHasta' AND  Centro_Id IS NULL) 
 BEGIN 
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PreLote', 'HorarioNocturnoHasta', '7', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePostCalado' AND  Nombre = 'CartelLedPostCalado' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePostCalado', 'CartelLedPostCalado', '', NULL, GETDATE(), 'SCATO')
 END
 
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 

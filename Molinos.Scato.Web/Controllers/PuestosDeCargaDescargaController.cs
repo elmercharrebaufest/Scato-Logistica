@@ -6,10 +6,12 @@ using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -18,12 +20,17 @@ namespace Molinos.Scato.Web.Controllers
     {
         private readonly ILogger log;
         private readonly IServicioComandos servicioComandos;
+        private readonly IServicioOrquestador servicioOrquestador;
 
-        public PuestosDeCargaDescargaController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos)
+        public PuestosDeCargaDescargaController(ILogger log, 
+            IServicioRepositorio servicio, 
+            IServicioComandos servicioComandos,
+            IServicioOrquestador servicioOrquestador)
             : base(servicio)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
+            this.servicioOrquestador = servicioOrquestador;
         }
 
         [DatosUsuario]
@@ -68,9 +75,31 @@ namespace Molinos.Scato.Web.Controllers
             if (ModelState.IsValid)
             {
                 tipo.CentroId = datosUsuario.CentroId;
+                var hidraulicaActual = servicio.ObtenerHidraulica(tipo.Id);
                 var resultado = servicioComandos.Ejecutar(new ModificarPuestosDeCargaDescarga { Dto = tipo });
                 if (!resultado.HayErrores)
                 {
+                    if(hidraulicaActual.CodigoSensorBajada != tipo.CodigoSensorBajada)
+                    {
+                        if(!string.IsNullOrEmpty(hidraulicaActual.CodigoSensorBajada))
+                        {
+                            servicioComandos.Ejecutar(new CancelarSuscripcionDispositivos
+                            {
+                                Codigo = hidraulicaActual.CodigoSensorBajada,
+                                RutaWeb = false
+                            });
+                        }
+
+                        if(!string.IsNullOrEmpty(tipo.CodigoSensorBajada))
+                        {
+                            servicioComandos.Ejecutar(new SuscribirDispositivos
+                            {
+                                Codigo = tipo.CodigoSensorBajada,
+                                Evento = CodigosEventos.CambioEstadoSensorGeneral,
+                                RutaWeb = false
+                            });
+                        }
+                    }
                     return new AjaxEditSuccessResult();
                 }
                 ModelState.AgregarErrores(resultado);
@@ -82,7 +111,16 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         public ActionResult Eliminar(int id)
         {
+            var hidraulica = servicio.ObtenerHidraulica(id);
             var resultado = servicioComandos.Ejecutar(new EliminarPuestosDeCargaDescarga {Id = id});
+            if(!resultado.HayErrores && !string.IsNullOrEmpty(hidraulica.CodigoSensorBajada))
+            {
+                servicioComandos.Ejecutar(new CancelarSuscripcionDispositivos
+                {
+                    Codigo = hidraulica.CodigoSensorBajada,
+                    RutaWeb = false
+                });
+            }
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
         }
 
@@ -103,6 +141,15 @@ namespace Molinos.Scato.Web.Controllers
                 var resultado = servicioComandos.Ejecutar(new CrearPuestosDeCargaDescarga { Dto = tipo });
                 if (!resultado.HayErrores)
                 {
+                    if(!string.IsNullOrEmpty(tipo.CodigoSensorBajada))
+                    {
+                        servicioComandos.Ejecutar(new SuscribirDispositivos
+                        {
+                            Codigo = tipo.CodigoSensorBajada,
+                            Evento = CodigosEventos.CambioEstadoSensorGeneral,
+                            RutaWeb = false
+                        });
+                    }
                     return new AjaxEditSuccessResult();
                 }
                 ModelState.AgregarErrores(resultado);
@@ -114,6 +161,7 @@ namespace Molinos.Scato.Web.Controllers
         private void SetearVista(DatosUsuario datosUsuario)
         {
             ViewBag.PuestosDeTrabajo = servicio.ListarPuestosDeTrabajoPorCentro(datosUsuario.CentroId).OrderBy(c => c.NombrePuesto).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.NombrePuesto);
+            ViewBag.SensoresBajada = servicioOrquestador.ListarSensores().ToSelectList(x => x.Codigo, x => x.Descripcion);
         }
     }
 }
