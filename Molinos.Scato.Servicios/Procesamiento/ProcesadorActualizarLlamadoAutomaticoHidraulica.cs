@@ -29,15 +29,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ActualizarLlamadoAutomaticoHidraulica comando)
         {
             var resultado = new Resultado();
-            var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(q => q.Hidraulica.Id == comando.Id);
-            hidraulica.Estado = comando.Estado;
-            hidraulica.UltimaPatenteLlamada = comando.Patente;
-            hidraulica.FechaUltimaModificacionEstado = DateTime.Now;
-            if (comando.Estado == EstadoHidraulica.Disponible)
+            var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(q => q.Hidraulica.Id == comando.Id && (q.Estado != EstadoHidraulica.Inhabilitado || comando.Estado == EstadoHidraulica.Disponible));
+            if(hidraulica != null)
             {
-                LlamadoAutomaticoVolcadora(hidraulica);
+                hidraulica.Estado = comando.Estado;
+                hidraulica.UltimaPatenteLlamada = comando.Patente;
+                hidraulica.FechaUltimaModificacionEstado = DateTime.Now;
+                if (comando.Estado == EstadoHidraulica.Disponible)
+                {
+                    LlamadoAutomaticoVolcadora(hidraulica);
+                }
+                Repositorio.GuardarCambios();
             }
-            Repositorio.GuardarCambios();
 
             return resultado;
         }
