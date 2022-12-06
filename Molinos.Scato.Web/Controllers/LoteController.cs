@@ -117,7 +117,7 @@ namespace Molinos.Scato.Web.Controllers
                                     WorkflowId = muestra.WorkflowInstanceId,
                                 };
 
-                                var resultadoComando = servicioComandos.Ejecutar(new ImprimirEnvioLoteACamara { Dto = dto, CantidadCopias = 1 });
+                                var resultadoComando = servicioComandos.Ejecutar(new ImprimirEnvioLoteACamara { Dto = dto, CantidadCopias = 2 });
                             }
                         }
                     }
