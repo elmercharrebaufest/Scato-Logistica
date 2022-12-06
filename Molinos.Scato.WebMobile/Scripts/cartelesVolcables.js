@@ -17,15 +17,15 @@ $(function () {
 
 function ActualizarInfoHidraulica(hidraulica) {
     if (hidraulica.Id > 0) {
-        $(`#tiempo-${hidraulica.Id}`).html(CalcularTiempoEnCola(hidraulica.FechaUltimaModificacionEstado));
-        $(`#estado-${hidraulica.Id}`).text(Object.keys(EstadoHidraulica).find(key => EstadoHidraulica[key] === hidraulica.Estado));
-        Coloreado(hidraulica.Estado, hidraulica.Id);
-        $(`#nombre-${hidraulica.Id}`).text(hidraulica.HidraulicaNombre);
+        $(`#tiempo-${hidraulica.HidraulicaId}`).html(CalcularTiempoEnCola(hidraulica.FechaUltimaModificacionEstado));
+        $(`#estado-${hidraulica.HidraulicaId}`).text(Object.keys(EstadoHidraulica).find(key => EstadoHidraulica[key] === hidraulica.Estado));
+        Coloreado(hidraulica.Estado, hidraulica.HidraulicaId);
+        $(`#nombre-${hidraulica.HidraulicaId}`).text(hidraulica.HidraulicaNombre);
         if (hidraulica.UltimaPatenteLlamada && hidraulica.UltimaPatenteLlamada.length > 0) {
-            $(`#patente-${hidraulica.Id}`).text(hidraulica.UltimaPatenteLlamada);
+            $(`#patente-${hidraulica.HidraulicaId}`).text(hidraulica.UltimaPatenteLlamada);
         } else {
-            $(`#patente-${hidraulica.Id}`).text("-");
-            $(`#patente-${hidraulica.Id}`).addClass("text-white");
+            $(`#patente-${hidraulica.HidraulicaId}`).text("-");
+            $(`#patente-${hidraulica.HidraulicaId}`).addClass("text-white");
         }
     }
 }

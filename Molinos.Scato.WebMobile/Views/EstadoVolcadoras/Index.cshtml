@@ -24,37 +24,37 @@
         @foreach (var hidraulica in Model)
         {
             <div class="hidraulica">
-                <div id="tiempo-@hidraulica.Id" class="hidraulica__tiempo"></div>
-                <h6 id="nombre-@hidraulica.Id" class="hidraulica__nombre"></h6>
-                <h6 id="estado-@hidraulica.Id"></h6>
-                <h6 id="patente-@hidraulica.Id"></h6>
+                <div id="tiempo-@hidraulica.HidraulicaId" class="hidraulica__tiempo"></div>
+                <h6 id="nombre-@hidraulica.HidraulicaId" class="hidraulica__nombre"></h6>
+                <h6 id="estado-@hidraulica.HidraulicaId"></h6>
+                <h6 id="patente-@hidraulica.HidraulicaId"></h6>
                 <div class="hidraulica__buttons">
-                    <button id="habilitado-@hidraulica.Id"
+                    <button id="habilitado-@hidraulica.HidraulicaId"
                             disabled type="button"
                             class="btn btn-primary"
-                            onclick="OpenModal(true, '@hidraulica.Id')">
+                            onclick="OpenModal(true, '@hidraulica.HidraulicaId')">
                         Habilitar
                     </button>
-                    <button id="deshabilitado-@hidraulica.Id"
+                    <button id="deshabilitado-@hidraulica.HidraulicaId"
                             disabled type="button"
                             class="btn btn-secondary"
-                            onclick="OpenModal(false, '@hidraulica.Id')">
+                            onclick="OpenModal(false, '@hidraulica.HidraulicaId')">
                         Deshabilitar
                     </button>
                 </div>
             </div>
 
-            <dialog id="modalConfirmarHabilitarDeshabilitar-@hidraulica.Id">
+            <dialog id="modalConfirmarHabilitarDeshabilitar-@hidraulica.HidraulicaId">
                 <h4>@Textos.Confirmacion</h4>
                 <p>
                     ¿Confirma el cambio de estado?
                 </p>
                 <div>
-                    <button type="button" id="btn-confirm" onclick="CambiarEstado('@hidraulica.Id', '@hidraulica.HidraulicaNombre')"
+                    <button type="button" id="btn-confirm" onclick="CambiarEstado('@hidraulica.HidraulicaId', '@hidraulica.HidraulicaNombre')"
                             class="btn btn-warning">
                         Confirmar
                     </button>
-                    <button class="btn" onclick="Cerrar('@hidraulica.Id')">Cerrar</button>
+                    <button class="btn" onclick="Cerrar('@hidraulica.HidraulicaId')">Cerrar</button>
                 </div>
             </dialog>
         }
