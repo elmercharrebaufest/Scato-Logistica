@@ -27,6 +27,7 @@
     [CPE]                        BIT           DEFAULT ((0)) NOT NULL,
     [FotoRutaSustentable]        NVARCHAR(255) NULL,
     [EnProgresoAutomatico]       BIT           DEFAULT((0)) NOT NULL,
+    [IngresoAvanceCPEAutomatico] BIT           DEFAULT((0)) NOT NULL,
     CONSTRAINT [PK_dbo.CargaDeCupo] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.CargaDeCupo_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
     CONSTRAINT [FK_dbo.CargaDeCupo_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),

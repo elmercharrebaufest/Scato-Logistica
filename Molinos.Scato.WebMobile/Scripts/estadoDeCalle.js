@@ -39,15 +39,26 @@ function Calle(item, context) {
     self.LLamar = function () {
         $.blockUI({
             blockMsgClass: 'blocuiBox',
-            message: '<h5>' + cargandoGif() + ' LLamando a ' + self.Nombre +'</h5>'
+            message: '<h5>' + cargandoGif() + ' LLamando a ' + self.Nombre + '</h5>'
         });
 
-        $.getJSON(urlLLamarCalle, { calleId: self.Id, calleCaladoId: self.CalleCalado.Id },
-            function () {
-                self.Llamada(true);
-                $.unblockUI();
-            }
-        );
+        if(self.TipoCalle == 2){
+            $.getJSON(urlLLamarCallePostCalado, { calleId: self.Id },
+                function () {
+                    self.Llamada(true);
+                    $.unblockUI();
+                }
+            );
+        }
+
+        else {
+            $.getJSON(urlLLamarCalle, { calleId: self.Id, calleCaladoId: self.CalleCalado.Id },
+                function () {
+                    self.Llamada(true);
+                    $.unblockUI();
+                }
+            );
+        }
     }
     self.CancelarLLamado = function () {
         $.blockUI({
@@ -96,9 +107,9 @@ function Calle(item, context) {
             blockMsgClass: 'blocuiBox',
             message: '<h5>' + cargandoGif() + (self.Automatica() ? 'Activando' : 'Desactivando') + ' llamando automático para ' + self.Nombre + '</h5>'
         });
-        $.getJSON(urlLLamadoAutomaticoCalle, { calleId: self.Id, materialId: self.MaterialId(), activar: true, motivo:"" },
+        $.getJSON(urlLLamadoAutomaticoCalle, { calleId: self.Id, materialId: self.MaterialId(), activar: true, motivo: "" },
             function (itemActualizado) {
-                
+
                 self.Automatica(itemActualizado.Automatica);
                 self.MaterialId(itemActualizado.MaterialId.toString());
 
@@ -240,7 +251,7 @@ function EstadoDeCallesViewModel() {
     };
     self.CallesLLamadas = function (tipoCalle, tipoCalle2, tipoCalle3, materialId) {
         self.dummy();
-    //mejorar para que reciba lista de calles a filtrar
+        //mejorar para que reciba lista de calles a filtrar
         var array = ko.utils.arrayFilter(self.Calles(), function (customer) {
             return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2 || customer.TipoCalle == tipoCalle3) && (!materialId || materialId == customer.MaterialId()) && customer.Llamada();
         });
@@ -272,7 +283,7 @@ function EstadoDeCallesViewModel() {
     };
     self.Recalcular = function () {
         self.dummy.notifySubscribers();
-    }; 
+    };
     self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(4); });
     self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
@@ -281,7 +292,7 @@ function EstadoDeCallesViewModel() {
     self.CantidadPellet = ko.computed(function () { return self.sumarCamiones(63750); });
     self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
 
-    self.ListarCamiones = function () { 
+    self.ListarCamiones = function () {
         $.ajax({
             url: urlEstadoDeCalles,
             type: 'POST',
@@ -308,31 +319,35 @@ function EstadoDeCallesViewModel() {
                     // Validar si existe calador para fila precalado o circular
                     var filaCalador = null;
                     if (filasCalador != null && filasCalador.length > 0) {
-                        let menor = 9999;
                         $.each(filasCalador, function (key, value) {
                             if (value.FilasPrecalado.find(x => x.Id == calle.Id)
-                                && value.FilasPrecaladoLlamadas.length < menor) {
+                                && value.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
                                 filaCalador = value;
-                                menor = value.FilasPrecaladoLlamadas.length;
+                                if(calle.CalleCalado != null){
+                                    return true;
+                                }
+                                if (caladoAutomatico && calle.TipoCalle == 7) {
+                                    calle.CalleCalado = filaCalador;
+                                    value.FilasPrecaladoLlamadas++;
+                                    calle.LlamarCircular();
+                                }
+
+                                if (caladoAutomatico && calle.TipoCalle == 1) {
+                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+                                        calle.CalleCalado = filaCalador;
+                                        value.FilasPrecaladoLlamadas++;
+                                        calle.LlamarPrecalado();
+                                    }
+                                }
                             }
                         });
                     }
 
-                    if (caladoAutomatico && calle.TipoCalle == 7 && filaCalador != null) {
-                        calle.CalleCalado = filaCalador;
-                        calle.LlamarCircular();
-                    }
 
-                    if (caladoAutomatico && calle.TipoCalle == 1 && filaCalador != null) {
-                        if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
-                            calle.CalleCalado = filaCalador;
-                            calle.LlamarPrecalado();
-                        }
-                    }
 
                 });
                 self.Materiales(allData.materiales);
-                
+
             },
             error: function (data) {
                 setTimeout(recargar, 2000);
@@ -410,7 +425,7 @@ function ConfirmarEnviarAFilaRechazado() {
         url: urlConfirmarRechazado,
         data: {
             instanciaWorflow: $('#InstanciaWorflow').val()
-           
+
         },
         type: "POST",
         success: function (result) {

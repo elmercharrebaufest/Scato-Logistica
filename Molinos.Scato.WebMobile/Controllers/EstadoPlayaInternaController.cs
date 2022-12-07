@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -85,7 +86,64 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult MostrarDetalleCamion(string patente, int calleId)
         {
             var model = servicio.ObtenerInfoPatente(patente, calleId);
+            if(model.RecorridoId != null)
+            {
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                model.CorrespondeConfirmarCargaDescarga = servicio.ExisteConfirmacionCargaDescargaDeRecorrido(model.RecorridoId ?? 0) && servicio.TienePermiso(usuario.Value, PermisosScato.ConfirmacionCargaDescarga);
+            }
             return PartialView("_DetalleCamion", model);
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmarCargaDescarga(Guid workflowInstance, int recorridoId)
+        {
+            var response = new RespuestaEstandarDto();
+            try
+            {
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                var confirmacion = new ConfirmacionCargaDescargaDto()
+                {
+                    RecorridoId = recorridoId,
+                    FechaConfirmacion = DateTime.Now,
+                    Confirmado = true,
+                    PendienteConfirmacion = false,
+                    NombreUsuario = usuario.Value
+                };
+                var resultado = servicioComandos.Ejecutar(new ActualizarConfirmacionCargaDescarga
+                {
+                    Dto = confirmacion
+                });
+
+                if(!resultado.HayErrores)
+                {
+                    var controlRecorrido = new ControlRecorridoDto()
+                    {
+                        WorkflowInstanceId = workflowInstance,
+                        Actividad = EtapaWorkflow.ConfirmacionCargaDescarga,
+                        ActividadXaml = EtapaWorkflow.ConfirmacionCargaDescarga,
+                        NombreUsuario = usuario.Value
+                    };
+                    resultado = servicioComandos.Ejecutar(new CrearControlRecorrido
+                    {
+                        Dto = controlRecorrido
+                    });
+                }
+
+                if (resultado.HayErrores)
+                {
+                    foreach (var item in resultado.Errores)
+                    {
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error al confirmar Carga/Descarga para el workflow {workflowInstance}";
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+
         }
 
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()

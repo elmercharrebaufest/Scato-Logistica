@@ -82,6 +82,8 @@
   <ItemGroup>
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
+    <Compile Include="DeshabilitarConfirmacionCargaDescarga.cs" />
+    <Compile Include="HabilitarConfirmacionCargaDescarga.cs" />
     <Compile Include="EnviarMensajeCircular.cs" />
     <Compile Include="EnviarMensajeV3.cs" />
     <Compile Include="ImpresionEtiquetaMuestraInase.cs" />

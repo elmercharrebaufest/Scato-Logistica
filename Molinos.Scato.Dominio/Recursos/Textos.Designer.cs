@@ -9601,6 +9601,60 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuracion de calle hidráulica.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Cartel.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica_CodigoCartel {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica_CodigoCartel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuración.
+        /// </summary>
+        public static string Configuracion_CalleHidraulica_Titulo {
+            get {
+                return ResourceManager.GetString("Configuracion_CalleHidraulica_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Cámara.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoCamara {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoCamara", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Sensor.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoSensor {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Código Sensor Circulación.
+        /// </summary>
+        public static string ConfiguracionCalleHidraulica_CodigoSensorCirculacion {
+            get {
+                return ResourceManager.GetString("ConfiguracionCalleHidraulica_CodigoSensorCirculacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Características de Calidad.
         /// </summary>
         public static string ConfiguracionDeTabla_CaracteristicasDeCalidad {
@@ -9714,6 +9768,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ConfirmacionBorrado {
             get {
                 return ResourceManager.GetString("ConfirmacionBorrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirmación de Carga/Descarga.
+        /// </summary>
+        public static string ConfirmacionCargaDescarga {
+            get {
+                return ResourceManager.GetString("ConfirmacionCargaDescarga", resourceCulture);
             }
         }
         
@@ -14420,11 +14483,56 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disponible.
+        /// </summary>
+        public static string EstadoHidraulica_Disponible {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Disponible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inhabilitado.
+        /// </summary>
+        public static string EstadoHidraulica_Inhabilitado {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Inhabilitado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Llamando.
+        /// </summary>
+        public static string EstadoHidraulica_Llamando {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Llamando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocupado.
+        /// </summary>
+        public static string EstadoHidraulica_Ocupado {
+            get {
+                return ResourceManager.GetString("EstadoHidraulica_Ocupado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Estado De Planta.
         /// </summary>
         public static string EstadoPlanta {
             get {
                 return ResourceManager.GetString("EstadoPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Llamado automático de hidraulicas.
+        /// </summary>
+        public static string EstadoVolcadoras_Titulo {
+            get {
+                return ResourceManager.GetString("EstadoVolcadoras_Titulo", resourceCulture);
             }
         }
         
@@ -24445,6 +24553,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoDeTrabajo_VisualizacionBarrera {
             get {
                 return ResourceManager.GetString("PuestoDeTrabajo_VisualizacionBarrera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor de bajada.
+        /// </summary>
+        public static string PuestosDeCargaDescarga_CodigoSensorBajada {
+            get {
+                return ResourceManager.GetString("PuestosDeCargaDescarga_CodigoSensorBajada", resourceCulture);
             }
         }
         

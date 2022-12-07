@@ -210,6 +210,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         DocumentoExterno = 99,
         [Display(ResourceType = typeof(Textos), Name = "AbmCategoriaCamiones")]
         AbmCategoriaCamiones = 604,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionCalleHidraulica")]
+        AbmConfiguracionCalleHidraulica = 701,
 
         //Permisos Actividades
         [Display(ResourceType = typeof(Textos), Name = "ActAutorizarDescuentosEntregador")]
@@ -493,7 +495,9 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "CamionesPendientesMesa")]
         CamionesPendientesMesa = 236,
         [Display(ResourceType = typeof(Textos), Name = "CamionesPendientesNoGranos")]
-        CamionesPendientesNoGranos = 258,
+        CamionesPendientesNoGranos = 258, 
+        [Display(ResourceType = typeof(Textos), Name = "ConfirmacionCargaDescarga")]
+        ConfirmacionCargaDescarga = 612,
 
         [Display(ResourceType = typeof(Textos), Name = "DestinoPuerto")]
         DestinoPuerto = 237,

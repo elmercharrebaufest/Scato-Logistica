@@ -61,7 +61,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var auth = accesoWsCtg.ObtenerAuth(cuitRepresentado, resultado);
                 // Armo la consulta
                 Log.Debug("armo consulta dependiendo del tipo de vehiculo");
-                var response = new CartaPorteRespuesta();
                 var request = "";
 
                 var tipoCpe = ObtenerTipoCpe(comando.Dto.TipoVehiculo);
@@ -134,7 +133,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Debug("Inicio la consulta");
                     // Realizo la consulta
                     var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEAutomotor(confirmarArriboRequest).respuesta;
-                    if(respuesta.pdf != null)
+                    if(respuesta.pdf != null) // TODO - Revisar si es necesario, ya que PDF actualmente siempre es null
                     {
                         servicioComandos.Ejecutar(new GuardarImagenDescarga
                         {
@@ -147,6 +146,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         });
                     } 
                     Log.Debug("Realizo la consulta ");
+
+
+                    Repositorio.Agregar(
+                    new LogAfipCpe
+                    {
+                        Servicio = "ConfirmarArriboDefinitivo",
+                        Consulta = request,
+                        Respuesta = respuesta.ToXml(),
+                        Fecha = DateTime.Now,
+                    });
                 }
                 if (tipoCpe == 75)
                 {
@@ -209,36 +218,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Repositorio.GuardarCambios();
                     }
                    
-                    UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    // UpdateBajaCTGDefinitiva(comando.WorkflowId);
 
                 }
                 catch (Exception e)
                 {
                     Log.Debug("Error al loguear request Afip CTG", e.Message);
-                }
-
-                if (response != null && response.errores != null && response.errores.Any())
-                {
-                    resultado.Errores.Add(response.errores.FirstOrDefault().codigo, response.errores.FirstOrDefault().descripcion);
-                    Log.Error("Error en la Confirmacion: {0}", response.errores.FirstOrDefault().descripcion);
-                }
-                else if (response != null)
-                {
-                    //Si no hay errores, registro la baja del CTG
-                    var datos = response.cabecera;
-                    Repositorio.Agregar(
-                        new LogAfipCpe
-                        {
-                            Servicio = "ConfirmarArriboDefinitivo",
-                            Consulta = request,
-                            Respuesta = response.ToXml(),
-                            Fecha = DateTime.Now,
-                        });
-                    Log.Debug("La Confirmacion Definitiva {0}-{1} procesada correctamente", comando.Dto.Sucursal, comando.Dto.CTG);
-                }
-                else
-                {
-                    Log.Error("La Confirmacion Definitiva {0}-{1} respuesta invalida", comando.Dto.Sucursal, comando.Dto.CTG);
                 }
             }
             catch (FaultException e)

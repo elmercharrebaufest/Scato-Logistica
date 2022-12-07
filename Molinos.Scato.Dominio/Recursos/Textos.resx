@@ -10051,4 +10051,43 @@
   <data name="TipoCalleSalidaGranos" xml:space="preserve">
     <value>Salida Granos</value>
   </data>
+  <data name="EstadoHidraulica_Disponible" xml:space="preserve">
+    <value>Disponible</value>
+  </data>
+  <data name="EstadoHidraulica_Inhabilitado" xml:space="preserve">
+    <value>Inhabilitado</value>
+  </data>
+  <data name="EstadoHidraulica_Llamando" xml:space="preserve">
+    <value>Llamando</value>
+  </data>
+  <data name="EstadoHidraulica_Ocupado" xml:space="preserve">
+    <value>Ocupado</value>
+  </data>
+  <data name="PuestosDeCargaDescarga_CodigoSensorBajada" xml:space="preserve">
+    <value>Sensor de bajada</value>
+  </data>
+  <data name="EstadoVolcadoras_Titulo" xml:space="preserve">
+    <value>Llamado automático de hidraulicas</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica" xml:space="preserve">
+    <value>Configuracion de calle hidráulica</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_Titulo" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="ConfirmacionCargaDescarga" xml:space="preserve">
+    <value>Confirmación de Carga/Descarga</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoCamara" xml:space="preserve">
+    <value>Código Cámara</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensor" xml:space="preserve">
+    <value>Código Sensor</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensorCirculacion" xml:space="preserve">
+    <value>Código Sensor Circulación</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_CodigoCartel" xml:space="preserve">
+    <value>Código Cartel</value>
+  </data>
 </root>

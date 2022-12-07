@@ -3,7 +3,6 @@ using Molinos.Scato.Dominio.Entidades;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Objects.SqlClient;
 using System.Linq;
 using System.Transactions;
 
@@ -19,7 +18,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
             var listadoCamiones = contexto.Set<CallePorRecorrido>()
-                              .Where(x => x.FechaEgreso == null)
+                              .Where(x => x.FechaEgreso.Equals(null))
                               .Select(x => new CallePorRecorridoListadoCamionesDto
                               {
                                   Id = x.Id,
@@ -40,7 +39,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
                                   ColorFondo = x.Recorrido.Material.ColorFondo,
                                   ColorTexto = x.Recorrido.Material.ColorTexto
-                              }).ToList();
+                              })
+                              .OrderBy(q => q.FechaIngreso)
+                              .ToList();
 
             var resultado = new List<CallePorRecorridoDto>();
 

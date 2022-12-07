@@ -17,5 +17,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual ICollection<AsignacionDeRecorrido> AsignacionesDeRecorrido { get; set; }
         public virtual bool EsSojaSustentable { get; set; }
         public virtual bool? EsEspecial { get; set; }
+        public virtual string CodigoSensorBajada { get; set; }
     }
 }

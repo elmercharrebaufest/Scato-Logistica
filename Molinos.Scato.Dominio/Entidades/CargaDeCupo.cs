@@ -49,5 +49,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public bool CPE { get; set; }
         public virtual string FotoRutaSustentable { get; set; }
         public bool EnProgresoAutomatico { get; set; }
+        public bool IngresoAvanceCPEAutomatico { get; set; }
     }
 }
