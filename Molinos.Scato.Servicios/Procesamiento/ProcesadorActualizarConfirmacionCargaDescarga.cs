@@ -42,7 +42,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var confirmacion = Repositorio.Obtener<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == comando.Dto.RecorridoId);
             confirmacion.FechaConfirmacion = comando.Dto.FechaConfirmacion;
-            confirmacion.Confirmado = comando.Dto.Confirmado;
+            if(!confirmacion.Confirmado)
+                confirmacion.Confirmado = comando.Dto.Confirmado;
             confirmacion.PendienteConfirmacion = comando.Dto.PendienteConfirmacion;
             confirmacion.NombreUsuario = comando.Dto.NombreUsuario;
         }
