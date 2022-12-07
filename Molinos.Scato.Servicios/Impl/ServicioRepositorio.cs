@@ -29,7 +29,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Printing;
 using System.ServiceModel.Configuration;
-using static NPOI.HSSF.Util.HSSFColor;
 using WebConfigurationManager = System.Web.Configuration.WebConfigurationManager;
 
 namespace Molinos.Scato.Servicios.Impl
