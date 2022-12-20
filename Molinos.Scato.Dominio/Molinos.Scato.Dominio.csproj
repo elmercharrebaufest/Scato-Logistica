@@ -224,7 +224,7 @@
     <Compile Include="Comandos\EtiquetaAuditoriaEnCartaDePorteDetalle.cs" />
     <Compile Include="Comandos\GuardarfotoMesaDigitalizacion.cs" />
     <Compile Include="Comandos\GuardarAutorizacionComando.cs" />
-    <Compile Include="Comandos\EnviarMensajeCarteLed.cs" />
+    <Compile Include="Comandos\EnviarMensajeCartelLed.cs" />
     <Compile Include="Comandos\ActualizarCargaOpuesta.cs" />
     <Compile Include="Comandos\ActualizarLecturaDeTarjetaPatente.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoCaladoEnPlanta.cs" />

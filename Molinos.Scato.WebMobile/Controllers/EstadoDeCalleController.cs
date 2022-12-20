@@ -238,7 +238,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     var callesDeCalador = servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", calleCalado.Nombre);
                     if(callesDeCalador != null && !string.IsNullOrEmpty(callesDeCalador.Valor) && !string.IsNullOrEmpty(cartel.Valor))
                     {
-                        servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                        servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                         {
                             Mensaje = $"{callePrecalado.Nombre} {mensajeCartel.Mensaje} {callesDeCalador.Valor}",
                             Codigo = cartel.Valor,
@@ -266,7 +266,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     if (!string.IsNullOrEmpty(cartel.Valor))
                     {
-                        servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                        servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                         {
                             Mensaje = $"{mensajeCartel.Mensaje} {callePostCalado.Nombre}",
                             Codigo = cartel.Valor,

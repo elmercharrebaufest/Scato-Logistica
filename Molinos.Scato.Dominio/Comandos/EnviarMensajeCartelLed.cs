@@ -2,7 +2,7 @@
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class EnviarMensajeCarteLed : Comando
+    public class EnviarMensajeCartelLed : Comando
     {
         public string Mensaje { get; set; }
         public string Codigo { get; set; }
@@ -11,5 +11,10 @@ namespace Molinos.Scato.Dominio.Comandos
         public string NumeroPrograma { get; set; }
         public string NumeroVariable { get; set; }
         public int SegundosDeEspera { get; set; }
+
+
+        public bool EsMensajeConIntervalo { get; set; }
+        public string MensajeSecundario { get; set; }
+        public int? IntervaloMilliseconds { get; set; }
     }
 }

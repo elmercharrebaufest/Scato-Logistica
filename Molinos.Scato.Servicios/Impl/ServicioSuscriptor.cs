@@ -96,18 +96,18 @@ namespace Molinos.Scato.Servicios.Impl
 
                         var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
                         var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
-                        EnviarMensajeACartel(configuracionCalle.CodigoCartel, $"{patente} avance a {nombreHidraulicaAsignada}");
+                        EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, 3000);
                         ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente);
                         break;
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
-                        if(Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
+                        if (Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
                         {
                             switch (tipoAccion)
                             {
                                 case TipoAccionSensor.CamionCruzo:
                                     var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(notificacion.CodigoDispositivo);
-                                    EnviarMensajeACartel(configuracionCalleHidraulica.CodigoCartel, "PARE");
+                                    LimpiarMensajeCartel(configuracionCalleHidraulica.CodigoCartel);
                                     break;
 
                                 case TipoAccionSensor.HidraulicaBajo:
@@ -214,14 +214,14 @@ namespace Molinos.Scato.Servicios.Impl
                 }
             }
         }
-        
+
         private CamionHidraulicaDto ObtenerDatosPorPatente(string patente)
         {
             CamionHidraulicaDto datosCamion = null;
             try
             {
                 var recorrido = repositorio.ObtenerRecorridoActivoPorPatente(patente);
-                if(recorrido != null)
+                if (recorrido != null)
                 {
                     datosCamion = new CamionHidraulicaDto()
                     {
@@ -238,21 +238,50 @@ namespace Molinos.Scato.Servicios.Impl
             return datosCamion;
         }
 
-        private void EnviarMensajeACartel(string codigoCartel, string mensaje)
+        private void EnviarMensajeACartelConIntervalo(string codigoCartel, string mensaje, string mensajeSecundario, int intervaloMilliseconds)
         {
             try
             {
                 var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
-                    servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
                         Codigo = codigoCartel,
                         NumeroPrograma = mensajeCartel.Programa,
                         NumeroTrama = mensajeCartel.Trama,
                         NumeroVariable = mensajeCartel.Variable,
-                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                        SegundosDeEspera = mensajeCartel.SegundosDeEspera,
+                        EsMensajeConIntervalo = true,
+                        MensajeSecundario = mensajeSecundario,
+                        IntervaloMilliseconds = intervaloMilliseconds
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
+        }
+
+        private void LimpiarMensajeCartel(string codigoCartel)
+        {
+            try
+            {
+                var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
+                if (!string.IsNullOrEmpty(codigoCartel))
+                {
+                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
+                    {
+                        CodigoDispositivo = codigoCartel
+                    });
+
+                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                    {
+                        Codigo = codigoCartel,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = CartelTramaPare.LlamadoAutomaticoVolcadoras
                     });
                 }
             }

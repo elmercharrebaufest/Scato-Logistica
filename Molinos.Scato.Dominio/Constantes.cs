@@ -43,7 +43,7 @@
             public const string NoExistenSolicitudes = "800";
         }
 
-        public struct AsignacionDeEstablecimientoRangos 
+        public struct AsignacionDeEstablecimientoRangos
         {
             public const int Desde = 90000;
             public const int Hasta = 99998;
@@ -85,6 +85,11 @@
         {
             public const string Visteo = "Visteo";
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
+        }
+
+        public struct CartelTramaPare
+        {
+            public const string LlamadoAutomaticoVolcadoras = "02";
         }
     }
 }
