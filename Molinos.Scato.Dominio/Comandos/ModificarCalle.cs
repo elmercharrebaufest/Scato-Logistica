@@ -5,5 +5,6 @@ namespace Molinos.Scato.Dominio.Comandos
     public class ModificarCalle : Comando
     {
         public CalleDto Dto { get; set; }
+        public bool Llamada { get; set; }
     }
 }

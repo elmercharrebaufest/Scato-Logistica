@@ -61,6 +61,9 @@
                 public const string EficienciaCalado = "EficienciaCalado";
                 public const string AFIP = "AFIP";
                 public const string PreLote = "PreLote";
+                public const string EstadoDeCallePostCalado = "EstadoDeCallePostCalado";
+                public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
+                public const string EstadoPlayaInterna = "EstadoPlayaInterna";
             }
 
             public struct EficienciaCalado
@@ -79,6 +82,22 @@
                 public const string HorarioNocturnoDesde = "HorarioNocturnoDesde";
                 public const string HorarioNocturnoHasta = "HorarioNocturnoHasta";
             }
+
+            public struct PostCalado
+            {
+                public const string CartelLedPostCalado = "CartelLedPostCalado";
+            }
+
+            public struct PreCalado
+            {
+                public const string CartelLedCalador = "CartelLedCalador";
+            }
+
+            public struct PreBalanza
+            {
+                public const string CartelLedPreBalanza = "CartelLedPreBalanza";
+            }
+
         }
 
         public struct EtapaWorkflow
@@ -90,6 +109,14 @@
         public struct CartelTramaPare
         {
             public const string LlamadoAutomaticoVolcadoras = "02";
+        }
+        
+        public struct Caladores
+        {
+            public const string CodigoCalador1 = "CAL1";
+            public const string CodigoCalador2 = "CAL2";
+            public const string NombreCalador1 = "Calador 1";
+            public const string NombreCalador2 = "Calador 2";
         }
     }
 }

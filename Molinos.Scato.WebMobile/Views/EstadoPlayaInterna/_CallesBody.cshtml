@@ -15,7 +15,7 @@
                                     <strong data-bind="text: CalleDesc"></strong>
                                     <sup data-bind="text: Camiones.length + '/' + LimiteDeCamiones"></sup>
                                 </p>
-                                <div class="row-borde borde-grafico color-fondo">
+                                <div class="row-borde borde-grafico color-fondo" data-bind="css: { 'bg-success': Bloqueada && Camiones.length > 0 }">
                                     <div class="col">
                                         <div data-bind="foreach: Camiones">
                                             <div data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }" class="card" style="max-width: 100%; padding-top:4px; padding-bottom:4px;">

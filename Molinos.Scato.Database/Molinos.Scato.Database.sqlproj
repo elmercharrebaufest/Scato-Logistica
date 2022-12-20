@@ -516,6 +516,8 @@
     <Build Include="dbo\Tables\ConfiguracionCalleHidraulica.sql" />
     <Build Include="dbo\Tables\LlamadoAutomaticoHidraulica.sql" />
     <Build Include="dbo\Tables\ConfirmacionCargaDescarga.sql" />
+    <Build Include="dbo\Tables\HistorialMensajeCartelLed.sql" />
+    <Build Include="dbo\Tables\CallePreBalanzaPlayaInterna.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

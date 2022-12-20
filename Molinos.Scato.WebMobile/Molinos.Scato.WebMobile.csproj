@@ -195,6 +195,7 @@
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
+    <Compile Include="Controllers\ConfiguracionCartelesFijosPreCaladoController.cs" />
     <Compile Include="Controllers\EficienciaCaladoController.cs" />
     <Compile Include="Controllers\EstadoPlayaInternaController.cs" />
     <Compile Include="Controllers\EstadoDeCalleController.cs" />

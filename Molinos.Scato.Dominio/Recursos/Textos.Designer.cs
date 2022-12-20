@@ -13529,6 +13529,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Llegó al límite de llamados que se pueden hacer.
+        /// </summary>
+        public static string Error_LimiteCallesLlamadas {
+            get {
+                return ResourceManager.GetString("Error_LimiteCallesLlamadas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aún quedan litros sin distribuir.
         /// </summary>
         public static string Error_LitrosDisponibles {

@@ -2411,7 +2411,7 @@ namespace Molinos.Scato.Servicios
         IList<CalleDto> ListarTodasLasCalles(int centroId);
 
         [OperationContract]
-        IList<CallePorRecorridoDto> ListarTodasLasCallesPorRecorrido(int calleId);
+        IList<CallePorRecorridoDto> ListarCallePorRecorridoPorCalleId(int calleId);
 
         [OperationContract]
         IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCentro(int centroId);
@@ -2751,5 +2751,17 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
+
+        [OperationContract]
+        MensajeCartelLedDto ObtenerCodigoMensaje(CalleDto calle);
+
+        [OperationContract]
+        int ObtenerOrdenCircular(string codigo);
+
+        [OperationContract]
+        int ObtenerCantidadCamionesEnCallePreBalanza(int calleId);
+
+        [OperationContract]
+        List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
     }
 }

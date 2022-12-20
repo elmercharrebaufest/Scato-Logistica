@@ -700,4 +700,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Confirmado" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="00074de6-c57b-4d6e-bc7f-7a540bccfc86" ChangeDateTime="12/01/2022 19:06:32">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[FechaUltimaModificacion ]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FechaUltimaModificacion" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b4b550bf-d566-4c0f-8a56-efcd17e5415e" ChangeDateTime="12/05/2022 19:47:33">
+    <Property Name="ElementName" Value="[dbo].[HistorialMensajeCartelLed].[FilaId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HistorialMensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CalleId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="293109d0-5797-43fb-af90-8527d5228572" ChangeDateTime="12/12/2022 15:48:25">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[HistorialCartelLed_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HistorialCartelLedId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a5d3bba7-b599-4d03-8328-10cd284a7afa" ChangeDateTime="12/12/2022 15:48:37">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[HistorialCartelLedId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HistorialMensajeCartelLedId" />
+  </Operation>
 </Operations>

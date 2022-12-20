@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -18,5 +15,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int SegundosDeEspera { get; set; }
         public string DescripcionFormatoMensaje { get; set; }
         public bool Habilitado { get; set; }
+        public DateTime? FechaUltimaModificacion { get; set; }
+        public HistorialMensajeCartelLedDto HistorialMensajeCartelLed { get; set; }
     }
 }

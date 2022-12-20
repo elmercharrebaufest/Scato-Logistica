@@ -33,7 +33,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     asignacion.Calle = asignacion.Calle;
                     asignacion.FechaEgreso = DateTime.Now;
                     if (asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
-                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
+                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular ||
+                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PostCalado ||
+                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreBalanzaGranos)
                     {
                         //LLamarSiguienteCallePreCalado(asignacion);
                         LiberarFilaSiQuedaVacia(asignacion);
@@ -67,7 +69,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 asignacion.Calle.Bloqueada = false;
                 asignacion.Calle.FechaLLamada = null;
-                asignacion.Calle.CalleCalado = null;
+
+                if(asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado || 
+                    asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
+                {
+                    asignacion.Calle.CalleCalado = null;
+                }
             }
         }
     }
