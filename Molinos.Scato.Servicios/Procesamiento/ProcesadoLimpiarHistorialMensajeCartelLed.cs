@@ -11,14 +11,14 @@ using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadoModificarHistorialMensajeCartelLed : ProcesadorComando<ModificarHistorialMensajeCartelLed>
+    public class ProcesadoLimpiarHistorialMensajeCartelLed : ProcesadorComando<LimpiarHistorialMensajeCartelLed>
     {
-        public ProcesadoModificarHistorialMensajeCartelLed(IRepositorio repositorio, IConversor conversor, ILogger log)
+        public ProcesadoLimpiarHistorialMensajeCartelLed(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
         }
 
-        public override Resultado Ejecutar(ModificarHistorialMensajeCartelLed comando)
+        public override Resultado Ejecutar(LimpiarHistorialMensajeCartelLed comando)
         {
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
             Log.Debug("Ejecutando ModificarHistorialMensajeCartelLed");

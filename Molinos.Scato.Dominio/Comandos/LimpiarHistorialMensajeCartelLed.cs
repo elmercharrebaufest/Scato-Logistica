@@ -3,7 +3,7 @@
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class ModificarHistorialMensajeCartelLed : Comando
+    public class LimpiarHistorialMensajeCartelLed : Comando
     {
         public string Codigo { get; set; }
 

@@ -36,7 +36,7 @@ namespace Molinos.Scato.Actividades
                                 CallePlayaInternaId = callePlayaInterna.Id,
                                 CallePreBalanzaId = callePreBalanza.Id
                             });
-                            resultado = servicio.Ejecutar(new ModificarHistorialMensajeCartelLed()
+                            resultado = servicio.Ejecutar(new LimpiarHistorialMensajeCartelLed()
                             {
                                 Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
                                 CalleId = callePreBalanza.Id

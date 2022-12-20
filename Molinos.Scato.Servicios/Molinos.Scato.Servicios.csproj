@@ -537,7 +537,7 @@
     <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorInsertarSlotMensajeCartelLed.cs" />
-    <Compile Include="Procesamiento\ProcesadoModificarHistorialMensajeCartelLed.cs" />
+    <Compile Include="Procesamiento\ProcesadoLimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />
