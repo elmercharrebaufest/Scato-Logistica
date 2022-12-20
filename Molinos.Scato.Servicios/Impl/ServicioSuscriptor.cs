@@ -279,9 +279,11 @@ namespace Molinos.Scato.Servicios.Impl
 
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
+                        Mensaje = "PARE AQUI",
                         Codigo = codigoCartel,
                         NumeroPrograma = mensajeCartel.Programa,
-                        NumeroTrama = CartelTramaPare.LlamadoAutomaticoVolcadoras
+                        NumeroTrama = CartelTramaPare.LlamadoAutomaticoVolcadoras,
+                        NumeroVariable = mensajeCartel.Variable
                     });
                 }
             }
