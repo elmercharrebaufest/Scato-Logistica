@@ -57,7 +57,7 @@ namespace Molinos.Scato.Actividades
                 {
                     servicio.Ejecutar(new EnviarMensajeCartelLed
                     {
-                        Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? string.Empty,
+                        Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
                         Codigo = cartel?.Valor,
                         NumeroTrama = mensajeCartelLed.Trama,
                         NumeroPrograma = mensajeCartelLed.Programa,

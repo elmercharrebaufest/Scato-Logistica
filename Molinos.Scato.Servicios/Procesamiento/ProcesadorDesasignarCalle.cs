@@ -34,8 +34,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     asignacion.FechaEgreso = DateTime.Now;
                     if (asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado ||
                         asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular ||
-                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PostCalado ||
-                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreBalanzaGranos)
+                        asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PostCalado)
                     {
                         //LLamarSiguienteCallePreCalado(asignacion);
                         LiberarFilaSiQuedaVacia(asignacion);

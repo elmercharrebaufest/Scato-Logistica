@@ -3,7 +3,6 @@ using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -17,7 +16,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(EliminarCallePreBalanzaPlayaInterna comando)
         {
             var resultado = new Resultado();
-
+            Log.Debug("Ejecutando EliminarCallePreBalanzaPlayaInterna");
             var existeCallePreBalanzaPlayaInterna = Repositorio.Existe<CallePreBalanzaPlayaInterna>(q => q.CallePlayaInternaId == comando.CallePlayaInternaId && q.CallePreBalanzaId == comando.CallePreBalanzaId);
 
             if (existeCallePreBalanzaPlayaInterna)
@@ -29,6 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 Repositorio.Remover(callePreBalanzaPlayaInterna);
                 Repositorio.GuardarCambios();
+                Log.Debug($"Finalizando EliminarCallePreBalanzaPlayaInterna");
             }
 
             return resultado;

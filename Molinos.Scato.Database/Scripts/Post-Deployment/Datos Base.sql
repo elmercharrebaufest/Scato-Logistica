@@ -1473,6 +1473,11 @@ BEGIN
 INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePostCalado', 'CartelLedPostCalado', '', NULL, GETDATE(), 'SCATO')
 END
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoPlayaInterna' AND  Nombre = 'CartelLedPreBalanza' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoPlayaInterna', 'CartelLedPreBalanza', '', NULL, GETDATE(), 'SCATO')
+END
+
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJVOL','MPSOJVOL',0)
