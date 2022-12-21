@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -29,8 +30,8 @@ namespace Molinos.Scato.Actividades.Internas
             var pesaje = new ResultadoPesaje();
             Error.Set(context, new Resultado());
             var tipoPesada = TipoPesada.Get<TipoPesada>(context);
-            if ((recorrido.ActividadXaml == "PesadaBruto" && tipoPesada == Dominio.Enums.TipoPesada.Bruto) ||
-                (recorrido.ActividadXaml == "PesadaTara" && tipoPesada == Dominio.Enums.TipoPesada.Tara))
+            if ((recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto && tipoPesada == Dominio.Enums.TipoPesada.Bruto) ||
+                (recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaTara && tipoPesada == Dominio.Enums.TipoPesada.Tara))
             {
 
                 try
@@ -45,7 +46,7 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     else
                     {
-                        if(recorrido.ActividadXaml == "PesadaBruto" && tipoPesada == Dominio.Enums.TipoPesada.Bruto)
+                        if(recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto && tipoPesada == Dominio.Enums.TipoPesada.Bruto)
                         {
                             ContigenciaDePesosExcedidos(repositorio, servComando, pesaje, recorrido);
                         }

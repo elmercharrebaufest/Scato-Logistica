@@ -104,6 +104,8 @@
         {
             public const string Visteo = "Visteo";
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
+            public const string PesadaBruto = "PesadaBruto";
+            public const string PesadaTara = "PesadaTara";
         }
 
         public struct CartelTramaPare
