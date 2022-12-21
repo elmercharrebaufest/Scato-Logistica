@@ -269,33 +269,38 @@ namespace Molinos.Scato.Web.Controllers
 
         private void EnviarAPreLote(int caladoId, string nombreUsuario, string codigoWf, Guid instanceId, int centroId)
         {
-            var configuracionHorarioPreLote = servicio.ListarConfiguracionesGenerales(Constantes.ConfiguracionGeneral.Pantalla.PreLote);
-            var diaActual = DateTime.Now;
-            var confDesde = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoDesde)?.Valor;
-            var congHasta = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoHasta)?.Valor;
-
-            int desde = 0;
-            int hasta = 0;
-            if (int.TryParse(confDesde, out desde) && int.TryParse(congHasta, out hasta))
+            var muestraEnvioACamara = servicio.ObtenerMuestraEnvioACamaraPorCalado(caladoId);
+            if(muestraEnvioACamara == null)
             {
-                if (diaActual.Hour >= desde || diaActual.Hour <= hasta)
+                var configuracionHorarioPreLote = servicio.ListarConfiguracionesGenerales(Constantes.ConfiguracionGeneral.Pantalla.PreLote);
+                var diaActual = DateTime.Now;
+                var confDesde = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoDesde)?.Valor;
+                var congHasta = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoHasta)?.Valor;
+
+                int desde = 0;
+                int hasta = 0;
+                if (int.TryParse(confDesde, out desde) && int.TryParse(congHasta, out hasta))
                 {
-                    var camaras = servicio.ListarCamaras();
-                    var muestra = new MuestraEnvioACamaraDto
+                    if (diaActual.Hour >= desde || diaActual.Hour <= hasta)
                     {
-                        NombreUsuario = nombreUsuario,
-                        CaladoId = caladoId,
-                        CamaraId = camaras.FirstOrDefault().Id, // obetener alguna camara,
-                        CaracteristicasDeCalidad = null,
-                        Actividad = codigoWf,
-                        WorkflowInstanceId = instanceId,
-                        FechaDescarga = DateTime.Now,
-                        CentroId = centroId,
-                        HuboExcepcion = false,
-                        EsPreLote = true
-                    };
-                    var resultado = servicioComandos.Ejecutar(new CrearEnvioACamara { Dto = muestra }) as ResultadoCrear;
+                        var camaras = servicio.ListarCamaras();
+                        var muestra = new MuestraEnvioACamaraDto
+                        {
+                            NombreUsuario = nombreUsuario,
+                            CaladoId = caladoId,
+                            CamaraId = camaras.FirstOrDefault().Id, // obetener alguna camara,
+                            CaracteristicasDeCalidad = null,
+                            Actividad = codigoWf,
+                            WorkflowInstanceId = instanceId,
+                            FechaDescarga = DateTime.Now,
+                            CentroId = centroId,
+                            HuboExcepcion = false,
+                            EsPreLote = true
+                        };
+                        var resultado = servicioComandos.Ejecutar(new CrearEnvioACamara { Dto = muestra }) as ResultadoCrear;
+                    }
                 }
+
             }
         }
     }
