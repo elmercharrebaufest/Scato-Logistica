@@ -17,6 +17,7 @@
         {
             public const string Intercomunicador = "Intercomunicador";
             public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
+            public const string NotificacionAplicacion = "NotificacionAplicacion";
         }
 
         public struct Entidad
