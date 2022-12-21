@@ -22,6 +22,7 @@ namespace Molinos.Scato.Actividades.Internas
         {
             var servComando = context.GetExtension<IServicioComandos>();
             var servicio = context.GetExtension<IServicioNotificarUsuario>();
+            var repositorio = context.GetExtension<IServicioRepositorio>();
 
             var recorrido = Recorrido.Get<ControlRecorridoDto>(context);
 
@@ -44,6 +45,10 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     else
                     {
+                        if(recorrido.ActividadXaml == "PesadaBruto" && tipoPesada == Dominio.Enums.TipoPesada.Bruto)
+                        {
+                            ContigenciaDePesosExcedidos(repositorio, servComando, pesaje, recorrido);
+                        }
                         Peso.Set(context, pesaje.Peso);
                         BalanzaId.Set(context, pesaje.BalanzaId);
                     }
@@ -131,6 +136,24 @@ namespace Molinos.Scato.Actividades.Internas
                 var mensaje = "La etapa a ejecutar no coincide con el estado del workflow.";
                 pesaje.Error("2", mensaje);
                 Error.Set(context, pesaje);
+            }
+        }
+
+        private void ContigenciaDePesosExcedidos(IServicioRepositorio repositorio, IServicioComandos servicioComando, ResultadoPesaje pesaje, ControlRecorridoDto recorrido)
+        {
+            var balanza = repositorio.ObtenerBalanza(pesaje.BalanzaId);
+            if (balanza.ContingenciaExcedentesHabilitada && balanza.ToleranciaExcedida != null && recorrido.RecorridoId != null)
+            {
+                var pesoMaximoPorTipoVehiculo = repositorio.LeerPesoMaximo(recorrido.WorkflowInstanceId, recorrido.TipoDeWorkflow);
+                if (pesaje.Peso > pesoMaximoPorTipoVehiculo && (pesaje.Peso - pesoMaximoPorTipoVehiculo <= balanza.ToleranciaExcedida))
+                {
+                    servicioComando.Ejecutar(new CrearPesosExc()
+                    {
+                        RecorridoId = recorrido.RecorridoId.Value,
+                        PesoTomado = pesaje.Peso
+                    });
+                    pesaje.Peso = pesoMaximoPorTipoVehiculo;
+                }
             }
         }
     }

@@ -728,4 +728,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="HistorialMensajeCartelLedId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="a19290fe-eb17-4f8c-8210-0c91845df0ef" ChangeDateTime="12/21/2022 20:21:18">
+    <Property Name="ElementName" Value="[dbo].[Balanza].[EstaContingenciaExcedentesHabilitada]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Balanza]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ContingenciaExcedentesHabilitada" />
+  </Operation>
 </Operations>

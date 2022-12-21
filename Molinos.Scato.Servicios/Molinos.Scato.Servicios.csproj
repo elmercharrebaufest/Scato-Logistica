@@ -541,6 +541,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPesosExc.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargaDeCupo.cs" />

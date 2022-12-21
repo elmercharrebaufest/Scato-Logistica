@@ -5222,7 +5222,8 @@ namespace Molinos.Scato.Servicios.Impl
                     PesoTara = x.PesoTara,
                     Calle = x.Calle.Nombre,
                     TipoDocumento = x.TipoDocumentoIngreso,
-                    TipoComercial = x.TipoComercial.Descripcion
+                    TipoComercial = x.TipoComercial.Descripcion,
+                    TipoDeWorkflow = x.Workflow.TipoDeWorkflow
                 });
         }
 

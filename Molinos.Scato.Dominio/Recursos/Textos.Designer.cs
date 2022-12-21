@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -4903,6 +4903,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Habilitar Contingencia de Pesos Excedentes.
+        /// </summary>
+        public static string Balanza_ContingenciaExcedentesHabilitada {
+            get {
+                return ResourceManager.GetString("Balanza_ContingenciaExcedentesHabilitada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear Balanza.
         /// </summary>
         public static string Balanza_Crear {
@@ -5097,6 +5106,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Balanza_Titulo {
             get {
                 return ResourceManager.GetString("Balanza_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tolerancia Excedida.
+        /// </summary>
+        public static string Balanza_ToleranciaExcedida {
+            get {
+                return ResourceManager.GetString("Balanza_ToleranciaExcedida", resourceCulture);
             }
         }
         

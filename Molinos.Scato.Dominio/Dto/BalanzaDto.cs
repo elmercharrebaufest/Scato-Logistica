@@ -80,6 +80,11 @@ namespace Molinos.Scato.Dominio.Dto
 
         public bool Desactivado { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "Balanza_ContingenciaExcedentesHabilitada")]
+        public bool ContingenciaExcedentesHabilitada { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Balanza_ToleranciaExcedida")]
+        public int? ToleranciaExcedida { get; set; }
     }
 }
  
