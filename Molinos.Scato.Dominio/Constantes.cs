@@ -92,6 +92,7 @@
             public struct PreCalado
             {
                 public const string CartelLedCalador = "CartelLedCalador";
+                public const string LimiteFilasLlamadas = "LimiteFilasLlamadas";
             }
 
             public struct PreBalanza

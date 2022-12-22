@@ -19,7 +19,7 @@ function Calle(item, context) {
     }
     self.Posiciones = ko.observableArray(posiciones);
     self.Bloqueada = ko.computed(function () {
-        
+
         return self.Llamada() && self.CamionesEnCalle() > 0;
     });
 
@@ -38,24 +38,7 @@ function Calle(item, context) {
     };
 
     self.LLamar = function () {
-
-        $.ajax({
-            url: urlLEstadoDeCallesBloqueada,
-            type: 'GET',
-            data: {
-                tipoCalle: self.TipoCalle
-            },
-            async: true,
-            success: function (data) {
-                if((self.TipoCalle == 1 || self.TipoCalle == 7) && data == limiteFilasLlamadasPrecalado){
-                    MostrarAlertaInfo('Llamado de calles llegó al máximo');
-                    return  
-                }
-                else{
-                    LlamarCalle(self.Nombre, self.TipoCalle, self.Id, self.CalleCalado?.Id, self.Llamada(true));   
-                }
-            },
-        });        
+        LlamarCalle(self.Nombre, self.TipoCalle, self.Id, self.CalleCalado?.Id, self.Llamada(true));
     }
 
     self.CancelarLLamado = function () {
@@ -319,13 +302,13 @@ function EstadoDeCallesViewModel() {
                     if (filasCalador != null && filasCalador.length > 0) {
                         $.each(filasCalador, function (key, value) {
                             if (value.FilasPrecalado.find(x => x.Id == calle.Id)
-                                && value.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+                                && value.FilasPrecaladoLlamadas.length < limiteFilasLlamadasTotal) {
                                 filaCalador = value;
-                                if(calle.CalleCalado != null){
+                                if (calle.CalleCalado != null) {
                                     return true;
                                 }
                                 if (caladoAutomatico && calle.TipoCalle == 7) {
-                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado){
+                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasTotal) {
                                         calle.CalleCalado = filaCalador;
                                         value.FilasPrecaladoLlamadas++;
                                         calle.LlamarCircular();
@@ -333,7 +316,7 @@ function EstadoDeCallesViewModel() {
                                 }
 
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
-                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasTotal) {
                                         calle.CalleCalado = filaCalador;
                                         value.FilasPrecaladoLlamadas++;
                                         calle.LlamarPrecalado();
@@ -437,13 +420,13 @@ function ConfirmarEnviarAFilaRechazado() {
     });
 }
 
-function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada){
+function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: '<h5>' + cargandoGif() + ' LLamando a ' + nombre + '</h5>'
     });
 
-    if(tipoCalle == 2){
+    if (tipoCalle == 2) {
         $.getJSON(urlLLamarCallePostCalado, { calleId: calleId },
             function () {
                 llamada;
@@ -454,11 +437,24 @@ function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada){
 
     else {
         $.getJSON(urlLLamarCalle, { calleId: calleId, calleCaladoId: calleCaladoId },
-            function () {
+            function (data) {
                 llamada;
                 $.unblockUI();
+                LlamadasPrecaladoLimiteFilas(data)
             }
         );
+    }
+}
+
+function LlamadasPrecaladoLimiteFilas(data) {   
+    if (data.Mensaje == "1") {
+        MostrarAlertaInfo('Llamado de calles llegó al máximo');
+        return
+    }       
+
+    if (data.Mensaje == "2") {
+        MostrarAlertaInfo('Llamado de calles circulares llegó al máximo');
+        return
     }
 }
 

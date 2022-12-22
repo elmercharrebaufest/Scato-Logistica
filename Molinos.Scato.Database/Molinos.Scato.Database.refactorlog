@@ -735,4 +735,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ContingenciaExcedentesHabilitada" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="4221419f-1207-4523-adfc-9c8f5bab089d" ChangeDateTime="12/22/2022 20:45:17">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLedCalador].[CalleCalador_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLedCalador]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Calle_Id" />
+  </Operation>
 </Operations>

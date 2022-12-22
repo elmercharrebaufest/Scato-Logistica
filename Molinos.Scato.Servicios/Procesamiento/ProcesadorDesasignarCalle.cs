@@ -11,12 +11,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
     public class ProcesadorDesasignarCalle : ProcesadorComando<DesasignarCalle>
     {
         private IAdministradorDeCalles administradorDeCalles;
+        private readonly IServicioComandos servicioComandos;
 
         public ProcesadorDesasignarCalle(IRepositorio repositorio, IConversor conversor, ILogger log,
-            IAdministradorDeCalles administradorDeCalles)
+            IAdministradorDeCalles administradorDeCalles, IServicioComandos servicioComandos)
             : base(repositorio, conversor, log)
         {
             this.administradorDeCalles = administradorDeCalles;
+            this.servicioComandos = servicioComandos;
         }
 
         public override Resultado Ejecutar(DesasignarCalle comando)
@@ -72,6 +74,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if(asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.PreCalado || 
                     asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
                 {
+                    var codigo = Repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == asignacion.Calle.Id).MensajeCartelLed.Codigo;
+                    var orden = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == codigo).Last().Orden;
+                    servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed { CalleId = asignacion.Calle.Id, Codigo = codigo, OrdenCircular = orden });
                     asignacion.Calle.CalleCalado = null;
                 }
             }

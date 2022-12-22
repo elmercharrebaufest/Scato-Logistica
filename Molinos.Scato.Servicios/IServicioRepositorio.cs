@@ -3,6 +3,7 @@ using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
 using System;
 using System.Collections.Generic;
@@ -2753,7 +2754,7 @@ namespace Molinos.Scato.Servicios
         IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
 
         [OperationContract]
-        MensajeCartelLedDto ObtenerCodigoMensaje(CalleDto calle);
+        string ObtenerCodigoMensaje(int calle);
 
         [OperationContract]
         int ObtenerOrdenCircular(string codigo);
@@ -2763,5 +2764,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
+        
+        [OperationContract]
+        CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
     }
 }

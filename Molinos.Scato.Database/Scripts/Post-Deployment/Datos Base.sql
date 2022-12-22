@@ -1428,7 +1428,7 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'LimiteFilasLlamadas' AND  Centro_Id IS NULL) 
 BEGIN 
-INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'LimiteFilasLlamadas', '2', NULL, GETDATE(), 'SCATO')
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'LimiteFilasLlamadas', '6', NULL, GETDATE(), 'SCATO')
 END
 
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MuestraInase' AND  Centro_Id IS NULL) 
