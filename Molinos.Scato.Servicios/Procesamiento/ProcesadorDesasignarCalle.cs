@@ -75,8 +75,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     asignacion.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular)
                 {
                     var codigo = Repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == asignacion.Calle.Id).MensajeCartelLed.Codigo;
-                    var orden = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == codigo).Last().Orden;
-                    servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed { CalleId = asignacion.Calle.Id, Codigo = codigo, OrdenCircular = orden });
+                    servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed { CalleId = asignacion.Calle.Id, Codigo = codigo });
                     asignacion.Calle.CalleCalado = null;
                 }
             }

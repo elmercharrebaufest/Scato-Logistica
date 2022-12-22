@@ -291,7 +291,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                 servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                 {
-                    Mensaje = $"{historialMensajeCartel.Mensaje}",
+                    Mensaje = $"{resultadoSlot.Mensaje}",
                     Codigo = cartel.Valor,
                     NumeroPrograma = resultadoSlot.NumeroPrograma,
                     NumeroTrama = resultadoSlot.NumeroTrama,
@@ -369,7 +369,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     var resultado = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
                     {
                         Codigo = codigo,
-                        CalleId = calle.Id
+                        CalleId = calle.Id,
                     }) as ResultadoMensajeCartelLedReordenado;
 
                     var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);

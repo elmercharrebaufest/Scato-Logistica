@@ -8,7 +8,5 @@ namespace Molinos.Scato.Dominio.Comandos
         public string Codigo { get; set; }
 
         public int CalleId { get; set; }
-
-        public int? OrdenCircular { get; set; }
     }
 }

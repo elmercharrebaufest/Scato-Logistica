@@ -23,20 +23,21 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
             Log.Debug("Ejecutando ModificarHistorialMensajeCartelLed");
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
-            LimpiarSlotCartel(listaMensajes, comando.CalleId, comando.OrdenCircular);
+            LimpiarSlotCartel(listaMensajes, comando.CalleId);
             resultadoMensajeCartelLed.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
             Log.Debug($"Finalizando ModificarHistorialMensajeCartelLed - {resultadoMensajeCartelLed.ToJson()}");
             return resultadoMensajeCartelLed;
         }
 
 
-        private void LimpiarSlotCartel(List<MensajeCartelLed> listaMensajes, int calleId, int? slotCircular = null)
+        private void LimpiarSlotCartel(List<MensajeCartelLed> listaMensajes, int calleId)
         {
             var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.Calle.Id == calleId);
             mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
             mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
             mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
-            ReordenarMensajes(listaMensajes, slotCircular);
+            var circular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular);
+            ReordenarMensajes(listaMensajes, circular?.Orden);
         }
 
         private void ReordenarMensajes(List<MensajeCartelLed> listaMensajes, int? slotCircular = null)
