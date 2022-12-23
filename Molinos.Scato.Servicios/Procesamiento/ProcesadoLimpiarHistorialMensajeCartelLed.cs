@@ -32,11 +32,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void LimpiarSlotCartel(List<MensajeCartelLed> listaMensajes, int calleId)
         {
-            var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.Calle.Id == calleId);
+            var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed?.Calle?.Id == calleId);
+            var circular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.TipoCalle == Dominio.Enums.TipoCalle.Circular);
             mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
             mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
             mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
-            var circular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed.Calle.TipoCalle == Dominio.Enums.TipoCalle.Circular);
             ReordenarMensajes(listaMensajes, circular?.Orden);
         }
 
@@ -49,7 +49,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 .Select(x => x.HistorialMensajeCartelLed)
                 .OrderBy(x => x.FechaUltimaModificacion).ToList();
 
-            for (int i = 0; i < listaMensajes.Count(); i++)
+            var listMensajesCant = (slotCircular == null) ? listaMensajes.Count() : listaMensajes.Count() - 1;
+
+            for (int i = 0; i < listMensajesCant; i++)
             {
                 var tieneDatos = (i < historial.Count());
                 
