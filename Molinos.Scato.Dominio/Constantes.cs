@@ -65,6 +65,7 @@
                 public const string EstadoDeCallePostCalado = "EstadoDeCallePostCalado";
                 public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
                 public const string EstadoPlayaInterna = "EstadoPlayaInterna";
+                public const string EstadoVolcadoras = "EstadoVolcadoras";
             }
 
             public struct EficienciaCalado
@@ -98,6 +99,11 @@
             public struct PreBalanza
             {
                 public const string CartelLedPreBalanza = "CartelLedPreBalanza";
+            }
+
+            public struct Volcadoras
+            {
+                public const string CartelLedIntervalo = "CartelLedIntervalo";
             }
 
         }

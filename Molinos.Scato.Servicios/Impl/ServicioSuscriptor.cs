@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -96,7 +97,8 @@ namespace Molinos.Scato.Servicios.Impl
 
                         var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
                         var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
-                        EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, 3000);
+                        var tiempoDeIntervalo = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras, Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
+                        EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                         ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente);
                         break;
 
