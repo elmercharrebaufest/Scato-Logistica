@@ -19,6 +19,7 @@ function Calle(item, context) {
     }
     self.Posiciones = ko.observableArray(posiciones);
     self.Bloqueada = ko.computed(function () {
+
         return self.Llamada() && self.CamionesEnCalle() > 0;
     });
 
@@ -37,29 +38,9 @@ function Calle(item, context) {
     };
 
     self.LLamar = function () {
-        $.blockUI({
-            blockMsgClass: 'blocuiBox',
-            message: '<h5>' + cargandoGif() + ' LLamando a ' + self.Nombre + '</h5>'
-        });
-
-        if(self.TipoCalle == 2){
-            $.getJSON(urlLLamarCallePostCalado, { calleId: self.Id },
-                function () {
-                    self.Llamada(true);
-                    $.unblockUI();
-                }
-            );
-        }
-
-        else {
-            $.getJSON(urlLLamarCalle, { calleId: self.Id, calleCaladoId: self.CalleCalado.Id },
-                function () {
-                    self.Llamada(true);
-                    $.unblockUI();
-                }
-            );
-        }
+        LlamarCalle(self.Nombre, self.TipoCalle, self.Id, self.CalleCalado?.Id, self.Llamada);
     }
+
     self.CancelarLLamado = function () {
         $.blockUI({
             blockMsgClass: 'blocuiBox',
@@ -309,6 +290,7 @@ function EstadoDeCallesViewModel() {
                     $.each(filasCalador, function (key, value) {
                         value.FilasPrecalado = allData.calles.filter(x => (x.TipoCalle == 1 || x.TipoCalle == 7) && x.MaterialId == value.MaterialId && x.Id != value.Id);
                         value.FilasPrecaladoLlamadas = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada);
+                        value.FilasCircularLlamadas = allData.calles.filter(x => x.TipoCalle == 7 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada);
                     });
                 }
 
@@ -320,22 +302,32 @@ function EstadoDeCallesViewModel() {
                     var filaCalador = null;
                     if (filasCalador != null && filasCalador.length > 0) {
                         $.each(filasCalador, function (key, value) {
-                            if (value.FilasPrecalado.find(x => x.Id == calle.Id)
-                                && value.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+                            if (value.FilasPrecalado.find(x => x.Id == calle.Id)) {
                                 filaCalador = value;
-                                if(calle.CalleCalado != null){
+                                if (calle.CalleCalado != null) {
                                     return true;
                                 }
+
+                                var limiteCalador = parseInt(limiteFilasLlamadasTotal / filasCalador.length);
+
                                 if (caladoAutomatico && calle.TipoCalle == 7) {
-                                    calle.CalleCalado = filaCalador;
-                                    value.FilasPrecaladoLlamadas++;
-                                    calle.LlamarCircular();
+
+                                    var limite = (filaCalador.MaterialId == 4) ? 1 : limiteCalador;
+
+                                    if (filaCalador.FilasCircularLlamadas.length < limite) {
+                                        calle.CalleCalado = filaCalador;
+                                        filaCalador.FilasCircularLlamadas++;
+                                        calle.LlamarCircular();
+                                    }
                                 }
 
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
-                                    if (filaCalador.FilasPrecaladoLlamadas.length < limiteFilasLlamadasPrecalado) {
+
+                                    var limite = (filaCalador.MaterialId == 4) ? limiteCalador - 1 : limiteCalador;
+
+                                    if (filaCalador.FilasPrecaladoLlamadas.length < limite) {
                                         calle.CalleCalado = filaCalador;
-                                        value.FilasPrecaladoLlamadas++;
+                                        filaCalador.FilasPrecaladoLlamadas++;
                                         calle.LlamarPrecalado();
                                     }
                                 }
@@ -437,6 +429,37 @@ function ConfirmarEnviarAFilaRechazado() {
     });
 }
 
+function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: '<h5>' + cargandoGif() + ' LLamando a ' + nombre + '</h5>'
+    });
 
+    if (tipoCalle == 2) {
+        $.getJSON(urlLLamarCallePostCalado, { calleId: calleId },
+            function () {
+                $.unblockUI();
+                llamada(true);
+            }
+        );
+    }
 
+    else {
+        $.getJSON(urlLLamarCalle, { calleId: calleId, calleCaladoId: calleCaladoId },
+            function (data) {
+                $.unblockUI();
+                if (data.Mensaje == "1") {
+                    MostrarAlertaInfo('Llamado de calles llegó al máximo');
+                    return
+                }
 
+                if (data.Mensaje == "2") {
+                    MostrarAlertaInfo('Llamado de calles circulares llegó al máximo');
+                    return
+                }
+                llamada(true);
+            }
+        );
+    }
+    $.unblockUI();
+}

@@ -30,6 +30,8 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarJson))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.DetenerMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarMensajeIntervalo))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarNotificacionEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
@@ -252,6 +254,8 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarJson))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.DetenerMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarMensajeIntervalo))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarNotificacionEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
@@ -412,6 +416,116 @@ namespace Molinos.Scato.Servicios.Orquestador {
                 if ((object.ReferenceEquals(this.jsonField, value) != true)) {
                     this.jsonField = value;
                     this.RaisePropertyChanged("json");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DetenerMensajeIntervalo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class DetenerMensajeIntervalo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEnviarMensajeIntervalo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarEnviarMensajeIntervalo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IntervaloField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroProgramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroTramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroVariableField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextSecundarioField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Intervalo {
+            get {
+                return this.IntervaloField;
+            }
+            set {
+                if ((this.IntervaloField.Equals(value) != true)) {
+                    this.IntervaloField = value;
+                    this.RaisePropertyChanged("Intervalo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroPrograma {
+            get {
+                return this.NumeroProgramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroProgramaField, value) != true)) {
+                    this.NumeroProgramaField = value;
+                    this.RaisePropertyChanged("NumeroPrograma");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroTrama {
+            get {
+                return this.NumeroTramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroTramaField, value) != true)) {
+                    this.NumeroTramaField = value;
+                    this.RaisePropertyChanged("NumeroTrama");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroVariable {
+            get {
+                return this.NumeroVariableField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroVariableField, value) != true)) {
+                    this.NumeroVariableField = value;
+                    this.RaisePropertyChanged("NumeroVariable");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string TextSecundario {
+            get {
+                return this.TextSecundarioField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextSecundarioField, value) != true)) {
+                    this.TextSecundarioField = value;
+                    this.RaisePropertyChanged("TextSecundario");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Texto {
+            get {
+                return this.TextoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextoField, value) != true)) {
+                    this.TextoField = value;
+                    this.RaisePropertyChanged("Texto");
                 }
             }
         }

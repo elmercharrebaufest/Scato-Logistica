@@ -10,6 +10,5 @@
 	[SegundosDeEspera] INT NOT NULL DEFAULT 0,
 	[DescripcionFormatoMensaje] NVARCHAR(500) NULL,
 	[Habilitado] BIT NOT NULL DEFAULT 1,
-
-	CONSTRAINT [PK_dbo.MensajeCartelLed] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [PK_dbo.MensajeCartelLed] PRIMARY KEY CLUSTERED ([Id] ASC),
 )

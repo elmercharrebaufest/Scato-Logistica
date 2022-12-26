@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Enums
         public const string LlamadoCallePrecaladoACalar = "LlamadoCallePrecaladoACalar";
         public const string LlamadoCallePostcalado = "LlamadoCallePostcalado";
         public const string LlamadoAutomaticoVolcadoras = "LlamadoAutomaticoVolcadoras";
+        public const string CartelPreBalanza = "CartelPreBalanza";
     }
 }

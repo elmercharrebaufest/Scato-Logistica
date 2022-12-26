@@ -8,6 +8,7 @@ $(document).ready(function () {
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
     notificador.client.actualizarNotificaciones = function (notificacion) {
+
         if (notificacion !== null && (notificacion.TipoAlerta == 7 || notificacion.TipoAlerta == 6)) {
             var balanza = JSON.parse(notificacion.Mensaje);
             Acualizarfoto(false, balanza.FotoAlMarcarTarjeta, balanza.Tarjeta, balanza.Id);
@@ -34,6 +35,10 @@ $(document).ready(function () {
                     }
                 }
             }
+        }
+
+        if (notificacion !== null && notificacion.TipoAlerta == 4) {
+            obtenerMensajesAplicacion();
         }
 
         if (notificacion !== null && notificacion.TipoAlerta == 10) {

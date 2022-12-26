@@ -27,7 +27,8 @@
     urlLLamarCallePostCalado = '@Url.Action("LlamarCallePostCalado", "EstadoDeCalle")';
     minutosEsperaCircular = @Html.Raw(ViewBag.MinutosEsperaCircular);
     minutosEsperaPrecalado = @Html.Raw(ViewBag.MinutosEsperaPrecalado);
-    limiteFilasLlamadasPrecalado = @Html.Raw(ViewBag.LimiteFilasPrecaladoLlamadas);
+    limiteFilasLlamadasTotal = @Html.Raw(ViewBag.LimiteFilasPrecaladoLlamadas);
+    urlLEstadoDeCallesBloqueada = '@Url.Action("EstadoDeCallesBloqueada", "EstadoDeCalle")';
 </script>
 <script type="text/javascript" src="@Url.Script("~/scripts/estadoDeCalle.js")"></script>
 

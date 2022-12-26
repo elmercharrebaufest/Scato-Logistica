@@ -102,13 +102,11 @@ function CambiarMensaje(tipoMensaje,idMensaje, titulo, detalle) {
         $("#notificaiconActiva").html(result);
         MostrarAlertaExitosa();
         estadoActual = tipoMensaje;
-        //console.log(result);
-        //idMensaje = result.idMensaje;
+
     });
 }
 
 function LimpiarCampos() {
-    //$("#notificacionFecha").val();
     $("#notificacionTitulo").val("");
     $("#notificacionDetalle").val("");
 }

@@ -173,7 +173,7 @@ $(document).ready(function () {
     $("#alertaFija").hide();
 
     obtenerMensajesAplicacion();
-    setInterval(obtenerMensajesAplicacion, 60000);
+/*    setInterval(obtenerMensajesAplicacion, 60000);*/
 
 
     $("#alertaFija").click(function () {

@@ -165,6 +165,7 @@ function conectarSignalR() {
     window.hubReady.done(function () {
         recargarNotificaciones(false, true, true);
         notificador.server.unirseAGrupo(grupos);
+        notificador.server.unirseAGrupo('NotificacionAplicacion');
         notificador.server.unirseAGrupo('SENSORESBARRERA');
         if ($("#barreraHeader")) {
             $.post($("#ActualizarEstadoBarrera").val());
@@ -244,7 +245,7 @@ function mostrarAlertaPorPantalla(tipoAlerta, mensaje) {
     } else if (tipoAlerta == 3) {
         MostrarAlertaInfo(mensaje);
     } else if (tipoAlerta == 4) {
-        alert(mensaje);
+        obtenerMensajesAplicacion();
     } else if (tipoAlerta == 8) {
         ActualizarEstadoServicios(mensaje);
     } else if (tipoAlerta == 9) {

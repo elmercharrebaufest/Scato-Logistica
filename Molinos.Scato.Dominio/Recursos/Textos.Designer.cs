@@ -4903,6 +4903,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Habilitar Contingencia de Pesos Excedentes.
+        /// </summary>
+        public static string Balanza_ContingenciaExcedentesHabilitada {
+            get {
+                return ResourceManager.GetString("Balanza_ContingenciaExcedentesHabilitada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear Balanza.
         /// </summary>
         public static string Balanza_Crear {
@@ -5097,6 +5106,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Balanza_Titulo {
             get {
                 return ResourceManager.GetString("Balanza_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tolerancia Excedida.
+        /// </summary>
+        public static string Balanza_ToleranciaExcedida {
+            get {
+                return ResourceManager.GetString("Balanza_ToleranciaExcedida", resourceCulture);
             }
         }
         
@@ -13525,6 +13543,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Error_LibroOnccaMaterial {
             get {
                 return ResourceManager.GetString("Error_LibroOnccaMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Llegó al límite de llamados que se pueden hacer.
+        /// </summary>
+        public static string Error_LimiteCallesLlamadas {
+            get {
+                return ResourceManager.GetString("Error_LimiteCallesLlamadas", resourceCulture);
             }
         }
         

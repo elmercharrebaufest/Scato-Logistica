@@ -10090,4 +10090,13 @@
   <data name="Configuracion_CalleHidraulica_CodigoCartel" xml:space="preserve">
     <value>Código Cartel</value>
   </data>
+  <data name="Error_LimiteCallesLlamadas" xml:space="preserve">
+    <value>Llegó al límite de llamados que se pueden hacer</value>
+  </data>
+  <data name="Balanza_ContingenciaExcedentesHabilitada" xml:space="preserve">
+    <value>Habilitar Contingencia de Pesos Excedentes</value>
+  </data>
+  <data name="Balanza_ToleranciaExcedida" xml:space="preserve">
+    <value>Tolerancia Excedida</value>
+  </data>
 </root>

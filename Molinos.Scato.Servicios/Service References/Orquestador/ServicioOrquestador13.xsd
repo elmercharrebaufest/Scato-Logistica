@@ -131,6 +131,29 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="EjecutarEnviarJson" nillable="true" type="tns:EjecutarEnviarJson" />
+  <xs:complexType name="DetenerMensajeIntervalo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ComandoEjecutar">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DetenerMensajeIntervalo" nillable="true" type="tns:DetenerMensajeIntervalo" />
+  <xs:complexType name="EjecutarEnviarMensajeIntervalo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ComandoEjecutar">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Intervalo" type="xs:int" />
+          <xs:element minOccurs="0" name="NumeroPrograma" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NumeroTrama" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NumeroVariable" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TextSecundario" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Texto" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EjecutarEnviarMensajeIntervalo" nillable="true" type="tns:EjecutarEnviarMensajeIntervalo" />
   <xs:complexType name="EjecutarNotificacionEstadoSensor">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ComandoEjecutar">

@@ -4,6 +4,6 @@ namespace Molinos.Scato.Dominio.Comandos
 {
     public class EnviarMensajesAsincronoCartelLed : Comando
     {
-        public List<EnviarMensajeCarteLed> Mensajes { get; set; } = new List<EnviarMensajeCarteLed>();
+        public List<EnviarMensajeCartelLed> Mensajes { get; set; } = new List<EnviarMensajeCartelLed>();
     }
 }
