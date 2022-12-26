@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -39,6 +40,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     LlamadoAutomaticoVolcadora(hidraulica);
                 }
+
                 Repositorio.GuardarCambios();
             }
 
@@ -83,8 +85,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             if (primerosCamiones.Count > 0)
             {
+                var tiempoDeIntervalo = Repositorio.Obtener<ConfiguracionGeneral>(q => q.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras && q.Nombre == Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
                 var camionLlamado = primerosCamiones.OrderBy(x => x.FechaLlegadaACalleHidraulica).FirstOrDefault();
-                EnviarMensajeACartelConIntervalo(camionLlamado.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, 3000);
+                EnviarMensajeACartelConIntervalo(camionLlamado.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                 hidraulica.Estado = EstadoHidraulica.Llamando;
                 hidraulica.UltimaPatenteLlamada = camionLlamado.Patente;
             }
