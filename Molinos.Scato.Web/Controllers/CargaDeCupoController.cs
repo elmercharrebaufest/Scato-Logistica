@@ -747,7 +747,7 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 var mensajes = mensajesCartel.Select(s =>
-                    new EnviarMensajeCarteLed
+                    new EnviarMensajeCartelLed
                     {
                         Mensaje = string.Format(s.Mensaje, mensaje, patente),
                         PuestoDeTrabajoId = puestoDeTrabajo.Id,

@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -30,7 +31,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var resultado = new Resultado();
             var hidraulica = Repositorio.Obtener<LlamadoAutomaticoHidraulica>(q => q.Hidraulica.Id == comando.Id && (q.Estado != EstadoHidraulica.Inhabilitado || comando.Estado == EstadoHidraulica.Disponible));
-            if(hidraulica != null)
+            if (hidraulica != null)
             {
                 hidraulica.Estado = comando.Estado;
                 hidraulica.UltimaPatenteLlamada = comando.Patente;
@@ -39,6 +40,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     LlamadoAutomaticoVolcadora(hidraulica);
                 }
+
                 Repositorio.GuardarCambios();
             }
 
@@ -83,28 +85,32 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             if (primerosCamiones.Count > 0)
             {
+                var tiempoDeIntervalo = Repositorio.Obtener<ConfiguracionGeneral>(q => q.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras && q.Nombre == Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
                 var camionLlamado = primerosCamiones.OrderBy(x => x.FechaLlegadaACalleHidraulica).FirstOrDefault();
-                EnviarMensajeACartel(camionLlamado.CodigoCartel, $"{camionLlamado.Patente} avance a {hidraulica.Hidraulica.Nombre}");
+                EnviarMensajeACartelConIntervalo(camionLlamado.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                 hidraulica.Estado = EstadoHidraulica.Llamando;
                 hidraulica.UltimaPatenteLlamada = camionLlamado.Patente;
             }
         }
 
-        private void EnviarMensajeACartel(string codigoCartel, string mensaje)
+        private void EnviarMensajeACartelConIntervalo(string codigoCartel, string mensaje, string mensajeSecundario, int intervaloMilliseconds)
         {
             try
             {
                 var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
-                    servicioComandos.Ejecutar(new EnviarMensajeCarteLed
+                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
                         Codigo = codigoCartel,
                         NumeroPrograma = mensajeCartel.Programa,
                         NumeroTrama = mensajeCartel.Trama,
                         NumeroVariable = mensajeCartel.Variable,
-                        SegundosDeEspera = mensajeCartel.SegundosDeEspera
+                        SegundosDeEspera = mensajeCartel.SegundosDeEspera,
+                        EsMensajeConIntervalo = true,
+                        MensajeSecundario = mensajeSecundario,
+                        IntervaloMilliseconds = intervaloMilliseconds
                     });
                 }
             }

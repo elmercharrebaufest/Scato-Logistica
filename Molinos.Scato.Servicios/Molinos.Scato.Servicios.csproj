@@ -168,9 +168,11 @@
     <Compile Include="Behavior\AiErrorHandlerBehaviorAttribute.cs" />
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CallePreBalanzaPlayaInternaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionCalleHidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HistorialMensajeCartelLedMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\LlamadoAutomaticoHidraulicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfigSensoresMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
@@ -194,7 +196,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\DensidadPorTemperaturaDeMaterialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EstadoBuqueMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EstadoPuertoMappingProfile.cs" />
-    <Compile Include="Conversiones\Impl\Perfiles\CallePorRecorridoProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CallePorRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ContingenciaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CargaComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaPuertoMappingProfile.cs" />
@@ -532,6 +534,10 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorInsertarSlotMensajeCartelLed.cs" />
+    <Compile Include="Procesamiento\ProcesadoLimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />

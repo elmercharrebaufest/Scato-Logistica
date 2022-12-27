@@ -19,6 +19,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Escalable { get; set; }
         public string ColorFondo { get; set; }
         public string ColorTexto { get; set; }
+        public int? CalleRecorridoId { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto

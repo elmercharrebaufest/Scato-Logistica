@@ -280,7 +280,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             mensajesCartel?.ToList().ForEach(x =>
             {
-                comandos.Ejecutar(new EnviarMensajeCarteLed()
+                comandos.Ejecutar(new EnviarMensajeCartelLed()
                 {
                     Mensaje = x.Mensaje,
                     PuestoDeTrabajoId = puesto.PuestoId,

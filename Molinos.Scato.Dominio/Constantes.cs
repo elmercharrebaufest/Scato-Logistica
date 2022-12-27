@@ -17,6 +17,7 @@
         {
             public const string Intercomunicador = "Intercomunicador";
             public const string SensoresBarreraHidraulica = "SensoresBarreraHidraulica";
+            public const string NotificacionAplicacion = "NotificacionAplicacion";
         }
 
         public struct Entidad
@@ -43,7 +44,7 @@
             public const string NoExistenSolicitudes = "800";
         }
 
-        public struct AsignacionDeEstablecimientoRangos 
+        public struct AsignacionDeEstablecimientoRangos
         {
             public const int Desde = 90000;
             public const int Hasta = 99998;
@@ -61,6 +62,10 @@
                 public const string EficienciaCalado = "EficienciaCalado";
                 public const string AFIP = "AFIP";
                 public const string PreLote = "PreLote";
+                public const string EstadoDeCallePostCalado = "EstadoDeCallePostCalado";
+                public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
+                public const string EstadoPlayaInterna = "EstadoPlayaInterna";
+                public const string EstadoVolcadoras = "EstadoVolcadoras";
             }
 
             public struct EficienciaCalado
@@ -79,12 +84,49 @@
                 public const string HorarioNocturnoDesde = "HorarioNocturnoDesde";
                 public const string HorarioNocturnoHasta = "HorarioNocturnoHasta";
             }
+
+            public struct PostCalado
+            {
+                public const string CartelLedPostCalado = "CartelLedPostCalado";
+            }
+
+            public struct PreCalado
+            {
+                public const string CartelLedCalador = "CartelLedCalador";
+                public const string LimiteFilasLlamadas = "LimiteFilasLlamadas";
+            }
+
+            public struct PreBalanza
+            {
+                public const string CartelLedPreBalanza = "CartelLedPreBalanza";
+            }
+
+            public struct Volcadoras
+            {
+                public const string CartelLedIntervalo = "CartelLedIntervalo";
+            }
+
         }
 
         public struct EtapaWorkflow
         {
             public const string Visteo = "Visteo";
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
+            public const string PesadaBruto = "PesadaBruto";
+            public const string PesadaTara = "PesadaTara";
+        }
+
+        public struct CartelTramaPare
+        {
+            public const string LlamadoAutomaticoVolcadoras = "02";
+        }
+        
+        public struct Caladores
+        {
+            public const string CodigoCalador1 = "CAL1";
+            public const string CodigoCalador2 = "CAL2";
+            public const string NombreCalador1 = "Calador 1";
+            public const string NombreCalador2 = "Calador 2";
         }
     }
 }

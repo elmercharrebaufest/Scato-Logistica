@@ -89,6 +89,8 @@
     <Compile Include="ImpresionEtiquetaMuestraInase.cs" />
     <Compile Include="ImpresionGenericaFile.cs" />
     <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
+    <Compile Include="VerificarCartelPreBalanza.cs" />
+    <Compile Include="LlamarCallePreBalanza.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
     <Compile Include="Internas\InformarEstadoCaladoCircular.cs" />
     <Compile Include="Internas\SetearPuestoEnTransito.cs" />

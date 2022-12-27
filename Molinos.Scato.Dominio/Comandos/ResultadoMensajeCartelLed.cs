@@ -1,15 +1,19 @@
-﻿using System;
+﻿using System.Runtime.Serialization;
 
 namespace Molinos.Scato.Dominio.Comandos
 {
-    public class EnviarMensajeCarteLed : Comando
+    [DataContract]
+    public class ResultadoMensajeCartelLed : Resultado
     {
+        [DataMember]
         public string Mensaje { get; set; }
-        public string Codigo { get; set; }
-        public int PuestoDeTrabajoId { get; set; }
+        [DataMember]
         public string NumeroTrama { get; set; }
+        [DataMember]
         public string NumeroPrograma { get; set; }
+        [DataMember]
         public string NumeroVariable { get; set; }
+        [DataMember]
         public int SegundosDeEspera { get; set; }
     }
 }

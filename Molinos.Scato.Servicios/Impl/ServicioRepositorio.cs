@@ -5222,7 +5222,8 @@ namespace Molinos.Scato.Servicios.Impl
                     PesoTara = x.PesoTara,
                     Calle = x.Calle.Nombre,
                     TipoDocumento = x.TipoDocumentoIngreso,
-                    TipoComercial = x.TipoComercial.Descripcion
+                    TipoComercial = x.TipoComercial.Descripcion,
+                    TipoDeWorkflow = x.Workflow.TipoDeWorkflow
                 });
         }
 
@@ -8968,7 +8969,7 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Calle, CalleDto>(x => x.CentroId.Equals(centroId));
         }
 
-        public IList<CallePorRecorridoDto> ListarTodasLasCallesPorRecorrido(int calleId)
+        public IList<CallePorRecorridoDto> ListarCallePorRecorridoPorCalleId(int calleId)
         {
             return Listar<CallePorRecorrido, CallePorRecorridoDto>(x => x.Calle.Id.Equals(calleId) && x.FechaEgreso == null);
         }
@@ -10140,6 +10141,46 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo)
         {
             return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo);
+        }
+        
+        public string ObtenerCodigoMensaje(int calleCaladoId)
+        {
+
+            return repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == calleCaladoId).MensajeCartelLed.Codigo;
+        }
+
+        public int ObtenerOrdenCircular(string codigo)
+        {
+            var lista = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
+                        
+            return lista.Last().Orden;
+        }
+
+        public int ObtenerCantidadCamionesEnCallePreBalanza(int calleId)
+        {
+            var callePreBalanzaPlayaInternaList = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == calleId)
+                .Select(q=>q.CallePreBalanzaId).ToList();
+
+            var cantidadCamiones = repositorio.Contar<CallePorRecorrido>(q => callePreBalanzaPlayaInternaList.Contains(q.Calle.Id) && q.FechaEgreso.Equals(null));
+            return cantidadCamiones;
+        }
+
+        public List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId)
+        {
+            var callePreBalanzaIdList = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == callePlayaInternaId)
+                .Select(q => q.CallePreBalanzaId).ToList();
+            return Listar<Calle, CalleDto>(x => callePreBalanzaIdList.Contains(x.Id)).ToList();
+        }
+
+        public CantidadPrecaladoCircularHelper ContarCallesBloqueadas()
+        {
+            var listaPreCaladoCircular = Listar<Calle, CalleDto>(x => (x.TipoCalle == TipoCalle.PreCalado || x.TipoCalle == TipoCalle.Circular));
+
+            var cantidadPrecaladoCircularHelper = new CantidadPrecaladoCircularHelper();
+            cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => x.Bloqueada);
+            cantidadPrecaladoCircularHelper.CantidadCircular = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.Circular && x.Bloqueada);
+
+            return cantidadPrecaladoCircularHelper;
         }
     }
 }
