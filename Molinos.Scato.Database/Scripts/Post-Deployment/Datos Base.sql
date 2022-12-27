@@ -1481,7 +1481,7 @@ END
 
 IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoVolcadoras' AND  Nombre = 'CartelLedIntervalo' AND  Centro_Id IS NULL) 
 BEGIN 
-INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoVolcadoras', 'CartelLedIntervalo', '3000', NULL, GETDATE(), 'SCATO')
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoVolcadoras', 'CartelLedIntervalo', '5000', NULL, GETDATE(), 'SCATO')
 END
 
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
