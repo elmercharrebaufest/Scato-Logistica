@@ -19,7 +19,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultado = new Resultado();
             var entity = new PesosExc();
             entity.PesoTomado = comando.PesoTomado;
-            entity.Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.RecorridoId);
+            var recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.RecorridoId);
+            recorrido.PasoPorContingenciaPesoExc = true;
+            entity.Recorrido = recorrido;
             Repositorio.Agregar(entity);
             Repositorio.GuardarCambios();
             return resultado;

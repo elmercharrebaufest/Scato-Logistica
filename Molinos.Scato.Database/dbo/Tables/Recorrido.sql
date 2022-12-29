@@ -59,6 +59,7 @@
     [MotivoDemora]                      NVARCHAR (1000)  NULL,
     [SacoTurnoConCircular]              BIT              DEFAULT ((0)) NOT NULL,
     [LlegoEnHorario]                    BIT              DEFAULT ((0)) NOT NULL,
+    [PasoPorContingenciaPesoExc] BIT DEFAULT ((0)) NOT NULL, 
     CONSTRAINT [PK_dbo.Recorrido] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Recorrido_dbo.Almacen_Almacen_Id] FOREIGN KEY ([Almacen_Id]) REFERENCES [dbo].[Almacen] ([Id]),
     CONSTRAINT [FK_dbo.Recorrido_dbo.AnalisisDeCalidad_AnalisisDeCalidad_Id] FOREIGN KEY ([AnalisisDeCalidad_Id]) REFERENCES [dbo].[AnalisisDeCalidad] ([Id]),

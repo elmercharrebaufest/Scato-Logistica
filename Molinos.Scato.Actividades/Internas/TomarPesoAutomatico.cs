@@ -46,7 +46,9 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     else
                     {
-                        if(recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto && tipoPesada == Dominio.Enums.TipoPesada.Bruto)
+                        if(recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto 
+                            && tipoPesada == Dominio.Enums.TipoPesada.Bruto
+                            && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
                         {
                             ContigenciaDePesosExcedidos(repositorio, servComando, pesaje, recorrido);
                         }
