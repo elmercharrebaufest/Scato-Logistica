@@ -47,6 +47,8 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsExportacion { get; set; }
 
         public virtual bool Desactivado { get; set; }
+        public virtual bool ContingenciaExcedentesHabilitada { get; set; }
+        public virtual int? ToleranciaExcedida { get; set; }
     }
 }
 

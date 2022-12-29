@@ -206,7 +206,9 @@ namespace Molinos.Scato.Web.Controllers
                              PesoBruto = recorrido.PesoBruto,
                              PesoTara = recorrido.PesoTara,
                              PesoOrigenNeto = recorrido.PesoNetoOrigen,
-                             Calle = recorrido.Calle
+                             Calle = recorrido.Calle,
+                             TipoDeWorkflow = recorrido.TipoDeWorkflow,
+                             RecorridoId = recorrido.Id
                          });
                     
                     EncenderSemaforoVagon(color, puestoId);

@@ -94,6 +94,7 @@
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\InsertarSlotMensajeCartelLed.cs" />
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
+    <Compile Include="Comandos\CrearPesosExc.cs" />
     <Compile Include="Comandos\ModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
@@ -1035,6 +1036,7 @@
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarqueHistorico.cs" />
     <Compile Include="Entidades\ModuloDeCargaUmap.cs" />
     <Compile Include="Entidades\ConfirmacionCargaDescarga.cs" />
+    <Compile Include="Entidades\PesosExc.cs" />
     <Compile Include="Entidades\MuestraDeInase.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
