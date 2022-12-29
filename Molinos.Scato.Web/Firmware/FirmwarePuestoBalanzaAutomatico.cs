@@ -126,7 +126,6 @@ namespace Molinos.Scato.Web.Firmware
                              Decision = false,
                              PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
                              Automatizado = true,
-
                              CartaDePorte = recorrido.CartaDePorte,
                              Entregador = recorrido.Entregador,
                              Material = recorrido.Material,
@@ -138,7 +137,9 @@ namespace Molinos.Scato.Web.Firmware
                              PesoTara = recorrido.PesoTara,
                              TipoVehiculo = recorrido.TipoVehiculo,
                              Tarjeta = recorrido.TarjetaDeAcceso,
-                             Calle = recorrido.Calle
+                             Calle = recorrido.Calle,
+                             TipoDeWorkflow = recorrido.TipoDeWorkflow,
+                             RecorridoId = recorrido.Id
                          });
                     if (resultadoActividad != null && resultadoActividad.HayErrores)
                     {

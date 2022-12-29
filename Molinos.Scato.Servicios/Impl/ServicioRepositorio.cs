@@ -5275,7 +5275,6 @@ namespace Molinos.Scato.Servicios.Impl
                     WorkflowId = x.Workflow.Id,
                     AdvertirCaladoEnPlanta = x.CorrespondeCaladoEnPlanta && x.CaladoEnPlanta == null,
                     Id = x.Id,
-
                     CartaDePorte = x.NumeroDocumentoIngreso,
                     Entregador = x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte ? x.Vehiculo.CartaPorte.Entregador != null : false,
                     Material = x.Material.Descripcion,
@@ -5285,7 +5284,8 @@ namespace Molinos.Scato.Servicios.Impl
                     PesoTara = x.PesoTara,
                     PesoNetoOrigen = x.PesoBrutoOrigen - x.PesoTaraOrigen,
                     TipoDeWorkflow = x.Workflow.TipoDeWorkflow,
-                    Calle = x.Calle.Nombre
+                    Calle = x.Calle.Nombre,
+                    PasoPorContingenciaPesosExc = x.PasoPorContingenciaPesoExc
                 });
         }
 

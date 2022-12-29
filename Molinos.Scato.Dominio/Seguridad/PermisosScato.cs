@@ -498,6 +498,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         CamionesPendientesNoGranos = 258, 
         [Display(ResourceType = typeof(Textos), Name = "ConfirmacionCargaDescarga")]
         ConfirmacionCargaDescarga = 612,
+        [Display(ResourceType = typeof(Textos), Name = "ContingenciaPesosExcedentes")]
+        ContingenciaPesosExcedentes = 613,
 
         [Display(ResourceType = typeof(Textos), Name = "DestinoPuerto")]
         DestinoPuerto = 237,

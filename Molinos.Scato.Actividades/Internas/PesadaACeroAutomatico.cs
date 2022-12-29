@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -43,6 +44,9 @@ namespace Molinos.Scato.Actividades.Internas
                 recorrido.TipoVehiculo = datosRecorrido.TipoVehiculo;
                 recorrido.Tarjeta = datosRecorrido.TarjetaDeAcceso;
                 recorrido.Calle = datosRecorrido.Calle;
+                recorrido.TipoDeWorkflow = datosRecorrido.TipoDeWorkflow;
+                recorrido.RecorridoId = datosRecorrido.Id;
+                recorrido.PasoPorContingenciaPesosExc = datosRecorrido.PasoPorContingenciaPesosExc;
 
                 var resultadoCero = VolverACero(repositorio, servComando, recorrido, context);
                 ControlRecorrido.Set(context, recorrido);
@@ -146,6 +150,10 @@ namespace Molinos.Scato.Actividades.Internas
                         }
                         
                         resultado = (ResultadoPesaje)servComando.Ejecutar(new ObtenerPesada() { Recorrido = recorrido });
+                        if (recorrido.PasoPorContingenciaPesosExc && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+                        {
+                            ContigenciaDePesosExcedidos(repositorio, resultado, recorrido);
+                        }
                         count++;
                         mensaje = mensaje == "" && resultado.HayErrores ? resultado.Errores.First().Value : mensaje;
                         leido = mensaje == "";
@@ -191,6 +199,19 @@ namespace Molinos.Scato.Actividades.Internas
                 recorrido.Comentario = e.Message;
             }
             return resultado;
+        }
+
+        private void ContigenciaDePesosExcedidos(IServicioRepositorio repositorio, ResultadoPesaje pesaje, ControlRecorridoDto recorrido)
+        {
+            var balanza = repositorio.ObtenerBalanza(pesaje.BalanzaId);
+            if (balanza.ContingenciaExcedentesHabilitada && balanza.ToleranciaExcedida != null && recorrido.RecorridoId != null)
+            {
+                var pesoMaximoPorTipoVehiculo = repositorio.LeerPesoMaximo(recorrido.WorkflowInstanceId, recorrido.TipoDeWorkflow);
+                if (pesaje.Peso > pesoMaximoPorTipoVehiculo && (pesaje.Peso - pesoMaximoPorTipoVehiculo <= balanza.ToleranciaExcedida))
+                {
+                    pesaje.Peso = pesoMaximoPorTipoVehiculo;
+                }
+            }
         }
     }
 }
