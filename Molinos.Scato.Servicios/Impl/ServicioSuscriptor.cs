@@ -99,7 +99,7 @@ namespace Molinos.Scato.Servicios.Impl
                         var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
                         var tiempoDeIntervalo = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras, Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
                         EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
-                        ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente);
+                        ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente, configuracionCalle.CodigoCartel);
                         break;
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
@@ -114,7 +114,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                                 case TipoAccionSensor.HidraulicaBajo:
                                     var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
-                                    ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty);
+                                    ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty, string.Empty);
                                     break;
                             }
                         }
@@ -247,6 +247,11 @@ namespace Molinos.Scato.Servicios.Impl
                 var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
+                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
+                    {
+                        CodigoDispositivo = codigoCartel
+                    });
+
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
@@ -295,7 +300,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        private void ActualizarEstadoHidraulica(int hidraulicaId, EstadoHidraulica nuevoEstado, string patenteLlamada)
+        private void ActualizarEstadoHidraulica(int hidraulicaId, EstadoHidraulica nuevoEstado, string patenteLlamada,string codigoCartel)
         {
             try
             {
@@ -303,7 +308,8 @@ namespace Molinos.Scato.Servicios.Impl
                 {
                     Id = hidraulicaId,
                     Estado = nuevoEstado,
-                    Patente = patenteLlamada
+                    Patente = patenteLlamada,
+                    Cartel = codigoCartel
                 });
             }
             catch (Exception e)

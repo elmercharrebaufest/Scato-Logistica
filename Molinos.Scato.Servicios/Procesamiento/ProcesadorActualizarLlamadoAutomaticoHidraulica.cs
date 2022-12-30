@@ -10,6 +10,8 @@ using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Molinos.Scato.Dominio.Constantes;
+using ConfiguracionGeneral = Molinos.Scato.Dominio.Entidades.ConfiguracionGeneral;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -36,9 +38,21 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 hidraulica.Estado = comando.Estado;
                 hidraulica.UltimaPatenteLlamada = comando.Patente;
                 hidraulica.FechaUltimaModificacionEstado = DateTime.Now;
-                if (comando.Estado == EstadoHidraulica.Disponible)
+
+                switch (comando.Estado)
                 {
-                    LlamadoAutomaticoVolcadora(hidraulica);
+                    case EstadoHidraulica.Disponible:
+                        LlamadoAutomaticoVolcadora(hidraulica);
+                        break;
+
+                    case EstadoHidraulica.Llamando:
+                        hidraulica.UltimoCartelLlamado = comando.Cartel;
+                        break;
+
+                    case EstadoHidraulica.Inhabilitado:
+                        LimpiarMensajeCartel(hidraulica.UltimoCartelLlamado);
+                        hidraulica.UltimoCartelLlamado = null;
+                        break;
                 }
 
                 Repositorio.GuardarCambios();
@@ -90,6 +104,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 EnviarMensajeACartelConIntervalo(camionLlamado.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                 hidraulica.Estado = EstadoHidraulica.Llamando;
                 hidraulica.UltimaPatenteLlamada = camionLlamado.Patente;
+                hidraulica.UltimoCartelLlamado = camionLlamado.CodigoCartel;
             }
         }
 
@@ -97,9 +112,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
-                var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
+                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
+                    {
+                        CodigoDispositivo = codigoCartel
+                    });
+                    var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
@@ -111,6 +130,33 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         EsMensajeConIntervalo = true,
                         MensajeSecundario = mensajeSecundario,
                         IntervaloMilliseconds = intervaloMilliseconds
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "No se pudo mostrar el mensaje en Cartel Led");
+            }
+        }
+
+        private void LimpiarMensajeCartel(string codigoCartel)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(codigoCartel))
+                {
+                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
+                    {
+                        CodigoDispositivo = codigoCartel
+                    });
+                    var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
+                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                    {
+                        Mensaje = "PARE AQUI",
+                        Codigo = codigoCartel,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = CartelTramaPare.LlamadoAutomaticoVolcadoras,
+                        NumeroVariable = mensajeCartel.Variable
                     });
                 }
             }
