@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -142,7 +143,8 @@ namespace Molinos.Scato.Actividades.Internas
                 if (!string.IsNullOrEmpty(cartaPorte.CorredorVendedorSecundarioCodigoSap)) corredores.Add(cartaPorte.CorredorVendedorSecundarioCodigoSap);
                 var corredor = corredores.LastOrDefault();
                 var corredorSAP = string.Empty;
-                var esDestinatarioMOA = firmasCuit.Any(x => x == cartaPorte.DestinatarioCuil);
+                //var esDestinatarioMOA = firmasCuit.Any(x => x == cartaPorte.DestinatarioCuil);
+                var esDestinatarioMOA = Constantes.Proveedores.CuitMolinos == cartaPorte.DestinatarioCuil;
                 var esProductor = clasificacion.ToUpper().Trim().Equals("PRODUCTOR");
                 var esOperador = clasificacion.ToUpper().Trim().Equals("OPERADOR");
 
