@@ -19,7 +19,8 @@ namespace Molinos.Scato.Actividades
             var repositorio = context.GetExtension<IServicioRepositorio>();
 
             var callePlayaInternaList = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(q => !q.Deshabilitada);
-            var callePreBalanzaList = repositorio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(q => !q.Deshabilitada && !q.Bloqueada && q.FechaLLamada.Equals(null));
+            //var callePreBalanzaList = repositorio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(q => !q.Deshabilitada && !q.Bloqueada && q.FechaLLamada.Equals(null));
+            var callePreBalanzaList = repositorio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(q => !q.Deshabilitada && q.FechaLLamada.Equals(null));
 
 
             foreach (var callePlayaInterna in callePlayaInternaList)

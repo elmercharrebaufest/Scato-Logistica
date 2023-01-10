@@ -41,13 +41,36 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private Calle ObtenerCalleDisponible(DbContext contexto)
         {
-            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle 
+            Calle calleDisponible = null;
+
+            var ultimaAsignacion = contexto.Set<CallePorRecorrido>()
+                .Where(x => x.Calle.TipoCalle == TipoCalle.PreBalanzaGranos && x.FechaEgreso == null)
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefault();
+
+            var callesDisponibles = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PreBalanzaGranos 
                                             && x.Material.Id == materialId
                                             && !x.Bloqueada
                                             && !x.Deshabilitada
-                                            && x.FechaLLamada == null
-                                            && (x.CantidadDeCamiones > contexto.Set<CallePorRecorrido>().Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id)))
-                                              .FirstOrDefault();
+                                            && (contexto.Set<CallePorRecorrido>()
+                                              .Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id)) < x.CantidadDeCamiones).
+                                              OrderBy(x => x.Id)
+                                              .ToList();
+
+            //busca en calle actual
+            if (ultimaAsignacion != null)
+            {
+                var idCalle = ultimaAsignacion.Calle.Id;
+                calleDisponible = callesDisponibles.FirstOrDefault(x => x.Id == idCalle) ?? callesDisponibles.FirstOrDefault(x => x.Id > idCalle);
+            }
+
+            //busca en todas las calles 
+            if(calleDisponible == null)
+            {
+                calleDisponible = callesDisponibles.FirstOrDefault();
+            }
+
+            return calleDisponible;
         }
     }
 }
