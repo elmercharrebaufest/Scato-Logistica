@@ -7,6 +7,7 @@ using System.Configuration;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    //TODO : Refactorizar para que no reciba Material y sólo el Id en cada caso
     public class AdministradorDeCalles : IAdministradorDeCalles
     {
         private readonly IRepositorio repositorio;
@@ -56,7 +57,7 @@ namespace Molinos.Scato.Servicios.Impl
                 Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
                 if(calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material)){
                     calle.Bloqueada = true;
-                    calle.FechaLLamada = DateTime.Now;
+                    //calle.FechaLLamada = DateTime.Now;
                     repositorio.GuardarCambios();
                 }
                 return calle;
