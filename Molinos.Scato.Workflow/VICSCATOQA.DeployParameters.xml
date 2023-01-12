@@ -17,8 +17,8 @@
   <setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
   <setParameter name="MailSettings Smtp Port" value="25" />
   <setParameter name="MailSettings Smtp EnableSsl" value="false" />
-  <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
-  <setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
+  <setParameter name="SapServiceUsername Config" value="FUNCIG" />
+  <setParameter name="SapServicePassword Config" value="RQsncbUlOC0T9iEPjcvyPg==" />
   <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
   <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
   <setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
