@@ -5,10 +5,7 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -33,10 +30,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 var resultadoCalado = servicioRepositorio.ListarAnalisisYCaladoPorCaracteristica(comando.WorkflowInstanceId);
                 Log.Debug($"ProcesadorInformarCaladoCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}, resultadoCaladoEncontrados: {resultadoCalado.Count()}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, x.Rechazado, Calidad = x.CaracteristicasAnalizadasList.Any() ? x.CaracteristicasAnalizadasList.FirstOrDefault().Calidad : TipoCalidad.Desconocida, InformaCircular = x.Centro.InformaCircular });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, x.Rechazado, Calidad = x.CaracteristicasAnalizadasList.Any() ? x.CaracteristicasAnalizadasList.FirstOrDefault().Calidad : TipoCalidad.Desconocida, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso });
                 Log.Debug($"ProcesadorInformarCaladoCircular= InformaEstadosACircular: {recorrido.InformaCircular}, WorkflowInstanceId: {comando.WorkflowInstanceId}, resultadoCaladoEncontrados: {resultadoCalado.Count()}, Recorrido-CartaPorte: {recorrido.NumeroDocumentoIngreso} Recorrido-Rechazado: {recorrido.Rechazado} Recorrido-Calidad: {Convert.ToString(recorrido.Calidad)} ");
 
-                if (recorrido.InformaCircular)
+                if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte)
                 {
                     var estado = recorrido.Rechazado ? "RECHAZADO" : recorrido.Calidad == TipoCalidad.Conforme || comando.EsPostCalado ? "APROBADO" : "DEMORADO";
                     servicioCircular.InformarEstadoCalado(recorrido.NumeroDocumentoIngreso, resultadoCalado, estado);
