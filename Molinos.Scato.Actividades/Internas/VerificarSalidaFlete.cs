@@ -35,17 +35,16 @@ namespace Molinos.Scato.Actividades.Internas
             
             var patente = Patente.Get<string>(context);
             var choferId = ChoferId.Get<int>(context);
-            var transportistaId = TransportistaId.Get<int>(context);
             try
             {
+                var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(context.WorkflowInstanceId);
                 ChoferDto chofer = repositorio.ObtenerChofer(choferId);
-                TransportistaDto transportista = repositorio.ObtenerTransportista(transportistaId);
 
                 if (chofer.NumeroDeDocumento.Length == 7)
                 {
                     chofer.NumeroDeDocumento = "0" + chofer.NumeroDeDocumento;
                 }
-                ComplianceV2(context, transportista, chofer, patente);
+                ComplianceV2(context, cartaPorte.IntermediarioFleteCuil ?? cartaPorte.TransportistaCUIT, chofer, patente);
             }
             catch (Exception ex)
             {
@@ -55,14 +54,14 @@ namespace Molinos.Scato.Actividades.Internas
             return SalidaVerificada.Get<bool>(context);
         }
 
-        private void ComplianceV2(CodeActivityContext context, TransportistaDto transportista, ChoferDto chofer, string patente)
+        private void ComplianceV2(CodeActivityContext context, string cuit, ChoferDto chofer, string patente)
         {
             var servicioCompliance = context.GetExtension<DatosPort>();
 
             controlarDatosAgroacopiosRequest datosGranelesRequest = new controlarDatosAgroacopiosRequest()
             {
                 datos = new Datos() {
-                    cuit = transportista.Cuit,
+                    cuit = cuit,
                     dni = chofer.NumeroDeDocumento,
                     patente1 = patente,
                     planta = context.GetExtension<ScatoPersistenceParticipant>().CentroId.ToString()
