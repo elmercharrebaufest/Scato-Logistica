@@ -520,6 +520,7 @@
     <Build Include="dbo\Tables\CallePreBalanzaPlayaInterna.sql" />
     <Build Include="dbo\Tables\PesosExc.sql" />
     <Build Include="dbo\Tables\MensajeCartelLedCalador.sql" />
+    <Build Include="dbo\Tables\ExcepcionAlControlProveedor.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

@@ -10182,5 +10182,46 @@ namespace Molinos.Scato.Servicios.Impl
 
             return cantidadPrecaladoCircularHelper;
         }
+
+        public ListaPaginada<ExcepcionAlControlProveedorDto> ListarExcepcionesAlControlProveedor(string filtro, Paginacion paginacion)
+        {
+            Expression<Func<ExcepcionAlControlProveedor, bool>> expresionFiltro = null;
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                filtro = filtro.Trim();
+                expresionFiltro =
+                    x => x.Motivo != MotivoExcepcionAlControl.B && (   x.Proveedor.RazonSocial.Contains(filtro) ||
+                                                                       x.Proveedor.Cuil.Contains(filtro) ||
+                                                                       x.Material.Descripcion.Contains(filtro) ||
+                                                                       x.Material.DescripcionCorta.Contains(filtro) ||
+                                                                       x.Material.CodigoSAP.Contains(filtro) ||
+                                                                       x.Centro.Descripcion.Contains(filtro) ||
+                                                                       (x.CentroDestino != null && x.CentroDestino.Descripcion.Contains(filtro)) ||
+                                                                       (x.ClienteDestino != null && x.ClienteDestino.Descripcion.Contains(filtro)));
+            }
+            else
+            {
+                expresionFiltro = x => x.Motivo != MotivoExcepcionAlControl.B;
+            }
+
+            return Listar<ExcepcionAlControlProveedor, ExcepcionAlControlProveedorDto>(expresionFiltro, paginacion);
+        }
+
+        public ExcepcionAlControlProveedorDto ObtenerExcepcionAlControlProveedor(int id)
+        {
+            return Obtener<ExcepcionAlControlProveedor, ExcepcionAlControlProveedorDto>(id);
+        }
+
+        public bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId)
+        {
+            return repositorio.Existe<ExcepcionAlControlProveedor>(x =>
+                                                          x.Material.Id == materialId &&
+                                                          x.Proveedor.Id == proveedorId &&
+                                                          x.Centro.Id == centroId &&
+                                                          x.FechaDesde <= fecha && x.FechaHasta >= fecha &&
+                                                          x.Motivo != MotivoExcepcionAlControl.B &&
+                                                          ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (clienteDestinoId.HasValue && x.ClienteDestino.Id == clienteDestinoId.Value) || (!centroDestinoId.HasValue && !clienteDestinoId.HasValue))
+                                                          );
+        }
     }
 }

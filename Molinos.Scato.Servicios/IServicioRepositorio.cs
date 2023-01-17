@@ -2767,5 +2767,14 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
+
+        [OperationContract]
+        ListaPaginada<ExcepcionAlControlProveedorDto> ListarExcepcionesAlControlProveedor(string filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ExcepcionAlControlProveedorDto ObtenerExcepcionAlControlProveedor(int id);
+
+        [OperationContract]
+        bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
     }
 }

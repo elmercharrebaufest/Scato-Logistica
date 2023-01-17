@@ -31,7 +31,11 @@ namespace Molinos.Scato.Actividades.Internas
             var centroDestinoId = CentroDestinoId.Get<int?>(context);
             var clienteDestinoId = ClienteDestinoId.Get<int?>(context);
 
-            return repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
+            var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(context.WorkflowInstanceId);
+
+            return cartaPorte.IntermediarioFleteId > 0 
+                ? repositorio.BuscarExcepcionAlControlProveedor(materialId, cartaPorte.IntermediarioFleteId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId)
+                : repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
         }
     }
 }
