@@ -24,9 +24,8 @@ namespace Molinos.Scato.Actividades.Internas
 
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
-
+        public InArgument<int?> IntermediarioId { get; set; }
         public OutArgument<bool> SalidaVerificada { get; set; }
-
         public OutArgument<string> MensajeError { get; set; }
 
         protected override bool Execute(CodeActivityContext context)
@@ -35,16 +34,20 @@ namespace Molinos.Scato.Actividades.Internas
             
             var patente = Patente.Get<string>(context);
             var choferId = ChoferId.Get<int>(context);
+            var transportistaId = TransportistaId.Get<int>(context);
+            var intermediarioId = IntermediarioId.Get<int>(context);
             try
             {
-                var cartaPorte = repositorio.ObtenerCartaPortePorInstanceId(context.WorkflowInstanceId);
                 ChoferDto chofer = repositorio.ObtenerChofer(choferId);
+                TransportistaDto transportista = repositorio.ObtenerTransportista(transportistaId);
+                ProveedorDto intermediario = repositorio.ObtenerProveedor(intermediarioId);
+                string cuit = intermediario != null ? intermediario.Cuil : transportista.Cuit;
 
                 if (chofer.NumeroDeDocumento.Length == 7)
                 {
                     chofer.NumeroDeDocumento = "0" + chofer.NumeroDeDocumento;
                 }
-                ComplianceV2(context, cartaPorte.IntermediarioFleteCuil ?? cartaPorte.TransportistaCUIT, chofer, patente);
+                ComplianceV2(context, cuit, chofer, patente);
             }
             catch (Exception ex)
             {
