@@ -212,6 +212,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         AbmCategoriaCamiones = 604,
         [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionCalleHidraulica")]
         AbmConfiguracionCalleHidraulica = 701,
+        [Display(ResourceType = typeof(Textos), Name = "AbmExcepcionAlControlProveedor")]
+        AbmExcepcionAlControlProveedor = 702,
 
         //Permisos Actividades
         [Display(ResourceType = typeof(Textos), Name = "ActAutorizarDescuentosEntregador")]

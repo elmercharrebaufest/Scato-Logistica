@@ -10099,4 +10099,7 @@
   <data name="Balanza_ToleranciaExcedida" xml:space="preserve">
     <value>Tolerancia Excedida</value>
   </data>
+  <data name="ExcepcionAlControlProveedor_Titulo" xml:space="preserve">
+    <value>Excepciones a Intermediarios</value>
+  </data>
 </root>

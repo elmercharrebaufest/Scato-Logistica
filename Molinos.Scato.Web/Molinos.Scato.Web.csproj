@@ -381,6 +381,7 @@
     <Compile Include="Controllers\BarreraController.cs" />
     <Compile Include="Controllers\EsperaConfirmacionController.cs" />
     <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
+    <Compile Include="Controllers\ExcepcionAlControlProveedorController.cs" />
     <Compile Include="Controllers\LoteInaseController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
@@ -862,6 +863,7 @@
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
     <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\notificacionAplicacion.js" />
     <Content Include="Scripts\devolucionDeReciboMunicipal.js" />
     <Content Include="Scripts\documentoExterno.js" />
@@ -2379,6 +2381,11 @@
     <Content Include="Views\ConfiguracionCalleHidraulica\Crear.cshtml" />
     <Content Include="Views\ConfiguracionCalleHidraulica\Modificar.cshtml" />
     <Content Include="Views\ConfiguracionCalleHidraulica\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Crear.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Index.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Listar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Modificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

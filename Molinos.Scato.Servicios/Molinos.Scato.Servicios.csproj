@@ -172,6 +172,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionCalleHidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExcepcionAlControlProveedorMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\HistorialMensajeCartelLedMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\LlamadoAutomaticoHidraulicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfigSensoresMappingProfile.cs" />
@@ -534,8 +535,10 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorInsertarSlotMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadoLimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
@@ -549,6 +552,7 @@
     <Compile Include="Procesamiento\ProcesadorCrearLoteInase.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorSetearProgresoCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />

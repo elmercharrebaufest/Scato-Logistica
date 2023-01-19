@@ -17,9 +17,9 @@ namespace Molinos.Scato.Actividades.Internas
 
         [RequiredArgument]
         public InArgument<int> MaterialId { get; set; }
-
         public InArgument<int?> CentroDestinoId { get; set; }
         public InArgument<int?> ClienteDestinoId { get; set; }
+        public InArgument<int?> IntermediarioId { get; set; }
 
         protected override bool Execute(CodeActivityContext context)
         {
@@ -30,8 +30,11 @@ namespace Molinos.Scato.Actividades.Internas
             var materialId = MaterialId.Get<int>(context);
             var centroDestinoId = CentroDestinoId.Get<int?>(context);
             var clienteDestinoId = ClienteDestinoId.Get<int?>(context);
+            var intermediarioId = IntermediarioId.Get<int>(context);
 
-            return repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
+            return intermediarioId > 0
+                ? repositorio.BuscarExcepcionAlControlProveedor(materialId, intermediarioId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId)
+                : repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
         }
     }
 }

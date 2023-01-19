@@ -13,7 +13,7 @@
         return value.length > 0;
     }, $('#ClienteDescripcion').data().errorRequerido);
 
-    DefinirAutocompletar('#RazonSocial', '#TransportistaId', $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico);
+    DefinirAutocompletar('#RazonSocial', '#ProveedorId', $('#links').data().urlBuscarProveedores, $('#links').data().urlBuscarProveedorUnico);
     $("#RazonSocial").autocomplete("option", "appendTo", "#dialogo-editar");
     
     DefinirAutocompletar('#MaterialDesc', '#MaterialId', $('#links').data().urlBuscarMateriales, $('#links').data().urlBuscarMaterial);

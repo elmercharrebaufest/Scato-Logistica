@@ -1,3 +1,4 @@
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -263,7 +264,7 @@ namespace Molinos.Scato.Actividades.Internas
                                         PROVEEDOR = PadProveedor(cartaPorte?.TitularCartaPorteCodigoSap),
                                         PROCEDENCIA = cartaPorte?.ProcedenciaCodigoSap,
                                         PROV_PROC = cartaPorte?.ProvinciaCodigoSap,
-                                        REMITENTE_COM = cartaPorte.Cpe ? (rtteComercialSAP != null ? PadProveedor(rtteComercialSAP ): string.Empty) : PadProveedor( cartaPorte.RtteComercialCodigoSap),
+                                        REMITENTE_COM = cartaPorte.Cpe ? ( !esDestinatarioMOA ? string.Empty : (rtteComercialSAP != null ? PadProveedor(rtteComercialSAP ) : string.Empty)) : PadProveedor( cartaPorte.RtteComercialCodigoSap),
                                         TARA = pesoTara.ToString(CultureInfo.InvariantCulture),
                                         TARA_ORIGEN = vehiculo?.PesoTaraOrigen.ToString(),
                                         TIPODOCHOFER = cartaPorte?.Chofer?.TipoDocumentoIdentidadCodigoSap,

@@ -128,5 +128,10 @@
             public const string NombreCalador1 = "Calador 1";
             public const string NombreCalador2 = "Calador 2";
         }
+
+        public struct Proveedores
+        {
+            public const string CuitMolinos = "30-71511877-3";
+        }
     }
 }

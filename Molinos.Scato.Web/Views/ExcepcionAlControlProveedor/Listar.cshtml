@@ -1,0 +1,24 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ExcepcionAlControlProveedorDto>) ViewBag.Items;
+}
+
+<div class="controls">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "ExcepcionAlControlProveedor"),
+        grilla.Columna("Intermediario.RazonSocial", Textos.Intermediario, c => c.RazonSocial),
+        grilla.Columna("Material.Descripcion", Textos.Material, c => c.MaterialDesc),
+        grilla.Columna("FechaDesde", Textos.FechaDesde, x => FormattingHtmlHelper.Formatted(x.FechaDesde)),
+        grilla.Columna("FechaHasta", Textos.FechaHasta,x => FormattingHtmlHelper.Formatted(x.FechaHasta)),
+        grilla.Columna("Centro.Descripcion", Textos.MovStockSap_CentroOrigen, c => c.CentroNombre),
+        grilla.Columna("TipoDestino", Textos.Tipo_Destino, c => c.TipoDestino),
+        grilla.Columna("CentroDestino.Descripcion", Textos.Destino, c => c.DestinoNombre)
+        
+        ))
+</div>

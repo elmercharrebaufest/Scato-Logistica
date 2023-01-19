@@ -14681,6 +14681,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excepciones a Intermediarios.
+        /// </summary>
+        public static string ExcepcionAlControlProveedor_Titulo {
+            get {
+                return ResourceManager.GetString("ExcepcionAlControlProveedor_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear Excepción al Descuento.
         /// </summary>
         public static string ExcepcionAlDescuento_Crear {

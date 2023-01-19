@@ -90,8 +90,10 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Comandos\EliminarExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\InsertarSlotMensajeCartelLed.cs" />
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Comandos\CrearConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
+    <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\ResultadoConsultarAFIP.cs" />
     <Compile Include="Comandos\CrearLoteInase.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLedReordenado.cs" />
@@ -709,6 +712,7 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
+    <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\ConfiguracionCalleHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\CamionHidraulicaDto.cs" />
@@ -984,6 +988,7 @@
     <Compile Include="Entidades\CallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Entidades\ATAPuerto.cs" />
     <Compile Include="Entidades\ConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Entidades\ExcepcionAlControlProveedor.cs" />
     <Compile Include="Entidades\HistorialMensajeCartelLed.cs" />
     <Compile Include="Entidades\LlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Entidades\CaracteristicasCartaPorteOtrosPuertos.cs" />
