@@ -7,11 +7,14 @@ using System.Web.UI;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.Helpers;
 using Ninject.Extensions.Logging;
 namespace Molinos.Scato.WebMobile.Controllers
 {
+    [Autorizacion(PermisosScato.GraficoDePlanta)]
     public class IndexController : ConsultasController
     {
         private readonly IFirmaProvider firmaProvider;

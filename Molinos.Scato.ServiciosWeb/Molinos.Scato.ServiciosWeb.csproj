@@ -223,6 +223,7 @@
     <Content Include="ApplicationInsights.config" />
     <Content Include="ApplicationInsights.QA.config" />
     <Content Include="ApplicationInsights.PRD.config" />
+    <Content Include="CertificadosProd\alias2022.p12" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
