@@ -5,6 +5,7 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -23,13 +24,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(InformarPesadaCircular comando)
         {
             var resultado = new ResultadoCircular();
+            var camionesPermitidos = new List<TipoVehiculo> { TipoVehiculo.Camión, TipoVehiculo.CamiónC, TipoVehiculo.CamiónD, TipoVehiculo.CamiónE };
 
             try
             {
                 Log.Debug($"ProcesadorInformarPesadaCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso, x.TipoVehiculo });
                 Log.Debug($"ProcesadorInformarPesadaCircular= InformaCircular: {recorrido.InformaCircular}, NumeroDocumentoIngreso: {recorrido.NumeroDocumentoIngreso} WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte)
+                var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
+
+                if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && permitido)
                 {
                     servicioCircular.InformarPesoCircular(recorrido.NumeroDocumentoIngreso, comando.TipoPesada, comando.Peso);
                 }
