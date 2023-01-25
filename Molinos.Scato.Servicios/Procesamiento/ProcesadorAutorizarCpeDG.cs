@@ -188,11 +188,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         },
                         transporte = new TransporteAutomotorDGSolicitud
                         {
-                            cuitTransportista = !string.IsNullOrEmpty(recorrido.Transportista.Cuit) ? long.Parse(recorrido.Transportista.Cuit.Replace("-", string.Empty)) : default(long),
+                            cuitTransportista = !string.IsNullOrEmpty(recorrido.Transportista.Cuit) ? long.Parse(recorrido.Transportista.Cuit.Replace("-", string.Empty)) : 0,
                             dominio = orden.Dominios,
                             fechaHoraPartida = DateTime.Now.AddMinutes(10),
                             kmRecorrer = orden.KmRecorrer,
-                            cuitChofer = !string.IsNullOrEmpty(recorrido.Chofer.Cuil) ? long.Parse(recorrido.Chofer.Cuil.Replace("-", string.Empty)) : default(long),
+                            cuitChofer = !string.IsNullOrEmpty(recorrido.Chofer.Cuil) ? long.Parse(recorrido.Chofer.Cuil.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = orden.PagadorFleteCuit,
                         }
                     }

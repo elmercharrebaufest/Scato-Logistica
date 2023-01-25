@@ -26,14 +26,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
             {
-                DestinoCuit = !string.IsNullOrEmpty(orden?.Destino?.Cuit) ? long.Parse(orden?.Destino?.Cuit?.Replace("-", string.Empty)) : default,
-                DestinoPlanta = orden.PlantaDGDestino ?? default,
+                DestinoCuit = !string.IsNullOrEmpty(orden?.Destino?.Cuit) ? long.Parse(orden?.Destino?.Cuit?.Replace("-", string.Empty)) : 0,
+                DestinoPlanta = orden.PlantaDGDestino ?? 0,
                 DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
-                DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? default,
-                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Destino?.Cuit) ? long.Parse(orden?.Destino?.Cuit?.Replace("-", string.Empty)) : default,
+                DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
+                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Destino?.Cuit) ? long.Parse(orden?.Destino?.Cuit?.Replace("-", string.Empty)) : 0,
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
                 KmRecorrer = !string.IsNullOrWhiteSpace(orden.KmRecorrer) ? int.Parse(orden.KmRecorrer) : 0,
-                PagadorFleteCuit = orden.CuitPagadorFlete ?? default,
+                PagadorFleteCuit = orden.CuitPagadorFlete ?? 0,
             };
             return request;
         }

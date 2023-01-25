@@ -26,14 +26,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
             {
-                DestinoCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : default(long),
+                DestinoCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
                 DestinoPlanta = int.Parse(Constantes.DatosDummy.DestinoPlanta),
                 DestinoDomicilioTipo = int.Parse(Constantes.DatosDummy.DestinoDomicilioTipo),
                 DestinoDomicilioOrden = int.Parse(Constantes.DatosDummy.DestinoDomicilioOrden),
-                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : default(long),
+                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
                 KmRecorrer = !string.IsNullOrWhiteSpace(orden.KmRecorrer) ? int.Parse(orden.KmRecorrer) : 0,
-                PagadorFleteCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : default(long),
+                PagadorFleteCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
             };
             return request;
         }
