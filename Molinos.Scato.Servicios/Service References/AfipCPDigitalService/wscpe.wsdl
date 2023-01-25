@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://serviciosjava.afip.gob.ar/wscpe/" name="wscpe" targetNamespace="https://serviciosjava.afip.gob.ar/wscpe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:tns="https://serviciosjava.afip.gob.ar/wscpe/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="wscpe" targetNamespace="https://serviciosjava.afip.gob.ar/wscpe/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="https://serviciosjava.afip.gob.ar/wscpe/">
       <xsd:complexType name="Auth">
@@ -12,6 +12,34 @@
       <xsd:complexType name="CodigoDescripcion">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="codigo" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="descripcion" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DomicilioPUCRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipo" type="xsd:int" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="orden" type="xsd:int" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="descripcion" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DomicilioPUC">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipo" type="xsd:int" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="orden" type="xsd:int" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TipoEmbalajeUnidadMedida">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="codigo" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="descripcion" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="unidadMedida" type="tns:CodigoDescripcion" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DerivadoGranario">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="granoPadre" type="xsd:long" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="granoPadreDescripcion" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="codigo" type="xsd:long" />
           <xsd:element minOccurs="1" maxOccurs="1" name="descripcion" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
@@ -40,14 +68,81 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDGPendienteActivacionRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="cartaPorte" type="tns:CPEDGPendienteActivacionRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="cartaPorte" type="tns:CPEEmitidasDestinoDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarTiposEmbalajeRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="tipoEmbalaje" type="tns:TipoEmbalajeUnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarUnidadesMedidaRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="unidadMedida" type="tns:CodigoDescripcion" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDerivadosGranariosRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="derivadoGranario" type="tns:DerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarLocalidadesPorProvinciaSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="codProvincia" type="xsd:int" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarDomiciliosPorCUITSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarUnidadesMedidaResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarUnidadesMedidaRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarUnidadesMedidaRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDerivadosGranariosResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarDerivadosGranariosRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDerivadosGranariosRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarLocalidadesPorProvinciaRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="localidad" type="tns:CodigoDescripcion" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDomiciliosPorCUITRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="domicilio" type="tns:DomicilioPUCRespuesta" />
           <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
           <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
         </xsd:sequence>
@@ -136,7 +231,7 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportistaTramo2" type="tns:CUIT" />
           <xsd:element minOccurs="1" maxOccurs="1" name="nroVagon" type="tns:NumeroVagon" />
-          <xsd:element minOccurs="1" maxOccurs="1" name="nroPrecinto" type="tns:NumeroPrecinto" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="nroPrecinto" type="tns:NumeroPrecinto" />
           <xsd:element minOccurs="1" maxOccurs="1" name="nroOperativo" type="tns:NumeroOperativo" />
           <xsd:element minOccurs="1" maxOccurs="1" name="ramal" type="tns:Ramal" />
           <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartidaTren" type="xsd:dateTime" />
@@ -163,6 +258,79 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AutorizarFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cabecera" type="tns:CabeceraFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="origen" type="tns:OrigenFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="datosCarga" type="tns:DatosCargaFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CabeceraFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sucursal" type="tns:NumeroSucursal" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroOrden" type="tns:NumeroOrden" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervinientesFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCargaFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBruto" type="tns:KilogramosFerroviariaDG" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoTara" type="tns:KilogramosFerroviariaDG" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="tns:Texto140" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TransporteFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportistaTramo2" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroVagon" type="tns:NumeroVagon" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="nroPrecinto" type="tns:NumeroPrecinto" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroOperativo" type="tns:NumeroOperativo" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ramal" type="tns:Ramal" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartidaTren" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductor" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductorTramo2" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="tns:Tarifa" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitPagadorFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="CabeceraRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="tipoCartaPorte" type="xsd:int" />
@@ -174,6 +342,26 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaInicioEstado" type="xsd:dateTime" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaVencimiento" type="xsd:dateTime" />
           <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionMotivo" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionObservaciones" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CPEDGPendienteActivacionRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoCartaPorte" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="sucursal" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroOrden" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaPartida" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CPEEmitidasDestinoDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoCartaPorte" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="sucursal" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroOrden" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaPartida" type="xsd:dateTime" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="RetiroProductorRespuesta">
@@ -183,6 +371,7 @@
       </xsd:complexType>
       <xsd:complexType name="IntervinientesFerroviariaRespuesta">
         <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaPrimaria" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaSecundaria" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaSecundaria2" type="xsd:long" />
@@ -191,16 +380,26 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredorVentaSecundaria" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRepresentanteEntregador" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRepresentanteRecibidor" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="xsd:long" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DatosCargaFerroviariaRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cosecha" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoTara" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoBrutoDescarga" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoTaraDescarga" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DestinoRespuesta">
@@ -209,6 +408,26 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="codProvincia" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="codLocalidad" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="domicilioDestino" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoDuctosDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuit" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codProvincia" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codLocalidad" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="domicilioDestino" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaHoraInicioEnvio" type="xsd:dateTime" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaHoraFinEnvio" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoEmisionDestinoRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuit" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="domicilioDestino" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DestinatarioRespuesta">
@@ -221,22 +440,28 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportista" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportistaTramo2" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="nroVagon" type="xsd:long" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="nroPrecinto" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroPrecinto" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="nroOperativo" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="ramal" type="tns:Ramal" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaHoraPartidaTren" type="xsd:dateTime" />
           <xsd:element minOccurs="0" maxOccurs="1" name="kmRecorrer" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitPagadorFlete" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductor" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductorTramo2" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="mercaderiaFumigada" type="xsd:boolean" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="OrigenFerroviariaRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="cuit" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
           <xsd:element minOccurs="0" maxOccurs="1" name="codProvincia" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="codLocalidad" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="domicilio" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="xsd:long" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DetalleFerroviariaRespuesta">
@@ -245,6 +470,20 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="origen" type="tns:OrigenFerroviariaRespuesta" />
           <xsd:element minOccurs="0" maxOccurs="1" name="correspondeRetiroProductor" type="xsd:boolean" />
           <xsd:element minOccurs="0" maxOccurs="1" name="retiroProductor" type="tns:RetiroProductorRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesFerroviariaRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="datosCarga" type="tns:DatosCargaFerroviariaRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pdf" type="xsd:base64Binary" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DetalleFerroviariaDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cabecera" type="tns:CabeceraRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="origen" type="tns:OrigenFerroviariaRespuesta" />
           <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesFerroviariaRespuesta" />
           <xsd:element minOccurs="0" maxOccurs="1" name="datosCarga" type="tns:DatosCargaFerroviariaRespuesta" />
           <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoRespuesta" />
@@ -277,9 +516,27 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="AnularCPESolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionMotivo" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionObservaciones" type="tns:Texto100" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AnularCPEEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionMotivo" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="anulacionObservaciones" type="tns:Texto100" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DetalleContingenciaSolicitud">
@@ -291,6 +548,13 @@
       <xsd:complexType name="InformarContingenciaSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="contingencia" type="tns:DetalleContingenciaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="InformarContingenciaEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
           <xsd:element minOccurs="1" maxOccurs="1" name="contingencia" type="tns:DetalleContingenciaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
@@ -314,6 +578,15 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="motivoDesactivacionCP" type="tns:DesactivacionSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="CerrarContingenciaEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="concepto" type="tns:ConceptoCierreContingencia" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="reactivacionDestino" type="tns:ReactivacionDestinoFerroviariaSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="motivoDesactivacionCP" type="tns:DesactivacionSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="TransporteFerroviariaModificaSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="ramal" type="tns:Ramal" />
@@ -327,6 +600,31 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoSolicitud" />
           <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
           <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaModificaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaModificaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DestinatarioRegresoOrigenSolicitud">
@@ -348,12 +646,42 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="DesvioDestinoFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioDestinoAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="DesvioFerroviariaSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
           <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DesvioDestinoFerroviariaSolicitud" />
           <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaModificaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DesvioDestinoFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaModificaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DesvioDestinoAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConfirmarArriboSolicitud">
@@ -366,6 +694,8 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="rechazoMotivo" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="rechazoObservaciones" type="tns:Texto100" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="IntervConfirmacionFerroviariaSolicitud">
@@ -389,6 +719,45 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="ramalDescarga" type="tns:Ramal" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConfirmacionFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBrutoDescarga" type="tns:Kilogramos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoTaraDescarga" type="tns:Kilogramos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ramalDescarga" type="tns:Ramal" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBrutoDescarga" type="tns:Kilogramos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoTaraDescarga" type="tns:Kilogramos" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBrutoDescarga" type="tns:KilogramosDuctos" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervEditarConfirmadaFerroviariaSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredorVentaPrimaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredorVentaSecundaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaPrimaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaSecundaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialProductor" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaFerroviariaSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="intervinientes" type="tns:IntervEditarConfirmadaFerroviariaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultaCPEFerroviariaPorNroOperativoSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="nroOperativo" type="tns:NumeroOperativo" />
@@ -399,7 +768,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="nroVagon" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="grano" type="xsd:long" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="nroPrecinto" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="nroPrecinto" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoTara" type="xsd:long" />
         </xsd:sequence>
@@ -430,6 +799,68 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="nroVagon" type="tns:NumeroVagon" />
           <xsd:element minOccurs="1" maxOccurs="1" name="pesoBruto" type="tns:Kilogramos" />
           <xsd:element minOccurs="1" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarActivaDGFerroviariaSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductor" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportistaTramo2" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitConductorTramo2" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroVagon" type="tns:NumeroVagon" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="nroPrecinto" type="tns:NumeroPrecinto" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroOperativo" type="tns:NumeroOperativo" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="ramal" type="tns:Ramal" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoFerroviariaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="tns:Tarifa" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitPagadorFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="tns:Kilogramos" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarActivaDGAutomotorSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitChofer" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="tns:Tarifa" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitPagadorFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="tns:Kilogramos" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="dominio" type="tns:NumeroDominio" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarActivaDGDuctosSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesDuctosDGModificacionActivaSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DatosCargaAutomotorSolicitud">
@@ -481,6 +912,77 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="productor" type="tns:OrigenProductorAutomotorSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="CabeceraAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipoCP" type="tns:TipoCPE" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="sucursal" type="tns:NumeroSucursal" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroOrden" type="tns:NumeroOrden" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitOrigen" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervinientesAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCargaAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBruto" type="tns:Kilogramos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoTara" type="tns:Kilogramos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TransporteAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="unbounded" name="dominio" type="tns:NumeroDominio" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartida" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitChofer" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="tns:Tarifa" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitPagadorFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="AutorizarAutomotorSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cabecera" type="tns:CabeceraAutomotorSolicitud" />
@@ -496,10 +998,121 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="CabeceraDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="sucursal" type="tns:NumeroSucursal" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroOrden" type="tns:NumeroOrden" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCargaDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="pesoBruto" type="tns:KilogramosDuctos" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervinientesDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervinientesDuctosDGModificacionActivaSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DestinoDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraInicioEnvio" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraFinEnvio" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cabecera" type="tns:CabeceraAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="origen" type="tns:OrigenAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="datosCarga" type="tns:DatosCargaAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarDuctosDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cabecera" type="tns:CabeceraDuctosDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="origen" type="tns:OrigenDuctosDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="intervinientes" type="tns:IntervinientesDuctosDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="datosCarga" type="tns:DatosCargaDuctosDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoDuctosDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cabecera" type="tns:CabeceraAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="origen" type="tns:OrigenEmisionDestinoDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="datosCarga" type="tns:DatosCargaAutomotorDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destino" type="tns:DestinoEmisionDestinoDGSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarAutomotorSolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDuctosSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
           <xsd:element minOccurs="0" maxOccurs="1" name="nroCTG" type="xsd:long" />
         </xsd:sequence>
       </xsd:complexType>
@@ -508,6 +1121,12 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartida" type="xsd:dateTime" />
           <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
           <xsd:element minOccurs="0" maxOccurs="1" name="codigoTurno" type="tns:CodigoTurno" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TransporteAutomotorModificaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartida" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="NuevoDestinoDestinatarioAutomotorSolicitud">
@@ -522,6 +1141,30 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
           <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenAutomotorDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenFerroviariaDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteFerroviariaModificaSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="domicilioDestino" type="tns:DomicilioPUC" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorModificaDGSolicitud" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DesvioDestinoAutomotorSolicitud">
@@ -564,6 +1207,31 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="xsd:int" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="OrigenAutomotorDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitOrigen" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenDuctosDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="esUsuarioIndustria" type="xsd:boolean" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitTitularPlanta" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitOrigen" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="OrigenEmisionDestinoDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="domicilioOrigen" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitOrigen" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="IntervinientesAutomotorRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaPrimaria" type="xsd:long" />
@@ -576,6 +1244,22 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitRepresentanteRecibidor" type="xsd:long" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="IntervinientesAutomotorDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervinientesDuctosDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercial" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitMercadoATermino" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitComisionista" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredor" type="xsd:long" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="DatosCargaAutomotorRespuesta">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="xsd:int" />
@@ -584,6 +1268,44 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="cosecha" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoBrutoDescarga" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoTaraDescarga" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCargaDuctosDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cosecha" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoBrutoDescarga" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoTaraDescarga" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="xsd:long" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DatosCargaAutomotorDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="codGrano" type="tns:CodigoGrano" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="tns:Kilogramos" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pesoTara" type="tns:Kilogramos" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="TransporteAutomotorRespuesta">
@@ -599,6 +1321,19 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitPagadorFlete" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="mercaderiaFumigada" type="xsd:boolean" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TransporteAutomotorDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitTransportista" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="dominio" type="xsd:string" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="fechaHoraPartida" type="xsd:dateTime" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="kmRecorrer" type="tns:Kilometros" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitChofer" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifa" type="tns:Tarifa" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="tarifaReferencia" type="xsd:decimal" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitPagadorFlete" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitIntermediarioFlete" type="tns:CUIT" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DetalleAutomotorRespuesta">
@@ -617,9 +1352,83 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="DetalleAutomotorDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cabecera" type="tns:CabeceraRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="origen" type="tns:OrigenAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="datosCarga" type="tns:DatosCargaAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pdf" type="xsd:base64Binary" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DetalleDuctosDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cabecera" type="tns:CabeceraRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="origen" type="tns:OrigenDuctosDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesDuctosDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="datosCarga" type="tns:DatosCargaDuctosDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoDuctosDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pdf" type="xsd:base64Binary" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DetalleEmisionDestinoDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cabecera" type="tns:CabeceraRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="origen" type="tns:OrigenEmisionDestinoDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="datosCarga" type="tns:DatosCargaAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoEmisionDestinoRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="destinatario" type="tns:DestinatarioRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="transporte" type="tns:TransporteAutomotorDGRespuesta" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="pdf" type="xsd:base64Binary" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="DescargadoDestinoCPESolicitud">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DescargadoDestinoCPEEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDestinoDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitSolicitante" type="tns:CUIT" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuitDestino" type="tns:CUIT" />
           <xsd:element minOccurs="1" maxOccurs="1" name="cartaPorte" type="tns:CartaPorte" />
         </xsd:sequence>
       </xsd:complexType>
@@ -697,6 +1506,57 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarPlantasDGSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDGPendienteActivacionSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="planta" type="tns:NumeroPlanta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PlantaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="nroPlanta" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="actividad" type="xsd:int" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="conPlantaDG" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="sinPlantaDG" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarPlantasDGRespuesta">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="planta" type="tns:PlantaDGResponse" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="errores" type="tns:Errores" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="metadata" type="tns:Metadata" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="IntervEditarConfirmadaAutomotorSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredorVentaPrimaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitCorredorVentaSecundaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaPrimaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialVentaSecundaria" type="tns:CUIT" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="cuitRemitenteComercialProductor" type="tns:CUIT" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaAutomotorSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="intervinientes" type="tns:IntervEditarConfirmadaAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaDuctosSolicitud">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="nroCTG" type="xsd:long" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="destinatario" type="tns:DestinatarioSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="DummyResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DummyRespuesta" />
@@ -712,6 +1572,38 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDGPendienteActivacionResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarCPEDGPendienteActivacionRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmitidasDestinoDGPendientesActivacionResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDGPendienteActivacionRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarCPEDGPendienteActivacionSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmitidasDestinoDGPendientesActivacionRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarTiposEmbalajeResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarTiposEmbalajeRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarTiposEmbalajeRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarLocalidadesPorProvinciaResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarLocalidadesPorProvinciaRespuesta" />
@@ -721,6 +1613,17 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarLocalidadesPorProvinciaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDomiciliosPorCUITResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarDomiciliosPorCUITRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarDomiciliosPorCUITRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="cuit" type="tns:CUIT" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConsultarLocalidadesProductorResponse">
@@ -766,7 +1669,18 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:InformarContingenciaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="InformarContingenciaEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:InformarContingenciaEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="AnularCPEResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AnularCPEEmisionDestinoDGResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
         </xsd:sequence>
@@ -775,6 +1689,12 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AnularCPESolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AnularCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AnularCPEEmisionDestinoDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConfirmarArriboCPEResponse">
@@ -810,6 +1730,61 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:DescargadoDestinoCPESolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="DescargadoDestinoCPEEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DescargadoDestinoCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:DescargadoDestinoCPEEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AceptarEmisionDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RechazarEmisionDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AceptarEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AceptarEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RechazarEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RechazarEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarCPEPorDestinoResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarCPEPorDestinoRespuesta" />
@@ -843,6 +1818,17 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:CerrarContingenciaFerroviariaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="CerrarContingenciaCPEEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CerrarContingenciaCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:CerrarContingenciaEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarPlantasResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarPlantasRespuesta" />
@@ -854,9 +1840,25 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarPlantasSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarPlantasDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:ConsultarPlantasDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarPlantasDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarPlantasDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="AutorizarCPEFerroviariaResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleFerroviariaRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleFerroviariaDGRespuesta" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="AutorizarCPEFerroviariaRequest">
@@ -865,9 +1867,30 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarFerroviariaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConsultarCPEFerroviariaResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleFerroviariaRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleFerroviariaDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleAutomotorDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleEmisionDestinoDGRespuesta" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConsultarCPEFerroviariaRequest">
@@ -876,7 +1899,56 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarFerroviariaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarEmisionDestinoDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDuctosResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleDuctosDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConsultarCPEDuctosRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConsultarDuctosSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="NuevoDestinoDestinatarioCPEFerroviariaResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinatarioCPEDuctosDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEEmisionDestinoDGResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
         </xsd:sequence>
@@ -885,6 +1957,30 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioFerroviariaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEAutomotorRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NuevoDestinoDestinatarioCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioEmisionDestinoDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="RegresoOrigenCPEFerroviariaResponse">
@@ -909,6 +2005,28 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:DesvioFerroviariaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="DesvioCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:DesvioFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DesvioCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:DesvioAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ConfirmacionDefinitivaCPEFerroviariaResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
@@ -918,6 +2036,39 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConfirmacionFerroviariaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEDuctosDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConfirmacionFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConfirmacionAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ConfirmacionDefinitivaCPEDuctosDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:ConfirmacionDuctosDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConsultaCPEFerroviariaPorNroOperativoResponse">
@@ -942,15 +2093,92 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarActivaFerroviariaSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGFerroviariaResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGFerroviariaRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarActivaDGFerroviariaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGAutomotorRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarActivaDGAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGAutomotorResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGDuctosRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarActivaDGDuctosSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEDGDuctosResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaFerroviariaResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaFerroviariaRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarCPEConfirmadaFerroviariaSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="AutorizarCPEAutomotorResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleAutomotorRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleAutomotorDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEDuctosDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleDuctosDGRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:DetalleEmisionDestinoDGRespuesta" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="AutorizarCPEAutomotorRequest">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEDuctosDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarDuctosDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AutorizarCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:AutorizarEmisionDestinoDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ConsultarCPEAutomotorResponse">
@@ -969,12 +2197,6 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="NuevoDestinoDestinatarioCPEAutomotorRequest">
-        <xsd:sequence>
-          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
-          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:NuevoDestinoDestinatarioAutomotorSolicitud" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="RegresoOrigenCPEAutomotorResponse">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
@@ -984,6 +2206,39 @@
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RegresoOrigenAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEAutomotorDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEAutomotorDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RegresoOrigenAutomotorDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEFerroviariaDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEFerroviariaDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RegresoOrigenFerroviariaDGSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEEmisionDestinoDGResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RegresoOrigenCPEEmisionDestinoDGRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:RegresoOrigenEmisionDestinoDGSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="DesvioCPEAutomotorResponse">
@@ -1019,6 +2274,28 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarActivaAutomotorSolicitud" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaAutomotorResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaAutomotorRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarCPEConfirmadaAutomotorSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaDuctosResponse">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="respuesta" type="tns:CartaPorteRespuesta" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EditarCPEConfirmadaDuctosRequest">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="auth" type="tns:Auth" />
+          <xsd:element minOccurs="1" maxOccurs="1" name="solicitud" type="tns:EditarCPEConfirmadaDuctosSolicitud" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:simpleType name="CUIT">
         <xsd:restriction base="xsd:long">
           <xsd:minInclusive value="10000000000" />
@@ -1031,13 +2308,49 @@
           <xsd:maxInclusive value="999" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="CodigoDerivadoGranario">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TipoEmbalaje">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Digitos5">
+        <xsd:restriction base="xsd:long">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="99999" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="Cosecha">
         <xsd:restriction base="xsd:short">
           <xsd:minInclusive value="0" />
           <xsd:maxInclusive value="9999" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="UnidadMedida">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="Kilogramos">
+        <xsd:restriction base="xsd:int">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="88000" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KilogramosDuctos">
+        <xsd:restriction base="xsd:int">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="99999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="KilogramosFerroviariaDG">
         <xsd:restriction base="xsd:int">
           <xsd:minInclusive value="1" />
           <xsd:maxInclusive value="88000" />
@@ -1085,10 +2398,22 @@
           <xsd:maxLength value="140" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="Texto15">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="15" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="Texto50">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="1" />
           <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Texto100">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="1" />
+          <xsd:maxLength value="100" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="NumeroSucursal">
@@ -1109,10 +2434,52 @@
           <xsd:maxInclusive value="999999" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="ActividadRUCA">
+        <xsd:restriction base="xsd:int">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="99999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="NumeroDominioInternacional">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="6" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TransporteInternacional">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Planta">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TransporteNacional">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Pais">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Aduana">
+        <xsd:restriction base="xsd:short">
+          <xsd:minInclusive value="1" />
+          <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="TipoCPE">
         <xsd:restriction base="xsd:short">
           <xsd:minInclusive value="1" />
-          <xsd:maxInclusive value="274" />
+          <xsd:maxInclusive value="287" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="MotivoContingencia">
@@ -1167,8 +2534,20 @@
       <xsd:element name="DummyResp" type="tns:DummyResponse" />
       <xsd:element name="ConsultarProvinciasReq" type="tns:ConsultarProvinciasRequest" />
       <xsd:element name="ConsultarProvinciasResp" type="tns:ConsultarProvinciasResponse" />
+      <xsd:element name="ConsultarCPEDGPendienteActivacionReq" type="tns:ConsultarCPEDGPendienteActivacionRequest" />
+      <xsd:element name="ConsultarCPEDGPendienteActivacionResp" type="tns:ConsultarCPEDGPendienteActivacionResponse" />
+      <xsd:element name="ConsultarCPEEmitidasDestinoDGPendientesActivacionReq" type="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionRequest" />
+      <xsd:element name="ConsultarCPEEmitidasDestinoDGPendientesActivacionResp" type="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionResponse" />
+      <xsd:element name="ConsultarTiposEmbalajeReq" type="tns:ConsultarTiposEmbalajeRequest" />
+      <xsd:element name="ConsultarTiposEmbalajeResp" type="tns:ConsultarTiposEmbalajeResponse" />
+      <xsd:element name="ConsultarUnidadesMedidaReq" type="tns:ConsultarUnidadesMedidaRequest" />
+      <xsd:element name="ConsultarUnidadesMedidaResp" type="tns:ConsultarUnidadesMedidaResponse" />
+      <xsd:element name="ConsultarDerivadosGranariosReq" type="tns:ConsultarDerivadosGranariosRequest" />
+      <xsd:element name="ConsultarDerivadosGranariosResp" type="tns:ConsultarDerivadosGranariosResponse" />
       <xsd:element name="ConsultarLocalidadesPorProvinciaReq" type="tns:ConsultarLocalidadesPorProvinciaRequest" />
       <xsd:element name="ConsultarLocalidadesPorProvinciaResp" type="tns:ConsultarLocalidadesPorProvinciaResponse" />
+      <xsd:element name="ConsultarDomiciliosPorCUITReq" type="tns:ConsultarDomiciliosPorCUITRequest" />
+      <xsd:element name="ConsultarDomiciliosPorCUITResp" type="tns:ConsultarDomiciliosPorCUITResponse" />
       <xsd:element name="ConsultarLocalidadesProductorReq" type="tns:ConsultarLocalidadesProductorRequest" />
       <xsd:element name="ConsultarLocalidadesProductorResp" type="tns:ConsultarLocalidadesProductorResponse" />
       <xsd:element name="ConsultarTiposGranoReq" type="tns:ConsultarTiposGranoRequest" />
@@ -1177,52 +2556,119 @@
       <xsd:element name="ConsultarUltNroOrdenResp" type="tns:ConsultarUltNroOrdenResponse" />
       <xsd:element name="InformarContingenciaReq" type="tns:InformarContingenciaRequest" />
       <xsd:element name="InformarContingenciaResp" type="tns:InformarContingenciaResponse" />
+      <xsd:element name="InformarContingenciaEmisionDestinoDGReq" type="tns:InformarContingenciaEmisionDestinoDGRequest" />
       <xsd:element name="AnularCPEReq" type="tns:AnularCPERequest" />
       <xsd:element name="AnularCPEResp" type="tns:AnularCPEResponse" />
+      <xsd:element name="AnularCPEEmisionDestinoDGReq" type="tns:AnularCPEEmisionDestinoDGRequest" />
+      <xsd:element name="AnularCPEEmisionDestinoDGResp" type="tns:AnularCPEEmisionDestinoDGResponse" />
       <xsd:element name="ConfirmarArriboCPEReq" type="tns:ConfirmarArriboCPERequest" />
       <xsd:element name="ConfirmarArriboCPEResp" type="tns:ConfirmarArriboCPEResponse" />
       <xsd:element name="RechazoCPEReq" type="tns:RechazoCPERequest" />
       <xsd:element name="RechazoCPEResp" type="tns:RechazoCPEResponse" />
       <xsd:element name="DescargadoDestinoCPEReq" type="tns:DescargadoDestinoCPERequest" />
       <xsd:element name="DescargadoDestinoCPEResp" type="tns:DescargadoDestinoCPEResponse" />
+      <xsd:element name="DescargadoDestinoCPEEmisionDestinoDGReq" type="tns:DescargadoDestinoCPEEmisionDestinoDGRequest" />
+      <xsd:element name="DescargadoDestinoCPEEmisionDestinoDGResp" type="tns:DescargadoDestinoCPEEmisionDestinoDGResponse" />
+      <xsd:element name="AceptarEmisionDGReq" type="tns:AceptarEmisionDGRequest" />
+      <xsd:element name="AceptarEmisionDGResp" type="tns:AceptarEmisionDGResponse" />
+      <xsd:element name="RechazarEmisionDGReq" type="tns:RechazarEmisionDGRequest" />
+      <xsd:element name="RechazarEmisionDGResp" type="tns:RechazarEmisionDGResponse" />
+      <xsd:element name="AceptarEmisionDestinoDGReq" type="tns:AceptarEmisionDestinoDGRequest" />
+      <xsd:element name="AceptarEmisionDestinoDGResp" type="tns:AceptarEmisionDestinoDGResponse" />
+      <xsd:element name="RechazarEmisionDestinoDGReq" type="tns:RechazarEmisionDestinoDGRequest" />
+      <xsd:element name="RechazarEmisionDestinoDGResp" type="tns:RechazarEmisionDGResponse" />
       <xsd:element name="ConsultarCPEPorDestinoReq" type="tns:ConsultarCPEPorDestinoRequest" />
       <xsd:element name="ConsultarCPEPorDestinoResp" type="tns:ConsultarCPEPorDestinoResponse" />
       <xsd:element name="ConsultarCPEPPendientesDeResolucionReq" type="tns:ConsultarCPEPPendientesDeResolucionRequest" />
       <xsd:element name="ConsultarCPEPPendientesDeResolucionResp" type="tns:ConsultarCPEPPendientesDeResolucionResponse" />
       <xsd:element name="CerrarContingenciaCPEReq" type="tns:CerrarContingenciaCPERequest" />
       <xsd:element name="CerrarContingenciaCPEResp" type="tns:CerrarContingenciaCPEResponse" />
+      <xsd:element name="CerrarContingenciaCPEEmisionDestinoDGReq" type="tns:CerrarContingenciaCPEEmisionDestinoDGRequest" />
+      <xsd:element name="CerrarContingenciaCPEEmisionDestinoDGResp" type="tns:CerrarContingenciaCPEEmisionDestinoDGResponse" />
       <xsd:element name="ConsultarPlantasReq" type="tns:ConsultarPlantasRequest" />
       <xsd:element name="ConsultarPlantasResp" type="tns:ConsultarPlantasResponse" />
+      <xsd:element name="ConsultarPlantasDGReq" type="tns:ConsultarPlantasDGRequest" />
+      <xsd:element name="ConsultarPlantasDGResp" type="tns:ConsultarPlantasDGResponse" />
       <xsd:element name="AutorizarCPEFerroviariaReq" type="tns:AutorizarCPEFerroviariaRequest" />
       <xsd:element name="AutorizarCPEFerroviariaResp" type="tns:AutorizarCPEFerroviariaResponse" />
+      <xsd:element name="AutorizarCPEFerroviariaDGReq" type="tns:AutorizarCPEFerroviariaDGRequest" />
+      <xsd:element name="AutorizarCPEFerroviariaDGResp" type="tns:AutorizarCPEFerroviariaDGResponse" />
       <xsd:element name="ConsultarCPEFerroviariaReq" type="tns:ConsultarCPEFerroviariaRequest" />
       <xsd:element name="ConsultarCPEFerroviariaResp" type="tns:ConsultarCPEFerroviariaResponse" />
+      <xsd:element name="ConsultarCPEFerroviariaDGReq" type="tns:ConsultarCPEFerroviariaDGRequest" />
+      <xsd:element name="ConsultarCPEFerroviariaDGResp" type="tns:ConsultarCPEFerroviariaDGResponse" />
       <xsd:element name="NuevoDestinoDestinatarioCPEFerroviariaReq" type="tns:NuevoDestinoDestinatarioCPEFerroviariaRequest" />
       <xsd:element name="NuevoDestinoDestinatarioCPEFerroviariaResp" type="tns:NuevoDestinoDestinatarioCPEFerroviariaResponse" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEFerroviariaDGReq" type="tns:NuevoDestinoDestinatarioCPEFerroviariaDGRequest" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEFerroviariaDGResp" type="tns:NuevoDestinoDestinatarioCPEFerroviariaDGResponse" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEAutomotorDGReq" type="tns:NuevoDestinoDestinatarioCPEAutomotorDGRequest" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEAutomotorDGResp" type="tns:NuevoDestinoDestinatarioCPEAutomotorDGResponse" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEEmisionDestinoDGReq" type="tns:NuevoDestinoDestinatarioCPEEmisionDestinoDGRequest" />
+      <xsd:element name="NuevoDestinoDestinatarioCPEEmisionDestinoDGResp" type="tns:NuevoDestinoDestinatarioCPEEmisionDestinoDGResponse" />
       <xsd:element name="RegresoOrigenCPEFerroviariaReq" type="tns:RegresoOrigenCPEFerroviariaRequest" />
       <xsd:element name="RegresoOrigenCPEFerroviariaResp" type="tns:RegresoOrigenCPEFerroviariaResponse" />
       <xsd:element name="DesvioCPEFerroviariaReq" type="tns:DesvioCPEFerroviariaRequest" />
       <xsd:element name="DesvioCPEFerroviariaResp" type="tns:DesvioCPEFerroviariaResponse" />
+      <xsd:element name="DesvioCPEFerroviariaDGReq" type="tns:DesvioCPEFerroviariaDGRequest" />
+      <xsd:element name="DesvioCPEFerroviariaDGResp" type="tns:DesvioCPEFerroviariaDGResponse" />
+      <xsd:element name="DesvioCPEAutomotorDGReq" type="tns:DesvioCPEAutomotorDGRequest" />
+      <xsd:element name="DesvioCPEAutomotorDGResp" type="tns:DesvioCPEAutomotorDGResponse" />
       <xsd:element name="ConfirmacionDefinitivaCPEFerroviariaReq" type="tns:ConfirmacionDefinitivaCPEFerroviariaRequest" />
       <xsd:element name="ConfirmacionDefinitivaCPEFerroviariaResp" type="tns:ConfirmacionDefinitivaCPEFerroviariaResponse" />
+      <xsd:element name="ConfirmacionDefinitivaCPEFerroviariaDGReq" type="tns:ConfirmacionDefinitivaCPEFerroviariaDGRequest" />
+      <xsd:element name="ConfirmacionDefinitivaCPEFerroviariaDGResp" type="tns:ConfirmacionDefinitivaCPEFerroviariaDGResponse" />
+      <xsd:element name="ConfirmacionDefinitivaCPEAutomotorDGReq" type="tns:ConfirmacionDefinitivaCPEAutomotorDGRequest" />
+      <xsd:element name="ConfirmacionDefinitivaCPEAutomotorDGResp" type="tns:ConfirmacionDefinitivaCPEAutomotorDGResponse" />
+      <xsd:element name="ConfirmacionDefinitivaCPEDuctosDGReq" type="tns:ConfirmacionDefinitivaCPEDuctosDGRequest" />
+      <xsd:element name="ConfirmacionDefinitivaCPEDuctosDGResp" type="tns:ConfirmacionDefinitivaCPEDuctosDGResponse" />
       <xsd:element name="ConsultaCPEFerroviariaPorNroOperativoReq" type="tns:ConsultaCPEFerroviariaPorNroOperativoRequest" />
       <xsd:element name="ConsultaCPEFerroviariaPorNroOperativoResp" type="tns:ConsultaCPEFerroviariaPorNroOperativoResponse" />
       <xsd:element name="EditarCPEFerroviariaReq" type="tns:EditarCPEFerroviariaRequest" />
       <xsd:element name="EditarCPEFerroviariaResp" type="tns:EditarCPEFerroviariaResponse" />
+      <xsd:element name="EditarCPEDGFerroviariaReq" type="tns:EditarCPEDGFerroviariaRequest" />
+      <xsd:element name="EditarCPEDGFerroviariaResp" type="tns:EditarCPEDGFerroviariaResponse" />
+      <xsd:element name="EditarCPEDGAutomotorReq" type="tns:EditarCPEDGAutomotorRequest" />
+      <xsd:element name="EditarCPEDGAutomotorResp" type="tns:EditarCPEDGAutomotorResponse" />
+      <xsd:element name="EditarCPEDGDuctosReq" type="tns:EditarCPEDGDuctosRequest" />
+      <xsd:element name="EditarCPEDGDuctosResp" type="tns:EditarCPEDGDuctosResponse" />
+      <xsd:element name="EditarCPEConfirmadaFerroviariaReq" type="tns:EditarCPEConfirmadaFerroviariaRequest" />
+      <xsd:element name="EditarCPEConfirmadaFerroviariaResp" type="tns:EditarCPEConfirmadaFerroviariaResponse" />
       <xsd:element name="AutorizarCPEAutomotorReq" type="tns:AutorizarCPEAutomotorRequest" />
       <xsd:element name="AutorizarCPEAutomotorResp" type="tns:AutorizarCPEAutomotorResponse" />
+      <xsd:element name="AutorizarCPEAutomotorDGReq" type="tns:AutorizarCPEAutomotorDGRequest" />
+      <xsd:element name="AutorizarCPEAutomotorDGResp" type="tns:AutorizarCPEAutomotorDGResponse" />
+      <xsd:element name="AutorizarCPEDuctosDGReq" type="tns:AutorizarCPEDuctosDGRequest" />
+      <xsd:element name="AutorizarCPEDuctosDGResp" type="tns:AutorizarCPEDuctosDGResponse" />
+      <xsd:element name="AutorizarCPEEmisionDestinoDGReq" type="tns:AutorizarCPEEmisionDestinoDGRequest" />
+      <xsd:element name="AutorizarCPEEmisionDestinoDGResp" type="tns:AutorizarCPEEmisionDestinoDGResponse" />
       <xsd:element name="ConsultarCPEAutomotorReq" type="tns:ConsultarCPEAutomotorRequest" />
       <xsd:element name="ConsultarCPEAutomotorResp" type="tns:ConsultarCPEAutomotorResponse" />
+      <xsd:element name="ConsultarCPEAutomotorDGReq" type="tns:ConsultarCPEAutomotorDGRequest" />
+      <xsd:element name="ConsultarCPEAutomotorDGResp" type="tns:ConsultarCPEAutomotorDGResponse" />
+      <xsd:element name="ConsultarCPEEmisionDestinoDGReq" type="tns:ConsultarCPEEmisionDestinoDGRequest" />
+      <xsd:element name="ConsultarCPEEmisionDestinoDGResp" type="tns:ConsultarCPEEmisionDestinoDGResponse" />
+      <xsd:element name="ConsultarCPEDuctosReq" type="tns:ConsultarCPEDuctosRequest" />
+      <xsd:element name="ConsultarCPEDuctosResp" type="tns:ConsultarCPEDuctosResponse" />
       <xsd:element name="NuevoDestinoDestinatarioCPEAutomotorReq" type="tns:NuevoDestinoDestinatarioCPEAutomotorRequest" />
       <xsd:element name="NuevoDestinoDestinatarioCPEAutomotorResp" type="tns:NuevoDestinoDestinatarioCPEAutomotorResponse" />
       <xsd:element name="RegresoOrigenCPEAutomotorReq" type="tns:RegresoOrigenCPEAutomotorRequest" />
       <xsd:element name="RegresoOrigenCPEAutomotorResp" type="tns:RegresoOrigenCPEAutomotorResponse" />
+      <xsd:element name="RegresoOrigenCPEAutomotorDGReq" type="tns:RegresoOrigenCPEAutomotorDGRequest" />
+      <xsd:element name="RegresoOrigenCPEAutomotorDGResp" type="tns:RegresoOrigenCPEAutomotorDGResponse" />
+      <xsd:element name="RegresoOrigenCPEFerroviariaDGReq" type="tns:RegresoOrigenCPEFerroviariaDGRequest" />
+      <xsd:element name="RegresoOrigenCPEFerroviariaDGResp" type="tns:RegresoOrigenCPEFerroviariaDGResponse" />
+      <xsd:element name="RegresoOrigenCPEEmisionDestinoDGReq" type="tns:RegresoOrigenCPEEmisionDestinoDGRequest" />
+      <xsd:element name="RegresoOrigenCPEEmisionDestinoDGResp" type="tns:RegresoOrigenCPEEmisionDestinoDGResponse" />
       <xsd:element name="DesvioCPEAutomotorReq" type="tns:DesvioCPEAutomotorRequest" />
       <xsd:element name="DesvioCPEAutomotorResp" type="tns:DesvioCPEAutomotorResponse" />
       <xsd:element name="ConfirmacionDefinitivaCPEAutomotorReq" type="tns:ConfirmacionDefinitivaCPEAutomotorRequest" />
       <xsd:element name="ConfirmacionDefinitivaCPEAutomotorResp" type="tns:ConfirmacionDefinitivaCPEAutomotorResponse" />
       <xsd:element name="EditarCPEAutomotorReq" type="tns:EditarCPEAutomotorRequest" />
       <xsd:element name="EditarCPEAutomotorResp" type="tns:EditarCPEAutomotorResponse" />
+      <xsd:element name="EditarCPEConfirmadaAutomotorReq" type="tns:EditarCPEConfirmadaAutomotorRequest" />
+      <xsd:element name="EditarCPEConfirmadaAutomotorResp" type="tns:EditarCPEConfirmadaAutomotorResponse" />
+      <xsd:element name="EditarCPEConfirmadaDuctosReq" type="tns:EditarCPEConfirmadaDuctosRequest" />
+      <xsd:element name="EditarCPEConfirmadaDuctosResp" type="tns:EditarCPEConfirmadaDuctosResponse" />
       <xsd:element name="Exception" type="tns:ExceptionType" />
       <xsd:complexType name="ExceptionType">
         <xsd:sequence>
@@ -1235,15 +2681,20 @@
       </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="rechazarEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:RechazarEmisionDestinoDGReq" />
+  </wsdl:message>
   <wsdl:message name="consultarCPEFerroviariaRequest">
     <wsdl:part name="parameters" element="tns:ConsultarCPEFerroviariaReq" />
   </wsdl:message>
-  <wsdl:message name="dummyRequest" />
-  <wsdl:message name="confirmacionDefinitivaCPEAutomotorResponse">
-    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEAutomotorResp" />
+  <wsdl:message name="consultarCPEEmitidasDestinoDGPendientesActivacionRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionReq" />
   </wsdl:message>
   <wsdl:message name="editarCPEAutomotorResponse">
     <wsdl:part name="parameters" element="tns:EditarCPEAutomotorResp" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEEmisionDestinoDGResp" />
   </wsdl:message>
   <wsdl:message name="consultarPlantasResponse">
     <wsdl:part name="parameters" element="tns:ConsultarPlantasResp" />
@@ -1251,14 +2702,20 @@
   <wsdl:message name="consultarLocalidadesProductorRequest">
     <wsdl:part name="parameters" element="tns:ConsultarLocalidadesProductorReq" />
   </wsdl:message>
-  <wsdl:message name="rechazoCPERequest">
-    <wsdl:part name="parameters" element="tns:RechazoCPEReq" />
-  </wsdl:message>
   <wsdl:message name="consultarCPEFerroviariaResponse">
     <wsdl:part name="parameters" element="tns:ConsultarCPEFerroviariaResp" />
   </wsdl:message>
-  <wsdl:message name="consultarCPEAutomotorRequest">
-    <wsdl:part name="parameters" element="tns:ConsultarCPEAutomotorReq" />
+  <wsdl:message name="anularCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:AnularCPEEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarUnidadesMedidaResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarUnidadesMedidaResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarPlantasDGResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarPlantasDGResp" />
   </wsdl:message>
   <wsdl:message name="consultarLocalidadesPorProvinciaResponse">
     <wsdl:part name="parameters" element="tns:ConsultarLocalidadesPorProvinciaResp" />
@@ -1269,20 +2726,38 @@
   <wsdl:message name="consultarCPEAutomotorResponse">
     <wsdl:part name="parameters" element="tns:ConsultarCPEAutomotorResp" />
   </wsdl:message>
+  <wsdl:message name="consultarTiposEmbalajeResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarTiposEmbalajeResp" />
+  </wsdl:message>
+  <wsdl:message name="informarContingenciaEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:InformarContingenciaEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="desvioCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:DesvioCPEAutomotorDGResp" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEAutomotorDGResp" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEAutomotorDGResp" />
+  </wsdl:message>
   <wsdl:message name="autorizarCPEAutomotorRequest">
     <wsdl:part name="parameters" element="tns:AutorizarCPEAutomotorReq" />
   </wsdl:message>
   <wsdl:message name="consultarCPEPPendientesDeResolucionResponse">
     <wsdl:part name="parameters" element="tns:ConsultarCPEPPendientesDeResolucionResp" />
   </wsdl:message>
-  <wsdl:message name="consultarTiposGranoRequest">
-    <wsdl:part name="parameters" element="tns:ConsultarTiposGranoReq" />
+  <wsdl:message name="consultarCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEFerroviariaDGResp" />
   </wsdl:message>
-  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaRequest">
-    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaReq" />
-  </wsdl:message>
-  <wsdl:message name="consultarProvinciasRequest">
-    <wsdl:part name="parameters" element="tns:ConsultarProvinciasReq" />
+  <wsdl:message name="autorizarCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEAutomotorDGReq" />
   </wsdl:message>
   <wsdl:message name="consultarCPEPorDestinoRequest">
     <wsdl:part name="parameters" element="tns:ConsultarCPEPorDestinoReq" />
@@ -1293,11 +2768,11 @@
   <wsdl:message name="confirmarArriboCPERequest">
     <wsdl:part name="parameters" element="tns:ConfirmarArriboCPEReq" />
   </wsdl:message>
-  <wsdl:message name="regresoOrigenCPEFerroviariaResponse">
-    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaResp" />
-  </wsdl:message>
   <wsdl:message name="consultarLocalidadesPorProvinciaRequest">
     <wsdl:part name="parameters" element="tns:ConsultarLocalidadesPorProvinciaReq" />
+  </wsdl:message>
+  <wsdl:message name="aceptarEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:AceptarEmisionDestinoDGReq" />
   </wsdl:message>
   <wsdl:message name="consultarUltNroOrdenResponse">
     <wsdl:part name="parameters" element="tns:ConsultarUltNroOrdenResp" />
@@ -1308,8 +2783,8 @@
   <wsdl:message name="rechazoCPEResponse">
     <wsdl:part name="parameters" element="tns:RechazoCPEResp" />
   </wsdl:message>
-  <wsdl:message name="confirmarArriboCPEResponse">
-    <wsdl:part name="parameters" element="tns:ConfirmarArriboCPEResp" />
+  <wsdl:message name="consultarCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEFerroviariaDGReq" />
   </wsdl:message>
   <wsdl:message name="editarCPEAutomotorRequest">
     <wsdl:part name="parameters" element="tns:EditarCPEAutomotorReq" />
@@ -1317,14 +2792,201 @@
   <wsdl:message name="anularCPERequest">
     <wsdl:part name="parameters" element="tns:AnularCPEReq" />
   </wsdl:message>
+  <wsdl:message name="cerrarContingenciaCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:CerrarContingenciaCPEEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEDuctosResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEDuctosResp" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaDGResp" />
+  </wsdl:message>
   <wsdl:message name="desvioCPEFerroviariaRequest">
     <wsdl:part name="parameters" element="tns:DesvioCPEFerroviariaReq" />
   </wsdl:message>
-  <wsdl:message name="informarContingenciaResponse">
-    <wsdl:part name="parameters" element="tns:InformarContingenciaResp" />
+  <wsdl:message name="consultarCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEAutomotorDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarPlantasDGRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarPlantasDGReq" />
   </wsdl:message>
   <wsdl:message name="nuevoDestinoDestinatarioCPEAutomotorResponse">
     <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEAutomotorResp" />
+  </wsdl:message>
+  <wsdl:message name="cerrarContingenciaCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:CerrarContingenciaCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEFerroviariaRequest">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarTiposGranoResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarTiposGranoResp" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEAutomotorRequest">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEAutomotorReq" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEAutomotorDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultaCPEFerroviariaPorNroOperativoResponse">
+    <wsdl:part name="parameters" element="tns:ConsultaCPEFerroviariaPorNroOperativoResp" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEConfirmadaFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="desvioCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:DesvioCPEAutomotorDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarPlantasRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarPlantasReq" />
+  </wsdl:message>
+  <wsdl:message name="desvioCPEAutomotorRequest">
+    <wsdl:part name="parameters" element="tns:DesvioCPEAutomotorReq" />
+  </wsdl:message>
+  <wsdl:message name="descargadoDestinoCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:DescargadoDestinoCPEEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEFerroviariaRequest">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarDomiciliosPorCUITResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarDomiciliosPorCUITResp" />
+  </wsdl:message>
+  <wsdl:message name="anularCPEResponse">
+    <wsdl:part name="parameters" element="tns:AnularCPEResp" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="aceptarEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:AceptarEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEEmisionDestinoDGResp" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEDuctosDGRequest">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEDuctosDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarDerivadosGranariosResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarDerivadosGranariosResp" />
+  </wsdl:message>
+  <wsdl:message name="dummyRequest" />
+  <wsdl:message name="confirmacionDefinitivaCPEAutomotorResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEAutomotorResp" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEDGDuctosRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGDuctosReq" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEAutomotorDGReq" />
+  </wsdl:message>
+  <wsdl:message name="anularCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:AnularCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEDGAutomotorRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGAutomotorReq" />
+  </wsdl:message>
+  <wsdl:message name="rechazoCPERequest">
+    <wsdl:part name="parameters" element="tns:RechazoCPEReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEDGFerroviariaRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarUnidadesMedidaRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarUnidadesMedidaReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEConfirmadaFerroviariaRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEAutomotorRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEAutomotorReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEAutomotorDGResp" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEFerroviariaDGReq" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEAutomotorDGResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEDuctosRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEDuctosReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEConfirmadaDuctosResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaDuctosResp" />
+  </wsdl:message>
+  <wsdl:message name="rechazarEmisionDGResponse">
+    <wsdl:part name="parameters" element="tns:RechazarEmisionDGResp" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEConfirmadaAutomotorResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaAutomotorResp" />
+  </wsdl:message>
+  <wsdl:message name="rechazarEmisionDGRequest">
+    <wsdl:part name="parameters" element="tns:RechazarEmisionDGReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarDerivadosGranariosRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarDerivadosGranariosReq" />
+  </wsdl:message>
+  <wsdl:message name="aceptarEmisionDGRequest">
+    <wsdl:part name="parameters" element="tns:AceptarEmisionDGReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEDGDuctosResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGDuctosResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarDomiciliosPorCUITRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarDomiciliosPorCUITReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarTiposGranoRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarTiposGranoReq" />
+  </wsdl:message>
+  <wsdl:message name="editarCPEConfirmadaDuctosRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaDuctosReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarTiposEmbalajeRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarTiposEmbalajeReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEDGPendienteActivacionResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEDGPendienteActivacionResp" />
+  </wsdl:message>
+  <wsdl:message name="consultarCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaRequest">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="consultarProvinciasRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarProvinciasReq" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaResp" />
+  </wsdl:message>
+  <wsdl:message name="confirmarArriboCPEResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmarArriboCPEResp" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEDuctosDGRequest">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEDuctosDGReq" />
+  </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEFerroviariaDGResp" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEDuctosDGResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEDuctosDGResp" />
+  </wsdl:message>
+  <wsdl:message name="informarContingenciaResponse">
+    <wsdl:part name="parameters" element="tns:InformarContingenciaResp" />
   </wsdl:message>
   <wsdl:message name="regresoOrigenCPEAutomotorResponse">
     <wsdl:part name="parameters" element="tns:RegresoOrigenCPEAutomotorResp" />
@@ -1332,14 +2994,11 @@
   <wsdl:message name="consultarLocalidadesProductorResponse">
     <wsdl:part name="parameters" element="tns:ConsultarLocalidadesProductorResp" />
   </wsdl:message>
-  <wsdl:message name="autorizarCPEFerroviariaRequest">
-    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaReq" />
-  </wsdl:message>
   <wsdl:message name="descargadoDestinoCPERequest">
     <wsdl:part name="parameters" element="tns:DescargadoDestinoCPEReq" />
   </wsdl:message>
-  <wsdl:message name="consultarTiposGranoResponse">
-    <wsdl:part name="parameters" element="tns:ConsultarTiposGranoResp" />
+  <wsdl:message name="descargadoDestinoCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:DescargadoDestinoCPEEmisionDestinoDGReq" />
   </wsdl:message>
   <wsdl:message name="nuevoDestinoDestinatarioCPEAutomotorRequest">
     <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEAutomotorReq" />
@@ -1350,29 +3009,47 @@
   <wsdl:message name="nuevoDestinoDestinatarioCPEFerroviariaRequest">
     <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEFerroviariaReq" />
   </wsdl:message>
-  <wsdl:message name="regresoOrigenCPEAutomotorRequest">
-    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEAutomotorReq" />
+  <wsdl:message name="editarCPEDGFerroviariaResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGFerroviariaResp" />
   </wsdl:message>
-  <wsdl:message name="consultaCPEFerroviariaPorNroOperativoResponse">
-    <wsdl:part name="parameters" element="tns:ConsultaCPEFerroviariaPorNroOperativoResp" />
+  <wsdl:message name="regresoOrigenCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaDGReq" />
   </wsdl:message>
   <wsdl:message name="descargadoDestinoCPEResponse">
     <wsdl:part name="parameters" element="tns:DescargadoDestinoCPEResp" />
   </wsdl:message>
+  <wsdl:message name="autorizarCPEDuctosDGResponse">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEDuctosDGResp" />
+  </wsdl:message>
   <wsdl:message name="editarCPEFerroviariaRequest">
     <wsdl:part name="parameters" element="tns:EditarCPEFerroviariaReq" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaDGResp" />
+  </wsdl:message>
+  <wsdl:message name="aceptarEmisionDGResponse">
+    <wsdl:part name="parameters" element="tns:AceptarEmisionDGResp" />
   </wsdl:message>
   <wsdl:message name="desvioCPEFerroviariaResponse">
     <wsdl:part name="parameters" element="tns:DesvioCPEFerroviariaResp" />
   </wsdl:message>
+  <wsdl:message name="editarCPEDGAutomotorResponse">
+    <wsdl:part name="parameters" element="tns:EditarCPEDGAutomotorResp" />
+  </wsdl:message>
   <wsdl:message name="desvioCPEAutomotorResponse">
     <wsdl:part name="parameters" element="tns:DesvioCPEAutomotorResp" />
   </wsdl:message>
+  <wsdl:message name="nuevoDestinoDestinatarioCPEAutomotorDGRequest">
+    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEAutomotorDGReq" />
+  </wsdl:message>
+  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaDGReq" />
+  </wsdl:message>
+  <wsdl:message name="regresoOrigenCPEAutomotorDGResponse">
+    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEAutomotorDGResp" />
+  </wsdl:message>
   <wsdl:message name="Exception">
     <wsdl:part name="parameters" element="tns:Exception" />
-  </wsdl:message>
-  <wsdl:message name="consultarPlantasRequest">
-    <wsdl:part name="parameters" element="tns:ConsultarPlantasReq" />
   </wsdl:message>
   <wsdl:message name="consultaCPEFerroviariaPorNroOperativoRequest">
     <wsdl:part name="parameters" element="tns:ConsultaCPEFerroviariaPorNroOperativoReq" />
@@ -1380,8 +3057,14 @@
   <wsdl:message name="consultarCPEPorDestinoResponse">
     <wsdl:part name="parameters" element="tns:ConsultarCPEPorDestinoResp" />
   </wsdl:message>
-  <wsdl:message name="desvioCPEAutomotorRequest">
-    <wsdl:part name="parameters" element="tns:DesvioCPEAutomotorReq" />
+  <wsdl:message name="editarCPEConfirmadaAutomotorRequest">
+    <wsdl:part name="parameters" element="tns:EditarCPEConfirmadaAutomotorReq" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEEmisionDestinoDGRequest">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEEmisionDestinoDGReq" />
+  </wsdl:message>
+  <wsdl:message name="autorizarCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaDGResp" />
   </wsdl:message>
   <wsdl:message name="consultarCPEPPendientesDeResolucionRequest">
     <wsdl:part name="parameters" element="tns:ConsultarCPEPPendientesDeResolucionReq" />
@@ -1389,32 +3072,32 @@
   <wsdl:message name="consultarProvinciasResponse">
     <wsdl:part name="parameters" element="tns:ConsultarProvinciasResp" />
   </wsdl:message>
+  <wsdl:message name="consultarCPEDGPendienteActivacionRequest">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEDGPendienteActivacionReq" />
+  </wsdl:message>
   <wsdl:message name="dummyResponse">
     <wsdl:part name="parameters" element="tns:DummyResp" />
   </wsdl:message>
   <wsdl:message name="cerrarContingenciaCPEResponse">
     <wsdl:part name="parameters" element="tns:CerrarContingenciaCPEResp" />
   </wsdl:message>
-  <wsdl:message name="regresoOrigenCPEFerroviariaRequest">
-    <wsdl:part name="parameters" element="tns:RegresoOrigenCPEFerroviariaReq" />
-  </wsdl:message>
   <wsdl:message name="confirmacionDefinitivaCPEAutomotorRequest">
     <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEAutomotorReq" />
   </wsdl:message>
-  <wsdl:message name="nuevoDestinoDestinatarioCPEFerroviariaResponse">
-    <wsdl:part name="parameters" element="tns:NuevoDestinoDestinatarioCPEFerroviariaResp" />
+  <wsdl:message name="consultarCPEEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEEmisionDestinoDGResp" />
   </wsdl:message>
-  <wsdl:message name="confirmacionDefinitivaCPEFerroviariaResponse">
-    <wsdl:part name="parameters" element="tns:ConfirmacionDefinitivaCPEFerroviariaResp" />
+  <wsdl:message name="consultarCPEEmitidasDestinoDGPendientesActivacionResponse">
+    <wsdl:part name="parameters" element="tns:ConsultarCPEEmitidasDestinoDGPendientesActivacionResp" />
   </wsdl:message>
-  <wsdl:message name="anularCPEResponse">
-    <wsdl:part name="parameters" element="tns:AnularCPEResp" />
+  <wsdl:message name="desvioCPEFerroviariaDGResponse">
+    <wsdl:part name="parameters" element="tns:DesvioCPEFerroviariaDGResp" />
   </wsdl:message>
-  <wsdl:message name="editarCPEFerroviariaResponse">
-    <wsdl:part name="parameters" element="tns:EditarCPEFerroviariaResp" />
+  <wsdl:message name="rechazarEmisionDestinoDGResponse">
+    <wsdl:part name="parameters" element="tns:RechazarEmisionDestinoDGResp" />
   </wsdl:message>
-  <wsdl:message name="autorizarCPEFerroviariaResponse">
-    <wsdl:part name="parameters" element="tns:AutorizarCPEFerroviariaResp" />
+  <wsdl:message name="desvioCPEFerroviariaDGRequest">
+    <wsdl:part name="parameters" element="tns:DesvioCPEFerroviariaDGReq" />
   </wsdl:message>
   <wsdl:portType name="CpePortType">
     <wsdl:operation name="dummy">
@@ -1427,9 +3110,39 @@
       <wsdl:output message="tns:consultarProvinciasResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="consultarCPEDGPendienteActivacion">
+      <wsdl:input message="tns:consultarCPEDGPendienteActivacionRequest" />
+      <wsdl:output message="tns:consultarCPEDGPendienteActivacionResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEEmitidasDestinoDGPendientesActivacion">
+      <wsdl:input message="tns:consultarCPEEmitidasDestinoDGPendientesActivacionRequest" />
+      <wsdl:output message="tns:consultarCPEEmitidasDestinoDGPendientesActivacionResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarTiposEmbalaje">
+      <wsdl:input message="tns:consultarTiposEmbalajeRequest" />
+      <wsdl:output message="tns:consultarTiposEmbalajeResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarUnidadesMedida">
+      <wsdl:input message="tns:consultarUnidadesMedidaRequest" />
+      <wsdl:output message="tns:consultarUnidadesMedidaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarDerivadosGranarios">
+      <wsdl:input message="tns:consultarDerivadosGranariosRequest" />
+      <wsdl:output message="tns:consultarDerivadosGranariosResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="consultarLocalidadesPorProvincia">
       <wsdl:input message="tns:consultarLocalidadesPorProvinciaRequest" />
       <wsdl:output message="tns:consultarLocalidadesPorProvinciaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarDomiciliosPorCUIT">
+      <wsdl:input message="tns:consultarDomiciliosPorCUITRequest" />
+      <wsdl:output message="tns:consultarDomiciliosPorCUITResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="consultarLocalidadesProductor">
@@ -1452,9 +3165,19 @@
       <wsdl:output message="tns:informarContingenciaResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="informarContingenciaEmisionDestinoDG">
+      <wsdl:input message="tns:informarContingenciaEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:informarContingenciaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="anularCPE">
       <wsdl:input message="tns:anularCPERequest" />
       <wsdl:output message="tns:anularCPEResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="anularCPEEmisionDestinoDG">
+      <wsdl:input message="tns:anularCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:anularCPEEmisionDestinoDGResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="confirmarArriboCPE">
@@ -1472,6 +3195,31 @@
       <wsdl:output message="tns:descargadoDestinoCPEResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="descargadoDestinoCPEEmisionDestinoDG">
+      <wsdl:input message="tns:descargadoDestinoCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:descargadoDestinoCPEEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="aceptarEmisionDG">
+      <wsdl:input message="tns:aceptarEmisionDGRequest" />
+      <wsdl:output message="tns:aceptarEmisionDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="rechazarEmisionDG">
+      <wsdl:input message="tns:rechazarEmisionDGRequest" />
+      <wsdl:output message="tns:rechazarEmisionDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="aceptarEmisionDestinoDG">
+      <wsdl:input message="tns:aceptarEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:aceptarEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="rechazarEmisionDestinoDG">
+      <wsdl:input message="tns:rechazarEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:rechazarEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="consultarCPEPorDestino">
       <wsdl:input message="tns:consultarCPEPorDestinoRequest" />
       <wsdl:output message="tns:consultarCPEPorDestinoResponse" />
@@ -1487,9 +3235,19 @@
       <wsdl:output message="tns:cerrarContingenciaCPEResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="cerrarContingenciaCPEEmisionDestinoDG">
+      <wsdl:input message="tns:cerrarContingenciaCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:cerrarContingenciaCPEEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="consultarPlantas">
       <wsdl:input message="tns:consultarPlantasRequest" />
       <wsdl:output message="tns:consultarPlantasResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarPlantasDG">
+      <wsdl:input message="tns:consultarPlantasDGRequest" />
+      <wsdl:output message="tns:consultarPlantasDGResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="autorizarCPEFerroviaria">
@@ -1497,14 +3255,54 @@
       <wsdl:output message="tns:autorizarCPEFerroviariaResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="autorizarCPEFerroviariaDG">
+      <wsdl:input message="tns:autorizarCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:autorizarCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="consultarCPEFerroviaria">
       <wsdl:input message="tns:consultarCPEFerroviariaRequest" />
       <wsdl:output message="tns:consultarCPEFerroviariaResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="consultarCPEFerroviariaDG">
+      <wsdl:input message="tns:consultarCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:consultarCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEAutomotorDG">
+      <wsdl:input message="tns:consultarCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:consultarCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEEmisionDestinoDG">
+      <wsdl:input message="tns:consultarCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:consultarCPEEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEDuctos">
+      <wsdl:input message="tns:consultarCPEDuctosRequest" />
+      <wsdl:output message="tns:consultarCPEDuctosResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="nuevoDestinoDestinatarioCPEFerroviaria">
       <wsdl:input message="tns:nuevoDestinoDestinatarioCPEFerroviariaRequest" />
       <wsdl:output message="tns:nuevoDestinoDestinatarioCPEFerroviariaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEFerroviariaDG">
+      <wsdl:input message="tns:nuevoDestinoDestinatarioCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:nuevoDestinoDestinatarioCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEAutomotorDG">
+      <wsdl:input message="tns:nuevoDestinoDestinatarioCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:nuevoDestinoDestinatarioCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEEmisionDestinoDG">
+      <wsdl:input message="tns:nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="regresoOrigenCPEFerroviaria">
@@ -1517,9 +3315,34 @@
       <wsdl:output message="tns:desvioCPEFerroviariaResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="desvioCPEFerroviariaDG">
+      <wsdl:input message="tns:desvioCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:desvioCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="desvioCPEAutomotorDG">
+      <wsdl:input message="tns:desvioCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:desvioCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="confirmacionDefinitivaCPEFerroviaria">
       <wsdl:input message="tns:confirmacionDefinitivaCPEFerroviariaRequest" />
       <wsdl:output message="tns:confirmacionDefinitivaCPEFerroviariaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEFerroviariaDG">
+      <wsdl:input message="tns:confirmacionDefinitivaCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:confirmacionDefinitivaCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEAutomotorDG">
+      <wsdl:input message="tns:confirmacionDefinitivaCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:confirmacionDefinitivaCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEDuctosDG">
+      <wsdl:input message="tns:confirmacionDefinitivaCPEDuctosDGRequest" />
+      <wsdl:output message="tns:confirmacionDefinitivaCPEDuctosDGResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="consultaCPEFerroviariaPorNroOperativo">
@@ -1532,9 +3355,44 @@
       <wsdl:output message="tns:editarCPEFerroviariaResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="editarCPEDGFerroviaria">
+      <wsdl:input message="tns:editarCPEDGFerroviariaRequest" />
+      <wsdl:output message="tns:editarCPEDGFerroviariaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEDGAutomotor">
+      <wsdl:input message="tns:editarCPEDGAutomotorRequest" />
+      <wsdl:output message="tns:editarCPEDGAutomotorResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEDGDuctos">
+      <wsdl:input message="tns:editarCPEDGDuctosRequest" />
+      <wsdl:output message="tns:editarCPEDGDuctosResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaFerroviaria">
+      <wsdl:input message="tns:editarCPEConfirmadaFerroviariaRequest" />
+      <wsdl:output message="tns:editarCPEConfirmadaFerroviariaResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="autorizarCPEAutomotor">
       <wsdl:input message="tns:autorizarCPEAutomotorRequest" />
       <wsdl:output message="tns:autorizarCPEAutomotorResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEAutomotorDG">
+      <wsdl:input message="tns:autorizarCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:autorizarCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEDuctosDG">
+      <wsdl:input message="tns:autorizarCPEDuctosDGRequest" />
+      <wsdl:output message="tns:autorizarCPEDuctosDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEEmisionDestinoDG">
+      <wsdl:input message="tns:autorizarCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:autorizarCPEEmisionDestinoDGResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
     <wsdl:operation name="consultarCPEAutomotor">
@@ -1552,6 +3410,21 @@
       <wsdl:output message="tns:regresoOrigenCPEAutomotorResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEAutomotorDG">
+      <wsdl:input message="tns:regresoOrigenCPEAutomotorDGRequest" />
+      <wsdl:output message="tns:regresoOrigenCPEAutomotorDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEFerroviariaDG">
+      <wsdl:input message="tns:regresoOrigenCPEFerroviariaDGRequest" />
+      <wsdl:output message="tns:regresoOrigenCPEFerroviariaDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEEmisionDestinoDG">
+      <wsdl:input message="tns:regresoOrigenCPEEmisionDestinoDGRequest" />
+      <wsdl:output message="tns:regresoOrigenCPEEmisionDestinoDGResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
     <wsdl:operation name="desvioCPEAutomotor">
       <wsdl:input message="tns:desvioCPEAutomotorRequest" />
       <wsdl:output message="tns:desvioCPEAutomotorResponse" />
@@ -1565,6 +3438,16 @@
     <wsdl:operation name="editarCPEAutomotor">
       <wsdl:input message="tns:editarCPEAutomotorRequest" />
       <wsdl:output message="tns:editarCPEAutomotorResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaAutomotor">
+      <wsdl:input message="tns:editarCPEConfirmadaAutomotorRequest" />
+      <wsdl:output message="tns:editarCPEConfirmadaAutomotorResponse" />
+      <wsdl:fault name="Exception" message="tns:Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaDuctos">
+      <wsdl:input message="tns:editarCPEConfirmadaDuctosRequest" />
+      <wsdl:output message="tns:editarCPEConfirmadaDuctosResponse" />
       <wsdl:fault name="Exception" message="tns:Exception" />
     </wsdl:operation>
   </wsdl:portType>
@@ -1594,8 +3477,116 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="consultarCPEDGPendienteActivacion">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDGPendienteActivacion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEEmitidasDestinoDGPendientesActivacion">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmitidasDestinoDGPendientesActivacion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarCPEDuctos">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDuctos" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarTiposEmbalaje">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarTiposEmbalaje" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarUnidadesMedida">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarUnidadesMedida" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarDerivadosGranarios">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarDerivadosGranarios" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="consultarLocalidadesPorProvincia">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarLocalidadesPorProvincia" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarDomiciliosPorCUIT">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarDomiciliosPorCUIT" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1654,8 +3645,32 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="informarContingenciaEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="anularCPE">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/anularCPE" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="anularCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/anularCPEEmisionDestinoDG" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1702,6 +3717,66 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="descargadoDestinoCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/descargadoDestinoCPEEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="aceptarEmisionDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="rechazarEmisionDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="aceptarEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="rechazarEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="consultarCPEPorDestino">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEPorDestino" />
       <wsdl:input>
@@ -1738,8 +3813,32 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="cerrarContingenciaCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/cerrarContingenciaCPEEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="consultarPlantas">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantas" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="consultarPlantasDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantasDG" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1774,8 +3873,56 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="consultarCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="nuevoDestinoDestinatarioCPEFerroviaria">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviaria" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="nuevoDestinoDestinatarioCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEEmisionDestinoDG" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1810,8 +3957,68 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="desvioCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="desvioCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="confirmacionDefinitivaCPEFerroviaria">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviaria" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="confirmacionDefinitivaCPEDuctosDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEDuctosDG" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1846,8 +4053,104 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="editarCPEDGFerroviaria">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGFerroviaria" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEDGAutomotor">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGAutomotor" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEDGDuctos">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGDuctos" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaFerroviaria">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaFerroviaria" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="autorizarCPEAutomotor">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotor" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEDuctosDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEDuctosDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="autorizarCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEEmisionDestinoDG" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1894,6 +4197,42 @@
         <soap:fault use="literal" name="Exception" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEAutomotorDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEAutomotorDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEFerroviariaDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEFerroviariaDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="regresoOrigenCPEEmisionDestinoDG">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEEmisionDestinoDG" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="desvioCPEAutomotor">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotor" />
       <wsdl:input>
@@ -1920,6 +4259,30 @@
     </wsdl:operation>
     <wsdl:operation name="editarCPEAutomotor">
       <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEAutomotor" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaAutomotor">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaAutomotor" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="editarCPEConfirmadaDuctos">
+      <soap:operation soapAction="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

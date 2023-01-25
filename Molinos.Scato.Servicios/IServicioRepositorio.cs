@@ -137,6 +137,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ObtenerAlmacenesPorCentro(int centroId);
+        
+        [OperationContract]
+        IList<TipoEmbalajeDto> ListarEmbalaje();
 
         [OperationContract]
         MaterialPorCentroDto ObtenerMaterialPorCentro(int centroId, int materialId);
@@ -2776,5 +2779,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
+        
+        [OperationContract]
+        bool ValidacionAutomaticaCtgDG(int centroId);
+        
+        [OperationContract]
+        List<DomicilioDto> ListarDomicilios();
     }
 }

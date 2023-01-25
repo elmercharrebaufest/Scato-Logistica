@@ -8,6 +8,10 @@
 	[PatenteAcoplado] VARCHAR(10) NULL,
     [TipoComercial_Id] INT NOT NULL,
 	[EsExtranjero] BIT NULL,
+    [NumeroCTG] VARCHAR(12) NULL,
+    [Sucursal] VARCHAR(20) NULL,
+    [NroOrden] VARCHAR(20) NULL
+
 	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.TipoComercial_TipoComercial_Id] FOREIGN KEY ([TipoComercial_Id]) REFERENCES [dbo].[TipoComercial] ([Id]),
     [Material_Id] INT NOT NULL, 
 	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),

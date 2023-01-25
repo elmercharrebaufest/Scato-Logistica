@@ -55,7 +55,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         PesoBrutoOrigen = comando.Orden.PesoBrutoOrigen,
                         PesoTaraOrigen = comando.Orden.PesoTaraOrigen,
                         PesoNetoOrigen = comando.Orden.PesoNetoOrigen,
-                        Recorrido = recorrido
+                        Recorrido = recorrido,
+                        NumeroCTG = comando.Orden.NumeroCTG,
+                        NroOrden = comando.Orden.NroOrden,
+                        Sucursal = comando.Orden.Sucursal
+
                     };
 
                     Repositorio.Agregar(ordenDeDescargaFason);

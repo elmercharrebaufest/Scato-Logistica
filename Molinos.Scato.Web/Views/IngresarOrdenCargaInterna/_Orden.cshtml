@@ -12,7 +12,28 @@
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
     string WorkflowDescripcion = ViewBag.WorkflowDescripcion.ToString();
     var vehiculo = Model != null ? (int)Model.TipoVehiculo : 0;
+    var plantasDG = new List<SelectListItem>();
+    var domiciliosDG = new List<SelectListItem>();
 }
+
+<style>
+    #checkDerivadoGranario {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        margin: 0 auto 0.7rem;
+    }
+
+        #checkDerivadoGranario label {
+            font-size: 11px;
+            width: 120px;
+        }
+
+        #checkDerivadoGranario label,
+        #checkDerivadoGranario input {
+            margin: 0;
+        }
+</style>
 
 @if (Model != null)
 {
@@ -38,7 +59,10 @@
      data-url-obtener-materiales="@Url.Action("ListarMaterialesPorCliente", "Consultas")"
      data-url-obtener-estado-cliente="@Url.Action("ClienteBloqueado", "Consultas")"
      data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")"
-     data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"></div>
+     data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
+     data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
+     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")"
+</div>
 
 <script type="text/javascript">
     workflowId = @ViewBag.WorkflowId
@@ -75,7 +99,6 @@
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset class="grupo-carta-porte">
-
             <div class="control">
                 @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small margin10" })
                 <div class="">
@@ -100,7 +123,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small margin10" })
                 <div class="" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
-                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales,Textos.Default_TipoComercial, new { @class = "control " })
+                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control " })
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
@@ -116,7 +139,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material,new { @class = "control " })
+                    @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control " })
                     @Html.ValidationMessageFor(model => model.MaterialId)
                 </div>
             </div>
@@ -135,7 +158,31 @@
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                 </div>
             </div>
-
+            <div id="checkDerivadoGranario">
+                @Html.LabelFor(model => model.DerivadoGranarioHabilitado)
+                <input type="checkbox" id="DerivadoGranarioHabilitado" name="DerivadoGranarioHabilitado" value="true" @(Model.DerivadoGranarioHabilitado ? "checked='checked'" : "") />
+            </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)", new { @id = "plantaDGDestinoDropdown" })
+                    @Html.ValidationMessageFor(model => model.PlantaDGDestino)
+                </div>
+            </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.OrdenDomicilioDestino, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.DropDownListFor(model => model.OrdenDomicilioDestino, domiciliosDG, "(domicilio)", new { @id = "ordenDomicilioDestinoDropdown" })
+                    @Html.ValidationMessageFor(model => model.OrdenDomicilioDestino)
+                </div>
+            </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.CuitPagadorFlete, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.CuitPagadorFlete, new { @class = "control", @maxlength = "11" })
+                    @Html.ValidationMessageFor(model => model.CuitPagadorFlete)
+                </div>
+            </div>
         </fieldset>
     </div>
 
@@ -212,7 +259,7 @@
                     @Html.ValidationMessageFor(model => model.Almacen_Id)
                 </div>
             </div>
-             <div class="control">
+            <div class="control">
                 @Html.LabelFor(model => model.Calle_Id, new { @class = "control-label small margin10" })
                 <div class="">
                     @Html.DropDownListFor(model => model.Calle_Id, calles, "Calle", new { @class = "control " })

@@ -17,11 +17,43 @@
     }, $('#errorClienteRequerido').data().errorRequerido);
 
     if ($('#Destino').length > 0) {
-        DefinirAutocompletarConSAP('#Destino', '#DestinoId', '#autocompleteDestino', $('#links').data().urlBuscarClientes, $('#links').data().urlBuscarClienteUnico, $('#links').data().urlObtenerClientesSap, function () {  validarClienteNoBloqueado(); cargarMaterial(); }, function () { deshabilitarKmRecorrerYLocalidad(); cargarMaterial(); });
+        DefinirAutocompletarConSAP(
+            '#Destino',
+            '#DestinoId',
+            '#autocompleteDestino',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+                validarClienteNoBloqueado();
+                cargarMaterial();
+                CargarPlantas();
+                CargarDomicilios();
+            },
+            function () {
+                deshabilitarKmRecorrerYLocalidad();
+                cargarMaterial();
+            }
+        );
     }
 
     if ($('#Cliente').length > 0) {
-        DefinirAutocompletarConSAP('#Cliente', '#ClienteId', '#autocompleteCliente', $('#links').data().urlBuscarClientes, $('#links').data().urlBuscarClienteUnico, $('#links').data().urlObtenerClientesSap, function () { completarKmRecorrerYLocalidad(); cargarMaterial(); }, function () { deshabilitarKmRecorrerYLocalidad(); cargarMaterial(); });
+        DefinirAutocompletarConSAP(
+            '#Cliente',
+            '#ClienteId',
+            '#autocompleteCliente',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+                completarKmRecorrerYLocalidad();
+                cargarMaterial();
+            },
+            function () {
+                deshabilitarKmRecorrerYLocalidad();
+                cargarMaterial();
+            }
+        );
     }
 
     var listarProveedores = $('#links').data().urlBuscarProveedores;
@@ -38,9 +70,18 @@
     });
     $('#PatenteCamion').change(ValidarPatenteCnrt);
     $('#PatenteAcoplado').change(ValidarPatenteCnrt);
-    $('#MaterialId').change(CargarAlamacenesPorMaterial);
+    $('#MaterialId').change(function () {
+        CargarAlamacenesPorMaterial();
+    });
 
-    
+    $('#DerivadoGranarioHabilitado').click(function () {
+        DatosDeDerivadoGranario($("#DerivadoGranarioHabilitado").is(':checked'));
+    })
+
+    if ($('#DestinoId').length > 0) {
+        CargarPlantas();
+        CargarDomicilios();
+    }
 
 });
 
@@ -63,7 +104,6 @@ function cargarMaterial() {
 
     $.getJSON($('#links').data().urlObtenerMateriales, { workflowId: workflowId, centroId: $('#centroId').val(), clienteId: clienteId },
         function (allData) {
-
             var options = '';
             for (var j = 0; j < allData.length; j++) {
                 options += "<option value='" + allData[j].Value + "'>"
@@ -203,4 +243,48 @@ function CargarAlamacenesPorMaterial() {
             $('#Almacen_Id').html(options);
         }
     );
+}
+
+function CargarPlantas() {
+    var cliente = $("#DestinoId").val();
+    if ($("#DerivadoGranarioHabilitado").is(':checked') && cliente.length > 0) {
+        $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
+            function (allData) {
+                if (!allData.HayErrores) {
+                    var options = '';
+                    for (var i = 0; i < allData.Plantas.length; i++) {
+                        options += `<option value="${allData.Plantas[i]}">Planta Nro. ${allData.Plantas[i]}</option>`;
+                    }
+                    $('#plantaDGDestinoDropdown').html(options);
+                }
+            }
+        );
+    }
+}
+
+function CargarDomicilios() {
+    var cliente = $("#DestinoId").val();
+    if ($("#DerivadoGranarioHabilitado").is(':checked') && cliente.length > 0) {
+        $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
+            function (allData) {
+                if (!allData.HayErrores) {
+                    var options = '';
+                    for (var i = 0; i < allData.Domicilios.length; i++) {
+                        options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
+                    }
+                    $('#ordenDomicilioDestinoDropdown').html(options);
+                }
+            }
+        );
+    }
+}
+
+function DatosDeDerivadoGranario(mostrar) {
+    if (mostrar) {
+        $('#DerivadoGranarioHabilitado').val(true)
+        $('.derivadoGranario').removeClass('hidden');
+    } else {
+        $('#DerivadoGranarioHabilitado').val(false)
+        $('.derivadoGranario').addClass('hidden');
+    }
 }

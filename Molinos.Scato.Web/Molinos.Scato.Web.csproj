@@ -376,6 +376,9 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\BajaCTGDGDefinitivoController.cs" />
+    <Compile Include="Controllers\BajaCTGDGController.cs" />
+    <Compile Include="Controllers\AltaCTGDGController.cs" />
     <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />
     <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
     <Compile Include="Controllers\BarreraController.cs" />
@@ -857,6 +860,7 @@
     <Content Include="Scripts\area\enEsperaHB4\index.js" />
     <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
+    <Content Include="Scripts\altaCTGDG.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\barrera.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
@@ -2386,6 +2390,8 @@
     <Content Include="Views\ExcepcionAlControlProveedor\Index.cshtml" />
     <Content Include="Views\ExcepcionAlControlProveedor\Listar.cshtml" />
     <Content Include="Views\ExcepcionAlControlProveedor\Modificar.cshtml" />
+    <Content Include="Views\BajaCTGDG\Index.cshtml" />
+    <Content Include="Views\AltaCTGDG\Index.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

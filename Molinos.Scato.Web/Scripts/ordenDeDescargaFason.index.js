@@ -1,13 +1,12 @@
 ﻿jQuery(document).ready(function ($) {
-
     //Máscaras
     $(".numeroRemito").mask("9999-99999999");
-    $(".patente-internacional").mask("?*******", {placeholder: ""});
+    
+    $(".patente-internacional").mask("?*******", { placeholder: "" });
     $("#FechaOD").click(function () {
         $("#FechaCP").mask("99/99/9999");
     });
-
-    
+   
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
@@ -16,11 +15,17 @@
     DefinirAutocompletarConSAP('#Cliente', '#ClienteId', '#autocompleteCliente', $('#links').data().urlBuscarClientes, $('#links').data().urlBuscarClienteUnico, $('#links').data().urlObtenerClientesSap, cargarMaterial, cargarMaterial);
 
     DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
+
     $('#TipoComercialId').change(function () {
         DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, true, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
         if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
     });
-    
+
+    $('#Transportista').change(function () {
+        DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, true, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
+        if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
+    });
+
     // para que el campo retome el foco al seleccionar una fecha
     $('input.date').datepicker("option", "onSelect", function () {
         $(this).focus();
@@ -37,15 +42,15 @@
 
         $('#pesoNeto').val(pesoBruto - pesoTara);
     });
- 
+
     $.validator.addMethod("clienteRequerido", function (value, element) {
         return $('#ClienteId').val() > 0;
     }, $('#Cliente').data().errorRequerido);
     $(".pesoNetoMaximoEjecutar").change(
-            function () {
-                $('.pesoNetoMaximo').valid();
-            }
-        );
+        function () {
+            $('.pesoNetoMaximo').valid();
+        }
+    );
 
     $.validator.addMethod("pesoNetoMaximo", function (value, element) {
         var pesoNeto = $('#pesoNeto').val();
@@ -60,13 +65,28 @@
 
     $('#PatenteCamion').change(ValidarPatenteCnrt);
     $('#PatenteAcoplado').change(ValidarPatenteCnrt);
+    $('#NumeroCTG').change(ValidarCTG);
+    $('#MaterialId').change(function () {
+        var materialId = $("#MaterialId").val();
+        var datos = $("#Material").val();
+
+        $('#EsDerivadoGranario').val(JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario);
+
+        if (JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario) {
+            $('.numero-ctg-cpe').attr("hidden", true);
+        } else {
+            $('.numero-ctg-cpe').removeAttr('hidden');
+        }
+        
+    });
+
+   
 });
 
 function cargarMaterial() {
     var clienteId = $('#ClienteId').val();
     $.getJSON($('#links').data().urlObtenerMateriales, { workflowId: workflowId, centroId: $('#centroId').val(), clienteId: clienteId },
         function (allData) {
-
             var options = '';
             for (var j = 0; j < allData.length; j++) {
                 options += "<option value='" + allData[j].Value + "'>"
@@ -76,7 +96,7 @@ function cargarMaterial() {
         }
     );
 }
-    
+
 function onSelectProveedor() {
     $('#EsTransportista').val(false);
 }
@@ -87,24 +107,66 @@ function onSelectTransportista() {
 
 function cargarTiposVehiculo(bool) {
     $.getJSON($('#links').data().urlObtenertiposvehiculo, { conTren: bool },
-            function (response) {
-                var options = '';
-                for (var i = 0; i < response.length; i++) {
-                    options += "<option data-netoMaximo='" + response[i].netoMaximo + "'  data-brutoMaximo='" + response[i].brutoMaximoEgreso + "' value='" + response[i].tipoVehiculoValue + "'" + ">"
-                        + response[i].tipoVehiculoText + "</option>";
-                }
-                $('#tipoVehiculoDropdown').html(options);
-                $('#tipoVehiculoDropdown').val($('#TipoVehiculoInt').val());
-            });
+        function (response) {
+            var options = '';
+            for (var i = 0; i < response.length; i++) {
+                options += "<option data-netoMaximo='" + response[i].netoMaximo + "'  data-brutoMaximo='" + response[i].brutoMaximoEgreso + "' value='" + response[i].tipoVehiculoValue + "'" + ">"
+                    + response[i].tipoVehiculoText + "</option>";
+            }
+            $('#tipoVehiculoDropdown').html(options);
+            $('#tipoVehiculoDropdown').val($('#TipoVehiculoInt').val());
+        });
 }
 
+function ValidarCTG() {
+    var nroCartaPorte = $('#NumeroCTG').val();
+    
+    if (nroCartaPorte != '') {
+        BuscarNumeroCPE(nroCartaPorte, function () { BlockUI(" consulta de numero de cpe"); }, function () { $.unblockUI(); });
+    }
+    
+}
+
+function BuscarNumeroCPE(ctg, before, callback) {
+    if (before != null) before();
+    $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: ctg }, function (data) {
+        
+
+        if (data.satus == 500) {
+            console.log(JSON.stringify(data))
+            MostrarAlertaAdvertencia(data.satus);
+        }
+    }).complete(function (data) {
+        var cadenaSucursal = "000000000" + data.responseJSON.sucursal;
+        var cadenaNumeroOrden = "000000000" + data.responseJSON.nroOrden;
+        var formatSucursal = cadenaSucursal.substr(cadenaSucursal.length - 5);
+        var formatNroOrden = cadenaNumeroOrden.substr(cadenaNumeroOrden.length - 8);
+        $('#Sucursal').val(formatSucursal);
+        $('#NroOrden').val(formatNroOrden);
+        $('#Transportista').val(data.responseJSON.cuitTransportista);
+        $('#PatenteCamion').val(data.responseJSON.patenteCamion);
+        $('#PatenteAcoplado').val(data.responseJSON.patenteAcoplado);
+        $('#Chofer_Cuil').val(data.responseJSON.cuitChofer);
+        $('#pesoBruto').val(data.responseJSON.pesoBruto);
+        $('#pesoTara').val(data.responseJSON.pesoTara);
+
+        if (callback != null) callback();
+    });
+
+
+}
+
+
+
 function ValidarPatenteCnrt() {
+    ;
     var patente = $("#PatenteCamion").val();
     var acoplado = $("#PatenteAcoplado").val();
     if (patente != '' && acoplado != '') {
         ActualizarTipoVehiculo(patente, acoplado, function () { BlockUI(" consulta de tipo de vehiculo por patente"); }, function () { $.unblockUI(); });
     }
 }
+
 function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
     if (before != null) before();
     $.getJSON($("#links").data().urlObtenerTipovehiculoPorPatente, { patente: patente, acoplado: acoplado, workflow: $('#WorkflowDescripcion').val() }, function (data) {
@@ -127,3 +189,30 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
         if (callback != null) callback();
     });
 }
+
+$('#NumeroCTG').change(function () {
+    
+    var nroCartaPorte = $('.cargarCartaPorte').val();
+    var clienteId = $('#ClienteId').val();
+    if ((nroCartaPorte.length == 11 || nroCartaPorte.length == 12) && $.isNumeric(nroCartaPorte)) {
+        BlockUI();
+        
+
+        $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: nroCartaPorte }, function (data) {
+
+            console.log(JSON.stringify(data))
+         
+            
+
+            
+        }).complete(function () {
+            $.unblockUI();
+        });
+    }
+});
+
+$('#MaterialId').change(function () {
+    var customVal = $("#MaterialId").data("value");
+    var id = $('#MaterialId').value();
+    $('#EsDerivadoGranario').value("hol");
+});

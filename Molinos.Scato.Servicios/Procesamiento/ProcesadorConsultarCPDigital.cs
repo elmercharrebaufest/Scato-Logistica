@@ -842,7 +842,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         RamalFerroviario = responseCp?.respuesta?.transporte?.ramal?.codigo,
 
                         //NumeroOperativo
-                        NumeroPrecinto = responseCp?.respuesta?.transporte?.nroPrecinto,
+                        NumeroPrecinto = responseCp?.respuesta?.transporte?.nroPrecinto[0],
 
                         //Pdf
                         Pdf = responseCp?.respuesta?.pdf,

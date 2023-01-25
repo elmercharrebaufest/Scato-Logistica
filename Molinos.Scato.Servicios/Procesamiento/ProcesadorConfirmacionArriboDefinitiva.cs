@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -141,7 +142,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             RutaFotoCP = comando.Dto.FotoRutaDestino,
                             CodigoCentroSap = centro.CodigoSAP,
                             Patente = recorrido.Patente,
-                            EsSustentable = recorrido.Establecimiento != null,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
                             Pdf = respuesta.pdf
                         });
                     } 
@@ -197,7 +198,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             RutaFotoCP = comando.Dto.FotoRutaDestino,
                             CodigoCentroSap = centro.CodigoSAP,
                             Patente = recorrido.Patente,
-                            EsSustentable = recorrido.Establecimiento != null,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
                             Pdf = respuesta.pdf
                         });
                     }

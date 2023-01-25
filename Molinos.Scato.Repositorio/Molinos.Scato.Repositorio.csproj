@@ -71,6 +71,9 @@
     <Compile Include="ComandosEF\CrearArchivoDeMovimientos.cs" />
     <Compile Include="ComandosEF\CrearLoteAuditoria.cs" />
     <Compile Include="ConsultasEF\ConsultarEstadosWorkflows.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInternaFason.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInterna.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaFas.cs" />
     <Compile Include="ConsultasEF\ControlRecorridoLogActividadConsulta.cs" />
     <Compile Include="ComandosEF\CrearLoteBiotecnologia.cs" />
     <Compile Include="ConsultasEF\BajaCtgDefinitivaConsulta.cs" />

@@ -468,6 +468,19 @@ namespace Molinos.Scato.Servicios.Impl
             return conversor.ConvertirList<Almacen, AlmacenDto>(almacenes);
         }
 
+        public IList<TipoEmbalajeDto> ListarEmbalaje()
+        {
+            return Listar<TipoEmbalaje, TipoEmbalajeDto>();
+        }
+
+        //public IList<TipoEmbalajeDto> ObtenerTipoEmbalaje()
+        //{
+        //    Expression<Func<TipoEmbalaje, bool>> expresionFiltro = x => x.Activo == true;
+        //    var embalajes = repositorio.Listar(expresionFiltro);
+        //    return conversor.ConvertirList<TipoEmbalaje, TipoEmbalajeDto>(embalajes);
+        //}
+
+
         public MaterialPorCentroDto ObtenerMaterialPorCentro(int centroId, int materialId)
         {
             return
@@ -10222,6 +10235,16 @@ namespace Molinos.Scato.Servicios.Impl
                                                           x.Motivo != MotivoExcepcionAlControl.B &&
                                                           ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (clienteDestinoId.HasValue && x.ClienteDestino.Id == clienteDestinoId.Value) || (!centroDestinoId.HasValue && !clienteDestinoId.HasValue))
                                                           );
+        }
+        public bool ValidacionAutomaticaCtgDG(int centroId)
+        {
+            var centro = repositorio.Obtener<Centro>(centroId);
+            return centro != null && centro.ValidarAutomaticamenteCTGDG;
+        }
+
+        public List<DomicilioDto> ListarDomicilios()
+        {
+            return Listar<Domicilio, DomicilioDto>().ToList();
         }
     }
 }

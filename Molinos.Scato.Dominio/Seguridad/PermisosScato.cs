@@ -418,6 +418,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         EnEsperaHB4= 199,
         [Display(ResourceType = typeof(Textos), Name = "ActEsperaConfirmacion")]
         ActividadEsperaConfirmacion = 700,
+        [Display(ResourceType = typeof(Textos), Name = "ActAltaCTGDG")]
+        ActividadAltaCTGDG = 703,
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]

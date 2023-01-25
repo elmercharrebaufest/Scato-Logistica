@@ -79,5 +79,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
+
+        public string NroCTG { get; set; }
     }
 }

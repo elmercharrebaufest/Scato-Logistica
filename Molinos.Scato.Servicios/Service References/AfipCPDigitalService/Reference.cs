@@ -181,6 +181,54 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarProvincias", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarProvinciasResponse> consultarProvinciasAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarProvinciasRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEDGPendienteActivacionReq) of message consultarCPEDGPendienteActivacionRequest does not match the default value (consultarCPEDGPendienteActivacion)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDGPendienteActivacion", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDGPendienteActivacion", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse consultarCPEDGPendienteActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDGPendienteActivacion", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse> consultarCPEDGPendienteActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEEmitidasDestinoDGPendientesActivacionReq) of message consultarCPEEmitidasDestinoDGPendientesActivacionRequest does not match the default value (consultarCPEEmitidasDestinoDGPendientesActivacion)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmitidasDestinoDGPendientesAc" +
+            "tivacion", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmitidasDestinoDGPendientesAc" +
+            "tivacion", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse consultarCPEEmitidasDestinoDGPendientesActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmitidasDestinoDGPendientesAc" +
+            "tivacion", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse> consultarCPEEmitidasDestinoDGPendientesActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarTiposEmbalajeReq) of message consultarTiposEmbalajeRequest does not match the default value (consultarTiposEmbalaje)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarTiposEmbalaje", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarTiposEmbalaje", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse consultarTiposEmbalaje(Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarTiposEmbalaje", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse> consultarTiposEmbalajeAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarUnidadesMedidaReq) of message consultarUnidadesMedidaRequest does not match the default value (consultarUnidadesMedida)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarUnidadesMedida", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarUnidadesMedida", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse consultarUnidadesMedida(Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarUnidadesMedida", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse> consultarUnidadesMedidaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarDerivadosGranariosReq) of message consultarDerivadosGranariosRequest does not match the default value (consultarDerivadosGranarios)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDerivadosGranarios", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDerivadosGranarios", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse consultarDerivadosGranarios(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDerivadosGranarios", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse> consultarDerivadosGranariosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (ConsultarLocalidadesPorProvinciaReq) of message consultarLocalidadesPorProvinciaRequest does not match the default value (consultarLocalidadesPorProvincia)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarLocalidadesPorProvincia", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarLocalidadesPorProvincia", Name="Exception")]
@@ -189,6 +237,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarLocalidadesPorProvincia", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaResponse> consultarLocalidadesPorProvinciaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarDomiciliosPorCUITReq) of message consultarDomiciliosPorCUITRequest does not match the default value (consultarDomiciliosPorCUIT)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDomiciliosPorCUIT", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDomiciliosPorCUIT", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse consultarDomiciliosPorCUIT(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarDomiciliosPorCUIT", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse> consultarDomiciliosPorCUITAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (ConsultarLocalidadesProductorReq) of message consultarLocalidadesProductorRequest does not match the default value (consultarLocalidadesProductor)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarLocalidadesProductor", ReplyAction="*")]
@@ -226,6 +283,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingencia", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> informarContingenciaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (InformarContingenciaEmisionDestinoDGReq) of message informarContingenciaEmisionDestinoDGRequest does not match the default value (informarContingenciaEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/informarContingenciaEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (AnularCPEReq) of message anularCPERequest does not match the default value (anularCPE)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPE", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPE", Name="Exception")]
@@ -234,6 +300,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPE", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEResponse> anularCPEAsync(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPERequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AnularCPEEmisionDestinoDGReq) of message anularCPEEmisionDestinoDGRequest does not match the default value (anularCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse anularCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/anularCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse> anularCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (ConfirmarArriboCPEReq) of message confirmarArriboCPERequest does not match the default value (confirmarArriboCPE)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmarArriboCPE", ReplyAction="*")]
@@ -262,6 +337,51 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/descargadoDestinoCPE", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEResponse> descargadoDestinoCPEAsync(Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPERequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (DescargadoDestinoCPEEmisionDestinoDGReq) of message descargadoDestinoCPEEmisionDestinoDGRequest does not match the default value (descargadoDestinoCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/descargadoDestinoCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/descargadoDestinoCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse descargadoDestinoCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/descargadoDestinoCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse> descargadoDestinoCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AceptarEmisionDGReq) of message aceptarEmisionDGRequest does not match the default value (aceptarEmisionDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse aceptarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse> aceptarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (RechazarEmisionDGReq) of message rechazarEmisionDGRequest does not match the default value (rechazarEmisionDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse rechazarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse> rechazarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AceptarEmisionDestinoDGReq) of message aceptarEmisionDestinoDGRequest does not match the default value (aceptarEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse aceptarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/aceptarEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse> aceptarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (RechazarEmisionDestinoDGReq) of message rechazarEmisionDestinoDGRequest does not match the default value (rechazarEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse rechazarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/rechazarEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse> rechazarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEPorDestinoReq) of message consultarCPEPorDestinoRequest does not match the default value (consultarCPEPorDestino)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEPorDestino", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEPorDestino", Name="Exception")]
@@ -289,6 +409,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/cerrarContingenciaCPE", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEResponse> cerrarContingenciaCPEAsync(Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPERequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (CerrarContingenciaCPEEmisionDestinoDGReq) of message cerrarContingenciaCPEEmisionDestinoDGRequest does not match the default value (cerrarContingenciaCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/cerrarContingenciaCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/cerrarContingenciaCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse cerrarContingenciaCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/cerrarContingenciaCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse> cerrarContingenciaCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (ConsultarPlantasReq) of message consultarPlantasRequest does not match the default value (consultarPlantas)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantas", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantas", Name="Exception")]
@@ -297,6 +426,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantas", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasResponse> consultarPlantasAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarPlantasDGReq) of message consultarPlantasDGRequest does not match the default value (consultarPlantasDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantasDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantasDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse consultarPlantasDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarPlantasDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse> consultarPlantasDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEFerroviariaReq) of message autorizarCPEFerroviariaRequest does not match the default value (autorizarCPEFerroviaria)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviaria", ReplyAction="*")]
@@ -307,6 +445,15 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaResponse> autorizarCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEFerroviariaDGReq) of message autorizarCPEFerroviariaDGRequest does not match the default value (autorizarCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse autorizarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse> autorizarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEFerroviariaReq) of message consultarCPEFerroviariaRequest does not match the default value (consultarCPEFerroviaria)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviaria", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviaria", Name="Exception")]
@@ -316,6 +463,42 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaResponse> consultarCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEFerroviariaDGReq) of message consultarCPEFerroviariaDGRequest does not match the default value (consultarCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse consultarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse> consultarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEAutomotorDGReq) of message consultarCPEAutomotorDGRequest does not match the default value (consultarCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse consultarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse> consultarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEEmisionDestinoDGReq) of message consultarCPEEmisionDestinoDGRequest does not match the default value (consultarCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse consultarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse> consultarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEDuctosReq) of message consultarCPEDuctosRequest does not match the default value (consultarCPEDuctos)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDuctos", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDuctos", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse consultarCPEDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEDuctos", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse> consultarCPEDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (NuevoDestinoDestinatarioCPEFerroviariaReq) of message nuevoDestinoDestinatarioCPEFerroviariaRequest does not match the default value (nuevoDestinoDestinatarioCPEFerroviaria)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviaria", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviaria", Name="Exception")]
@@ -324,6 +507,36 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaResponse> nuevoDestinoDestinatarioCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (NuevoDestinoDestinatarioCPEFerroviariaDGReq) of message nuevoDestinoDestinatarioCPEFerroviariaDGRequest does not match the default value (nuevoDestinoDestinatarioCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse nuevoDestinoDestinatarioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse> nuevoDestinoDestinatarioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (NuevoDestinoDestinatarioCPEAutomotorDGReq) of message nuevoDestinoDestinatarioCPEAutomotorDGRequest does not match the default value (nuevoDestinoDestinatarioCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse nuevoDestinoDestinatarioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse> nuevoDestinoDestinatarioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (NuevoDestinoDestinatarioCPEEmisionDestinoDGReq) of message nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest does not match the default value (nuevoDestinoDestinatarioCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEEmisionDestino" +
+            "DG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEEmisionDestino" +
+            "DG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse nuevoDestinoDestinatarioCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/nuevoDestinoDestinatarioCPEEmisionDestino" +
+            "DG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse> nuevoDestinoDestinatarioCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (RegresoOrigenCPEFerroviariaReq) of message regresoOrigenCPEFerroviariaRequest does not match the default value (regresoOrigenCPEFerroviaria)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEFerroviaria", ReplyAction="*")]
@@ -343,6 +556,24 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaResponse> desvioCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (DesvioCPEFerroviariaDGReq) of message desvioCPEFerroviariaDGRequest does not match the default value (desvioCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse desvioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse> desvioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (DesvioCPEAutomotorDGReq) of message desvioCPEAutomotorDGRequest does not match the default value (desvioCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse desvioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse> desvioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (ConfirmacionDefinitivaCPEFerroviariaReq) of message confirmacionDefinitivaCPEFerroviariaRequest does not match the default value (confirmacionDefinitivaCPEFerroviaria)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviaria", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviaria", Name="Exception")]
@@ -351,6 +582,33 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaResponse> confirmacionDefinitivaCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConfirmacionDefinitivaCPEFerroviariaDGReq) of message confirmacionDefinitivaCPEFerroviariaDGRequest does not match the default value (confirmacionDefinitivaCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse confirmacionDefinitivaCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse> confirmacionDefinitivaCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConfirmacionDefinitivaCPEAutomotorDGReq) of message confirmacionDefinitivaCPEAutomotorDGRequest does not match the default value (confirmacionDefinitivaCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse confirmacionDefinitivaCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse> confirmacionDefinitivaCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (ConfirmacionDefinitivaCPEDuctosDGReq) of message confirmacionDefinitivaCPEDuctosDGRequest does not match the default value (confirmacionDefinitivaCPEDuctosDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEDuctosDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEDuctosDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse confirmacionDefinitivaCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/confirmacionDefinitivaCPEDuctosDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse> confirmacionDefinitivaCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (ConsultaCPEFerroviariaPorNroOperativoReq) of message consultaCPEFerroviariaPorNroOperativoRequest does not match the default value (consultaCPEFerroviariaPorNroOperativo)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultaCPEFerroviariaPorNroOperativo", ReplyAction="*")]
@@ -370,6 +628,42 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEFerroviaria", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEFerroviariaResponse> editarCPEFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEFerroviariaRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEDGFerroviariaReq) of message editarCPEDGFerroviariaRequest does not match the default value (editarCPEDGFerroviaria)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGFerroviaria", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGFerroviaria", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse editarCPEDGFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGFerroviaria", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse> editarCPEDGFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEDGAutomotorReq) of message editarCPEDGAutomotorRequest does not match the default value (editarCPEDGAutomotor)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGAutomotor", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGAutomotor", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse editarCPEDGAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGAutomotor", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse> editarCPEDGAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEDGDuctosReq) of message editarCPEDGDuctosRequest does not match the default value (editarCPEDGDuctos)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGDuctos", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGDuctos", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse editarCPEDGDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEDGDuctos", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse> editarCPEDGDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaFerroviariaReq) of message editarCPEConfirmadaFerroviariaRequest does not match the default value (editarCPEConfirmadaFerroviaria)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaFerroviaria", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaFerroviaria", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse editarCPEConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaFerroviaria", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse> editarCPEConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEAutomotorReq) of message autorizarCPEAutomotorRequest does not match the default value (autorizarCPEAutomotor)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotor", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotor", Name="Exception")]
@@ -378,6 +672,33 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotor", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorResponse> autorizarCPEAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEAutomotorDGReq) of message autorizarCPEAutomotorDGRequest does not match the default value (autorizarCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse autorizarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse> autorizarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEDuctosDGReq) of message autorizarCPEDuctosDGRequest does not match the default value (autorizarCPEDuctosDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEDuctosDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEDuctosDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse autorizarCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEDuctosDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse> autorizarCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (AutorizarCPEEmisionDestinoDGReq) of message autorizarCPEEmisionDestinoDGRequest does not match the default value (autorizarCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse autorizarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/autorizarCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse> autorizarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest request);
         
         // CODEGEN: Generating message contract since the wrapper name (ConsultarCPEAutomotorReq) of message consultarCPEAutomotorRequest does not match the default value (consultarCPEAutomotor)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/consultarCPEAutomotor", ReplyAction="*")]
@@ -406,6 +727,33 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEAutomotor", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorResponse> regresoOrigenCPEAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorRequest request);
         
+        // CODEGEN: Generating message contract since the wrapper name (RegresoOrigenCPEAutomotorDGReq) of message regresoOrigenCPEAutomotorDGRequest does not match the default value (regresoOrigenCPEAutomotorDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEAutomotorDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEAutomotorDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse regresoOrigenCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEAutomotorDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse> regresoOrigenCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (RegresoOrigenCPEFerroviariaDGReq) of message regresoOrigenCPEFerroviariaDGRequest does not match the default value (regresoOrigenCPEFerroviariaDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEFerroviariaDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEFerroviariaDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse regresoOrigenCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEFerroviariaDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse> regresoOrigenCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (RegresoOrigenCPEEmisionDestinoDGReq) of message regresoOrigenCPEEmisionDestinoDGRequest does not match the default value (regresoOrigenCPEEmisionDestinoDG)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEEmisionDestinoDG", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEEmisionDestinoDG", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse regresoOrigenCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/regresoOrigenCPEEmisionDestinoDG", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse> regresoOrigenCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest request);
+        
         // CODEGEN: Generating message contract since the wrapper name (DesvioCPEAutomotorReq) of message desvioCPEAutomotorRequest does not match the default value (desvioCPEAutomotor)
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotor", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/desvioCPEAutomotor", Name="Exception")]
@@ -432,6 +780,24 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEAutomotor", ReplyAction="*")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEAutomotorResponse> editarCPEAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEAutomotorRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaAutomotorReq) of message editarCPEConfirmadaAutomotorRequest does not match the default value (editarCPEConfirmadaAutomotor)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaAutomotor", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaAutomotor", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse editarCPEConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaAutomotor", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse> editarCPEConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest request);
+        
+        // CODEGEN: Generating message contract since the wrapper name (EditarCPEConfirmadaDuctosReq) of message editarCPEConfirmadaDuctosRequest does not match the default value (editarCPEConfirmadaDuctos)
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", ReplyAction="*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Molinos.Scato.Servicios.AfipCPDigitalService.ExceptionType), Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", Name="Exception")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse editarCPEConfirmadaDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="https://serviciosjava.afip.gob.ar/wscpe/editarCPEConfirmadaDuctos", ReplyAction="*")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse> editarCPEConfirmadaDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -731,6 +1097,1015 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarCPEDGPendienteActivacionSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int plantaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarCPEDGPendienteActivacionRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CPEDGPendienteActivacionRespuesta[] cartaPorteField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("cartaPorte", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CPEDGPendienteActivacionRespuesta[] cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CPEDGPendienteActivacionRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int tipoCartaPorteField;
+        
+        private bool tipoCartaPorteFieldSpecified;
+        
+        private int sucursalField;
+        
+        private bool sucursalFieldSpecified;
+        
+        private long nroOrdenField;
+        
+        private bool nroOrdenFieldSpecified;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private System.DateTime fechaPartidaField;
+        
+        private bool fechaPartidaFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int tipoCartaPorte {
+            get {
+                return this.tipoCartaPorteField;
+            }
+            set {
+                this.tipoCartaPorteField = value;
+                this.RaisePropertyChanged("tipoCartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoCartaPorteSpecified {
+            get {
+                return this.tipoCartaPorteFieldSpecified;
+            }
+            set {
+                this.tipoCartaPorteFieldSpecified = value;
+                this.RaisePropertyChanged("tipoCartaPorteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int sucursal {
+            get {
+                return this.sucursalField;
+            }
+            set {
+                this.sucursalField = value;
+                this.RaisePropertyChanged("sucursal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sucursalSpecified {
+            get {
+                return this.sucursalFieldSpecified;
+            }
+            set {
+                this.sucursalFieldSpecified = value;
+                this.RaisePropertyChanged("sucursalSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long nroOrden {
+            get {
+                return this.nroOrdenField;
+            }
+            set {
+                this.nroOrdenField = value;
+                this.RaisePropertyChanged("nroOrden");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroOrdenSpecified {
+            get {
+                return this.nroOrdenFieldSpecified;
+            }
+            set {
+                this.nroOrdenFieldSpecified = value;
+                this.RaisePropertyChanged("nroOrdenSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public System.DateTime fechaPartida {
+            get {
+                return this.fechaPartidaField;
+            }
+            set {
+                this.fechaPartidaField = value;
+                this.RaisePropertyChanged("fechaPartida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaPartidaSpecified {
+            get {
+                return this.fechaPartidaFieldSpecified;
+            }
+            set {
+                this.fechaPartidaFieldSpecified = value;
+                this.RaisePropertyChanged("fechaPartidaSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEDGPendienteActivacionReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEDGPendienteActivacionRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionSolicitud solicitud;
+        
+        public consultarCPEDGPendienteActivacionRequest() {
+        }
+        
+        public consultarCPEDGPendienteActivacionRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEDGPendienteActivacionResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEDGPendienteActivacionResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionRespuesta respuesta;
+        
+        public consultarCPEDGPendienteActivacionResponse() {
+        }
+        
+        public consultarCPEDGPendienteActivacionResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int plantaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CPEEmitidasDestinoDGRespuesta[] cartaPorteField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("cartaPorte", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CPEEmitidasDestinoDGRespuesta[] cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CPEEmitidasDestinoDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int tipoCartaPorteField;
+        
+        private bool tipoCartaPorteFieldSpecified;
+        
+        private int sucursalField;
+        
+        private bool sucursalFieldSpecified;
+        
+        private long nroOrdenField;
+        
+        private bool nroOrdenFieldSpecified;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private System.DateTime fechaPartidaField;
+        
+        private bool fechaPartidaFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int tipoCartaPorte {
+            get {
+                return this.tipoCartaPorteField;
+            }
+            set {
+                this.tipoCartaPorteField = value;
+                this.RaisePropertyChanged("tipoCartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoCartaPorteSpecified {
+            get {
+                return this.tipoCartaPorteFieldSpecified;
+            }
+            set {
+                this.tipoCartaPorteFieldSpecified = value;
+                this.RaisePropertyChanged("tipoCartaPorteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int sucursal {
+            get {
+                return this.sucursalField;
+            }
+            set {
+                this.sucursalField = value;
+                this.RaisePropertyChanged("sucursal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sucursalSpecified {
+            get {
+                return this.sucursalFieldSpecified;
+            }
+            set {
+                this.sucursalFieldSpecified = value;
+                this.RaisePropertyChanged("sucursalSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long nroOrden {
+            get {
+                return this.nroOrdenField;
+            }
+            set {
+                this.nroOrdenField = value;
+                this.RaisePropertyChanged("nroOrden");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroOrdenSpecified {
+            get {
+                return this.nroOrdenFieldSpecified;
+            }
+            set {
+                this.nroOrdenFieldSpecified = value;
+                this.RaisePropertyChanged("nroOrdenSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public System.DateTime fechaPartida {
+            get {
+                return this.fechaPartidaField;
+            }
+            set {
+                this.fechaPartidaField = value;
+                this.RaisePropertyChanged("fechaPartida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaPartidaSpecified {
+            get {
+                return this.fechaPartidaFieldSpecified;
+            }
+            set {
+                this.fechaPartidaFieldSpecified = value;
+                this.RaisePropertyChanged("fechaPartidaSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEEmitidasDestinoDGPendientesActivacionReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEEmitidasDestinoDGPendientesActivacionRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud solicitud;
+        
+        public consultarCPEEmitidasDestinoDGPendientesActivacionRequest() {
+        }
+        
+        public consultarCPEEmitidasDestinoDGPendientesActivacionRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEEmitidasDestinoDGPendientesActivacionResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEEmitidasDestinoDGPendientesActivacionResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta respuesta;
+        
+        public consultarCPEEmitidasDestinoDGPendientesActivacionResponse() {
+        }
+        
+        public consultarCPEEmitidasDestinoDGPendientesActivacionResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarTiposEmbalajeRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private TipoEmbalajeUnidadMedida[] tipoEmbalajeField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("tipoEmbalaje", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public TipoEmbalajeUnidadMedida[] tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class TipoEmbalajeUnidadMedida : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string codigoField;
+        
+        private string descripcionField;
+        
+        private CodigoDescripcion[] unidadMedidaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string codigo {
+            get {
+                return this.codigoField;
+            }
+            set {
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string descripcion {
+            get {
+                return this.descripcionField;
+            }
+            set {
+                this.descripcionField = value;
+                this.RaisePropertyChanged("descripcion");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("unidadMedida", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public CodigoDescripcion[] unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarTiposEmbalajeReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarTiposEmbalajeRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        public consultarTiposEmbalajeRequest() {
+        }
+        
+        public consultarTiposEmbalajeRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            this.auth = auth;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarTiposEmbalajeResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarTiposEmbalajeResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarTiposEmbalajeRespuesta respuesta;
+        
+        public consultarTiposEmbalajeResponse() {
+        }
+        
+        public consultarTiposEmbalajeResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarTiposEmbalajeRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarUnidadesMedidaRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CodigoDescripcion[] unidadMedidaField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("unidadMedida", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CodigoDescripcion[] unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarUnidadesMedidaReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarUnidadesMedidaRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        public consultarUnidadesMedidaRequest() {
+        }
+        
+        public consultarUnidadesMedidaRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            this.auth = auth;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarUnidadesMedidaResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarUnidadesMedidaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUnidadesMedidaRespuesta respuesta;
+        
+        public consultarUnidadesMedidaResponse() {
+        }
+        
+        public consultarUnidadesMedidaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUnidadesMedidaRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarDerivadosGranariosRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private DerivadoGranario[] derivadoGranarioField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("derivadoGranario", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public DerivadoGranario[] derivadoGranario {
+            get {
+                return this.derivadoGranarioField;
+            }
+            set {
+                this.derivadoGranarioField = value;
+                this.RaisePropertyChanged("derivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DerivadoGranario : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long granoPadreField;
+        
+        private string granoPadreDescripcionField;
+        
+        private long codigoField;
+        
+        private string descripcionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long granoPadre {
+            get {
+                return this.granoPadreField;
+            }
+            set {
+                this.granoPadreField = value;
+                this.RaisePropertyChanged("granoPadre");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string granoPadreDescripcion {
+            get {
+                return this.granoPadreDescripcionField;
+            }
+            set {
+                this.granoPadreDescripcionField = value;
+                this.RaisePropertyChanged("granoPadreDescripcion");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long codigo {
+            get {
+                return this.codigoField;
+            }
+            set {
+                this.codigoField = value;
+                this.RaisePropertyChanged("codigo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string descripcion {
+            get {
+                return this.descripcionField;
+            }
+            set {
+                this.descripcionField = value;
+                this.RaisePropertyChanged("descripcion");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarDerivadosGranariosReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarDerivadosGranariosRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        public consultarDerivadosGranariosRequest() {
+        }
+        
+        public consultarDerivadosGranariosRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            this.auth = auth;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarDerivadosGranariosResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarDerivadosGranariosResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDerivadosGranariosRespuesta respuesta;
+        
+        public consultarDerivadosGranariosResponse() {
+        }
+        
+        public consultarDerivadosGranariosResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDerivadosGranariosRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public partial class ConsultarLocalidadesPorProvinciaSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
         
         private int codProvinciaField;
@@ -855,6 +2230,168 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public consultarLocalidadesPorProvinciaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarLocalidadesPorProvinciaRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarDomiciliosPorCUITRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private DomicilioPUCRespuesta[] domicilioField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("domicilio", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public DomicilioPUCRespuesta[] domicilio {
+            get {
+                return this.domicilioField;
+            }
+            set {
+                this.domicilioField = value;
+                this.RaisePropertyChanged("domicilio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DomicilioPUCRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int tipoField;
+        
+        private int ordenField;
+        
+        private string descripcionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int tipo {
+            get {
+                return this.tipoField;
+            }
+            set {
+                this.tipoField = value;
+                this.RaisePropertyChanged("tipo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int orden {
+            get {
+                return this.ordenField;
+            }
+            set {
+                this.ordenField = value;
+                this.RaisePropertyChanged("orden");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string descripcion {
+            get {
+                return this.descripcionField;
+            }
+            set {
+                this.descripcionField = value;
+                this.RaisePropertyChanged("descripcion");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarDomiciliosPorCUITReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarDomiciliosPorCUITRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public long cuit;
+        
+        public consultarDomiciliosPorCUITRequest() {
+        }
+        
+        public consultarDomiciliosPorCUITRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit) {
+            this.auth = auth;
+            this.cuit = cuit;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarDomiciliosPorCUITResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarDomiciliosPorCUITResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDomiciliosPorCUITRespuesta respuesta;
+        
+        public consultarDomiciliosPorCUITResponse() {
+        }
+        
+        public consultarDomiciliosPorCUITResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDomiciliosPorCUITRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -1519,6 +3056,12 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private string observacionesField;
         
+        private long anulacionMotivoField;
+        
+        private bool anulacionMotivoFieldSpecified;
+        
+        private string anulacionObservacionesField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public int tipoCartaPorte {
@@ -1711,6 +3254,42 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             }
         }
         
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public long anulacionMotivo {
+            get {
+                return this.anulacionMotivoField;
+            }
+            set {
+                this.anulacionMotivoField = value;
+                this.RaisePropertyChanged("anulacionMotivo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool anulacionMotivoSpecified {
+            get {
+                return this.anulacionMotivoFieldSpecified;
+            }
+            set {
+                this.anulacionMotivoFieldSpecified = value;
+                this.RaisePropertyChanged("anulacionMotivoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public string anulacionObservaciones {
+            get {
+                return this.anulacionObservacionesField;
+            }
+            set {
+                this.anulacionObservacionesField = value;
+                this.RaisePropertyChanged("anulacionObservaciones");
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -1768,9 +3347,13 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
-    public partial class AnularCPESolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+    public partial class InformarContingenciaEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
         
         private CartaPorte cartaPorteField;
+        
+        private long cuitDestinoField;
+        
+        private DetalleContingenciaSolicitud contingenciaField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -1781,6 +3364,127 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.cartaPorteField = value;
                 this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DetalleContingenciaSolicitud contingencia {
+            get {
+                return this.contingenciaField;
+            }
+            set {
+                this.contingenciaField = value;
+                this.RaisePropertyChanged("contingencia");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="InformarContingenciaEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class informarContingenciaEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud;
+        
+        public informarContingenciaEmisionDestinoDGRequest() {
+        }
+        
+        public informarContingenciaEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AnularCPESolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long anulacionMotivoField;
+        
+        private bool anulacionMotivoFieldSpecified;
+        
+        private string anulacionObservacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long anulacionMotivo {
+            get {
+                return this.anulacionMotivoField;
+            }
+            set {
+                this.anulacionMotivoField = value;
+                this.RaisePropertyChanged("anulacionMotivo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool anulacionMotivoSpecified {
+            get {
+                return this.anulacionMotivoFieldSpecified;
+            }
+            set {
+                this.anulacionMotivoFieldSpecified = value;
+                this.RaisePropertyChanged("anulacionMotivoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string anulacionObservaciones {
+            get {
+                return this.anulacionObservacionesField;
+            }
+            set {
+                this.anulacionObservacionesField = value;
+                this.RaisePropertyChanged("anulacionObservaciones");
             }
         }
         
@@ -1831,6 +3535,135 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public anularCPEResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AnularCPEEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitDestinoField;
+        
+        private long anulacionMotivoField;
+        
+        private bool anulacionMotivoFieldSpecified;
+        
+        private string anulacionObservacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long anulacionMotivo {
+            get {
+                return this.anulacionMotivoField;
+            }
+            set {
+                this.anulacionMotivoField = value;
+                this.RaisePropertyChanged("anulacionMotivo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool anulacionMotivoSpecified {
+            get {
+                return this.anulacionMotivoFieldSpecified;
+            }
+            set {
+                this.anulacionMotivoFieldSpecified = value;
+                this.RaisePropertyChanged("anulacionMotivoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string anulacionObservaciones {
+            get {
+                return this.anulacionObservacionesField;
+            }
+            set {
+                this.anulacionObservacionesField = value;
+                this.RaisePropertyChanged("anulacionObservaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AnularCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class anularCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AnularCPEEmisionDestinoDGSolicitud solicitud;
+        
+        public anularCPEEmisionDestinoDGRequest() {
+        }
+        
+        public anularCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AnularCPEEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AnularCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class anularCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public anularCPEEmisionDestinoDGResponse() {
+        }
+        
+        public anularCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -1934,6 +3767,12 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private CartaPorte cartaPorteField;
         
+        private long rechazoMotivoField;
+        
+        private bool rechazoMotivoFieldSpecified;
+        
+        private string rechazoObservacionesField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public long cuitSolicitante {
@@ -1955,6 +3794,42 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.cartaPorteField = value;
                 this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long rechazoMotivo {
+            get {
+                return this.rechazoMotivoField;
+            }
+            set {
+                this.rechazoMotivoField = value;
+                this.RaisePropertyChanged("rechazoMotivo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool rechazoMotivoSpecified {
+            get {
+                return this.rechazoMotivoFieldSpecified;
+            }
+            set {
+                this.rechazoMotivoFieldSpecified = value;
+                this.RaisePropertyChanged("rechazoMotivoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string rechazoObservaciones {
+            get {
+                return this.rechazoObservacionesField;
+            }
+            set {
+                this.rechazoObservacionesField = value;
+                this.RaisePropertyChanged("rechazoObservaciones");
             }
         }
         
@@ -2092,6 +3967,483 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public descargadoDestinoCPEResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DescargadoDestinoCPEEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private long cuitDestinoField;
+        
+        private CartaPorte cartaPorteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DescargadoDestinoCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class descargadoDestinoCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DescargadoDestinoCPEEmisionDestinoDGSolicitud solicitud;
+        
+        public descargadoDestinoCPEEmisionDestinoDGRequest() {
+        }
+        
+        public descargadoDestinoCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DescargadoDestinoCPEEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DescargadoDestinoCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class descargadoDestinoCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public descargadoDestinoCPEEmisionDestinoDGResponse() {
+        }
+        
+        public descargadoDestinoCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AceptarEmisionDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AceptarEmisionDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class aceptarEmisionDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDGSolicitud solicitud;
+        
+        public aceptarEmisionDGRequest() {
+        }
+        
+        public aceptarEmisionDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AceptarEmisionDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class aceptarEmisionDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public aceptarEmisionDGResponse() {
+        }
+        
+        public aceptarEmisionDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class RechazarEmisionDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RechazarEmisionDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class rechazarEmisionDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDGSolicitud solicitud;
+        
+        public rechazarEmisionDGRequest() {
+        }
+        
+        public rechazarEmisionDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RechazarEmisionDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class rechazarEmisionDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public rechazarEmisionDGResponse() {
+        }
+        
+        public rechazarEmisionDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AceptarEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private long cuitDestinoField;
+        
+        private CartaPorte cartaPorteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AceptarEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class aceptarEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDestinoDGSolicitud solicitud;
+        
+        public aceptarEmisionDestinoDGRequest() {
+        }
+        
+        public aceptarEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AceptarEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class aceptarEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public aceptarEmisionDestinoDGResponse() {
+        }
+        
+        public aceptarEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class RechazarEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private long cuitDestinoField;
+        
+        private CartaPorte cartaPorteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RechazarEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class rechazarEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDestinoDGSolicitud solicitud;
+        
+        public rechazarEmisionDestinoDGRequest() {
+        }
+        
+        public rechazarEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RechazarEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class rechazarEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public rechazarEmisionDestinoDGResponse() {
+        }
+        
+        public rechazarEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -2846,6 +5198,135 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CerrarContingenciaEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitDestinoField;
+        
+        private string conceptoField;
+        
+        private ReactivacionDestinoFerroviariaSolicitud reactivacionDestinoField;
+        
+        private DesactivacionSolicitud motivoDesactivacionCPField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string concepto {
+            get {
+                return this.conceptoField;
+            }
+            set {
+                this.conceptoField = value;
+                this.RaisePropertyChanged("concepto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public ReactivacionDestinoFerroviariaSolicitud reactivacionDestino {
+            get {
+                return this.reactivacionDestinoField;
+            }
+            set {
+                this.reactivacionDestinoField = value;
+                this.RaisePropertyChanged("reactivacionDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DesactivacionSolicitud motivoDesactivacionCP {
+            get {
+                return this.motivoDesactivacionCPField;
+            }
+            set {
+                this.motivoDesactivacionCPField = value;
+                this.RaisePropertyChanged("motivoDesactivacionCP");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="CerrarContingenciaCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class cerrarContingenciaCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CerrarContingenciaEmisionDestinoDGSolicitud solicitud;
+        
+        public cerrarContingenciaCPEEmisionDestinoDGRequest() {
+        }
+        
+        public cerrarContingenciaCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.CerrarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="CerrarContingenciaCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class cerrarContingenciaCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public cerrarContingenciaCPEEmisionDestinoDGResponse() {
+        }
+        
+        public cerrarContingenciaCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public partial class ConsultarPlantasSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
         
         private long cuitField;
@@ -3072,6 +5553,242 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public consultarPlantasResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarPlantasDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarPlantasDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private PlantaDGResponse[] plantaField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("planta", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public PlantaDGResponse[] planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class PlantaDGResponse : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int nroPlantaField;
+        
+        private bool nroPlantaFieldSpecified;
+        
+        private int actividadField;
+        
+        private bool actividadFieldSpecified;
+        
+        private string conPlantaDGField;
+        
+        private string sinPlantaDGField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int nroPlanta {
+            get {
+                return this.nroPlantaField;
+            }
+            set {
+                this.nroPlantaField = value;
+                this.RaisePropertyChanged("nroPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroPlantaSpecified {
+            get {
+                return this.nroPlantaFieldSpecified;
+            }
+            set {
+                this.nroPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("nroPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int actividad {
+            get {
+                return this.actividadField;
+            }
+            set {
+                this.actividadField = value;
+                this.RaisePropertyChanged("actividad");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actividadSpecified {
+            get {
+                return this.actividadFieldSpecified;
+            }
+            set {
+                this.actividadFieldSpecified = value;
+                this.RaisePropertyChanged("actividadSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string conPlantaDG {
+            get {
+                return this.conPlantaDGField;
+            }
+            set {
+                this.conPlantaDGField = value;
+                this.RaisePropertyChanged("conPlantaDG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string sinPlantaDG {
+            get {
+                return this.sinPlantaDGField;
+            }
+            set {
+                this.sinPlantaDGField = value;
+                this.RaisePropertyChanged("sinPlantaDG");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarPlantasDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarPlantasDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGSolicitud solicitud;
+        
+        public consultarPlantasDGRequest() {
+        }
+        
+        public consultarPlantasDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarPlantasDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarPlantasDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGRespuesta respuesta;
+        
+        public consultarPlantasDGResponse() {
+        }
+        
+        public consultarPlantasDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -3778,7 +6495,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private int nroVagonField;
         
-        private string nroPrecintoField;
+        private string[] nroPrecintoField;
         
         private long nroOperativoField;
         
@@ -3843,8 +6560,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string nroPrecinto {
+        [System.Xml.Serialization.XmlElementAttribute("nroPrecinto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string[] nroPrecinto {
             get {
                 return this.nroPrecintoField;
             }
@@ -4207,6 +6924,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool cuitFieldSpecified;
         
+        private bool esUsuarioIndustriaField;
+        
+        private bool esUsuarioIndustriaFieldSpecified;
+        
         private int codProvinciaField;
         
         private bool codProvinciaFieldSpecified;
@@ -4220,6 +6941,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int plantaField;
         
         private bool plantaFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -4247,6 +6972,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool esUsuarioIndustriaSpecified {
+            get {
+                return this.esUsuarioIndustriaFieldSpecified;
+            }
+            set {
+                this.esUsuarioIndustriaFieldSpecified = value;
+                this.RaisePropertyChanged("esUsuarioIndustriaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public int codProvincia {
             get {
                 return this.codProvinciaField;
@@ -4270,7 +7019,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public int codLocalidad {
             get {
                 return this.codLocalidadField;
@@ -4294,7 +7043,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public string domicilio {
             get {
                 return this.domicilioField;
@@ -4306,7 +7055,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public int planta {
             get {
                 return this.plantaField;
@@ -4326,6 +7075,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.plantaFieldSpecified = value;
                 this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
             }
         }
         
@@ -4393,6 +7166,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public partial class IntervinientesFerroviariaRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
         
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
         private long cuitRemitenteComercialVentaPrimariaField;
         
         private bool cuitRemitenteComercialVentaPrimariaFieldSpecified;
@@ -4425,8 +7202,40 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool cuitRepresentanteRecibidorFieldSpecified;
         
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
         public long cuitRemitenteComercialVentaPrimaria {
             get {
                 return this.cuitRemitenteComercialVentaPrimariaField;
@@ -4450,7 +7259,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public long cuitRemitenteComercialVentaSecundaria {
             get {
                 return this.cuitRemitenteComercialVentaSecundariaField;
@@ -4474,7 +7283,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public long cuitRemitenteComercialVentaSecundaria2 {
             get {
                 return this.cuitRemitenteComercialVentaSecundaria2Field;
@@ -4498,7 +7307,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public long cuitMercadoATermino {
             get {
                 return this.cuitMercadoATerminoField;
@@ -4522,7 +7331,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public long cuitCorredorVentaPrimaria {
             get {
                 return this.cuitCorredorVentaPrimariaField;
@@ -4546,7 +7355,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public long cuitCorredorVentaSecundaria {
             get {
                 return this.cuitCorredorVentaSecundariaField;
@@ -4570,7 +7379,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
         public long cuitRepresentanteEntregador {
             get {
                 return this.cuitRepresentanteEntregadorField;
@@ -4594,7 +7403,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
         public long cuitRepresentanteRecibidor {
             get {
                 return this.cuitRepresentanteRecibidorField;
@@ -4614,6 +7423,54 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.cuitRepresentanteRecibidorFieldSpecified = value;
                 this.RaisePropertyChanged("cuitRepresentanteRecibidorSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
             }
         }
         
@@ -4639,6 +7496,10 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool codGranoFieldSpecified;
         
+        private int codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
         private int cosechaField;
         
         private bool cosechaFieldSpecified;
@@ -4658,6 +7519,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int pesoTaraDescargaField;
         
         private bool pesoTaraDescargaFieldSpecified;
+        
+        private int tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private string otroEmbalajeField;
+        
+        private int unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private bool kgLitroM3FieldSpecified;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -4685,6 +7570,30 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public int cosecha {
             get {
                 return this.cosechaField;
@@ -4708,7 +7617,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public int pesoBruto {
             get {
                 return this.pesoBrutoField;
@@ -4732,7 +7641,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
         public int pesoTara {
             get {
                 return this.pesoTaraField;
@@ -4756,7 +7665,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public int pesoBrutoDescarga {
             get {
                 return this.pesoBrutoDescargaField;
@@ -4780,7 +7689,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public int pesoTaraDescarga {
             get {
                 return this.pesoTaraDescargaField;
@@ -4800,6 +7709,150 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.pesoTaraDescargaFieldSpecified = value;
                 this.RaisePropertyChanged("pesoTaraDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public int tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public int unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kgLitroM3Specified {
+            get {
+                return this.kgLitroM3FieldSpecified;
+            }
+            set {
+                this.kgLitroM3FieldSpecified = value;
+                this.RaisePropertyChanged("kgLitroM3Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
             }
         }
         
@@ -4836,6 +7889,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private int plantaField;
         
         private bool plantaFieldSpecified;
+        
+        private string domicilioDestinoField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
@@ -4930,6 +7985,18 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.plantaFieldSpecified = value;
                 this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
             }
         }
         
@@ -5009,7 +8076,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool nroVagonFieldSpecified;
         
-        private string nroPrecintoField;
+        private string[] nroPrecintoField;
         
         private long nroOperativoField;
         
@@ -5028,6 +8095,22 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         private long cuitPagadorFleteField;
         
         private bool cuitPagadorFleteFieldSpecified;
+        
+        private long cuitConductorField;
+        
+        private bool cuitConductorFieldSpecified;
+        
+        private long cuitConductorTramo2Field;
+        
+        private bool cuitConductorTramo2FieldSpecified;
+        
+        private long tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
         
         private bool mercaderiaFumigadaField;
         
@@ -5106,8 +8189,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string nroPrecinto {
+        [System.Xml.Serialization.XmlElementAttribute("nroPrecinto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string[] nroPrecinto {
             get {
                 return this.nroPrecintoField;
             }
@@ -5227,6 +8310,102 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public long cuitConductor {
+            get {
+                return this.cuitConductorField;
+            }
+            set {
+                this.cuitConductorField = value;
+                this.RaisePropertyChanged("cuitConductor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorSpecified {
+            get {
+                return this.cuitConductorFieldSpecified;
+            }
+            set {
+                this.cuitConductorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long cuitConductorTramo2 {
+            get {
+                return this.cuitConductorTramo2Field;
+            }
+            set {
+                this.cuitConductorTramo2Field = value;
+                this.RaisePropertyChanged("cuitConductorTramo2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorTramo2Specified {
+            get {
+                return this.cuitConductorTramo2FieldSpecified;
+            }
+            set {
+                this.cuitConductorTramo2FieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorTramo2Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public long tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
         public bool mercaderiaFumigada {
             get {
                 return this.mercaderiaFumigadaField;
@@ -5296,6 +8475,1176 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public autorizarCPEFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AutorizarFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraFerroviariaDGSolicitud cabeceraField;
+        
+        private OrigenFerroviariaDGSolicitud origenField;
+        
+        private IntervinientesFerroviariaDGSolicitud intervinientesField;
+        
+        private DatosCargaFerroviariaDGSolicitud datosCargaField;
+        
+        private DestinoFerroviariaDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteFerroviariaDGSolicitud transporteField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraFerroviariaDGSolicitud cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenFerroviariaDGSolicitud origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesFerroviariaDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaFerroviariaDGSolicitud datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoFerroviariaDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteFerroviariaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CabeceraFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int sucursalField;
+        
+        private int nroOrdenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int sucursal {
+            get {
+                return this.sucursalField;
+            }
+            set {
+                this.sucursalField = value;
+                this.RaisePropertyChanged("sucursal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int nroOrden {
+            get {
+                return this.nroOrdenField;
+            }
+            set {
+                this.nroOrdenField = value;
+                this.RaisePropertyChanged("nroOrden");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool esUsuarioIndustriaField;
+        
+        private int plantaField;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private DomicilioPUC domicilioOrigenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DomicilioPUC domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DomicilioPUC : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int tipoField;
+        
+        private int ordenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int tipo {
+            get {
+                return this.tipoField;
+            }
+            set {
+                this.tipoField = value;
+                this.RaisePropertyChanged("tipo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int orden {
+            get {
+                return this.ordenField;
+            }
+            set {
+                this.ordenField = value;
+                this.RaisePropertyChanged("orden");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DatosCargaFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private short codGranoField;
+        
+        private short codDerivadoGranarioField;
+        
+        private int pesoBrutoField;
+        
+        private int pesoTaraField;
+        
+        private short tipoEmbalajeField;
+        
+        private string otroEmbalajeField;
+        
+        private short unidadMedidaField;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoTara {
+            get {
+                return this.pesoTaraField;
+            }
+            set {
+                this.pesoTaraField = value;
+                this.RaisePropertyChanged("pesoTara");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class TransporteFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitTransportistaField;
+        
+        private long cuitTransportistaTramo2Field;
+        
+        private bool cuitTransportistaTramo2FieldSpecified;
+        
+        private int nroVagonField;
+        
+        private string[] nroPrecintoField;
+        
+        private long nroOperativoField;
+        
+        private Ramal ramalField;
+        
+        private System.DateTime fechaHoraPartidaTrenField;
+        
+        private int kmRecorrerField;
+        
+        private long cuitConductorField;
+        
+        private bool cuitConductorFieldSpecified;
+        
+        private long cuitConductorTramo2Field;
+        
+        private bool cuitConductorTramo2FieldSpecified;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private long cuitPagadorFleteField;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitTransportista {
+            get {
+                return this.cuitTransportistaField;
+            }
+            set {
+                this.cuitTransportistaField = value;
+                this.RaisePropertyChanged("cuitTransportista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitTransportistaTramo2 {
+            get {
+                return this.cuitTransportistaTramo2Field;
+            }
+            set {
+                this.cuitTransportistaTramo2Field = value;
+                this.RaisePropertyChanged("cuitTransportistaTramo2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTransportistaTramo2Specified {
+            get {
+                return this.cuitTransportistaTramo2FieldSpecified;
+            }
+            set {
+                this.cuitTransportistaTramo2FieldSpecified = value;
+                this.RaisePropertyChanged("cuitTransportistaTramo2Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int nroVagon {
+            get {
+                return this.nroVagonField;
+            }
+            set {
+                this.nroVagonField = value;
+                this.RaisePropertyChanged("nroVagon");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("nroPrecinto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string[] nroPrecinto {
+            get {
+                return this.nroPrecintoField;
+            }
+            set {
+                this.nroPrecintoField = value;
+                this.RaisePropertyChanged("nroPrecinto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long nroOperativo {
+            get {
+                return this.nroOperativoField;
+            }
+            set {
+                this.nroOperativoField = value;
+                this.RaisePropertyChanged("nroOperativo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public Ramal ramal {
+            get {
+                return this.ramalField;
+            }
+            set {
+                this.ramalField = value;
+                this.RaisePropertyChanged("ramal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public System.DateTime fechaHoraPartidaTren {
+            get {
+                return this.fechaHoraPartidaTrenField;
+            }
+            set {
+                this.fechaHoraPartidaTrenField = value;
+                this.RaisePropertyChanged("fechaHoraPartidaTren");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public long cuitConductor {
+            get {
+                return this.cuitConductorField;
+            }
+            set {
+                this.cuitConductorField = value;
+                this.RaisePropertyChanged("cuitConductor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorSpecified {
+            get {
+                return this.cuitConductorFieldSpecified;
+            }
+            set {
+                this.cuitConductorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public long cuitConductorTramo2 {
+            get {
+                return this.cuitConductorTramo2Field;
+            }
+            set {
+                this.cuitConductorTramo2Field = value;
+                this.RaisePropertyChanged("cuitConductorTramo2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorTramo2Specified {
+            get {
+                return this.cuitConductorTramo2FieldSpecified;
+            }
+            set {
+                this.cuitConductorTramo2FieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorTramo2Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public long cuitPagadorFlete {
+            get {
+                return this.cuitPagadorFleteField;
+            }
+            set {
+                this.cuitPagadorFleteField = value;
+                this.RaisePropertyChanged("cuitPagadorFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DetalleFerroviariaDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraRespuesta cabeceraField;
+        
+        private OrigenFerroviariaRespuesta origenField;
+        
+        private IntervinientesFerroviariaRespuesta intervinientesField;
+        
+        private DatosCargaFerroviariaRespuesta datosCargaField;
+        
+        private DestinoRespuesta destinoField;
+        
+        private DestinatarioRespuesta destinatarioField;
+        
+        private TransporteFerroviariaRespuesta transporteField;
+        
+        private byte[] pdfField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraRespuesta cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenFerroviariaRespuesta origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesFerroviariaRespuesta intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaFerroviariaRespuesta datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoRespuesta destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioRespuesta destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteFerroviariaRespuesta transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=7)]
+        public byte[] pdf {
+            get {
+                return this.pdfField;
+            }
+            set {
+                this.pdfField = value;
+                this.RaisePropertyChanged("pdf");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarFerroviariaDGSolicitud solicitud;
+        
+        public autorizarCPEFerroviariaDGRequest() {
+        }
+        
+        public autorizarCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta respuesta;
+        
+        public autorizarCPEFerroviariaDGResponse() {
+        }
+        
+        public autorizarCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -5425,6 +9774,2845 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public consultarCPEFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private long nroCTGField;
+        
+        private bool nroCTGFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroCTGSpecified {
+            get {
+                return this.nroCTGFieldSpecified;
+            }
+            set {
+                this.nroCTGFieldSpecified = value;
+                this.RaisePropertyChanged("nroCTGSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarFerroviariaDGSolicitud solicitud;
+        
+        public consultarCPEFerroviariaDGRequest() {
+        }
+        
+        public consultarCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta respuesta;
+        
+        public consultarCPEFerroviariaDGResponse() {
+        }
+        
+        public consultarCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private long nroCTGField;
+        
+        private bool nroCTGFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroCTGSpecified {
+            get {
+                return this.nroCTGFieldSpecified;
+            }
+            set {
+                this.nroCTGFieldSpecified = value;
+                this.RaisePropertyChanged("nroCTGSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DetalleAutomotorDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraRespuesta cabeceraField;
+        
+        private OrigenAutomotorDGRespuesta origenField;
+        
+        private IntervinientesAutomotorDGRespuesta intervinientesField;
+        
+        private DatosCargaAutomotorDGRespuesta datosCargaField;
+        
+        private DestinoRespuesta destinoField;
+        
+        private DestinatarioRespuesta destinatarioField;
+        
+        private TransporteAutomotorDGRespuesta transporteField;
+        
+        private byte[] pdfField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraRespuesta cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenAutomotorDGRespuesta origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesAutomotorDGRespuesta intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaAutomotorDGRespuesta datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoRespuesta destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioRespuesta destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteAutomotorDGRespuesta transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=7)]
+        public byte[] pdf {
+            get {
+                return this.pdfField;
+            }
+            set {
+                this.pdfField = value;
+                this.RaisePropertyChanged("pdf");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenAutomotorDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool esUsuarioIndustriaField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private string domicilioOrigenField;
+        
+        private long cuitOrigenField;
+        
+        private bool cuitOrigenFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitOrigen {
+            get {
+                return this.cuitOrigenField;
+            }
+            set {
+                this.cuitOrigenField = value;
+                this.RaisePropertyChanged("cuitOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitOrigenSpecified {
+            get {
+                return this.cuitOrigenFieldSpecified;
+            }
+            set {
+                this.cuitOrigenFieldSpecified = value;
+                this.RaisePropertyChanged("cuitOrigenSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesAutomotorDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DatosCargaAutomotorDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private short codGranoField;
+        
+        private bool codGranoFieldSpecified;
+        
+        private short codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
+        private int pesoBrutoField;
+        
+        private bool pesoBrutoFieldSpecified;
+        
+        private int pesoTaraField;
+        
+        private bool pesoTaraFieldSpecified;
+        
+        private short tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private string otroEmbalajeField;
+        
+        private short unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private bool kgLitroM3FieldSpecified;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codGranoSpecified {
+            get {
+                return this.codGranoFieldSpecified;
+            }
+            set {
+                this.codGranoFieldSpecified = value;
+                this.RaisePropertyChanged("codGranoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoSpecified {
+            get {
+                return this.pesoBrutoFieldSpecified;
+            }
+            set {
+                this.pesoBrutoFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoTara {
+            get {
+                return this.pesoTaraField;
+            }
+            set {
+                this.pesoTaraField = value;
+                this.RaisePropertyChanged("pesoTara");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoTaraSpecified {
+            get {
+                return this.pesoTaraFieldSpecified;
+            }
+            set {
+                this.pesoTaraFieldSpecified = value;
+                this.RaisePropertyChanged("pesoTaraSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kgLitroM3Specified {
+            get {
+                return this.kgLitroM3FieldSpecified;
+            }
+            set {
+                this.kgLitroM3FieldSpecified = value;
+                this.RaisePropertyChanged("kgLitroM3Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class TransporteAutomotorDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitTransportistaField;
+        
+        private string[] dominioField;
+        
+        private System.DateTime fechaHoraPartidaField;
+        
+        private int kmRecorrerField;
+        
+        private long cuitChoferField;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private decimal tarifaReferenciaField;
+        
+        private bool tarifaReferenciaFieldSpecified;
+        
+        private long cuitPagadorFleteField;
+        
+        private bool cuitPagadorFleteFieldSpecified;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitTransportista {
+            get {
+                return this.cuitTransportistaField;
+            }
+            set {
+                this.cuitTransportistaField = value;
+                this.RaisePropertyChanged("cuitTransportista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("dominio", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string[] dominio {
+            get {
+                return this.dominioField;
+            }
+            set {
+                this.dominioField = value;
+                this.RaisePropertyChanged("dominio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public System.DateTime fechaHoraPartida {
+            get {
+                return this.fechaHoraPartidaField;
+            }
+            set {
+                this.fechaHoraPartidaField = value;
+                this.RaisePropertyChanged("fechaHoraPartida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitChofer {
+            get {
+                return this.cuitChoferField;
+            }
+            set {
+                this.cuitChoferField = value;
+                this.RaisePropertyChanged("cuitChofer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public decimal tarifaReferencia {
+            get {
+                return this.tarifaReferenciaField;
+            }
+            set {
+                this.tarifaReferenciaField = value;
+                this.RaisePropertyChanged("tarifaReferencia");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaReferenciaSpecified {
+            get {
+                return this.tarifaReferenciaFieldSpecified;
+            }
+            set {
+                this.tarifaReferenciaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaReferenciaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cuitPagadorFlete {
+            get {
+                return this.cuitPagadorFleteField;
+            }
+            set {
+                this.cuitPagadorFleteField = value;
+                this.RaisePropertyChanged("cuitPagadorFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitPagadorFleteSpecified {
+            get {
+                return this.cuitPagadorFleteFieldSpecified;
+            }
+            set {
+                this.cuitPagadorFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitPagadorFleteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarAutomotorDGSolicitud solicitud;
+        
+        public consultarCPEAutomotorDGRequest() {
+        }
+        
+        public consultarCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta respuesta;
+        
+        public consultarCPEAutomotorDGResponse() {
+        }
+        
+        public consultarCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private long nroCTGField;
+        
+        private bool nroCTGFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroCTGSpecified {
+            get {
+                return this.nroCTGFieldSpecified;
+            }
+            set {
+                this.nroCTGFieldSpecified = value;
+                this.RaisePropertyChanged("nroCTGSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DetalleEmisionDestinoDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraRespuesta cabeceraField;
+        
+        private OrigenEmisionDestinoDGRespuesta origenField;
+        
+        private IntervinientesAutomotorDGRespuesta intervinientesField;
+        
+        private DatosCargaAutomotorDGRespuesta datosCargaField;
+        
+        private DestinoEmisionDestinoRespuesta destinoField;
+        
+        private DestinatarioRespuesta destinatarioField;
+        
+        private TransporteAutomotorDGRespuesta transporteField;
+        
+        private byte[] pdfField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraRespuesta cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenEmisionDestinoDGRespuesta origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesAutomotorDGRespuesta intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaAutomotorDGRespuesta datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoEmisionDestinoRespuesta destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioRespuesta destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteAutomotorDGRespuesta transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=7)]
+        public byte[] pdf {
+            get {
+                return this.pdfField;
+            }
+            set {
+                this.pdfField = value;
+                this.RaisePropertyChanged("pdf");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenEmisionDestinoDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private string domicilioOrigenField;
+        
+        private long cuitOrigenField;
+        
+        private bool cuitOrigenFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitOrigen {
+            get {
+                return this.cuitOrigenField;
+            }
+            set {
+                this.cuitOrigenField = value;
+                this.RaisePropertyChanged("cuitOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitOrigenSpecified {
+            get {
+                return this.cuitOrigenFieldSpecified;
+            }
+            set {
+                this.cuitOrigenFieldSpecified = value;
+                this.RaisePropertyChanged("cuitOrigenSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoEmisionDestinoRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private bool cuitFieldSpecified;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private string domicilioDestinoField;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSpecified {
+            get {
+                return this.cuitFieldSpecified;
+            }
+            set {
+                this.cuitFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarEmisionDestinoDGSolicitud solicitud;
+        
+        public consultarCPEEmisionDestinoDGRequest() {
+        }
+        
+        public consultarCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta respuesta;
+        
+        public consultarCPEEmisionDestinoDGResponse() {
+        }
+        
+        public consultarCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConsultarDuctosSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitSolicitanteField;
+        
+        private bool cuitSolicitanteFieldSpecified;
+        
+        private long nroCTGField;
+        
+        private bool nroCTGFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSolicitanteSpecified {
+            get {
+                return this.cuitSolicitanteFieldSpecified;
+            }
+            set {
+                this.cuitSolicitanteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSolicitanteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroCTGSpecified {
+            get {
+                return this.nroCTGFieldSpecified;
+            }
+            set {
+                this.nroCTGFieldSpecified = value;
+                this.RaisePropertyChanged("nroCTGSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DetalleDuctosDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraRespuesta cabeceraField;
+        
+        private OrigenDuctosDGRespuesta origenField;
+        
+        private IntervinientesDuctosDGRespuesta intervinientesField;
+        
+        private DatosCargaDuctosDGRespuesta datosCargaField;
+        
+        private DestinoDuctosDGRespuesta destinoField;
+        
+        private DestinatarioRespuesta destinatarioField;
+        
+        private byte[] pdfField;
+        
+        private CodigoDescripcion[] erroresField;
+        
+        private Metadata metadataField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraRespuesta cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenDuctosDGRespuesta origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesDuctosDGRespuesta intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaDuctosDGRespuesta datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoDuctosDGRespuesta destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioRespuesta destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, DataType="base64Binary", Order=6)]
+        public byte[] pdf {
+            get {
+                return this.pdfField;
+            }
+            set {
+                this.pdfField = value;
+                this.RaisePropertyChanged("pdf");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("error", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=false)]
+        public CodigoDescripcion[] errores {
+            get {
+                return this.erroresField;
+            }
+            set {
+                this.erroresField = value;
+                this.RaisePropertyChanged("errores");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public Metadata metadata {
+            get {
+                return this.metadataField;
+            }
+            set {
+                this.metadataField = value;
+                this.RaisePropertyChanged("metadata");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenDuctosDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool esUsuarioIndustriaField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private string domicilioOrigenField;
+        
+        private long cuitOrigenField;
+        
+        private bool cuitOrigenFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitOrigen {
+            get {
+                return this.cuitOrigenField;
+            }
+            set {
+                this.cuitOrigenField = value;
+                this.RaisePropertyChanged("cuitOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitOrigenSpecified {
+            get {
+                return this.cuitOrigenFieldSpecified;
+            }
+            set {
+                this.cuitOrigenFieldSpecified = value;
+                this.RaisePropertyChanged("cuitOrigenSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesDuctosDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DatosCargaDuctosDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int codGranoField;
+        
+        private bool codGranoFieldSpecified;
+        
+        private short codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
+        private int cosechaField;
+        
+        private bool cosechaFieldSpecified;
+        
+        private int pesoBrutoDescargaField;
+        
+        private bool pesoBrutoDescargaFieldSpecified;
+        
+        private int pesoTaraDescargaField;
+        
+        private bool pesoTaraDescargaFieldSpecified;
+        
+        private int tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private string otroEmbalajeField;
+        
+        private int unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private int pesoBrutoField;
+        
+        private bool pesoBrutoFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private bool kgLitroM3FieldSpecified;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codGranoSpecified {
+            get {
+                return this.codGranoFieldSpecified;
+            }
+            set {
+                this.codGranoFieldSpecified = value;
+                this.RaisePropertyChanged("codGranoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int cosecha {
+            get {
+                return this.cosechaField;
+            }
+            set {
+                this.cosechaField = value;
+                this.RaisePropertyChanged("cosecha");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cosechaSpecified {
+            get {
+                return this.cosechaFieldSpecified;
+            }
+            set {
+                this.cosechaFieldSpecified = value;
+                this.RaisePropertyChanged("cosechaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoBrutoDescarga {
+            get {
+                return this.pesoBrutoDescargaField;
+            }
+            set {
+                this.pesoBrutoDescargaField = value;
+                this.RaisePropertyChanged("pesoBrutoDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoDescargaSpecified {
+            get {
+                return this.pesoBrutoDescargaFieldSpecified;
+            }
+            set {
+                this.pesoBrutoDescargaFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public int pesoTaraDescarga {
+            get {
+                return this.pesoTaraDescargaField;
+            }
+            set {
+                this.pesoTaraDescargaField = value;
+                this.RaisePropertyChanged("pesoTaraDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoTaraDescargaSpecified {
+            get {
+                return this.pesoTaraDescargaFieldSpecified;
+            }
+            set {
+                this.pesoTaraDescargaFieldSpecified = value;
+                this.RaisePropertyChanged("pesoTaraDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public int tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public int unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoSpecified {
+            get {
+                return this.pesoBrutoFieldSpecified;
+            }
+            set {
+                this.pesoBrutoFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kgLitroM3Specified {
+            get {
+                return this.kgLitroM3FieldSpecified;
+            }
+            set {
+                this.kgLitroM3FieldSpecified = value;
+                this.RaisePropertyChanged("kgLitroM3Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoDuctosDGRespuesta : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private bool cuitFieldSpecified;
+        
+        private int codProvinciaField;
+        
+        private bool codProvinciaFieldSpecified;
+        
+        private int codLocalidadField;
+        
+        private bool codLocalidadFieldSpecified;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private string domicilioDestinoField;
+        
+        private System.DateTime fechaHoraInicioEnvioField;
+        
+        private bool fechaHoraInicioEnvioFieldSpecified;
+        
+        private System.DateTime fechaHoraFinEnvioField;
+        
+        private bool fechaHoraFinEnvioFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitSpecified {
+            get {
+                return this.cuitFieldSpecified;
+            }
+            set {
+                this.cuitFieldSpecified = value;
+                this.RaisePropertyChanged("cuitSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int codProvincia {
+            get {
+                return this.codProvinciaField;
+            }
+            set {
+                this.codProvinciaField = value;
+                this.RaisePropertyChanged("codProvincia");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codProvinciaSpecified {
+            get {
+                return this.codProvinciaFieldSpecified;
+            }
+            set {
+                this.codProvinciaFieldSpecified = value;
+                this.RaisePropertyChanged("codProvinciaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int codLocalidad {
+            get {
+                return this.codLocalidadField;
+            }
+            set {
+                this.codLocalidadField = value;
+                this.RaisePropertyChanged("codLocalidad");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codLocalidadSpecified {
+            get {
+                return this.codLocalidadFieldSpecified;
+            }
+            set {
+                this.codLocalidadFieldSpecified = value;
+                this.RaisePropertyChanged("codLocalidadSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public System.DateTime fechaHoraInicioEnvio {
+            get {
+                return this.fechaHoraInicioEnvioField;
+            }
+            set {
+                this.fechaHoraInicioEnvioField = value;
+                this.RaisePropertyChanged("fechaHoraInicioEnvio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaHoraInicioEnvioSpecified {
+            get {
+                return this.fechaHoraInicioEnvioFieldSpecified;
+            }
+            set {
+                this.fechaHoraInicioEnvioFieldSpecified = value;
+                this.RaisePropertyChanged("fechaHoraInicioEnvioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public System.DateTime fechaHoraFinEnvio {
+            get {
+                return this.fechaHoraFinEnvioField;
+            }
+            set {
+                this.fechaHoraFinEnvioField = value;
+                this.RaisePropertyChanged("fechaHoraFinEnvio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaHoraFinEnvioSpecified {
+            get {
+                return this.fechaHoraFinEnvioFieldSpecified;
+            }
+            set {
+                this.fechaHoraFinEnvioFieldSpecified = value;
+                this.RaisePropertyChanged("fechaHoraFinEnvioSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEDuctosReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEDuctosRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDuctosSolicitud solicitud;
+        
+        public consultarCPEDuctosRequest() {
+        }
+        
+        public consultarCPEDuctosRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDuctosSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConsultarCPEDuctosResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class consultarCPEDuctosResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta respuesta;
+        
+        public consultarCPEDuctosResponse() {
+        }
+        
+        public consultarCPEDuctosResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -5600,6 +12788,471 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public nuevoDestinoDestinatarioCPEFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class NuevoDestinoDestinatarioFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private DestinoFerroviariaDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteFerroviariaModificaSolicitud transporteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public DestinoFerroviariaDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public TransporteFerroviariaModificaSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioFerroviariaDGSolicitud solicitud;
+        
+        public nuevoDestinoDestinatarioCPEFerroviariaDGRequest() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public nuevoDestinoDestinatarioCPEFerroviariaDGResponse() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class NuevoDestinoDestinatarioAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private DestinoAutomotorDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteAutomotorModificaDGSolicitud transporteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public DestinoAutomotorDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public TransporteAutomotorModificaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class TransporteAutomotorModificaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private System.DateTime fechaHoraPartidaField;
+        
+        private int kmRecorrerField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public System.DateTime fechaHoraPartida {
+            get {
+                return this.fechaHoraPartidaField;
+            }
+            set {
+                this.fechaHoraPartidaField = value;
+                this.RaisePropertyChanged("fechaHoraPartida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioAutomotorDGSolicitud solicitud;
+        
+        public nuevoDestinoDestinatarioCPEAutomotorDGRequest() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public nuevoDestinoDestinatarioCPEAutomotorDGResponse() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class NuevoDestinoDestinatarioEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitDestinoField;
+        
+        private DestinoAutomotorDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteAutomotorModificaDGSolicitud transporteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DestinoAutomotorDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public TransporteAutomotorModificaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioEmisionDestinoDGSolicitud solicitud;
+        
+        public nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="NuevoDestinoDestinatarioCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse() {
+        }
+        
+        public nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -5890,6 +13543,356 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public desvioCPEFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DesvioFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        private DesvioDestinoFerroviariaDGSolicitud destinoField;
+        
+        private TransporteFerroviariaModificaSolicitud transporteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DesvioDestinoFerroviariaDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public TransporteFerroviariaModificaSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DesvioDestinoFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DesvioCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class desvioCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DesvioFerroviariaDGSolicitud solicitud;
+        
+        public desvioCPEFerroviariaDGRequest() {
+        }
+        
+        public desvioCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DesvioCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class desvioCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public desvioCPEFerroviariaDGResponse() {
+        }
+        
+        public desvioCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DesvioAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        private DesvioDestinoAutomotorDGSolicitud destinoField;
+        
+        private TransporteAutomotorModificaDGSolicitud transporteField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DesvioDestinoAutomotorDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public TransporteAutomotorModificaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DesvioDestinoAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DesvioCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class desvioCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DesvioAutomotorDGSolicitud solicitud;
+        
+        public desvioCPEAutomotorDGRequest() {
+        }
+        
+        public desvioCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="DesvioCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class desvioCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public desvioCPEAutomotorDGResponse() {
+        }
+        
+        public desvioCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -6243,6 +14246,351 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConfirmacionFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        private int pesoBrutoDescargaField;
+        
+        private int pesoTaraDescargaField;
+        
+        private Ramal ramalDescargaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBrutoDescarga {
+            get {
+                return this.pesoBrutoDescargaField;
+            }
+            set {
+                this.pesoBrutoDescargaField = value;
+                this.RaisePropertyChanged("pesoBrutoDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoTaraDescarga {
+            get {
+                return this.pesoTaraDescargaField;
+            }
+            set {
+                this.pesoTaraDescargaField = value;
+                this.RaisePropertyChanged("pesoTaraDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public Ramal ramalDescarga {
+            get {
+                return this.ramalDescargaField;
+            }
+            set {
+                this.ramalDescargaField = value;
+                this.RaisePropertyChanged("ramalDescarga");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionFerroviariaDGSolicitud solicitud;
+        
+        public confirmacionDefinitivaCPEFerroviariaDGRequest() {
+        }
+        
+        public confirmacionDefinitivaCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public confirmacionDefinitivaCPEFerroviariaDGResponse() {
+        }
+        
+        public confirmacionDefinitivaCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConfirmacionAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        private int pesoBrutoDescargaField;
+        
+        private int pesoTaraDescargaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBrutoDescarga {
+            get {
+                return this.pesoBrutoDescargaField;
+            }
+            set {
+                this.pesoBrutoDescargaField = value;
+                this.RaisePropertyChanged("pesoBrutoDescarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoTaraDescarga {
+            get {
+                return this.pesoTaraDescargaField;
+            }
+            set {
+                this.pesoTaraDescargaField = value;
+                this.RaisePropertyChanged("pesoTaraDescarga");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionAutomotorDGSolicitud solicitud;
+        
+        public confirmacionDefinitivaCPEAutomotorDGRequest() {
+        }
+        
+        public confirmacionDefinitivaCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public confirmacionDefinitivaCPEAutomotorDGResponse() {
+        }
+        
+        public confirmacionDefinitivaCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class ConfirmacionDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitSolicitanteField;
+        
+        private CartaPorte cartaPorteField;
+        
+        private int pesoBrutoDescargaField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitSolicitante {
+            get {
+                return this.cuitSolicitanteField;
+            }
+            set {
+                this.cuitSolicitanteField = value;
+                this.RaisePropertyChanged("cuitSolicitante");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBrutoDescarga {
+            get {
+                return this.pesoBrutoDescargaField;
+            }
+            set {
+                this.pesoBrutoDescargaField = value;
+                this.RaisePropertyChanged("pesoBrutoDescarga");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEDuctosDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEDuctosDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionDuctosDGSolicitud solicitud;
+        
+        public confirmacionDefinitivaCPEDuctosDGRequest() {
+        }
+        
+        public confirmacionDefinitivaCPEDuctosDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionDuctosDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="ConfirmacionDefinitivaCPEDuctosDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class confirmacionDefinitivaCPEDuctosDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public confirmacionDefinitivaCPEDuctosDGResponse() {
+        }
+        
+        public confirmacionDefinitivaCPEDuctosDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
     public partial class ConsultaCPEFerroviariaPorNroOperativoSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
         
         private long nroOperativoField;
@@ -6474,7 +14822,7 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool granoFieldSpecified;
         
-        private string nroPrecintoField;
+        private string[] nroPrecintoField;
         
         private long pesoBrutoField;
         
@@ -6545,8 +14893,8 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public string nroPrecinto {
+        [System.Xml.Serialization.XmlElementAttribute("nroPrecinto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public string[] nroPrecinto {
             get {
                 return this.nroPrecintoField;
             }
@@ -6990,6 +15338,1822 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public editarCPEFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarActivaDGFerroviariaSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private long cuitTransportistaField;
+        
+        private bool cuitTransportistaFieldSpecified;
+        
+        private long cuitConductorField;
+        
+        private bool cuitConductorFieldSpecified;
+        
+        private long cuitTransportistaTramo2Field;
+        
+        private bool cuitTransportistaTramo2FieldSpecified;
+        
+        private long cuitConductorTramo2Field;
+        
+        private bool cuitConductorTramo2FieldSpecified;
+        
+        private int nroVagonField;
+        
+        private bool nroVagonFieldSpecified;
+        
+        private string[] nroPrecintoField;
+        
+        private long nroOperativoField;
+        
+        private Ramal ramalField;
+        
+        private short codGranoField;
+        
+        private bool codGranoFieldSpecified;
+        
+        private short codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
+        private short unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private short tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private IntervinientesFerroviariaDGSolicitud intervinientesField;
+        
+        private long cuitDestinatarioField;
+        
+        private bool cuitDestinatarioFieldSpecified;
+        
+        private DestinoFerroviariaDGSolicitud destinoField;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private long cuitPagadorFleteField;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
+        
+        private int kmRecorrerField;
+        
+        private int pesoBrutoField;
+        
+        private bool pesoBrutoFieldSpecified;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitTransportista {
+            get {
+                return this.cuitTransportistaField;
+            }
+            set {
+                this.cuitTransportistaField = value;
+                this.RaisePropertyChanged("cuitTransportista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTransportistaSpecified {
+            get {
+                return this.cuitTransportistaFieldSpecified;
+            }
+            set {
+                this.cuitTransportistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTransportistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitConductor {
+            get {
+                return this.cuitConductorField;
+            }
+            set {
+                this.cuitConductorField = value;
+                this.RaisePropertyChanged("cuitConductor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorSpecified {
+            get {
+                return this.cuitConductorFieldSpecified;
+            }
+            set {
+                this.cuitConductorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitTransportistaTramo2 {
+            get {
+                return this.cuitTransportistaTramo2Field;
+            }
+            set {
+                this.cuitTransportistaTramo2Field = value;
+                this.RaisePropertyChanged("cuitTransportistaTramo2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTransportistaTramo2Specified {
+            get {
+                return this.cuitTransportistaTramo2FieldSpecified;
+            }
+            set {
+                this.cuitTransportistaTramo2FieldSpecified = value;
+                this.RaisePropertyChanged("cuitTransportistaTramo2Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitConductorTramo2 {
+            get {
+                return this.cuitConductorTramo2Field;
+            }
+            set {
+                this.cuitConductorTramo2Field = value;
+                this.RaisePropertyChanged("cuitConductorTramo2");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitConductorTramo2Specified {
+            get {
+                return this.cuitConductorTramo2FieldSpecified;
+            }
+            set {
+                this.cuitConductorTramo2FieldSpecified = value;
+                this.RaisePropertyChanged("cuitConductorTramo2Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public int nroVagon {
+            get {
+                return this.nroVagonField;
+            }
+            set {
+                this.nroVagonField = value;
+                this.RaisePropertyChanged("nroVagon");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool nroVagonSpecified {
+            get {
+                return this.nroVagonFieldSpecified;
+            }
+            set {
+                this.nroVagonFieldSpecified = value;
+                this.RaisePropertyChanged("nroVagonSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("nroPrecinto", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public string[] nroPrecinto {
+            get {
+                return this.nroPrecintoField;
+            }
+            set {
+                this.nroPrecintoField = value;
+                this.RaisePropertyChanged("nroPrecinto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long nroOperativo {
+            get {
+                return this.nroOperativoField;
+            }
+            set {
+                this.nroOperativoField = value;
+                this.RaisePropertyChanged("nroOperativo");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public Ramal ramal {
+            get {
+                return this.ramalField;
+            }
+            set {
+                this.ramalField = value;
+                this.RaisePropertyChanged("ramal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codGranoSpecified {
+            get {
+                return this.codGranoFieldSpecified;
+            }
+            set {
+                this.codGranoFieldSpecified = value;
+                this.RaisePropertyChanged("codGranoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
+        public IntervinientesFerroviariaDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
+        public long cuitDestinatario {
+            get {
+                return this.cuitDestinatarioField;
+            }
+            set {
+                this.cuitDestinatarioField = value;
+                this.RaisePropertyChanged("cuitDestinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitDestinatarioSpecified {
+            get {
+                return this.cuitDestinatarioFieldSpecified;
+            }
+            set {
+                this.cuitDestinatarioFieldSpecified = value;
+                this.RaisePropertyChanged("cuitDestinatarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
+        public DestinoFerroviariaDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=18)]
+        public long cuitPagadorFlete {
+            get {
+                return this.cuitPagadorFleteField;
+            }
+            set {
+                this.cuitPagadorFleteField = value;
+                this.RaisePropertyChanged("cuitPagadorFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=19)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=20)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=21)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoSpecified {
+            get {
+                return this.pesoBrutoFieldSpecified;
+            }
+            set {
+                this.pesoBrutoFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=22)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGFerroviariaReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGFerroviariaRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGFerroviariaSolicitud solicitud;
+        
+        public editarCPEDGFerroviariaRequest() {
+        }
+        
+        public editarCPEDGFerroviariaRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGFerroviariaSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGFerroviariaResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGFerroviariaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEDGFerroviariaResponse() {
+        }
+        
+        public editarCPEDGFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarActivaDGAutomotorSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private long cuitTransportistaField;
+        
+        private bool cuitTransportistaFieldSpecified;
+        
+        private long cuitChoferField;
+        
+        private bool cuitChoferFieldSpecified;
+        
+        private short codGranoField;
+        
+        private bool codGranoFieldSpecified;
+        
+        private short codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
+        private short unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private short tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private IntervinientesAutomotorDGSolicitud intervinientesField;
+        
+        private DestinoAutomotorDGSolicitud destinoField;
+        
+        private long cuitDestinatarioField;
+        
+        private bool cuitDestinatarioFieldSpecified;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private long cuitPagadorFleteField;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
+        
+        private int kmRecorrerField;
+        
+        private int pesoBrutoField;
+        
+        private bool pesoBrutoFieldSpecified;
+        
+        private string[] dominioField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitTransportista {
+            get {
+                return this.cuitTransportistaField;
+            }
+            set {
+                this.cuitTransportistaField = value;
+                this.RaisePropertyChanged("cuitTransportista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTransportistaSpecified {
+            get {
+                return this.cuitTransportistaFieldSpecified;
+            }
+            set {
+                this.cuitTransportistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTransportistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitChofer {
+            get {
+                return this.cuitChoferField;
+            }
+            set {
+                this.cuitChoferField = value;
+                this.RaisePropertyChanged("cuitChofer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitChoferSpecified {
+            get {
+                return this.cuitChoferFieldSpecified;
+            }
+            set {
+                this.cuitChoferFieldSpecified = value;
+                this.RaisePropertyChanged("cuitChoferSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codGranoSpecified {
+            get {
+                return this.codGranoFieldSpecified;
+            }
+            set {
+                this.codGranoFieldSpecified = value;
+                this.RaisePropertyChanged("codGranoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public IntervinientesAutomotorDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public DestinoAutomotorDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long cuitDestinatario {
+            get {
+                return this.cuitDestinatarioField;
+            }
+            set {
+                this.cuitDestinatarioField = value;
+                this.RaisePropertyChanged("cuitDestinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitDestinatarioSpecified {
+            get {
+                return this.cuitDestinatarioFieldSpecified;
+            }
+            set {
+                this.cuitDestinatarioFieldSpecified = value;
+                this.RaisePropertyChanged("cuitDestinatarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=12)]
+        public long cuitPagadorFlete {
+            get {
+                return this.cuitPagadorFleteField;
+            }
+            set {
+                this.cuitPagadorFleteField = value;
+                this.RaisePropertyChanged("cuitPagadorFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=13)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=14)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=15)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pesoBrutoSpecified {
+            get {
+                return this.pesoBrutoFieldSpecified;
+            }
+            set {
+                this.pesoBrutoFieldSpecified = value;
+                this.RaisePropertyChanged("pesoBrutoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("dominio", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=16)]
+        public string[] dominio {
+            get {
+                return this.dominioField;
+            }
+            set {
+                this.dominioField = value;
+                this.RaisePropertyChanged("dominio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=17)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGAutomotorReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGAutomotorRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGAutomotorSolicitud solicitud;
+        
+        public editarCPEDGAutomotorRequest() {
+        }
+        
+        public editarCPEDGAutomotorRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGAutomotorSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGAutomotorResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGAutomotorResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEDGAutomotorResponse() {
+        }
+        
+        public editarCPEDGAutomotorResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarActivaDGDuctosSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private short codGranoField;
+        
+        private bool codGranoFieldSpecified;
+        
+        private short codDerivadoGranarioField;
+        
+        private bool codDerivadoGranarioFieldSpecified;
+        
+        private short unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private short tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private IntervinientesDuctosDGModificacionActivaSolicitud intervinientesField;
+        
+        private long cuitDestinatarioField;
+        
+        private bool cuitDestinatarioFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private bool kgLitroM3FieldSpecified;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codGranoSpecified {
+            get {
+                return this.codGranoFieldSpecified;
+            }
+            set {
+                this.codGranoFieldSpecified = value;
+                this.RaisePropertyChanged("codGranoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool codDerivadoGranarioSpecified {
+            get {
+                return this.codDerivadoGranarioFieldSpecified;
+            }
+            set {
+                this.codDerivadoGranarioFieldSpecified = value;
+                this.RaisePropertyChanged("codDerivadoGranarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public IntervinientesDuctosDGModificacionActivaSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public long cuitDestinatario {
+            get {
+                return this.cuitDestinatarioField;
+            }
+            set {
+                this.cuitDestinatarioField = value;
+                this.RaisePropertyChanged("cuitDestinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitDestinatarioSpecified {
+            get {
+                return this.cuitDestinatarioFieldSpecified;
+            }
+            set {
+                this.cuitDestinatarioFieldSpecified = value;
+                this.RaisePropertyChanged("cuitDestinatarioSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kgLitroM3Specified {
+            get {
+                return this.kgLitroM3FieldSpecified;
+            }
+            set {
+                this.kgLitroM3FieldSpecified = value;
+                this.RaisePropertyChanged("kgLitroM3Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesDuctosDGModificacionActivaSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGDuctosReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGDuctosRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGDuctosSolicitud solicitud;
+        
+        public editarCPEDGDuctosRequest() {
+        }
+        
+        public editarCPEDGDuctosRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGDuctosSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEDGDuctosResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEDGDuctosResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEDGDuctosResponse() {
+        }
+        
+        public editarCPEDGDuctosResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarCPEConfirmadaFerroviariaSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private IntervEditarConfirmadaFerroviariaSolicitud intervinientesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public IntervEditarConfirmadaFerroviariaSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervEditarConfirmadaFerroviariaSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitCorredorVentaPrimariaField;
+        
+        private bool cuitCorredorVentaPrimariaFieldSpecified;
+        
+        private long cuitCorredorVentaSecundariaField;
+        
+        private bool cuitCorredorVentaSecundariaFieldSpecified;
+        
+        private long cuitRemitenteComercialVentaPrimariaField;
+        
+        private bool cuitRemitenteComercialVentaPrimariaFieldSpecified;
+        
+        private long cuitRemitenteComercialVentaSecundariaField;
+        
+        private bool cuitRemitenteComercialVentaSecundariaFieldSpecified;
+        
+        private long cuitRemitenteComercialProductorField;
+        
+        private bool cuitRemitenteComercialProductorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitCorredorVentaPrimaria {
+            get {
+                return this.cuitCorredorVentaPrimariaField;
+            }
+            set {
+                this.cuitCorredorVentaPrimariaField = value;
+                this.RaisePropertyChanged("cuitCorredorVentaPrimaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorVentaPrimariaSpecified {
+            get {
+                return this.cuitCorredorVentaPrimariaFieldSpecified;
+            }
+            set {
+                this.cuitCorredorVentaPrimariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorVentaPrimariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitCorredorVentaSecundaria {
+            get {
+                return this.cuitCorredorVentaSecundariaField;
+            }
+            set {
+                this.cuitCorredorVentaSecundariaField = value;
+                this.RaisePropertyChanged("cuitCorredorVentaSecundaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorVentaSecundariaSpecified {
+            get {
+                return this.cuitCorredorVentaSecundariaFieldSpecified;
+            }
+            set {
+                this.cuitCorredorVentaSecundariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorVentaSecundariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitRemitenteComercialVentaPrimaria {
+            get {
+                return this.cuitRemitenteComercialVentaPrimariaField;
+            }
+            set {
+                this.cuitRemitenteComercialVentaPrimariaField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaPrimaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialVentaPrimariaSpecified {
+            get {
+                return this.cuitRemitenteComercialVentaPrimariaFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialVentaPrimariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaPrimariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitRemitenteComercialVentaSecundaria {
+            get {
+                return this.cuitRemitenteComercialVentaSecundariaField;
+            }
+            set {
+                this.cuitRemitenteComercialVentaSecundariaField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaSecundaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialVentaSecundariaSpecified {
+            get {
+                return this.cuitRemitenteComercialVentaSecundariaFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialVentaSecundariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaSecundariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitRemitenteComercialProductor {
+            get {
+                return this.cuitRemitenteComercialProductorField;
+            }
+            set {
+                this.cuitRemitenteComercialProductorField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialProductor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialProductorSpecified {
+            get {
+                return this.cuitRemitenteComercialProductorFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialProductorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialProductorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaFerroviariaReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaFerroviariaRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaSolicitud solicitud;
+        
+        public editarCPEConfirmadaFerroviariaRequest() {
+        }
+        
+        public editarCPEConfirmadaFerroviariaRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaFerroviariaResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaFerroviariaResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEConfirmadaFerroviariaResponse() {
+        }
+        
+        public editarCPEConfirmadaFerroviariaResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -8285,6 +18449,26 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         
         private bool pesoTaraDescargaFieldSpecified;
         
+        private int tipoEmbalajeField;
+        
+        private bool tipoEmbalajeFieldSpecified;
+        
+        private string otroEmbalajeField;
+        
+        private int unidadMedidaField;
+        
+        private bool unidadMedidaFieldSpecified;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private bool kgLitroM3FieldSpecified;
+        
+        private string loteField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
         public int codGrano {
@@ -8426,6 +18610,126 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             set {
                 this.pesoTaraDescargaFieldSpecified = value;
                 this.RaisePropertyChanged("pesoTaraDescargaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public int tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tipoEmbalajeSpecified {
+            get {
+                return this.tipoEmbalajeFieldSpecified;
+            }
+            set {
+                this.tipoEmbalajeFieldSpecified = value;
+                this.RaisePropertyChanged("tipoEmbalajeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public int unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unidadMedidaSpecified {
+            get {
+                return this.unidadMedidaFieldSpecified;
+            }
+            set {
+                this.unidadMedidaFieldSpecified = value;
+                this.RaisePropertyChanged("unidadMedidaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool kgLitroM3Specified {
+            get {
+                return this.kgLitroM3FieldSpecified;
+            }
+            set {
+                this.kgLitroM3FieldSpecified = value;
+                this.RaisePropertyChanged("kgLitroM3Specified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
             }
         }
         
@@ -8774,6 +19078,1669 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public autorizarCPEAutomotorResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AutorizarAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraAutomotorDGSolicitud cabeceraField;
+        
+        private OrigenAutomotorDGSolicitud origenField;
+        
+        private IntervinientesAutomotorDGSolicitud intervinientesField;
+        
+        private DatosCargaAutomotorDGSolicitud datosCargaField;
+        
+        private DestinoAutomotorDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteAutomotorDGSolicitud transporteField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraAutomotorDGSolicitud cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenAutomotorDGSolicitud origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesAutomotorDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaAutomotorDGSolicitud datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoAutomotorDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteAutomotorDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CabeceraAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private short tipoCPField;
+        
+        private int sucursalField;
+        
+        private int nroOrdenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public short tipoCP {
+            get {
+                return this.tipoCPField;
+            }
+            set {
+                this.tipoCPField = value;
+                this.RaisePropertyChanged("tipoCP");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int sucursal {
+            get {
+                return this.sucursalField;
+            }
+            set {
+                this.sucursalField = value;
+                this.RaisePropertyChanged("sucursal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int nroOrden {
+            get {
+                return this.nroOrdenField;
+            }
+            set {
+                this.nroOrdenField = value;
+                this.RaisePropertyChanged("nroOrden");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool esUsuarioIndustriaField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private DomicilioPUC domicilioOrigenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DomicilioPUC domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DatosCargaAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private short codGranoField;
+        
+        private short codDerivadoGranarioField;
+        
+        private int pesoBrutoField;
+        
+        private int pesoTaraField;
+        
+        private short tipoEmbalajeField;
+        
+        private string otroEmbalajeField;
+        
+        private short unidadMedidaField;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int pesoTara {
+            get {
+                return this.pesoTaraField;
+            }
+            set {
+                this.pesoTaraField = value;
+                this.RaisePropertyChanged("pesoTara");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class TransporteAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitTransportistaField;
+        
+        private string[] dominioField;
+        
+        private System.DateTime fechaHoraPartidaField;
+        
+        private int kmRecorrerField;
+        
+        private long cuitChoferField;
+        
+        private decimal tarifaField;
+        
+        private bool tarifaFieldSpecified;
+        
+        private long cuitPagadorFleteField;
+        
+        private long cuitIntermediarioFleteField;
+        
+        private bool cuitIntermediarioFleteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitTransportista {
+            get {
+                return this.cuitTransportistaField;
+            }
+            set {
+                this.cuitTransportistaField = value;
+                this.RaisePropertyChanged("cuitTransportista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("dominio", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string[] dominio {
+            get {
+                return this.dominioField;
+            }
+            set {
+                this.dominioField = value;
+                this.RaisePropertyChanged("dominio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public System.DateTime fechaHoraPartida {
+            get {
+                return this.fechaHoraPartidaField;
+            }
+            set {
+                this.fechaHoraPartidaField = value;
+                this.RaisePropertyChanged("fechaHoraPartida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int kmRecorrer {
+            get {
+                return this.kmRecorrerField;
+            }
+            set {
+                this.kmRecorrerField = value;
+                this.RaisePropertyChanged("kmRecorrer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitChofer {
+            get {
+                return this.cuitChoferField;
+            }
+            set {
+                this.cuitChoferField = value;
+                this.RaisePropertyChanged("cuitChofer");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public decimal tarifa {
+            get {
+                return this.tarifaField;
+            }
+            set {
+                this.tarifaField = value;
+                this.RaisePropertyChanged("tarifa");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool tarifaSpecified {
+            get {
+                return this.tarifaFieldSpecified;
+            }
+            set {
+                this.tarifaFieldSpecified = value;
+                this.RaisePropertyChanged("tarifaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public long cuitPagadorFlete {
+            get {
+                return this.cuitPagadorFleteField;
+            }
+            set {
+                this.cuitPagadorFleteField = value;
+                this.RaisePropertyChanged("cuitPagadorFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long cuitIntermediarioFlete {
+            get {
+                return this.cuitIntermediarioFleteField;
+            }
+            set {
+                this.cuitIntermediarioFleteField = value;
+                this.RaisePropertyChanged("cuitIntermediarioFlete");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitIntermediarioFleteSpecified {
+            get {
+                return this.cuitIntermediarioFleteFieldSpecified;
+            }
+            set {
+                this.cuitIntermediarioFleteFieldSpecified = value;
+                this.RaisePropertyChanged("cuitIntermediarioFleteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarAutomotorDGSolicitud solicitud;
+        
+        public autorizarCPEAutomotorDGRequest() {
+        }
+        
+        public autorizarCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta respuesta;
+        
+        public autorizarCPEAutomotorDGResponse() {
+        }
+        
+        public autorizarCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AutorizarDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraDuctosDGSolicitud cabeceraField;
+        
+        private OrigenDuctosDGSolicitud origenField;
+        
+        private IntervinientesDuctosDGSolicitud intervinientesField;
+        
+        private DatosCargaDuctosDGSolicitud datosCargaField;
+        
+        private DestinoDuctosDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraDuctosDGSolicitud cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenDuctosDGSolicitud origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesDuctosDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaDuctosDGSolicitud datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoDuctosDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class CabeceraDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int sucursalField;
+        
+        private int nroOrdenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public int sucursal {
+            get {
+                return this.sucursalField;
+            }
+            set {
+                this.sucursalField = value;
+                this.RaisePropertyChanged("sucursal");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int nroOrden {
+            get {
+                return this.nroOrdenField;
+            }
+            set {
+                this.nroOrdenField = value;
+                this.RaisePropertyChanged("nroOrden");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool esUsuarioIndustriaField;
+        
+        private int plantaField;
+        
+        private long cuitTitularPlantaField;
+        
+        private bool cuitTitularPlantaFieldSpecified;
+        
+        private DomicilioPUC domicilioOrigenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public bool esUsuarioIndustria {
+            get {
+                return this.esUsuarioIndustriaField;
+            }
+            set {
+                this.esUsuarioIndustriaField = value;
+                this.RaisePropertyChanged("esUsuarioIndustria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitTitularPlanta {
+            get {
+                return this.cuitTitularPlantaField;
+            }
+            set {
+                this.cuitTitularPlantaField = value;
+                this.RaisePropertyChanged("cuitTitularPlanta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitTitularPlantaSpecified {
+            get {
+                return this.cuitTitularPlantaFieldSpecified;
+            }
+            set {
+                this.cuitTitularPlantaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitTitularPlantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DomicilioPUC domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervinientesDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitRemitenteComercialField;
+        
+        private bool cuitRemitenteComercialFieldSpecified;
+        
+        private long cuitMercadoATerminoField;
+        
+        private bool cuitMercadoATerminoFieldSpecified;
+        
+        private long cuitComisionistaField;
+        
+        private bool cuitComisionistaFieldSpecified;
+        
+        private long cuitCorredorField;
+        
+        private bool cuitCorredorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitRemitenteComercial {
+            get {
+                return this.cuitRemitenteComercialField;
+            }
+            set {
+                this.cuitRemitenteComercialField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercial");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialSpecified {
+            get {
+                return this.cuitRemitenteComercialFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitMercadoATermino {
+            get {
+                return this.cuitMercadoATerminoField;
+            }
+            set {
+                this.cuitMercadoATerminoField = value;
+                this.RaisePropertyChanged("cuitMercadoATermino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitMercadoATerminoSpecified {
+            get {
+                return this.cuitMercadoATerminoFieldSpecified;
+            }
+            set {
+                this.cuitMercadoATerminoFieldSpecified = value;
+                this.RaisePropertyChanged("cuitMercadoATerminoSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitComisionista {
+            get {
+                return this.cuitComisionistaField;
+            }
+            set {
+                this.cuitComisionistaField = value;
+                this.RaisePropertyChanged("cuitComisionista");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitComisionistaSpecified {
+            get {
+                return this.cuitComisionistaFieldSpecified;
+            }
+            set {
+                this.cuitComisionistaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitComisionistaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitCorredor {
+            get {
+                return this.cuitCorredorField;
+            }
+            set {
+                this.cuitCorredorField = value;
+                this.RaisePropertyChanged("cuitCorredor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorSpecified {
+            get {
+                return this.cuitCorredorFieldSpecified;
+            }
+            set {
+                this.cuitCorredorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DatosCargaDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private short codGranoField;
+        
+        private short codDerivadoGranarioField;
+        
+        private int pesoBrutoField;
+        
+        private short tipoEmbalajeField;
+        
+        private string otroEmbalajeField;
+        
+        private short unidadMedidaField;
+        
+        private long cantidadUnidadesField;
+        
+        private bool cantidadUnidadesFieldSpecified;
+        
+        private long kgLitroM3Field;
+        
+        private string loteField;
+        
+        private System.DateTime fechaLoteField;
+        
+        private bool fechaLoteFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public short codGrano {
+            get {
+                return this.codGranoField;
+            }
+            set {
+                this.codGranoField = value;
+                this.RaisePropertyChanged("codGrano");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public short codDerivadoGranario {
+            get {
+                return this.codDerivadoGranarioField;
+            }
+            set {
+                this.codDerivadoGranarioField = value;
+                this.RaisePropertyChanged("codDerivadoGranario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int pesoBruto {
+            get {
+                return this.pesoBrutoField;
+            }
+            set {
+                this.pesoBrutoField = value;
+                this.RaisePropertyChanged("pesoBruto");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public short tipoEmbalaje {
+            get {
+                return this.tipoEmbalajeField;
+            }
+            set {
+                this.tipoEmbalajeField = value;
+                this.RaisePropertyChanged("tipoEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public string otroEmbalaje {
+            get {
+                return this.otroEmbalajeField;
+            }
+            set {
+                this.otroEmbalajeField = value;
+                this.RaisePropertyChanged("otroEmbalaje");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public short unidadMedida {
+            get {
+                return this.unidadMedidaField;
+            }
+            set {
+                this.unidadMedidaField = value;
+                this.RaisePropertyChanged("unidadMedida");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public long cantidadUnidades {
+            get {
+                return this.cantidadUnidadesField;
+            }
+            set {
+                this.cantidadUnidadesField = value;
+                this.RaisePropertyChanged("cantidadUnidades");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cantidadUnidadesSpecified {
+            get {
+                return this.cantidadUnidadesFieldSpecified;
+            }
+            set {
+                this.cantidadUnidadesFieldSpecified = value;
+                this.RaisePropertyChanged("cantidadUnidadesSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public long kgLitroM3 {
+            get {
+                return this.kgLitroM3Field;
+            }
+            set {
+                this.kgLitroM3Field = value;
+                this.RaisePropertyChanged("kgLitroM3");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        public string lote {
+            get {
+                return this.loteField;
+            }
+            set {
+                this.loteField = value;
+                this.RaisePropertyChanged("lote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        public System.DateTime fechaLote {
+            get {
+                return this.fechaLoteField;
+            }
+            set {
+                this.fechaLoteField = value;
+                this.RaisePropertyChanged("fechaLote");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fechaLoteSpecified {
+            get {
+                return this.fechaLoteFieldSpecified;
+            }
+            set {
+                this.fechaLoteFieldSpecified = value;
+                this.RaisePropertyChanged("fechaLoteSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoDuctosDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        private System.DateTime fechaHoraInicioEnvioField;
+        
+        private System.DateTime fechaHoraFinEnvioField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public System.DateTime fechaHoraInicioEnvio {
+            get {
+                return this.fechaHoraInicioEnvioField;
+            }
+            set {
+                this.fechaHoraInicioEnvioField = value;
+                this.RaisePropertyChanged("fechaHoraInicioEnvio");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public System.DateTime fechaHoraFinEnvio {
+            get {
+                return this.fechaHoraFinEnvioField;
+            }
+            set {
+                this.fechaHoraFinEnvioField = value;
+                this.RaisePropertyChanged("fechaHoraFinEnvio");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEDuctosDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEDuctosDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarDuctosDGSolicitud solicitud;
+        
+        public autorizarCPEDuctosDGRequest() {
+        }
+        
+        public autorizarCPEDuctosDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarDuctosDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEDuctosDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEDuctosDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta respuesta;
+        
+        public autorizarCPEDuctosDGResponse() {
+        }
+        
+        public autorizarCPEDuctosDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class AutorizarEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CabeceraAutomotorDGSolicitud cabeceraField;
+        
+        private OrigenEmisionDestinoDGSolicitud origenField;
+        
+        private IntervinientesAutomotorDGSolicitud intervinientesField;
+        
+        private DatosCargaAutomotorDGSolicitud datosCargaField;
+        
+        private DestinoEmisionDestinoDGSolicitud destinoField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        private TransporteAutomotorDGSolicitud transporteField;
+        
+        private string observacionesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CabeceraAutomotorDGSolicitud cabecera {
+            get {
+                return this.cabeceraField;
+            }
+            set {
+                this.cabeceraField = value;
+                this.RaisePropertyChanged("cabecera");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public OrigenEmisionDestinoDGSolicitud origen {
+            get {
+                return this.origenField;
+            }
+            set {
+                this.origenField = value;
+                this.RaisePropertyChanged("origen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public IntervinientesAutomotorDGSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DatosCargaAutomotorDGSolicitud datosCarga {
+            get {
+                return this.datosCargaField;
+            }
+            set {
+                this.datosCargaField = value;
+                this.RaisePropertyChanged("datosCarga");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public DestinoEmisionDestinoDGSolicitud destino {
+            get {
+                return this.destinoField;
+            }
+            set {
+                this.destinoField = value;
+                this.RaisePropertyChanged("destino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+        public TransporteAutomotorDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string observaciones {
+            get {
+                return this.observacionesField;
+            }
+            set {
+                this.observacionesField = value;
+                this.RaisePropertyChanged("observaciones");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class OrigenEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitOrigenField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioOrigenField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitOrigen {
+            get {
+                return this.cuitOrigenField;
+            }
+            set {
+                this.cuitOrigenField = value;
+                this.RaisePropertyChanged("cuitOrigen");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioOrigen {
+            get {
+                return this.domicilioOrigenField;
+            }
+            set {
+                this.domicilioOrigenField = value;
+                this.RaisePropertyChanged("domicilioOrigen");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class DestinoEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitField;
+        
+        private int plantaField;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuit {
+            get {
+                return this.cuitField;
+            }
+            set {
+                this.cuitField = value;
+                this.RaisePropertyChanged("cuit");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarEmisionDestinoDGSolicitud solicitud;
+        
+        public autorizarCPEEmisionDestinoDGRequest() {
+        }
+        
+        public autorizarCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="AutorizarCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class autorizarCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta respuesta;
+        
+        public autorizarCPEEmisionDestinoDGResponse() {
+        }
+        
+        public autorizarCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -9165,6 +21132,393 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         public regresoOrigenCPEAutomotorResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class RegresoOrigenAutomotorDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private TransporteAutomotorModificaDGSolicitud transporteField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public TransporteAutomotorModificaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEAutomotorDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEAutomotorDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenAutomotorDGSolicitud solicitud;
+        
+        public regresoOrigenCPEAutomotorDGRequest() {
+        }
+        
+        public regresoOrigenCPEAutomotorDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenAutomotorDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEAutomotorDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEAutomotorDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public regresoOrigenCPEAutomotorDGResponse() {
+        }
+        
+        public regresoOrigenCPEAutomotorDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class RegresoOrigenFerroviariaDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private TransporteFerroviariaModificaSolicitud transporteField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        private DomicilioPUC domicilioDestinoField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public TransporteFerroviariaModificaSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public DomicilioPUC domicilioDestino {
+            get {
+                return this.domicilioDestinoField;
+            }
+            set {
+                this.domicilioDestinoField = value;
+                this.RaisePropertyChanged("domicilioDestino");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEFerroviariaDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEFerroviariaDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenFerroviariaDGSolicitud solicitud;
+        
+        public regresoOrigenCPEFerroviariaDGRequest() {
+        }
+        
+        public regresoOrigenCPEFerroviariaDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenFerroviariaDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEFerroviariaDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEFerroviariaDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public regresoOrigenCPEFerroviariaDGResponse() {
+        }
+        
+        public regresoOrigenCPEFerroviariaDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class RegresoOrigenEmisionDestinoDGSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CartaPorte cartaPorteField;
+        
+        private long cuitDestinoField;
+        
+        private TransporteAutomotorModificaDGSolicitud transporteField;
+        
+        private int plantaField;
+        
+        private bool plantaFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public CartaPorte cartaPorte {
+            get {
+                return this.cartaPorteField;
+            }
+            set {
+                this.cartaPorteField = value;
+                this.RaisePropertyChanged("cartaPorte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitDestino {
+            get {
+                return this.cuitDestinoField;
+            }
+            set {
+                this.cuitDestinoField = value;
+                this.RaisePropertyChanged("cuitDestino");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public TransporteAutomotorModificaDGSolicitud transporte {
+            get {
+                return this.transporteField;
+            }
+            set {
+                this.transporteField = value;
+                this.RaisePropertyChanged("transporte");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public int planta {
+            get {
+                return this.plantaField;
+            }
+            set {
+                this.plantaField = value;
+                this.RaisePropertyChanged("planta");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool plantaSpecified {
+            get {
+                return this.plantaFieldSpecified;
+            }
+            set {
+                this.plantaFieldSpecified = value;
+                this.RaisePropertyChanged("plantaSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEEmisionDestinoDGReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEEmisionDestinoDGRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenEmisionDestinoDGSolicitud solicitud;
+        
+        public regresoOrigenCPEEmisionDestinoDGRequest() {
+        }
+        
+        public regresoOrigenCPEEmisionDestinoDGRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenEmisionDestinoDGSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="RegresoOrigenCPEEmisionDestinoDGResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class regresoOrigenCPEEmisionDestinoDGResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public regresoOrigenCPEEmisionDestinoDGResponse() {
+        }
+        
+        public regresoOrigenCPEEmisionDestinoDGResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
             this.respuesta = respuesta;
         }
     }
@@ -9928,6 +22282,338 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
     }
     
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarCPEConfirmadaAutomotorSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private IntervEditarConfirmadaAutomotorSolicitud intervinientesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public IntervEditarConfirmadaAutomotorSolicitud intervinientes {
+            get {
+                return this.intervinientesField;
+            }
+            set {
+                this.intervinientesField = value;
+                this.RaisePropertyChanged("intervinientes");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class IntervEditarConfirmadaAutomotorSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long cuitCorredorVentaPrimariaField;
+        
+        private bool cuitCorredorVentaPrimariaFieldSpecified;
+        
+        private long cuitCorredorVentaSecundariaField;
+        
+        private bool cuitCorredorVentaSecundariaFieldSpecified;
+        
+        private long cuitRemitenteComercialVentaPrimariaField;
+        
+        private bool cuitRemitenteComercialVentaPrimariaFieldSpecified;
+        
+        private long cuitRemitenteComercialVentaSecundariaField;
+        
+        private bool cuitRemitenteComercialVentaSecundariaFieldSpecified;
+        
+        private long cuitRemitenteComercialProductorField;
+        
+        private bool cuitRemitenteComercialProductorFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long cuitCorredorVentaPrimaria {
+            get {
+                return this.cuitCorredorVentaPrimariaField;
+            }
+            set {
+                this.cuitCorredorVentaPrimariaField = value;
+                this.RaisePropertyChanged("cuitCorredorVentaPrimaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorVentaPrimariaSpecified {
+            get {
+                return this.cuitCorredorVentaPrimariaFieldSpecified;
+            }
+            set {
+                this.cuitCorredorVentaPrimariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorVentaPrimariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public long cuitCorredorVentaSecundaria {
+            get {
+                return this.cuitCorredorVentaSecundariaField;
+            }
+            set {
+                this.cuitCorredorVentaSecundariaField = value;
+                this.RaisePropertyChanged("cuitCorredorVentaSecundaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitCorredorVentaSecundariaSpecified {
+            get {
+                return this.cuitCorredorVentaSecundariaFieldSpecified;
+            }
+            set {
+                this.cuitCorredorVentaSecundariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitCorredorVentaSecundariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public long cuitRemitenteComercialVentaPrimaria {
+            get {
+                return this.cuitRemitenteComercialVentaPrimariaField;
+            }
+            set {
+                this.cuitRemitenteComercialVentaPrimariaField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaPrimaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialVentaPrimariaSpecified {
+            get {
+                return this.cuitRemitenteComercialVentaPrimariaFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialVentaPrimariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaPrimariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public long cuitRemitenteComercialVentaSecundaria {
+            get {
+                return this.cuitRemitenteComercialVentaSecundariaField;
+            }
+            set {
+                this.cuitRemitenteComercialVentaSecundariaField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaSecundaria");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialVentaSecundariaSpecified {
+            get {
+                return this.cuitRemitenteComercialVentaSecundariaFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialVentaSecundariaFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialVentaSecundariaSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        public long cuitRemitenteComercialProductor {
+            get {
+                return this.cuitRemitenteComercialProductorField;
+            }
+            set {
+                this.cuitRemitenteComercialProductorField = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialProductor");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cuitRemitenteComercialProductorSpecified {
+            get {
+                return this.cuitRemitenteComercialProductorFieldSpecified;
+            }
+            set {
+                this.cuitRemitenteComercialProductorFieldSpecified = value;
+                this.RaisePropertyChanged("cuitRemitenteComercialProductorSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaAutomotorReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaAutomotorRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorSolicitud solicitud;
+        
+        public editarCPEConfirmadaAutomotorRequest() {
+        }
+        
+        public editarCPEConfirmadaAutomotorRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaAutomotorResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaAutomotorResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEConfirmadaAutomotorResponse() {
+        }
+        
+        public editarCPEConfirmadaAutomotorResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.9032.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/")]
+    public partial class EditarCPEConfirmadaDuctosSolicitud : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long nroCTGField;
+        
+        private DestinatarioSolicitud destinatarioField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long nroCTG {
+            get {
+                return this.nroCTGField;
+            }
+            set {
+                this.nroCTGField = value;
+                this.RaisePropertyChanged("nroCTG");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public DestinatarioSolicitud destinatario {
+            get {
+                return this.destinatarioField;
+            }
+            set {
+                this.destinatarioField = value;
+                this.RaisePropertyChanged("destinatario");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaDuctosReq", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaDuctosRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaDuctosSolicitud solicitud;
+        
+        public editarCPEConfirmadaDuctosRequest() {
+        }
+        
+        public editarCPEConfirmadaDuctosRequest(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaDuctosSolicitud solicitud) {
+            this.auth = auth;
+            this.solicitud = solicitud;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="EditarCPEConfirmadaDuctosResp", WrapperNamespace="https://serviciosjava.afip.gob.ar/wscpe/", IsWrapped=true)]
+    public partial class editarCPEConfirmadaDuctosResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="https://serviciosjava.afip.gob.ar/wscpe/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta;
+        
+        public editarCPEConfirmadaDuctosResponse() {
+        }
+        
+        public editarCPEConfirmadaDuctosResponse(Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta respuesta) {
+            this.respuesta = respuesta;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface CpePortTypeChannel : Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType, System.ServiceModel.IClientChannel {
     }
@@ -10000,6 +22686,125 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEDGPendienteActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest request) {
+            return base.Channel.consultarCPEDGPendienteActivacion(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionRespuesta consultarCPEDGPendienteActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEDGPendienteActivacion(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEDGPendienteActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest request) {
+            return base.Channel.consultarCPEDGPendienteActivacionAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse> consultarCPEDGPendienteActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEDGPendienteActivacionAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEEmitidasDestinoDGPendientesActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest request) {
+            return base.Channel.consultarCPEEmitidasDestinoDGPendientesActivacion(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta consultarCPEEmitidasDestinoDGPendientesActivacion(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEEmitidasDestinoDGPendientesActivacion(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEEmitidasDestinoDGPendientesActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest request) {
+            return base.Channel.consultarCPEEmitidasDestinoDGPendientesActivacionAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse> consultarCPEEmitidasDestinoDGPendientesActivacionAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEEmitidasDestinoDGPendientesActivacionAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarTiposEmbalaje(Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest request) {
+            return base.Channel.consultarTiposEmbalaje(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarTiposEmbalajeRespuesta consultarTiposEmbalaje(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest();
+            inValue.auth = auth;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarTiposEmbalaje(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarTiposEmbalajeAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest request) {
+            return base.Channel.consultarTiposEmbalajeAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse> consultarTiposEmbalajeAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeRequest();
+            inValue.auth = auth;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarTiposEmbalajeAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarUnidadesMedida(Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest request) {
+            return base.Channel.consultarUnidadesMedida(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUnidadesMedidaRespuesta consultarUnidadesMedida(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest();
+            inValue.auth = auth;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarUnidadesMedida(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarUnidadesMedidaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest request) {
+            return base.Channel.consultarUnidadesMedidaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse> consultarUnidadesMedidaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaRequest();
+            inValue.auth = auth;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarUnidadesMedidaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarDerivadosGranarios(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest request) {
+            return base.Channel.consultarDerivadosGranarios(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDerivadosGranariosRespuesta consultarDerivadosGranarios(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest();
+            inValue.auth = auth;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarDerivadosGranarios(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarDerivadosGranariosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest request) {
+            return base.Channel.consultarDerivadosGranariosAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse> consultarDerivadosGranariosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosRequest();
+            inValue.auth = auth;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarDerivadosGranariosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarLocalidadesPorProvincia(Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaRequest request) {
             return base.Channel.consultarLocalidadesPorProvincia(request);
         }
@@ -10022,6 +22827,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarLocalidadesPorProvinciaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarDomiciliosPorCUIT(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest request) {
+            return base.Channel.consultarDomiciliosPorCUIT(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDomiciliosPorCUITRespuesta consultarDomiciliosPorCUIT(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest();
+            inValue.auth = auth;
+            inValue.cuit = cuit;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarDomiciliosPorCUIT(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarDomiciliosPorCUITAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest request) {
+            return base.Channel.consultarDomiciliosPorCUITAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse> consultarDomiciliosPorCUITAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, long cuit) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITRequest();
+            inValue.auth = auth;
+            inValue.cuit = cuit;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarDomiciliosPorCUITAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10123,6 +22953,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
+            return base.Channel.informarContingenciaEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta informarContingenciaEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).informarContingenciaEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest request) {
+            return base.Channel.informarContingenciaEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse> informarContingenciaEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.InformarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).informarContingenciaEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.anularCPE(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPERequest request) {
             return base.Channel.anularCPE(request);
         }
@@ -10145,6 +23000,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).anularCPEAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.anularCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest request) {
+            return base.Channel.anularCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta anularCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AnularCPEEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).anularCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.anularCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest request) {
+            return base.Channel.anularCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse> anularCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AnularCPEEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).anularCPEEmisionDestinoDGAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10223,6 +23103,131 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.descargadoDestinoCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest request) {
+            return base.Channel.descargadoDestinoCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta descargadoDestinoCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DescargadoDestinoCPEEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).descargadoDestinoCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.descargadoDestinoCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest request) {
+            return base.Channel.descargadoDestinoCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse> descargadoDestinoCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DescargadoDestinoCPEEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).descargadoDestinoCPEEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.aceptarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest request) {
+            return base.Channel.aceptarEmisionDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta aceptarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).aceptarEmisionDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.aceptarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest request) {
+            return base.Channel.aceptarEmisionDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse> aceptarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).aceptarEmisionDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.rechazarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest request) {
+            return base.Channel.rechazarEmisionDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta rechazarEmisionDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).rechazarEmisionDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.rechazarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest request) {
+            return base.Channel.rechazarEmisionDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse> rechazarEmisionDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).rechazarEmisionDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.aceptarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest request) {
+            return base.Channel.aceptarEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta aceptarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).aceptarEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.aceptarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest request) {
+            return base.Channel.aceptarEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse> aceptarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AceptarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).aceptarEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.rechazarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest request) {
+            return base.Channel.rechazarEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta rechazarEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).rechazarEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.rechazarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest request) {
+            return base.Channel.rechazarEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse> rechazarEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RechazarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).rechazarEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEPorDestinoResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEPorDestino(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEPorDestinoRequest request) {
             return base.Channel.consultarCPEPorDestino(request);
         }
@@ -10298,6 +23303,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.cerrarContingenciaCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest request) {
+            return base.Channel.cerrarContingenciaCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta cerrarContingenciaCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.CerrarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).cerrarContingenciaCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.cerrarContingenciaCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest request) {
+            return base.Channel.cerrarContingenciaCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse> cerrarContingenciaCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.CerrarContingenciaEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).cerrarContingenciaCPEEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarPlantas(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasRequest request) {
             return base.Channel.consultarPlantas(request);
         }
@@ -10320,6 +23350,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarPlantasAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarPlantasDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest request) {
+            return base.Channel.consultarPlantasDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGRespuesta consultarPlantasDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarPlantasDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarPlantasDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest request) {
+            return base.Channel.consultarPlantasDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse> consultarPlantasDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarPlantasDGAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10348,6 +23403,31 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest request) {
+            return base.Channel.autorizarCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta autorizarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest request) {
+            return base.Channel.autorizarCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse> autorizarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaRequest request) {
             return base.Channel.consultarCPEFerroviaria(request);
         }
@@ -10373,6 +23453,106 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest request) {
+            return base.Channel.consultarCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta consultarCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest request) {
+            return base.Channel.consultarCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse> consultarCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest request) {
+            return base.Channel.consultarCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta consultarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest request) {
+            return base.Channel.consultarCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse> consultarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest request) {
+            return base.Channel.consultarCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta consultarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest request) {
+            return base.Channel.consultarCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse> consultarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest request) {
+            return base.Channel.consultarCPEDuctos(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta consultarCPEDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEDuctos(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.consultarCPEDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest request) {
+            return base.Channel.consultarCPEDuctosAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse> consultarCPEDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).consultarCPEDuctosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaRequest request) {
             return base.Channel.nuevoDestinoDestinatarioCPEFerroviaria(request);
         }
@@ -10395,6 +23575,81 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEFerroviariaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta nuevoDestinoDestinatarioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse> nuevoDestinoDestinatarioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta nuevoDestinoDestinatarioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse> nuevoDestinoDestinatarioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta nuevoDestinoDestinatarioCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.nuevoDestinoDestinatarioCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest request) {
+            return base.Channel.nuevoDestinoDestinatarioCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse> nuevoDestinoDestinatarioCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.NuevoDestinoDestinatarioEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).nuevoDestinoDestinatarioCPEEmisionDestinoDGAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10448,6 +23703,56 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.desvioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest request) {
+            return base.Channel.desvioCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta desvioCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).desvioCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.desvioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest request) {
+            return base.Channel.desvioCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse> desvioCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).desvioCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.desvioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest request) {
+            return base.Channel.desvioCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta desvioCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).desvioCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.desvioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest request) {
+            return base.Channel.desvioCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse> desvioCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.DesvioAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).desvioCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaRequest request) {
             return base.Channel.confirmacionDefinitivaCPEFerroviaria(request);
         }
@@ -10470,6 +23775,81 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEFerroviariaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta confirmacionDefinitivaCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse> confirmacionDefinitivaCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta confirmacionDefinitivaCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse> confirmacionDefinitivaCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEDuctosDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta confirmacionDefinitivaCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionDuctosDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEDuctosDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.confirmacionDefinitivaCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest request) {
+            return base.Channel.confirmacionDefinitivaCPEDuctosDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse> confirmacionDefinitivaCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.ConfirmacionDuctosDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).confirmacionDefinitivaCPEDuctosDGAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10523,6 +23903,106 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest request) {
+            return base.Channel.editarCPEDGFerroviaria(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEDGFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGFerroviariaSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGFerroviaria(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest request) {
+            return base.Channel.editarCPEDGFerroviariaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse> editarCPEDGFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGFerroviariaSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGFerroviariaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest request) {
+            return base.Channel.editarCPEDGAutomotor(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEDGAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGAutomotorSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGAutomotor(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest request) {
+            return base.Channel.editarCPEDGAutomotorAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse> editarCPEDGAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGAutomotorSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGAutomotorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest request) {
+            return base.Channel.editarCPEDGDuctos(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEDGDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGDuctos(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEDGDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest request) {
+            return base.Channel.editarCPEDGDuctosAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse> editarCPEDGDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarActivaDGDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEDGDuctosAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest request) {
+            return base.Channel.editarCPEConfirmadaFerroviaria(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEConfirmadaFerroviaria(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaFerroviaria(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest request) {
+            return base.Channel.editarCPEConfirmadaFerroviariaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse> editarCPEConfirmadaFerroviariaAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaFerroviariaSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaFerroviariaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorRequest request) {
             return base.Channel.autorizarCPEAutomotor(request);
         }
@@ -10545,6 +24025,81 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEAutomotorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest request) {
+            return base.Channel.autorizarCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta autorizarCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest request) {
+            return base.Channel.autorizarCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse> autorizarCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest request) {
+            return base.Channel.autorizarCPEDuctosDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta autorizarCPEDuctosDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarDuctosDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEDuctosDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest request) {
+            return base.Channel.autorizarCPEDuctosDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse> autorizarCPEDuctosDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarDuctosDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEDuctosDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest request) {
+            return base.Channel.autorizarCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta autorizarCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.autorizarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest request) {
+            return base.Channel.autorizarCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse> autorizarCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.AutorizarEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).autorizarCPEEmisionDestinoDGAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10623,6 +24178,81 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest request) {
+            return base.Channel.regresoOrigenCPEAutomotorDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta regresoOrigenCPEAutomotorDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEAutomotorDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest request) {
+            return base.Channel.regresoOrigenCPEAutomotorDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse> regresoOrigenCPEAutomotorDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenAutomotorDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEAutomotorDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest request) {
+            return base.Channel.regresoOrigenCPEFerroviariaDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta regresoOrigenCPEFerroviariaDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEFerroviariaDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest request) {
+            return base.Channel.regresoOrigenCPEFerroviariaDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse> regresoOrigenCPEFerroviariaDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenFerroviariaDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEFerroviariaDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest request) {
+            return base.Channel.regresoOrigenCPEEmisionDestinoDG(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta regresoOrigenCPEEmisionDestinoDG(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEEmisionDestinoDG(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.regresoOrigenCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest request) {
+            return base.Channel.regresoOrigenCPEEmisionDestinoDGAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse> regresoOrigenCPEEmisionDestinoDGAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.RegresoOrigenEmisionDestinoDGSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).regresoOrigenCPEEmisionDestinoDGAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.desvioCPEAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorRequest request) {
             return base.Channel.desvioCPEAutomotor(request);
         }
@@ -10695,6 +24325,56 @@ namespace Molinos.Scato.Servicios.AfipCPDigitalService {
             inValue.auth = auth;
             inValue.solicitud = solicitud;
             return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEAutomotorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest request) {
+            return base.Channel.editarCPEConfirmadaAutomotor(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEConfirmadaAutomotor(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaAutomotor(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest request) {
+            return base.Channel.editarCPEConfirmadaAutomotorAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse> editarCPEConfirmadaAutomotorAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaAutomotorSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaAutomotorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request) {
+            return base.Channel.editarCPEConfirmadaDuctos(request);
+        }
+        
+        public Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta editarCPEConfirmadaDuctos(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse retVal = ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaDuctos(inValue);
+            return retVal.respuesta;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse> Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType.editarCPEConfirmadaDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest request) {
+            return base.Channel.editarCPEConfirmadaDuctosAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse> editarCPEConfirmadaDuctosAsync(Molinos.Scato.Servicios.AfipCPDigitalService.Auth auth, Molinos.Scato.Servicios.AfipCPDigitalService.EditarCPEConfirmadaDuctosSolicitud solicitud) {
+            Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest inValue = new Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosRequest();
+            inValue.auth = auth;
+            inValue.solicitud = solicitud;
+            return ((Molinos.Scato.Servicios.AfipCPDigitalService.CpePortType)(this)).editarCPEConfirmadaDuctosAsync(inValue);
         }
     }
 }

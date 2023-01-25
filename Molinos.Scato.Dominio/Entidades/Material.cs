@@ -45,5 +45,8 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsAsignableCalle { get; set; }
         public virtual string ColorFondo { get; set; }
         public virtual string ColorTexto { get; set; }
+        public virtual bool EsDerivadoGranario { get; set; }
+        public virtual int? CodigoGranoPadre { get; set; }
+        public virtual TipoEmbalaje TipoEmbalaje { get; set; }
     }
 }

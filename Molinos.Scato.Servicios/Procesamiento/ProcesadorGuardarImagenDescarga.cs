@@ -9,7 +9,6 @@ using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -31,12 +30,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ConvertirPDFaPNG(comando.Pdf, resultado);
                 if (resultado.PdfImage != null)
                 {
-                    if(comando.EsSustentable)
+                    switch (comando.TipoImagen)
                     {
-                        GuardarImagenSustentable(resultado.PdfImage, comando);
-                    } else
-                    {
-                        GuardarImagen(resultado.PdfImage, comando);
+                        case Dominio.Enums.TipoImagen.CPESustentable:
+                            GuardarImagenSustentable(comando, resultado);
+                            break;
+                        case Dominio.Enums.TipoImagen.CPEDG:
+                            GuardarImagenDerivadoGranario(comando, resultado);
+                            break;
+                        default:
+                            GuardarImagen(comando, resultado);
+                            break;
                     }
                 }
             }
@@ -66,39 +70,77 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private void GuardarImagenSustentable(byte[] imagenCp, GuardarImagenDescarga comando)
+        private void GuardarImagenSustentable(GuardarImagenDescarga comando, ResultadoCartaPorteElectronica resultado)
         {
-            var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
+            try
             {
-                SoloDibujar = true,
-                PdfImage = imagenCp
-            }) as ResultadoCartaPorteElectronica;
-
-            if (File.Exists(comando.RutaFotoCP) && resultadoSustentable.PdfImageSustentable != null)
-            {
-                resultadoSustentable.PdfImageSustentable = ExtensionesImage.Compress(resultadoSustentable.PdfImageSustentable);
-                var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente) + "-descargado-sustentable.jpeg";
-                var imagenCpSustentable = resultadoSustentable.PdfImageSustentable;
-
-                using (var ms = new MemoryStream(imagenCpSustentable))
+                var resultadoSustentable = servicioComandos.Ejecutar(new AgregarMarcaSustentable
                 {
-                    var bitmapSustentable = new Bitmap(ms);
-                    bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    SoloDibujar = true,
+                    PdfImage = resultado.PdfImage
+                }) as ResultadoCartaPorteElectronica;
+
+                if (File.Exists(comando.RutaFotoCP) && resultadoSustentable.PdfImageSustentable != null)
+                {
+                    resultadoSustentable.PdfImageSustentable = ExtensionesImage.Compress(resultadoSustentable.PdfImageSustentable);
+                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente) + "-descargado-sustentable.jpeg";
+                    var imagenCpSustentable = resultadoSustentable.PdfImageSustentable;
+
+                    using (var ms = new MemoryStream(imagenCpSustentable))
+                    {
+                        var bitmapSustentable = new Bitmap(ms);
+                        bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al guardar imagen sustentable de descarga");
+                resultado.Errores.Add("4", "Error al guardar imagen sustentable de descarga");
             }
         }
 
-        private void GuardarImagen(byte[] imagenCp, GuardarImagenDescarga comando)
+        private void GuardarImagen(GuardarImagenDescarga comando, ResultadoCartaPorteElectronica resultado)
         {
-            if (File.Exists(comando.RutaFotoCP))
+            try
             {
-                imagenCp = ExtensionesImage.Compress(imagenCp);
-                var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente) + "-descargado.jpeg";
-                using (var ms = new MemoryStream(imagenCp))
+                if (File.Exists(comando.RutaFotoCP))
                 {
-                    var bitmapSustentable = new Bitmap(ms);
-                    bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    resultado.PdfImage = ExtensionesImage.Compress(resultado.PdfImage);
+                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente) + "-descargado.jpeg";
+                    using (var ms = new MemoryStream(resultado.PdfImage))
+                    {
+                        var bitmapSustentable = new Bitmap(ms);
+                        bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al guardar imagen de descarga");
+                resultado.Errores.Add("4", "Error al guardar imagen de descarga");
+            }
+        }
+
+        private void GuardarImagenDerivadoGranario(GuardarImagenDescarga comando, ResultadoCartaPorteElectronica resultado)
+        {
+            try
+            {
+                if (File.Exists(comando.RutaFotoCP))
+                {
+                    resultado.PdfImage = ExtensionesImage.Compress(resultado.PdfImage);
+                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente, comando.Etapa, DateTime.Now, comando.TipoVehiculo) + ".jpeg";
+                    using (var ms = new MemoryStream(resultado.PdfImage))
+                    {
+                        var bitmapSustentable = new Bitmap(ms);
+                        bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error al guardar imagen CP de derivado granario");
+                resultado.Errores.Add("4", "Error al guardar imagen CP de derivado granario");
             }
         }
     }

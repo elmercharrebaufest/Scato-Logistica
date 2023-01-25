@@ -7,7 +7,6 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -42,7 +41,7 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
             var numeroOrden = servicio.ObtenerNumeroDocumentoGenerado().ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
-            var orden = new OrdenCargaInternaDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden };
+            var orden = new OrdenCargaInternaDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden, DerivadoGranarioHabilitado = true };
             if(cargaDeCupoId != 0)
             {
                 var cupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
@@ -58,6 +57,13 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
+            Validar(orden);
+
+            if (!ModelState.IsValid)
+            {
+                SetearVista(workflowObje, datosUsuario.CentroId);
+                return View(orden);
+            }
 
             if (orden.PatenteCamion != null)
             {
@@ -78,10 +84,10 @@ namespace Molinos.Scato.Web.Controllers
             var resultadoChofer = SetearChofer(orden.Chofer);
             if (resultadoChofer == false)
             {
-                        var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-                        SetearVista(workflowObj, datosUsuario.CentroId);
-                        return View(orden);
-                    }
+                var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+                SetearVista(workflowObj, datosUsuario.CentroId);
+                return View(orden);
+            }
 
             var transportistaId = orden.TransportistaId;
             var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, orden.EsTransportista);
@@ -94,18 +100,12 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var controlRecorrido = new ControlRecorridoDto
-                    {
-                    Actividad = Textos.ActIngresarOrdenCargaInterna,
-                    ActividadXaml = "IngresarOrdenCargaInterna",
-                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                    NombreUsuario = datosUsuario.NombreUsuario
-                };
-            
-            if (!Validar(orden, datosUsuario))
             {
-                SetearVista(workflowObje, datosUsuario.CentroId);
-                return View(orden);
-            }
+                Actividad = Textos.ActIngresarOrdenCargaInterna,
+                ActividadXaml = "IngresarOrdenCargaInterna",
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario
+            };
 
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
@@ -155,15 +155,38 @@ namespace Molinos.Scato.Web.Controllers
             return Json(almacenes, JsonRequestBehavior.AllowGet);
         }
 
-        protected virtual bool Validar(OrdenCargaInternaDto orden, DatosUsuario usuario)
+        private void Validar(OrdenCargaInternaDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
             {
                 ModelState.AddModelError("Almacen_Id", Textos.OrdenInterna_AlmacenRequerido);
-                return false;
             }
-            return true;
+
+            if (!orden.DerivadoGranarioHabilitado && material.EsDerivadoGranario)
+            {
+                ModelState.AddModelError("MaterialId", "El material es un derivado granario. Habilitar check y completar datos faltantes.");
+            }
+
+            if (orden.DerivadoGranarioHabilitado && !material.EsDerivadoGranario)
+            {
+                ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
+            }
+
+            if (orden.DerivadoGranarioHabilitado && !orden.PlantaDGDestino.HasValue)
+            {
+                ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_PlantaDGDestino));
+            }
+
+            if (orden.DerivadoGranarioHabilitado && !orden.OrdenDomicilioDestino.HasValue)
+            {
+                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_OrdenDomicilioDestino));
+            }
+
+            if (orden.DerivadoGranarioHabilitado && !orden.CuitPagadorFlete.HasValue)
+            {
+                ModelState.AddModelError("CuitPagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_CuitPagadorFlete));
+            }
         }
     }
 }

@@ -88,7 +88,15 @@
     <Compile Include="EnviarMensajeV3.cs" />
     <Compile Include="ImpresionEtiquetaMuestraInase.cs" />
     <Compile Include="ImpresionGenericaFile.cs" />
+    <Compile Include="Interfaces\IBajaCTGDGService.cs" />
+    <Compile Include="Interfaces\IAltaCTGDGService.cs" />
     <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
+    <Compile Include="Internas\DarDeAltaCtgDGAutomatica.cs" />
+    <Compile Include="Internas\DarDeAltaCtgDGManual.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGDefinitivoAutomatica.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGAutomatica.cs" />
+    <Compile Include="Internas\ObtenerTipoDeValidacionCtgDG.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGManual.cs" />
     <Compile Include="VerificarCartelPreBalanza.cs" />
     <Compile Include="LlamarCallePreBalanza.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
@@ -1227,6 +1235,24 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="EnEsperaHB4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AltaCTGDG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTGDGDefinitivo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTGDG.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -244,22 +245,22 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         Repositorio.Agregar(new ControlRecorrido
                         {
-                            Actividad = "Request Alta de CPE",
+                            Actividad = Constantes.ControlRecorrido.Actividades.Actividad,
                             Fecha = DateTime.Now,
                             Comentario = request,
                             NombreUsuario = "",
                             WorkflowInstanceId = comando.WorkflowId,
-                            Mensaje = "Automatico"
+                            Mensaje = Constantes.ControlRecorrido.Mensajes.Mensaje
                         });
 
                         Repositorio.Agregar(new ControlRecorrido
                         {
-                            Actividad = "Response Alta de CPE",
+                            Actividad = Constantes.ControlRecorrido.Actividades.Actividad,
                             Fecha = DateTime.Now,
                             Comentario = responseAFIP is null ? string.Empty : responseAFIP.ToXml(),
                             NombreUsuario = "",
                             WorkflowInstanceId = comando.WorkflowId,
-                            Mensaje = "Automatico"
+                            Mensaje = Constantes.ControlRecorrido.Mensajes.Mensaje
                         });
                         Repositorio.GuardarCambios();
                     }
@@ -361,6 +362,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var transportekmRecorrer = comando?.Dto?.KmRecorrer ?? 0;
 
                 var nroPrecinto = comando?.Dto?.NumeroPrecinto;
+                var nroPrecintoLista = new string[1];
+                nroPrecintoLista[0] = nroPrecinto;
+
                 var nroOperativo = Convert.ToInt64(comando?.Dto?.NumeroOperativo);
                 var codigoRamalId = (short)comando.Dto?.CodigoRamalAfip;
                 var transportecuitTransportistaTramo2 = !string.IsNullOrEmpty(comando?.Dto?.TransportistaTramo2CUIT) ? long.Parse(comando?.Dto?.TransportistaTramo2CUIT?.Replace("-", string.Empty)) : default(long);
@@ -422,7 +426,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             cuitTransportista = transportecuitTransportista,
                             nroVagon = transportenroVagon,
-                            nroPrecinto = nroPrecinto,
+                            nroPrecinto = nroPrecintoLista,
                             nroOperativo = nroOperativo,
                             ramal = new Ramal
                             {
@@ -652,7 +656,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         RamalFerroviario = responseCp?.respuesta?.transporte?.ramal?.codigo,
 
                         //NumeroOperativo
-                        NumeroPrecinto = responseCp?.respuesta?.transporte?.nroPrecinto,
+                        NumeroPrecinto = responseCp?.respuesta?.transporte?.nroPrecinto[0],
 
                         //Pdf
                         Pdf = responseCp?.respuesta?.pdf is null ? null : responseCp?.respuesta?.pdf,

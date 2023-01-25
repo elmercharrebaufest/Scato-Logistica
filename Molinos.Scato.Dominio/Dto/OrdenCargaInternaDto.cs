@@ -98,6 +98,16 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Calle")]
         public int? Calle_Id { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_DerivadoGranarioHabilitado")]
+        public bool DerivadoGranarioHabilitado { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_PlantaDGDestino")]
+        public int? PlantaDGDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_OrdenDomicilioDestino")]
+        public int? OrdenDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_CuitPagadorFlete")]
+        public long? CuitPagadorFlete { get; set;}
     }
 }

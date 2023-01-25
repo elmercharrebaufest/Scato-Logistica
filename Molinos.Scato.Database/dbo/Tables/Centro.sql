@@ -66,10 +66,14 @@
     [FotosPath]                        VARCHAR (200)  NULL,
     [AvanzaCpe] BIT NOT NULL DEFAULT 0, 
     [MinutosEsperaPrecalado] INT DEFAULT ((0)) NULL,
+    [Domicilio_Id] INT NULL, 
+    [ValidarAutomaticamenteCTGDG] BIT DEFAULT ((0)) NOT NULL, 
+    [PlantaDG] INT NULL, 
     CONSTRAINT [PK_dbo.Centro] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Centro_dbo.Camara_Camara_Id] FOREIGN KEY ([CamaraDefault_Id]) REFERENCES [dbo].[Camara] ([Id]),
     CONSTRAINT [FK_dbo.Centro_dbo.Localidad_Localidad_Id] FOREIGN KEY ([Localidad_Id]) REFERENCES [dbo].[Localidad] ([Id]),
     CONSTRAINT [FK_dbo.Centro_dbo.Provincia_Provincia_Id] FOREIGN KEY ([Provincia_Id]) REFERENCES [dbo].[Provincia] ([Id]),
+    CONSTRAINT [FK_dbo.Centro_dbo.Domicilio_Domicilio_Id] FOREIGN KEY ([Domicilio_Id]) REFERENCES [dbo].[Domicilio] ([Id]),
     CONSTRAINT [UK_Centro_CodigoSAP] UNIQUE NONCLUSTERED ([CodigoSAP] ASC)
 );
 

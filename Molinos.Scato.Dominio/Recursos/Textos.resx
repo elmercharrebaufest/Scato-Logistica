@@ -10102,4 +10102,61 @@
   <data name="ExcepcionAlControlProveedor_Titulo" xml:space="preserve">
     <value>Excepciones a Intermediarios</value>
   </data>
+  <data name="Material_EsDerivadoGranario" xml:space="preserve">
+    <value>Es Derivado Granario</value>
+  </data>
+  <data name="ActAltaCTGDG" xml:space="preserve">
+    <value>Alta de CTG Derivado Granario</value>
+  </data>
+  <data name="Material_CodigoGranoPadre" xml:space="preserve">
+    <value>Codigo grano padre</value>
+  </data>
+  <data name="Material_TipoEmbalaje" xml:space="preserve">
+    <value>Tipo Embalaje</value>
+  </data>
+  <data name="Centro_Domicilio" xml:space="preserve">
+    <value>Domicilio</value>
+  </data>
+  <data name="Default_Embalaje" xml:space="preserve">
+    <value>(Embalaje)</value>
+  </data>
+  <data name="Centro_PlantaDG" xml:space="preserve">
+    <value>Planta Derivado Granario</value>
+  </data>
+  <data name="Centro_ValidarAutomaticamenteCTGDG" xml:space="preserve">
+    <value>Alta Automática Derivado Granario</value>
+  </data>
+  <data name="Default_Domicilio" xml:space="preserve">
+    <value>(domicilio)</value>
+	  </data>
+  <data name="ActBajaCTGDG" xml:space="preserve">
+    <value>Baja de CTG Derivado Granario</value>
+  </data>
+  <data name="ActBajaCTGDGDefinitivo" xml:space="preserve">
+    <value>Baja CTG Derivado Granario Definitivo</value>
+  </data>
+  <data name="CartaPorte_NumeroCTG" xml:space="preserve">
+    <value>Numero de CTG</value>
+  </data>
+  <data name="CartaPorte_NroCPE" xml:space="preserve">
+    <value>N° CPE (Sucursal - Orden)</value>
+  </data>
+  <data name="CartaPorte_NumeroCPE" xml:space="preserve">
+    <value>N° CPE (Sucursal - Orden)</value>
+  </data>
+  <data name="AltaCTGDG_Titulo" xml:space="preserve">
+    <value>Confirmación Manual de Alta CTG Derivado Granario</value>
+  </data>
+  <data name="OrdenCargaInterna_CuitPagadorFlete" xml:space="preserve">
+    <value>Cuit Pagador Flete</value>
+  </data>
+  <data name="OrdenCargaInterna_DerivadoGranarioHabilitado" xml:space="preserve">
+    <value>Derivado Granario</value>
+  </data>
+  <data name="OrdenCargaInterna_OrdenDomicilioDestino" xml:space="preserve">
+    <value>Domicilio</value>
+  </data>
+  <data name="OrdenCargaInterna_PlantaDGDestino" xml:space="preserve">
+    <value>Planta</value>
+  </data>
 </root>

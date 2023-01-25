@@ -871,6 +871,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alta de CTG Derivado Granario.
+        /// </summary>
+        public static string ActAltaCTGDG {
+            get {
+                return ResourceManager.GetString("ActAltaCTGDG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Análisis de Calidad.
         /// </summary>
         public static string ActAnalisisDeCalidad {
@@ -957,6 +966,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ActBajaCTGDefinitivo {
             get {
                 return ResourceManager.GetString("ActBajaCTGDefinitivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baja de CTG Derivado Granario.
+        /// </summary>
+        public static string ActBajaCTGDG {
+            get {
+                return ResourceManager.GetString("ActBajaCTGDG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baja CTG Derivado Granario Definitivo.
+        /// </summary>
+        public static string ActBajaCTGDGDefinitivo {
+            get {
+                return ResourceManager.GetString("ActBajaCTGDGDefinitivo", resourceCulture);
             }
         }
         
@@ -4116,6 +4143,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AltaCTG_ValidarCTGRepetido {
             get {
                 return ResourceManager.GetString("AltaCTG_ValidarCTGRepetido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirmación Manual de Alta CTG Derivado Granario.
+        /// </summary>
+        public static string AltaCTGDG_Titulo {
+            get {
+                return ResourceManager.GetString("AltaCTGDG_Titulo", resourceCulture);
             }
         }
         
@@ -7900,6 +7936,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to N° CPE (Sucursal - Orden).
+        /// </summary>
+        public static string CartaPorte_NroCPE {
+            get {
+                return ResourceManager.GetString("CartaPorte_NroCPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nº Documento.
         /// </summary>
         public static string CartaPorte_NroDocumento {
@@ -7914,6 +7959,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CartaPorte_NumeroAduana {
             get {
                 return ResourceManager.GetString("CartaPorte_NumeroAduana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N° CPE (Sucursal - Orden).
+        /// </summary>
+        public static string CartaPorte_NumeroCPE {
+            get {
+                return ResourceManager.GetString("CartaPorte_NumeroCPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Numero de CTG.
+        /// </summary>
+        public static string CartaPorte_NumeroCTG {
+            get {
+                return ResourceManager.GetString("CartaPorte_NumeroCTG", resourceCulture);
             }
         }
         
@@ -8737,6 +8800,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Domicilio.
+        /// </summary>
+        public static string Centro_Domicilio {
+            get {
+                return ResourceManager.GetString("Centro_Domicilio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Encolar Baja CTG Automáticamente.
         /// </summary>
         public static string Centro_EncolaBajaCtgAutomatico {
@@ -8935,6 +9007,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Planta Derivado Granario.
+        /// </summary>
+        public static string Centro_PlantaDG {
+            get {
+                return ResourceManager.GetString("Centro_PlantaDG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Centro/Productor.
         /// </summary>
         public static string Centro_Productor {
@@ -9066,6 +9147,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Centro_ToleranciaRomaneo {
             get {
                 return ResourceManager.GetString("Centro_ToleranciaRomaneo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alta Automática Derivado Granario.
+        /// </summary>
+        public static string Centro_ValidarAutomaticamenteCTGDG {
+            get {
+                return ResourceManager.GetString("Centro_ValidarAutomaticamenteCTGDG", resourceCulture);
             }
         }
         
@@ -11190,6 +11280,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Default_Documento {
             get {
                 return ResourceManager.GetString("Default_Documento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (domicilio).
+        /// </summary>
+        public static string Default_Domicilio {
+            get {
+                return ResourceManager.GetString("Default_Domicilio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (Embalaje).
+        /// </summary>
+        public static string Default_Embalaje {
+            get {
+                return ResourceManager.GetString("Default_Embalaje", resourceCulture);
             }
         }
         
@@ -19445,6 +19553,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Codigo grano padre.
+        /// </summary>
+        public static string Material_CodigoGranoPadre {
+            get {
+                return ResourceManager.GetString("Material_CodigoGranoPadre", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Código INV.
         /// </summary>
         public static string Material_CodigoINV {
@@ -19603,6 +19720,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Material_EsCosecha {
             get {
                 return ResourceManager.GetString("Material_EsCosecha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es Derivado Granario.
+        /// </summary>
+        public static string Material_EsDerivadoGranario {
+            get {
+                return ResourceManager.GetString("Material_EsDerivadoGranario", resourceCulture);
             }
         }
         
@@ -19819,6 +19945,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Material_TipoDeGrano {
             get {
                 return ResourceManager.GetString("Material_TipoDeGrano", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo Embalaje.
+        /// </summary>
+        public static string Material_TipoEmbalaje {
+            get {
+                return ResourceManager.GetString("Material_TipoEmbalaje", resourceCulture);
             }
         }
         
@@ -22478,6 +22613,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cuit Pagador Flete.
+        /// </summary>
+        public static string OrdenCargaInterna_CuitPagadorFlete {
+            get {
+                return ResourceManager.GetString("OrdenCargaInterna_CuitPagadorFlete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Derivado Granario.
+        /// </summary>
+        public static string OrdenCargaInterna_DerivadoGranarioHabilitado {
+            get {
+                return ResourceManager.GetString("OrdenCargaInterna_DerivadoGranarioHabilitado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destino.
         /// </summary>
         public static string OrdenCargaInterna_Destino {
@@ -22550,6 +22703,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Domicilio.
+        /// </summary>
+        public static string OrdenCargaInterna_OrdenDomicilioDestino {
+            get {
+                return ResourceManager.GetString("OrdenCargaInterna_OrdenDomicilioDestino", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patente Acoplado.
         /// </summary>
         public static string OrdenCargaInterna_PatenteAcoplado {
@@ -22582,6 +22744,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string OrdenCargaInterna_PesoMaximoExcedido {
             get {
                 return ResourceManager.GetString("OrdenCargaInterna_PesoMaximoExcedido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Planta.
+        /// </summary>
+        public static string OrdenCargaInterna_PlantaDGDestino {
+            get {
+                return ResourceManager.GetString("OrdenCargaInterna_PlantaDGDestino", resourceCulture);
             }
         }
         

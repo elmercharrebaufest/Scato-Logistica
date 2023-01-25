@@ -14,6 +14,7 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
@@ -158,13 +159,16 @@ namespace Molinos.Scato.Web.Controllers
 
             controller.ViewBag.TiposComerciales = tiposComerciales.ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
             controller.ViewBag.TiposComercialesTransportista = tiposComerciales.Where(x => !x.TransportistaEsProveedor).Select(y => y.Id.ToString()).ToList();
-            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString() , f => f.MaterialDesc);
             controller.ViewBag.TiposDocumentos = servicio.ListarTiposDocumentoIdentidad().ToSelectList(f => f.Id.ToString(), f => f.DescripcionCorta);
             controller.ViewBag.Workflow = workflow.Codigo;
             controller.ViewBag.WorkflowId = workflow.Id;
             controller.ViewBag.EsIngreso = workflow.TipoDeWorkflow == TipoDeWorkflow.Ingreso;
             controller.ViewBag.CentroId = centroId;
             controller.ViewBag.WorkflowId = workflow.Id;
+            
+            
+            controller.ViewBag.TipoMateriales = JsonConvert.SerializeObject(materiales.Select(s => new { Id = s.MaterialId.ToString(), EsDerivadoGranario = s.EsDerivadoGranario }));
 
         }
     }

@@ -60,7 +60,13 @@
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset class="grupo-carta-porte">
-            
+            <div class="control">
+                @Html.LabelFor(model => model.NroCTG, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.NroCTG, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.NroCTG)
+                </div>
+            </div>
             <div class="control">
                 @Html.LabelFor(model => model.Cliente, new { @class = "control-label small margin10" })
                 <div class="">

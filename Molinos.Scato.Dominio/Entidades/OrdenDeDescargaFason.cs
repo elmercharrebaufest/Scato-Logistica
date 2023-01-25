@@ -34,6 +34,10 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual Recorrido Recorrido { get; set; }
         public virtual bool? EsExtranjero { get; set; }
+
+        public virtual string NumeroCTG { get; set; }
+        public virtual string Sucursal { get; set; }
+        public virtual string NroOrden { get; set; }
     }
 }
 
