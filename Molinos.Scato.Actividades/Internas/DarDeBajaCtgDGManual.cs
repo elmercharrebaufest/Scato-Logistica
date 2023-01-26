@@ -24,8 +24,8 @@ namespace Molinos.Scato.Actividades.Internas
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var baja = new BajaCTGDto
                 {
-                    CartaPorteId = orden.Id,
-                    CodigoDeBaja = orden.NumeroCTG,
+                    OrdenDeDescargaFasonId = orden.Id,
+                    CodigoDeBaja = codigoDeBaja,
                     Fecha = DateTime.Now,
                     WorkflowId = workflowId
                 };

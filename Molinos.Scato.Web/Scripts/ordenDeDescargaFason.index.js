@@ -21,10 +21,6 @@
         if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
     });
 
-    $('#Transportista').change(function () {
-        DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, true, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
-        if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
-    });
 
     // para que el campo retome el foco al seleccionar una fecha
     $('input.date').datepicker("option", "onSelect", function () {
@@ -73,9 +69,9 @@
         $('#EsDerivadoGranario').val(JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario);
 
         if (JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario) {
-            $('.numero-ctg-cpe').attr("hidden", true);
-        } else {
             $('.numero-ctg-cpe').removeAttr('hidden');
+        } else {
+            $('.numero-ctg-cpe').attr("hidden", true);
         }
         
     });
@@ -132,8 +128,7 @@ function BuscarNumeroCPE(ctg, before, callback) {
     $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: ctg }, function (data) {
         
 
-        if (data.satus == 500) {
-            console.log(JSON.stringify(data))
+        if (data.status == 500) {
             MostrarAlertaAdvertencia(data.satus);
         }
     }).complete(function (data) {
@@ -159,7 +154,6 @@ function BuscarNumeroCPE(ctg, before, callback) {
 
 
 function ValidarPatenteCnrt() {
-    ;
     var patente = $("#PatenteCamion").val();
     var acoplado = $("#PatenteAcoplado").val();
     if (patente != '' && acoplado != '') {
@@ -189,30 +183,3 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
         if (callback != null) callback();
     });
 }
-
-$('#NumeroCTG').change(function () {
-    
-    var nroCartaPorte = $('.cargarCartaPorte').val();
-    var clienteId = $('#ClienteId').val();
-    if ((nroCartaPorte.length == 11 || nroCartaPorte.length == 12) && $.isNumeric(nroCartaPorte)) {
-        BlockUI();
-        
-
-        $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: nroCartaPorte }, function (data) {
-
-            console.log(JSON.stringify(data))
-         
-            
-
-            
-        }).complete(function () {
-            $.unblockUI();
-        });
-    }
-});
-
-$('#MaterialId').change(function () {
-    var customVal = $("#MaterialId").data("value");
-    var id = $('#MaterialId').value();
-    $('#EsDerivadoGranario').value("hol");
-});

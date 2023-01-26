@@ -99,7 +99,6 @@ namespace Molinos.Scato.Dominio.Dto
 
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NumeroCTG { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]

@@ -763,4 +763,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Sucursal" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9adbb80a-e568-4764-bbba-95d0adb69499" ChangeDateTime="01/26/2023 15:49:36">
+    <Property Name="ElementName" Value="[dbo].[BajaCTG].[Orde]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BajaCTG]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrdenDeDescargaFason_Id" />
+  </Operation>
 </Operations>

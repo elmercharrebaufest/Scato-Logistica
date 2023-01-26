@@ -43,11 +43,6 @@
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
-    <x:Property Name="vehiculo" Type="InArgument(msdd:VehiculoDto)">
-      <x:Property.Attributes>
-        <RequiredArgumentAttribute />
-      </x:Property.Attributes>
-    </x:Property>
     <x:Property Name="puestoDeTrabajoId" Type="InOutArgument(x:Int32)" />
     <x:Property Name="rechazado" Type="OutArgument(x:Boolean)" />
     <x:Property Name="demorado" Type="OutArgument(x:Boolean)" />
@@ -118,10 +113,9 @@
             <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, ActividadXaml = "BajaCTGDG", WorkflowInstanceId = workflowId, PuestoDeTrabajoId = puestoDeTrabajoId }</mca:CSharpValue>
           </Variable.Default>
         </Variable>
-        <Variable x:TypeArguments="x:Boolean" Name="usarValidacionManual" />
       </Flowchart.Variables>
       <Flowchart.StartNode>
-        <FlowStep x:Name="__ReferenceID25" sap2010:WorkflowViewState.IdRef="FlowStep_20">
+        <FlowStep x:Name="__ReferenceID21" sap2010:WorkflowViewState.IdRef="FlowStep_20">
           <local:ObtenerTipoDeValidacionCtgDG sap2010:WorkflowViewState.IdRef="ObtenerTipoDeValidacionCtgDG_1">
             <local:ObtenerTipoDeValidacionCtgDG.CentroId>
               <InArgument x:TypeArguments="x:Int32">
@@ -135,12 +129,12 @@
             </local:ObtenerTipoDeValidacionCtgDG.UsarValidacionAutomatica>
           </local:ObtenerTipoDeValidacionCtgDG>
           <FlowStep.Next>
-            <FlowDecision x:Name="__ReferenceID14" DisplayName="Automatica?" sap2010:WorkflowViewState.IdRef="FlowDecision_6">
+            <FlowDecision x:Name="__ReferenceID11" DisplayName="Automatica?" sap2010:WorkflowViewState.IdRef="FlowDecision_6">
               <FlowDecision.Condition>
                 <mca:CSharpValue x:TypeArguments="x:Boolean">usarValidacionAutomatica</mca:CSharpValue>
               </FlowDecision.Condition>
               <FlowDecision.True>
-                <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_10">
+                <FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_10">
                   <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_5">
                     <local:ControlRecorrido.ControlRecorridoDto>
                       <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -168,12 +162,12 @@
                         </local:DarDeBajaCtgDGAutomatica.Resultado>
                       </local:DarDeBajaCtgDGAutomatica>
                       <FlowStep.Next>
-                        <FlowDecision x:Name="__ReferenceID6" DisplayName="Fallo?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                        <FlowDecision x:Name="__ReferenceID5" DisplayName="Fallo?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
                           <FlowDecision.Condition>
                             <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
                           </FlowDecision.Condition>
                           <FlowDecision.True>
-                            <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_4">
+                            <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_4">
                               <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
                                 <local:ControlRecorrido.ControlRecorridoDto>
                                   <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -182,7 +176,7 @@
                                 </local:ControlRecorrido.ControlRecorridoDto>
                               </local:ControlRecorrido>
                               <FlowStep.Next>
-                                <FlowDecision x:Name="__ReferenceID13" DisplayName="reintentar?" sap2010:WorkflowViewState.IdRef="FlowDecision_5">
+                                <FlowDecision x:Name="__ReferenceID10" DisplayName="reintentar?" sap2010:WorkflowViewState.IdRef="FlowDecision_5">
                                   <FlowDecision.Condition>
                                     <mca:CSharpValue x:TypeArguments="x:Boolean">contadorDeFallos &lt; 3</mca:CSharpValue>
                                   </FlowDecision.Condition>
@@ -190,98 +184,104 @@
                                     <x:Reference>__ReferenceID0</x:Reference>
                                   </FlowDecision.True>
                                   <FlowDecision.False>
-                                    <FlowDecision x:Name="__ReferenceID22" DisplayName="Manual?" sap2010:WorkflowViewState.IdRef="FlowDecision_8">
-                                      <FlowDecision.Condition>
-                                        <mca:CSharpValue x:TypeArguments="x:Boolean">usarValidacionManual</mca:CSharpValue>
-                                      </FlowDecision.Condition>
-                                      <FlowDecision.True>
-                                        <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_2">
-                                          <p:Receive x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="BajaCTGDG" ServiceContractName="p1:IBajaCTGDGService">
-                                            <p:Receive.CorrelatesOn>
-                                              <p:XPathMessageQuery x:Key="key1">
-                                                <p:XPathMessageQuery.Namespaces>
-                                                  <ssx:XPathMessageContextMarkup>
-                                                    <x:String x:Key="xgSc">http://scato.molinos.com/</x:String>
-                                                  </ssx:XPathMessageContextMarkup>
-                                                </p:XPathMessageQuery.Namespaces>sm:body()/xgSc:BajaCTGDG/xgSc:instanceId</p:XPathMessageQuery>
-                                            </p:Receive.CorrelatesOn>
-                                            <p:Receive.CorrelatesWith>
-                                              <InArgument x:TypeArguments="p:CorrelationHandle">
-                                                <mca:CSharpValue x:TypeArguments="p:CorrelationHandle">hndInstance</mca:CSharpValue>
-                                              </InArgument>
-                                            </p:Receive.CorrelatesWith>
-                                            <p:ReceiveParametersContent>
-                                              <OutArgument x:TypeArguments="s:Guid" x:Key="instanceId" />
-                                              <OutArgument x:TypeArguments="msde:DecisionCtg" x:Key="decision">
-                                                <mca:CSharpReference x:TypeArguments="msde:DecisionCtg">decision</mca:CSharpReference>
-                                              </OutArgument>
-                                              <OutArgument x:TypeArguments="x:String" x:Key="codigoBaja">
-                                                <mca:CSharpReference x:TypeArguments="x:String">codigoBaja</mca:CSharpReference>
-                                              </OutArgument>
-                                              <OutArgument x:TypeArguments="msdd:ControlRecorridoDto" x:Key="controlRecorrido">
-                                                <mca:CSharpReference x:TypeArguments="msdd:ControlRecorridoDto">controlRecorrido</mca:CSharpReference>
-                                              </OutArgument>
-                                            </p:ReceiveParametersContent>
-                                          </p:Receive>
-                                          <FlowStep.Next>
-                                            <FlowSwitch x:TypeArguments="msde:DecisionCtg" x:Name="__ReferenceID19" sap2010:WorkflowViewState.IdRef="FlowSwitch`1_1">
-                                              <FlowSwitch.Expression>
-                                                <mca:CSharpValue x:TypeArguments="msde:DecisionCtg">decision</mca:CSharpValue>
-                                              </FlowSwitch.Expression>
-                                              <FlowStep x:Key="DarDeBajaAutomaticamente" x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_8">
-                                                <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_4">
-                                                  <local:ControlRecorrido.ControlRecorridoDto>
-                                                    <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
-                                                      <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Automatica", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Reintentar Automatica", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                    <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+                                      <p:Receive x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="BajaCTGDG" ServiceContractName="p1:IBajaCTGDGService">
+                                        <p:Receive.CorrelatesOn>
+                                          <p:XPathMessageQuery x:Key="key1">
+                                            <p:XPathMessageQuery.Namespaces>
+                                              <ssx:XPathMessageContextMarkup>
+                                                <x:String x:Key="xgSc">http://scato.molinos.com/</x:String>
+                                              </ssx:XPathMessageContextMarkup>
+                                            </p:XPathMessageQuery.Namespaces>sm:body()/xgSc:BajaCTGDG/xgSc:instanceId</p:XPathMessageQuery>
+                                        </p:Receive.CorrelatesOn>
+                                        <p:Receive.CorrelatesWith>
+                                          <InArgument x:TypeArguments="p:CorrelationHandle">
+                                            <mca:CSharpValue x:TypeArguments="p:CorrelationHandle">hndInstance</mca:CSharpValue>
+                                          </InArgument>
+                                        </p:Receive.CorrelatesWith>
+                                        <p:ReceiveParametersContent>
+                                          <OutArgument x:TypeArguments="s:Guid" x:Key="instanceId" />
+                                          <OutArgument x:TypeArguments="msde:DecisionCtg" x:Key="decision">
+                                            <mca:CSharpReference x:TypeArguments="msde:DecisionCtg">decision</mca:CSharpReference>
+                                          </OutArgument>
+                                          <OutArgument x:TypeArguments="x:String" x:Key="codigoBaja">
+                                            <mca:CSharpReference x:TypeArguments="x:String">codigoBaja</mca:CSharpReference>
+                                          </OutArgument>
+                                          <OutArgument x:TypeArguments="msdd:ControlRecorridoDto" x:Key="controlRecorrido">
+                                            <mca:CSharpReference x:TypeArguments="msdd:ControlRecorridoDto">controlRecorrido</mca:CSharpReference>
+                                          </OutArgument>
+                                        </p:ReceiveParametersContent>
+                                      </p:Receive>
+                                      <FlowStep.Next>
+                                        <FlowSwitch x:TypeArguments="msde:DecisionCtg" x:Name="__ReferenceID16" sap2010:WorkflowViewState.IdRef="FlowSwitch`1_1">
+                                          <FlowSwitch.Expression>
+                                            <mca:CSharpValue x:TypeArguments="msde:DecisionCtg">decision</mca:CSharpValue>
+                                          </FlowSwitch.Expression>
+                                          <FlowStep x:Key="DarDeBajaAutomaticamente" x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_8">
+                                            <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_4">
+                                              <local:ControlRecorrido.ControlRecorridoDto>
+                                                <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                  <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Automatica", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Reintentar Automatica", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                                </InArgument>
+                                              </local:ControlRecorrido.ControlRecorridoDto>
+                                              <local:ControlRecorrido.Result>
+                                                <OutArgument x:TypeArguments="msdc:Resultado">
+                                                  <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ControlRecorrido.Result>
+                                            </local:ControlRecorrido>
+                                            <FlowStep.Next>
+                                              <FlowStep x:Name="__ReferenceID23" sap2010:WorkflowViewState.IdRef="FlowStep_25">
+                                                <local:DarDeBajaCtgDGAutomatica sap2010:WorkflowViewState.IdRef="DarDeBajaCtgDGAutomatica_2">
+                                                  <local:DarDeBajaCtgDGAutomatica.Intentos>
+                                                    <InOutArgument x:TypeArguments="x:Int32">
+                                                      <mca:CSharpReference x:TypeArguments="x:Int32">contadorDeFallos</mca:CSharpReference>
+                                                    </InOutArgument>
+                                                  </local:DarDeBajaCtgDGAutomatica.Intentos>
+                                                  <local:DarDeBajaCtgDGAutomatica.Orden>
+                                                    <InArgument x:TypeArguments="msdd:OrdenDeDescargaFasonDto">
+                                                      <mca:CSharpValue x:TypeArguments="msdd:OrdenDeDescargaFasonDto">orden</mca:CSharpValue>
                                                     </InArgument>
-                                                  </local:ControlRecorrido.ControlRecorridoDto>
-                                                  <local:ControlRecorrido.Result>
+                                                  </local:DarDeBajaCtgDGAutomatica.Orden>
+                                                  <local:DarDeBajaCtgDGAutomatica.Resultado>
                                                     <OutArgument x:TypeArguments="msdc:Resultado">
                                                       <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
                                                     </OutArgument>
-                                                  </local:ControlRecorrido.Result>
-                                                </local:ControlRecorrido>
+                                                  </local:DarDeBajaCtgDGAutomatica.Resultado>
+                                                </local:DarDeBajaCtgDGAutomatica>
                                                 <FlowStep.Next>
-                                                  <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_1">
-                                                    <p:SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
-                                                      <p:SendParametersContent>
-                                                        <InArgument x:TypeArguments="msdc:Resultado" x:Key="resultado">
-                                                          <mca:CSharpValue x:TypeArguments="msdc:Resultado">resultado</mca:CSharpValue>
-                                                        </InArgument>
-                                                      </p:SendParametersContent>
-                                                    </p:SendReply>
-                                                    <FlowStep.Next>
-                                                      <FlowDecision x:Name="__ReferenceID11" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
-                                                        <FlowDecision.Condition>
-                                                          <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
-                                                        </FlowDecision.Condition>
-                                                        <FlowDecision.True>
-                                                          <x:Reference>__ReferenceID2</x:Reference>
-                                                        </FlowDecision.True>
-                                                        <FlowDecision.False>
-                                                          <FlowDecision x:Name="__ReferenceID17" sap2010:WorkflowViewState.IdRef="FlowDecision_7">
-                                                            <FlowDecision.Condition>
-                                                              <mca:CSharpValue x:TypeArguments="x:Boolean">decision == DecisionCtg.DarDeBajaAutomaticamente</mca:CSharpValue>
-                                                            </FlowDecision.Condition>
-                                                            <FlowDecision.True>
-                                                              <x:Reference>__ReferenceID3</x:Reference>
-                                                            </FlowDecision.True>
-                                                            <FlowDecision.False>
-                                                              <FlowStep x:Name="__ReferenceID16" sap2010:WorkflowViewState.IdRef="FlowStep_12">
-                                                                <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_7">
-                                                                  <local:ControlRecorrido.ControlRecorridoDto>
-                                                                    <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
-                                                                      <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Manual", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Dado de baja manualmente", WorkflowInstanceId = workflowId }</mca:CSharpValue>
-                                                                    </InArgument>
-                                                                  </local:ControlRecorrido.ControlRecorridoDto>
-                                                                  <local:ControlRecorrido.Result>
-                                                                    <OutArgument x:TypeArguments="msdc:Resultado">
-                                                                      <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
-                                                                    </OutArgument>
-                                                                  </local:ControlRecorrido.Result>
-                                                                </local:ControlRecorrido>
-                                                                <FlowStep.Next>
-                                                                  <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_13">
+                                                  <FlowDecision x:Name="__ReferenceID4" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
+                                                    <FlowDecision.Condition>
+                                                      <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
+                                                    </FlowDecision.Condition>
+                                                    <FlowDecision.True>
+                                                      <FlowStep x:Name="__ReferenceID25" sap2010:WorkflowViewState.IdRef="FlowStep_24">
+                                                        <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_10">
+                                                          <local:ControlRecorrido.ControlRecorridoDto>
+                                                            <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                              <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Manual", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Error: " + resultado.Errores.FirstOrDefault().Value, WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                                            </InArgument>
+                                                          </local:ControlRecorrido.ControlRecorridoDto>
+                                                        </local:ControlRecorrido>
+                                                        <FlowStep.Next>
+                                                          <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+                                                            <p:SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendReplyToReceive" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+                                                              <p:SendParametersContent>
+                                                                <InArgument x:TypeArguments="msdc:Resultado" x:Key="resultado">
+                                                                  <mca:CSharpValue x:TypeArguments="msdc:Resultado">resultado</mca:CSharpValue>
+                                                                </InArgument>
+                                                              </p:SendParametersContent>
+                                                            </p:SendReply>
+                                                            <FlowStep.Next>
+                                                              <FlowDecision x:Name="__ReferenceID9" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                                                                <FlowDecision.Condition>
+                                                                  <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
+                                                                </FlowDecision.Condition>
+                                                                <FlowDecision.True>
+                                                                  <x:Reference>__ReferenceID2</x:Reference>
+                                                                </FlowDecision.True>
+                                                                <FlowDecision.False>
+                                                                  <FlowStep x:Name="__ReferenceID15" sap2010:WorkflowViewState.IdRef="FlowStep_13">
                                                                     <local:FinDeActividad InstanceId="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_1">
                                                                       <local:FinDeActividad.ControlRecorridoDto>
                                                                         <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -300,50 +300,74 @@
                                                                       </local:FinDeActividad.PuestoDeTrabajoId>
                                                                     </local:FinDeActividad>
                                                                   </FlowStep>
-                                                                </FlowStep.Next>
-                                                              </FlowStep>
-                                                            </FlowDecision.False>
-                                                          </FlowDecision>
-                                                        </FlowDecision.False>
-                                                      </FlowDecision>
-                                                    </FlowStep.Next>
-                                                  </FlowStep>
+                                                                </FlowDecision.False>
+                                                              </FlowDecision>
+                                                            </FlowStep.Next>
+                                                          </FlowStep>
+                                                        </FlowStep.Next>
+                                                      </FlowStep>
+                                                    </FlowDecision.True>
+                                                    <FlowDecision.False>
+                                                      <x:Reference>__ReferenceID3</x:Reference>
+                                                    </FlowDecision.False>
+                                                  </FlowDecision>
                                                 </FlowStep.Next>
                                               </FlowStep>
-                                              <FlowStep x:Key="Rechazar" x:Name="__ReferenceID20" sap2010:WorkflowViewState.IdRef="FlowStep_15">
-                                                <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_8">
-                                                  <local:ControlRecorrido.ControlRecorridoDto>
-                                                    <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
-                                                      <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Rechazado", NombreUsuario = nombreUsuario, Comentario = "CTG: Rechazado", WorkflowInstanceId = workflowId }</mca:CSharpValue>
-                                                    </InArgument>
-                                                  </local:ControlRecorrido.ControlRecorridoDto>
-                                                  <local:ControlRecorrido.Result>
+                                            </FlowStep.Next>
+                                          </FlowStep>
+                                          <FlowStep x:Key="Rechazar" x:Name="__ReferenceID17" sap2010:WorkflowViewState.IdRef="FlowStep_15">
+                                            <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_8">
+                                              <local:ControlRecorrido.ControlRecorridoDto>
+                                                <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                  <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Rechazado", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Rechazado", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                                </InArgument>
+                                              </local:ControlRecorrido.ControlRecorridoDto>
+                                              <local:ControlRecorrido.Result>
+                                                <OutArgument x:TypeArguments="msdc:Resultado">
+                                                  <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ControlRecorrido.Result>
+                                            </local:ControlRecorrido>
+                                            <FlowStep.Next>
+                                              <FlowStep x:Name="__ReferenceID18" sap2010:WorkflowViewState.IdRef="FlowStep_16">
+                                                <local:RechazarCamion sap2010:WorkflowViewState.IdRef="RechazarCamion_1">
+                                                  <local:RechazarCamion.Rechazado>
+                                                    <OutArgument x:TypeArguments="x:Boolean">
+                                                      <mca:CSharpReference x:TypeArguments="x:Boolean">rechazado</mca:CSharpReference>
+                                                    </OutArgument>
+                                                  </local:RechazarCamion.Rechazado>
+                                                  <local:RechazarCamion.Result>
                                                     <OutArgument x:TypeArguments="msdc:Resultado">
                                                       <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
                                                     </OutArgument>
-                                                  </local:ControlRecorrido.Result>
-                                                </local:ControlRecorrido>
+                                                  </local:RechazarCamion.Result>
+                                                  <local:RechazarCamion.WorkflowInstanceId>
+                                                    <InArgument x:TypeArguments="s:Guid">
+                                                      <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+                                                    </InArgument>
+                                                  </local:RechazarCamion.WorkflowInstanceId>
+                                                </local:RechazarCamion>
                                                 <FlowStep.Next>
-                                                  <FlowStep x:Name="__ReferenceID21" sap2010:WorkflowViewState.IdRef="FlowStep_16">
-                                                    <local:RechazarCamion sap2010:WorkflowViewState.IdRef="RechazarCamion_1">
-                                                      <local:RechazarCamion.Rechazado>
-                                                        <OutArgument x:TypeArguments="x:Boolean">
-                                                          <mca:CSharpReference x:TypeArguments="x:Boolean">rechazado</mca:CSharpReference>
-                                                        </OutArgument>
-                                                      </local:RechazarCamion.Rechazado>
-                                                      <local:RechazarCamion.WorkflowInstanceId>
-                                                        <InArgument x:TypeArguments="s:Guid">
-                                                          <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
-                                                        </InArgument>
-                                                      </local:RechazarCamion.WorkflowInstanceId>
-                                                    </local:RechazarCamion>
-                                                    <FlowStep.Next>
-                                                      <x:Reference>__ReferenceID4</x:Reference>
-                                                    </FlowStep.Next>
-                                                  </FlowStep>
+                                                  <x:Reference>__ReferenceID4</x:Reference>
                                                 </FlowStep.Next>
                                               </FlowStep>
-                                              <FlowStep x:Key="Demorar" x:Name="__ReferenceID23" sap2010:WorkflowViewState.IdRef="FlowStep_18">
+                                            </FlowStep.Next>
+                                          </FlowStep>
+                                          <FlowStep x:Key="Demorar" x:Name="__ReferenceID20" sap2010:WorkflowViewState.IdRef="FlowStep_19">
+                                            <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_9">
+                                              <local:ControlRecorrido.ControlRecorridoDto>
+                                                <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                  <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Automatica", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Camion Demorado", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                                </InArgument>
+                                              </local:ControlRecorrido.ControlRecorridoDto>
+                                              <local:ControlRecorrido.Result>
+                                                <OutArgument x:TypeArguments="msdc:Resultado">
+                                                  <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ControlRecorrido.Result>
+                                            </local:ControlRecorrido>
+                                            <FlowStep.Next>
+                                              <FlowStep x:Name="__ReferenceID19" sap2010:WorkflowViewState.IdRef="FlowStep_18">
                                                 <local:DemorarBajaCtg sap2010:WorkflowViewState.IdRef="DemorarBajaCtg_1">
                                                   <local:DemorarBajaCtg.DemorarBaja>
                                                     <OutArgument x:TypeArguments="x:Boolean">
@@ -352,79 +376,64 @@
                                                   </local:DemorarBajaCtg.DemorarBaja>
                                                 </local:DemorarBajaCtg>
                                                 <FlowStep.Next>
-                                                  <FlowStep x:Name="__ReferenceID24" sap2010:WorkflowViewState.IdRef="FlowStep_19">
-                                                    <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_9">
-                                                      <local:ControlRecorrido.ControlRecorridoDto>
-                                                        <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
-                                                          <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Automatica", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Reintentar Automatica", WorkflowInstanceId = workflowId }</mca:CSharpValue>
-                                                        </InArgument>
-                                                      </local:ControlRecorrido.ControlRecorridoDto>
-                                                      <local:ControlRecorrido.Result>
-                                                        <OutArgument x:TypeArguments="msdc:Resultado">
-                                                          <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
-                                                        </OutArgument>
-                                                      </local:ControlRecorrido.Result>
-                                                    </local:ControlRecorrido>
-                                                    <FlowStep.Next>
-                                                      <x:Reference>__ReferenceID4</x:Reference>
-                                                    </FlowStep.Next>
-                                                  </FlowStep>
+                                                  <x:Reference>__ReferenceID4</x:Reference>
                                                 </FlowStep.Next>
                                               </FlowStep>
-                                              <FlowStep x:Key="DarDeBajaManual" x:Name="__ReferenceID27">
-                                                <local:DarDeBajaCtgDGManual CodigoDeBaja="{x:Null}" Orden="{x:Null}" Resultado="{x:Null}" WorkflowId="{x:Null}" sap2010:WorkflowViewState.IdRef="DarDeBajaCtgDGManual_1" />
+                                            </FlowStep.Next>
+                                          </FlowStep>
+                                          <FlowStep x:Key="DarDeBajaManual" x:Name="__ReferenceID24" sap2010:WorkflowViewState.IdRef="FlowStep_26">
+                                            <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_11">
+                                              <local:ControlRecorrido.ControlRecorridoDto>
+                                                <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                  <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Manual", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Dado de baja manualmente", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                                </InArgument>
+                                              </local:ControlRecorrido.ControlRecorridoDto>
+                                              <local:ControlRecorrido.Result>
+                                                <OutArgument x:TypeArguments="msdc:Resultado">
+                                                  <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ControlRecorrido.Result>
+                                            </local:ControlRecorrido>
+                                            <FlowStep.Next>
+                                              <FlowStep x:Name="__ReferenceID22" sap2010:WorkflowViewState.IdRef="FlowStep_22">
+                                                <local:DarDeBajaCtgDGManual sap2010:WorkflowViewState.IdRef="DarDeBajaCtgDGManual_1">
+                                                  <local:DarDeBajaCtgDGManual.CodigoDeBaja>
+                                                    <InArgument x:TypeArguments="x:String">
+                                                      <mca:CSharpValue x:TypeArguments="x:String">codigoBaja</mca:CSharpValue>
+                                                    </InArgument>
+                                                  </local:DarDeBajaCtgDGManual.CodigoDeBaja>
+                                                  <local:DarDeBajaCtgDGManual.Orden>
+                                                    <InArgument x:TypeArguments="msdd:OrdenDeDescargaFasonDto">
+                                                      <mca:CSharpValue x:TypeArguments="msdd:OrdenDeDescargaFasonDto">orden</mca:CSharpValue>
+                                                    </InArgument>
+                                                  </local:DarDeBajaCtgDGManual.Orden>
+                                                  <local:DarDeBajaCtgDGManual.Resultado>
+                                                    <OutArgument x:TypeArguments="msdc:Resultado">
+                                                      <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                                    </OutArgument>
+                                                  </local:DarDeBajaCtgDGManual.Resultado>
+                                                  <local:DarDeBajaCtgDGManual.WorkflowId>
+                                                    <InArgument x:TypeArguments="s:Guid">
+                                                      <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
+                                                    </InArgument>
+                                                  </local:DarDeBajaCtgDGManual.WorkflowId>
+                                                </local:DarDeBajaCtgDGManual>
                                                 <FlowStep.Next>
-                                                  <FlowDecision x:Name="__ReferenceID12" DisplayName="Hay Errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
-                                                    <FlowDecision.Condition>
-                                                      <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
-                                                    </FlowDecision.Condition>
-                                                    <FlowDecision.True>
-                                                      <x:Reference>__ReferenceID4</x:Reference>
-                                                    </FlowDecision.True>
-                                                    <FlowDecision.False>
-                                                      <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_7">
-                                                        <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_3">
-                                                          <local:ControlRecorrido.ControlRecorridoDto>
-                                                            <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
-                                                              <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActBajaCTGDG, Mensaje = "Manual", NombreUsuario = nombreUsuario, Comentario = "CTG: " + orden.NumeroCTG + " Dado de baja manualmente", WorkflowInstanceId = workflowId }</mca:CSharpValue>
-                                                            </InArgument>
-                                                          </local:ControlRecorrido.ControlRecorridoDto>
-                                                          <local:ControlRecorrido.Result>
-                                                            <OutArgument x:TypeArguments="msdc:Resultado">
-                                                              <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
-                                                            </OutArgument>
-                                                          </local:ControlRecorrido.Result>
-                                                        </local:ControlRecorrido>
-                                                        <FlowStep.Next>
-                                                          <x:Reference>__ReferenceID4</x:Reference>
-                                                        </FlowStep.Next>
-                                                      </FlowStep>
-                                                    </FlowDecision.False>
-                                                  </FlowDecision>
+                                                  <x:Reference>__ReferenceID4</x:Reference>
                                                 </FlowStep.Next>
-                                                <sap2010:WorkflowViewState.IdRef>FlowStep_22</sap2010:WorkflowViewState.IdRef>
                                               </FlowStep>
-                                            </FlowSwitch>
-                                          </FlowStep.Next>
-                                        </FlowStep>
-                                      </FlowDecision.True>
-                                      <FlowDecision.False>
-                                        <FlowStep x:Name="__ReferenceID26">
-                                          <local:DarDeBajaCtgDGManual CodigoDeBaja="{x:Null}" Orden="{x:Null}" Resultado="{x:Null}" WorkflowId="{x:Null}" sap2010:WorkflowViewState.IdRef="DarDeBajaCtgDGManual_2" />
-                                          <FlowStep.Next>
-                                            <x:Reference>__ReferenceID5</x:Reference>
-                                          </FlowStep.Next>
-                                          <sap2010:WorkflowViewState.IdRef>FlowStep_23</sap2010:WorkflowViewState.IdRef>
-                                        </FlowStep>
-                                      </FlowDecision.False>
-                                    </FlowDecision>
+                                            </FlowStep.Next>
+                                          </FlowStep>
+                                        </FlowSwitch>
+                                      </FlowStep.Next>
+                                    </FlowStep>
                                   </FlowDecision.False>
                                 </FlowDecision>
                               </FlowStep.Next>
                             </FlowStep>
                           </FlowDecision.True>
                           <FlowDecision.False>
-                            <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+                            <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_6">
                               <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_2">
                                 <local:ControlRecorrido.ControlRecorridoDto>
                                   <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -433,7 +442,7 @@
                                 </local:ControlRecorrido.ControlRecorridoDto>
                               </local:ControlRecorrido>
                               <FlowStep.Next>
-                                <FlowStep x:Name="__ReferenceID18" sap2010:WorkflowViewState.IdRef="FlowStep_14">
+                                <FlowStep x:Name="__ReferenceID14" sap2010:WorkflowViewState.IdRef="FlowStep_14">
                                   <local:FinDeActividad InstanceId="{x:Null}" NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="FinDeActividad_2">
                                     <local:FinDeActividad.ControlRecorridoDto>
                                       <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -457,7 +466,7 @@
                 </FlowStep>
               </FlowDecision.True>
               <FlowDecision.False>
-                <FlowStep x:Name="__ReferenceID15" sap2010:WorkflowViewState.IdRef="FlowStep_11">
+                <FlowStep x:Name="__ReferenceID13" sap2010:WorkflowViewState.IdRef="FlowStep_11">
                   <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_6">
                     <local:ControlRecorrido.ControlRecorridoDto>
                       <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
@@ -475,34 +484,32 @@
         </FlowStep>
       </Flowchart.StartNode>
       <x:Reference>__ReferenceID2</x:Reference>
-      <x:Reference>__ReferenceID4</x:Reference>
+      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID5</x:Reference>
       <x:Reference>__ReferenceID6</x:Reference>
       <x:Reference>__ReferenceID7</x:Reference>
       <x:Reference>__ReferenceID8</x:Reference>
       <x:Reference>__ReferenceID9</x:Reference>
+      <x:Reference>__ReferenceID4</x:Reference>
       <x:Reference>__ReferenceID10</x:Reference>
       <x:Reference>__ReferenceID11</x:Reference>
       <x:Reference>__ReferenceID12</x:Reference>
       <x:Reference>__ReferenceID13</x:Reference>
       <x:Reference>__ReferenceID14</x:Reference>
-      <x:Reference>__ReferenceID3</x:Reference>
       <x:Reference>__ReferenceID15</x:Reference>
       <x:Reference>__ReferenceID16</x:Reference>
       <x:Reference>__ReferenceID17</x:Reference>
       <x:Reference>__ReferenceID18</x:Reference>
-      <x:Reference>__ReferenceID5</x:Reference>
       <x:Reference>__ReferenceID19</x:Reference>
       <x:Reference>__ReferenceID20</x:Reference>
       <x:Reference>__ReferenceID21</x:Reference>
+      <x:Reference>__ReferenceID0</x:Reference>
       <x:Reference>__ReferenceID22</x:Reference>
       <x:Reference>__ReferenceID23</x:Reference>
       <x:Reference>__ReferenceID24</x:Reference>
       <x:Reference>__ReferenceID25</x:Reference>
-      <x:Reference>__ReferenceID0</x:Reference>
-      <x:Reference>__ReferenceID26</x:Reference>
-      <x:Reference>__ReferenceID27</x:Reference>
     </Flowchart>
-    <sads:DebugSymbol.Symbol>d1ZDOlxVc2Vyc1xhbW9yYWxlc1xzb3VyY2VccmVwb3NcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xCYWphQ1RHREcueGFtbEFlA/oDDgIBAWYFbBoDAdAFbQX4AxECAQJpC2nBAQMB0QVyNXI4AgEUdg12mgICAQN9C4gBMAMBrQWMARGMAWgDAZwFzQMT0wMsAwGKBccBK+EBNwMBxQTlATHlAX8DAbQE9wIx9wLcAQMBswT7Ajf7AooBAwGiBIIDOY0DUgMB/wP2ATX8AUMDAe0DgAI7gAKOAQMB3AOIAj+IAq4BAwHLA48CQZoCWgMBqAOdAkWtAlwDAfQCkAETlgEsAwHiApkBF6kBOAMBrgKtAR2tAXADAZ0CrAMfsgM4AwGLArUDI8ADOgMB6AGxAR+3ATgDAdYBuwEluwF7AwHFAcMBKcMBfAMBtAGdAyudA9YBAwGzAdsCMeECSAMBoQHkAjXvAk4CAX66AjHFAkoCAVvIAjXTAkwCATjoATHzAUoCARWAARGAAVYDAb8FhQERhQFwAwGuBdADGdAD4gIDAYsF0gEx0gGFAQMB+QTeATHeAZcBAwHoBNgBMdgBhwEDAdcE2wEx2wGBAQMBxgSFAz+FA4EDAwGRBIoDP4oDlAEDAYAE+QE7+QGIAQMB7gOSAkeSAokDAwG6A5cCR5cCnAEDAakDoAJLoAKpAQMBlwOlAkulAp4BAwGGA6oCS6oCoQEDAfUCkwEZkwHqAgMB4wKhAR2hAXQDAdECnAEdnAFyAwHAAqYBHaYBcgMBrwKvAyWvA+8CAwGMArgDKbgDhwEDAfoBvQMpvQN/AwHpAbQBJbQBhQMDAdcB3gI33gKGAQMBogHnAjvnAv4CAwGQAewCO+wCkAECAX+9Aje9AtUCAgFtwgI3wgKMAQIBXMsCO8sCiwECAUrQAjvQAoEBAgE56wE36wH6AgIBJ/ABN/ABjAECARY=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1ZDOlxVc2Vyc1xhbW9yYWxlc1xzb3VyY2VccmVwb3NcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xCYWphQ1RHREcueGFtbEZgA4EEDgIBAWEFZxoDAckFaAX/AxECAQJkC2TBAQMBygVtNW04AgEScQ1xmgICAQN3C4IBMAMBqgWGARGGAWgDAZsF1gMT3AMsAwGLBbwBJ9YBMwMBzgTaAS3aAXsDAb8EgQMtjANGAwGgBI8DMaQDTgMB4wP/ATf/AYoBAwHUA4wCPZICSwMBxAOWAkOWApYBAwG1A50CRa0CXAMBhwODAjmJAlIDAfcC5QIt8AJGAwHYAvMCMfkCSAMByAK/Ai3KAkYDAakCzQIx3QJIAwH7Ad0BLegBRgMB3AHrATH7AVIDAa4BigETkAEsAwGeAZMBF6MBOAIBcKcBHacBcAIBYbUDH7sDOAIBUb4DI8kDOgIBMqsBH7EBOAIBIrUBJbUBewIBE3oRelYDAboFfxF/cAMBqwXZAxnZA+ICAwGMBccBLccBgQEDAfwE0wEt0wGTAQMB7QTNAS3NAYMBAwHeBNABLdABfQMBzwSEAzOEA/UCAwGwBIkDM4kDiAEDAaEEkgM3kgN/AwGRBKEDN6EDfQMBggSXAzeXA44BAwHzA5wDN5wDjAEDAeQDjwJDjwKQAQMBxQOgAkugAqkBAwGmA6UCS6UCngEDAZcDqgJLqgKhAQMBiAOGAj+GApsDAwH4AugCM+gC8AIDAegC7QIz7QKIAQMB2QL2Ajf2AoYBAwHJAsICM8IC6QIDAbkCxwIzxwKIAQMBqgLVAjfVAowBAwGaAtACN9AChwEDAYsC2gI32gJ9AwH8AeABM+AB9gIDAewB5QEz5QGIAQMB3QHzATfzAY4BAwHNAe4BN+4BjAEDAb4B+AE3+AGMAQMBrwGNARmNAeoCAwGfAZsBHZsBdAMBjwGWAR2WAXIDAYABoAEdoAFyAgFxuAMluAPvAgIBUsEDKcEDhwECAULGAynGA38CATOuASWuAYUDAgEj</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -555,14 +562,21 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.333333333333,90.6666666666667">
+      <sap2010:ViewStateData Id="DarDeBajaCtgDGAutomatica_2" sap:VirtualizedContainerService.HintSize="200,22">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ControlRecorrido_7" sap:VirtualizedContainerService.HintSize="200,22">
+      <sap2010:ViewStateData Id="ControlRecorrido_10" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.333333333333,90.6666666666667">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -579,28 +593,8 @@
       <sap2010:ViewStateData Id="FlowStep_13">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">520,1479</av:Point>
+            <av:Point x:Key="ShapeLocation">540,1599</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_12">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">520,1419</av:Point>
-            <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">620,1441 620,1479</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowDecision_7" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <av:Point x:Key="ShapeLocation">375,1386.5</av:Point>
-            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
-            <av:PointCollection x:Key="TrueConnector">375,1430 17.7431121725514,1430 17.7431121725514,172.084839733449 440,172.084839733449 440,209</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">445,1430 520,1430</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -608,19 +602,48 @@
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <av:Point x:Key="ShapeLocation">264.5,1276.5</av:Point>
+            <av:Point x:Key="ShapeLocation">295,1386.66666666667</av:Point>
             <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
-            <av:PointCollection x:Key="TrueConnector">264.5,1320 54.5,1320 54.5,630 410,630 410,655</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">334.5,1320 410,1320 410,1386.5</av:PointCollection>
+            <av:PointCollection x:Key="TrueConnector">295,1430 50.1666666666667,1430 50.1666666666667,625 410.166666666667,625 410.166666666667,655</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">365,1430 640,1430 640,1599</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_1">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">172.5,1135</av:Point>
+            <av:Point x:Key="ShapeLocation">492.333333333333,1224.66666666667</av:Point>
             <av:Size x:Key="ShapeSize">255.333333333333,90.6666666666667</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">300.166666666667,1225.66666666667 300.166666666667,1255.66666666667 299.5,1255.66666666667 299.5,1276.5</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">620,1315.33333333333 620,1345.33333333333 330,1345.33333333333 330,1386.66666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_24">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">180,1179</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">380,1190 620,1190 620,1224.66666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_4" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">575,1086.66666666667</av:Point>
+            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">575,1130 280,1130 280,1179</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">645,1130 675,1130 675,1194.66666666667 620,1194.66666666667 620,1224.66666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_25">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">540,959</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">640,981 640,1011 610,1011 610,1086.66666666667</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -629,7 +652,7 @@
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">540,899</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">640,921 640,1105 300.166666666667,1105 300.166666666667,1135</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">640,921 640,959</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -650,9 +673,9 @@
       <sap2010:ViewStateData Id="FlowStep_16">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">750,999</av:Point>
+            <av:Point x:Key="ShapeLocation">750,959</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">850,1021 850,1051 300.166666666667,1051 300.166666666667,1135</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">850,981 850,1011 610,1011 610,1086.66666666667</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -661,14 +684,7 @@
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">750,899</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">850,921 850,999</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="DemorarBajaCtg_1" sap:VirtualizedContainerService.HintSize="200,22">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:PointCollection x:Key="ConnectorLocation">850,921 850,959</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -679,21 +695,35 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_19">
+      <sap2010:ViewStateData Id="DemorarBajaCtg_1" sap:VirtualizedContainerService.HintSize="200,22">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">330,961</av:Point>
-            <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">430,983 430,1105 300.166666666667,1105 300.166666666667,1135</av:PointCollection>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_18">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">330,899</av:Point>
+            <av:Point x:Key="ShapeLocation">330,959</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">430,921 430,961</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">430,981 430,1011 610,1011 610,1086.66666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_19">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">330,897</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">430,919 430,959</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_11" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -704,39 +734,21 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ControlRecorrido_3" sap:VirtualizedContainerService.HintSize="200,22">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_7">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">200,1009</av:Point>
-            <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">300,1031 300,1135</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowDecision_4" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <av:Point x:Key="ShapeLocation">144.5,876.5</av:Point>
-            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
-            <av:PointCollection x:Key="TrueConnector">144.5,920 120,920 120,1105 300,1105 300,1135</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">214.5,920 300,920 300,1009</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_22">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">80,819</av:Point>
+            <av:Point x:Key="ShapeLocation">80,959</av:Point>
             <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">180,841 180,871 179.5,871 179.5,876.5</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">180,981 180,1011 610,1011 610,1086.66666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_26">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">80,897</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">180,919 180,959</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -748,8 +760,8 @@
             <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
             <av:PointCollection x:Key="DarDeBajaAutomaticamenteConnector">595,788.166666666667 640,788.166666666667 640,899</av:PointCollection>
             <av:PointCollection x:Key="RechazarConnector">595,809.833333333333 850,809.833333333333 850,899</av:PointCollection>
-            <av:PointCollection x:Key="DarDeBajaManualConnector">525,788.166666666667 180,788.166666666667 180,819</av:PointCollection>
-            <av:PointCollection x:Key="DemorarConnector">525,809.833333333333 430,809.833333333333 430,899</av:PointCollection>
+            <av:PointCollection x:Key="DarDeBajaManualConnector">525,788.166666666667 180,788.166666666667 180,897</av:PointCollection>
+            <av:PointCollection x:Key="DemorarConnector">525,809.833333333333 430,809.833333333333 430,897</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -762,33 +774,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="DarDeBajaCtgDGManual_2" sap:VirtualizedContainerService.HintSize="200,22">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_23">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">910,650</av:Point>
-            <av:Size x:Key="ShapeSize">200,22</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">1010,672 1010,1490 720,1490</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowDecision_8" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <av:Point x:Key="ShapeLocation">445,496.5</av:Point>
-            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
-            <av:PointCollection x:Key="TrueConnector">445,540 410,540 410,655</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">515,539.833333333333 1010,539.833333333333 1010,650</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowDecision_5" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -796,7 +781,7 @@
             <av:Point x:Key="ShapeLocation">205,416.5</av:Point>
             <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
             <av:PointCollection x:Key="TrueConnector">205,459.833333333333 110,459.833333333333 110,249 440,249 440,279</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">275,460 480,460 480,496.5</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">275,459.833333333333 410.166666666667,459.833333333333 410.166666666667,655</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>

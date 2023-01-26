@@ -376,7 +376,6 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
-    <Compile Include="Controllers\BajaCTGDGDefinitivoController.cs" />
     <Compile Include="Controllers\BajaCTGDGController.cs" />
     <Compile Include="Controllers\AltaCTGDGController.cs" />
     <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />

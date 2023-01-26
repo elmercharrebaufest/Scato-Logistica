@@ -57,8 +57,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var auth = accesoWsCtg.ObtenerAuth(cuitRepresentado, resultado);
                 // Armo la consulta
                 Log.Debug("armo consulta dependiendo del tipo de vehiculo");
-                var request = "";
-
+                
                 consultarCPEAutomotorDGResponse consulta = new consultarCPEAutomotorDGResponse();
 
                 //obtengo el estado actual
@@ -86,12 +85,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                //if (tipoCpe == 74)
-                //{
-                //    var ctg = Convert.ToInt64(comando.Dto.NumeroCTG);
-                //    var tipoCartaPorteElectronica = Repositorio.ObtenerProyeccion<CartaPorteElectronica, int?>(x => x.NroCTG == ctg, x => x.TipoCartaPorte);
-                //    tipoCpe = tipoCartaPorteElectronica is null ? tipoCpe : Convert.ToInt16(tipoCartaPorteElectronica);
-                //}
+               
 
                 var confirmarArriboRequest = new confirmacionDefinitivaCPEAutomotorDGRequest
                 {
@@ -109,7 +103,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         },
                     }
                 };
-                request = confirmarArriboRequest.ToXml();
+                var request = confirmarArriboRequest.ToXml();
                 Log.Debug("Inicio la consulta");
                 // Realizo la consulta
                 var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEAutomotorDG(confirmarArriboRequest).respuesta;
@@ -126,6 +120,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 //    });
                 //}
                 Log.Debug("Realizo la consulta ");
+
+                if (respuesta?.cabecera?.estado == "CN")
+                {
+                    UpdateBajaCTGDefinitiva(recorrido.InstanciaWorkflow);     
+                }
 
                 Repositorio.Agregar(
                 new LogAfipCpe
@@ -151,7 +150,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Repositorio.GuardarCambios();
                     }
 
-                    // UpdateBajaCTGDefinitiva(comando.WorkflowId);
                 }
                 catch (Exception e)
                 {
@@ -175,26 +173,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private short ObtenerTipoCpe(Dominio.Enums.TipoVehiculo tipoVehiculo)
-        {
-            switch (tipoVehiculo)
-            {
-                case Dominio.Enums.TipoVehiculo.Camiones:
-                case Dominio.Enums.TipoVehiculo.Camión:
-                case Dominio.Enums.TipoVehiculo.CamiónC:
-                case Dominio.Enums.TipoVehiculo.CamiónD:
-                case Dominio.Enums.TipoVehiculo.CamiónE:
-                case Dominio.Enums.TipoVehiculo.Bitren:
-                    return 74;
-
-                case Dominio.Enums.TipoVehiculo.Tren:
-                case Dominio.Enums.TipoVehiculo.Vapor:
-                    return 75;
-
-                default:
-                    return 74;
-            }
-        }
+        
 
         private void UpdateBajaCTGDefinitiva(Guid workFlowId)
         {
