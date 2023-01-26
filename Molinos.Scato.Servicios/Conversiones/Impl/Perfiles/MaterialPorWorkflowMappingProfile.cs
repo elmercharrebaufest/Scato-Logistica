@@ -26,6 +26,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(t => t.ClienteId, f => f.MapFrom(r => r.Cliente.Id))
                   .ForMember(t => t.EsCosecha, f => f.MapFrom(r => r.Material.EsCosecha))
                   .ForMember(t => t.VigenciaDesde, f => f.MapFrom(r => r.Material.VigenciaDesde))
+                  .ForMember(t => t.VigenciaHasta, f => f.MapFrom(r => r.Material.VigenciaHasta))
                   .ForMember(t => t.EsDerivadoGranario, f => f.MapFrom(r => r.Material.EsDerivadoGranario));
             Mapper.CreateMap<MaterialPorWorkflowDto, MaterialPorWorkflow>();
 
