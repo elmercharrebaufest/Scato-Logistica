@@ -51,6 +51,7 @@
             <h4>@Textos.AltaCTGDG_Titulo</h4>
         </div>
         <div class="modal-body">
+            @Html.HiddenFor(model => model.TarifaReferencia, new { Value = 0 })
             @Html.HiddenFor(model => model.WorkflowCodigo)
             @Html.HiddenFor(model => model.WorkflowId)
             @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)

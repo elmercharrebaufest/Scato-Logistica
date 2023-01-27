@@ -546,6 +546,11 @@
           <xsd:maxLength value="25" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="char250">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="char255">
         <xsd:restriction base="xsd:string">
           <xsd:maxLength value="255" />
@@ -1032,6 +1037,15 @@
           <xsd:element name="CHOFER" type="tns:char20" />
           <xsd:element name="TIPO_DOC_CHOFER" type="tns:char3" />
           <xsd:element name="NRO_DOC_CHOFER" type="tns:char15" />
+          <xsd:element name="CLIENTE_CTA_ORDEN" type="tns:char10" />
+          <xsd:element name="CUIT_CTA_ORDEN" type="tns:char16" />
+          <xsd:element name="RAZON_SOCIAL_CTA_ORDEN" type="tns:char35" />
+          <xsd:element name="CUIT_PAGADOR_FLETE" type="tns:char16" />
+          <xsd:element name="CODPLANTA" type="tns:char6" />
+          <xsd:element name="TIPODOM" type="tns:char1" />
+          <xsd:element name="ORDENDOM" type="tns:char2" />
+          <xsd:element name="DOMORDEN" type="tns:char250" />
+          <xsd:element name="INHABILITADO" type="tns:char1" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ZMMBALANZA5">
@@ -1683,6 +1697,8 @@
             <xsd:element name="Cliente" type="tns:char10" />
             <xsd:element name="DocChofer" type="tns:char8" />
             <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element name="NomChofer" type="tns:char35" />
             <xsd:element name="PatCamion" type="tns:char10" />
             <xsd:element name="PatRemolque" type="tns:char10" />
@@ -1789,6 +1805,8 @@
             <xsd:element minOccurs="0" name="Destino" type="tns:char10" />
             <xsd:element minOccurs="0" name="DocLegal" type="tns:char16" />
             <xsd:element minOccurs="0" name="FechaIng" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element minOccurs="0" name="IM_NUM_SCATO" type="tns:char12" />
             <xsd:element minOccurs="0" name="Km" type="tns:decimal5.0" />
             <xsd:element minOccurs="0" name="LocalidadOrig" type="tns:char5" />
@@ -1818,6 +1836,8 @@
           <xsd:sequence>
             <xsd:element minOccurs="0" name="Documento" type="tns:char70" />
             <xsd:element name="Entrega" type="tns:char10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element minOccurs="0" name="PesoBruto" type="tns:quantum15.3" />
             <xsd:element minOccurs="0" name="PesoNeto" type="tns:quantum15.3" />
           </xsd:sequence>

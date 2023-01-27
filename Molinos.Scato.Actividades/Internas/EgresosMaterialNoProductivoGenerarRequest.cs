@@ -52,6 +52,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(InstanceId.Get<Guid>(context).ToString("D"));
                 var almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
                 var cliente = srvRepositorio.ObtenerCliente(clienteId);
+                var cartaPorteDerivadoGranario = srvRepositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(context.WorkflowInstanceId);
 
                 var centroSap = centro != null ? centro.CodigoSAP : "";
                 var transportistaSap = transportista != null ? transportista.Cuit.Replace("-", string.Empty) : "";
@@ -72,6 +73,8 @@ namespace Molinos.Scato.Actividades.Internas
                                 NomChofer = chofer.NombreCompleto,
                                 PatCamion = patente,
                                 PatRemolque = !String.IsNullOrEmpty(patenteAcolado) ? patenteAcolado : patente,
+                                IM_CPEDG = cartaPorteDerivadoGranario != null ? (cartaPorteDerivadoGranario.Sucursal + "-" + cartaPorteDerivadoGranario.NroOrden) : string.Empty,
+                                IM_CTG = cartaPorteDerivadoGranario != null ? cartaPorteDerivadoGranario.NroCTG : string.Empty,
                                 Posiciones = new[]
                                     {
                                         new ZSDES9903

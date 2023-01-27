@@ -52,6 +52,10 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("Sucursal", string.Format(Textos.Error_Requerido, "Sucursal CPE"));
             if (string.IsNullOrEmpty(model.NroOrden))
                 ModelState.AddModelError("NroOrden", string.Format(Textos.Error_Requerido, "NroOrden CPE"));
+            if (!string.IsNullOrEmpty(model.Sucursal) && model.Sucursal.Length > 5)
+                ModelState.AddModelError("Sucursal", "Sucursal CPE no debe exceder de 5 dígitos");
+            if (!string.IsNullOrEmpty(model.NroOrden) && model.NroOrden.Length > 8)
+                ModelState.AddModelError("NroOrden", "NroOrden CPE no debe exceder de 8 dígitos");
 
             if (ModelState.IsValid)
             {

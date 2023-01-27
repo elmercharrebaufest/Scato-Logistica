@@ -2785,5 +2785,8 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         List<DomicilioDto> ListarDomicilios();
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorGuid(Guid instanceId);
     }
 }

@@ -19,13 +19,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override AltaCTG CrearEntidad(CrearAltaCTGDG comando)
         {
             var entidad = Conversor.Convertir<AltaCTGDto, AltaCTG>(comando.Dto);
-            var recorrido = Repositorio.Obtener<Recorrido>(comando.Dto.WorkflowId);
+            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.Dto.WorkflowId);
             var cartaPorteDerivadoGranario = new CartaPorteDerivadoGranario()
             {
                     NroCTG = comando.Dto.CodigoCTG,
-                    NroOrden = comando.Dto.NroOrden,
-                    Sucursal = comando.Dto.Sucursal,
-            };
+                    NroOrden = comando.Dto.NroOrden.PadLeft(8, '0'),
+                    Sucursal = comando.Dto.Sucursal.PadLeft(5, '0'),
+        };
             cartaPorteDerivadoGranario.Recorrido = recorrido;
             entidad.CartaPorteDerivadoGranario = cartaPorteDerivadoGranario;
             return entidad;

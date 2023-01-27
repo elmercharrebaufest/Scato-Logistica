@@ -10246,5 +10246,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<Domicilio, DomicilioDto>().ToList();
         }
+
+        public CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorGuid(Guid instanceId)
+        {
+            return Obtener<CartaPorteDerivadoGranario, CartaPorteDerivadoGranarioDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
+        }
     }
 }
