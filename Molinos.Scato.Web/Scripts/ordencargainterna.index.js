@@ -56,6 +56,21 @@
         );
     }
 
+    if ($('#PagadorFlete').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#PagadorFlete',
+            '#PagadorFleteId',
+            '#autocompletePagadorFlete',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+            },
+            function () {
+            }
+        );
+    }
+
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
@@ -301,6 +316,7 @@ function ValidarDerivadoGranario() {
         $('.derivadoGranario').addClass('hidden');
         $('#PlantaDGDestino').val('');
         $('#OrdenDomicilioDestino').val('');
-        $('#CuitPagadorFlete').val('');
+        $('#PagadorFlete').val('');
+        $('#PagadorFleteId').val('');
     }
 }

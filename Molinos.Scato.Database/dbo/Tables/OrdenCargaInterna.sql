@@ -17,7 +17,7 @@
     [DerivadoGranarioHabilitado] BIT DEFAULT ((0)) NOT NULL,
     [PlantaDGDestino] INT NULL, 
     [OrdenDomicilioDestino] INT NULL, 
-    [CuitPagadorFlete] BIGINT NULL, 
+    [PagadorFlete_Id] INT NULL, 
     CONSTRAINT [PK_dbo.OrdenCargaInterna] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Centro_Destino_Id] FOREIGN KEY ([Destino_Id]) REFERENCES [dbo].[Cliente] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Chofer_Chofer_Id] FOREIGN KEY ([Chofer_Id]) REFERENCES [dbo].[Chofer] ([Id]),
@@ -25,7 +25,8 @@
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.TipoComercial_TipoComercial_Id] FOREIGN KEY ([TipoComercial_Id]) REFERENCES [dbo].[TipoComercial] ([Id]),
-    CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Transportista_Transportista_Id] FOREIGN KEY ([Transportista_Id]) REFERENCES [dbo].[Transportista] ([Id])
+    CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Transportista_Transportista_Id] FOREIGN KEY ([Transportista_Id]) REFERENCES [dbo].[Transportista] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaInterna_dbo.Cliente_PagadorFlete_Id] FOREIGN KEY ([PagadorFlete_Id]) REFERENCES [dbo].[Cliente] ([Id])
 );
 
 

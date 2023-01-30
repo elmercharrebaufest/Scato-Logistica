@@ -172,10 +172,11 @@
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
-                @Html.LabelFor(model => model.CuitPagadorFlete, new { @class = "control-label small margin10" })
+                @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.TextBoxFor(model => model.CuitPagadorFlete, new { @class = "control", @maxlength = "11" })
-                    @Html.ValidationMessageFor(model => model.CuitPagadorFlete)
+                    @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.PagadorFlete)
+                    @Html.HiddenFor(model => model.PagadorFleteId)
                 </div>
             </div>
         </fieldset>
@@ -266,3 +267,4 @@
 </div>
 <div id="autocompleteTran"></div>
 <div id="autocompleteDestino"></div>
+<div id="autocompletePagadorFlete"></div>

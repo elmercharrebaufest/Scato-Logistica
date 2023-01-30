@@ -166,7 +166,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("Almacen_Id", Textos.OrdenInterna_AlmacenRequerido);
             }
 
-            if(!material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.CuitPagadorFlete.HasValue))
+            if(!material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.PagadorFleteId.HasValue))
             {
                 ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
             }
@@ -181,9 +181,9 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_OrdenDomicilioDestino));
             }
 
-            if (material.EsDerivadoGranario && !orden.CuitPagadorFlete.HasValue)
+            if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0)) 
             {
-                ModelState.AddModelError("CuitPagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_CuitPagadorFlete));
+                ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_CuitPagadorFlete));
             }
         }
     }

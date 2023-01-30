@@ -34,6 +34,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool DerivadoGranarioHabilitado { get; set; }
         public virtual int? PlantaDGDestino { get; set; }
         public virtual int? OrdenDomicilioDestino { get; set; }
-        public virtual long? CuitPagadorFlete { get; set; }
+        public virtual Cliente PagadorFlete { get; set; }
     }
 }
