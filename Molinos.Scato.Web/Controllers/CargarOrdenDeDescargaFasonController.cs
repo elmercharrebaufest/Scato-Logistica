@@ -59,6 +59,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenDeDescargaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+           
 
             if (datosUsuario.CentroId == 0)
             {
@@ -99,6 +100,31 @@ namespace Molinos.Scato.Web.Controllers
                 return View(orden);
             }
 
+            var consultaCPEAutomotor = servicioComandos.Ejecutar(new ConsultarCPEAutomotorDG
+            {
+                CentroId = datosUsuario.CentroId,
+                Usuario = datosUsuario.NombreUsuario,
+                NumeroCTG = Convert.ToInt64(orden.NumeroCTG)
+            });
+
+            var codigoSAP = servicio.ObtenerCentroCodigoSap(datosUsuario.CentroId);
+            ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
+
+            if(consultaCPEAutomotor != null )
+            {
+                servicioComandos.Ejecutar(new GuardarImagenDescarga
+                {
+                    Pdf = consulta.pdf,
+                    TipoImagen = TipoImagen.CPEDG,
+                    CodigoCentroSap = codigoSAP,
+                    NroCartaPorte = orden.Numero,
+                    Patente = orden.PatenteCamion,
+                    Etapa = string.Empty,
+                    TipoVehiculo = orden.TipoVehiculo
+
+                });
+            }
+ 
             if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
             {
                 TempData["Alerta"] = Textos.OrdenCargaInterna_PatenteEnOtroWorkflow;
@@ -143,6 +169,8 @@ namespace Molinos.Scato.Web.Controllers
                     SetearVista(workflowObj, datosUsuario.CentroId);
                     return View(orden);
                 }
+
+               
 
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
         }

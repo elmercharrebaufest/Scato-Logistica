@@ -76,6 +76,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.cuitChofer = responseCp.respuesta.transporte.cuitChofer;
                 resultado.pesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
                 resultado.pesoTara = responseCp.respuesta.datosCarga.pesoTara;
+                resultado.pdf = responseCp.respuesta.pdf;
             }
             catch (FaultException e)
             {

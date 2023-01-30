@@ -15,11 +15,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
     public class ProcesadorGuardarImagenDescarga : ProcesadorComando<GuardarImagenDescarga>
     {
         private IServicioComandos servicioComandos;
+        private readonly IConfiguracionProvider configuracion;
 
-        public ProcesadorGuardarImagenDescarga(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos)
+        public ProcesadorGuardarImagenDescarga(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos , IConfiguracionProvider configuracion)
             : base(repositorio, conversor, log)
         {
             this.servicioComandos = servicioComandos;
+            this.configuracion = configuracion;
         }
 
         public override Resultado Ejecutar(GuardarImagenDescarga comando)
@@ -126,15 +128,21 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
-                if (File.Exists(comando.RutaFotoCP))
+                var rutaDestino = ObtenerFotoRutaDestino();
+                if (!Directory.Exists(rutaDestino))
+                {
+                    Directory.CreateDirectory(rutaDestino);
+                }
+                if (Directory.Exists(rutaDestino))
                 {
                     resultado.PdfImage = ExtensionesImage.Compress(resultado.PdfImage);
                     var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroCartaPorte, comando.Patente, comando.Etapa, DateTime.Now, comando.TipoVehiculo) + ".jpeg";
                     using (var ms = new MemoryStream(resultado.PdfImage))
                     {
                         var bitmapSustentable = new Bitmap(ms);
-                        bitmapSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                        bitmapSustentable.Save(Path.Combine(rutaDestino, nombreFoto), ImageFormat.Jpeg);
                     }
+                    resultado.RutaImagen = Path.Combine(rutaDestino, nombreFoto);
                 }
             }
             catch (Exception ex)
@@ -142,6 +150,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error(ex, "Error al guardar imagen CP de derivado granario");
                 resultado.Errores.Add("4", "Error al guardar imagen CP de derivado granario");
             }
+        }
+
+        private string ObtenerFotoRutaDestino()
+        {
+            var path = configuracion.AppSettings["FotosPath"];
+            return path + (path.EndsWith("\\") ? "" : "\\") + DateTime.Now.ToString("yyyyMMdd");
         }
     }
 }

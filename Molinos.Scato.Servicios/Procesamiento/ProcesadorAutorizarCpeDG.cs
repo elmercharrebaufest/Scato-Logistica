@@ -206,23 +206,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Debug("Realizo la consulta ");
 
                 var responseAFIP = response?.respuesta;
-                var rutaFotoCPE = ObtenerFotoRutaDestino();
+                var rutaFotoCPE = string.Empty;
                 if (!(responseAFIP is null) && !(responseAFIP?.pdf is null))
                 {
                     var resultadoGuardarImagen = servicioComandos.Ejecutar( new GuardarImagenDescarga
                     {
-                        NroCartaPorte = recorrido.NumeroDocumentoIngreso,
-                        RutaFotoCP = rutaFotoCPE,
-                        CodigoCentroSap = recorrido.Centro.CodigoSAP,
-                        Patente = recorrido.Patente,
-                        TipoImagen = TipoImagen.CPEDG,
                         Pdf = responseAFIP.pdf,
+                        TipoImagen = TipoImagen.CPEDG,
+                        CodigoCentroSap = recorrido.Centro.CodigoSAP,
+                        NroCartaPorte = recorrido.NumeroDocumentoIngreso,
+                        Patente = recorrido.Patente,
                         Etapa = string.Empty,
                         TipoVehiculo = recorrido.TipoVehiculo,
-                    });
-                    if (resultadoGuardarImagen.HayErrores)
+                    }) as ResultadoCartaPorteElectronica;
+
+                    if (!resultadoGuardarImagen.HayErrores)
                     {
-                        rutaFotoCPE = string.Empty;
+                        rutaFotoCPE = resultadoGuardarImagen.RutaImagen;
                     }
 
                     responseAFIP.pdf = null;

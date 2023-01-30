@@ -32,6 +32,9 @@ namespace Molinos.Scato.Dominio.Comandos
         [DataMember]
         public int pesoTara { get; set; }
 
+        [DataMember]
+        public byte[] pdf { get; set; }
+
     }
 
     
