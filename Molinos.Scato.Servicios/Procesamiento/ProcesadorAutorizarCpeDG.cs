@@ -271,9 +271,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         var cartaPorteDerivadoGranario = new CartaPorteDerivadoGranario()
                         {
-                            NroCTG = response?.respuesta?.cabecera?.nroCTG.ToString(),
-                            NroOrden = comando.NroOrden.ToString("D8"),
-                            Sucursal = response?.respuesta?.cabecera?.sucursal.ToString("D5"),
+                            NroCTG = response?.respuesta?.cabecera?.nroCTG.ToString().PadLeft(12, '0'),
+                            NroOrden = comando.NroOrden.ToString().PadLeft(8, '0'),
+                            Sucursal = response?.respuesta?.cabecera?.sucursal.ToString().PadLeft(5, '0'),
                             RutaFotoCPEDG = rutaFotoCPE,
                             Recorrido = recorrido
                         };

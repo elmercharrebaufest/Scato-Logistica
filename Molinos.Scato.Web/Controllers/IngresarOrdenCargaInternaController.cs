@@ -41,7 +41,7 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj, datosUsuario.CentroId);
             var numeroOrden = servicio.ObtenerNumeroDocumentoGenerado().ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
-            var orden = new OrdenCargaInternaDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden, DerivadoGranarioHabilitado = true };
+            var orden = new OrdenCargaInternaDto { FechaEmision = DateTime.Now, NumeroOrden = numeroOrden };
             if(cargaDeCupoId != 0)
             {
                 var cupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
@@ -130,10 +130,11 @@ namespace Molinos.Scato.Web.Controllers
         {
             var tiposComerciales = servicio.ListarTiposComercialesPorWfCodigo(workflow.Codigo);
             var pesoMaximoPorTipoVehiculo = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(centroId);
+            var materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, centroId);
 
             controller.ViewBag.TiposComerciales = tiposComerciales.ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
             controller.ViewBag.TiposComercialesTransportista = tiposComerciales.Where(x => !x.TransportistaEsProveedor).Select(y => y.Id.ToString()).ToList();
-            controller.ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, centroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             controller.ViewBag.TiposDocumentos = servicio.ListarTiposDocumentoIdentidad().ToSelectList(f => f.Id.ToString(), f => f.DescripcionCorta);
             var almacenes = servicio.ListarAlmacenesPorCentro(centroId);
             controller.ViewBag.Almacenes = almacenes.GroupBy(x => x.Descripcion).Select(x => new AlmacenDto { Id = x.Select(y => y.Id).FirstOrDefault(), Descripcion = x.Key }).ToSelectList(f => f.Id.ToString(), f => f.Descripcion);
@@ -144,6 +145,7 @@ namespace Molinos.Scato.Web.Controllers
             controller.ViewBag.TiposVehiculo = pesoMaximoPorTipoVehiculo.Where(x => x.TipoVehiculo != TipoVehiculo.Tren ).ToSelectList(f => ((int)f.TipoVehiculo).ToString(), f => f.TipoVehiculo.DisplayText());
             controller.ViewBag.WorkflowId = workflow.Id;
             controller.ViewBag.WorkflowDescripcion = workflow.Descripcion;
+            controller.ViewBag.MaterialesDerivadoGranario = materiales.Where(x => x.EsDerivadoGranario).Select(x => x.MaterialId).ToList();
         }
 
         [HttpGet]
@@ -158,32 +160,28 @@ namespace Molinos.Scato.Web.Controllers
         private void Validar(OrdenCargaInternaDto orden)
         {
             var material = servicio.ObtenerMaterial(orden.MaterialId);
+            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (material != null && material.Descripcion == "RESIDUOS ORGANICOS" && orden.Almacen_Id == null)
             {
                 ModelState.AddModelError("Almacen_Id", Textos.OrdenInterna_AlmacenRequerido);
             }
 
-            if (!orden.DerivadoGranarioHabilitado && material.EsDerivadoGranario)
-            {
-                ModelState.AddModelError("MaterialId", "El material es un derivado granario. Habilitar check y completar datos faltantes.");
-            }
-
-            if (orden.DerivadoGranarioHabilitado && !material.EsDerivadoGranario)
+            if(!material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.CuitPagadorFlete.HasValue))
             {
                 ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
             }
 
-            if (orden.DerivadoGranarioHabilitado && !orden.PlantaDGDestino.HasValue)
+            if (material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_PlantaDGDestino));
             }
 
-            if (orden.DerivadoGranarioHabilitado && !orden.OrdenDomicilioDestino.HasValue)
+            if (material.EsDerivadoGranario && !orden.OrdenDomicilioDestino.HasValue)
             {
                 ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_OrdenDomicilioDestino));
             }
 
-            if (orden.DerivadoGranarioHabilitado && !orden.CuitPagadorFlete.HasValue)
+            if (material.EsDerivadoGranario && !orden.CuitPagadorFlete.HasValue)
             {
                 ModelState.AddModelError("CuitPagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_CuitPagadorFlete));
             }

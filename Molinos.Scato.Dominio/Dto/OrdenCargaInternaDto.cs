@@ -109,5 +109,11 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_CuitPagadorFlete")]
         public long? CuitPagadorFlete { get; set;}
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
+        public string NumeroCTG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
+        public string NumeroCPE { get; set; }
     }
 }

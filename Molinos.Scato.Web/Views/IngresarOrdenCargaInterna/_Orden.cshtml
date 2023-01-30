@@ -14,26 +14,8 @@
     var vehiculo = Model != null ? (int)Model.TipoVehiculo : 0;
     var plantasDG = new List<SelectListItem>();
     var domiciliosDG = new List<SelectListItem>();
+    var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
 }
-
-<style>
-    #checkDerivadoGranario {
-        width: 80%;
-        display: flex;
-        align-items: center;
-        margin: 0 auto 0.7rem;
-    }
-
-        #checkDerivadoGranario label {
-            font-size: 11px;
-            width: 120px;
-        }
-
-        #checkDerivadoGranario label,
-        #checkDerivadoGranario input {
-            margin: 0;
-        }
-</style>
 
 @if (Model != null)
 {
@@ -73,6 +55,11 @@
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.RecorridoId)
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
+@Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
+@Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
+@Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
+@Html.Hidden("DomicilioSeleccionado", Model.OrdenDomicilioDestino)
+@Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
     <fieldset class="grupo-carta-porte">
@@ -84,6 +71,12 @@
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
                 </div>
             </div>
+            <div class="control">
+                @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small margin10" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
+                </div>
+            </div>
         </div>
         <div class="span6">
             <div class="control paddingRight">
@@ -91,6 +84,12 @@
                 <div class="">
                     @Html.TextBoxFor(model => model.FechaEmision, new { @Value = Model != null ? Model.FechaEmision.FormattedFixed() : string.Empty, @class = "" })
                     @Html.ValidationMessageFor(model => model.FechaEmision)
+                </div>
+            </div>
+            <div class="control paddingRight">
+                @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label small", style = "margin-left:15%" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
                 </div>
             </div>
         </div>
@@ -158,21 +157,17 @@
                     @Html.ValidationMessageFor(model => model.LocalidadDestinoId)
                 </div>
             </div>
-            <div id="checkDerivadoGranario">
-                @Html.LabelFor(model => model.DerivadoGranarioHabilitado)
-                <input type="checkbox" id="DerivadoGranarioHabilitado" name="DerivadoGranarioHabilitado" value="true" @(Model.DerivadoGranarioHabilitado ? "checked='checked'" : "") />
-            </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)", new { @id = "plantaDGDestinoDropdown" })
+                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)")
                     @Html.ValidationMessageFor(model => model.PlantaDGDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.OrdenDomicilioDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.OrdenDomicilioDestino, domiciliosDG, "(domicilio)", new { @id = "ordenDomicilioDestinoDropdown" })
+                    @Html.DropDownListFor(model => model.OrdenDomicilioDestino, domiciliosDG, "(domicilio)")
                     @Html.ValidationMessageFor(model => model.OrdenDomicilioDestino)
                 </div>
             </div>

@@ -22,7 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.Dto.WorkflowId);
             var cartaPorteDerivadoGranario = new CartaPorteDerivadoGranario()
             {
-                    NroCTG = comando.Dto.CodigoCTG,
+                    NroCTG = comando.Dto.CodigoCTG.PadLeft(12, '0'),
                     NroOrden = comando.Dto.NroOrden.PadLeft(8, '0'),
                     Sucursal = comando.Dto.Sucursal.PadLeft(5, '0'),
         };

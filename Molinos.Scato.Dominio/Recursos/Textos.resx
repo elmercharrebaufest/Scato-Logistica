@@ -10128,7 +10128,7 @@
   </data>
   <data name="Default_Domicilio" xml:space="preserve">
     <value>(domicilio)</value>
-	  </data>
+  </data>
   <data name="ActBajaCTGDG" xml:space="preserve">
     <value>Baja de CTG Derivado Granario</value>
   </data>
@@ -10148,7 +10148,7 @@
     <value>Confirmación Manual de Alta CTG Derivado Granario</value>
   </data>
   <data name="OrdenCargaInterna_CuitPagadorFlete" xml:space="preserve">
-    <value>Cuit Pagador Flete</value>
+    <value>Pagador Flete</value>
   </data>
   <data name="OrdenCargaInterna_DerivadoGranarioHabilitado" xml:space="preserve">
     <value>Derivado Granario</value>

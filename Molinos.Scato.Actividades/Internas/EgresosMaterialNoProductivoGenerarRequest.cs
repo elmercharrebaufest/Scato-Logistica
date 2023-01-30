@@ -73,7 +73,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 NomChofer = chofer.NombreCompleto,
                                 PatCamion = patente,
                                 PatRemolque = !String.IsNullOrEmpty(patenteAcolado) ? patenteAcolado : patente,
-                                IM_CPEDG = cartaPorteDerivadoGranario != null ? (cartaPorteDerivadoGranario.Sucursal + "-" + cartaPorteDerivadoGranario.NroOrden) : string.Empty,
+                                IM_CPEDG = cartaPorteDerivadoGranario != null ? ($"{cartaPorteDerivadoGranario.Sucursal}{cartaPorteDerivadoGranario.NroOrden}") : string.Empty,
                                 IM_CTG = cartaPorteDerivadoGranario != null ? cartaPorteDerivadoGranario.NroCTG : string.Empty,
                                 Posiciones = new[]
                                     {
