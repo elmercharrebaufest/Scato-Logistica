@@ -19,6 +19,5 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Localidad LocalidadDestino { get; set; }
         public virtual string KmRecorrer { get; set; }
         public virtual bool? EsExtranjero { get; set; }
-        
     }
 }

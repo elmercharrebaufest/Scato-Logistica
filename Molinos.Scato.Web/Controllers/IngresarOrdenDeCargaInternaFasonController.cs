@@ -59,6 +59,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
+            Validar(orden, datosUsuario);
 
             if (orden.PatenteCamion != null)
             {
@@ -101,12 +102,6 @@ namespace Molinos.Scato.Web.Controllers
                     PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                     NombreUsuario = datosUsuario.NombreUsuario
                 };
-
-            if (!Validar(orden, datosUsuario))
-            {
-                SetearVista(workflowObje, datosUsuario.CentroId);
-                return View(orden);
-            }
             
             int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
             var servicioWf = factory.CrearServicio(workflowDefinicionId);
@@ -131,17 +126,18 @@ namespace Molinos.Scato.Web.Controllers
         {
             var tiposComerciales = servicio.ListarTiposComercialesPorWfCodigo(workflow.Codigo);
             var pesoMaximoPorTipoVehiculo = servicio.ListarPesoMaximoPorTipoVehiculoPorCentro(centroId);
+            var materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, centroId);
 
             controller.ViewBag.TiposComerciales = tiposComerciales.ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
             controller.ViewBag.TiposComercialesTransportista = tiposComerciales.Where(x => !x.TransportistaEsProveedor).Select(y => y.Id.ToString()).ToList();
-            controller.ViewBag.Materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, centroId).ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
             controller.ViewBag.TiposDocumentos = servicio.ListarTiposDocumentoIdentidad().ToSelectList(f => f.Id.ToString(), f => f.DescripcionCorta);
             controller.ViewBag.Workflow = workflow.Codigo;
             controller.ViewBag.WorkflowDescripcion = workflow.Descripcion;
             controller.ViewBag.CentroId = centroId;
             controller.ViewBag.TiposVehiculo = pesoMaximoPorTipoVehiculo.Where(x => x.TipoVehiculo != TipoVehiculo.Tren).ToSelectList(f => ((int)f.TipoVehiculo).ToString(), f => f.TipoVehiculo.DisplayText());
             controller.ViewBag.WorkflowId = workflow.Id;
-
+            controller.ViewBag.MaterialesDerivadoGranario = materiales.Where(x => x.EsDerivadoGranario).Select(x => x.MaterialId).ToList();
         }
 
         protected static string MascaraCuit(string entrada)
@@ -153,16 +149,36 @@ namespace Molinos.Scato.Web.Controllers
             return entrada.Substring(0, 2) + "-" + entrada.Substring(2, 8) + "-" + entrada.Substring(10);
         }
 
-        protected virtual bool Validar(OrdenCargaInternaFasonDto orden, DatosUsuario usuario)
+        protected virtual void Validar(OrdenCargaInternaFasonDto orden, DatosUsuario usuario)
         {
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
+            var material = servicio.ObtenerMaterial(orden.MaterialId);
+            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
             if (otroRecorridoDelChofer != null)
             {
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
-                return false;
             }
-            return true;
+
+            if (!material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.PagadorFleteId.HasValue))
+            {
+                ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
+            }
+
+            if (material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
+            {
+                ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
+            }
+
+            if (material.EsDerivadoGranario && !orden.OrdenDomicilioDestino.HasValue)
+            {
+                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+            }
+
+            if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            {
+                ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
+            }
         }
     }
 }

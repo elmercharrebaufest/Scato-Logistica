@@ -80,6 +80,23 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
 
-        public string NroCTG { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
+        public bool DerivadoGranarioHabilitado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_PlantaDGDestino")]
+        public int? PlantaDGDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
+        public int? OrdenDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_CuitPagadorFlete")]
+        public string PagadorFlete { get; set; }
+        public int? PagadorFleteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
+        public string NumeroCTG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
+        public string NumeroCPE { get; set; }
     }
 }

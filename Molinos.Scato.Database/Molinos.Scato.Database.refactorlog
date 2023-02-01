@@ -770,4 +770,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OrdenDeDescargaFason_Id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c7e811aa-bee6-4175-9879-c44d267ff5f6" ChangeDateTime="01/30/2023 19:49:04">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[CuitPagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="aaf6c0e5-b9e4-4b64-befe-00ee3772a87b" ChangeDateTime="01/30/2023 19:49:12">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[PagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete_Id" />
+  </Operation>
 </Operations>

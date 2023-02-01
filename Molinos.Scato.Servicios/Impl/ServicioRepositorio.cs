@@ -1665,7 +1665,14 @@ namespace Molinos.Scato.Servicios.Impl
 
         public OrdenCargaInternaFasonDto ObtenerOrdenCargaInternaFasonPorInstanceId(Guid id)
         {
-            return Obtener<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.Recorrido.InstanciaWorkflow == id);
+            var orden = Obtener<OrdenCargaInternaFason, OrdenCargaInternaFasonDto>(x => x.Recorrido.InstanciaWorkflow == id);
+            var cartaPorteDerivadoGranario = repositorio.Obtener<CartaPorteDerivadoGranario>(x => x.Recorrido.InstanciaWorkflow == id);
+            if (cartaPorteDerivadoGranario != null)
+            {
+                orden.NumeroCTG = cartaPorteDerivadoGranario.NroCTG;
+                orden.NumeroCPE = string.Concat(cartaPorteDerivadoGranario.Sucursal, "-", cartaPorteDerivadoGranario.NroOrden);
+            }
+            return orden;
         }
 
         public OrdenCargaInternaFasonDto ObtenerOrdenCargaInternaFasonPorNumero(string numero)

@@ -48,6 +48,8 @@
             function () {
                 completarKmRecorrerYLocalidad();
                 cargarMaterial();
+                CargarPlantas();
+                CargarDomicilios();
             },
             function () {
                 deshabilitarKmRecorrerYLocalidad();
@@ -88,9 +90,11 @@
     $('#MaterialId').change(function () {
         CargarAlamacenesPorMaterial();
         ValidarDerivadoGranario();
+        CargarPlantas();
+        CargarDomicilios();
     });
 
-    if ($('#DestinoId').length > 0) {
+    if ($('#DestinoId').length > 0 || $('#ClienteId').length > 0) {
         CargarPlantas();
         CargarDomicilios();
     }
@@ -264,7 +268,7 @@ function CargarAlamacenesPorMaterial() {
 
 function CargarPlantas() {
     let plantaSeleccionada = $("#PlantaSeleccionada").val();
-    let cliente = $("#DestinoId").val();
+    let cliente = $("#DestinoId").val() != null? $("#DestinoId").val() : $("#ClienteId").val() ;
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
             function (allData) {
@@ -285,7 +289,7 @@ function CargarPlantas() {
 
 function CargarDomicilios() {
     let domicilioSeleccionado = $("#DomicilioSeleccionado").val();
-    let cliente = $("#DestinoId").val();
+    let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val() ;
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
             function (allData) {

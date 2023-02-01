@@ -10147,16 +10147,16 @@
   <data name="AltaCTGDG_Titulo" xml:space="preserve">
     <value>Confirmación Manual de Alta CTG Derivado Granario</value>
   </data>
-  <data name="OrdenCargaInterna_CuitPagadorFlete" xml:space="preserve">
+  <data name="OrdenCarga_CuitPagadorFlete" xml:space="preserve">
     <value>Pagador Flete</value>
   </data>
-  <data name="OrdenCargaInterna_DerivadoGranarioHabilitado" xml:space="preserve">
+  <data name="OrdenCarga_DerivadoGranarioHabilitado" xml:space="preserve">
     <value>Derivado Granario</value>
   </data>
-  <data name="OrdenCargaInterna_OrdenDomicilioDestino" xml:space="preserve">
+  <data name="OrdenCarga_OrdenDomicilioDestino" xml:space="preserve">
     <value>Domicilio</value>
   </data>
-  <data name="OrdenCargaInterna_PlantaDGDestino" xml:space="preserve">
+  <data name="OrdenCarga_PlantaDGDestino" xml:space="preserve">
     <value>Planta</value>
   </data>
 </root>

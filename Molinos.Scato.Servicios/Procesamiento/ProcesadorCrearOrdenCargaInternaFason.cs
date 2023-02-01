@@ -50,7 +50,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Recorrido = recorrido,
                         Cliente = cliente,
                         KmRecorrer = comando.Orden.KmARecorrer,
-                        LocalidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId)
+                        LocalidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId),
+                        DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
+                        PlantaDGDestino = comando.Orden.PlantaDGDestino,
+                        OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
+                        PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId)
                     };
 
                     Repositorio.Agregar(ordenCargaInternaFason);

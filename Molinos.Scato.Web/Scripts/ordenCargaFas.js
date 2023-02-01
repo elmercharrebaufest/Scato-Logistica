@@ -79,6 +79,7 @@ jQuery(document).ready(function () {
         $("#MotivoDemora").val("");
     });
     $("#VehiculoDemorado").val(false);
+
 });
 
 function deshabilitarKmRecorrerYLocalidad() {

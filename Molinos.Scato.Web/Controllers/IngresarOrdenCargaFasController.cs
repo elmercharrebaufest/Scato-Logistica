@@ -61,7 +61,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-
+           
             if (orden.VehiculoDemorado)
             {
                 var res = Demorado(orden, MotivoDemora, Material, workflowObj, datosUsuario);
@@ -158,6 +158,11 @@ namespace Molinos.Scato.Web.Controllers
         private void SetearVista(WorkflowDto workflow)
         {
             SetearVista(workflow, servicio, this);
+        }
+
+        protected virtual bool Validar(OrdenCargaFasDto orden, DatosUsuario usuario)
+        {
+            return true;
         }
 
         public static void SetearVista(WorkflowDto workflow, IServicioRepositorio servicio, ControllerBase controller)
@@ -300,11 +305,6 @@ namespace Molinos.Scato.Web.Controllers
             string documento = cuil.Substring(2, 8);
             string validador2 = cuil.Substring(10, 1);
             return validador1 + "-" + documento + "-" + validador2;
-        }
-
-        protected virtual bool Validar(OrdenCargaFasDto orden, DatosUsuario usuario)
-        {
-            return true;
         }
 
         [DatosUsuario]
