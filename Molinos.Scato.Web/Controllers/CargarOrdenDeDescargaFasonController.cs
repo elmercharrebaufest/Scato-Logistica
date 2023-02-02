@@ -108,6 +108,7 @@ namespace Molinos.Scato.Web.Controllers
             });
 
             var codigoSAP = servicio.ObtenerCentroCodigoSap(datosUsuario.CentroId);
+            var camara = servicio.ListarVideoCamarasPuesto(datosUsuario.PuestoDeTrabajoId).FirstOrDefault();
             ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
 
             if(consultaCPEAutomotor != null )
@@ -120,7 +121,8 @@ namespace Molinos.Scato.Web.Controllers
                     NroCartaPorte = orden.Numero,
                     Patente = orden.PatenteCamion,
                     Etapa = string.Empty,
-                    TipoVehiculo = orden.TipoVehiculo
+                    TipoVehiculo = orden.TipoVehiculo ,
+                    RutaFotoCP = camara == null ? string.Empty : camara.Directorio
 
                 });
             }

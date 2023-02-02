@@ -6,13 +6,14 @@
     $("#FechaOD").click(function () {
         $("#FechaCP").mask("99/99/9999");
     });
-   
+
+    $('.numero-ctg-cpe').attr("hidden", true);
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
     DefinirAutocompletarChofer();
     DefinirAutocompletar('#Procedencia', '#ProcedenciaId', $('#links').data().urlBuscarProcedencias, $('#links').data().urlBuscarProcedenciaUnica);
-    DefinirAutocompletarConSAP('#Cliente', '#ClienteId', '#autocompleteCliente', $('#links').data().urlBuscarClientes, $('#links').data().urlBuscarClienteUnico, $('#links').data().urlObtenerClientesSap, cargarMaterial, cargarMaterial);
+    DefinirAutocompletarConSAP('#Cliente', '#ClienteId', '#autocompleteCliente', $('#links').data().urlBuscarClientes, $('#links').data().urlBuscarClienteUnico, $('#links').data().urlObtenerClientesSap, null, null);
 
     DefinirAutocompletarTransportista('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
 
@@ -70,8 +71,14 @@
 
         if (JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario) {
             $('.numero-ctg-cpe').removeAttr('hidden');
-        } else {
+        }
+
+        else {
             $('.numero-ctg-cpe').attr("hidden", true);
+            $('#Sucursal').val('');
+            $('#NroOrden').val('');
+            $('#NumeroCTG').val('');
+
         }
         
     });

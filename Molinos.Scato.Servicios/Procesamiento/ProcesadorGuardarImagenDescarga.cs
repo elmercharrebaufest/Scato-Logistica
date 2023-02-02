@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Web;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -128,7 +129,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             try
             {
-                var rutaDestino = ObtenerFotoRutaDestino();
+                var rutaDestino = ObtenerFotoRutaDestino(comando.RutaFotoCP);
                 if (!Directory.Exists(rutaDestino))
                 {
                     Directory.CreateDirectory(rutaDestino);
@@ -152,9 +153,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private string ObtenerFotoRutaDestino()
+        private string ObtenerFotoRutaDestino(string directorio)
         {
-            var path = configuracion.AppSettings["FotosPath"];
+            var path = string.IsNullOrEmpty(directorio) ? configuracion.AppSettings["FotosPath"] : directorio ;
             return path + (path.EndsWith("\\") ? "" : "\\") + DateTime.Now.ToString("yyyyMMdd");
         }
     }

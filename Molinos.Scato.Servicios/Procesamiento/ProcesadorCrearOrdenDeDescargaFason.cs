@@ -56,12 +56,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         PesoTaraOrigen = comando.Orden.PesoTaraOrigen,
                         PesoNetoOrigen = comando.Orden.PesoNetoOrigen,
                         Recorrido = recorrido,
-                        NumeroCTG = comando.Orden.NumeroCTG,
-                        NroOrden = comando.Orden.NroOrden,
-                        Sucursal = comando.Orden.Sucursal
+                        NumeroCTG = comando?.Orden?.NumeroCTG.PadLeft(12, '0'),
+                        NroOrden = comando?.Orden?.NroOrden.PadLeft(8, '0'),
+                        Sucursal = comando?.Orden?.Sucursal.PadLeft(5, '0')
 
                     };
-
+                   
                     Repositorio.Agregar(ordenDeDescargaFason);
                     Repositorio.GuardarCambios();
                     resultado.Id = comando.Orden.Id != 0 ? comando.Orden.Id : ordenDeDescargaFason.Id;

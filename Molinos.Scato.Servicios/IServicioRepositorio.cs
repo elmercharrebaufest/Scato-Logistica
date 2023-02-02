@@ -2788,5 +2788,10 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorGuid(Guid instanceId);
+
+        [OperationContract]
+        IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
+
+
     }
 }

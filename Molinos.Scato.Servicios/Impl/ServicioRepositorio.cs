@@ -10265,5 +10265,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CartaPorteDerivadoGranario, CartaPorteDerivadoGranarioDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
         }
+
+
+        public IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto)
+        {
+            return Listar<VideoCamara, VideoCamaraDto>(x => x.PuestoDeTrabajo.Id == idPuesto);
+        }
     }
 }
