@@ -10270,6 +10270,43 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto)
         {
             return Listar<VideoCamara, VideoCamaraDto>(x => x.PuestoDeTrabajo.Id == idPuesto);
+		}
+		
+        public DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso)
+        {
+            DatosDerivadoGranarioDto datosDerivadosGranario = null;
+
+            switch (tipoDocumentoIngreso)
+            {
+                case TipoDocumentoIngreso.OrdenDeDescargaFason:
+                    datosDerivadosGranario =
+                        repositorio.ObtenerProyeccion<OrdenDeDescargaFason, DatosDerivadoGranarioDto>(
+                        r =>
+                        r.Recorrido.Id == recorridoId &&
+                        r.Recorrido.TipoDocumentoIngreso == tipoDocumentoIngreso,
+                        r => new DatosDerivadoGranarioDto 
+                        {
+                           NroCTG = r.NumeroCTG,
+                           NroOrden = r.NroOrden,
+                           Sucursal = r.Sucursal
+                        });
+                    break;
+                case TipoDocumentoIngreso.OrdenCargaInternaFason:
+                    datosDerivadosGranario =
+                        repositorio.ObtenerProyeccion<CartaPorteDerivadoGranario, DatosDerivadoGranarioDto>(
+                        r =>
+                        r.Recorrido.Id == recorridoId &&
+                        r.Recorrido.TipoDocumentoIngreso == tipoDocumentoIngreso,
+                        r => new DatosDerivadoGranarioDto
+                        {
+                            NroCTG = r.NroCTG,
+                            NroOrden = r.NroOrden,
+                            Sucursal = r.Sucursal
+                        });
+                    break;
+            }
+          
+            return datosDerivadosGranario;
         }
     }
 }

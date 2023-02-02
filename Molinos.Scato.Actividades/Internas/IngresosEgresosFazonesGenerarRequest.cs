@@ -75,7 +75,7 @@ namespace Molinos.Scato.Actividades.Internas
                 
                 var provincia = srvRepositorio.ObtenerProvincia(ProvinciaId.Get<int?>(context) ?? 0);
                 var chofer = recorrido.Chofer;
-                var orden = srvRepositorio.ObtenerOrdenDeDescargaFasonPorInstanceId(instanceId);
+                var orden = srvRepositorio.ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(recorrido.Id, recorrido.TipoDocumentoIngreso);
                 request = new IngresosEgresosFazonesRequest
                     {
                         IngresosEgresosFazones = new IngresosEgresosFazones
@@ -99,7 +99,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 TipoDoc = chofer.TipoDocumentoIdentidadCodigoSap,
                                 Patente2 = patenteAcoplado,
                                 IM_NUM_SCATO = recorrido.Id.ToString(CultureInfo.InvariantCulture) ,
-                                IM_CTG = orden != null ? orden.NumeroCTG : string.Empty,
+                                IM_CTG = orden != null ? orden.NroCTG : string.Empty,
                                 IM_CPEDG =  orden != null ? orden.Sucursal + orden.NroOrden : string.Empty,
                         }
                     };

@@ -2792,6 +2792,7 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
 
-
+ 		[OperationContract]
+        DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
     }
 }

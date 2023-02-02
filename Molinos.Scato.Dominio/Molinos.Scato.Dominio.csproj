@@ -724,6 +724,7 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
+    <Compile Include="Dto\DerivadoGranario\DatosDerivadoGranarioDto.cs" />
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
     <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
     <Compile Include="Dto\DomicilioDto.cs" />
