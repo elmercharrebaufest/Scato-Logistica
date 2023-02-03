@@ -18,8 +18,8 @@
     <script>
         jQuery(document).ready(function ($) {
             var nroIngresado = $('#NumeroCTG').val();
-            
-            if (nroIngresado != "" && nroIngresado != null ) {
+
+            if (nroIngresado != "" && nroIngresado != null) {
                 $('#NumeroCTG').change();
             }
         });
@@ -34,13 +34,34 @@
     <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenDeDescargaFason_Titulo</div>
 </div>
 
-@using (Html.BeginForm("Index", "CargarOrdenDeDescargaFason", new { workflow }, FormMethod.Post, new { @class = "form-horizontal container content causaBlock", id = "orden-form", data_mensaje_espera = Textos.OrdenDeDescarga_MensajeDeEspera }))
-{
-    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
-    {
-        <div class="alert alert-error">
-            @Html.ValidationSummary(true)
-        </div>
-    }
-    @Html.Partial("_Orden", Model)
-}
+<div class="row-fluid row-fluid-ie7">
+    <div class="span8">
+        @using (Html.BeginForm("Index", "CargarOrdenDeDescargaFason", new { workflow }, FormMethod.Post, new { @class = "form-horizontal row-fluid row-fluid-ie7 container content causaBlock", id = "orden-form", data_mensaje_espera = Textos.OrdenDeDescarga_MensajeDeEspera }))
+        {
+            if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+            {
+                <div class="alert alert-error">
+                    @Html.ValidationSummary(true)
+                </div>
+            }
+            @Html.Partial("_Orden", Model)
+        }
+
+    </div>
+   
+        <div id="divImagenPdf" class="span4">
+            
+            
+                <div class="bordeGrisCompleto"  id="marco-cp" style="height:560px; width:auto;margin:auto;">
+                    
+
+                    <a id="" href="#" class="btn tomarFoto1" style="display: none; position: absolute;float:left;z-index:1000">
+                        <i class="fa fa-camera"></i>
+                    </a>
+                    <img id="imagen-cp"  src="" alt="Carta de porte. Ingrese el numero de Carta de porte para que se tome la foto..." style="max-height: 100%; max-width: 100%;height:560px" />
+                </div>
+            
+        </div>   
+   
+
+</div>

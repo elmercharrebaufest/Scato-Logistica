@@ -6,7 +6,11 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using PdfiumViewer;
 using System;
+using System.Configuration;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
@@ -66,7 +70,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Errores.Add("2", $"{error.codigo} - {error.descripcion}");
                     return resultado;
                 }
-
+                
                 resultado.nroCTG = responseCp.respuesta.cabecera.nroCTG;
                 resultado.nroOrden = responseCp.respuesta.cabecera.nroOrden;
                 resultado.sucursal = responseCp.respuesta.cabecera.sucursal;
@@ -76,7 +80,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.cuitChofer = responseCp.respuesta.transporte.cuitChofer;
                 resultado.pesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
                 resultado.pesoTara = responseCp.respuesta.datosCarga.pesoTara;
-                resultado.pdf = responseCp.respuesta.pdf;
+                resultado.pdf =  responseCp.respuesta.pdf;
+                var imagen = ConvertirPDFaPNG(responseCp.respuesta.pdf);
+                resultado.pdfBase = Convert.ToBase64String(imagen);
             }
             catch (FaultException e)
             {
@@ -109,6 +115,29 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
 
             return cuilBuilder.ToString();
+        }
+
+        private byte[] ConvertirPDFaPNG(byte[] pdf)
+        {
+            try
+            {
+                using (var document = PdfDocument.Load(new MemoryStream(pdf)))
+                {
+                    var dpix = ConfigurationManager.AppSettings["PdfCpeDpiX"];
+                    var dpiy = ConfigurationManager.AppSettings["PdfCpeDpiY"];
+                    var image = document.Render(0, string.IsNullOrEmpty(dpix) ? 600 : Convert.ToInt32(dpix), string.IsNullOrEmpty(dpiy) ? 600 : Convert.ToInt32(dpiy), PdfRenderFlags.ForPrinting | PdfRenderFlags.CorrectFromDpi);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        image.Save(ms, ImageFormat.Png);
+                        return ms.ToArray();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"Error al Convertir PDF en PNG");
+                return new byte[0];
+            }
         }
     }
 }

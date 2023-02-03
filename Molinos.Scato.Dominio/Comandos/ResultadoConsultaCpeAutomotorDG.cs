@@ -35,6 +35,9 @@ namespace Molinos.Scato.Dominio.Comandos
         [DataMember]
         public byte[] pdf { get; set; }
 
+        [DataMember]
+        public string pdfBase { get; set; }
+
     }
 
     

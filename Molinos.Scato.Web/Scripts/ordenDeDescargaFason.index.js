@@ -8,6 +8,7 @@
     });
 
     $('.numero-ctg-cpe').attr("hidden", true);
+    $('#marco-cp').attr("hidden", true);
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
@@ -71,13 +72,17 @@
 
         if (JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario) {
             $('.numero-ctg-cpe').removeAttr('hidden');
+            $('#marco-cp').removeAttr('hidden');
+            
         }
 
         else {
             $('.numero-ctg-cpe').attr("hidden", true);
+            $('#marco-cp').attr("hidden", true);
             $('#Sucursal').val('');
             $('#NroOrden').val('');
             $('#NumeroCTG').val('');
+            $("#imagen-cp").attr("src", "" );
 
         }
         
@@ -151,6 +156,7 @@ function BuscarNumeroCPE(ctg, before, callback) {
         $('#Chofer_Cuil').val(data.responseJSON.cuitChofer);
         $('#pesoBruto').val(data.responseJSON.pesoBruto);
         $('#pesoTara').val(data.responseJSON.pesoTara);
+        $("#imagen-cp").attr("src", "data:application/pdf;base64," + data.responseJSON.pdfBase);
 
         if (callback != null) callback();
     });
