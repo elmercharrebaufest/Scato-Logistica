@@ -2794,5 +2794,8 @@ namespace Molinos.Scato.Servicios
 
  		[OperationContract]
         DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
+        
+        [OperationContract]
+        ClienteDto ObtenerClientePorCuit(string cuit);
     }
 }

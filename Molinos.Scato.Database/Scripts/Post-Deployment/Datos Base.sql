@@ -551,6 +551,7 @@ IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'EtiquetaRubros
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'AsigRecorrCtrolCalid') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'ImpGaritaSalida') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('ImpGaritaSalida', 'ImpGaritaSalida', 'ImpGaritaSalida') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaDePorteElectronica') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaDePorteElectronica', 'Impresion de Carta de Porte Electronica', 'CartaDePorteElectronica') END
+IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaPorteElectronicaDerivadoGranario') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaPorteElectronicaDerivadoGranario', 'Impresion de CPE Derivado Granario', 'CartaPorteElectronicaDerivadoGranario') END
 
 
 

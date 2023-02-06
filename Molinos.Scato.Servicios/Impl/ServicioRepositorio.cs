@@ -4178,7 +4178,14 @@ namespace Molinos.Scato.Servicios.Impl
 
         public OrdenCargaFasDto ObtenerOrdenCargaFasPorInstanceId(Guid instanceId)
         {
-            return Obtener<OrdenCargaFas, OrdenCargaFasDto>(c => c.Recorrido.InstanciaWorkflow == instanceId);
+            var orden = Obtener<OrdenCargaFas, OrdenCargaFasDto>(c => c.Recorrido.InstanciaWorkflow == instanceId);
+            var cartaPorteDerivadoGranario = repositorio.Obtener<CartaPorteDerivadoGranario>(x => x.Recorrido.InstanciaWorkflow == instanceId);
+            if (cartaPorteDerivadoGranario != null)
+            {
+                orden.NumeroCTG = cartaPorteDerivadoGranario.NroCTG;
+                orden.NumeroCPE = string.Concat(cartaPorteDerivadoGranario.Sucursal, "-", cartaPorteDerivadoGranario.NroOrden);
+            }
+            return orden;
         }
 
         public decimal ObtenerPesoNetoRomaneo(Guid instanceId)
@@ -10266,7 +10273,6 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<CartaPorteDerivadoGranario, CartaPorteDerivadoGranarioDto>(x => x.Recorrido.InstanciaWorkflow == instanceId);
         }
 
-
         public IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto)
         {
             return Listar<VideoCamara, VideoCamaraDto>(x => x.PuestoDeTrabajo.Id == idPuesto);
@@ -10307,6 +10313,11 @@ namespace Molinos.Scato.Servicios.Impl
             }
           
             return datosDerivadosGranario;
+        }
+        
+        public ClienteDto ObtenerClientePorCuit(string cuit)
+        {
+            return Obtener<Cliente, ClienteDto>(x => x.Cuit.Equals(cuit));
         }
     }
 }

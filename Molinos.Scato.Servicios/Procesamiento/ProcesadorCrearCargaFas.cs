@@ -53,7 +53,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             NumeroOrden = comando.Orden.VehiculoDemorado ? "" : comando.Orden.NumeroOrden,
                             Recorrido = recorrido,
                             KmRecorrer = comando.Orden.KmARecorrer,
-                            LocalidadDestino = comando.Orden.VehiculoDemorado ?null :localidadDestino,
+                            LocalidadDestino = comando.Orden.VehiculoDemorado ? null : localidadDestino,
+                            DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
+                            PlantaDGDestino = comando.Orden.PlantaDGDestino,
+                            OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
+                            PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId)
                     };
 
                     if (!comando.Orden.VehiculoDemorado && Repositorio.Existe<OrdenCargaFas>(x => x.Id == comando.Orden.Id))
