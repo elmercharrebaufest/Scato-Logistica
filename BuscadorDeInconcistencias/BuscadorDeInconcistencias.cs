@@ -157,8 +157,8 @@ namespace BuscadorDeInconcistencias
 
             ////////////step two -instantiate your credentials
             //ClientCredentials loginCredentials = new ClientCredentials();
-            //loginCredentials.UserName.UserName = "FUNCIG";
-            //loginCredentials.UserName.Password = Encriptador.Decrypt("RQsncbUlOC0T9iEPjcvyPg==");
+            //loginCredentials.UserName.UserName = "GWEBSRV_SCA";
+            //loginCredentials.UserName.Password = Encriptador.Decrypt("h88WYKNtezwGAqJMt205vw==");
 
             ////////////step three -set that as new endpoint behavior on factory
             ////////factory.Endpoint.Behaviors.Add(loginCredentials); //add required ones
@@ -186,7 +186,7 @@ namespace BuscadorDeInconcistencias
 
             //// step two - instantiate your credentials
             //ClientCredentials loginCredentials = new ClientCredentials();
-            //loginCredentials.UserName.UserName = "FUNCIG";
+            //loginCredentials.UserName.UserName = "GWEBSRV_SCA";
             //loginCredentials.UserName.Password =
             //Encriptador.Decrypt("ipiYlSviW3QB7BjrHn+7vw==");
             //Encriptador.Decrypt("RQsncbUlOC0T9iEPjcvyPg==");
@@ -264,8 +264,8 @@ namespace BuscadorDeInconcistencias
 
             // step two - instantiate your credentials
             ClientCredentials loginCredentials = new ClientCredentials();
-            loginCredentials.UserName.UserName = "FUNCIG";
-            loginCredentials.UserName.Password = "prueba"; //RQsncbUlOC0T9iEPjcvyPg==
+            loginCredentials.UserName.UserName = "GWEBSRV_SCA";
+            loginCredentials.UserName.Password = "scatoqa2015"; //h88WYKNtezwGAqJMt205vw==
 
             // step three - set that as new endpoint behavior on factory
             factory.Endpoint.Behaviors.Add(loginCredentials); //add required ones
