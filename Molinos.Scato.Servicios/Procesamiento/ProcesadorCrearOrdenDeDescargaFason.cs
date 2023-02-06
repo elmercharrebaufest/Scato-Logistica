@@ -1,5 +1,6 @@
 ﻿using System;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -56,12 +57,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         PesoTaraOrigen = comando.Orden.PesoTaraOrigen,
                         PesoNetoOrigen = comando.Orden.PesoNetoOrigen,
                         Recorrido = recorrido,
-                        NumeroCTG = comando?.Orden?.NumeroCTG.PadLeft(12, '0'),
-                        NroOrden = comando?.Orden?.NroOrden.PadLeft(8, '0'),
-                        Sucursal = comando?.Orden?.Sucursal.PadLeft(5, '0')
-
                     };
-                   
+
+                    if (material.EsDerivadoGranario)
+                    {
+                        var orden = comando?.Orden;
+                        ObtenerDatosOrdenDerivadoGranario(orden, ordenDeDescargaFason);
+                    }
+
                     Repositorio.Agregar(ordenDeDescargaFason);
                     Repositorio.GuardarCambios();
                     resultado.Id = comando.Orden.Id != 0 ? comando.Orden.Id : ordenDeDescargaFason.Id;
@@ -74,6 +77,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             return resultado;
+        }
+
+        private void ObtenerDatosOrdenDerivadoGranario(OrdenDeDescargaFasonDto orden, OrdenDeDescargaFason nuevaOrden)
+        {
+            nuevaOrden.NumeroCTG = orden?.NumeroCTG != null ? orden.NumeroCTG.PadLeft(12, '0') : null;
+            nuevaOrden.NroOrden = orden?.NroOrden != null ? orden.NroOrden.PadLeft(8, '0') : null;
+            nuevaOrden.Sucursal = orden?.Sucursal != null ? orden.Sucursal.PadLeft(5, '0') : null;
         }
     }
 }
