@@ -7522,8 +7522,8 @@
   <data name="StockDeEstablecimiento_Nuevo" xml:space="preserve">
     <value>Nuevo Stock de Establecimiento</value>
   </data>
-  <data name="Filtrar_StockDeEstablecimientos" xml:space="preserve">
-    <value>Filtrar Stock de Establecimientos</value>
+  <data name="Filtrar_Codigo_de_Establecimiento" xml:space="preserve">
+    <value>Código de Establecimiento</value>
   </data>
   <data name="Error_NoExisteEstablecimiento" xml:space="preserve">
     <value>No existe ningún Establecimiento con ese código</value>

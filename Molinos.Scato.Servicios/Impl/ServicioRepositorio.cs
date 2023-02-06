@@ -480,7 +480,6 @@ namespace Molinos.Scato.Servicios.Impl
         //    return conversor.ConvertirList<TipoEmbalaje, TipoEmbalajeDto>(embalajes);
         //}
 
-
         public MaterialPorCentroDto ObtenerMaterialPorCentro(int centroId, int materialId)
         {
             return
@@ -1684,7 +1683,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var orden = Obtener<OrdenCargaInterna, OrdenCargaInternaDto>(x => x.Recorrido.InstanciaWorkflow == id);
             var cartaPorteDerivadoGranario = repositorio.Obtener<CartaPorteDerivadoGranario>(x => x.Recorrido.InstanciaWorkflow == id);
-            if(cartaPorteDerivadoGranario != null)
+            if (cartaPorteDerivadoGranario != null)
             {
                 orden.NumeroCTG = cartaPorteDerivadoGranario.NroCTG;
                 orden.NumeroCPE = string.Concat(cartaPorteDerivadoGranario.Sucursal, "-", cartaPorteDerivadoGranario.NroOrden);
@@ -7169,8 +7168,7 @@ namespace Molinos.Scato.Servicios.Impl
             Expression<Func<StockDeEstablecimiento, bool>> expresionFiltro = null;
             if (!string.IsNullOrEmpty(filtro))
             {
-                expresionFiltro = (x => (x.CodigoEstablecimiento.Contains(filtro)
-                                         || (x.Cosecha.Contains(filtro))));
+                expresionFiltro = (x => (x.CodigoEstablecimiento.Contains(filtro)));
             }
 
             var stocksDeEstablecimiento = Listar<StockDeEstablecimiento, StockDeEstablecimientoDto>(expresionFiltro, paginacion);
@@ -10154,8 +10152,8 @@ namespace Molinos.Scato.Servicios.Impl
             var resultado = ObtenerPrimero<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(x => x.PuestoDeTrabajo.Id == puestoDeTrabajoId);
             return resultado;
         }
-        
-        public ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica( Paginacion paginacion)
+
+        public ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica(Paginacion paginacion)
         {
             Expression<Func<ConfiguracionCalleHidraulica, bool>> expresionFiltro = null;
 
@@ -10165,7 +10163,7 @@ namespace Molinos.Scato.Servicios.Impl
         public ConfiguracionCalleHidraulicaDto ObtenerCalleHidraulica(int id)
         {
             return Obtener<ConfiguracionCalleHidraulica, ConfiguracionCalleHidraulicaDto>(id);
-    	}
+        }
 
         public bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId)
         {
@@ -10176,24 +10174,23 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo);
         }
-        
+
         public string ObtenerCodigoMensaje(int calleCaladoId)
         {
-
             return repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == calleCaladoId).MensajeCartelLed.Codigo;
         }
 
         public int ObtenerOrdenCircular(string codigo)
         {
             var lista = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
-                        
+
             return lista.Last().Orden;
         }
 
         public int ObtenerCantidadCamionesEnCallePreBalanza(int calleId)
         {
             var callePreBalanzaPlayaInternaList = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == calleId)
-                .Select(q=>q.CallePreBalanzaId).ToList();
+                .Select(q => q.CallePreBalanzaId).ToList();
 
             var cantidadCamiones = repositorio.Contar<CallePorRecorrido>(q => callePreBalanzaPlayaInternaList.Contains(q.Calle.Id) && q.FechaEgreso.Equals(null));
             return cantidadCamiones;
@@ -10224,7 +10221,7 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 filtro = filtro.Trim();
                 expresionFiltro =
-                    x => x.Motivo != MotivoExcepcionAlControl.B && (   x.Proveedor.RazonSocial.Contains(filtro) ||
+                    x => x.Motivo != MotivoExcepcionAlControl.B && (x.Proveedor.RazonSocial.Contains(filtro) ||
                                                                        x.Proveedor.Cuil.Contains(filtro) ||
                                                                        x.Material.Descripcion.Contains(filtro) ||
                                                                        x.Material.DescripcionCorta.Contains(filtro) ||
@@ -10257,6 +10254,7 @@ namespace Molinos.Scato.Servicios.Impl
                                                           ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (clienteDestinoId.HasValue && x.ClienteDestino.Id == clienteDestinoId.Value) || (!centroDestinoId.HasValue && !clienteDestinoId.HasValue))
                                                           );
         }
+
         public bool ValidacionAutomaticaCtgDG(int centroId)
         {
             var centro = repositorio.Obtener<Centro>(centroId);
@@ -10276,8 +10274,8 @@ namespace Molinos.Scato.Servicios.Impl
         public IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto)
         {
             return Listar<VideoCamara, VideoCamaraDto>(x => x.PuestoDeTrabajo.Id == idPuesto);
-		}
-		
+        }
+
         public DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso)
         {
             DatosDerivadoGranarioDto datosDerivadosGranario = null;
@@ -10290,13 +10288,14 @@ namespace Molinos.Scato.Servicios.Impl
                         r =>
                         r.Recorrido.Id == recorridoId &&
                         r.Recorrido.TipoDocumentoIngreso == tipoDocumentoIngreso,
-                        r => new DatosDerivadoGranarioDto 
+                        r => new DatosDerivadoGranarioDto
                         {
-                           NroCTG = r.NumeroCTG,
-                           NroOrden = r.NroOrden,
-                           Sucursal = r.Sucursal
+                            NroCTG = r.NumeroCTG,
+                            NroOrden = r.NroOrden,
+                            Sucursal = r.Sucursal
                         });
                     break;
+
                 case TipoDocumentoIngreso.OrdenCargaInternaFason:
                     datosDerivadosGranario =
                         repositorio.ObtenerProyeccion<CartaPorteDerivadoGranario, DatosDerivadoGranarioDto>(
@@ -10311,10 +10310,10 @@ namespace Molinos.Scato.Servicios.Impl
                         });
                     break;
             }
-          
+
             return datosDerivadosGranario;
         }
-        
+
         public ClienteDto ObtenerClientePorCuit(string cuit)
         {
             return Obtener<Cliente, ClienteDto>(x => x.Cuit.Equals(cuit));

@@ -19,7 +19,7 @@ namespace Molinos.Scato.Dominio.Recursos {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Textos {
@@ -15473,6 +15473,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código de Establecimiento.
+        /// </summary>
+        public static string Filtrar_Codigo_de_Establecimiento {
+            get {
+                return ResourceManager.GetString("Filtrar_Codigo_de_Establecimiento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filtrar Cosechas.
         /// </summary>
         public static string Filtrar_Cosechas {
@@ -15640,15 +15649,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Filtrar_Roles {
             get {
                 return ResourceManager.GetString("Filtrar_Roles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filtrar Stock de Establecimientos.
-        /// </summary>
-        public static string Filtrar_StockDeEstablecimientos {
-            get {
-                return ResourceManager.GetString("Filtrar_StockDeEstablecimientos", resourceCulture);
             }
         }
         
