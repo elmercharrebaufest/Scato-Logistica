@@ -57,7 +57,7 @@
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
                 </div>
             </div>
-            <div class="control">
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small margin10" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
@@ -72,7 +72,7 @@
                     @Html.ValidationMessageFor(model => model.FechaEmision)
                 </div>
             </div>
-            <div class="control paddingRight">
+            <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label small", style = "margin-left:15%" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "control", autocomplete = "off", @readonly = "readonly" })

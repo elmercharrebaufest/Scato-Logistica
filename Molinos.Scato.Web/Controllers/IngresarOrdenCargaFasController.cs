@@ -424,17 +424,17 @@ namespace Molinos.Scato.Web.Controllers
 
             if (material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
             {
-                ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_PlantaDGDestino));
+                ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
             if (material.EsDerivadoGranario && !orden.OrdenDomicilioDestino.HasValue)
             {
-                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_OrdenDomicilioDestino));
+                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
 
             if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
-                ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCargaInterna_CuitPagadorFlete));
+                ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
         }
     }
