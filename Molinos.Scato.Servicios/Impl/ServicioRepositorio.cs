@@ -3055,6 +3055,7 @@ namespace Molinos.Scato.Servicios.Impl
                             x.Terminado, x => x.FechaInicio, x => x.Vehiculo.CartaPorte);
                         if (cp is null)
                             continue;
+
                         if (
                         !repositorio.Existe<MaterialPorWorkflow>(
                             x =>
@@ -3063,6 +3064,16 @@ namespace Molinos.Scato.Servicios.Impl
                             log.Debug("No se encontró el material {0} para el centro {0}", cp.Material.Id, centroId);
                             continue;
                         }
+
+                        if (repositorio.Existe<Recorrido>(
+                            x =>
+                            x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == cartaPorteItem.NroCartaPorte &&
+                            x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow == workflow.TipoDeWorkflow && x.Rechazado && x.Terminado))
+                        {
+                            log.Debug($"Se excluye la Carta de Porte {cartaPorteItem.NroCartaPorte} que finalizó el recorrido y fue rechazado en el mismo centro y workflow.");
+                            continue;
+                        }
+
                         cartaPorte = cartaPorteItem;
                         var vehiculoItem = cartaPorte.Vehiculos.FirstOrDefault();
                         if (!(vehiculoItem is null))

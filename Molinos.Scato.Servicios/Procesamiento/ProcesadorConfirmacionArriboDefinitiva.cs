@@ -148,7 +148,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     } 
                     Log.Debug("Realizo la consulta ");
 
-
                     Repositorio.Agregar(
                     new LogAfipCpe
                     {
@@ -157,6 +156,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Respuesta = respuesta.ToXml(),
                         Fecha = DateTime.Now,
                     });
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
                 if (tipoCpe == 75)
                 {
@@ -203,6 +207,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         });
                     }
                     Log.Debug("Realizo la consulta ");
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
                 try
                 {
@@ -218,9 +227,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         });
                         Repositorio.GuardarCambios();
                     }
-                   
-                    // UpdateBajaCTGDefinitiva(comando.WorkflowId);
-
                 }
                 catch (Exception e)
                 {
