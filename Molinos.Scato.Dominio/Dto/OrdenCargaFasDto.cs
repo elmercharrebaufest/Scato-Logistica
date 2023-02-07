@@ -83,16 +83,16 @@ namespace Molinos.Scato.Dominio.Dto
         public string MotivoDemora { get; set; }
         public bool ActualizarTipoVehiculo { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_DerivadoGranarioHabilitado")]
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
         public bool DerivadoGranarioHabilitado { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_PlantaDGDestino")]
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_PlantaDGDestino")]
         public int? PlantaDGDestino { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_OrdenDomicilioDestino")]
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
         public int? OrdenDomicilioDestino { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCargaInterna_CuitPagadorFlete")]
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_CuitPagadorFlete")]
         public string PagadorFlete { get; set; }
         public int? PagadorFleteId { get; set; }
         public bool Inhabilitado { get; set; }
