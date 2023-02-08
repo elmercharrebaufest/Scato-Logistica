@@ -420,6 +420,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ActividadEsperaConfirmacion = 700,
         [Display(ResourceType = typeof(Textos), Name = "ActAltaCTGDG")]
         ActividadAltaCTGDG = 703,
+        [Display(ResourceType = typeof(Textos), Name = "ActBajaCTGDG")]
+        ActividadBajaCTGDG = 704, 
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]

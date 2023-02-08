@@ -17,7 +17,7 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
 {
-    [Autorizacion(PermisosScato.ActividadBajaCTG)]
+    [Autorizacion(PermisosScato.ActividadBajaCTGDG)]
     public class BajaCTGDGController : BaseController
     {
         private readonly IServicioActividadFactory<IBajaCTGService> factory;

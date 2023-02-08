@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
-    [Autorizacion(PermisosScato.ActividadAltaCTG)]
+    [Autorizacion(PermisosScato.ActividadAltaCTGDG)]
     public class AltaCTGDGController : BaseController
     {
         private readonly IServicioActividadFactory<IAltaCTGDGService> factory;
