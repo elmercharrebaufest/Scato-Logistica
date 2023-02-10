@@ -1,7 +1,7 @@
 ﻿jQuery(document).ready(function ($) {
     //Máscaras
     $(".numeroRemito").mask("9999-99999999");
-    
+
     $(".patente-internacional").mask("?*******", { placeholder: "" });
     $("#FechaOD").click(function () {
         $("#FechaCP").mask("99/99/9999");
@@ -9,6 +9,7 @@
 
     $('.numero-ctg-cpe').attr("hidden", true);
     $('#marco-cp').attr("hidden", true);
+
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
@@ -72,7 +73,7 @@
         if (JSON.parse(datos).find(f => f.Id === materialId).EsDerivadoGranario) {
             $('.numero-ctg-cpe').removeAttr('hidden');
             $('#marco-cp').removeAttr('hidden');
-            
+            $('#divImagenPdf').attr("style", "width: 30%")
         }
 
         else {
@@ -81,13 +82,24 @@
             $('#Sucursal').val('');
             $('#NroOrden').val('');
             $('#NumeroCTG').val('');
-            $("#imagen-cp").attr("src", "" );
-
+            $("#imagen-cp").attr("src", "");
+            $.removeData($('#imagen-cp'), 'elevateZoom');//borra la data zoom de img
+            $('.zoomContainer').remove();// borra el contenedor de zoom en el DOM
+            $('#divImagenPdf').removeAttr("style")
         }
-        
     });
 
-   
+    $('#imagen-cp').mouseover(function () {
+        console.log("Antes")
+
+        $('#imagen-cp').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+            scrollZoom: true,
+        });
+    })
+        .mouseout(function () {
+        });
 });
 
 function cargarMaterial() {
@@ -127,18 +139,15 @@ function cargarTiposVehiculo(bool) {
 
 function ValidarCTG() {
     var nroCartaPorte = $('#NumeroCTG').val();
-    
+
     if (nroCartaPorte != '') {
         BuscarNumeroCPE(nroCartaPorte, function () { BlockUI(" consulta de numero de cpe"); }, function () { $.unblockUI(); });
     }
-    
 }
 
 function BuscarNumeroCPE(ctg, before, callback) {
     if (before != null) before();
     $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: ctg }, function (data) {
-        
-
         if (data.status == 500) {
             MostrarAlertaAdvertencia(data.satus);
         }
@@ -162,11 +171,7 @@ function BuscarNumeroCPE(ctg, before, callback) {
 
         if (callback != null) callback();
     });
-
-
 }
-
-
 
 function ValidarPatenteCnrt() {
     var patente = $("#PatenteCamion").val();
