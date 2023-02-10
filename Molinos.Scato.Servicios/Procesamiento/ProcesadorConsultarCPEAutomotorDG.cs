@@ -76,7 +76,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.sucursal = responseCp.respuesta.cabecera.sucursal;
                 resultado.cuitTransportista = formatoCuilTransportista(responseCp.respuesta.transporte.cuitTransportista);
                 resultado.patenteCamion = responseCp.respuesta.transporte.dominio[0];
-                resultado.patenteAcoplado = responseCp.respuesta.transporte.dominio[1];
+                resultado.patenteAcoplado = responseCp.respuesta.transporte.dominio.Length > 1 ? responseCp.respuesta.transporte.dominio[1] : string.Empty;
                 resultado.cuitChofer = responseCp.respuesta.transporte.cuitChofer;
                 resultado.pesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
                 resultado.pesoTara = responseCp.respuesta.datosCarga.pesoTara;

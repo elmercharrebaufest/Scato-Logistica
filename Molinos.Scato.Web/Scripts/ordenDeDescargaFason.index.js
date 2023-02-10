@@ -164,7 +164,10 @@ function BuscarNumeroCPE(ctg, before, callback) {
     
         $('#PatenteCamion').val(data.responseJSON.patenteCamion);
         $('#PatenteAcoplado').val(data.responseJSON.patenteAcoplado);
+
         $('#Chofer_Cuil').val(data.responseJSON.cuitChofer);
+        $('#Chofer_Cuil').focusout();
+        
         $('#pesoBruto').val(data.responseJSON.pesoBruto);
         $('#pesoTara').val(data.responseJSON.pesoTara);
         $("#imagen-cp").attr("src", "data:application/pdf;base64," + data.responseJSON.pdfBase);
