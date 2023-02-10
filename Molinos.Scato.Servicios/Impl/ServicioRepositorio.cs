@@ -3033,7 +3033,10 @@ namespace Molinos.Scato.Servicios.Impl
                     #region FerroviarioCPE
 
                     var numeroOperativo = Convert.ToInt64(numero);
-                    var cartaPortesFerroviario = repositorio.Listar<CartaPorte>(x => x.NumeroOperativo == numeroOperativo);
+                    var cartaPortesFerroviario = repositorio.Listar<CartaPorte>(x => x.NumeroOperativo == numeroOperativo)
+                        .GroupBy(x => x.NroCartaPorte)
+                        .Select(x => x.OrderBy(c => c.Id).FirstOrDefault())
+                        .ToList();
                     CartaPorte cartaPorte = null;
 
                     foreach (var cartaPorteItem in cartaPortesFerroviario)
@@ -3062,15 +3065,6 @@ namespace Molinos.Scato.Servicios.Impl
                             x.Material.Id == cp.Material.Id && x.Centro.Id == centroId && x.Workflow.Id == workflow.Id))
                         {
                             log.Debug("No se encontró el material {0} para el centro {0}", cp.Material.Id, centroId);
-                            continue;
-                        }
-
-                        if (repositorio.Existe<Recorrido>(
-                            x =>
-                            x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == cartaPorteItem.NroCartaPorte &&
-                            x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow == workflow.TipoDeWorkflow && x.Rechazado && x.Terminado))
-                        {
-                            log.Debug($"Se excluye la Carta de Porte {cartaPorteItem.NroCartaPorte} que finalizó el recorrido y fue rechazado en el mismo centro y workflow.");
                             continue;
                         }
 
