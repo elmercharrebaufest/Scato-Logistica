@@ -9,7 +9,6 @@ using Molinos.Scato.Repositorio;
 using Molinos.Scato.Repositorio.ConsultasEF;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
-using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -209,6 +208,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var rutaFotoCPE = string.Empty;
                 if (!(responseAFIP is null) && !(responseAFIP?.pdf is null))
                 {
+                    var rutaFotoPuestoDeTrabajo = Repositorio.ObtenerMayor<VideoCamara, int, string>(x => x.PuestoDeTrabajo.Id == comando.PuestoDeTrabajoId, x => x.Id, x => x.Directorio);
                     var resultadoGuardarImagen = servicioComandos.Ejecutar( new GuardarImagenDescarga
                     {
                         Pdf = responseAFIP.pdf,
@@ -218,6 +218,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Patente = recorrido.Patente,
                         Etapa = string.Empty,
                         TipoVehiculo = recorrido.TipoVehiculo,
+                        RutaFotoCP = !string.IsNullOrEmpty(rutaFotoPuestoDeTrabajo) ? rutaFotoPuestoDeTrabajo : null
                     }) as ResultadoCartaPorteElectronica;
 
                     if (!resultadoGuardarImagen.HayErrores)
@@ -275,7 +276,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             NroOrden = comando.NroOrden.ToString().PadLeft(8, '0'),
                             Sucursal = response?.respuesta?.cabecera?.sucursal.ToString().PadLeft(5, '0'),
                             RutaFotoCPEDG = rutaFotoCPE,
-                            Recorrido = recorrido
+                            Recorrido = recorrido,
+                            FechaEmision = DateTime.Now
                         };
                         Repositorio.Agregar(cartaPorteDerivadoGranario);
                     }
@@ -363,12 +365,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     break;
             }
             return request;
-        }
-
-        private string ObtenerFotoRutaDestino()
-        {
-            var path = configuracion.AppSettings["FotosPath"];
-            return path + (path.EndsWith("\\") ? "" : "\\") + DateTime.Now.ToString("yyyyMMdd");
         }
     }
 }

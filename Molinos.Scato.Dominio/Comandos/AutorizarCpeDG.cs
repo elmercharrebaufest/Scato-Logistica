@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int NroOrden { get; set; }
         public int Sucursal { get; set; }
         public short TipoCPE { get; set; }
+        public int PuestoDeTrabajoId { get; set; }
     }
 }

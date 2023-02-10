@@ -10329,5 +10329,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<Cliente, ClienteDto>(x => x.Cuit.Equals(cuit));
         }
+
+        public CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorCTG(string nroCTG)
+        {
+            return Obtener<CartaPorteDerivadoGranario, CartaPorteDerivadoGranarioDto>(x => x.NroCTG == nroCTG);
+        }
     }
 }

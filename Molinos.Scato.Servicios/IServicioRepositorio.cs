@@ -2797,5 +2797,8 @@ namespace Molinos.Scato.Servicios
         
         [OperationContract]
         ClienteDto ObtenerClientePorCuit(string cuit);
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorCTG(string nroCTG);
     }
 }

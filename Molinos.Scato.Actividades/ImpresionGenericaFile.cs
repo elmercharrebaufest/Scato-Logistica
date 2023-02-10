@@ -1,4 +1,6 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -7,6 +9,7 @@ using System;
 using System.Activities;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
@@ -76,9 +79,21 @@ namespace Molinos.Scato.Actividades
                 } else if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaPorteElectronicaDerivadoGranario) == documento.CodigoDocumentoImpresion)
                 {
                     var cartaporteElectronica = repositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(workflowId);
-                    if (cartaporteElectronica != null && string.IsNullOrEmpty(cartaporteElectronica.RutaFotoCPEDG))
+                    if (cartaporteElectronica != null && !string.IsNullOrEmpty(cartaporteElectronica.RutaFotoCPEDG) && File.Exists(cartaporteElectronica.RutaFotoCPEDG))
                     {
-                        var pdf = File.ReadAllBytes(cartaporteElectronica.RutaFotoCPEDG);
+                        byte[] pdf = null;
+                        var document = new Document();
+                        using (var stream = new MemoryStream())
+                        {
+                            PdfWriter.GetInstance(document, stream);
+                            document.Open();
+                            Image image = Image.GetInstance(cartaporteElectronica.RutaFotoCPEDG);
+                            image.ScaleAbsolute(document.PageSize.Width, document.PageSize.Height);
+                            image.SetAbsolutePosition(0, 0);
+                            document.Add(image);
+                            document.Close();
+                            pdf = stream.ToArray();
+                        }
                         ImprimirFileGenerico(servicio, pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
                     }
                 }              
@@ -86,6 +101,21 @@ namespace Molinos.Scato.Actividades
             catch (Exception e)
             {
                 resultado.Errores.Add("1", e.Message);
+            }
+
+            if(resultado.HayErrores)
+            {
+                servicio.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "Impresion Generica File",
+                        Fecha = DateTime.Now,
+                        Comentario = resultado.Errores.Values.First(),
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
+                });
             }
 
             try

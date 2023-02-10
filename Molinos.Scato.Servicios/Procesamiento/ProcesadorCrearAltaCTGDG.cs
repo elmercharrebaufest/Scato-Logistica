@@ -25,6 +25,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     NroCTG = comando.Dto.CodigoCTG.PadLeft(12, '0'),
                     NroOrden = comando.Dto.NroOrden.PadLeft(8, '0'),
                     Sucursal = comando.Dto.Sucursal.PadLeft(5, '0'),
+                    FechaEmision = DateTime.Now
         };
             cartaPorteDerivadoGranario.Recorrido = recorrido;
             entidad.CartaPorteDerivadoGranario = cartaPorteDerivadoGranario;

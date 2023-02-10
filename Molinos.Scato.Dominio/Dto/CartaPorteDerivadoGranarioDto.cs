@@ -1,7 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -13,5 +10,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string NroOrden { get; set; }
         public string RutaFotoCPEDG { get; set; }
         public int RecorridoId { get; set; }
+        public DateTime? FechaEmision { get; set; }
     }
 }

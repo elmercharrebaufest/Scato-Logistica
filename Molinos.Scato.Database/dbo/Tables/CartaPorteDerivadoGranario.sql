@@ -5,6 +5,7 @@
     [NroOrden] CHAR(8) NULL, 
     [RutaFotoCPEDG] VARCHAR(200) NULL,
     [Recorrido_Id] INT NOT NULL,
+    [FechaEmision] DATETIME NULL,
     CONSTRAINT [PK_dbo.CartaPorteDerivadoGranario] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.CartaPorteDerivadoGranario_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE
 );

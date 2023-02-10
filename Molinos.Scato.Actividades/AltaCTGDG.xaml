@@ -80,6 +80,8 @@
       <AssemblyReference>WindowsBase</AssemblyReference>
       <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
       <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
     </sco:Collection>
@@ -144,6 +146,11 @@
                             <mca:CSharpReference x:TypeArguments="x:Int32">contadorDeFallos</mca:CSharpReference>
                           </InOutArgument>
                         </local:DarDeAltaCtgDGAutomatica.Intentos>
+                        <local:DarDeAltaCtgDGAutomatica.PuestoDeTrabajoId>
+                          <InArgument x:TypeArguments="x:Int32">
+                            <mca:CSharpValue x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpValue>
+                          </InArgument>
+                        </local:DarDeAltaCtgDGAutomatica.PuestoDeTrabajoId>
                         <local:DarDeAltaCtgDGAutomatica.Resultado>
                           <OutArgument x:TypeArguments="msdc:Resultado">
                             <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
@@ -379,6 +386,11 @@
                                                       <mca:CSharpReference x:TypeArguments="x:Int32">contadorDeFallos</mca:CSharpReference>
                                                     </InOutArgument>
                                                   </local:DarDeAltaCtgDGAutomatica.Intentos>
+                                                  <local:DarDeAltaCtgDGAutomatica.PuestoDeTrabajoId>
+                                                    <InArgument x:TypeArguments="x:Int32">
+                                                      <mca:CSharpValue x:TypeArguments="x:Int32">puestoDeTrabajoId</mca:CSharpValue>
+                                                    </InArgument>
+                                                  </local:DarDeAltaCtgDGAutomatica.PuestoDeTrabajoId>
                                                   <local:DarDeAltaCtgDGAutomatica.Resultado>
                                                     <OutArgument x:TypeArguments="msdc:Resultado">
                                                       <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
@@ -489,7 +501,7 @@
       <x:Reference>__ReferenceID22</x:Reference>
       <x:Reference>__ReferenceID23</x:Reference>
     </Flowchart>
-    <sads:DebugSymbol.Symbol>d0dDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xBbHRhQ1RHREcueGFtbEVXA+0DDgIBAVgFXhoDAYUGXwXrAxECAQJbC1vBAQMBhgZjNWM4AgEDbAt3MAMB5AV7EXtoAwHUBb8DE8oDLAMBswW7ASfbATMDAdIE3wEt3wF7AwHCBOoCLfUCRgMBoQT4AjGIA1IDAfAD/wE3/wGKAQMB4AOMAj2SAksDAc8DlgJDlgKWAQMBvwOdAkWtAlwDAY4DgwI5iQJSAwH9Ar8CLcoCRgMB3ALNAjHiAk4DAZsC4gEt7QFGAwH6AfABMfsBSAMB2QF/E4oBLAMBuAGNARedATgDAYcBoQEdoQFwAgF3mQMfpAM4AgFWpwMjsgM6AgE1pQEfsAE4AgEUtAEltAF7AgEEbxFvVgMB9QV0EXRwAwHlBcIDGcIDpgIDAcQFxwMZxwNuAwG0BcYBLcYBgQEDAaMF0gEt0gGTAQMBkwXMAS3MAYMBAwGDBdUBLdUBewMB8wTYAS3YAXsDAeMEzwEtzwF8AwHTBO0CM+0CwQIDAbIE8gIz8gKIAQMBogSFAzeFA5MBAwGRBPsCN/sCjAEDAYEEgAM3gAOMAQMB8QOPAkOPApABAwHQA6ACS6ACqQEDAa8DpQJLpQKeAQMBnwOqAkuqAqEBAwGPA4YCP4YC4wIDAf4CwgIzwgK5AgMB7QLHAjPHAogBAwHdAtACN9ACfgMBzALfAjffAn0DAbwC1QI31QJ9AwGsAtoCN9oCjAEDAZwC5QEz5QG+AgMBiwLqATPqAYgBAwH7AfMBN/MBhwEDAeoB+AE3+AF9AwHaAYIBGYIBrgIDAckBhwEZhwFuAwG5AZoBHZoBeQMBqAGQAR2QAXIDAZgBlQEdlQFyAwGIAZwDJZwDswICAWehAyWhA3oCAVeqAymqA9ACAgFGrwMprwN/AgE2qAElqAHJAgIBJa0BJa0BegIBFQ==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0dDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xBbHRhQ1RHREcueGFtbEdZA/kDDgIBAVoFYBoDAaUGYQX3AxECAQJdC13BAQMBpgZlNWU4AgEDbgt5MAMBhAZ9EX1oAwH0BcsDE9YDLAMB0wXCASfiATMDAfIE5gEt5gF7AwHiBPECLfwCRgMBwQT/AjGUA1IDAYAEhgI3hgKKAQMB8AOTAj2ZAksDAd8DnQJDnQKWAQMBzwOkAkW0AlwDAZ4DigI5kAJSAwGNA8YCLdECRgMB7ALUAjHpAk4DAasC6QEt9AFGAwGKAvcBMYICSAMB6QGBAROMASwDAcgBjwEXpAE4AwGHAagBHagBcAIBd6UDH7ADOAIBVrMDI74DOgIBNawBH7cBOAIBFLsBJbsBewIBBHERcVYDAZUGdhF2cAMBhQbOAxnOA6YCAwHkBdMDGdMDbgMB1AXNAS3NAYEBAwHDBdkBLdkBkwEDAbMF0wEt0wGDAQMBowXcAS3cAXsDAZMF3wEt3wF7AwGDBdYBLdYBfAMB8wT0AjP0AsECAwHSBPkCM/kCiAEDAcIEkQM3kQOTAQMBsQSCAzeCA4wBAwGhBIwDN4wDjAEDAZEEhwM3hwOFAQMBgQSWAkOWApABAwHgA6cCS6cCqQEDAb8DrAJLrAKeAQMBrwOxAkuxAqEBAwGfA40CP40C4wIDAY4DyQIzyQK5AgMB/QLOAjPOAogBAwHtAtcCN9cCfgMB3ALmAjfmAn0DAcwC3AI33AJ9AwG8AuECN+ECjAEDAawC7AEz7AG+AgMBmwLxATPxAYgBAwGLAvoBN/oBhwEDAfoB/wE3/wF9AwHqAYQBGYQBrgIDAdkBiQEZiQFuAwHJAaEBHaEBeQMBuAGSAR2SAXIDAagBnAEdnAFyAwGYAZcBHZcBawMBiAGoAyWoA7MCAgFnrQMlrQN6AgFXtgMptgPQAgIBRrsDKbsDfwIBNq8BJa8ByQICASW0ASW0AXoCARU=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
