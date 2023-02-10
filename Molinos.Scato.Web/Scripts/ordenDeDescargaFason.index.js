@@ -23,7 +23,6 @@
         if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
     });
 
-
     // para que el campo retome el foco al seleccionar una fecha
     $('input.date').datepicker("option", "onSelect", function () {
         $(this).focus();
@@ -150,7 +149,10 @@ function BuscarNumeroCPE(ctg, before, callback) {
         var formatNroOrden = cadenaNumeroOrden.substr(cadenaNumeroOrden.length - 8);
         $('#Sucursal').val(formatSucursal);
         $('#NroOrden').val(formatNroOrden);
+        
         $('#Transportista').val(data.responseJSON.cuitTransportista);
+        $('#Transportista').focusout();
+    
         $('#PatenteCamion').val(data.responseJSON.patenteCamion);
         $('#PatenteAcoplado').val(data.responseJSON.patenteAcoplado);
         $('#Chofer_Cuil').val(data.responseJSON.cuitChofer);
