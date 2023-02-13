@@ -119,6 +119,8 @@ function cargarMaterial() {
     $.getJSON($('#links').data().urlObtenerMateriales, { workflowId: workflowId, centroId: $('#centroId').val(), clienteId: clienteId },
         function (allData) {
             var options = '';
+            options += "<option value='' selected='selected' >" + "</option>";
+
             for (var j = 0; j < allData.length; j++) {
                 options += "<option value='" + allData[j].Value + "'>"
                     + allData[j].Text + "</option>";
