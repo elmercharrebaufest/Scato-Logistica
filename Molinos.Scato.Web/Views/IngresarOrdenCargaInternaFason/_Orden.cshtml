@@ -39,12 +39,13 @@
 
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.RecorridoId)
-@Html.Hidden("WorkflowDescripcion",WorkflowDescripcion)
+@Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
 @Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
 @Html.Hidden("DomicilioSeleccionado", Model.OrdenDomicilioDestino)
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
+@Html.Hidden("MaterialSeleccionado", Model.MaterialId)
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
@@ -116,7 +117,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small margin10" })
                 <div class="" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
-                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales,Textos.Default_TipoComercial, new { @class = "control " })
+                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control " })
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
@@ -147,7 +148,7 @@
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)" )
+                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)")
                     @Html.ValidationMessageFor(model => model.PlantaDGDestino)
                 </div>
             </div>
@@ -166,7 +167,7 @@
                     @Html.HiddenFor(model => model.PagadorFleteId)
                 </div>
             </div>
-            
+
         </fieldset>
     </div>
 
