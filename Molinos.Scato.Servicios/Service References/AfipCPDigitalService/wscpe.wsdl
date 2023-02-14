@@ -302,7 +302,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="tns:Texto140" />
           <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
-          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
@@ -816,7 +816,9 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
           <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
           <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesFerroviariaDGSolicitud" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
           <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoFerroviariaDGSolicitud" />
@@ -837,7 +839,9 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="codDerivadoGranario" type="tns:CodigoDerivadoGranario" />
           <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
           <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesAutomotorDGSolicitud" />
           <xsd:element minOccurs="0" maxOccurs="1" name="destino" type="tns:DestinoAutomotorDGSolicitud" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
@@ -859,7 +863,6 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
           <xsd:element minOccurs="0" maxOccurs="1" name="intervinientes" type="tns:IntervinientesDuctosDGModificacionActivaSolicitud" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cuitDestinatario" type="tns:CUIT" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="observaciones" type="tns:Observaciones" />
         </xsd:sequence>
       </xsd:complexType>
@@ -952,7 +955,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
           <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
           <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
-          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
@@ -1020,8 +1023,6 @@
           <xsd:element minOccurs="1" maxOccurs="1" name="tipoEmbalaje" type="tns:TipoEmbalaje" />
           <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
           <xsd:element minOccurs="1" maxOccurs="1" name="unidadMedida" type="tns:UnidadMedida" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
-          <xsd:element minOccurs="1" maxOccurs="1" name="kgLitroM3" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="tns:Texto15" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
@@ -1286,9 +1287,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="tipoEmbalaje" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="1" name="otroEmbalaje" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="unidadMedida" type="xsd:int" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="cantidadUnidades" type="tns:Digitos5" />
           <xsd:element minOccurs="0" maxOccurs="1" name="pesoBruto" type="xsd:int" />
-          <xsd:element minOccurs="0" maxOccurs="1" name="kgLitroM3" type="xsd:long" />
           <xsd:element minOccurs="0" maxOccurs="1" name="lote" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="fechaLote" type="xsd:dateTime" />
         </xsd:sequence>
@@ -2479,7 +2478,7 @@
       <xsd:simpleType name="TipoCPE">
         <xsd:restriction base="xsd:short">
           <xsd:minInclusive value="1" />
-          <xsd:maxInclusive value="287" />
+          <xsd:maxInclusive value="999" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="MotivoContingencia">
