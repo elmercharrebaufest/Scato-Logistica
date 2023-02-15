@@ -23,6 +23,11 @@
                            /endpoint[@name='ListaDeWorkflows']
                            /@address" />
   </parameter>
+  <parameter name="UrlBaseWorkflow Config">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+                    match="/configuration/appSettings/add[@key='UrlBaseWorkflow']
+                           /@value" />
+  </parameter>
   <parameter name="FederationMetadataLocation Config">
     <parameterEntry kind="XmlFile" scope="Web.config"
                     match="/configuration/appSettings/add[@key='ida:FederationMetadataLocation']

@@ -5,6 +5,7 @@
   <setParameter name="ServicioComandos Service Endpoint Address" value="http://scatoqa.molinosagro.com.ar/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
   <setParameter name="ListaDeWorkflows Service Endpoint Address" value="http://scatoqa.molinosagro.com.ar/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
   <setParameter name="FirmaProvider Service Endpoint Address" value="http://scatoqa.molinosagro.com.ar/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
+  <setParameter name="UrlBaseWorkflow Config" value="http://scatoqa.molinosagro.com.ar/Scato.workflow/xaml/" />
   <setParameter name="FederationMetadataLocation Config" value="https://pase.molinosagro.com.ar/FederationMetadata/2007-06/FederationMetadata.xml" />
   <setParameter name="Issuer Config" value="https://pase.molinosagro.com.ar/adfs/ls/" />
   <setParameter name="IssuerTrust Identity Configuration" value="http://pase.molinosagro.com.ar/adfs/services/trust" />
