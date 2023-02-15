@@ -9,6 +9,8 @@
 
     $('.numero-ctg-cpe').attr("hidden", true);
     $('#marco-cp').attr("hidden", true);
+    $('.procedenciaDG').attr("hidden", true);
+
 
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
@@ -74,6 +76,9 @@
             $('.numero-ctg-cpe').removeAttr('hidden');
             $('#marco-cp').removeAttr('hidden');
             $('#divImagenPdf').attr("style", "width: 30%")
+            $('.procedencia').attr("hidden", true);
+            $('.procedencia').prop('required',false)
+            $('.procedenciaDG').removeAttr('hidden');
         }
 
         else {
@@ -86,6 +91,10 @@
             $.removeData($('#imagen-cp'), 'elevateZoom');//borra la data zoom de img
             $('.zoomContainer').remove();// borra el contenedor de zoom en el DOM
             $('#divImagenPdf').removeAttr("style")
+            $('.procedencia').removeAttr('hidden');
+            $('.procedencia').prop('required',true);
+            $('.procedenciaDG').attr("hidden", true);
+
         }
     });
 
@@ -139,38 +148,50 @@ function cargarTiposVehiculo(bool) {
 
 function ValidarCTG() {
     var nroCartaPorte = $('#NumeroCTG').val();
+    var codigoPadre = null;
+    var codigoDerivadoGranario = null;
 
     if (nroCartaPorte != '') {
-        BuscarNumeroCPE(nroCartaPorte, function () { BlockUI(" consulta de numero de cpe"); }, function () { $.unblockUI(); });
+        BuscarNumeroCPE(nroCartaPorte, function () { BlockUI(" consulta de numero de cpe"); }, function () { $.unblockUI(); }, codigoPadre, codigoDerivadoGranario);
     }
 }
 
-function BuscarNumeroCPE(ctg, before, callback) {
+function BuscarNumeroCPE(ctg, before, callback, codigoPadre, codigoDerivadoGranario) {
     if (before != null) before();
     $.getJSON($("#links").data().urlObtenerCartaPorteCtg, { numeroCtg: ctg }, function (data) {
         if (data.status == 500) {
             MostrarAlertaAdvertencia(data.satus);
         }
     }).complete(function (data) {
-        var cadenaSucursal = "000000000" + data.responseJSON.sucursal;
-        var cadenaNumeroOrden = "000000000" + data.responseJSON.nroOrden;
+        var cadenaSucursal = "000000000" + data.responseJSON.Sucursal;
+        var cadenaNumeroOrden = "000000000" + data.responseJSON.NroOrden;
         var formatSucursal = cadenaSucursal.substr(cadenaSucursal.length - 5);
         var formatNroOrden = cadenaNumeroOrden.substr(cadenaNumeroOrden.length - 8);
+        var cuitOrigen = data.responseJSON.CuitOrigen;
+        var plantaDG = data.responseJSON.PlantaDG;
+        codigoPadre = data.responseJSON.CodigoPadre;
+        codigoDerivadoGranario = data.responseJSON.CodigoGranario;
+
         $('#Sucursal').val(formatSucursal);
         $('#NroOrden').val(formatNroOrden);
         
-        $('#Transportista').val(data.responseJSON.cuitTransportista);
+        $('#Transportista').val(data.responseJSON.CuitTransportista);
         $('#Transportista').focusout();
     
-        $('#PatenteCamion').val(data.responseJSON.patenteCamion);
-        $('#PatenteAcoplado').val(data.responseJSON.patenteAcoplado);
+        $('#PatenteCamion').val(data.responseJSON.PatenteCamion);
+        $('#PatenteAcoplado').val(data.responseJSON.PatenteAcoplado);
 
-        $('#Chofer_Cuil').val(data.responseJSON.cuitChofer);
+        $('#Chofer_Cuil').val(data.responseJSON.CuitChofer);
         $('#Chofer_Cuil').focusout();
         
-        $('#pesoBruto').val(data.responseJSON.pesoBruto);
-        $('#pesoTara').val(data.responseJSON.pesoTara);
-        $("#imagen-cp").attr("src", "data:application/pdf;base64," + data.responseJSON.pdfBase);
+        $('#pesoBruto').val(data.responseJSON.PesoBruto);
+        $('#pesoTara').val(data.responseJSON.PesoTara);
+        $("#imagen-cp").attr("src", "data:application/pdf;base64," + data.responseJSON.PdfBase);
+
+        BuscarCliente(cuitOrigen);
+        BuscarProcedenciaDG(plantaDG);
+        BuscarMaterialDG(codigoPadre, codigoDerivadoGranario);
+
 
         if (callback != null) callback();
     });
@@ -204,5 +225,49 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
         }
     }).complete(function () {
         if (callback != null) callback();
+    });
+}
+
+
+function BuscarMaterialDG(codigoPadre, codigoDerivadoGranario){
+    $.getJSON($("#links").data().urlObtenerMaterialUnico, { codigoPadre: codigoPadre, codigoDerivadoGranario: codigoDerivadoGranario }, function (data) {
+        if (data.status == 500) {
+            MostrarAlertaAdvertencia(data.satus);
+        }
+    }).complete(function (data) {
+        if(data.responseJSON != null && data.responseJSON.Id != null){
+            var materialId = data.responseJSON.Id;
+            $("#MaterialId").val(materialId);        
+        }
+    });
+}
+
+function BuscarCliente(cuitOrigen){
+    $.getJSON($("#links").data().urlBuscarClienteUnico, { term: cuitOrigen }, function (data) {
+        if (data.status == 500) {
+            MostrarAlertaAdvertencia(data.satus);
+        }
+    }).complete(function (data) {
+        if(data.responseJSON != null && data.responseJSON.Id != null){
+            var descripcion = data.responseJSON.Descripcion;
+            $("#Cliente").val(descripcion);  
+            $('#Cliente').focusout();      
+        }
+    });
+}
+
+function BuscarProcedenciaDG(plantaDG){
+    $.getJSON($("#links").data().urlObtenerProcedenciaDg, { plantaDG: plantaDG }, function (data) {
+        if (data.status == 500) {
+            MostrarAlertaAdvertencia(data.satus);
+        }
+    }).complete(function (data) {
+        if(data.responseJSON != null && data.responseJSON.Id != null){
+            var descripcion = data.responseJSON.Descripcion;
+            var domicilioId = data.responseJSON.Id;
+            $("#Domicilio").val(descripcion);  
+            $("#DomicilioId").val(domicilioId);  
+            $("#Procedencia").val(" ");
+        }
     });
 }

@@ -59,7 +59,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenDeDescargaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
-           
+            Validar(orden);
 
             if (datosUsuario.CentroId == 0)
             {
@@ -115,7 +115,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 servicioComandos.Ejecutar(new GuardarImagenDescarga
                 {
-                    Pdf = consulta.pdf,
+                    Pdf = consulta.Pdf,
                     TipoImagen = TipoImagen.CPEDG,
                     CodigoCentroSap = codigoSAP,
                     NroCartaPorte = orden.Numero,
@@ -175,6 +175,20 @@ namespace Molinos.Scato.Web.Controllers
                
 
                 return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+        }
+
+        private void Validar(OrdenDeDescargaFasonDto orden)
+        {
+            var material = servicio.ObtenerMaterial(orden.MaterialId);
+
+            if (!material.EsDerivadoGranario && orden.ProcedenciaId == 0)
+            {
+                ModelState.AddModelError("Procedencia", string.Format(Textos.Error_Requerido, Textos.Procedencia));
+            }
+            if (material.EsDerivadoGranario && orden.DomicilioId == 0)
+            {
+                ModelState.AddModelError("Domicilio", string.Format(Textos.Error_Requerido, "Domicilio"));
+            }
         }
 
         private void SetearVista(WorkflowDto workflow, int centroId)

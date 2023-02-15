@@ -27,7 +27,9 @@
     [PesoBrutoOrigen] INT NULL, 
     [PesoNetoOrigen] INT NOT NULL,
 	[Recorrido_Id] INT NOT NULL,
-	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE
+	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE,
+    [Domicilio_Id] INT NULL, 
+	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Domicilio_Domicilio_Id] FOREIGN KEY ([Domicilio_Id]) REFERENCES [dbo].[Domicilio] ([Id]),
 );
 GO
 CREATE NONCLUSTERED INDEX [IX_Recorrido_Id]

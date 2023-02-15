@@ -2800,5 +2800,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorCTG(string nroCTG);
+
+        [OperationContract]
+        MaterialDto ObtenerMaterialDerivadoGranario(short codigoPadre, short codigoDreivadoGranario);
+
+        [OperationContract]
+        DomicilioDto ObtenerDomicilioDG(int plantaDG);
     }
 }

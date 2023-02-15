@@ -25,7 +25,9 @@
      data-url-obtenertiposvehiculo="@Url.Action("ObtenerTiposVehiculo", "Consultas")"
      data-url-obtener-materiales="@Url.Action("ListarMaterialesPorCliente", "Consultas")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
-     data-url-obtener-carta-porte-ctg="@Url.Action("ObtenerCPEAutomotorDG", "Consultas")">
+     data-url-obtener-carta-porte-ctg="@Url.Action("ObtenerCPEAutomotorDG", "Consultas")"
+     data-url-obtener-material-unico="@Url.Action("ObtenerMaterial", "Consultas")"
+     data-url-obtener-procedencia-dg="@Url.Action("ObtenerProcedenciaDG", "Consultas")">
 
 </div>
 <script type="text/javascript">
@@ -84,12 +86,20 @@
                             @Html.HiddenFor(model => model.ClienteId)
                         </div>
                     </div>
-                    <div class="control-group control-group-no-bottom">
+                    <div class="control-group control-group-no-bottom procedencia">
                         @Html.LabelFor(model => model.Procedencia, new { @class = "control-label small" })
                         <div class="controls-small">
                             @Html.TextBoxFor(model => model.Procedencia, new { @class = "control input-large " })
                             @Html.ValidationMessageFor(model => model.Procedencia)
                             @Html.HiddenFor(model => model.ProcedenciaId)
+                        </div>
+                    </div>
+                    <div class="control-group control-group-no-bottom procedenciaDG">
+                        @Html.LabelFor(model => model.Domicilio, new { @class = "control-label small" })
+                        <div class="controls-small">
+                            @Html.TextBoxFor(model => model.Domicilio, new { @class = "control input-large", @readonly = "readonly"})
+                            @Html.ValidationMessageFor(model => model.DomicilioId)
+                            @Html.HiddenFor(model => model.DomicilioId)
                         </div>
                     </div>
                 </div>

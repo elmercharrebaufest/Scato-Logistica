@@ -33,8 +33,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var centro = Repositorio.Obtener<Centro>(comando.CentroId);
                     var material = Repositorio.Obtener<Material>(comando.Orden.MaterialId);
                     var cliente = Repositorio.Obtener<Cliente>(comando.Orden.ClienteId);
-                    var procedencia = Repositorio.Obtener<Localidad>(comando.Orden.ProcedenciaId);
+                    var procedencia = new Localidad();
+                    var domicilio = new Domicilio();
                     var workflowDefinicion = Repositorio.Obtener<WorkflowDefinicion>(comando.WorkflowDefinicionId);
+
+                    if(comando.Orden.ProcedenciaId != 0)
+                    {
+                        procedencia = Repositorio.Obtener<Localidad>(comando.Orden.ProcedenciaId);
+                        domicilio = null;
+                    }
+                    else
+                    {
+                        domicilio = Repositorio.Obtener<Domicilio>(comando.Orden.DomicilioId);
+                        procedencia = null;
+                    }
 
                     var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenDeDescargaFason, NumeroDocumentoIngreso = comando.Orden.Numero, NumeroDocumentoIngresoLegal = (!string.IsNullOrEmpty(comando.Orden.NumeroRemito) ? comando.Orden.NumeroRemito.Replace('R', '-') : ""), WorkflowDefinicion = workflowDefinicion, Material = material,TipoVehiculo = comando.Orden.TipoVehiculo};
                     Repositorio.Agregar(recorrido);
@@ -57,6 +69,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         PesoTaraOrigen = comando.Orden.PesoTaraOrigen,
                         PesoNetoOrigen = comando.Orden.PesoNetoOrigen,
                         Recorrido = recorrido,
+                        Domicilio = domicilio,
                     };
 
                     if (material.EsDerivadoGranario)

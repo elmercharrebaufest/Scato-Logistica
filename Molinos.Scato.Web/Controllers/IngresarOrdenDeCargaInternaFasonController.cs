@@ -61,6 +61,12 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
             Validar(orden, datosUsuario);
 
+            if (!ModelState.IsValid)
+            {
+                SetearVista(workflowObje, datosUsuario.CentroId);
+                return View(orden);
+            }
+
             if (orden.PatenteCamion != null)
             {
                 orden.PatenteCamion = orden.PatenteCamion.ToUpper();

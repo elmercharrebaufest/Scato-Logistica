@@ -541,5 +541,19 @@ namespace Molinos.Scato.Web.Controllers
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        [DatosUsuario]
+        public ActionResult ObtenerMaterial(short codigoPadre, short codigoDerivadoGranario)
+        {
+            var material = servicio.ObtenerMaterialDerivadoGranario(codigoPadre, codigoDerivadoGranario);
+            return material != null ? Json(new { label = material.Descripcion, material.Id, material.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public ActionResult ObtenerProcedenciaDG(int plantaDG)
+        {
+            var domicilio = servicio.ObtenerDomicilioDG(plantaDG);
+            return domicilio != null ? Json(new { label = domicilio.Descripcion, domicilio.Id, domicilio.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
+        }
     }
 }

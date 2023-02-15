@@ -10328,5 +10328,16 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CartaPorteDerivadoGranario, CartaPorteDerivadoGranarioDto>(x => x.NroCTG == nroCTG);
         }
+
+        public MaterialDto ObtenerMaterialDerivadoGranario(short codigoPadre, short codigoDreivadoGranario)
+        {
+            return Obtener<Material, MaterialDto>(x => x.CodigoEspecie == codigoDreivadoGranario && x.CodigoGranoPadre == codigoPadre && x.EsDerivadoGranario);
+        }
+
+        public DomicilioDto ObtenerDomicilioDG(int plantaDG)
+        {
+            var domicilioId = Obtener<Centro, CentroDto>(x => x.PlantaDG == plantaDG).DomicilioId;
+            return Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId);
+        }
     }
 }

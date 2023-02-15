@@ -6,39 +6,48 @@ namespace Molinos.Scato.Dominio.Comandos
     public class ResultadoConsultaCpeAutomotorDG : Resultado
     {
         [DataMember]
-        public long nroOrden { get; set; }
+        public long NroOrden { get; set; }
 
         [DataMember]
-        public long nroCTG { get; set; }
+        public long NroCTG { get; set; }
 
         [DataMember]
-        public int sucursal { get; set; }
+        public int Sucursal { get; set; }
 
         [DataMember]
-        public string cuitTransportista { get; set; }
+        public string CuitTransportista { get; set; }
 
         [DataMember]
-        public string patenteCamion { get; set; }
+        public string PatenteCamion { get; set; }
 
         [DataMember]
-        public string patenteAcoplado { get; set; }  
-        
-        [DataMember]
-        public long cuitChofer { get; set; }
-        
-        [DataMember]
-        public int pesoBruto { get; set; }
-        
-        [DataMember]
-        public int pesoTara { get; set; }
+        public string PatenteAcoplado { get; set; }
 
         [DataMember]
-        public byte[] pdf { get; set; }
+        public long CuitChofer { get; set; }
 
         [DataMember]
-        public string pdfBase { get; set; }
+        public int PesoBruto { get; set; }
 
+        [DataMember]
+        public int PesoTara { get; set; }
+
+        [DataMember]
+        public byte[] Pdf { get; set; }
+
+        [DataMember]
+        public string PdfBase { get; set; }
+
+        [DataMember]
+        public short CodigoGranario { get; set; }
+
+        [DataMember]
+        public short CodigoPadre { get; set; }
+
+        [DataMember]
+        public string CuitOrigen { get; set; }
+
+        [DataMember]
+        public int PlantaDG { get; set; }
     }
-
-    
 }

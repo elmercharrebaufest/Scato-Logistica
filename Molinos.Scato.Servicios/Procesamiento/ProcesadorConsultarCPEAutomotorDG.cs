@@ -71,18 +71,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
                 
-                resultado.nroCTG = responseCp.respuesta.cabecera.nroCTG;
-                resultado.nroOrden = responseCp.respuesta.cabecera.nroOrden;
-                resultado.sucursal = responseCp.respuesta.cabecera.sucursal;
-                resultado.cuitTransportista = formatoCuilTransportista(responseCp.respuesta.transporte.cuitTransportista);
-                resultado.patenteCamion = responseCp.respuesta.transporte.dominio[0];
-                resultado.patenteAcoplado = responseCp.respuesta.transporte.dominio.Length > 1 ? responseCp.respuesta.transporte.dominio[1] : string.Empty;
-                resultado.cuitChofer = responseCp.respuesta.transporte.cuitChofer;
-                resultado.pesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
-                resultado.pesoTara = responseCp.respuesta.datosCarga.pesoTara;
-                resultado.pdf =  responseCp.respuesta.pdf;
+                resultado.NroCTG = responseCp.respuesta.cabecera.nroCTG;
+                resultado.NroOrden = responseCp.respuesta.cabecera.nroOrden;
+                resultado.Sucursal = responseCp.respuesta.cabecera.sucursal;
+                resultado.CuitTransportista = formatoCuitCuit(responseCp.respuesta.transporte.cuitTransportista);
+                resultado.PatenteCamion = responseCp.respuesta.transporte.dominio[0];
+                resultado.PatenteAcoplado = responseCp.respuesta.transporte.dominio.Length > 1 ? responseCp.respuesta.transporte.dominio[1] : string.Empty;
+                resultado.CuitChofer = responseCp.respuesta.transporte.cuitChofer;
+                resultado.PesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
+                resultado.PesoTara = responseCp.respuesta.datosCarga.pesoTara;
+                resultado.Pdf =  responseCp.respuesta.pdf;
+                resultado.CodigoGranario = responseCp.respuesta.datosCarga.codDerivadoGranario;
+                resultado.CodigoPadre = responseCp.respuesta.datosCarga.codGrano;
+                resultado.CuitOrigen = formatoCuitCuit(responseCp.respuesta.origen.cuitOrigen);
+                resultado.PlantaDG = responseCp.respuesta.origen.planta;
+
+
                 var imagen = ConvertirPDFaPNG(responseCp.respuesta.pdf);
-                resultado.pdfBase = Convert.ToBase64String(imagen);
+                resultado.PdfBase = Convert.ToBase64String(imagen);
             }
             catch (FaultException e)
             {
@@ -97,11 +103,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private string  formatoCuilTransportista(long cuilTransportista)
+        private string  formatoCuitCuit(long cuitCuil)
         {
             StringBuilder cuilBuilder = new StringBuilder();
 
-            var cuil = cuilTransportista.ToString();
+            var cuil = cuitCuil.ToString();
 
             for (int i = 0; i < cuil.Length; i++)
             {
@@ -112,7 +118,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 else
                 cuilBuilder.Append(cuil[i]);
             }
-
 
             return cuilBuilder.ToString();
         }
