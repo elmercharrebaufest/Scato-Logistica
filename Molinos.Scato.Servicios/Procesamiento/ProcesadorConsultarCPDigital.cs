@@ -952,7 +952,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Cpe = Conversor.Convertir<Dominio.Entidades.CartaPorte, CartaPorteDto>(entidad);
                     resultado.Cpe.NroOrden = cartaPorteRequest.NroOrden;
                     resultado.Cpe.Procedencia = localidadDto?.Descripcion;
-                    resultado.Cpe.ProcedenciaId = int.TryParse(localidadDto?.CodigoAfip, out int number) ? int.Parse(localidadDto?.CodigoAfip) : default(int);
+                    resultado.Cpe.ProcedenciaId = localidadDto?.Id ?? 0;
                     resultado.Cpe.DestinoId = centro.Id;
                     resultado.Cpe.Destino = centro.Descripcion;
                     resultado.Cpe.Cupo = cartaPorte.CodigoTurno;

@@ -187,7 +187,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             if (material.EsDerivadoGranario && orden.DomicilioId == 0)
             {
-                ModelState.AddModelError("Domicilio", string.Format(Textos.Error_Requerido, "Domicilio"));
+                ModelState.AddModelError("Procedencia", string.Format(Textos.Error_Requerido, Textos.Procedencia));
             }
         }
 
