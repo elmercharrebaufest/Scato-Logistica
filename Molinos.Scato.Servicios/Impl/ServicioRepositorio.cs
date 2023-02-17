@@ -8939,7 +8939,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public InfoPatenteDeCalleDto ObtenerInfoPatente(string patente, int calleId)
         {
-            var camion = repositorio.ObtenerProyeccion<CallePorRecorrido, InfoPatenteDeCalleDto>(x => x.Recorrido.Patente == patente
+            var camion = repositorio.ObtenerProyeccion<CallePorRecorrido, InfoPatenteDeCalleDto>(x => (x.Recorrido.Patente == patente || x.CargaDeCupo.Patente == patente)
              && x.Calle.Id == calleId
              && x.FechaEgreso == null, x => new InfoPatenteDeCalleDto
              {
