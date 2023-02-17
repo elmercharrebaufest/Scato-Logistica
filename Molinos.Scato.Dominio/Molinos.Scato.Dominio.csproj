@@ -90,6 +90,8 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\AnularCPEDGDummy.cs" />
+    <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\AutorizarCpeDG.cs" />
     <Compile Include="Comandos\ConfirmacionDefinitivaCPEAutomotorDG.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\ResultadoCartaPorteElectronicaDummy.cs" />
     <Compile Include="Comandos\ResultadoConsultaDomiciliosDG.cs" />
     <Compile Include="Comandos\ResultadoConsultaPlantasDG.cs" />
     <Compile Include="Comandos\ResultadoConsultaCpeAutomotorDG.cs" />

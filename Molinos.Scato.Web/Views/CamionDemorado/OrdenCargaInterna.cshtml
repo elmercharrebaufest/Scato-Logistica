@@ -1,20 +1,24 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
+
 @{
     ViewBag.Title = Textos.OrdenCargaInterna_Titulo;
-    var workflow = (string)ViewBag.Workflow;
 }
 <input id="ErrorAfip" type="hidden" name="ErrorAfip" value="@(ViewBag.ErrorAfip != null ? ViewBag.ErrorAfip.ToString() : string.Empty)" />
 <script type="text/javascript">
-        $(document).ready(function () {
-            if ($("#ErrorAfip").val() != '') {
-                MostrarAlertaError($("#ErrorAfip").val());
-                $("#MotivoDemora").val($("#ErrorAfip").val());
-                $("#MotivoRechazo").val($("#ErrorAfip").val());
-                $(".btnValidacionCTG").removeAttr("disabled");
-                $("#btnAceptar").attr("disabled", "disabled");
-            }
-        })
+    $(document).ready(function () {
+        if ($("#ErrorAfip").val() != '') {
+            MostrarAlertaError($("#ErrorAfip").val());
+            $(".btnValidacionCTG").removeAttr("disabled");
+            $("#MotivoRechazo").val($("#ErrorAfip").val());
+        }
+
+        $('input').attr("readonly", "readonly");
+        $('select').attr("readonly", "readonly");
+        $("#FechaEmision").datepicker("destroy");
+        $('#TipoVehiculo').attr("readonly", "readonly");
+        $("#Id").val('@Model.Id');
+    })
 </script>
 @section scripts
 {
@@ -34,7 +38,7 @@
     <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenCargaInterna_Titulo</div>
 </div>
 
-@using (Html.BeginForm("Index", "IngresarOrdenCargaInterna", new { workflow }, FormMethod.Post, new { @class = "form-horizontal container content causaBlock", id = "ordenCargaInterna-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInterna }))
+@using (Html.BeginForm("OrdenCargaInterna", "CamionDemorado", FormMethod.Post, new { @class = "form-horizontal container content causaBlock", id = "ordenCargaInterna-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInterna }))
 {
     if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
     {
@@ -42,11 +46,11 @@
             @Html.ValidationSummary(true)
         </div>
     }
-    @Html.Partial("_Orden")
+
+    @Html.Partial("~/Views/IngresarOrdenCargaInterna/_Orden.cshtml");
 
     <div class="control-group paddingRight cajaButtons">
         <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalDemorarOrdenCargaInterna.showModal()" disabled>@Textos.Demorar</button>
         <button class="btn btn-primary" id="btnAceptar" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>
@@ -62,22 +66,7 @@
         </div>
     </div>
     <div class="dialogModal__botones">
-        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInterna" >Confirmar</button>
-        <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()" >Cerrar</button>
-    </div>
-</dialog>
-
-<dialog id="modalDemorarOrdenCargaInterna" class="dialogModal">
-    <h4 class="dialogModal__titulo">@Textos.Demorar</h4>
-    <div class="dialogModal__descripcion">
-        <p>¿Está seguro que desea demorar el camión?</p>
-        <div class="dialogModal__group">
-            <label for="MotivoDemora">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoDemora")
-        </div>
-    </div>
-    <div class="dialogModal__botones">
-        <button class="btn btn-warning" type="button" id="btnDemorarOrdenCargaInterna">Confirmar</button>
-        <button class="btn" type="button" onclick="modalDemorarOrdenCargaInterna.close()">Cerrar</button>
+        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInterna">Confirmar</button>
+        <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()">Cerrar</button>
     </div>
 </dialog>

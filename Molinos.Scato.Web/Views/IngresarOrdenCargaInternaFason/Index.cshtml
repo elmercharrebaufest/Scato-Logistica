@@ -15,12 +15,8 @@
     <script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
 }
-<style>
- .content { padding-top: 20px;}
-
-</style>
 <div class ="container-fluid">
-    <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenCargaInternaFason_Titulo</div>
+    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaInternaFason_Titulo</div>
 </div>
 
 @using (Html.BeginForm("Index", "IngresarOrdenCargaInternaFason", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInternaFason }))

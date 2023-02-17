@@ -538,6 +538,8 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDG.cs" />
     <Compile Include="Procesamiento\ProcesadorBajaCTGDG.cs" />

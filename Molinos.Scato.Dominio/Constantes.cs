@@ -152,6 +152,9 @@
                 public const string Mensaje = "Automatico";
                 public const string RequestAltaDG = "Request Alta de CPEDG";
                 public const string ResponseAltaDG = "Response Alta de CPEDG";
+                public const string RequestAnularCPE = "Request Anular CPE";
+                public const string ResponseAnularCPE = "Response Anular CPE";
+
             }
         }
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -68,14 +66,13 @@ namespace Molinos.Scato.Web.Controllers
                     return View("OrdenCargaFas", orden);
                 }
                 ViewBag.OrdenFas = resultado.OrdenFas.ToSelectList(f => f.NumeroOrden.ToString(), f => f.NumeroOrden);
-                if (resultado.OrdenFas.Count > 1)
-                {
-                    return View("OrdenCargaFas", resultado.OrdenFas.FirstOrDefault());
-                }
-                else
-                {
-                    return View("OrdenCargaFas", resultado.OrdenFas.FirstOrDefault());
-                }
+                return View("OrdenCargaFas", resultado.OrdenFas.FirstOrDefault());
+            }
+            else if (recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaInterna)
+            {
+                var orden = servicio.ObtenerOrdenCargaInternaPorInstanceId(recorrido.InstanciaWorkflow);
+                IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                return View("OrdenCargaInterna", orden);
             }
             var documentoDeIngresoAux = servicio.ObtenerCartaPorte(recorrido.Vehiculo.CartaPorteId);
             var centro = servicio.ObtenerCentro(recorrido.Centro.Id);
@@ -254,6 +251,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug($"ErrorModel : {JsonConvert.SerializeObject(ModelState)}");
             return View(orden);
         }
+
         [HttpPost]
         [DatosUsuario]
         [ViewBagToResponseHeader]
@@ -277,7 +275,79 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.AgregarErrores(resultadoService);
             return Json(resultadoService.Errores, JsonRequestBehavior.AllowGet);
         }
-        
+
+        [HttpPost]
+        [DatosUsuario]
+        public ActionResult OrdenCargaInterna(OrdenCargaInternaDto model, DatosUsuario datosUsuario)
+        {
+            var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
+            if(ModelState.IsValid)
+            {
+                if (model.DerivadoGranarioHabilitado && !model.Rechazado)
+                {
+                    var dominios = new List<string> { model.PatenteCamion };
+                    if (!string.IsNullOrEmpty(model.PatenteAcoplado))
+                    {
+                        dominios.Add(model.PatenteAcoplado);
+                    }
+                    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+                    {
+                        TipoVehiculo = model.TipoVehiculo,
+                        CentroId = datosUsuario.CentroId,
+                        MaterialId = model.MaterialId,
+                        DestinoId = model.DestinoId,
+                        DestinoPlanta = model.PlantaDGDestino ?? 0,
+                        DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
+                        DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
+                        TransportistaId = model.TransportistaId,
+                        Dominios = dominios.ToArray(),
+                        KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
+                        ChoferCuit = model.Chofer.Cuil,
+                        PagadorFleteId = model.PagadorFleteId ?? 0,
+
+                    }) as ResultadoCartaPorteElectronicaDummy;
+                    if (resultadoAltaDummy.HayErrores)
+                    {
+                        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+                        return View(model);
+                    }
+
+                    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+                    {
+                        CentroId = datosUsuario.CentroId,
+                        NroOrden = (int)resultadoAltaDummy.NroOrden,
+                        Sucursal = resultadoAltaDummy.Sucursal,
+                        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+                    });
+                    if (resultadoAnulacionDummy.HayErrores)
+                    {
+                        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+                        return View(model);
+                    }
+                }
+
+                var controlRecorrido = new ControlRecorridoDto
+                {
+                    Actividad = Textos.CamionDemorado,
+                    ActividadXaml = "CamionDemorado",
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                    NombreUsuario = datosUsuario.NombreUsuario,
+                    Comentario = model.Rechazado ? $"Vehiculo Rechazado. {model.MotivoRechazo}" : string.Empty
+                };
+                var demoraService = actividadFactory.CrearServicio(recorrido.WorkflowDefinicionId);
+                var resultadoActividad = demoraService.CamionDemorado(controlRecorrido, recorrido.InstanciaWorkflow, model.Rechazado);
+                if (!resultadoActividad.HayErrores)
+                {
+                    return RedirectToAction("Index", "ListaDeCamiones");
+                }
+                ModelState.AgregarErrores(resultadoActividad);
+            }
+            IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+            return View(model);
+        }
+
         private ResultadoFas ObtenerDatos(string numero, DatosUsuario datosUsuario, OrdenCargaFasDto orden )
         {
             log.Info("Empieza el método FAS");

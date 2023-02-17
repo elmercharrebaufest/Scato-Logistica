@@ -97,6 +97,25 @@
         cargarMaterial();
     }
 
+    $("#btnRechazarOrdenCargaInterna").click(function () {
+        if ($("#Demorado").length > 0) {
+            $("#Demorado").val("False");
+        }
+        if ($("#Rechazado").length > 0) {
+            $("#Rechazado").val("True");
+        }
+        $("#ordenCargaInterna-form").submit();
+    })
+
+    $("#btnDemorarOrdenCargaInterna").click(function () {
+        if ($("#Demorado").length > 0) {
+            $("#Demorado").val("True");
+        }
+        if ($("#Rechazado").length > 0) {
+            $("#Rechazado").val("False");
+        }
+        $("#ordenCargaInterna-form").submit();
+    })
 });
 
 function cargarMaterial() {

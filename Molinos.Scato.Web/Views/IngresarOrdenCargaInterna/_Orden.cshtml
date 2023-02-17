@@ -54,6 +54,8 @@
 
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.RecorridoId)
+@Html.HiddenFor(model => model.Rechazado)
+@Html.HiddenFor(model => model.Demorado)
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)

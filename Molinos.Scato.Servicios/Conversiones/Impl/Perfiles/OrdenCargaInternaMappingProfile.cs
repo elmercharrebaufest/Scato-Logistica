@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.ClienteDireccion, c => c.MapFrom(o => o.Destino.Direccion))
                   .ForMember(x => x.ClienteLocalidad, c => c.MapFrom(o => o.Destino.Localidad))
                   .ForMember(x => x.ClienteProvincia, c => c.MapFrom(o => o.Destino.Provincia))
+                  .ForMember(x => x.KmARecorrer, c => c.MapFrom(o => o.KmRecorrer))
 
                   .ForMember(x => x.PatenteAcoplado, c => c.MapFrom(o => o.PatenteAcoplado != null ? o.PatenteAcoplado : ""))
 

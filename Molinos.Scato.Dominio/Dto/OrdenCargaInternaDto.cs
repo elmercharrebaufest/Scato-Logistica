@@ -116,5 +116,9 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
         public string NumeroCPE { get; set; }
+        public bool Demorado { get; set; }
+        public string MotivoDemora { get; set; }
+        public bool Rechazado { get; set; }
+        public string MotivoRechazo { get; set; }
     }
 }

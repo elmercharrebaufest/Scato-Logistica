@@ -14,13 +14,8 @@
     <script src="@Url.Script("~/Scripts/ordenCargaFas.js")" type="text/javascript"></script>
     @*    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>*@
 }
-<style>
-    .content {
-        padding-top: 20px;
-    }
-</style>
 <div class="container-fluid">
-    <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenCargaFAS_Titulo</div>
+    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaFAS_Titulo</div>
 </div>
 
 @using (Html.BeginForm("Index", "IngresarOrdenCargaFas", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", onsubmit = "AceptarFormulario()", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaFas }))
