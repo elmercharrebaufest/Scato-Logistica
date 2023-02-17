@@ -16,7 +16,7 @@
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -58,8 +58,8 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.9.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.10\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -75,9 +75,14 @@
     <Reference Include="MiniProfiler.Mvc">
       <HintPath>..\packages\MiniProfiler.MVC4.3.0.11\lib\net40\MiniProfiler.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="NewRelic.Api.Agent, Version=8.50.0.0, Culture=neutral, PublicKeyToken=06552fced0b33d87, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.Agent.Api.8.32.0\lib\net45\NewRelic.Api.Agent.dll</HintPath>
+    </Reference>
+    <Reference Include="NewRelic.LogEnrichers.Log4Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0f1b6df23b18ab4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.LogEnrichers.Log4Net.1.1.1\lib\net45\NewRelic.LogEnrichers.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
