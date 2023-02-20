@@ -34,6 +34,9 @@ namespace Molinos.Scato.Actividades.Internas
        [RequiredArgument]
         public InArgument<string> NombreUsuario { get; set; }
 
+        public OutArgument<bool> Demorado { get; set; }
+        public OutArgument<bool> Rechazado { get; set; }
+
         protected override Resultado Execute(CodeActivityContext context)
         {
             var orden = Orden.Get<OrdenCargaInternaFasonDto>(context);
@@ -66,6 +69,8 @@ namespace Molinos.Scato.Actividades.Internas
                     OrdenCargaInternaFason.Set(context, ordenDto);
                     TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.OrdenCargaInterna);
                     NumeroDocumentoIngreso.Set(context, orden.NumeroOrden);
+                    Demorado.Set(context, orden.Demorado);
+                    Rechazado.Set(context, orden.Rechazado);
                 }
                 if (resultadoCrear.HayErrores)
                 {

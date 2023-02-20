@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     //Foco en primer elemento
-    $("#orden-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    $("#ordenCargaInterna-form").find(':input:not([readonly]):enabled:visible:first').focus();
+    $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
     DefinirAutocompletarChofer();
@@ -104,6 +105,7 @@
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("True");
         }
+        modalRechazarOrdenCargaInterna.close();
         $("#ordenCargaInterna-form").submit();
     })
 
@@ -114,7 +116,30 @@
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("False");
         }
+        modalDemorarOrdenCargaInterna.close();
         $("#ordenCargaInterna-form").submit();
+    })
+
+    $("#btnRechazarOrdenCargaInternaFason").click(function () {
+        if ($("#Demorado").length > 0) {
+            $("#Demorado").val("False");
+        }
+        if ($("#Rechazado").length > 0) {
+            $("#Rechazado").val("True");
+        }
+        modalRechazarOrdenCargaInterna.close();
+        $("#ordenCargaInternaFason-form").submit();
+    })
+
+    $("#btnDemorarOrdenCargaInternaFason").click(function () {
+        if ($("#Demorado").length > 0) {
+            $("#Demorado").val("True");
+        }
+        if ($("#Rechazado").length > 0) {
+            $("#Rechazado").val("False");
+        }
+        modalDemorarOrdenCargaInterna.close();
+        $("#ordenCargaInternaFason-form").submit();
     })
 });
 

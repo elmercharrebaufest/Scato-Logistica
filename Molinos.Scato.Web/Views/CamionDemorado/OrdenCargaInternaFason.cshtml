@@ -14,6 +14,13 @@
             $(".btnValidacionCTG").removeAttr("disabled");
             $("#btnAceptar").attr("disabled", "disabled");
         }
+
+        $('input').attr("readonly", "readonly");
+        $('select').attr("readonly", "readonly");
+        $("#FechaEmision").datepicker("destroy");
+        $("#Id").val('@Model.Id');
+        let dropwdowns = document.querySelectorAll('select');
+        dropwdowns.forEach(x => x.addEventListener('mousedown', e => e.preventDefault()));
     })
 </script>
 @section scripts
@@ -32,7 +39,7 @@
     <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaInternaFason_Titulo</div>
 </div>
 
-@using (Html.BeginForm("Index", "IngresarOrdenCargaInternaFason", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "ordenCargaInternaFason-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInternaFason }))
+@using (Html.BeginForm("OrdenCargaInternaFason", "CamionDemorado", FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "ordenCargaInternaFason-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInternaFason }))
 {
     if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
     {
@@ -40,11 +47,10 @@
             @Html.ValidationSummary(true)
         </div>
     }
-    @Html.Partial("_Orden")
+    @Html.Partial("~/Views/IngresarOrdenCargaInternaFason/_Orden.cshtml")
 
     <div class="control-group paddingRight cajaButtons">
         <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>
-        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalDemorarOrdenCargaInterna.showModal()" disabled>@Textos.Demorar</button>
         <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>
@@ -65,17 +71,3 @@
     </div>
 </dialog>
 
-<dialog id="modalDemorarOrdenCargaInterna" class="dialogModal">
-    <h4 class="dialogModal__titulo">@Textos.Demorar</h4>
-    <div class="dialogModal__descripcion">
-        <p>¿Está seguro que desea demorar el camión?</p>
-        <div class="dialogModal__group">
-            <label for="MotivoDemora">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoDemora")
-        </div>
-    </div>
-    <div class="dialogModal__botones">
-        <button class="btn btn-warning" type="button" id="btnDemorarOrdenCargaInternaFason">Confirmar</button>
-        <button class="btn" type="button" onclick="modalDemorarOrdenCargaInterna.close()">Cerrar</button>
-    </div>
-</dialog>

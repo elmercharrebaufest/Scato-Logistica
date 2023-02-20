@@ -16,8 +16,9 @@
         $('input').attr("readonly", "readonly");
         $('select').attr("readonly", "readonly");
         $("#FechaEmision").datepicker("destroy");
-        $('#TipoVehiculo').attr("readonly", "readonly");
         $("#Id").val('@Model.Id');
+        let dropwdowns = document.querySelectorAll('select');
+        dropwdowns.forEach(x => x.addEventListener('mousedown', e => e.preventDefault()));
     })
 </script>
 @section scripts

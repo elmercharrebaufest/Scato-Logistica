@@ -2404,6 +2404,7 @@
     <Content Include="Views\BajaCTGDG\Index.cshtml" />
     <Content Include="Views\AltaCTGDG\Index.cshtml" />
     <Content Include="Views\CamionDemorado\OrdenCargaInterna.cshtml" />
+    <Content Include="Views\CamionDemorado\OrdenCargaInternaFason.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
