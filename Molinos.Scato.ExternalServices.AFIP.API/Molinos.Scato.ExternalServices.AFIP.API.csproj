@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.ExternalServices.Agents.AFIP\Molinos.Scato.ExternalServices.Agents.AFIP.csproj" />
+    <ProjectReference Include="..\Molinos.Scato.ExternalServices.Repository.Implementation\Molinos.Scato.ExternalServices.Repository.Implementation.csproj" />
+    <ProjectReference Include="..\Molinos.Scato.ExternalServices.Repository.Interfaces\Molinos.Scato.ExternalServices.Repository.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
+</Project>
