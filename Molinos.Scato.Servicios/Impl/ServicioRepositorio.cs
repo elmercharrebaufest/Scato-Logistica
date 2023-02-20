@@ -8943,12 +8943,11 @@ namespace Molinos.Scato.Servicios.Impl
              && x.Calle.Id == calleId
              && x.FechaEgreso == null, x => new InfoPatenteDeCalleDto
              {
-                 Patente = x.Recorrido != null ? x.Recorrido.Patente : x.CargaDeCupo != null ? x.CargaDeCupo.Patente : "",
-                 NombreChofer = x.Recorrido != null ? x.Recorrido.Chofer.Nombre + "  " + x.Recorrido.Chofer.Apellido : "",
-                 CartaPorte = x.Recorrido != null ? x.Recorrido.NumeroDocumentoIngreso : x.CargaDeCupo != null ? x.CargaDeCupo.CTG : "",
+                 Patente = x.Recorrido != null ? x.Recorrido.Patente : x.CargaDeCupo != null ? x.CargaDeCupo.Patente : string.Empty,
+                 NombreChofer = x.Recorrido != null ? x.Recorrido.Chofer.Nombre + "  " + x.Recorrido.Chofer.Apellido : string.Empty,
+                 CartaPorte = x.Recorrido != null ? x.Recorrido.NumeroDocumentoIngreso : x.CargaDeCupo != null ? x.CargaDeCupo.CTG : string.Empty,
                  RecorridoId = x.Recorrido != null ? x.Recorrido.Id : (int?)null,
                  CargaDeCupoId = x.CargaDeCupo != null ? x.CargaDeCupo.Id : (int?)null,
-
                  CalleId = x.Calle.Id,
                  InstanciaWorflow = x.Recorrido != null ? x.Recorrido.InstanciaWorkflow : (Guid?)null,
                  Rechazado = x.Recorrido != null && x.Recorrido.Rechazado,
@@ -8958,14 +8957,14 @@ namespace Molinos.Scato.Servicios.Impl
                  CaladoId = x.Recorrido != null ? x.Recorrido.Calado.Id : (int?)null,
                  Tarjeta = x.Recorrido != null ? x.Recorrido.TarjetaDeAcceso : x.CargaDeCupo != null ? x.CargaDeCupo.Numero : null,
                  WorkflowDefinicionId = x.Recorrido != null ? x.Recorrido.WorkflowDefinicion.Id : (int?)null,
-                 CalidadCamion = x.Recorrido != null && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() == null ? TipoCalidad.Desconocida : x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad,
+                 CalidadCamion = x.Recorrido != null ? (x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault() != null ? x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad : TipoCalidad.Desconocida) : TipoCalidad.Desconocida,
                  CalleNoGrano = x.Calle.TipoCalle == TipoCalle.NoGranos,
-                 NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : "",
+                 NombreWorkflow = x.Recorrido != null ? x.Recorrido.Workflow.Descripcion : string.Empty,
                  FechaIngreso = x.FechaIngeso,
                  TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
-                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : "",
+                 Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : string.Empty,
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
-                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : ""
+                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty
              });
 
             if (camion == null)
