@@ -133,7 +133,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 CodigoAnexo = comando.Orden.CodigoAnexo,
                                 Vehiculos = comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren && comando.Orden.Cpe ? vehiculos.Where(w => w.Patente == comando.Vehiculo.Patente).ToList() : vehiculos,
                                 Tecnologia = tecnologia,
-                                Cupo = comando.Orden.Cupo,
+                                Cupo = comando.Orden.Cupo != null ? comando.Orden.Cupo.ToUpper() : comando.Orden.Cupo,
                                 CorredorVendedor = corredorVendedor,
                                 Categoria = categoria,
                                 IntermediarioFlete = intermediarioFlete,
