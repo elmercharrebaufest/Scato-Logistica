@@ -109,6 +109,12 @@
     })
         .mouseout(function () {
         });
+
+    if ($("#NumeroCTG").val() != '') {
+        $('.numero-ctg-cpe').removeAttr("hidden");
+        $('.procedencia').attr("hidden", true);
+        $('.procedenciaDG').removeAttr("hidden");
+    }
 });
 
 function cargarMaterial() {

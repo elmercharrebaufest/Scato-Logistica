@@ -18,17 +18,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly CpePortType serviceAfipCpe;
         private readonly IAccesoWsCtg accesoWsCtg;
-        private readonly IServicioComandos servicioComandos;
-        private readonly IConfiguracionProvider configuracion;
 
         public ProcesadorAnularCPEDGDummy(IRepositorio repositorio, IConversor conversor, ILogger log,
-                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg, IServicioComandos servicioComandos, IConfiguracionProvider configuracion)
+                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg)
             : base(repositorio, conversor, log)
         {
             this.accesoWsCtg = accesoWsCtg;
             this.serviceAfipCpe = serviceAfipCpe;
-            this.servicioComandos = servicioComandos;
-            this.configuracion = configuracion;
         }
 
         public override Resultado Ejecutar(AnularCPEDGDummy comando)
@@ -112,6 +108,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 else if (response != null && !string.IsNullOrEmpty(response?.respuesta?.cabecera?.nroCTG.ToString()))
                 {
+                    var responseAFIP = response?.respuesta;
+                    Repositorio.Agregar(
+                        new LogAfipCpe
+                        {
+                            Servicio = "ProcesadorAnularCPEDGDummy",
+                            Consulta = request,
+                            Respuesta = responseAFIP is null ? string.Empty : responseAFIP.ToXml(),
+                            Fecha = DateTime.Now
+                        });
                     Log.Debug("La Anulacion {0} procesada correctamente", comando.NroOrden);
                 }
                 else

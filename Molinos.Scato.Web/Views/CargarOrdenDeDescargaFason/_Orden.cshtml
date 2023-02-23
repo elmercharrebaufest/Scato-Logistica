@@ -119,7 +119,7 @@
                             @Html.LabelFor(model => model.Material, new { @class = "control-label small" })
                             <div class="controls-small">
 
-                                @Html.DropDownListFor(model => model.MaterialId, materiales, "", new { @class = "control input-large" })
+                                @Html.DropDownListFor(model => model.MaterialId, materiales, "(material)", new { @class = "control input-large" })
                                 @Html.ValidationMessageFor(model => model.MaterialId)
                                 @Html.Hidden("EsDerivadoGranario")
                                 @Html.Hidden("Material", tiposMateriales)
