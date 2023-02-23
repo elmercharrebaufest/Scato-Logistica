@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -79,13 +79,13 @@ namespace Molinos.Scato.Web.Controllers
             var ordenDeDescarga = servicio.ObtenerOrdenDeDescargaFasonPorNumeroDeOrdenYCliente(orden.Numero, orden.ClienteId);
             if (ordenDeDescarga != null)
             {
-                ModelState.AddModelError("NumeroRemito", Textos.OrdenDeDescarga_Existente);
+                ModelState.AddModelError("Numero", Textos.OrdenDeDescarga_Existente);
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
             }
 
             var ordenDeDescargaPorRemito = servicio.ObtenerOrdenDeDescargaFasonPorNumeroRemito(orden.NumeroRemito);
-            if (ordenDeDescargaPorRemito != null)
+            if (ordenDeDescargaPorRemito != null && orden.NumeroRemito != Constantes.ValoresPorDefecto.NumeroRemitoGenerico)
             {
                 ModelState.AddModelError("NumeroRemito", Textos.IngresarRemito_Existente);
                 SetearVista(workflowObj, datosUsuario.CentroId);
