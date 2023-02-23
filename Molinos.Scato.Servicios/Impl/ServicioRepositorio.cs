@@ -10335,8 +10335,17 @@ namespace Molinos.Scato.Servicios.Impl
 
         public DomicilioDto ObtenerDomicilioDG(int plantaDG)
         {
-            var domicilioId = Obtener<Centro, CentroDto>(x => x.PlantaDG == plantaDG).DomicilioId;
-            return Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId);
+            int? domicilioId;
+            try
+            {
+                domicilioId = Obtener<Centro, CentroDto>(x => x.PlantaDG == plantaDG)?.DomicilioId;
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "No se pudo obtener el domicilio con número de planta {0}", plantaDG);
+                throw;
+            }
+            return domicilioId != null ? Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId) : null;
         }
     }
 }

@@ -61,6 +61,12 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             Validar(orden);
 
+            if (!ModelState.IsValid)
+            {
+                SetearVista(workflowObj, datosUsuario.CentroId);
+                return View(orden);
+            }
+
             if (datosUsuario.CentroId == 0)
             {
                 TempData["Alerta"] = Textos.SeleccionarCentro_Error;

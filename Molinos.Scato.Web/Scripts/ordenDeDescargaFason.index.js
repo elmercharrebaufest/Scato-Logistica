@@ -188,7 +188,7 @@ function BuscarNumeroCPE(ctg, before, callback, codigoPadre, codigoDerivadoGrana
         $('#PatenteAcoplado').val(data.responseJSON.PatenteAcoplado);
 
         $('#Chofer_Cuil').val(data.responseJSON.CuitChofer);
-        $('#Chofer_Cuil').focusout();
+        $('#Chofer_Cuil').blur();
         
         $('#pesoBruto').val(data.responseJSON.PesoBruto);
         $('#pesoTara').val(data.responseJSON.PesoTara);
@@ -197,7 +197,6 @@ function BuscarNumeroCPE(ctg, before, callback, codigoPadre, codigoDerivadoGrana
         BuscarCliente(cuitOrigen);
         BuscarProcedenciaDG(plantaDG);
         BuscarMaterialDG(codigoPadre, codigoDerivadoGranario);
-
 
         if (callback != null) callback();
     });
