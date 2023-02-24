@@ -1,0 +1,121 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T1 Cross Cutting", "T1 Cross Cutting", "{C1264B93-315F-4B49-ACD4-F9A64454571C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Web API", "01 Web API", "{20BA203F-B182-44A2-8241-3D280C31F721}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Application", "02 Application", "{119E7CF1-71EC-4D09-AD2F-9CA0822B02BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Infrastructure", "03 Infrastructure", "{2E5469C1-CFE8-4169-A608-8967921D1383}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{A167B31F-3536-418D-BE10-2359C32C3003}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{737ABD9F-F0CA-4D7E-80E0-5705DAF99C71}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "T2 Unit Testing", "T2 Unit Testing", "{1F1B719C-7FF7-4BEB-826D-74DDBFD39DE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.WebAPI", "Molinos.Scato.API.WebAPI\Molinos.Scato.API.WebAPI.csproj", "{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Application.Implementation", "Molinos.Scato.API.Application.Implementation\Molinos.Scato.API.Application.Implementation.csproj", "{D9BBF4CB-A959-4B1D-B778-4E322EA09692}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Application.Interfaces", "Molinos.Scato.API.Application.Interfaces\Molinos.Scato.API.Application.Interfaces.csproj", "{9021ADE5-E1DC-44F3-8325-F1ABEA566F45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Repository.Interfaces", "Molinos.Scato.API.Infrastructure.Repository.Interfaces\Molinos.Scato.API.Infrastructure.Repository.Interfaces.csproj", "{5C801D67-5859-40E4-89AB-81DE4EF5C348}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Repository.Entities", "Molinos.Scato.API.Infrastructure.Repository.Entities\Molinos.Scato.API.Infrastructure.Repository.Entities.csproj", "{87AF3813-3338-4F8A-8CAB-2C86879F1A16}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Repository.Implementation", "Molinos.Scato.API.Infrastructure.Repository.Implementation\Molinos.Scato.API.Infrastructure.Repository.Implementation.csproj", "{85C38A01-484E-4755-810A-A36F678FC18F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Service.Contracts", "Molinos.Scato.API.Infrastructure.Service.Contracts\Molinos.Scato.API.Infrastructure.Service.Contracts.csproj", "{2C30C063-468B-45B7-A4B4-49FAD5C81F80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Service.Interfaces", "Molinos.Scato.API.Infrastructure.Service.Intefaces\Molinos.Scato.API.Infrastructure.Service.Interfaces.csproj", "{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.Infrastructure.Service.Implementation", "Molinos.Scato.API.Infrastructure.Service.Implementation\Molinos.Scato.API.Infrastructure.Service.Implementation.csproj", "{B80C06D2-E71D-419F-8BCA-C554F31DB796}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.CrossCutting.Common", "Molinos.Scato.API.CrossCutting.Common\Molinos.Scato.API.CrossCutting.Common.csproj", "{18565E37-9A9B-436C-9975-9671DB00A748}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.CrossCutting.DTO", "Molinos.Scato.API.CrossCutting.DTO\Molinos.Scato.API.CrossCutting.DTO.csproj", "{F1791A8C-BAD2-415C-9770-A7D685C0E4D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molinos.Scato.API.CrossCutting.IoC", "Molinos.Scato.API.CrossCutting.IoC\Molinos.Scato.API.CrossCutting.IoC.csproj", "{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BBF4CB-A959-4B1D-B778-4E322EA09692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BBF4CB-A959-4B1D-B778-4E322EA09692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BBF4CB-A959-4B1D-B778-4E322EA09692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BBF4CB-A959-4B1D-B778-4E322EA09692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9021ADE5-E1DC-44F3-8325-F1ABEA566F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9021ADE5-E1DC-44F3-8325-F1ABEA566F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9021ADE5-E1DC-44F3-8325-F1ABEA566F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9021ADE5-E1DC-44F3-8325-F1ABEA566F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C801D67-5859-40E4-89AB-81DE4EF5C348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C801D67-5859-40E4-89AB-81DE4EF5C348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C801D67-5859-40E4-89AB-81DE4EF5C348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C801D67-5859-40E4-89AB-81DE4EF5C348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87AF3813-3338-4F8A-8CAB-2C86879F1A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87AF3813-3338-4F8A-8CAB-2C86879F1A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87AF3813-3338-4F8A-8CAB-2C86879F1A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87AF3813-3338-4F8A-8CAB-2C86879F1A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85C38A01-484E-4755-810A-A36F678FC18F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85C38A01-484E-4755-810A-A36F678FC18F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85C38A01-484E-4755-810A-A36F678FC18F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85C38A01-484E-4755-810A-A36F678FC18F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C30C063-468B-45B7-A4B4-49FAD5C81F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C30C063-468B-45B7-A4B4-49FAD5C81F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C30C063-468B-45B7-A4B4-49FAD5C81F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C30C063-468B-45B7-A4B4-49FAD5C81F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B80C06D2-E71D-419F-8BCA-C554F31DB796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B80C06D2-E71D-419F-8BCA-C554F31DB796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B80C06D2-E71D-419F-8BCA-C554F31DB796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B80C06D2-E71D-419F-8BCA-C554F31DB796}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18565E37-9A9B-436C-9975-9671DB00A748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18565E37-9A9B-436C-9975-9671DB00A748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18565E37-9A9B-436C-9975-9671DB00A748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18565E37-9A9B-436C-9975-9671DB00A748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1791A8C-BAD2-415C-9770-A7D685C0E4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1791A8C-BAD2-415C-9770-A7D685C0E4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1791A8C-BAD2-415C-9770-A7D685C0E4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1791A8C-BAD2-415C-9770-A7D685C0E4D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A167B31F-3536-418D-BE10-2359C32C3003} = {2E5469C1-CFE8-4169-A608-8967921D1383}
+		{737ABD9F-F0CA-4D7E-80E0-5705DAF99C71} = {2E5469C1-CFE8-4169-A608-8967921D1383}
+		{F2ECCE12-4EA2-43D8-BA03-12DE48A5B2C1} = {20BA203F-B182-44A2-8241-3D280C31F721}
+		{D9BBF4CB-A959-4B1D-B778-4E322EA09692} = {119E7CF1-71EC-4D09-AD2F-9CA0822B02BA}
+		{9021ADE5-E1DC-44F3-8325-F1ABEA566F45} = {119E7CF1-71EC-4D09-AD2F-9CA0822B02BA}
+		{5C801D67-5859-40E4-89AB-81DE4EF5C348} = {A167B31F-3536-418D-BE10-2359C32C3003}
+		{87AF3813-3338-4F8A-8CAB-2C86879F1A16} = {A167B31F-3536-418D-BE10-2359C32C3003}
+		{85C38A01-484E-4755-810A-A36F678FC18F} = {A167B31F-3536-418D-BE10-2359C32C3003}
+		{2C30C063-468B-45B7-A4B4-49FAD5C81F80} = {737ABD9F-F0CA-4D7E-80E0-5705DAF99C71}
+		{E1E78C16-A3EF-42F4-8B9B-14BFAAD19B0E} = {737ABD9F-F0CA-4D7E-80E0-5705DAF99C71}
+		{B80C06D2-E71D-419F-8BCA-C554F31DB796} = {737ABD9F-F0CA-4D7E-80E0-5705DAF99C71}
+		{18565E37-9A9B-436C-9975-9671DB00A748} = {C1264B93-315F-4B49-ACD4-F9A64454571C}
+		{F1791A8C-BAD2-415C-9770-A7D685C0E4D3} = {C1264B93-315F-4B49-ACD4-F9A64454571C}
+		{436CB3E2-8325-4BE2-B3F4-7CF0EAB92B13} = {C1264B93-315F-4B49-ACD4-F9A64454571C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19A9975E-5169-4B81-B5E6-BC049C6069E8}
+	EndGlobalSection
+EndGlobal

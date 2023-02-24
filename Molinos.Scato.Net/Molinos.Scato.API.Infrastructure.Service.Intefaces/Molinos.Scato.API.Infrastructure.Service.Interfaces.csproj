@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net70</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Molinos.Scato.API.CrossCutting.DTO\Molinos.Scato.API.CrossCutting.DTO.csproj" />
+    <ProjectReference Include="..\Molinos.Scato.API.Infrastructure.Service.Contracts\Molinos.Scato.API.Infrastructure.Service.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
