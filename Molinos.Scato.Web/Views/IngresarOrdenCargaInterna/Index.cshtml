@@ -9,10 +9,7 @@
         $(document).ready(function () {
             if ($("#ErrorAfip").val() != '') {
                 MostrarAlertaError($("#ErrorAfip").val());
-                $("#MotivoDemora").val($("#ErrorAfip").val());
-                $("#MotivoRechazo").val($("#ErrorAfip").val());
-                $(".btnValidacionCTG").removeAttr("disabled");
-                $("#btnAceptar").attr("disabled", "disabled");
+                $(".btnValidacionCTG").removeAttr("disabled"); 
             }
         })
 </script>
@@ -58,13 +55,18 @@
         <p>¿Está seguro que desea rechazar el camión?</p>
         <div class="dialogModal__group">
             <label for="MotivoRechazo">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoRechazo")
+            @Html.TextArea("MotivoRechazo", new { id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
+            <br />
         </div>
-    </div>
-    <div class="dialogModal__botones">
-        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInterna" >Confirmar</button>
-        <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()" >Cerrar</button>
-    </div>
+        <div class="row">
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoRechazo", style = "display:none; color:red;margin-left:18%" })
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeRechazo", style = "display:none; color:red;margin-left:18%" })
+        </div>
+        </div>
+        <div class="dialogModal__botones">
+            <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInterna">Confirmar</button>
+            <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()">Cerrar</button>
+        </div>
 </dialog>
 
 <dialog id="modalDemorarOrdenCargaInterna" class="dialogModal">
@@ -73,7 +75,12 @@
         <p>¿Está seguro que desea demorar el camión?</p>
         <div class="dialogModal__group">
             <label for="MotivoDemora">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoDemora")
+            @Html.TextArea("MotivoDemora", new { id = "motivoDemora", @class = "form-control", style = "width:350px;" })
+            <br />
+        </div>
+        <div class="row">
+            @Html.ValidationMessage("MotivoDemora", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoDemora", style = "display:none; color:red;margin-left:18%" })
+            @Html.ValidationMessage("MotivoDemora", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeDemora", style = "display:none; color:red;margin-left:18%" })
         </div>
     </div>
     <div class="dialogModal__botones">

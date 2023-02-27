@@ -10159,4 +10159,7 @@
   <data name="OrdenCarga_PlantaDGDestino" xml:space="preserve">
     <value>Planta</value>
   </data>
+  <data name="OrdenCarga_ErrorValidacion" xml:space="preserve">
+    <value>Existen validaciones dentro del formulario, favor de revisar</value>
+  </data>
 </root>

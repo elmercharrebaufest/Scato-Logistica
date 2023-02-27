@@ -66,6 +66,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!ModelState.IsValid)
             {
                 SetearVista(workflowObje, datosUsuario.CentroId);
+                ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
                 return View(orden);
             }
 
