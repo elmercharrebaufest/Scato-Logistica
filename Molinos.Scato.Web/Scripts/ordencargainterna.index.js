@@ -88,14 +88,17 @@
     $('#MaterialId').change(function () {
         CargarAlamacenesPorMaterial();
         ValidarDerivadoGranario();
-        CargarPlantas();
-        CargarDomicilios();
+    });
+    $('#OrdenDomicilioDestino').change(function () {
+        let ordenDomicilioDestino = $("#OrdenDomicilioDestino").val();
+        $('#DomicilioSeleccionado').val(ordenDomicilioDestino);
     });
 
     if ($('#DestinoId').length > 0 || $('#ClienteId').length > 0) {
         CargarPlantas();
         CargarDomicilios();
         cargarMaterial();
+        CargarAlamacenesPorMaterial();
     }
 
     $("#btnRechazarOrdenCargaInterna").click(function () {
@@ -364,6 +367,9 @@ function ValidarDerivadoGranario() {
     if (materialesDerivadoGranario.includes(parseInt(materialId))) {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
+        CargarPlantas();
+        CargarDomicilios();
+        
     } else {
         $('#DerivadoGranarioHabilitado').val('false')
         $('.derivadoGranario').addClass('hidden');
@@ -371,5 +377,7 @@ function ValidarDerivadoGranario() {
         $('#OrdenDomicilioDestino').val('');
         $('#PagadorFlete').val('');
         $('#PagadorFleteId').val('');
+        $('#DomicilioSeleccionado').val('');
+        $("#PlantaSeleccionada").val('')
     }
 }
