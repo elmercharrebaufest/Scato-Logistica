@@ -10,7 +10,7 @@
   <!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoor.molinos.com.ar:8081/ServicioOrquestador" />-->
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
-  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wscpe/services/soap" />
+  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws.afip.gob.ar/wscpe/services/soap" />
   <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 
   <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
@@ -40,3 +40,4 @@
   <setParameter name="PdfCpeDpiX Config" value="300" />
   <setParameter name="PdfCpeDpiY Config" value="300" />
 </parameters>
+
