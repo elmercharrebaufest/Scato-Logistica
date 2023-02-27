@@ -102,47 +102,123 @@
     }
 
     $("#btnRechazarOrdenCargaInterna").click(function () {
+        var valido = true;
+
+        if ($("#motivoRechazo").val().length == 0) {
+            valido = false;
+            $("#requeridoRechazo").addClass("field-validation-error");
+            $("#requeridoRechazo").show();
+            $("#largoMensajeRechazo").hide();
+        }
+        
+        else if ($("#motivoRechazo").val().length < 10) {
+            valido = false
+            $("#largoMensajeRechazo").addClass("field-validation-error");
+            $("#largoMensajeRechazo").show();
+            $("#requeridoRechazo").hide();
+        }
+        
         if ($("#Demorado").length > 0) {
             $("#Demorado").val("False");
         }
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("True");
         }
-        modalRechazarOrdenCargaInterna.close();
-        $("#ordenCargaInterna-form").submit();
+
+        if (valido) {
+            modalRechazarOrdenCargaInterna.close();
+            $("#ordenCargaInterna-form").submit();
+           
+        }
+       
     })
 
     $("#btnDemorarOrdenCargaInterna").click(function () {
+        var valido = true;
+
+        if ($("#motivoDemora").val().length == 0) {
+            valido = false;
+            $("#requeridoDemora").addClass("field-validation-error");
+            $("#requeridoDemora").show();
+            $("#largoMensajeDemora").hide();
+        }
+
+        else if ($("#motivoDemora").val().length < 10) {
+            valido = false
+            $("#largoMensajeDemora").addClass("field-validation-error");
+            $("#largoMensajeDemora").show();
+            $("#requeridoDemora").hide();
+        }
         if ($("#Demorado").length > 0) {
             $("#Demorado").val("True");
         }
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("False");
         }
-        modalDemorarOrdenCargaInterna.close();
-        $("#ordenCargaInterna-form").submit();
+        if (valido) {
+            modalDemorarOrdenCargaInterna.close();
+            $("#ordenCargaInterna-form").submit();
+        }
     })
 
     $("#btnRechazarOrdenCargaInternaFason").click(function () {
+        var valido = true;
+
+        if ($("#motivoRechazo").val().length == 0) {
+            valido = false;
+            $("#requeridoRechazo").addClass("field-validation-error");
+            $("#requeridoRechazo").show();
+            $("#largoMensajeRechazo").hide();
+        }
+
+        else if ($("#motivoRechazo").val().length < 10) {
+            valido = false
+            $("#largoMensajeRechazo").addClass("field-validation-error");
+            $("#largoMensajeRechazo").show();
+            $("#requeridoRechazo").hide();
+        }
+
         if ($("#Demorado").length > 0) {
             $("#Demorado").val("False");
         }
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("True");
         }
-        modalRechazarOrdenCargaInterna.close();
-        $("#ordenCargaInternaFason-form").submit();
+        if (valido)
+        {
+            modalRechazarOrdenCargaInterna.close();
+            $("#ordenCargaInternaFason-form").submit();
+        }
+        
     })
 
     $("#btnDemorarOrdenCargaInternaFason").click(function () {
+        var valido = true;
+
+        if ($("#motivoDemora").val().length == 0) {
+            valido = false;
+            $("#requeridoDemora").addClass("field-validation-error");
+            $("#requeridoDemora").show();
+            $("#largoMensajeDemora").hide();
+        }
+
+        else if ($("#motivoDemora").val().length < 10) {
+            valido = false
+            $("#largoMensajeDemora").addClass("field-validation-error");
+            $("#largoMensajeDemora").show();
+            $("#requeridoDemora").hide();
+        }
         if ($("#Demorado").length > 0) {
             $("#Demorado").val("True");
         }
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("False");
         }
-        modalDemorarOrdenCargaInterna.close();
-        $("#ordenCargaInternaFason-form").submit();
+        if (valido)
+        {
+            modalDemorarOrdenCargaInterna.close();
+            $("#ordenCargaInternaFason-form").submit();
+        }
     })
 });
 
@@ -324,8 +400,10 @@ function CargarPlantas() {
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
             function (allData) {
+                let options = '<option value="">(nro. planta)</option>';
+                $('#PlantaDGDestino').html(options);
                 if (!allData.HayErrores) {
-                    let options = '<option value="">(nro. planta)</option>';
+                    
                     for (let i = 0; i < allData.Plantas.length; i++) {
                         options += `<option value="${allData.Plantas[i]}">Planta Nro. ${allData.Plantas[i]}</option>`;
                     }
@@ -345,8 +423,11 @@ function CargarDomicilios() {
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
             function (allData) {
+                let options = '<option value="">(domicilio)</option>';
+                $('#OrdenDomicilioDestino').html(options);
+
                 if (!allData.HayErrores) {
-                    let options = '<option value="">(domicilio)</option>';
+                    
                     for (let i = 0; i < allData.Domicilios.length; i++) {
                         options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
@@ -356,6 +437,7 @@ function CargarDomicilios() {
                         $('#OrdenDomicilioDestino').val(parseInt(domicilioSeleccionado))
                     }
                 }
+
             }
         );
     }
