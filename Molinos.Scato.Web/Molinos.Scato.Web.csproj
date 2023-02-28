@@ -2356,7 +2356,6 @@
     <Content Include="Views\BalanzaAutomatica\PesadaVagones.cshtml" />
     <Content Include="Views\CamionesPendientesNoGranos\Index.cshtml" />
     <Content Include="Views\CamionDemorado\OrdenCargaFas.cshtml" />
-    <Content Include="Views\CamionDemorado\_OrdenFas.cshtml" />
     <Content Include="Views\RegistroInactividad\_Index.cshtml" />
     <Content Include="Views\CategoriaCamiones\_CrearModificar.cshtml" />
     <Content Include="Views\CategoriaCamiones\Crear.cshtml" />

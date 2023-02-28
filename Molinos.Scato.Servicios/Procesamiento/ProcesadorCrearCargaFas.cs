@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var workflowDefinicion = Repositorio.Obtener<WorkflowDefinicion>(comando.WorkflowDefinicionId);
                     var localidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId);
 
-                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaFas, Material = material, WorkflowDefinicion = workflowDefinicion, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, DatosProximaActividad = "Visteo",TipoVehiculo = comando.Orden.TipoVehiculo, VehiculoDemorado = comando.Orden.VehiculoDemorado, MotivoDemora = comando.Orden.MotivoDemora};
+                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaFas, Material = material, WorkflowDefinicion = workflowDefinicion, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, DatosProximaActividad = "Visteo",TipoVehiculo = comando.Orden.TipoVehiculo, VehiculoDemorado = comando.Orden.VehiculoDemorado, MotivoDemora = comando.Orden.MotivoDemora, Rechazado = comando.Orden.Rechazado};
                     Repositorio.Agregar(recorrido);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);
 
@@ -57,7 +57,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
                             PlantaDGDestino = comando.Orden.PlantaDGDestino,
                             OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
-                            PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId)
+                            PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
+                            Corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId),
+                            Comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId),
+                            Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId)
                     };
 
                     if (!comando.Orden.VehiculoDemorado && Repositorio.Existe<OrdenCargaFas>(x => x.Id == comando.Orden.Id))

@@ -19,6 +19,9 @@
      data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
      data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
      data-url-buscar-kmporproveedor="@Url.Action("BuscarKmPorProveedor", "Consultas")"
+     data-url-obtener-clientes-sap="@Url.Action("ObtenerClientesSap", "Consultas")"
+     data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-cliente-unico="@Url.Action("BuscarCliente", "Consultas")"
      data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
      data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
 </div>
@@ -53,6 +56,20 @@
             <div class="controls">
                 @Html.DisplayFor(model => model.ClienteDesc)
                 @Html.HiddenFor(model => model.ClienteId)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.Comisionista, new { @class = "control-label", @readonly = "readonly" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.Comisionista)
+                @Html.HiddenFor(model => model.ComisionistaId)
+            </div>
+        </div>
+        <div class="control paddingRight">
+            @Html.LabelFor(model => model.Remitente, new { @class = "control-label", @readonly = "readonly" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.Remitente)
+                @Html.HiddenFor(model => model.RemitenteId)
             </div>
         </div>
         <div class="control paddingRight">
@@ -108,6 +125,13 @@
                 @Html.TextBoxFor(model => model.PagadorFlete)
                 @Html.ValidationMessageFor(model => model.PagadorFlete)
                 @Html.HiddenFor(model => model.PagadorFleteId)
+            </div>
+        </div>
+        <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.Corredor, new { @class = "control-label small margin10" })
+            <div>
+                @Html.TextBoxFor(model => model.Corredor, new { @class = "control" })
+                @Html.HiddenFor(model => model.CorredorId)
             </div>
         </div>
     </div>

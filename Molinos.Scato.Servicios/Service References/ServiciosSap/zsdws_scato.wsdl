@@ -1046,6 +1046,7 @@
           <xsd:element name="ORDENDOM" type="tns:char2" />
           <xsd:element name="DOMORDEN" type="tns:char250" />
           <xsd:element name="INHABILITADO" type="tns:char1" />
+          <xsd:element name="TIPO_REVENTA" type="tns:char1" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ZMMBALANZA5">

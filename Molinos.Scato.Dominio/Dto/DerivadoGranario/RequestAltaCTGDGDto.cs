@@ -12,5 +12,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string[] Dominios { get; set; }
         public int KmRecorrer { get; set; } 
         public long PagadorFleteCuit { get; set; }
+        public long? CuitCorredor { get; set; }
+        public long? CuitComisionista { get; set; }
+        public long? CuitRemitente { get; set; }
     }
 }

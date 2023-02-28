@@ -1,5 +1,7 @@
 ﻿var ordenesSAP;
 jQuery(document).ready(function () {
+    $("#controlComisionista").hide();
+    $("#controlRemitente").hide();
 
     $(".patente-internacional").mask("?*******", { placeholder: "" });
     if (!$("#EsModificacion")) {
@@ -99,6 +101,33 @@ jQuery(document).ready(function () {
         CargarPlantas();
         CargarDomicilios();
     }
+
+    $("#btnRechazarOrdenCargaFas").click(function () {
+        let valido = true;
+
+        if ($("#MotivoRechazo").val() == '') {
+            valido = false;
+            $("#error-rechazo-requerido").show();
+            $("#error-rechazo-largo").hide();
+        } else if ($("#MotivoRechazo").val().length < 10) {
+            valido = false;
+            $("#error-rechazo-largo").show();
+            $("#error-rechazo-requerido").hide();
+        }
+
+        if ($("#VehiculoDemorado").length > 0) {
+            $("#VehiculoDemorado").val("False");
+        }
+
+        if ($("#Rechazado").length > 0) {
+            $("#Rechazado").val("True");
+        }
+
+        if (valido) {
+            modalRechazarOrdenCargaFas.close();
+            $("#ordenCargaFas-form").submit();
+        }
+    })
 });
 
 function deshabilitarKmRecorrerYLocalidad() {
@@ -120,6 +149,11 @@ function completarKmRecorrerYLocalidad() {
     if ($('#ClienteDesc').length > 0) {
         clienteId = $('#ClienteId').val();
     }
+    if ($('#RemitenteId').val() > 0) {
+        clienteId = $('#RemitenteId').val();
+    } else if ($('#ComisionistaId').val() > 0) {
+        clienteId = $('#ComisionistaId').val();
+    }
     if (clienteId > 0) {
         $.getJSON($('#links').data().urlBuscarKmporproveedor, { clienteId: clienteId },
             function (response) {
@@ -133,6 +167,11 @@ function completarKmRecorrerYLocalidad() {
                     optdefault = "<option value=''> (Localidad) </option>";
                     optdefault += options;
                     $('#localidadDestinoDropdown').html(optdefault);
+                    let localidadSeleccionada = $("#LocalidadSeleccionada").val();
+                    let localidadesIds = response.map(localidad => localidad.localidadDestinoId);
+                    if (localidadSeleccionada.length > 0 && localidadesIds.includes(parseInt(localidadSeleccionada))) {
+                        $('#localidadDestinoDropdown').val(parseInt(localidadSeleccionada))
+                    }
                     $('#localidadDestinoDropdown').removeAttr("disabled");
                     $('#KmARecorrer').removeAttr("disabled");
 
@@ -170,8 +209,6 @@ function findItem(term, data) {
 
 function ObtenerDatosSap() {
     if ($('#PatenteCamion').val().length == 0) {
-        $('input').attr('disabled', 'disabled');
-        $('select').attr('disabled', 'disabled');
         $('#PatenteCamion').removeAttr('disabled');
     } else {
         LimpiarChofer();
@@ -189,13 +226,6 @@ function ObtenerDatosSap() {
             $.unblockUI();
         });
     }
-}
-
-function AceptarFormulario() {
-    $("input[disabled='disabled']").attr("readonly", true);
-    $("input").removeAttr("disabled");
-    $("select[disabled='disabled']").attr("readonly", true);
-    $("select").removeAttr("disabled");
 }
 
 function LlenarCombo(datos) {
@@ -244,12 +274,20 @@ function LlenarDatos(datos) {
         $('#ValidaCompliance').val(datos.ValidaCompliance);
         $('#TipoComercialId').val(datos.TipoComercialId);
         $('#TipoComercialDEsc').val(datos.TipoComercialDesc);
-        $('#KmARecorrer').val("")
+        if ($('#LocalidadSeleccionada').val() == '0') {
+            $('#KmARecorrer').val("")
+        }
         $('#PlantaSeleccionada').val(datos.PlantaDGDestino);
         $('#DomicilioSeleccionado').val(datos.OrdenDomicilioDestino);
         $('#PagadorFlete').val(datos.PagadorFlete);
         $('#PagadorFleteId').val(datos.PagadorFleteId);
         $('#Inhabilitado').val(datos.Inhabilitado);
+        $('#Corredor').val(datos.Corredor);
+        $('#CorredorId').val(datos.CorredorId);
+        $('#Comisionista').val(datos.Comisionista);
+        $('#ComisionistaId').val(datos.ComisionistaId);
+        $('#Remitente').val(datos.Remitente);
+        $('#RemitenteId').val(datos.RemitenteId);
         ValidarDerivadoGranario();
         CargarPlantas();
         CargarDomicilios();
@@ -264,6 +302,16 @@ function LlenarDatos(datos) {
         } else {
             $("input[name^='Chofer']").removeAttr("disabled");
             $("select[name^='Chofer']").removeAttr("disabled");
+        }
+
+        if ($("#ComisionistaId").val() != '') {
+            $("#controlCliente").hide();
+            $("#controlComisionista").show();
+        } else if ($("#RemitenteId").val() != '') {
+            $("#controlCliente").hide();
+            $("#controlRemitente").show();
+        } else {
+            $("#controlCliente").show();
         }
     }
 }
@@ -332,28 +380,26 @@ function AceptarDemora() {
         valido = false;
         $("#error-material").show();
     }
-    $("#error-requerido").hide();
-    $("#error-largo").hide();
+    $("#error-demorado-requerido").hide();
+    $("#error--demorado-largo").hide();
     var motivo = $("#MotivoDemora").val();
     if (motivo == "") {
-        $("#error-requerido").show();
+        $("#error-demorado-requerido").dis;
         valido = false;
     }
     if (motivo.length < 10) {
-        $("#error-largo").show();
+        $("#error--demorado-largo").show();
         valido = false;
     }
 
     if (valido == false) return false;
     $("#VehiculoDemorado").val(true);
-    if ($("#ClienteId").val() == "") $("#ClienteId").val(99999)
-    if ($("#TransportistaId").val() == "") $("#TransportistaId").val(99999)
-    if ($("#MaterialDesc").val() == "") $("#MaterialDesc").val($("#Material").val())
-    if ($("#MaterialId").val() == "") $("#MaterialId").val($("#Material").val())
-    if ($("#NumeroOrden").val() == "") $("#NumeroOrden").val(0)
+    if ($("#ClienteId").val() == "" || $("#ClienteId").val() == "0") $("#ClienteId").val(99999)
+    if ($("#TransportistaId").val() == "" || $("#TransportistaId").val() == "0") $("#TransportistaId").val(99999)
+    if ($("#MaterialDesc").val() == "") $("#MaterialDesc").val($("#Material").find(":selected").text())
+    if ($("#MaterialId").val() == "" || $("#MaterialId").val() == "0") $("#MaterialId").val($("#Material").val())
     if ($("#NumeroOrden").val() == "") $("#NumeroOrden").val(0)
     if ($("#Chofer_Cuil").val() == "") $("#Chofer_Cuil").val("99-99999999-9")
-    if ($("#Chofer_NumeroDeDocumento").val() == "") $("#Chofer_NumeroDeDocumento").val("99999999")
     if ($("#Chofer_NumeroDeDocumento").val() == "") $("#Chofer_NumeroDeDocumento").val("99999999")
     if ($("#Chofer_Nombre").val() == "") $("#Chofer_Nombre").val("a")
     if ($("#Chofer_Apellido").val() == "") $("#Chofer_Apellido").val("a")
@@ -368,8 +414,9 @@ function CargarPlantas() {
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
             function (allData) {
+                let options = '<option value="">(nro. planta)</option>';
+                $('#PlantaDGDestino').html(options);
                 if (!allData.HayErrores) {
-                    let options = '<option value="">(nro. planta)</option>';
                     for (let i = 0; i < allData.Plantas.length; i++) {
                         options += `<option value="${allData.Plantas[i]}">Planta Nro. ${allData.Plantas[i]}</option>`;
                     }
@@ -389,12 +436,13 @@ function CargarDomicilios() {
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
             function (allData) {
+                let options = '<option value="">(domicilio)</option>';
+                $('#OrdenDomicilioDestino').html(options);
                 if (!allData.HayErrores) {
-                    let options = '<option value="">(domicilio)</option>';
                     for (let i = 0; i < allData.Domicilios.length; i++) {
                         options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
-                    $('#OrdenDomicilioDestino').html(options);
+                    $('#PlantaDGDestino').html(options);
                     let ordenes = allData.Domicilios.map(domicilio => domicilio.Orden);
                     if (domicilioSeleccionado.length > 0 && ordenes.includes(parseInt(domicilioSeleccionado))) {
                         $('#OrdenDomicilioDestino').val(parseInt(domicilioSeleccionado))

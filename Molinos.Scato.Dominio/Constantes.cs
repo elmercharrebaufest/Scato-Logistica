@@ -171,5 +171,11 @@
             public const int TipoDomicilioFiscal = 1;
             public const int TipoDomicilioPlanta = 3;
         }
+
+        public struct SAP
+        {
+            public const string TipoReventaComisionista = "C";
+            public const string TipoReventaRemitente = "R";
+        }
     }
 }

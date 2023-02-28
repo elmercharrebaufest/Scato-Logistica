@@ -3,27 +3,35 @@
 @{
     ViewBag.Title = Textos.OrdenCargaFAS_Titulo;
     var workflow = (string)ViewBag.Workflow;
-    var aceptaPendiente = (bool)(ViewBag.AceptaPendiente ?? false);
     var materiales = (IEnumerable<SelectListItem>)ViewBag.Materiales;
 }
+
+<input id="ErrorAfip" type="hidden" name="ErrorAfip" value="@(ViewBag.ErrorAfip != null ? ViewBag.ErrorAfip.ToString() : string.Empty)" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#ErrorAfip").val() != '') {
+            MostrarAlertaError($("#ErrorAfip").val());
+            $(".btnValidacionCTG").removeAttr("disabled");
+        }
+        $("#Id").val('@Model.Id');
+    })
+</script>
+
+
 @section scripts
 {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
     <script src="@Url.Script("~/Scripts/autocompletar.js")" type="text/javascript"></script>
     <script src="@Url.Script("~/Scripts/ordenCargaFas.js")" type="text/javascript"></script>
-    @*    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>*@
 }
-<style>
-    .content {
-        padding-top: 20px;
-    }
-</style>
+
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <div class="container-fluid">
-    <div class="titSecciones">@Textos.Workflow_Nombre - @Textos.OrdenCargaFAS_Titulo</div>
+    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaFAS_Titulo</div>
 </div>
 
-@using (Html.BeginForm("OrdenCargaFas", "CamionDemorado", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "orden-form", onsubmit = "AceptarFormulario()", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaFas }))
+@using (Html.BeginForm("OrdenCargaFas", "CamionDemorado", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "ordenCargaFas-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaFas }))
 {
     if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
     {
@@ -31,43 +39,30 @@
             @Html.ValidationSummary(true)
         </div>
     }
-    @Html.Partial("_OrdenFas")
+    @Html.Partial("~/Views/IngresarOrdenCargaFas/_Orden.cshtml");
 
     <div class="control-group paddingRight cajaButtons">
-        @if (aceptaPendiente)
-        {
-            <button id="pendiente" class="btn btn-warning" type="button">@Textos.Demorar</button>
-        }
+        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaFas.showModal()" disabled>@Textos.Rechazar</button>
         <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
         @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
     </div>
+}
 
-
-    <div class="modal hide fade" id="dialogo-demorar">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4>@Textos.Demorar</h4>
+<dialog id="modalRechazarOrdenCargaFas" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Rechazado</h4>
+    <div class="dialogModal__descripcion">
+        <p>¿Está seguro que desea rechazar el camión?</p>
+        <div class="dialogModal__group">
+            <label for="MotivoRechazo">@Textos.Motivo:</label>
+            @Html.TextArea("MotivoRechazo")
         </div>
-        <div class="modal-body form-horizontal" id="dialogo-confirmar-body">
-            @Textos.Material:
-            <div class="controls-small">
-                @Html.DropDownList("Material", materiales, "(materiales)", new { @class = "form-control", style = "width:100%" })
-
-                <span id="error-material" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Material")</span>
-            </div>
-        </div>
-        <div class="modal-body form-horizontal" id="dialogo-confirmar-body">
-            @Textos.Motivo:
-            <div class="controls-small">
-                @Html.TextArea("MotivoDemora", new { @class = "form-control", style = "width:410px" })
-
-                <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
-                <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button id="dialogo-demorar-confirmar" type="button" class="btn" value="">@Textos.Aceptar</button>
-            <button id="dialogo-demorar-cancelar" data-dismiss="modal" class="btn btn-warning">@Textos.Cancelar</button>
+        <div>
+            <span class="dialogModal__error" id="error-rechazo-requerido">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+            <span class="dialogModal__error" id="error-rechazo-largo">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
         </div>
     </div>
-}
+    <div class="dialogModal__botones">
+        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaFas">Confirmar</button>
+        <button class="btn" type="button" onclick="modalRechazarOrdenCargaFas.close()">Cerrar</button>
+    </div>
+</dialog>

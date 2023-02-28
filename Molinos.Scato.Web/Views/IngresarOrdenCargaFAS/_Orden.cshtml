@@ -4,8 +4,10 @@
     var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
     var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
+    var ordenFas = ViewBag.OrdenFas != null ? (IEnumerable<SelectListItem>)ViewBag.OrdenFas : new List<SelectListItem>();
     var kmdropdown = new List<SelectListItem>();
     string WorkflowDescripcion = ViewBag.WorkflowDescripcion.ToString();
+    string instanceId = ViewBag.WorkflowInstanceUid?.ToString() ?? string.Empty;
     var plantasDG = new List<SelectListItem>();
     var domiciliosDG = new List<SelectListItem>();
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
@@ -23,13 +25,20 @@
      data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
 </div>
 
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.RecorridoId)
+@Html.HiddenFor(model => model.Inhabilitado)
+@Html.HiddenFor(model => model.Rechazado)
+@Html.HiddenFor(model => model.VehiculoDemorado)
+@Html.HiddenFor(model => model.CuitTransporte)
+@Html.HiddenFor(model => model.ValidaCompliance)
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
+@Html.Hidden("WorkflowId", instanceId)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
 @Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
 @Html.Hidden("DomicilioSeleccionado", Model.OrdenDomicilioDestino)
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
-@Html.HiddenFor(model => model.Inhabilitado)
 <div class="row-fluid row-fluid-ie7">
     <fieldset class="grupo-carta-porte">
         <div class="span6">
@@ -71,22 +80,38 @@
             <div class="control">
                 @Html.LabelFor(model => model.PatenteAcoplado, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control patente-internacional uppercase datosap", @disabled = "disabled", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control patente-internacional uppercase datosap", @readonly = "readonly", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
                     @Html.ValidationMessageFor(model => model.PatenteAcoplado)
                 </div>
             </div>
-            <div class="control">
+            <div id="controlCliente" class="control">
                 @Html.LabelFor(model => model.ClienteDesc, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.ClienteDesc, new { @class = "control autocompletado-obligatorio datosap", @disabled = "disabled", data_url_buscar_clientes = Url.Action("BuscarClientes", "Consultas") })
+                    @Html.TextBoxFor(model => model.ClienteDesc, new { @class = "control autocompletado-obligatorio datosap", @readonly = "readonly", data_url_buscar_clientes = Url.Action("BuscarClientes", "Consultas") })
                     @Html.ValidationMessageFor(model => model.ClienteDesc)
                     @Html.HiddenFor(model => model.ClienteId)
+                </div>
+            </div>
+            <div id="controlComisionista" class="control">
+                @Html.LabelFor(model => model.Comisionista, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Comisionista, new { @class = "control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Comisionista)
+                    @Html.HiddenFor(model => model.ComisionistaId)
+                </div>
+            </div>
+            <div id="controlRemitente" class="control">
+                @Html.LabelFor(model => model.Remitente, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Remitente, new { @class = "control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Remitente)
+                    @Html.HiddenFor(model => model.RemitenteId)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.TransportistaDesc, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.TransportistaDesc, new { @class = "control autocompletado-obligatorio datosap", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.TransportistaDesc, new { @class = "control autocompletado-obligatorio datosap", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.TransportistaDesc)
                     @Html.HiddenFor(model => model.TransportistaId)
                 </div>
@@ -94,7 +119,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.MaterialDesc, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control  datosap", @disabled = "disabled" })
+                    @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control  datosap", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.MaterialDesc)
                     @Html.HiddenFor(model => model.MaterialId)
                 </div>
@@ -102,14 +127,14 @@
             <div class="control">
                 @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.NumeroOrden, new List<SelectListItem>(), new { @class = "control  cargaFas", @disabled = "disabled", data_first_option = Textos.OrdenCargaFAS_CargaFasPrimeraOpcion })
+                    @Html.DropDownListFor(model => model.NumeroOrden, ordenFas, new { @class = "control  cargaFas", @readonly = "readonly", data_first_option = Textos.OrdenCargaFAS_CargaFasPrimeraOpcion })
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
                 </div>
             </div>
             <div class="control">
                 @Html.LabelFor(model => model.TipoComercialDesc, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, new { @class = "control  tipoComercialId", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, new { @class = "control  tipoComercialId" })
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
@@ -140,6 +165,14 @@
                     @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control" })
                     @Html.ValidationMessageFor(model => model.PagadorFlete)
                     @Html.HiddenFor(model => model.PagadorFleteId)
+                </div>
+            </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.Corredor, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Corredor, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Corredor)
+                    @Html.HiddenFor(model => model.CorredorId)
                 </div>
             </div>
         </fieldset>
@@ -201,9 +234,6 @@
                         @Html.ValidationMessageFor(model => model.KmARecorrer)
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.CuitTransporte)
-                @Html.HiddenFor(model => model.ValidaCompliance)
-                @Html.HiddenFor(model => model.VehiculoDemorado)
             </div>
         </fieldset>
     </div>

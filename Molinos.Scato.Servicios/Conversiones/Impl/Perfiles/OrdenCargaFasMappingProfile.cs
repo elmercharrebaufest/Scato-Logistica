@@ -39,7 +39,13 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.LocalidadDestinoId, c => c.MapFrom(o => o.LocalidadDestino.Id))
                   .ForMember(x => x.TipoVehiculo, c => c.MapFrom(o => o.Recorrido.TipoVehiculo))
                   .ForMember(x => x.PagadorFleteId, c => c.MapFrom(o => o.PagadorFlete.Id))
-                  .ForMember(x => x.PagadorFlete, c => c.MapFrom(o => o.PagadorFlete.Descripcion));
+                  .ForMember(x => x.PagadorFlete, c => c.MapFrom(o => o.PagadorFlete.Descripcion))
+                  .ForMember(x => x.CorredorId, c => c.MapFrom(o => o.Corredor.Id))
+                  .ForMember(x => x.Corredor, c => c.MapFrom(o => o.Corredor.Descripcion))
+                  .ForMember(x => x.ComisionistaId, c => c.MapFrom(o => o.Comisionista.Id))
+                  .ForMember(x => x.Comisionista, c => c.MapFrom(o => o.Comisionista.Descripcion))
+                  .ForMember(x => x.RemitenteId, c => c.MapFrom(o => o.Remitente.Id))
+                  .ForMember(x => x.Remitente, c => c.MapFrom(o => o.Remitente.Descripcion));
             Mapper.CreateMap<OrdenCargaFasDto, OrdenCargaFas>();
 
         }

@@ -193,9 +193,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = orden.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(recorrido.Chofer.Cuil) ? long.Parse(recorrido.Chofer.Cuil.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = orden.PagadorFleteCuit,
+                        },
+                        intervinientes = new IntervinientesAutomotorDGSolicitud
+                        {
+                            cuitCorredorSpecified = orden.CuitCorredor != null,
+                            cuitCorredor = orden.CuitCorredor != null ? orden.CuitCorredor.Value : 0,
+                            cuitComisionistaSpecified = orden.CuitComisionista != null,
+                            cuitComisionista = orden.CuitComisionista != null ? orden.CuitComisionista.Value : 0,
+                            cuitRemitenteComercialSpecified = orden.CuitRemitente != null,
+                            cuitRemitenteComercial = orden.CuitRemitente != null ? orden.CuitRemitente.Value : 0,
                         }
                     }
                 };
+
                 request = autorizarCpeRequest.ToXml();
                 Log.Debug("Inicio la consulta");
                 Log.Debug($"Request Automotor : {request}");

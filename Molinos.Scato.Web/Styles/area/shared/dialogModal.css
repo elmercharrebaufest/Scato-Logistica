@@ -13,6 +13,14 @@
 .dialogModal__descripcion {
     margin: 0;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialogModal__error {
+    display: none;
+    color: rgb(185, 74, 72);
+    font-size: 12px;
 }
 
 .dialogModal__group {
