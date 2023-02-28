@@ -177,5 +177,11 @@
             public const string TipoReventaComisionista = "C";
             public const string TipoReventaRemitente = "R";
         }
+    
+        public struct MaterialPagoRealizado
+        {
+            public const string BiodiselAgranel = "99319";
+            public const string AceiteGirasolCrudoSAP = "94687";
+        }
     }
 }
