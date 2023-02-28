@@ -156,6 +156,10 @@ namespace Molinos.Scato.Web.Controllers
                     KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
                     ChoferCuit = orden.Chofer.Cuil,
                     PagadorFleteId = orden.PagadorFleteId ?? 0,
+                    CorredorId = orden.CorredorId,
+                    RemitenteId = orden.RemitenteId,
+                    ComisionistaId = orden.ComisionistaId,
+                    CuitDestinatario = orden.CuitDestinatario
 
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
@@ -349,7 +353,7 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (!string.IsNullOrEmpty(ordenCargaFas[i].CORRE))
                         {
-                            var corredor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].CORRE);
+                            var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
                             itemSap.Corredor = corredor?.Descripcion;
                             itemSap.CorredorId = corredor?.Id;
                         }

@@ -65,6 +65,21 @@ jQuery(document).ready(function () {
         );
     }
 
+    if ($('#Corredor').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#Corredor',
+            '#CorredorId',
+            '#autocompleteCorredor',
+            $('#links').data().urlBuscarProveedores,
+            $('#links').data().urlBuscarProveedorUnico,
+            $('#links').data().urlObtenerProveedoresSap,
+            function () {
+            },
+            function () {
+            }
+        );
+    }
+
     //Remuevo estilo italic si modifico lo seleccionado
     $('.autocompletado-obligatorio').keydown(function (e) {
         if (e.keyCode != 13 && e.keyCode != 9)

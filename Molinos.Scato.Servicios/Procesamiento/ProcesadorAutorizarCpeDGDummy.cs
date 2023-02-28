@@ -123,7 +123,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var material = Repositorio.Obtener<Material>(x => x.Id == comando.MaterialId);
                 var pesoMax = Repositorio.Obtener<PesoMaximoPorTipoVehiculo>(x => x.Activo == true && x.TipoVehiculo == comando.TipoVehiculo && x.Centro.Id == comando.CentroId);
                 var transportista = Repositorio.Obtener<Transportista>(x => x.Id == comando.TransportistaId);
-                var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
+                
                 var pagadorFlete = Repositorio.Obtener<Cliente>(x => x.Id == comando.PagadorFleteId);
 
                 var autorizarCpeRequest = new autorizarCPEAutomotorDGRequest
@@ -161,17 +161,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         },
                         destino = new DestinoAutomotorDGSolicitud
                         {
-                            cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0,
                             planta = comando.DestinoPlanta,
                             domicilioDestino = new DomicilioPUC
                             {
                                 tipo = comando.DestinoDomicilioTipo,
                                 orden = comando.DestinoDomicilioOrden
                             },
-                        },
-                        destinatario = new DestinatarioSolicitud
-                        {
-                            cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0,
                         },
                         transporte = new TransporteAutomotorDGSolicitud
                         {
@@ -184,6 +179,35 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                     }
                 };
+
+                if(comando.ComisionistaId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.ComisionistaId))
+                {
+                    var comisionista = Repositorio.Obtener<Cliente>(x => x.Id == comando.ComisionistaId);
+                    autorizarCpeRequest.solicitud.intervinientes.cuitComisionista = !string.IsNullOrEmpty(comisionista.Cuit) ? long.Parse(comisionista.Cuit.Replace("-", string.Empty)) : 0;
+                    autorizarCpeRequest.solicitud.intervinientes.cuitComisionistaSpecified = true;
+                    autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
+                    autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
+                } else if(comando.RemitenteId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.RemitenteId))
+                {
+                    var remitente = Repositorio.Obtener<Cliente>(x => x.Id == comando.RemitenteId);
+                    autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercial = !string.IsNullOrEmpty(remitente.Cuit) ? long.Parse(remitente.Cuit.Replace("-", string.Empty)) : 0;
+                    autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercialSpecified = true;
+                    autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
+                    autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
+                } else
+                {
+                    var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
+                    autorizarCpeRequest.solicitud.destino.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
+                    autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
+                }
+
+                if(comando.CorredorId.HasValue && Repositorio.Existe<Proveedor>(x => x.Id == comando.CorredorId))
+                {
+                    var proveedor = Repositorio.Obtener<Proveedor>(x => x.Id == comando.CorredorId);
+                    autorizarCpeRequest.solicitud.intervinientes.cuitCorredor = !string.IsNullOrEmpty(proveedor.Cuil) ? long.Parse(proveedor.Cuil.Replace("-", string.Empty)) : 0;
+                    autorizarCpeRequest.solicitud.intervinientes.cuitCorredorSpecified = true;
+                }
+
                 request = autorizarCpeRequest.ToXml();
                 Log.Debug($"Request Automotor : {request}");
 
@@ -261,7 +285,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Material));
             }
 
-            if (!destino)
+            if (!destino && !(comando.ComisionistaId.HasValue || comando.RemitenteId.HasValue))
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Destino));
             }

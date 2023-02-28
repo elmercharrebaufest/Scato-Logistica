@@ -20,5 +20,9 @@ namespace Molinos.Scato.Dominio.Comandos
         public int KmRecorrer { get; set; }
         public string ChoferCuit { get; set; }
         public int PagadorFleteId { get; set; }
+        public int? CorredorId { get; set; }
+        public int? ComisionistaId { get; set; }
+        public int? RemitenteId { get; set; }
+        public string CuitDestinatario { get; set; }
     }
 }
