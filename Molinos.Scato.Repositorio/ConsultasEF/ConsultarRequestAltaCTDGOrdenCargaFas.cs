@@ -23,6 +23,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             var orden = contexto.Set<OrdenCargaFas>()
                                 .Include(x => x.Cliente)
                                 .Include(x => x.PagadorFlete)
+                                .Include(x => x.Corredor)
+                                .Include(x => x.Comisionista)
+                                .Include(x => x.Remitente)
                                 .Where(x => x.Recorrido.InstanciaWorkflow == workflowInstance)
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()

@@ -60,7 +60,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
                             Corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId),
                             Comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId),
-                            Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId)
+                            Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId),
+                            CuitDestinatario = comando.Orden.CuitDestinatario
                     };
 
                     if (!comando.Orden.VehiculoDemorado && Repositorio.Existe<OrdenCargaFas>(x => x.Id == comando.Orden.Id))

@@ -288,6 +288,7 @@ function LlenarDatos(datos) {
         $('#ComisionistaId').val(datos.ComisionistaId);
         $('#Remitente').val(datos.Remitente);
         $('#RemitenteId').val(datos.RemitenteId);
+        $('#CuitDestinatario').val(datos.CuitDestinatario);
         ValidarDerivadoGranario();
         CargarPlantas();
         CargarDomicilios();
@@ -411,8 +412,12 @@ function AceptarDemora() {
 function CargarPlantas() {
     let plantaSeleccionada = $("#PlantaSeleccionada").val();
     let cliente = $("#ClienteId").val();
+    let cuit = ''
+    if ($('#RemitenteId').val() > 0 || $('#ComisionistaId').val() > 0) {
+        cuit = $('#CuitDestinatario').val();
+    }
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
-        $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
+        $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente, clienteCuit: cuit },
             function (allData) {
                 let options = '<option value="">(nro. planta)</option>';
                 $('#PlantaDGDestino').html(options);
@@ -433,8 +438,12 @@ function CargarPlantas() {
 function CargarDomicilios() {
     let domicilioSeleccionado = $("#DomicilioSeleccionado").val();
     let cliente = $("#ClienteId").val();
+    let cuit = ''
+    if ($('#RemitenteId').val() > 0 || $('#ComisionistaId').val() > 0) {
+        cuit = $('#CuitDestinatario').val();
+    }
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
-        $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
+        $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente, clienteCuit: cuit },
             function (allData) {
                 let options = '<option value="">(domicilio)</option>';
                 $('#OrdenDomicilioDestino').html(options);
@@ -442,7 +451,7 @@ function CargarDomicilios() {
                     for (let i = 0; i < allData.Domicilios.length; i++) {
                         options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
-                    $('#PlantaDGDestino').html(options);
+                    $('#OrdenDomicilioDestino').html(options);
                     let ordenes = allData.Domicilios.map(domicilio => domicilio.Orden);
                     if (domicilioSeleccionado.length > 0 && ordenes.includes(parseInt(domicilioSeleccionado))) {
                         $('#OrdenDomicilioDestino').val(parseInt(domicilioSeleccionado))

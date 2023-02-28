@@ -196,12 +196,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         },
                         intervinientes = new IntervinientesAutomotorDGSolicitud
                         {
-                            cuitCorredorSpecified = orden.CuitCorredor != null,
-                            cuitCorredor = orden.CuitCorredor != null ? orden.CuitCorredor.Value : 0,
-                            cuitComisionistaSpecified = orden.CuitComisionista != null,
-                            cuitComisionista = orden.CuitComisionista != null ? orden.CuitComisionista.Value : 0,
-                            cuitRemitenteComercialSpecified = orden.CuitRemitente != null,
-                            cuitRemitenteComercial = orden.CuitRemitente != null ? orden.CuitRemitente.Value : 0,
+                            cuitCorredorSpecified = orden.CuitCorredor.GetValueOrDefault() != 0,
+                            cuitCorredor = orden.CuitCorredor.GetValueOrDefault(),
+                            cuitComisionistaSpecified = orden.CuitComisionista.GetValueOrDefault() != 0,
+                            cuitComisionista = orden.CuitComisionista.GetValueOrDefault(),
+                            cuitRemitenteComercialSpecified = orden.CuitRemitente.GetValueOrDefault() != 0,
+                            cuitRemitenteComercial = orden.CuitRemitente.GetValueOrDefault(),
                         }
                     }
                 };

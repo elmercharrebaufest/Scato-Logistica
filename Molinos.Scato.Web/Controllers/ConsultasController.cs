@@ -487,7 +487,6 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerCPEAutomotorDG(DatosUsuario datosUsuario, long numeroCTG)
         {
-            
                 var result = servicioComandos.Ejecutar(new ConsultarCPEAutomotorDG
                 {
                     CentroId = datosUsuario.CentroId,
@@ -495,25 +494,27 @@ namespace Molinos.Scato.Web.Controllers
                     NumeroCTG = numeroCTG
                 });
 
-                
                 return Json(result, JsonRequestBehavior.AllowGet);
-            
-            
-            
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerPlantasDGPorClienteId(DatosUsuario datosUsuario, int clienteId)
+        public JsonResult ObtenerPlantasDGPorClienteId(DatosUsuario datosUsuario, int clienteId, string clienteCuit = null)
         {
             var result = new Resultado();
-            var cliente = servicio.ObtenerCliente(clienteId);
-            if(cliente == null)
+            var cuit = "0";
+            if(!string.IsNullOrEmpty(clienteCuit))
             {
-                result.Errores.Add("2", "No existe el cliente ingresado.");
-                return Json(result, JsonRequestBehavior.AllowGet);
+                cuit = clienteCuit;
+            } else
+            {
+                var cliente = servicio.ObtenerCliente(clienteId);
+                if(cliente == null)
+                {
+                    result.Errores.Add("2", "No existe el cliente ingresado.");
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                cuit = cliente.Cuit.Replace("-", string.Empty);
             }
-
-            var cuit = cliente.Cuit.Replace("-", string.Empty);
             result = servicioComandos.Ejecutar(new ConsultarPlantasDG
             {
                 CentroId = datosUsuario.CentroId,
@@ -523,17 +524,23 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerDomiciliosDG(DatosUsuario datosUsuario, int clienteId)
+        public JsonResult ObtenerDomiciliosDG(DatosUsuario datosUsuario, int clienteId, string clienteCuit = null)
         {
             var result = new Resultado();
-            var cliente = servicio.ObtenerCliente(clienteId);
-            if (cliente == null)
+            var cuit = "0";
+            if (!string.IsNullOrEmpty(clienteCuit))
             {
-                result.Errores.Add("2", "No existe el cliente ingresado.");
-                return Json(result, JsonRequestBehavior.AllowGet);
+                cuit = clienteCuit;
+            } else
+            {
+                var cliente = servicio.ObtenerCliente(clienteId);
+                if (cliente == null)
+                {
+                    result.Errores.Add("2", "No existe el cliente ingresado.");
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                cuit = cliente.Cuit.Replace("-", string.Empty);
             }
-
-            var cuit = cliente.Cuit.Replace("-", string.Empty);
             result = servicioComandos.Ejecutar(new ConsultarDomiciliosDG
             {
                 CentroId = datosUsuario.CentroId,

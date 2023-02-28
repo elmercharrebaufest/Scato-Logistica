@@ -547,7 +547,7 @@ namespace Molinos.Scato.Web.Controllers
                             RecorridoId = orden.RecorridoId,
                             DerivadoGranarioHabilitado = material.EsDerivadoGranario,
                             PlantaDGDestino = !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : 0,
-                            OrdenDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].DOMORDEN) && esTipoDomicilioPlanta ? int.Parse(ordenCargaFas[i].DOMORDEN) : 0,
+                            OrdenDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) && esTipoDomicilioPlanta ? int.Parse(ordenCargaFas[i].ORDENDOM) : 0,
                             PagadorFleteId = pagadorFlete?.Id,
                             PagadorFlete = pagadorFlete?.Descripcion,
                             Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO)
@@ -640,9 +640,21 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("TransportistaDesc", string.Format(Textos.Error_Requerido, Textos.Transportista));
             }
 
-            if (!orden.Rechazado && orden.ClienteId <= 0)
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
             {
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
+            {
+                if (orden.ComisionistaId.HasValue)
+                {
+                    ModelState.AddModelError("Comisionista", "No tiene cuit destinatario");
+                }
+                else if (orden.RemitenteId.HasValue)
+                {
+                    ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
+                }
             }
         }
 
@@ -665,7 +677,7 @@ namespace Molinos.Scato.Web.Controllers
                 FLETEPROPIO = string.Empty,
                 CODPLANTA = "1809",
                 TIPODOM = "1",
-                DOMORDEN = "3",
+                ORDENDOM = "3",
                 CUIT_PAGADOR_FLETE = "27000000014",
                 INHABILITADO = "X",
                 CORRE = "123AEA",
