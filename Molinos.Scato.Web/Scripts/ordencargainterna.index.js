@@ -381,7 +381,10 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
 }
 
 function CargarAlamacenesPorMaterial() {
-    var material = $("#MaterialId").val();
+    var material = $("#MaterialId").val() != ''?  $("#MaterialId").val() : null;
+    if(material == null){
+        return;
+    }
     $.getJSON($('#links').data().urlObtenerAlmacenesPorMaterial, { materialId: material},
         function (allData) {
             var options = '';

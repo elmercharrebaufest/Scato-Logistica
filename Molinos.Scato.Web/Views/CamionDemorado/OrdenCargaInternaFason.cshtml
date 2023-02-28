@@ -15,12 +15,12 @@
             $("#btnAceptar").attr("disabled", "disabled");
         }
 
-        $('input').attr("readonly", "readonly");
-        $('select').attr("readonly", "readonly");
+        $('#FechaEmision').attr("readonly", "readonly");
+        $('#MaterialId').attr("readonly", "readonly");
         $("#FechaEmision").datepicker("destroy");
         $("#Id").val('@Model.Id');
-        let dropwdowns = document.querySelectorAll('select');
-        dropwdowns.forEach(x => x.addEventListener('mousedown', e => e.preventDefault()));
+        @* let dropwdowns = document.querySelectorAll('select');
+        dropwdowns.forEach(x => x.addEventListener('mousedown', e => e.preventDefault())); *@
     })
 </script>
 @section scripts
