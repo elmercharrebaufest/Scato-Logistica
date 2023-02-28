@@ -244,8 +244,8 @@ namespace Molinos.Scato.Web.Controllers
             try
             {
                 log.Info("Empieza la llamada a SAP: Consultar Orden de Carga");
-                //var respuestaConsultaOrdenCarga = servicioSap.ConsultaOrdenDeCarga(datosRequest);
-                var respuestaConsultaOrdenCarga = ObtenerDatosDePruebaDeSAP();
+                var respuestaConsultaOrdenCarga = servicioSap.ConsultaOrdenDeCarga(datosRequest);
+                //var respuestaConsultaOrdenCarga = ObtenerDatosDePruebaDeSAP();
 
                 log.Info("Respuesta: " + respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida.ToXml());
                 var datosSap = new List<OrdenCargaFasDto>();
