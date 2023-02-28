@@ -9,10 +9,7 @@
     $(document).ready(function () {
         if ($("#ErrorAfip").val() != '') {
             MostrarAlertaError($("#ErrorAfip").val());
-            $("#MotivoDemora").val($("#ErrorAfip").val());
-            $("#MotivoRechazo").val($("#ErrorAfip").val());
             $(".btnValidacionCTG").removeAttr("disabled");
-            $("#btnAceptar").attr("disabled", "disabled");
         }
 
         $('#FechaEmision').attr("readonly", "readonly");
@@ -62,7 +59,11 @@
         <p>¿Está seguro que desea rechazar el camión?</p>
         <div class="dialogModal__group">
             <label for="MotivoRechazo">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoRechazo")
+            @Html.TextArea("MotivoRechazo", new { id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
+        </div>
+        <div class="row">
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoRechazo", style = "display:none; color:red; margin-left:18%" })
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeRechazo", style = "display:none; color:red;margin-left:18%" })
         </div>
     </div>
     <div class="dialogModal__botones">
