@@ -152,21 +152,21 @@
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PlantaDGDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)")
+                    @Html.DropDownListFor(model => model.PlantaDGDestino, plantasDG, "(nro. planta)", new { @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.PlantaDGDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.OrdenDomicilioDestino, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.DropDownListFor(model => model.OrdenDomicilioDestino, domiciliosDG, "(domicilio)")
+                    @Html.DropDownListFor(model => model.OrdenDomicilioDestino, domiciliosDG, "(domicilio)", new { @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.OrdenDomicilioDestino)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control" })
+                    @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.PagadorFlete)
                     @Html.HiddenFor(model => model.PagadorFleteId)
                 </div>
@@ -174,7 +174,7 @@
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.Corredor, new { @class = "control-label small margin10" })
                 <div>
-                    @Html.TextBoxFor(model => model.Corredor, new { @class = "control" })
+                    @Html.TextBoxFor(model => model.Corredor, new { @class = "control", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.Corredor)
                     @Html.HiddenFor(model => model.CorredorId)
                 </div>

@@ -36,6 +36,8 @@ namespace Molinos.Scato.Actividades.Internas
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
         public InArgument<string> PatenteAcoplado { get; set; }
+        public InArgument<string> ComisionistaCodigoSap { get; set; }
+        public InArgument<string> RemitenteCodigoSap { get; set; }
         public OutArgument<IngresosEgresosFazonesRequest> Request { get; set; }
         public OutArgument<Resultado> Resultado { get; set; }
         protected override void Execute(CodeActivityContext context)
@@ -47,7 +49,9 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 var instanceId = InstanceId.Get<Guid>(context);
                 var fechaIngreso = FechaIngreso.Get<DateTime>(context);
-                var cliente = ClienteCodigoSap.Get<string>(context);                
+                var cliente = ClienteCodigoSap.Get<string>(context);
+                var comisionista = ComisionistaCodigoSap.Get<string>(context);
+                var remitente = RemitenteCodigoSap.Get<string>(context);
                 var centroId = context.GetExtension<ScatoPersistenceParticipant>().CentroId ?? CentroId.Get<int>(context);
                 var materialId = MaterialId.Get<int>(context);
                 var patente = Patente.Get<string>(context);
@@ -86,7 +90,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 FechaIng = fechaIngreso.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                                 Km = km ?? 0,
                                 KmSpecified = km.HasValue,
-                                Destino = tipoMovimiento == "ENT" ? recorrido.Centro.CodigoSAP : cliente,
+                                Destino = tipoMovimiento == "ENT" ? recorrido.Centro.CodigoSAP : (!string.IsNullOrEmpty(comisionista) ? comisionista : (!string.IsNullOrEmpty(remitente) ? remitente : cliente)),
                                 Material = recorrido.Material.CodigoSAP,
                                 Patente = patente,
                                 Procedencia = tipoMovimiento == "ENT" ? cliente : recorrido.Centro.CodigoSAP,

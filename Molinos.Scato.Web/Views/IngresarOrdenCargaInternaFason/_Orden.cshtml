@@ -88,11 +88,27 @@
     <div class="span6">
         <fieldset class="grupo-carta-porte">
             <div class="control">
-                @Html.LabelFor(model => model.Cliente, new { @class = "control-label small margin10" })
+                <label class="control-label small margin10" for="Cliente">@(Model.DerivadoGranarioHabilitado ? "Destino" : "Cliente")</label>
                 <div class="">
                     @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido" })
                     @Html.ValidationMessageFor(model => model.Cliente)
                     @Html.HiddenFor(model => model.ClienteId)
+                </div>
+            </div>
+            <div id="controlComisionista" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.Comisionista, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Comisionista, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Comisionista)
+                    @Html.HiddenFor(model => model.ComisionistaId)
+                </div>
+            </div>
+            <div id="controlRemitente" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.Remitente, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Remitente, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Remitente)
+                    @Html.HiddenFor(model => model.RemitenteId)
                 </div>
             </div>
             <div class="control">
@@ -169,7 +185,14 @@
                     @Html.HiddenFor(model => model.PagadorFleteId)
                 </div>
             </div>
-
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.Corredor, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Corredor, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Corredor)
+                    @Html.HiddenFor(model => model.CorredorId)
+                </div>
+            </div>
         </fieldset>
     </div>
 
@@ -241,6 +264,10 @@
 
 <div id="autocompleteTran"></div>
 <div id="autocompleteCliente"></div>
+<div id="autocompletePagadorFlete"></div>
+<div id="autocompleteCorredor"></div>
+<div id="autocompleteComisionista"></div>
+<div id="autocompleteRemitente"></div>
 
 
 

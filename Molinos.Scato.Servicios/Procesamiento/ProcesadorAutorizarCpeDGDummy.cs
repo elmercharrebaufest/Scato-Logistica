@@ -185,13 +185,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var comisionista = Repositorio.Obtener<Cliente>(x => x.Id == comando.ComisionistaId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitComisionista = !string.IsNullOrEmpty(comisionista.Cuit) ? long.Parse(comisionista.Cuit.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitComisionistaSpecified = true;
-                    autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
-                    autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
                 } else if(comando.RemitenteId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.RemitenteId))
                 {
                     var remitente = Repositorio.Obtener<Cliente>(x => x.Id == comando.RemitenteId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercial = !string.IsNullOrEmpty(remitente.Cuit) ? long.Parse(remitente.Cuit.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercialSpecified = true;
+                } 
+                
+                if(!string.IsNullOrEmpty(comando.CuitDestinatario))
+                {
                     autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
                     autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
                 } else
@@ -285,7 +287,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Material));
             }
 
-            if (!destino && !(comando.ComisionistaId.HasValue || comando.RemitenteId.HasValue))
+            if (!destino && string.IsNullOrEmpty(comando.CuitDestinatario))
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Destino));
             }
