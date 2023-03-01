@@ -12,5 +12,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual PuestosDeCargaDescarga Hidraulica { get; set; }
         public virtual string UltimaPatenteLlamada { get; set; }
         public virtual DateTime? FechaUltimaModificacionEstado { get; set; }
+        public virtual string UltimoCartelLlamado { get; set; }
     }
 }

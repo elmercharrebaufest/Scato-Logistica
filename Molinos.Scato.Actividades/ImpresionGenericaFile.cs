@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -7,6 +8,8 @@ using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
 using System.Configuration;
+using System.IO;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
@@ -37,18 +40,18 @@ namespace Molinos.Scato.Actividades
             var centroId = CentroId.Get<int>(context);
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
 
-
-            var logActividad = new LogActividadDto
-            {
-                Actividad = "Impresion Generica File",
-                ActividadXaml = "ImpresionGenericaFile",
-                WorkflowInstanceId = workflowId,
-                Fecha = DateTime.Now
-            };
-
             try
             {
-                resultado = servicio.Ejecutar(new CrearLogActividad { Dto = logActividad }) as ResultadoCrear;
+                var logActividad = new LogActividadDto
+                {
+                    Actividad = "Impresion Generica File",
+                    ActividadXaml = "ImpresionGenericaFile",
+                    WorkflowInstanceId = workflowId,
+                    Fecha = DateTime.Now
+                };
+                resultado = servicio.Ejecutar(new CrearLogActividad { 
+                    Dto = logActividad 
+                }) as ResultadoCrear;
             }
             catch (Exception)
             {
@@ -71,40 +74,48 @@ namespace Molinos.Scato.Actividades
 
                     if(!(cartaporteElectronica is null))
                     {
-                        if(!(cartaporteElectronica.Pdf is null))
-                        {
-                            resultado = servicio.Ejecutar(new ImprimirFileGenerico { CantidadCopias = cantCopias, File = cartaporteElectronica.Pdf, Impresora = documento.ImpresoraDireccion ?? "", CodigoDocumentoImpresion = documento.CodigoDocumentoImpresion }) as ResultadoCrear;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                if (ConfigurationManager.AppSettings["LoguearRequestsSap"] == "1")
-                                {
-                                    var srv = context.GetExtension<IServicioComandos>();
-                                    srv.Ejecutar(new CrearControlRecorrido
-                                    {
-                                        Dto = new ControlRecorridoDto
-                                        {
-                                            Actividad = "EnviarMensaje",
-                                            Fecha = DateTime.Now,
-                                            Comentario = "Error, no se encontro el PDF en la tabla CartaPorteElectronica.",
-                                            NombreUsuario = "",
-                                            WorkflowInstanceId = context.WorkflowInstanceId,
-                                        }
-                                    });
-                                }
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        }
+                        ImprimirFileGenerico(servicio, cartaporteElectronica.Pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
                     }                    
-                }                
+                } else if (Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaPorteElectronicaDerivadoGranario) == documento.CodigoDocumentoImpresion)
+                {
+                    var cartaporteElectronica = repositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(workflowId);
+                    if (cartaporteElectronica != null && !string.IsNullOrEmpty(cartaporteElectronica.RutaFotoCPEDG) && File.Exists(cartaporteElectronica.RutaFotoCPEDG))
+                    {
+                        byte[] pdf = null;
+                        var document = new Document();
+                        using (var stream = new MemoryStream())
+                        {
+                            PdfWriter.GetInstance(document, stream);
+                            document.Open();
+                            Image image = Image.GetInstance(cartaporteElectronica.RutaFotoCPEDG);
+                            image.ScaleAbsolute(document.PageSize.Width, document.PageSize.Height);
+                            image.SetAbsolutePosition(0, 0);
+                            document.Add(image);
+                            document.Close();
+                            pdf = stream.ToArray();
+                        }
+                        ImprimirFileGenerico(servicio, pdf, cantCopias, documento.ImpresoraDireccion, documento.CodigoDocumentoImpresion, workflowId, resultado);
+                    }
+                }              
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("1", e.Message);
+            }
+
+            if(resultado.HayErrores)
+            {
+                servicio.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "Impresion Generica File",
+                        Fecha = DateTime.Now,
+                        Comentario = resultado.Errores.Values.First(),
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
+                });
             }
 
             try
@@ -117,6 +128,35 @@ namespace Molinos.Scato.Actividades
             }
 
             return resultado;
+        }
+
+        private void ImprimirFileGenerico(IServicioComandos servicioComando, byte[] pdf, int cantidadCopias, string impresora, string codigoDocumentoImpresion, Guid worfklowInstance, ResultadoCrear resultado)
+        {
+            if(!(pdf is null))
+            {
+                resultado = servicioComando.Ejecutar(new ImprimirFileGenerico 
+                { 
+                    CantidadCopias = cantidadCopias, 
+                    File = pdf, 
+                    Impresora = impresora ?? string.Empty, 
+                    CodigoDocumentoImpresion = codigoDocumentoImpresion
+                }) as ResultadoCrear;
+            }
+
+            if(pdf is null && ConfigurationManager.AppSettings["LoguearRequestsSap"] == "1")
+            {
+                servicioComando.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "EnviarMensaje",
+                        Fecha = DateTime.Now,
+                        Comentario = "Error, no se encontro el PDF en la tabla CartaPorteElectronica.",
+                        NombreUsuario = string.Empty,
+                        WorkflowInstanceId = worfklowInstance,
+                    }
+                });
+            }
         }
     }
 }

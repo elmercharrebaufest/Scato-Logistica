@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.ClienteDireccion, c => c.MapFrom(o => o.Destino.Direccion))
                   .ForMember(x => x.ClienteLocalidad, c => c.MapFrom(o => o.Destino.Localidad))
                   .ForMember(x => x.ClienteProvincia, c => c.MapFrom(o => o.Destino.Provincia))
+                  .ForMember(x => x.KmARecorrer, c => c.MapFrom(o => o.KmRecorrer))
 
                   .ForMember(x => x.PatenteAcoplado, c => c.MapFrom(o => o.PatenteAcoplado != null ? o.PatenteAcoplado : ""))
 
@@ -39,7 +40,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.MaterialUnidadMedida, c => c.MapFrom(o => o.Material.UnidadDeMedidad))
                   .ForMember(x => x.LocalidadDestinoId, c => c.MapFrom(o => o.LocalidadDestino.Id))
                   .ForMember(x => x.LocalidadDestinoDescripcion, c => c.MapFrom(o => o.LocalidadDestino.Descripcion))
-                  .ForMember(x => x.TipoVehiculo, c => c.MapFrom(o => o.Recorrido.TipoVehiculo));
+                  .ForMember(x => x.TipoVehiculo, c => c.MapFrom(o => o.Recorrido.TipoVehiculo))
+                  .ForMember(x => x.PagadorFleteId, c => c.MapFrom(o => o.PagadorFlete.Id))
+                  .ForMember(x => x.PagadorFlete, c => c.MapFrom(o => o.PagadorFlete.Descripcion));
 
             Mapper.CreateMap<OrdenCargaInternaDto, OrdenCargaInterna>();
             

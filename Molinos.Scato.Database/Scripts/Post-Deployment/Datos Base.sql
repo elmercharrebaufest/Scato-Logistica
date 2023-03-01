@@ -245,7 +245,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 197) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 198) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Camion Demorado',1,198,'CamionDemorado'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 199) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('En Espera HB4',1,199,'EnEsperaHB4'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 700) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Espera Confirmacion', 1, 700, 'EsperaConfirmacion'); END
-
+IF NOT EXISTS (select 1 from Permiso where Codigo = 703) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Alta CTGDG', 1, 703, 'AltaCTGDG'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 704) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Baja CTGDG', 1, 704, 'BajaCTGDG'); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 200) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('IniciarWorkflow', 1, 200, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 201) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Armar Lote', 0, 201, NULL); END
@@ -551,6 +552,7 @@ IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'EtiquetaRubros
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'AsigRecorrCtrolCalid') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'ImpGaritaSalida') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('ImpGaritaSalida', 'ImpGaritaSalida', 'ImpGaritaSalida') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaDePorteElectronica') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaDePorteElectronica', 'Impresion de Carta de Porte Electronica', 'CartaDePorteElectronica') END
+IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaPorteElectronicaDerivadoGranario') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaPorteElectronicaDerivadoGranario', 'Impresion de CPE Derivado Granario', 'CartaPorteElectronicaDerivadoGranario') END
 
 
 

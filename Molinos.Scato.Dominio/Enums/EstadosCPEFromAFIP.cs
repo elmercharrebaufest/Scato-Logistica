@@ -34,5 +34,6 @@ namespace Molinos.Scato.Dominio.Enums
 
         public static IReadOnlyList<string> Validos = new List<string> { "AC", "CF" };
         public static IReadOnlyList<string> Bloqueantes = new List<string> { "AN", "RE", "CO", "DE", "CN", "BR", "PA", "AP", "DD" };
+        public static IReadOnlyList<string> ValidosParaConfirmacionArribo = new List<string> { "CF", "CN" };
     }
 }

@@ -14,18 +14,15 @@ namespace Molinos.Scato.Dominio.Dto
         public string PatenteCamion { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaFAS_OrdenCargaFas")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NumeroOrden { get; set; } 
 
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCargaFAS_Cliente")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string ClienteDesc { get; set; }
 
         public int ClienteId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Transportista")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido_Sap")]
         public string TransportistaDesc { get; set; }
 
         public int TransportistaId { get; set; }
@@ -63,8 +60,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string LocalidadDestinoDescripcion { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "AdministracionDistancia_Localidad")]
         public int LocalidadDestinoId { get; set; }
-
-
         public string ClienteDescripcion { get; set; }
         public string ClienteDireccion { get; set; }
         public string ClienteLocalidad { get; set; }
@@ -82,5 +77,34 @@ namespace Molinos.Scato.Dominio.Dto
         public bool VehiculoDemorado { get; set; }
         public string MotivoDemora { get; set; }
         public bool ActualizarTipoVehiculo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
+        public bool DerivadoGranarioHabilitado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_PlantaDGDestino")]
+        public int? PlantaDGDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
+        public int? OrdenDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_CuitPagadorFlete")]
+        public string PagadorFlete { get; set; }
+        public int? PagadorFleteId { get; set; }
+        public bool Inhabilitado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
+        public string NumeroCTG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
+        public string NumeroCPE { get; set; }
+        public bool Rechazado { get; set; }
+        public string MotivoRechazo { get; set; }
+        public string Corredor { get; set; }
+        public int? CorredorId { get; set; }
+        public string Comisionista { get; set; }
+        public int? ComisionistaId { get; set; }
+        public string Remitente { get; set; }
+        public int? RemitenteId { get; set; }
+        public string CuitDestinatario { get; set; }
     }
 }

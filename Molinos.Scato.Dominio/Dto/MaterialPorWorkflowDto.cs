@@ -44,6 +44,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "AnioHasta")]
         public int? VigenciaHasta { get; set; }
+        public bool EsDerivadoGranario { get; set; }
 
     }
 }

@@ -25,6 +25,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 {
                     baja = Conversor.Convertir<BajaCTGDto, BajaCTG>(comando.Dto);
                     baja.CartaPorte = Repositorio.Obtener<CartaPorte>(x => x.Id == comando.Dto.CartaPorteId);
+                    baja.OrdenDeDescargaFason = Repositorio.Obtener<OrdenDeDescargaFason>(x => x.Id == comando.Dto.OrdenDeDescargaFasonId);
                     Repositorio.Agregar(baja);
                 }
                 else

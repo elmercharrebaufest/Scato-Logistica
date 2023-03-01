@@ -15,7 +15,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime FechaOD { get; set; }
         [Required]
         public virtual Cliente Cliente { get; set; }
-        [Required]
         public virtual Localidad Procedencia { get; set; }
         public virtual Transportista Transportista { get; set; }
         [Required]
@@ -34,6 +33,12 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual Recorrido Recorrido { get; set; }
         public virtual bool? EsExtranjero { get; set; }
+
+        public virtual string NumeroCTG { get; set; }
+        public virtual string Sucursal { get; set; }
+        public virtual string NroOrden { get; set; }
+        public virtual Domicilio Domicilio { get; set; }
+
     }
 }
 

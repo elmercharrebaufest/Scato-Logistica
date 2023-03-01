@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using System;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
@@ -13,8 +14,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
         protected override void Configure()
         {
             Mapper.CreateMap<MaterialPorCentro, MaterialPorCentroDto>()
-                  .ForMember(x => x.AlmacenPredId,mat => mat.MapFrom(matPorCentro => matPorCentro.AlmacenPredeterminado.Id))
-                  .ForMember(x => x.AlmacenPredDesc,mat => mat.MapFrom(matPorCentro => matPorCentro.AlmacenPredeterminado.Descripcion))
+                  .ForMember(x => x.AlmacenPredId, mat => mat.MapFrom(matPorCentro => matPorCentro.AlmacenPredeterminado.Id))
+                  .ForMember(x => x.AlmacenPredDesc, mat => mat.MapFrom(matPorCentro => matPorCentro.AlmacenPredeterminado.Descripcion))
                   .ForMember(x => x.MaterialId, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.Id))
                   .ForMember(x => x.MaterialDesc, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.Descripcion))
                   .ForMember(x => x.CentroId, mat => mat.MapFrom(matPorCentro => matPorCentro.Centro.Id))
@@ -53,8 +54,13 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.VigenciaHasta, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.VigenciaHasta))
                   .ForMember(x => x.CamaraDesc, mat => mat.MapFrom(matPorCentro => matPorCentro.Camara.Descripcion))
                   .ForMember(x => x.NirsCodigoProducto, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.NirsCodigoProducto))
+                  .ForMember(x => x.TipoEmbalajeId, mat=> mat.MapFrom(matPorCentro => matPorCentro.Material.TipoEmbalaje.Id))
+                  
+                  
             ;
             Mapper.CreateMap<MaterialDto, MaterialPorCentro>();
+                
+
         }
     }
 }

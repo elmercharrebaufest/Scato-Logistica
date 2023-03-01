@@ -137,6 +137,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ObtenerAlmacenesPorCentro(int centroId);
+        
+        [OperationContract]
+        IList<TipoEmbalajeDto> ListarEmbalaje();
 
         [OperationContract]
         MaterialPorCentroDto ObtenerMaterialPorCentro(int centroId, int materialId);
@@ -2776,5 +2779,32 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
+        
+        [OperationContract]
+        bool ValidacionAutomaticaCtgDG(int centroId);
+        
+        [OperationContract]
+        List<DomicilioDto> ListarDomicilios();
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorGuid(Guid instanceId);
+
+        [OperationContract]
+        IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
+
+ 		[OperationContract]
+        DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
+        
+        [OperationContract]
+        ClienteDto ObtenerClientePorCuit(string cuit);
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorCTG(string nroCTG);
+
+        [OperationContract]
+        MaterialDto ObtenerMaterialDerivadoGranario(short codigoPadre, short codigoDreivadoGranario);
+
+        [OperationContract]
+        DomicilioDto ObtenerDomicilioDG(int plantaDG);
     }
 }

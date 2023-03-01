@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
@@ -33,167 +33,111 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             {
                 ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
 
-                var queryCount = GenerarQueryCount(tipodoc, numerodoc, patente, tipoImpresion, paginacion.ItemsPorPagina, paginacion.Pagina);
-                var query = GenerarQuery(tipodoc, numerodoc, patente, tipoImpresion, paginacion.ItemsPorPagina, paginacion.Pagina);
+                var resultQuery = from impresion in contexto.Set<Impresion>()
+                            join rec in contexto.Set<Recorrido>() on impresion.WorkflowId equals rec.InstanciaWorkflow
+                            where !impresion.Eliminada
+                            && (string.IsNullOrEmpty(numerodoc) || rec.NumeroDocumentoIngreso == numerodoc)
+                            && (string.IsNullOrEmpty(patente) || rec.Patente == patente)
+                            select new ImpresionDto
+                            {
+                                Id = impresion.Id,
+                                FechaImpresion = impresion.FechaImpresion,
+                                TipoImpresion = impresion.TipoImpresion,
+                                Patente = impresion.Patente,
+                                Eliminada = impresion.Eliminada,
+                                Ctg = null,
+                                CtgDG = null,
+                            };
 
-                if(!string.IsNullOrEmpty(queryCount) && !string.IsNullOrEmpty(query))
+                var impresionCPE = ObtenerImpresionCartaPorteElectronica(contexto);
+                if (impresionCPE != null && impresionCPE.Any())
                 {
-                    var itemsTotales = ObtenerCountItems(contexto, queryCount);
-                    var resultados = contexto.Database.SqlQuery<ImpresionDto>(query);
-                    var resultado = resultados.OrderByDescending(x => x.FechaImpresion).Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina).ToList();
+                    resultQuery = resultQuery.Union(impresionCPE);
+                }
 
-                    return new ListaPaginada<ImpresionDto>(resultado, paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
-                }
-                else
+                var impresionCPEDG = ObtenerImpresionCartaPorteElectronicaDerivadoGranario(contexto);
+                if (impresionCPEDG != null && impresionCPEDG.Any())
                 {
-                    return consultarImpresion(contexto);
+                    resultQuery = resultQuery.Union(impresionCPEDG);
                 }
+
+                var itemsTotales = resultQuery.Count();
+
+                if (paginacion.OrdenarPor != null)
+                {
+                    var selectorOrden = Expresiones.Propiedad<ImpresionDto>(paginacion.OrdenarPor);
+                    resultQuery = paginacion.DireccionOrden == DirOrden.Asc
+                                     ? resultQuery.OrderBy(selectorOrden)
+                                     : resultQuery.OrderByDescending(selectorOrden);
+                }
+
+                resultQuery = resultQuery.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
+                return new ListaPaginada<ImpresionDto>(resultQuery.ToList(), paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return consultarImpresion(contexto);
+                return new ListaPaginada<ImpresionDto>(new List<ImpresionDto>(), paginacion.Pagina, paginacion.ItemsPorPagina, 0);
             }
         }
 
-        private ListaPaginada<ImpresionDto> consultarImpresion(DbContext contexto)
+        private IQueryable<ImpresionDto> ObtenerImpresionCartaPorteElectronica(DbContext contexto)
         {
-            try
+            if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
             {
-                var resultadosCount = contexto.Database.SqlQuery<ImpresionDto>(
-                "Select 1 from Impresion where Impresion.Eliminada = 0 and (((@tipoImp is null or @tipoImp = TipoImpresion) and @numeroDocumentoIngreso = '') or EXISTS(select Top 1 1 from Recorrido as R where R.InstanciaWorkflow = Impresion.WorkflowId and (@tipoDocumentoIngreso is null or R.TipoDocumentoIngreso = @tipoDocumentoIngreso) and (@numeroDocumentoIngreso = '' or R.NumeroDocumentoIngreso = @numeroDocumentoIngreso) and (@patente = '' or R.Patente = @patente) and (@tipoImp is null or @tipoImp = TipoImpresion)))"
-                , new SqlParameter("@tipoDocumentoIngreso", (object)tipodoc ?? DBNull.Value),
-                new SqlParameter("@numeroDocumentoIngreso", numerodoc ?? ""),
-                new SqlParameter("@patente", patente ?? ""),
-                new SqlParameter("@tipoImp", (object)tipoImpresion ?? DBNull.Value));
-                var resultados = contexto.Database.SqlQuery<ImpresionDto>(
-                "Select * from Impresion where Impresion.Eliminada = 0 and (((@tipoImp is null or @tipoImp = TipoImpresion) and @numeroDocumentoIngreso = '') or EXISTS(select Top 1 1 from Recorrido as R where R.InstanciaWorkflow = Impresion.WorkflowId and (@tipoDocumentoIngreso is null or R.TipoDocumentoIngreso = @tipoDocumentoIngreso) and (@numeroDocumentoIngreso = '' or R.NumeroDocumentoIngreso = @numeroDocumentoIngreso) and (@patente = '' or R.Patente = @patente) and (@tipoImp is null or @tipoImp = TipoImpresion)))"
-                , new SqlParameter("@tipoDocumentoIngreso", (object)tipodoc ?? DBNull.Value),
-                new SqlParameter("@numeroDocumentoIngreso", numerodoc ?? ""),
-                new SqlParameter("@patente", patente ?? ""),
-                new SqlParameter("@tipoImp", (object)tipoImpresion ?? DBNull.Value));
-                var itemsTotales = resultadosCount.Count();
-
-                var resultado = resultados.OrderByDescending(x => x.FechaImpresion).Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina).ToList();
-
-                return new ListaPaginada<ImpresionDto>(resultado, paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
+                var nroCTG = long.Parse(numerodoc);
+                var impresionCPE = contexto.Set<CartaPorteElectronica>()
+                                    .Where(q => q.NroCTG == nroCTG && q.Pdf != null)
+                                    .Select(q => new ImpresionDto()
+                {
+                    Id = 0,
+                    FechaImpresion = q.FechaEmision ?? DateTime.Now,
+                    TipoImpresion = TipoImpresion.CartaDePorteElectronica,
+                    Patente = q.Dominio,
+                    Eliminada = false,
+                    Ctg = q.NroCTG,
+                    CtgDG = null,
+                });
+                return impresionCPE;
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return null;
         }
 
-        private int ObtenerCountItems(DbContext contexto, string query)
+        private IQueryable<ImpresionDto> ObtenerImpresionCartaPorteElectronicaDerivadoGranario(DbContext contexto)
         {
-            return contexto.Database.SqlQuery<Int32>(query).FirstOrDefault();
-        }
-
-        private string GenerarQueryCount(TipoDocumentoIngreso? tipodoc, string numerodoc, string patente, TipoImpresion? tipoImpresion, int itemPorPagina, int pagina)
-        {
-            string query = string.Empty;
-
-            try
+            if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.OrdenCargaFas == tipodoc || TipoDocumentoIngreso.OrdenCargaInterna == tipodoc || TipoDocumentoIngreso.OrdenCargaInternaFason == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaPorteElectronicaDerivadoGranario == tipoImpresion))
             {
-                StringBuilder sbfilter = new StringBuilder();
-                sbfilter.AppendFormat("Select count(*) as cnt from Impresion where Impresion.Eliminada = 0 and ");
-                sbfilter.Append("(");
-                sbfilter.Append("EXISTS");
-                sbfilter.Append("(");
-                sbfilter.Append("select Top 1 1 from Recorrido as R where R.InstanciaWorkflow = Impresion.WorkflowId ");
-
-                if (!(tipodoc is null))
+                var impresionCPE = contexto.Set<CartaPorteDerivadoGranario>()
+                                        .Where(q => q.Recorrido.NumeroDocumentoIngreso == numerodoc && !string.IsNullOrEmpty(q.RutaFotoCPEDG))
+                                        .Select(q => new ImpresionDto()
                 {
-                    sbfilter.AppendFormat("and (R.TipoDocumentoIngreso = {0}) ", (int)tipodoc);
-                }
-
-                if (!string.IsNullOrEmpty(numerodoc))
-                {
-                    sbfilter.AppendFormat("and (R.NumeroDocumentoIngreso = '{0}') ", numerodoc);
-                }
-
-                if (!string.IsNullOrEmpty(patente))
-                {
-                    sbfilter.AppendFormat("and (R.Patente = '{0}') ", patente);
-                }
-
-                if (!(tipoImpresion is null))
-                {
-                    sbfilter.AppendFormat("and ({0} = TipoImpresion)", (int)tipoImpresion);
-                }
-
-                sbfilter.Append(")");
-                sbfilter.Append(")");
-
-                query = sbfilter.ToString();
-
-                if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
-                {
-                    query = $"select sum(cnt) as total from ({sbfilter.ToString()} UNION SELECT COUNT(*) from CartaPorteElectronica where Pdf is not null and NroCTG = '{numerodoc}' ) tmp";
-                }
-
-            }
-            catch (Exception e)
-            {
+                    Id = 0,
+                    FechaImpresion = q.FechaEmision ?? DateTime.Now,
+                    TipoImpresion = TipoImpresion.CartaPorteElectronicaDerivadoGranario,
+                    Patente = q.Recorrido.Patente,
+                    Eliminada = false,
+                    Ctg = null,
+                    CtgDG = q.NroCTG,
+                });
+                return impresionCPE;
             }
 
-            return query;
-        }
-
-        private string GenerarQuery(TipoDocumentoIngreso? tipodoc, string numerodoc, string patente, TipoImpresion? tipoImpresion, int itemPorPagina, int pagina)
-        {
-            string query = string.Empty;
-            string top = $"top {itemPorPagina * pagina}";
-
-            try
+            if (!string.IsNullOrEmpty(patente) && (tipodoc is null || TipoDocumentoIngreso.OrdenCargaFas == tipodoc || TipoDocumentoIngreso.OrdenCargaInterna == tipodoc || TipoDocumentoIngreso.OrdenCargaInternaFason == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaPorteElectronicaDerivadoGranario == tipoImpresion))
             {
-                StringBuilder sbfilter = new StringBuilder();
-                sbfilter.AppendFormat("Select {0} *, null as Ctg from Impresion where Impresion.Eliminada = 0 and ", !string.IsNullOrEmpty(numerodoc) || !string.IsNullOrEmpty(patente) ? string.Empty : top);
-                sbfilter.Append("(");
-                sbfilter.Append("EXISTS");
-                sbfilter.Append("(");
-                sbfilter.Append("select Top 1 1 from Recorrido as R where R.InstanciaWorkflow = Impresion.WorkflowId ");
-
-                if (!(tipodoc is null))
-                {
-                    sbfilter.AppendFormat("and (R.TipoDocumentoIngreso = {0}) ", (int)tipodoc);
-                }
-
-                if (!string.IsNullOrEmpty(numerodoc))
-                {
-                    sbfilter.AppendFormat("and (R.NumeroDocumentoIngreso = '{0}') ", numerodoc);
-                }
-
-                if (!string.IsNullOrEmpty(patente))
-                {
-                    sbfilter.AppendFormat("and (R.Patente = '{0}') ", patente);
-                }
-
-                if (!(tipoImpresion is null))
-                {
-                    sbfilter.AppendFormat("and ({0} = TipoImpresion)", (int)tipoImpresion);
-                }
-
-                sbfilter.Append(")");
-                sbfilter.Append(")");
-
-                if (string.IsNullOrEmpty(numerodoc))
-                {
-                    sbfilter.Append(" order by Impresion.FechaImpresion DESC");
-                }
-
-                if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
-                {
-                    sbfilter.AppendFormat(" union (select 0, '', 29, FechaEmision, SUBSTRING(Dominio,0,CHARINDEX(',',Dominio,0)), 'CartaPorteElectronica', NEWID(), '0', NroCTG from CartaPorteElectronica where Pdf is not null and NroCTG = '{0}')", numerodoc);
-                }
-
-                query = sbfilter.ToString();
-
+                var impresionCPE = contexto.Set<CartaPorteDerivadoGranario>()
+                                        .Where(q => q.Recorrido.Patente == patente && !string.IsNullOrEmpty(q.RutaFotoCPEDG))
+                                        .Select(q => new ImpresionDto()
+                                        {
+                                            Id = 0,
+                                            FechaImpresion = q.FechaEmision ?? DateTime.Now,
+                                            TipoImpresion = TipoImpresion.CartaPorteElectronicaDerivadoGranario,
+                                            Patente = q.Recorrido.Patente,
+                                            Eliminada = false,
+                                            Ctg = null,
+                                            CtgDG = q.NroCTG,
+                                        });
+                return impresionCPE;
             }
-            catch (Exception e)
-            {
-            }
-
-            return query;
+            return null;
         }
     }
 }

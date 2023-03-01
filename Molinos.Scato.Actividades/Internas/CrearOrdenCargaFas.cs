@@ -37,6 +37,7 @@ namespace Molinos.Scato.Actividades.Internas
 
         [RequiredArgument]
         public InArgument<string> NombreUsuario { get; set; }
+        public OutArgument<bool> Rechazado { get; set; }
 
 
         protected override Resultado Execute(CodeActivityContext context)
@@ -73,6 +74,7 @@ namespace Molinos.Scato.Actividades.Internas
                     TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.OrdenCargaFas);
                     NumeroDocumentoIngreso.Set(context, orden.Id.ToString());   
                     ValidaCompliance.Set(context, orden.ValidaCompliance);
+                    Rechazado.Set(context, orden.Rechazado);
                 }
                 if (resultadoCrear.HayErrores)
                 {

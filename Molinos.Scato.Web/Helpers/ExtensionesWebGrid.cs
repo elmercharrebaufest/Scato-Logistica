@@ -87,9 +87,9 @@ namespace Molinos.Scato.Web.Helpers
             return grid.Column("EliminarImprimir", "", f =>
                 html.Raw(
                 "<span>" +
-                html.BotonLink(Textos.Previsualizar, "Previsualizar", controller, new { f.id, f.ctg }, style + " ajax-previsualizar-link", "icon-search", true).ToHtmlString() +
-                html.BotonLink(Textos.Imprimir, "Imprimir", controller, new { f.id, f.ctg }, style + " ajax-imprimir-link", "icon-print", true).ToHtmlString() +
-                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id, f.ctg }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                html.BotonLink(Textos.Previsualizar, "Previsualizar", controller, new { f.id, f.ctg, f.ctgdg }, style + " ajax-previsualizar-link", "icon-search", true).ToHtmlString() +
+                html.BotonLink(Textos.Imprimir, "Imprimir", controller, new { f.id, f.ctg, f.ctgdg }, style + " ajax-imprimir-link", "icon-print", true).ToHtmlString() +
+                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id, f.ctg, f.ctgdg }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
                 "</span>"
                 )
                 , "editar-borrar-columna", false);

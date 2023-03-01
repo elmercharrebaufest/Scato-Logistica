@@ -19,6 +19,13 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Localidad LocalidadDestino { get; set; }
         public virtual string KmRecorrer { get; set; }
         public virtual bool? EsExtranjero { get; set; }
-        
+        public virtual bool DerivadoGranarioHabilitado { get; set; }
+        public virtual int? PlantaDGDestino { get; set; }
+        public virtual int? OrdenDomicilioDestino { get; set; }
+        public virtual Cliente PagadorFlete { get; set; }
+        public virtual Proveedor Corredor { get; set; }
+        public virtual Cliente Comisionista { get; set; }
+        public virtual Cliente Remitente { get; set; }
+        public virtual string CuitDestinatario { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             centro.CamaraDefault = Repositorio.Obtener<Camara>(comando.Dto.CamaraId);
             centro.Provincia = Repositorio.Obtener<Provincia>(comando.Dto.ProvinciaId);
             centro.Localidad = Repositorio.Obtener<Localidad>(comando.Dto.LocalidadId);
+            centro.Domicilio = Repositorio.Obtener<Domicilio>(comando.Dto.DomicilioId);
             centro.UsuariosAsociados = Repositorio.Listar<Usuario>(x => x.NombreUsuario == comando.NombreUsuario);
             return centro;
         }

@@ -11,5 +11,7 @@ namespace Molinos.Scato.Dominio.Dto
         public VehiculoDto Vehiculo { get; set; }
         public EstadoTransmisionASap EstadoCtg { get; set; }
         public EstadoTransmisionASap EstadoCtgDefinitivo { get; set; }
+        public OrdenDeDescargaFasonDto OrdenDeDescargaFason { get; set; }
+        public TipoDocumentoIngreso TipoDocumentoIngreso { get; set; }
     }
 }

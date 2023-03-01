@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:sap-com:document:sap:rfc:functions" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" targetNamespace="urn:sap-com:document:sap:rfc:functions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:sap-com:document:sap:rfc:functions" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="urn:sap-com:document:sap:rfc:functions" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:documentation>
     <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
   </wsdl:documentation>
@@ -139,12 +139,12 @@
           <sapsession:enableSession>false</sapsession:enableSession>
         </sapsession:Session>
         <sapcentraladmin:CentralAdministration xmlns:sapcentraladmin="http://www.sap.com/webas/700/soap/features/CentralAdministration/" wsp:Optional="true">
-          <sapcentraladmin:BusinessApplicationID>00505681C3051EEBB0FF0B54AF97B81E</sapcentraladmin:BusinessApplicationID>
+          <sapcentraladmin:BusinessApplicationID>00505681C3051EED849FAA8F7DB1583D</sapcentraladmin:BusinessApplicationID>
         </sapcentraladmin:CentralAdministration>
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__DatosMateriales">
+  <wsp:Policy wsu:Id="OP__EgresosNoProductivos">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -154,7 +154,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__IngresosEgresosFazones">
+  <wsp:Policy wsu:Id="OP__DatosMateriales">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -184,6 +184,16 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__MovAjuste">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="OP__ValidacionCOT">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -204,7 +214,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__ContabilizarIngresos">
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100T">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -214,7 +224,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100T">
+  <wsp:Policy wsu:Id="OP__EgresoSinFleteFazones">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -244,16 +254,6 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__Z_SDMF_Z2200N">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
-        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
-        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
-        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
   <wsp:Policy wsu:Id="OP__IngresosBodega">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -265,6 +265,16 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="OP__AnulaContabilizacion">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Mov305">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -294,46 +304,6 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
-        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
-        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
-        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__Mov305">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
-        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
-        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
-        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__EgresoSinFleteFazones">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
-        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
-        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
-        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__MovAjuste">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
-        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
-        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
-        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
   <wsp:Policy wsu:Id="OP__ConsultaLoteDispYRecepcion">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -344,7 +314,37 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="OP__EgresosNoProductivos">
+  <wsp:Policy wsu:Id="OP__Z_SDMF_RFC_Z2100">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__Z_SDMF_Z2200N">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__ContabilizarIngresos">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="OP__IngresosEgresosFazones">
     <wsp:ExactlyOne>
       <wsp:All>
         <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
@@ -544,6 +544,11 @@
       <xsd:simpleType name="char25">
         <xsd:restriction base="xsd:string">
           <xsd:maxLength value="25" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="char250">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="250" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="char255">
@@ -1032,6 +1037,16 @@
           <xsd:element name="CHOFER" type="tns:char20" />
           <xsd:element name="TIPO_DOC_CHOFER" type="tns:char3" />
           <xsd:element name="NRO_DOC_CHOFER" type="tns:char15" />
+          <xsd:element name="CLIENTE_CTA_ORDEN" type="tns:char10" />
+          <xsd:element name="CUIT_CTA_ORDEN" type="tns:char16" />
+          <xsd:element name="RAZON_SOCIAL_CTA_ORDEN" type="tns:char35" />
+          <xsd:element name="CUIT_PAGADOR_FLETE" type="tns:char16" />
+          <xsd:element name="CODPLANTA" type="tns:char6" />
+          <xsd:element name="TIPODOM" type="tns:char1" />
+          <xsd:element name="ORDENDOM" type="tns:char2" />
+          <xsd:element name="DOMORDEN" type="tns:char250" />
+          <xsd:element name="INHABILITADO" type="tns:char1" />
+          <xsd:element name="TIPO_REVENTA" type="tns:char1" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ZMMBALANZA5">
@@ -1220,7 +1235,7 @@
           <xsd:element name="MENSAJE" type="tns:char73" />
           <xsd:element name="COSECHA" type="tns:char5" />
           <xsd:element name="ESTABLECIMIENTO" type="tns:char6" />
-          <xsd:element name="CTG" type="tns:char12" />
+          <xsd:element name="CTG" type="tns:char13" />
           <xsd:element name="FECHA_CTG" type="tns:char8" />
           <xsd:element name="CUIT_DESTINATARI" type="tns:char16" />
           <xsd:element name="CLASIFICACION" type="tns:char20" />
@@ -1233,7 +1248,7 @@
         <xsd:sequence>
           <xsd:element name="CTG" type="tns:char12" />
           <xsd:element name="SOLICITANTE" type="tns:char16" />
-          <xsd:element name="CCPP" type="tns:char12" />
+          <xsd:element name="CCPP" type="tns:char13" />
           <xsd:element name="ESTADO" type="tns:char30" />
           <xsd:element name="CUIT_CANJEADOR" type="tns:char16" />
           <xsd:element name="CANJEREMITCOM" type="tns:char2" />
@@ -1683,6 +1698,8 @@
             <xsd:element name="Cliente" type="tns:char10" />
             <xsd:element name="DocChofer" type="tns:char8" />
             <xsd:element name="Fecha" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element name="NomChofer" type="tns:char35" />
             <xsd:element name="PatCamion" type="tns:char10" />
             <xsd:element name="PatRemolque" type="tns:char10" />
@@ -1789,6 +1806,8 @@
             <xsd:element minOccurs="0" name="Destino" type="tns:char10" />
             <xsd:element minOccurs="0" name="DocLegal" type="tns:char16" />
             <xsd:element minOccurs="0" name="FechaIng" type="tns:date10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element minOccurs="0" name="IM_NUM_SCATO" type="tns:char12" />
             <xsd:element minOccurs="0" name="Km" type="tns:decimal5.0" />
             <xsd:element minOccurs="0" name="LocalidadOrig" type="tns:char5" />
@@ -1818,6 +1837,8 @@
           <xsd:sequence>
             <xsd:element minOccurs="0" name="Documento" type="tns:char70" />
             <xsd:element name="Entrega" type="tns:char10" />
+            <xsd:element minOccurs="0" name="IM_CPEDG" type="tns:char13" />
+            <xsd:element minOccurs="0" name="IM_CTG" type="tns:char12" />
             <xsd:element minOccurs="0" name="PesoBruto" type="tns:quantum15.3" />
             <xsd:element minOccurs="0" name="PesoNeto" type="tns:quantum15.3" />
           </xsd:sequence>

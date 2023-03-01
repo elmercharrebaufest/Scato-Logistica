@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -13,6 +8,11 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -33,7 +33,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(DatosUsuario datosUsuario, int pagina = 1, string ordenarPor = "Fecha", DirOrden dirOrden = DirOrden.Desc)
         {
             var filtro = SetearFiltro();
-            
+
             if (ModelState.IsValid)
             {
                 ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden);
@@ -69,7 +69,7 @@ namespace Molinos.Scato.Web.Controllers
                 filtro.Patente = filtro.Patente.ToUpper();
             }
             filtro.CentroId = datosUsuario.CentroId;
-            
+
             var paginacion = new Paginacion(
                 ordenarPor,
                 dirOrden,
@@ -86,7 +86,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.FechaHasta = DateTime.Now.Date;
             filtro.EstadoTransmisionASap = EstadoTransmisionASap.Error;
             if (System.Web.HttpContext.Current != null)
-            {               
+            {
                 var fechaDesde = System.Web.HttpContext.Current.Request.Cookies["fechaDesde"];
                 var fechaHasta = System.Web.HttpContext.Current.Request.Cookies["fechaHasta"];
                 var horaDesde = System.Web.HttpContext.Current.Request.Cookies["horaDesde"];
@@ -108,7 +108,7 @@ namespace Molinos.Scato.Web.Controllers
                     filtro.TipoDocumentoIngreso = string.IsNullOrEmpty(tipoDoc.Value) ? (TipoDocumentoIngreso?)null : (TipoDocumentoIngreso)Enum.Parse(typeof(TipoDocumentoIngreso), tipoDoc.Value);
                 }
             }
-            
+
             return filtro;
         }
 
@@ -124,11 +124,11 @@ namespace Molinos.Scato.Web.Controllers
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("nroDocumento", filtro.NumeroDocumentoIngreso));
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("patente", filtro.Patente));
                 System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("tipoDoc", filtro.TipoDocumentoIngreso.ToString()));
-            }   
+            }
         }
 
         [DatosUsuario]
-        public ActionResult Transmitir(string transmisiones, DatosUsuario datosUsuario,bool bajaManual = false)
+        public ActionResult Transmitir(string transmisiones, DatosUsuario datosUsuario, bool bajaManual = false)
         {
             var ids = transmisiones.Split('|');
             log.Debug("Iniciando bajas CTG");
@@ -150,7 +150,14 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     if (x.EstadoCtg == EstadoTransmisionASap.Error)
                     {
-                        if (x.Dto.Cpe)
+                        if (x.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenDeDescargaFason)
+                        {
+                            resultados.Add(servicioComandos.Ejecutar(new ConfirmarArriboDG
+                            {
+                                Dto = x.OrdenDeDescargaFason
+                            }));
+                        }
+                        else if (x.Dto.Cpe)
                         {
                             resultados.Add(servicioComandos.Ejecutar(new ConfirmarArribo
                             {
@@ -158,7 +165,6 @@ namespace Molinos.Scato.Web.Controllers
                                 Vehiculo = x.Vehiculo,
                                 CentroId = x.CentroId,
                                 WorkflowId = x.WorkflowId
-
                             }));
                         }
                         else
@@ -169,14 +175,19 @@ namespace Molinos.Scato.Web.Controllers
                                 Vehiculo = x.Vehiculo,
                                 CentroId = x.CentroId,
                                 WorkflowId = x.WorkflowId
-
                             }));
                         }
-                        
                     }
                     else if (x.EstadoCtgDefinitivo == EstadoTransmisionASap.Error)
                     {
-                        if (x.Dto.Cpe)
+                        if (x.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenDeDescargaFason)
+                        {
+                            resultados.Add(servicioComandos.Ejecutar(new ConfirmarArriboDGDefinitivo
+                            {
+                                Dto = x.OrdenDeDescargaFason
+                            }));
+                        }
+                        else if (x.Dto.Cpe)
                         {
                             resultados.Add(servicioComandos.Ejecutar(new ConfirmarArriboDefinitivo
                             {
@@ -194,7 +205,6 @@ namespace Molinos.Scato.Web.Controllers
                                 WorkflowId = x.WorkflowId
                             }));
                         }
-                        
                     }
                 }
                 else
@@ -202,7 +212,6 @@ namespace Molinos.Scato.Web.Controllers
                     resultado = servicio.ActualizarBajaCTGDefinitivaManual(x.WorkflowId);
                     resultados.Add(resultado);
                 }
-                
 
                 servicioComandos.Ejecutar(new CrearControlRecorrido
                 {

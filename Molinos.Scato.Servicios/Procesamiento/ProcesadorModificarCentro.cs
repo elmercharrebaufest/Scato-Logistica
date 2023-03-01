@@ -23,6 +23,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             centroEditado.CamaraDefault = Repositorio.Obtener<Camara>(comando.Dto.CamaraId);
             centroEditado.Provincia = Repositorio.Obtener<Provincia>(comando.Dto.ProvinciaId);
             centroEditado.Localidad = Repositorio.Obtener<Localidad>(comando.Dto.LocalidadId);
+            centroEditado.Domicilio = Repositorio.Obtener<Domicilio>(comando.Dto.DomicilioId);
         }
 
         protected override void Validar(ModificarCentro comando, Resultado resultado)

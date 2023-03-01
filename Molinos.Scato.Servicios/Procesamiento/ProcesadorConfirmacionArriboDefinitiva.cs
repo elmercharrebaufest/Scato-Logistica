@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -141,12 +142,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             RutaFotoCP = comando.Dto.FotoRutaDestino,
                             CodigoCentroSap = centro.CodigoSAP,
                             Patente = recorrido.Patente,
-                            EsSustentable = recorrido.Establecimiento != null,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
                             Pdf = respuesta.pdf
                         });
                     } 
                     Log.Debug("Realizo la consulta ");
-
 
                     Repositorio.Agregar(
                     new LogAfipCpe
@@ -156,6 +156,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Respuesta = respuesta.ToXml(),
                         Fecha = DateTime.Now,
                     });
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
                 if (tipoCpe == 75)
                 {
@@ -197,11 +202,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             RutaFotoCP = comando.Dto.FotoRutaDestino,
                             CodigoCentroSap = centro.CodigoSAP,
                             Patente = recorrido.Patente,
-                            EsSustentable = recorrido.Establecimiento != null,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
                             Pdf = respuesta.pdf
                         });
                     }
                     Log.Debug("Realizo la consulta ");
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
                 try
                 {
@@ -217,9 +227,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         });
                         Repositorio.GuardarCambios();
                     }
-                   
-                    // UpdateBajaCTGDefinitiva(comando.WorkflowId);
-
                 }
                 catch (Exception e)
                 {
