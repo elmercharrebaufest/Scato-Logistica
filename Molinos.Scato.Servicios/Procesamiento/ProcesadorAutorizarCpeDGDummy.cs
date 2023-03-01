@@ -137,7 +137,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             sucursal = centro.Id,
                             nroOrden = comando.NroOrden
                         },
-
                         origen = new OrigenAutomotorDGSolicitud
                         {
                             esUsuarioIndustria = false,
@@ -149,7 +148,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 orden = centro.Domicilio.Orden
                             }
                         },
-
                         datosCarga = new DatosCargaAutomotorDGSolicitud
                         {
                             codGrano = (short)(material.CodigoGranoPadre ?? 0),
@@ -168,6 +166,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 orden = comando.DestinoDomicilioOrden
                             },
                         },
+                        destinatario = new DestinatarioSolicitud(),
                         transporte = new TransporteAutomotorDGSolicitud
                         {
                             cuitTransportista = !string.IsNullOrEmpty(transportista.Cuit) ? long.Parse(transportista.Cuit.Replace("-", string.Empty)) : 0,
@@ -176,7 +175,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = comando.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(comando.ChoferCuit) ? long.Parse(comando.ChoferCuit.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = !string.IsNullOrEmpty(pagadorFlete.Cuit) ? long.Parse(pagadorFlete.Cuit.Replace("-", string.Empty)) : 0,
-                        }
+                        },
+                        intervinientes = new IntervinientesAutomotorDGSolicitud()
                     }
                 };
 
