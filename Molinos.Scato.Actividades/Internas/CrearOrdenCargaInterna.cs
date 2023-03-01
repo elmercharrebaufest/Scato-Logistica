@@ -34,8 +34,10 @@ namespace Molinos.Scato.Actividades.Internas
 
         public OutArgument<string> NumeroDocumentoIngreso { get; set; }
 
-        public OutArgument<DateTime> FechaInicio { get; set; } 
-       
+        public OutArgument<DateTime> FechaInicio { get; set; }
+        public OutArgument<bool> Demorado { get; set; }
+        public OutArgument<bool> Rechazado { get; set; }
+
         protected override Resultado Execute(CodeActivityContext context)
         {
             var orden = Orden.Get<OrdenCargaInternaDto>(context);
@@ -65,6 +67,8 @@ namespace Molinos.Scato.Actividades.Internas
                 if (ordenDto != null)
                 {
                     OrdenCargaInterna.Set(context,ordenDto);
+                    Demorado.Set(context, orden.Demorado);
+                    Rechazado.Set(context, orden.Rechazado);
                     TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.OrdenCargaInterna);
                     NumeroDocumentoIngreso.Set(context, orden.NumeroOrden);   
                     FechaInicio.Set(context, DateTime.Now);

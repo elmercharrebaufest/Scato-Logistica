@@ -24,6 +24,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var Error = ModelState.Values.Where(c => c.Errors.Count > 0).ToList();
                 return false;
             }
             log.Info("SetearChofer para el chofer con el CUIL: " + choferDto.Cuil);

@@ -63,8 +63,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Librerias\Microsoft.ApplicationServer.StoreManagement.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\NPOI.dll</HintPath>
@@ -90,7 +90,18 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\AnularCPEDGDummy.cs" />
+    <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\AutorizarCpeDG.cs" />
+    <Compile Include="Comandos\ConfirmacionDefinitivaCPEAutomotorDG.cs" />
+    <Compile Include="Comandos\ConfirmarArriboDGDefinitivo.cs" />
+    <Compile Include="Comandos\ConfirmarArriboDG.cs" />
+    <Compile Include="Comandos\ConsultarDomiciliosDG.cs" />
+    <Compile Include="Comandos\ConsultarPlantasDG.cs" />
+    <Compile Include="Comandos\ConsultarCPEAutomotorDG.cs" />
+    <Compile Include="Comandos\CrearAltaCTGDG.cs" />
+    <Compile Include="Comandos\DarDeBajaCTGDG.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\EliminarExcepcionAlControlProveedor.cs" />
@@ -105,6 +116,10 @@
     <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\ResultadoCartaPorteElectronicaDummy.cs" />
+    <Compile Include="Comandos\ResultadoConsultaDomiciliosDG.cs" />
+    <Compile Include="Comandos\ResultadoConsultaPlantasDG.cs" />
+    <Compile Include="Comandos\ResultadoConsultaCpeAutomotorDG.cs" />
     <Compile Include="Comandos\ResultadoConsultarAFIP.cs" />
     <Compile Include="Comandos\CrearLoteInase.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLedReordenado.cs" />
@@ -712,12 +727,16 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
+    <Compile Include="Dto\DerivadoGranario\DatosDerivadoGranarioDto.cs" />
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
+    <Compile Include="Dto\DerivadoGranario\RequestAltaCTGDGDto.cs" />
+    <Compile Include="Dto\DomicilioDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\ConfiguracionCalleHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\CamionHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
+    <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />
     <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
@@ -874,6 +893,7 @@
     <Compile Include="Dto\SentidoManoDeEmbarqueDto.cs" />
     <Compile Include="Dto\TipoDeActividadDto.cs" />
     <Compile Include="Dto\TipoDeBuquePuertoDto.cs" />
+    <Compile Include="Dto\TipoEmbalajeDto.cs" />
     <Compile Include="Dto\TransmisionASapManualDto.cs" />
     <Compile Include="Dto\AnalisisObligatorioDto.cs" />
     <Compile Include="Dto\CaladoDto.cs" />
@@ -989,6 +1009,7 @@
     <Compile Include="Entidades\ATAPuerto.cs" />
     <Compile Include="Entidades\ConfiguracionCalleHidraulica.cs" />
     <Compile Include="Entidades\ExcepcionAlControlProveedor.cs" />
+    <Compile Include="Entidades\Domicilio.cs" />
     <Compile Include="Entidades\HistorialMensajeCartelLed.cs" />
     <Compile Include="Entidades\LlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Entidades\CaracteristicasCartaPorteOtrosPuertos.cs" />
@@ -1041,6 +1062,7 @@
     <Compile Include="Entidades\ModuloDeCargaTabiquesDeEmbarqueHistorico.cs" />
     <Compile Include="Entidades\ModuloDeCargaUmap.cs" />
     <Compile Include="Entidades\ConfirmacionCargaDescarga.cs" />
+    <Compile Include="Entidades\CartaPorteDerivadoGranario.cs" />
     <Compile Include="Entidades\PesosExc.cs" />
     <Compile Include="Entidades\MuestraDeInase.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
@@ -1103,6 +1125,7 @@
     <Compile Include="Entidades\Bodega.cs" />
     <Compile Include="Entidades\Adjunto.cs" />
     <Compile Include="Entidades\ReglaDeAnalisisObligatorio.cs" />
+    <Compile Include="Entidades\TipoEmbalaje.cs" />
     <Compile Include="Entidades\TipoDeActividad.cs" />
     <Compile Include="Entidades\TipoDeBuquePuerto.cs" />
     <Compile Include="Entidades\TurnoPuerto.cs" />
@@ -1156,6 +1179,7 @@
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />
     <Compile Include="Enums\FiltroEntregador.cs" />
     <Compile Include="Enums\TipoAccionSensor.cs" />
+    <Compile Include="Enums\TipoImagen.cs" />
     <Compile Include="Enums\TipoDeMensajeDeRespuesta.cs" />
     <Compile Include="Enums\CaracteristicasCalidad.cs" />
     <Compile Include="Enums\CodigoMensajeCartelLed.cs" />

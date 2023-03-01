@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Comandos
 {
@@ -8,7 +8,9 @@ namespace Molinos.Scato.Dominio.Comandos
         public string RutaFotoCP { get; set; }
         public string CodigoCentroSap { get; set; }
         public string Patente { get; set; }
-        public bool EsSustentable { get; set; }
+        public TipoImagen TipoImagen { get; set; }
         public byte[] Pdf { get; set; }
+        public string Etapa { get; set; }
+        public TipoVehiculo TipoVehiculo { get; set; }
     }
 }

@@ -71,6 +71,9 @@
     <Compile Include="ComandosEF\CrearArchivoDeMovimientos.cs" />
     <Compile Include="ComandosEF\CrearLoteAuditoria.cs" />
     <Compile Include="ConsultasEF\ConsultarEstadosWorkflows.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInternaFason.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInterna.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaFas.cs" />
     <Compile Include="ConsultasEF\ControlRecorridoLogActividadConsulta.cs" />
     <Compile Include="ComandosEF\CrearLoteBiotecnologia.cs" />
     <Compile Include="ConsultasEF\BajaCtgDefinitivaConsulta.cs" />
@@ -109,7 +112,6 @@
     <Compile Include="ConsultasEF\ListarReporteCargasPuerto.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoExcepcionEnvioCamara.cs" />
     <Compile Include="ConsultasEF\ListarRecorridosRechazados.cs" />
-    <Compile Include="ConsultasEF\KgEPAUtilizados.cs" />
     <Compile Include="ConsultasEF\EficienciaHidraulicasConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMovimientoDeTercerosPendientesConsulta.cs" />
     <Compile Include="ConsultasEF\ListarArchivoDeMovimientosEgresosParaArchivoConsulta.cs" />

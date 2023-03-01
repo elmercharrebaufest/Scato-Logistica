@@ -1,5 +1,6 @@
 ﻿using System;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
@@ -32,8 +33,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var centro = Repositorio.Obtener<Centro>(comando.CentroId);
                     var material = Repositorio.Obtener<Material>(comando.Orden.MaterialId);
                     var cliente = Repositorio.Obtener<Cliente>(comando.Orden.ClienteId);
-                    var procedencia = Repositorio.Obtener<Localidad>(comando.Orden.ProcedenciaId);
+                    var procedencia = new Localidad();
+                    var domicilio = new Domicilio();
                     var workflowDefinicion = Repositorio.Obtener<WorkflowDefinicion>(comando.WorkflowDefinicionId);
+
+                    if(comando.Orden.ProcedenciaId != 0)
+                    {
+                        procedencia = Repositorio.Obtener<Localidad>(comando.Orden.ProcedenciaId);
+                        domicilio = null;
+                    }
+                    else
+                    {
+                        domicilio = Repositorio.Obtener<Domicilio>(comando.Orden.DomicilioId);
+                        procedencia = null;
+                    }
 
                     var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenDeDescargaFason, NumeroDocumentoIngreso = comando.Orden.Numero, NumeroDocumentoIngresoLegal = (!string.IsNullOrEmpty(comando.Orden.NumeroRemito) ? comando.Orden.NumeroRemito.Replace('R', '-') : ""), WorkflowDefinicion = workflowDefinicion, Material = material,TipoVehiculo = comando.Orden.TipoVehiculo};
                     Repositorio.Agregar(recorrido);
@@ -55,8 +68,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         PesoBrutoOrigen = comando.Orden.PesoBrutoOrigen,
                         PesoTaraOrigen = comando.Orden.PesoTaraOrigen,
                         PesoNetoOrigen = comando.Orden.PesoNetoOrigen,
-                        Recorrido = recorrido
+                        Recorrido = recorrido,
+                        Domicilio = domicilio,
                     };
+
+                    if (material.EsDerivadoGranario)
+                    {
+                        var orden = comando?.Orden;
+                        ObtenerDatosOrdenDerivadoGranario(orden, ordenDeDescargaFason);
+                    }
 
                     Repositorio.Agregar(ordenDeDescargaFason);
                     Repositorio.GuardarCambios();
@@ -70,6 +90,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             return resultado;
+        }
+
+        private void ObtenerDatosOrdenDerivadoGranario(OrdenDeDescargaFasonDto orden, OrdenDeDescargaFason nuevaOrden)
+        {
+            nuevaOrden.NumeroCTG = orden?.NumeroCTG != null ? orden.NumeroCTG.PadLeft(12, '0') : null;
+            nuevaOrden.NroOrden = orden?.NroOrden != null ? orden.NroOrden.PadLeft(8, '0') : null;
+            nuevaOrden.Sucursal = orden?.Sucursal != null ? orden.Sucursal.PadLeft(5, '0') : null;
         }
     }
 }

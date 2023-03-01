@@ -742,4 +742,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Calle_Id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="13f24517-544b-422d-a275-b4c0742a0cbc" ChangeDateTime="01/09/2023 22:30:12">
+    <Property Name="ElementName" Value="[dbo].[Domicilio].[CodigoSAP]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Domicilio]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Tipo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c0e5e450-6be7-4e32-9334-d3ced8a7329a" ChangeDateTime="01/09/2023 22:30:18">
+    <Property Name="ElementName" Value="[dbo].[Domicilio].[Descripcion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Domicilio]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Orden" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="512f3edf-b98c-4904-99e9-2b3bbcd0e721" ChangeDateTime="01/11/2023 14:52:03">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaFas].[NroCPE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaFas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Sucursal" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9adbb80a-e568-4764-bbba-95d0adb69499" ChangeDateTime="01/26/2023 15:49:36">
+    <Property Name="ElementName" Value="[dbo].[BajaCTG].[Orde]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BajaCTG]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrdenDeDescargaFason_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c7e811aa-bee6-4175-9879-c44d267ff5f6" ChangeDateTime="01/30/2023 19:49:04">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[CuitPagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="aaf6c0e5-b9e4-4b64-befe-00ee3772a87b" ChangeDateTime="01/30/2023 19:49:12">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[PagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete_Id" />
+  </Operation>
 </Operations>

@@ -7,5 +7,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int Id { get; set; }
         public EstadoHidraulica Estado { get; set; }
         public string Patente { get; set; }
+        public string Cartel { get; set; }
     }
 }

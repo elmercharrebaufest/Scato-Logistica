@@ -265,7 +265,7 @@ namespace BuscadorDeInconcistencias
             // step two - instantiate your credentials
             ClientCredentials loginCredentials = new ClientCredentials();
             loginCredentials.UserName.UserName = "GWEBSRV_SCA";
-            loginCredentials.UserName.Password = "scatoqa2015";
+            loginCredentials.UserName.Password = "scatoqa2015"; //h88WYKNtezwGAqJMt205vw==
 
             // step three - set that as new endpoint behavior on factory
             factory.Endpoint.Behaviors.Add(loginCredentials); //add required ones

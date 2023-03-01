@@ -26,6 +26,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var material = Repositorio.Obtener<Material>(comando.Orden.MaterialId);
             var recorrido = Repositorio.Obtener<Recorrido>(comando.Orden.RecorridoId);
             var localidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId);
+            var pagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId);
 
             var ordenCargaFas = Repositorio.Obtener<OrdenCargaFas>(comando.Orden.Id);
 
@@ -141,6 +142,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ordenCargaFas.NumeroOrden = comando.Orden.NumeroOrden;
                 recorrido.NumeroDocumentoIngreso = comando.Orden.NumeroOrden;
             }
+            ordenCargaFas.PlantaDGDestino = comando.Orden.PlantaDGDestino;
+            ordenCargaFas.OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino;
+            ordenCargaFas.PagadorFlete = pagadorFlete;
 
             recorrido.Patente = comando.Orden.PatenteCamion;
             recorrido.Chofer = chofer;

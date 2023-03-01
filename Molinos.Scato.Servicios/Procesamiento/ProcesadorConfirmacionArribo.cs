@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Configuration;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -98,7 +98,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                     });
 
-                    if(consulta?.respuesta?.cabecera?.estado == "CF")
+                    if(EstadosCPEdeAFIP.ValidosParaConfirmacionArribo.Contains(consulta?.respuesta?.cabecera?.estado))
                     {
                         return resultado;
                     }
@@ -115,7 +115,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                     });
 
-                    if (consulta?.respuesta?.cabecera?.estado == "CF")
+                    if (EstadosCPEdeAFIP.ValidosParaConfirmacionArribo.Contains(consulta?.respuesta?.cabecera?.estado))
                     {
                         return resultado;
                     }

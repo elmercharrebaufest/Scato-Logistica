@@ -47,8 +47,14 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -88,7 +94,15 @@
     <Compile Include="EnviarMensajeV3.cs" />
     <Compile Include="ImpresionEtiquetaMuestraInase.cs" />
     <Compile Include="ImpresionGenericaFile.cs" />
+    <Compile Include="Interfaces\IBajaCTGDGService.cs" />
+    <Compile Include="Interfaces\IAltaCTGDGService.cs" />
     <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
+    <Compile Include="Internas\DarDeAltaCtgDGAutomatica.cs" />
+    <Compile Include="Internas\DarDeAltaCtgDGManual.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGDefinitivoAutomatica.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGAutomatica.cs" />
+    <Compile Include="Internas\ObtenerTipoDeValidacionCtgDG.cs" />
+    <Compile Include="Internas\DarDeBajaCtgDGManual.cs" />
     <Compile Include="VerificarCartelPreBalanza.cs" />
     <Compile Include="LlamarCallePreBalanza.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
@@ -569,6 +583,7 @@
     </XamlAppDef>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -1227,6 +1242,24 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="EnEsperaHB4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AltaCTGDG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTGDGDefinitivo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BajaCTGDG.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

@@ -270,5 +270,14 @@ namespace Molinos.Scato.Dominio.Dto
        
         public bool AvanzaCpe { get; set; }
         public int? MinutosEsperaPrecalado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_Domicilio")]
+        public int? DomicilioId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_ValidarAutomaticamenteCTGDG")]
+        public bool ValidarAutomaticamenteCTGDG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_PlantaDG")]
+        public int? PlantaDG { get; set; }
     }
 }

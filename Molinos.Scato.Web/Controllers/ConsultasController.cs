@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
@@ -15,6 +9,10 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -115,7 +113,6 @@ namespace Molinos.Scato.Web.Controllers
                        : Json("", JsonRequestBehavior.AllowGet);
         }
 
-
         public ActionResult BuscarEntregador(string term)
         {
             var entregador = servicio.BuscarEntregador(term);
@@ -166,18 +163,19 @@ namespace Molinos.Scato.Web.Controllers
             return Json(materiales.Select(s => new { label = s.MaterialDesc, Id = s.Id, s.MaterialDesc }), JsonRequestBehavior.AllowGet);
         }
 
-[DatosUsuario]
+        [DatosUsuario]
         public ActionResult BuscarCaracteristicasDeCalidadPorMaterial(int materialId, DatosUsuario datosUsuario)
         {
-           var  caracteristicasDeCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(materialId, datosUsuario.CentroId);
-            return Json(caracteristicasDeCalidad.Select(caracteristicaDeCalidad => new { label= caracteristicaDeCalidad.DescripcionCorta, Id= caracteristicaDeCalidad .Id, caracteristicaDeCalidad.DescripcionCorta}), JsonRequestBehavior.AllowGet);
+            var caracteristicasDeCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(materialId, datosUsuario.CentroId);
+            return Json(caracteristicasDeCalidad.Select(caracteristicaDeCalidad => new { label = caracteristicaDeCalidad.DescripcionCorta, Id = caracteristicaDeCalidad.Id, caracteristicaDeCalidad.DescripcionCorta }), JsonRequestBehavior.AllowGet);
         }
+
         [DatosUsuario]
         public ActionResult BuscarCaracteristicaDeCalidadPorId(int id)
         {
             var caracteristicaDeCalidad = servicio.ObtenerCaracteristicaDeCalidad(id);
-            return caracteristicaDeCalidad != null 
-                ? Json(new {id= caracteristicaDeCalidad.Id ,nombre= caracteristicaDeCalidad.DescripcionCorta, caladoMaximo= caracteristicaDeCalidad.CaladoMaximo, caladoMinimo= caracteristicaDeCalidad.CaladoMinimo }, JsonRequestBehavior.AllowGet)
+            return caracteristicaDeCalidad != null
+                ? Json(new { id = caracteristicaDeCalidad.Id, nombre = caracteristicaDeCalidad.DescripcionCorta, caladoMaximo = caracteristicaDeCalidad.CaladoMaximo, caladoMinimo = caracteristicaDeCalidad.CaladoMinimo }, JsonRequestBehavior.AllowGet)
                 : Json("", JsonRequestBehavior.AllowGet);
         }
 
@@ -230,7 +228,6 @@ namespace Molinos.Scato.Web.Controllers
                               JsonRequestBehavior.AllowGet)
                        : Json("", JsonRequestBehavior.AllowGet);
         }
-
 
         public JsonResult ObtenerProveedoresSap(string term, TiposProveedor tipo)
         {
@@ -305,6 +302,7 @@ namespace Molinos.Scato.Web.Controllers
 
             return Json(redireccionar, JsonRequestBehavior.AllowGet);
         }
+
         [DatosUsuario]
         public JsonResult RedireccionarABalanzaAutomatizada()
         {
@@ -312,6 +310,7 @@ namespace Molinos.Scato.Web.Controllers
 
             return Json(redireccionar, JsonRequestBehavior.AllowGet);
         }
+
         protected static string MascaraCuit(string entrada)
         {
             if (entrada.Length != 11)
@@ -341,7 +340,6 @@ namespace Molinos.Scato.Web.Controllers
             var kmPorProveedor = servicio.ListarKmPorProveedorYCentro(clienteId, datosUsuario.CentroId);
             return Json(kmPorProveedor.Select(s => new { kmRecorrer = s.KmARecorrer, localidadDescripcion = s.LocalidadDescripcion, localidadDestinoId = s.LocalidadId }).ToList(), JsonRequestBehavior.AllowGet);
         }
-
 
         [DatosUsuario]
         public ActionResult ObtenerTiposVehiculo(DatosUsuario datosUsuario, bool conTren = false)
@@ -429,6 +427,7 @@ namespace Molinos.Scato.Web.Controllers
             var almacen = servicio.BuscarAlmacenPuerto(term);
             return almacen != null ? Json(new { label = almacen.Descripcion, almacen.Id }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult BuscarAlmacenes(string term)
         {
             log.Info("Comienza la búsqueda de Almacenes");
@@ -443,7 +442,6 @@ namespace Molinos.Scato.Web.Controllers
             var materiales = servicio.ListarMaterialesPorWorkflowCliente(workflowId, datosUsuario.CentroId, clienteId).ToSelectList(f => f.MaterialId.ToString(CultureInfo.InvariantCulture), f => f.MaterialDesc);
 
             return Json(materiales, JsonRequestBehavior.AllowGet);
-
         }
 
         [DatosUsuario]
@@ -457,9 +455,6 @@ namespace Molinos.Scato.Web.Controllers
             }
             return Json(materiales.Select(s => new { label = s.MaterialDesc, Id = s.MaterialId, s.MaterialDesc }), JsonRequestBehavior.AllowGet);
         }
-
-
-
 
         public ActionResult ClienteBloqueado(int clienteId)
         {
@@ -484,10 +479,88 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public JsonResult ObtenerNombrePc(DatosUsuario datosUsuario)
         {
-           
             var nombrePc = System.Security.Claims.ClaimsPrincipal.
                 Current.FindFirst(x => x.Type == "UserComputerName")?.Value;
             return Json(nombrePc, JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public JsonResult ObtenerCPEAutomotorDG(DatosUsuario datosUsuario, long numeroCTG)
+        {
+                var result = servicioComandos.Ejecutar(new ConsultarCPEAutomotorDG
+                {
+                    CentroId = datosUsuario.CentroId,
+                    Usuario = datosUsuario.NombreUsuario,
+                    NumeroCTG = numeroCTG
+                });
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public JsonResult ObtenerPlantasDGPorClienteId(DatosUsuario datosUsuario, int clienteId, string clienteCuit = null)
+        {
+            var result = new Resultado();
+            var cuit = "0";
+            if(!string.IsNullOrEmpty(clienteCuit))
+            {
+                cuit = clienteCuit;
+            } else
+            {
+                var cliente = servicio.ObtenerCliente(clienteId);
+                if(cliente == null)
+                {
+                    result.Errores.Add("2", "No existe el cliente ingresado.");
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                cuit = cliente.Cuit.Replace("-", string.Empty);
+            }
+            result = servicioComandos.Ejecutar(new ConsultarPlantasDG
+            {
+                CentroId = datosUsuario.CentroId,
+                Cuit = long.Parse(cuit)
+            });
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public JsonResult ObtenerDomiciliosDG(DatosUsuario datosUsuario, int clienteId, string clienteCuit = null)
+        {
+            var result = new Resultado();
+            var cuit = "0";
+            if (!string.IsNullOrEmpty(clienteCuit))
+            {
+                cuit = clienteCuit;
+            } else
+            {
+                var cliente = servicio.ObtenerCliente(clienteId);
+                if (cliente == null)
+                {
+                    result.Errores.Add("2", "No existe el cliente ingresado.");
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+                cuit = cliente.Cuit.Replace("-", string.Empty);
+            }
+            result = servicioComandos.Ejecutar(new ConsultarDomiciliosDG
+            {
+                CentroId = datosUsuario.CentroId,
+                Cuit = long.Parse(cuit)
+            });
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public ActionResult ObtenerMaterial(short codigoPadre, short codigoDerivadoGranario)
+        {
+            var material = servicio.ObtenerMaterialDerivadoGranario(codigoPadre, codigoDerivadoGranario);
+            return material != null ? Json(new { label = material.Descripcion, material.Id, material.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public ActionResult ObtenerProcedenciaDG(int plantaDG)
+        {
+            var domicilio = servicio.ObtenerDomicilioDG(plantaDG);
+            return domicilio != null ? Json(new { label = domicilio.Descripcion, domicilio.Id, domicilio.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -58,6 +58,13 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenDeDescargaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+            Validar(orden);
+
+            if (!ModelState.IsValid)
+            {
+                SetearVista(workflowObj, datosUsuario.CentroId);
+                return View(orden);
+            }
 
             if (datosUsuario.CentroId == 0)
             {
@@ -77,12 +84,14 @@ namespace Molinos.Scato.Web.Controllers
             var ordenDeDescarga = servicio.ObtenerOrdenDeDescargaFasonPorNumeroDeOrdenYCliente(orden.Numero, orden.ClienteId);
             if (ordenDeDescarga != null)
             {
-                ModelState.AddModelError("NumeroRemito", Textos.OrdenDeDescarga_Existente);
+                ModelState.AddModelError("Numero", Textos.OrdenDeDescarga_Existente);
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
             }
 
             var ordenDeDescargaPorRemito = servicio.ObtenerOrdenDeDescargaFasonPorNumeroRemito(orden.NumeroRemito);
+
+            //if (ordenDeDescargaPorRemito != null && orden.NumeroRemito != Constantes.ValoresPorDefecto.NumeroRemitoGenerico)
             if (ordenDeDescargaPorRemito != null)
             {
                 ModelState.AddModelError("NumeroRemito", Textos.IngresarRemito_Existente);
@@ -96,6 +105,32 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
+            }
+
+            var consultaCPEAutomotor = servicioComandos.Ejecutar(new ConsultarCPEAutomotorDG
+            {
+                CentroId = datosUsuario.CentroId,
+                Usuario = datosUsuario.NombreUsuario,
+                NumeroCTG = Convert.ToInt64(orden.NumeroCTG)
+            });
+
+            var codigoSAP = servicio.ObtenerCentroCodigoSap(datosUsuario.CentroId);
+            var camara = servicio.ListarVideoCamarasPuesto(datosUsuario.PuestoDeTrabajoId).FirstOrDefault();
+            ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
+
+            if (consultaCPEAutomotor != null)
+            {
+                servicioComandos.Ejecutar(new GuardarImagenDescarga
+                {
+                    Pdf = consulta.Pdf,
+                    TipoImagen = TipoImagen.CPEDG,
+                    CodigoCentroSap = codigoSAP,
+                    NroCartaPorte = orden.Numero,
+                    Patente = orden.PatenteCamion,
+                    Etapa = string.Empty,
+                    TipoVehiculo = orden.TipoVehiculo,
+                    RutaFotoCP = camara == null ? string.Empty : camara.Directorio
+                });
             }
 
             if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
@@ -119,31 +154,45 @@ namespace Molinos.Scato.Web.Controllers
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
             }
-                orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
+            orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
 
-                orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
-                orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
+            orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
+            orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
 
-                int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-                var servicioWf = factory.CrearServicio(workflowDefinicionId);
+            int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            var servicioWf = factory.CrearServicio(workflowDefinicionId);
 
-                var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActCargarOrdenDeDescargaFason,
-                        ActividadXaml = "CargarOrdenDeDescargaFason",
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                Actividad = Textos.ActCargarOrdenDeDescargaFason,
+                ActividadXaml = "CargarOrdenDeDescargaFason",
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario
+            };
 
-                var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
-                if (resultadoActividad.HayErrores)
-                {
-                    ModelState.AgregarErrores(resultadoActividad);
-                    SetearVista(workflowObj, datosUsuario.CentroId);
-                    return View(orden);
-                }
+            var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+            if (resultadoActividad.HayErrores)
+            {
+                ModelState.AgregarErrores(resultadoActividad);
+                SetearVista(workflowObj, datosUsuario.CentroId);
+                return View(orden);
+            }
 
-                return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+            return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+        }
+
+        private void Validar(OrdenDeDescargaFasonDto orden)
+        {
+            var material = servicio.ObtenerMaterial(orden.MaterialId);
+
+            if (!material.EsDerivadoGranario && orden.ProcedenciaId == 0)
+            {
+                ModelState.AddModelError("Procedencia", string.Format(Textos.Error_Requerido, Textos.Procedencia));
+            }
+            if (material.EsDerivadoGranario && orden.DomicilioId == 0)
+            {
+                ModelState.AddModelError("Procedencia", string.Format(Textos.Error_Requerido, Textos.Procedencia));
+            }
         }
 
         private void SetearVista(WorkflowDto workflow, int centroId)
@@ -166,6 +215,7 @@ namespace Molinos.Scato.Web.Controllers
             controller.ViewBag.CentroId = centroId;
             controller.ViewBag.WorkflowId = workflow.Id;
 
+            controller.ViewBag.TipoMateriales = JsonConvert.SerializeObject(materiales.Select(s => new { Id = s.MaterialId.ToString(), EsDerivadoGranario = s.EsDerivadoGranario }));
         }
     }
 }

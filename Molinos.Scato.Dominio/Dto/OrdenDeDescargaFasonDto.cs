@@ -34,7 +34,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string ClienteCuit { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Procedencia")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Procedencia { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_EsExtranjero")]
         public Boolean EsExtranjero { get; set; }
@@ -96,6 +95,23 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
+
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
+        public string NumeroCTG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
+        public string NumeroCPE { get; set; }
+
+        public string Sucursal { get; set; }
+        public string NroOrden { get; set; }
+        public int? DomicilioId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Procedencia")]
+        public string Domicilio { get; set; }
+
+
+
         public int TipoVehiculoInt
         {
             get { return (int)TipoVehiculo; }

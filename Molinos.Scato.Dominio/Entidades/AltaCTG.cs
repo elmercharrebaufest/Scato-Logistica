@@ -11,5 +11,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual CartaPorte CartaPorte { get; set; }
         public virtual string CodigoCTG { get; set; }
         public virtual Guid WorkflowId { get; set; }
+        public virtual CartaPorteDerivadoGranario CartaPorteDerivadoGranario { get; set; }
     }
 }

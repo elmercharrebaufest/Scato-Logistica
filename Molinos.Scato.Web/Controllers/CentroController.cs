@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
@@ -32,6 +33,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             CargarCamaras();
             CargarProvincias(null);
+            CargarDomicilios();
             return View();
         }
 
@@ -51,6 +53,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             CargarCamaras();
             CargarProvincias(null);
+            CargarDomicilios();
             return View(model);
         }
 
@@ -88,6 +91,7 @@ namespace Molinos.Scato.Web.Controllers
             var centroAModificar = servicio.ObtenerCentro(id);
             CargarCamaras();
             CargarProvincias(centroAModificar);
+            CargarDomicilios(centroAModificar);
             return View(centroAModificar);
         }
 
@@ -101,6 +105,7 @@ namespace Molinos.Scato.Web.Controllers
                 var resultado = servicioComandos.Ejecutar(new ModificarCentro { Dto = centro, Usuario = datosUsuario.NombreUsuario });
                 CargarCamaras();
                 CargarProvincias(centro);
+                CargarDomicilios(centro);
                 if (!resultado.HayErrores)
                 {
                     return new AjaxEditSuccessResult();
@@ -108,26 +113,6 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AgregarErrores(resultado);
             }
             return View("Modificar", centro);
-        }
-
-        private void CargarCamaras()
-        {
-            ViewBag.Camaras = servicio.ListarCamaras().OrderBy(c => c.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
-        }
-
-        private void CargarProvincias(CentroDto model)
-        {
-            var provincias = servicio.ListarProvincias().OrderBy(p => p.Descripcion);
-
-            int provinciaId = 0;
-            if (model != null && model.ProvinciaId != null)
-            {
-                provinciaId = model.ProvinciaId.Value;
-            }
-
-            ViewBag.Provincias = provincias.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
-            ViewBag.Localidades = servicio.ListarLocalidadesPorProvincia(provinciaId)
-                            .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
         }
 
         [ActionName("CargarLocalidades")]
@@ -168,6 +153,31 @@ namespace Molinos.Scato.Web.Controllers
                 datosUsuario.BalanzaId = balanzaId;
             }
             return RedirectToAction("Index", "ListaDeCamiones");
+        }
+
+        private void CargarCamaras()
+        {
+            ViewBag.Camaras = servicio.ListarCamaras().OrderBy(c => c.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+        }
+
+        private void CargarProvincias(CentroDto model)
+        {
+            var provincias = servicio.ListarProvincias().OrderBy(p => p.Descripcion);
+
+            int provinciaId = 0;
+            if (model != null && model.ProvinciaId != null)
+            {
+                provinciaId = model.ProvinciaId.Value;
+            }
+
+            ViewBag.Provincias = provincias.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+            ViewBag.Localidades = servicio.ListarLocalidadesPorProvincia(provinciaId)
+                            .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+        }
+
+        private void CargarDomicilios(CentroDto centro = null)
+        {
+            ViewBag.Domicilios = servicio.ListarDomicilios().ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
         }
     }
 }

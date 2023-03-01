@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Molinos.Scato.Dominio;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -74,7 +76,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult Imprimir(DatosUsuario datosUsuario, int id, int impresora, int cantCopias, string ctg = null)
+        public ActionResult Imprimir(DatosUsuario datosUsuario, int id, int impresora, int cantCopias, string ctg = null, string ctgdg = null)
         {
             try
             {
@@ -98,6 +100,36 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         return Content(cartaPorte.Errores.Values.FirstOrDefault());
                     }
+                } else if (id == default(int) && !string.IsNullOrEmpty(ctgdg))
+                {
+                    var impresoraModel = servicio.ObtenerImpresora(impresora);
+                    var cartaPorteDerivadoGranario = servicio.ObtenerCartaPorteDerivadoGranarioPorCTG(ctgdg);
+                    if (cartaPorteDerivadoGranario != null && !string.IsNullOrEmpty(cartaPorteDerivadoGranario.RutaFotoCPEDG) && System.IO.File.Exists(cartaPorteDerivadoGranario.RutaFotoCPEDG))
+                    {
+                        byte[] pdf = null;
+                        var document = new Document();
+                        using (var stream = new MemoryStream())
+                        {
+                            PdfWriter.GetInstance(document, stream);
+                            document.Open();
+                            Image image = Image.GetInstance(cartaPorteDerivadoGranario.RutaFotoCPEDG);
+                            image.ScaleAbsolute(document.PageSize.Width, document.PageSize.Height);
+                            image.SetAbsolutePosition(0, 0);
+                            document.Add(image);
+                            document.Close();
+                            pdf = stream.ToArray();
+                        }
+                        var resultado =
+                        servicioComandos.Ejecutar(new ImprimirFileGenerico
+                        {
+                            CantidadCopias = cantCopias,
+                            File = pdf,
+                            Impresora = impresoraModel?.Direccion,
+                            CodigoDocumentoImpresion = Enum.GetName(typeof(TipoImpresion), TipoImpresion.CartaDePorteElectronica)
+                        });
+                        return Content("true");
+                    }
+                    return Content("No existe la Carta de Porte Derivado Granario");
                 }
                 else
                 {
@@ -119,7 +151,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult Previsualizar(DatosUsuario datosUsuario, int id, string ctg = null)
+        public ActionResult Previsualizar(DatosUsuario datosUsuario, int id, string ctg = null, string ctgdg = null)
         {
             try
             {
@@ -136,7 +168,35 @@ namespace Molinos.Scato.Web.Controllers
                         return File(cartaPorte.Pdf, "application/octet-stream", $"{ctg}.pdf");
 
                     return Content(cartaPorte.Errores.Values.FirstOrDefault());
-                } else
+                } else if (id == default(int) && !string.IsNullOrEmpty(ctgdg))
+                {
+                    var cartaPorteDerivadoGranario = servicio.ObtenerCartaPorteDerivadoGranarioPorCTG(ctgdg);
+
+                    if (System.Web.HttpContext.Current != null)
+                    {
+                        System.Web.HttpContext.Current.Response.SetCookie(new HttpCookie("RetornoExportacion", "ok"));
+                    }
+
+                    if (cartaPorteDerivadoGranario != null && !string.IsNullOrEmpty(cartaPorteDerivadoGranario.RutaFotoCPEDG) && System.IO.File.Exists(cartaPorteDerivadoGranario.RutaFotoCPEDG))
+                    {
+                        byte[] pdf = null;
+                        var document = new Document();
+                        using (var stream = new MemoryStream())
+                        {
+                            PdfWriter.GetInstance(document, stream);
+                            document.Open();
+                            Image image = Image.GetInstance(cartaPorteDerivadoGranario.RutaFotoCPEDG);
+                            image.ScaleAbsolute(document.PageSize.Width, document.PageSize.Height);
+                            image.SetAbsolutePosition(0, 0);
+                            document.Add(image);
+                            document.Close();
+                            pdf = stream.ToArray();
+                        }
+                        return File(pdf, "application/octet-stream", $"{ctgdg}.pdf");
+                    }
+                    return Content("No existe la Carta de Porte Derivado Granario");
+                } 
+                else
                 {
                     var resultado =
                     servicioComandos.Ejecutar(new ImprimirDocumento
@@ -164,11 +224,11 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        public ActionResult Eliminar(int id, string ctg = null)
+        public ActionResult Eliminar(int id, string ctg = null, string ctgdg = null)
         {
             try
             {
-                if(id == default(int) && !string.IsNullOrEmpty(ctg))
+                if(id == default(int) && (!string.IsNullOrEmpty(ctg) || !string.IsNullOrEmpty(ctgdg)))
                 {
                     return Content(Textos.Reimpresion_Documentos_CPE_Eliminar);
                 } else

@@ -11,6 +11,7 @@
 <script src="@Url.Script("~/Scripts/area/enEsperaHB4/index.js")" type="text/javascript"></script>
 
 <link href="~/Styles/area/enEsperaHB4/index.css" rel="stylesheet" />
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 
 @Html.Hidden("ConfirmarPendienteHB4Url", Url.Action("Index"))
 @Html.Hidden("Redirect", Url.Action("Index", "ListaDeCamiones"))
@@ -46,21 +47,21 @@
     {
         <div>No tienes permiso para avanzar el camión</div>
     }
-<div>
-    @if (PermisosHelper.Is(PermisosScato.EnEsperaHB4))
-    {
-        <button class="btn btn-primary" onclick="modalConfirmarPendienteHB4.showModal()">@Textos.Aceptar</button>
-    }
-    @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
-</div>
+    <div>
+        @if (PermisosHelper.Is(PermisosScato.EnEsperaHB4))
+        {
+            <button class="btn btn-primary" onclick="modalConfirmarPendienteHB4.showModal()">@Textos.Aceptar</button>
+        }
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    </div>
 </div>
 
-<dialog id="modalConfirmarPendienteHB4" class="dialogPendienteHB4">
-    <h4 class="dialogPendienteHB4__titulo">@Textos.Confirmacion</h4>
-    <p class="dialogPendienteHB4__descripcion">
+<dialog id="modalConfirmarPendienteHB4" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
+    <p class="dialogModal__descripcion">
         ¿Está seguro que desea Aceptar este Análisis de Calidad ?
     </p>
-    <div class="dialogPendienteHB4__botones">
+    <div class="dialogModal__botones">
         <button id="btnConfirmarpendienteHB4" class="btn btn-warning">Confirmar</button>
         <button class="btn" onclick="modalConfirmarPendienteHB4.close()">Cerrar</button>
     </div>

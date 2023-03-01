@@ -12,5 +12,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string CodigoDeBaja { get; set; }
         public virtual string CodigoDeBajaDefinitivo { get; set; }
         public virtual Guid WorkflowId { get; set; }
+        public virtual OrdenDeDescargaFason OrdenDeDescargaFason { get; set; }
     }
 }

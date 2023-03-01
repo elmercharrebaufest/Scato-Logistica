@@ -13,6 +13,14 @@
     [KmRecorrer]          NVARCHAR (10) NULL,
     [LocalidadDestino_Id] INT           NULL,
     [EsExtranjero]        BIT           NULL,
+    [DerivadoGranarioHabilitado] BIT DEFAULT ((0)) NOT NULL,
+    [PlantaDGDestino] INT NULL, 
+    [OrdenDomicilioDestino] INT NULL, 
+    [PagadorFlete_Id] INT NULL,
+    [Corredor_Id] INT NULL, 
+    [Comisionista_Id] INT NULL, 
+    [Remitente_Id] INT NULL, 
+    [CuitDestinatario] VARCHAR(11) NULL, 
     CONSTRAINT [PK_dbo.OrdenCargaFas] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Chofer_Chofer_Id] FOREIGN KEY ([Chofer_Id]) REFERENCES [dbo].[Chofer] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Cliente_Id] FOREIGN KEY ([Cliente_Id]) REFERENCES [dbo].[Cliente] ([Id]),
@@ -20,7 +28,12 @@
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE,
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.TipoComercial_TipoComercial_Id] FOREIGN KEY ([TipoComercial_Id]) REFERENCES [dbo].[TipoComercial] ([Id]),
-    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Transportista_Transportista_Id] FOREIGN KEY ([Transportista_Id]) REFERENCES [dbo].[Transportista] ([Id])
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Transportista_Transportista_Id] FOREIGN KEY ([Transportista_Id]) REFERENCES [dbo].[Transportista] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_PagadorFlete_Id] FOREIGN KEY ([PagadorFlete_Id]) REFERENCES [dbo].[Cliente] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Proveedor_Corredor_Id] FOREIGN KEY ([Corredor_Id]) REFERENCES [dbo].[Proveedor] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Comisionista_Id] FOREIGN KEY ([Comisionista_Id]) REFERENCES [dbo].[Cliente] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Remitente_Id] FOREIGN KEY ([Remitente_Id]) REFERENCES [dbo].[Cliente] ([Id])
+
 );
 
 

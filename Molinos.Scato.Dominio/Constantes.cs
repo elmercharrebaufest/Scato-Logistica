@@ -5,6 +5,8 @@
         public struct ValoresPorDefecto
         {
             public const string CupoGenerico = "MOL1111/11111111";
+            public const long CuitMOA = 30715118773;
+            public const string NumeroRemitoGenerico = "1111-11111111";
         }
 
         public struct IntercomunicadorDireccion
@@ -132,6 +134,54 @@
         public struct Proveedores
         {
             public const string CuitMolinos = "30-71511877-3";
+        }
+        public struct TipoCP
+        {
+            public const int CPCamion = 284;
+            public const int CPTren = 286;
+        }
+
+        public struct ControlRecorrido
+        {
+            public struct Actividades
+            {
+                public const string ActividadDG = "Request Alta de CPE DG";
+                public const string Actividad = "Request Alta de CPE";
+            }
+            public struct Mensajes
+            {
+                public const string Mensaje = "Automatico";
+                public const string RequestAltaDG = "Request Alta de CPEDG";
+                public const string ResponseAltaDG = "Response Alta de CPEDG";
+                public const string RequestAnularCPE = "Request Anular CPE";
+                public const string ResponseAnularCPE = "Response Anular CPE";
+
+            }
+        }
+
+        public struct DatosDummy
+        {
+            public const string DestinoPlanta = "3191";
+            public const string DestinoDomicilioTipo = "1";
+            public const string DestinoDomicilioOrden = "1";
+        }
+
+        public struct DerivadoGranario
+        {
+            public const int TipoDomicilioFiscal = 1;
+            public const int TipoDomicilioPlanta = 3;
+        }
+
+        public struct SAP
+        {
+            public const string TipoReventaComisionista = "C";
+            public const string TipoReventaRemitente = "R";
+        }
+    
+        public struct MaterialPagoRealizado
+        {
+            public const string BiodiselAgranel = "99319";
+            public const string AceiteGirasolCrudoSAP = "94687";
         }
     }
 }
