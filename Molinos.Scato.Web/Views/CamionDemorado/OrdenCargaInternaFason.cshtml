@@ -16,8 +16,8 @@
         $('#MaterialId').attr("readonly", "readonly");
         $("#FechaEmision").datepicker("destroy");
         $("#Id").val('@Model.Id');
-        @* let dropwdowns = document.querySelectorAll('select');
-        dropwdowns.forEach(x => x.addEventListener('mousedown', e => e.preventDefault())); *@
+        let materialDropdown = document.getElementsById('MaterialId');
+        materialDropdown.addEventListener('mousedown', e => e.preventDefault());
     })
 </script>
 @section scripts

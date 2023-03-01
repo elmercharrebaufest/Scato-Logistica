@@ -14,6 +14,8 @@
             $(".btnValidacionCTG").removeAttr("disabled");
         }
         $("#Id").val('@Model.Id');
+        let materialDropdown = document.getElementsById('MaterialId');
+        materialDropdown.addEventListener('mousedown', e => e.preventDefault());
     })
 </script>
 
