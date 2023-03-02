@@ -2,6 +2,7 @@
 jQuery(document).ready(function () {
     $("#controlComisionista").hide();
     $("#controlRemitente").hide();
+    $("#controlCuitDestinatario").hide();
 
     $(".patente-internacional").mask("?*******", { placeholder: "" });
     if (!$("#EsModificacion")) {
@@ -323,9 +324,11 @@ function LlenarDatos(datos) {
         if ($("#ComisionistaId").val() != '') {
             $("#controlCliente").hide();
             $("#controlComisionista").show();
+            $("#controlCuitDestinatario").show();
         } else if ($("#RemitenteId").val() != '') {
             $("#controlCliente").hide();
             $("#controlRemitente").show();
+            $("#controlCuitDestinatario").show();
         } else {
             $("#controlCliente").show();
         }

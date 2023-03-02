@@ -125,6 +125,9 @@ namespace Molinos.Scato.Web.Controllers
                     KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
                     ChoferCuit = orden.Chofer.Cuil,
                     PagadorFleteId = orden.PagadorFleteId ?? 0,
+                    CorredorId = orden.CorredorId,
+                    RemitenteId = orden.RemitenteId,
+                    ComisionistaId = orden.ComisionistaId,
 
                 }) as ResultadoCartaPorteElectronicaDummy;
 
@@ -234,6 +237,11 @@ namespace Molinos.Scato.Web.Controllers
             if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
+            }
+
+            if(material.EsDerivadoGranario && orden.ClienteId <= 0)
+            {
+                ModelState.AddModelError("Cliente", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
         }
     }

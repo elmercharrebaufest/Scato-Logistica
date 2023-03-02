@@ -71,6 +71,55 @@
         );
     }
 
+    if ($('#Corredor').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#Corredor',
+            '#CorredorId',
+            '#autocompleteCorredor',
+            $('#links').data().urlBuscarProveedores,
+            $('#links').data().urlBuscarProveedor,
+            $('#links').data().urlObtenerProveedoresSap,
+            null,
+            null,
+            false,
+            true,
+            false
+        );
+    }
+
+    
+
+
+    if ($('#Comisionista').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#Comisionista',
+            '#ComisionistaId',
+            '#autocompleteComisionista',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+            },
+            function () {
+            }
+        );
+    }
+
+    if ($('#Remitente').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#Remitente',
+            '#RemitenteId',
+            '#autocompleteRemitente',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+            },
+            function () {
+            }
+        );
+    }
+
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;
@@ -452,12 +501,13 @@ function ValidarDerivadoGranario() {
     if (materialesDerivadoGranario.includes(parseInt(materialId))) {
         $('#DerivadoGranarioHabilitado').val('true')
         $('.derivadoGranario').removeClass('hidden');
+        $("label[for='Cliente']").text('Destino');
         CargarPlantas();
         CargarDomicilios();
-        
     } else {
         $('#DerivadoGranarioHabilitado').val('false')
         $('.derivadoGranario').addClass('hidden');
+        $("label[for='Cliente']").text('Cliente');
         $('#PlantaDGDestino').val('');
         $('#OrdenDomicilioDestino').val('');
         $('#PagadorFlete').val('');

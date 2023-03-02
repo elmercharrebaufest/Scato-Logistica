@@ -105,6 +105,8 @@ namespace Molinos.Scato.Dominio.Dto
         public int? ComisionistaId { get; set; }
         public string Remitente { get; set; }
         public int? RemitenteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Destinatario_Cuit")]
         public string CuitDestinatario { get; set; }
     }
 }

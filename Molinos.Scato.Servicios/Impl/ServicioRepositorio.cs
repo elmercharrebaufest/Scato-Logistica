@@ -3322,8 +3322,11 @@ namespace Molinos.Scato.Servicios.Impl
             if (
                 repositorio.Existe<Recorrido>(
                     x =>
-                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == numero &&
-                    x.Workflow.TipoDeWorkflow == workflow.TipoDeWorkflow && (!x.Rechazado || !x.Terminado)))
+                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte &&
+                    x.NumeroDocumentoIngreso == numero &&
+                    x.Workflow.TipoDeWorkflow == workflow.TipoDeWorkflow &&
+                    x.Centro.Id == centroId &&
+                    !(x.Rechazado && x.Terminado)))
             {
                 log.Debug("La carta de porte {0} ya fue ingresada ", numero);
                 response.Error = String.Format(Textos.CartaPorte_Ingresada, numero);
@@ -3335,8 +3338,11 @@ namespace Molinos.Scato.Servicios.Impl
             if (
                 repositorio.Existe<Recorrido>(
                     x =>
-                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && x.NumeroDocumentoIngreso == numero &&
-                    x.Centro.Id == centroId && x.Workflow.TipoDeWorkflow != workflow.TipoDeWorkflow && !x.Rechazado))
+                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && 
+                    x.NumeroDocumentoIngreso == numero &&
+                    x.Centro.Id == centroId && 
+                    x.Workflow.TipoDeWorkflow != workflow.TipoDeWorkflow && 
+                    !x.Rechazado))
             {
                 if (workflow.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
                 {

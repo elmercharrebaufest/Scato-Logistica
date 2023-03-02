@@ -54,7 +54,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
                         PlantaDGDestino = comando.Orden.PlantaDGDestino,
                         OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
-                        PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId)
+                        PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
+                        Corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId),
+                        Comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId),
+                        Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId)
                     };
 
                     Repositorio.Agregar(ordenCargaInternaFason);

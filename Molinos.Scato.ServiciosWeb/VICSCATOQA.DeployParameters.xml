@@ -14,8 +14,8 @@
   <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
   <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 
-  <setParameter name="SapServiceUsername Config" value="FUNCIG" />
-  <setParameter name="SapServicePassword Config" value="RQsncbUlOC0T9iEPjcvyPg==" />
+  <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
+  <setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
   <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
 
   <setParameter name="CertificadoWsCtg Config" value="Certificados\alias.p12" />
