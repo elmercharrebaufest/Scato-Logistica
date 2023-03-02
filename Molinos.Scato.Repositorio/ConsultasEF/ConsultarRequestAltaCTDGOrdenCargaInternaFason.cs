@@ -21,8 +21,11 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
             var orden = contexto.Set<OrdenCargaInternaFason>()
-                                .Include(x => x.PagadorFlete)
                                 .Include(x => x.Cliente)
+                                .Include(x => x.PagadorFlete)
+                                .Include(x => x.Corredor)
+                                .Include(x => x.Comisionista)
+                                .Include(x => x.Remitente)
                                 .Where(x => x.Recorrido.InstanciaWorkflow == workflowInstance)
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
@@ -35,6 +38,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
                 KmRecorrer = !string.IsNullOrWhiteSpace(orden.KmRecorrer) ? int.Parse(orden.KmRecorrer) : 0,
                 PagadorFleteCuit = !string.IsNullOrEmpty(orden?.PagadorFlete?.Cuit) ? long.Parse(orden?.PagadorFlete?.Cuit?.Replace("-", string.Empty)) : 0,
+                CuitCorredor = !string.IsNullOrEmpty(orden?.Corredor?.Cuil) ? long.Parse(orden?.Corredor?.Cuil?.Replace("-", string.Empty)) : 0,
+                CuitComisionista = !string.IsNullOrEmpty(orden?.Comisionista?.Cuit) ? long.Parse(orden?.Comisionista?.Cuit?.Replace("-", string.Empty)) : 0,
+                CuitRemitente = !string.IsNullOrEmpty(orden?.Remitente?.Cuit) ? long.Parse(orden?.Remitente?.Cuit?.Replace("-", string.Empty)) : 0,
             };
             return request;
         }

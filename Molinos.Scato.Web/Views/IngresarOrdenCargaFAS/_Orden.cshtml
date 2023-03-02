@@ -35,7 +35,6 @@
 @Html.HiddenFor(model => model.VehiculoDemorado)
 @Html.HiddenFor(model => model.CuitTransporte)
 @Html.HiddenFor(model => model.ValidaCompliance)
-@Html.HiddenFor(model => model.CuitDestinatario)
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("WorkflowId", instanceId)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
@@ -110,6 +109,13 @@
                     @Html.TextBoxFor(model => model.Remitente, new { @class = "control", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.Remitente)
                     @Html.HiddenFor(model => model.RemitenteId)
+                </div>
+            </div>
+            <div id="controlCuitDestinatario" class="control">
+                @Html.LabelFor(model => model.CuitDestinatario, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.CuitDestinatario, new { @class = "control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.CuitDestinatario)
                 </div>
             </div>
             <div class="control">

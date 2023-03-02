@@ -103,5 +103,13 @@ namespace Molinos.Scato.Dominio.Dto
         public string MotivoDemora { get; set; }
         public bool Rechazado { get; set; }
         public string MotivoRechazo { get; set; }
+        public string Corredor { get; set; }
+        public int? CorredorId { get; set; }
+        public string Comisionista { get; set; }
+        public int? ComisionistaId { get; set; }
+        public string ComisionistaCodigoSap { get; set; }
+        public string Remitente { get; set; }
+        public int? RemitenteId { get; set; }
+        public string RemitenteCodigoSap { get; set; }
     }
 }

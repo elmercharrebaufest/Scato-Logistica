@@ -10162,4 +10162,7 @@
   <data name="OrdenCarga_ErrorValidacion" xml:space="preserve">
     <value>Existen validaciones dentro del formulario, favor de revisar</value>
   </data>
+  <data name="Destinatario_Cuit" xml:space="preserve">
+    <value>Cuit Destino</value>
+  </data>
 </root>

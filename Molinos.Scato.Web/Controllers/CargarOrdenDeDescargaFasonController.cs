@@ -1,5 +1,10 @@
-﻿using Molinos.Scato.Actividades.Interfaces;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
+using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -11,10 +16,6 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -118,7 +119,7 @@ namespace Molinos.Scato.Web.Controllers
             var camara = servicio.ListarVideoCamarasPuesto(datosUsuario.PuestoDeTrabajoId).FirstOrDefault();
             ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
 
-            if (consultaCPEAutomotor != null)
+            if(consultaCPEAutomotor != null )
             {
                 servicioComandos.Ejecutar(new GuardarImagenDescarga
                 {
@@ -128,11 +129,12 @@ namespace Molinos.Scato.Web.Controllers
                     NroCartaPorte = orden.Numero,
                     Patente = orden.PatenteCamion,
                     Etapa = string.Empty,
-                    TipoVehiculo = orden.TipoVehiculo,
+                    TipoVehiculo = orden.TipoVehiculo ,
                     RutaFotoCP = camara == null ? string.Empty : camara.Directorio
+
                 });
             }
-
+ 
             if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
             {
                 TempData["Alerta"] = Textos.OrdenCargaInterna_PatenteEnOtroWorkflow;
@@ -154,31 +156,33 @@ namespace Molinos.Scato.Web.Controllers
                 SetearVista(workflowObj, datosUsuario.CentroId);
                 return View(orden);
             }
-            orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
+                orden.TipoDeWorkflow = workflowObj.TipoDeWorkflow;
 
-            orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
-            orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
+                orden.PatenteCamion = orden.PatenteCamion != null ? orden.PatenteCamion.ToUpper() : "";
+                orden.PatenteAcoplado = orden.PatenteAcoplado != null ? orden.PatenteAcoplado.ToUpper() : "";
 
-            int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-            var servicioWf = factory.CrearServicio(workflowDefinicionId);
+                int workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+                var servicioWf = factory.CrearServicio(workflowDefinicionId);
 
-            var controlRecorrido = new ControlRecorridoDto
-            {
-                Actividad = Textos.ActCargarOrdenDeDescargaFason,
-                ActividadXaml = "CargarOrdenDeDescargaFason",
-                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                NombreUsuario = datosUsuario.NombreUsuario
-            };
+                var controlRecorrido = new ControlRecorridoDto
+                    {
+                        Actividad = Textos.ActCargarOrdenDeDescargaFason,
+                        ActividadXaml = "CargarOrdenDeDescargaFason",
+                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                        NombreUsuario = datosUsuario.NombreUsuario
+                    };
 
-            var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
-            if (resultadoActividad.HayErrores)
-            {
-                ModelState.AgregarErrores(resultadoActividad);
-                SetearVista(workflowObj, datosUsuario.CentroId);
-                return View(orden);
-            }
+                var resultadoActividad = servicioWf.CargarOrdenDeDescargaFason(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+                if (resultadoActividad.HayErrores)
+                {
+                    ModelState.AgregarErrores(resultadoActividad);
+                    SetearVista(workflowObj, datosUsuario.CentroId);
+                    return View(orden);
+                }
 
-            return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+               
+
+                return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
         }
 
         private void Validar(OrdenDeDescargaFasonDto orden)
@@ -207,15 +211,17 @@ namespace Molinos.Scato.Web.Controllers
 
             controller.ViewBag.TiposComerciales = tiposComerciales.ToSelectList(f => f.Id.Value.ToString(CultureInfo.InvariantCulture), f => f.Descripcion);
             controller.ViewBag.TiposComercialesTransportista = tiposComerciales.Where(x => !x.TransportistaEsProveedor).Select(y => y.Id.ToString()).ToList();
-            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
+            controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString() , f => f.MaterialDesc);
             controller.ViewBag.TiposDocumentos = servicio.ListarTiposDocumentoIdentidad().ToSelectList(f => f.Id.ToString(), f => f.DescripcionCorta);
             controller.ViewBag.Workflow = workflow.Codigo;
             controller.ViewBag.WorkflowId = workflow.Id;
             controller.ViewBag.EsIngreso = workflow.TipoDeWorkflow == TipoDeWorkflow.Ingreso;
             controller.ViewBag.CentroId = centroId;
             controller.ViewBag.WorkflowId = workflow.Id;
-
+            
+            
             controller.ViewBag.TipoMateriales = JsonConvert.SerializeObject(materiales.Select(s => new { Id = s.MaterialId.ToString(), EsDerivadoGranario = s.EsDerivadoGranario }));
+
         }
     }
 }
