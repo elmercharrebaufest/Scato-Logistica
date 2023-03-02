@@ -111,5 +111,10 @@ namespace Molinos.Scato.Dominio.Dto
         public string Remitente { get; set; }
         public int? RemitenteId { get; set; }
         public string RemitenteCodigoSap { get; set; }
+
+        public int IntermediarioFleteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
+        public string IntermediarioFlete { get; set; }
     }
 }

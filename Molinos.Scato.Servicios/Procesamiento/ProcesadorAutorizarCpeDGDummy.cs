@@ -123,7 +123,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var material = Repositorio.Obtener<Material>(x => x.Id == comando.MaterialId);
                 var pesoMax = Repositorio.Obtener<PesoMaximoPorTipoVehiculo>(x => x.Activo == true && x.TipoVehiculo == comando.TipoVehiculo && x.Centro.Id == comando.CentroId);
                 var transportista = Repositorio.Obtener<Transportista>(x => x.Id == comando.TransportistaId);
-                
+                var intermediarioFlete = Repositorio.Obtener<Proveedor>(x => x.Id == comando.IntermediarioFleteId);
+
+
                 var pagadorFlete = Repositorio.Obtener<Cliente>(x => x.Id == comando.PagadorFleteId);
 
                 var autorizarCpeRequest = new autorizarCPEAutomotorDGRequest
@@ -175,6 +177,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = comando.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(comando.ChoferCuit) ? long.Parse(comando.ChoferCuit.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = !string.IsNullOrEmpty(pagadorFlete.Cuit) ? long.Parse(pagadorFlete.Cuit.Replace("-", string.Empty)) : 0,
+                            cuitIntermediarioFlete = !string.IsNullOrEmpty(intermediarioFlete.Cuil) ? long.Parse(transportista.Cuit.Replace("-", string.Empty)) : 0,
                         },
                         intervinientes = new IntervinientesAutomotorDGSolicitud()
                     }
