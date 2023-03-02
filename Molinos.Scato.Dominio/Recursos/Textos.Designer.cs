@@ -11974,6 +11974,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cuit Destino.
+        /// </summary>
+        public static string Destinatario_Cuit {
+            get {
+                return ResourceManager.GetString("Destinatario_Cuit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destino.
         /// </summary>
         public static string Destino {
