@@ -170,7 +170,8 @@ namespace Molinos.Scato.Web.Controllers
             var materialPagoRealizado = new List<string>
             {
                 Constantes.MaterialPagoRealizado.BiodiselAgranel, 
-                Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP
+                Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
+                Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP
             };
 
             var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { valoresDeEntrada.NumeroDeTarjeta });
