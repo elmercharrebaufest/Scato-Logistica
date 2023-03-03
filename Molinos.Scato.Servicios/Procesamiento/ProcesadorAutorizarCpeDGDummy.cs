@@ -123,8 +123,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var material = Repositorio.Obtener<Material>(x => x.Id == comando.MaterialId);
                 var pesoMax = Repositorio.Obtener<PesoMaximoPorTipoVehiculo>(x => x.Activo == true && x.TipoVehiculo == comando.TipoVehiculo && x.Centro.Id == comando.CentroId);
                 var transportista = Repositorio.Obtener<Transportista>(x => x.Id == comando.TransportistaId);
-                var intermediarioFlete = Repositorio.Obtener<Proveedor>(x => x.Id == comando.IntermediarioFleteId);
-
 
                 var pagadorFlete = Repositorio.Obtener<Cliente>(x => x.Id == comando.PagadorFleteId);
 
@@ -211,6 +209,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var proveedor = Repositorio.Obtener<Proveedor>(x => x.Id == comando.CorredorId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitCorredor = !string.IsNullOrEmpty(proveedor.Cuil) ? long.Parse(proveedor.Cuil.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitCorredorSpecified = true;
+                }
+
+                if (comando.IntermediarioFleteId.HasValue && Repositorio.Existe<Proveedor>(x => x.Id == comando.IntermediarioFleteId))
+                {
+                    var intermediarioFlete = Repositorio.Obtener<Proveedor>(x => x.Id == comando.IntermediarioFleteId);
+                    autorizarCpeRequest.solicitud.transporte.cuitIntermediarioFlete = !string.IsNullOrEmpty(intermediarioFlete.Cuil) ? long.Parse(intermediarioFlete.Cuil.Replace("-", string.Empty)) : 0;
+                    autorizarCpeRequest.solicitud.transporte.cuitIntermediarioFleteSpecified = true;
                 }
 
                 request = autorizarCpeRequest.ToXml();
