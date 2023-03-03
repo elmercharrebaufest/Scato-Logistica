@@ -175,7 +175,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = comando.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(comando.ChoferCuit) ? long.Parse(comando.ChoferCuit.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = !string.IsNullOrEmpty(pagadorFlete.Cuit) ? long.Parse(pagadorFlete.Cuit.Replace("-", string.Empty)) : 0,
-                            cuitIntermediarioFlete = !string.IsNullOrEmpty(intermediarioFlete.Cuil) ? long.Parse(transportista.Cuit.Replace("-", string.Empty)) : 0,
                         },
                         intervinientes = new IntervinientesAutomotorDGSolicitud()
                     }
