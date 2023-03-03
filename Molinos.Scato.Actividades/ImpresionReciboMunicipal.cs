@@ -79,22 +79,26 @@ namespace Molinos.Scato.Actividades
                         aplicaPago = false;
                     }
                 }
-                //string numPuestoDeTrabajo = string.Empty;
-                //string numDeTicket = string.Empty; 
 
-                var numPuestoDeTrabajo = repositorio.ObtenerNumGaritaEntrada(puestoDeTrabajoId).PadLeft(4, '0');
-                var numDeTicket = repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0');
-                //var numDeTicket = repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0');
+                string numPuestoDeTrabajo = string.Empty;
+                string numDeTicket = string.Empty;
+                var ticketNumber = "Tasa abonada dentro del día";
 
-                numPuestoDeTrabajo = recorrido.PagoConMercadoPago ? numPuestoDeTrabajo : string.Concat("1", numPuestoDeTrabajo.Substring(1));
-                numDeTicket = (recorrido.PagoConMercadoPago && pagoRealizado == false) ? string.Concat(numDeTicket, " MP") : numDeTicket;
-                //numDeTicket = (recorrido.PagoConMercadoPago) ? string.Concat(numDeTicket, " MP") : numDeTicket
+                if (aplicaPago)
+                {
+                    numPuestoDeTrabajo = repositorio.ObtenerNumGaritaEntrada(puestoDeTrabajoId).PadLeft(4, '0');
+                    numDeTicket = repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0');
+                    numPuestoDeTrabajo = recorrido.PagoConMercadoPago ? numPuestoDeTrabajo : string.Concat("1", numPuestoDeTrabajo.Substring(1));
+                    numDeTicket = (recorrido.PagoConMercadoPago && pagoRealizado == false) ? string.Concat(numDeTicket, " MP") : numDeTicket;
+                    ticketNumber = $"{numPuestoDeTrabajo}-{numDeTicket}";
+                }
+                
 
                 var dto = new ImpReciboMunicipalDto
                 {
                     Impresora = documento.ImpresoraDireccion ?? "",
                     Codigo = codigo,
-                    TicketNro = aplicaPago ? $"{numPuestoDeTrabajo}-{numDeTicket}" : "Tasa abonada dentro del día",
+                    TicketNro = ticketNumber,
                     Ordenanza = recorrido.Ordenanza,
                     Valor = aplicaPago ? recorrido.Monto : "0",
                     FechaImpresion = DateTime.Now,
