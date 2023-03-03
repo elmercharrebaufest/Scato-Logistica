@@ -149,7 +149,7 @@ namespace Molinos.Scato.Web.Controllers
                     MaterialId = orden.MaterialId,
                     DestinoId = orden.ClienteId,
                     DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                    DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
+                    DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                     DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
                     TransportistaId = orden.TransportistaId,
                     Dominios = dominios.ToArray(),
@@ -283,7 +283,6 @@ namespace Molinos.Scato.Web.Controllers
                         var chofer = servicio.ObtenerChoferPorNumeroDocumento(numeroDocumentoChofer);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
                         var pagadorFlete = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_PAGADOR_FLETE));
-                        var esTipoDomicilioPlanta = !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) && int.Parse(ordenCargaFas[i].TIPODOM) == Constantes.DerivadoGranario.TipoDomicilioPlanta;
 
                         if (material == null)
                         {
@@ -326,10 +325,11 @@ namespace Molinos.Scato.Web.Controllers
                             TipoComercialId = tipoComercial != null ? (int)(tipoComercial.Id != null ? tipoComercial.Id : 0) : 0,
                             DerivadoGranarioHabilitado = material.EsDerivadoGranario,
                             PlantaDGDestino = !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : 0,
-                            OrdenDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) && esTipoDomicilioPlanta ? int.Parse(ordenCargaFas[i].ORDENDOM) : 0,
+                            OrdenDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : 0,
                             PagadorFleteId = pagadorFlete?.Id,
                             PagadorFlete = pagadorFlete?.Descripcion,
-                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO)
+                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
+                            TipoDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : 0,
                         };
 
                         if (ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
@@ -534,6 +534,11 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
                 }
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.TipoDomicilioDestino.HasValue)
+            {
+                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
         }
     }

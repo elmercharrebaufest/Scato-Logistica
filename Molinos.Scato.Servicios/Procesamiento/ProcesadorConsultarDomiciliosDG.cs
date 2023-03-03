@@ -66,7 +66,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                resultado.Domicilios = responseCp.respuesta.domicilio.Where(x => x.tipo == Constantes.DerivadoGranario.TipoDomicilioPlanta).Select(x => new DomicilioDto
+                resultado.Domicilios = responseCp.respuesta.domicilio.Select(x => new DomicilioDto
                 {
                     Tipo = x.tipo, 
                     Orden = x.orden,

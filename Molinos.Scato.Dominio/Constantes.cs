@@ -159,19 +159,6 @@
             }
         }
 
-        public struct DatosDummy
-        {
-            public const string DestinoPlanta = "3191";
-            public const string DestinoDomicilioTipo = "1";
-            public const string DestinoDomicilioOrden = "1";
-        }
-
-        public struct DerivadoGranario
-        {
-            public const int TipoDomicilioFiscal = 1;
-            public const int TipoDomicilioPlanta = 3;
-        }
-
         public struct SAP
         {
             public const string TipoReventaComisionista = "C";
