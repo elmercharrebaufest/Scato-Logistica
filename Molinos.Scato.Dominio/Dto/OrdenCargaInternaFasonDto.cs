@@ -85,8 +85,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_PlantaDGDestino")]
         public int? PlantaDGDestino { get; set; }
-
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
         public int? OrdenDomicilioDestino { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_CuitPagadorFlete")]
@@ -117,6 +115,8 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
         public string IntermediarioFlete { get; set; }
         public int? TipoDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
         public string TipoYOrdenDestino { get; set; }
     }
 }
