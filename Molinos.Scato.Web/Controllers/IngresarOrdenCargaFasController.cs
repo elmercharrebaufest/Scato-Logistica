@@ -503,7 +503,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
                 ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
