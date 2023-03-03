@@ -106,6 +106,9 @@ namespace Molinos.Scato.Web.Controllers
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
                 var dominios = new List<string> { orden.PatenteCamion };
                 if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
                 {
@@ -230,9 +233,9 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (material.EsDerivadoGranario && !orden.OrdenDomicilioDestino.HasValue)
+            if (material.EsDerivadoGranario && !string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
 
             if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
@@ -243,11 +246,6 @@ namespace Molinos.Scato.Web.Controllers
             if(material.EsDerivadoGranario && orden.ClienteId <= 0)
             {
                 ModelState.AddModelError("Cliente", string.Format(Textos.Error_Requerido, Textos.Cliente));
-            }
-
-            if (material.EsDerivadoGranario && !orden.TipoDomicilioDestino.HasValue)
-            {
-                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
         }
     }

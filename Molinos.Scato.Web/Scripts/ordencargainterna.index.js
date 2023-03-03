@@ -152,12 +152,6 @@
         CargarAlamacenesPorMaterial();
         ValidarDerivadoGranario();
     });
-    $('#OrdenDomicilioDestino').change(function () {
-        let ordenDomicilioDestino = $("#OrdenDomicilioDestino").val();
-        $('#DomicilioSeleccionado').val(ordenDomicilioDestino);
-        let tipoDestino = $("#OrdenDomicilioDestino :selected").data().tipo;
-        $("#TipoDomicilioDestino").val(tipoDestino);
-    });
 
     if ($('#DestinoId').length > 0 || $('#ClienteId').length > 0) {
         CargarPlantas();
@@ -486,25 +480,24 @@ function CargarPlantas() {
 }
 
 function CargarDomicilios() {
-    let ordenDomicilioSeleccionado = $("#DomicilioSeleccionado").val();
+    let ordenDomicilioSeleccionado = $("#OrdenDomicilioDestino").val();
     let tipoDomicilioSeleccionado = $("#TipoDomicilioDestino").val();
     let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val() ;
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
             function (allData) {
-                let options = '<option data-tipo="" value="">(domicilio)</option>';
-                $('#OrdenDomicilioDestino').html(options);
+                let options = '<option value="">(domicilio)</option>';
+                $('#TipoYOrdenDestino').html(options);
 
                 if (!allData.HayErrores) {
-                    
                     for (let i = 0; i < allData.Domicilios.length; i++) {
-                        options += `<option data-tipo="${allData.Domicilios[i].Tipo}" value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
+                        options += `<option value="${allData.Domicilios[i].Tipo}-${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
-                    $('#OrdenDomicilioDestino').html(options);
+                    $('#TipoYOrdenDestino').html(options);
                     if (ordenDomicilioSeleccionado.length > 0
                         && tipoDomicilioSeleccionado.length > 0
                         && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
-                        $('#OrdenDomicilioDestino').val(parseInt(ordenDomicilioSeleccionado))
+                        $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
                     }
                 }
 
@@ -527,10 +520,9 @@ function ValidarDerivadoGranario() {
         $('.derivadoGranario').addClass('hidden');
         $("label[for='Cliente']").text('Cliente');
         $('#PlantaDGDestino').val('');
-        $('#OrdenDomicilioDestino').val('');
+        $('#TipoYOrdenDestino').val('');
         $('#PagadorFlete').val('');
         $('#PagadorFleteId').val('');
-        $('#DomicilioSeleccionado').val('');
         $("#PlantaSeleccionada").val('')
     }
 }
