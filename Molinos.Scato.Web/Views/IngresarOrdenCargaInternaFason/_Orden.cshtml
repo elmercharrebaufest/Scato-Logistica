@@ -148,6 +148,14 @@
                     @Html.HiddenFor(model => model.EsTransportista)
                 </div>
             </div>
+             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                    @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
+                        @Html.ValidationMessageFor(model => model.IntermediarioFlete)
+                        @Html.HiddenFor(model => model.IntermediarioFleteId)
+                    </div>
+                </div>
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
@@ -268,6 +276,7 @@
 <div id="autocompleteCorredor"></div>
 <div id="autocompleteComisionista"></div>
 <div id="autocompleteRemitente"></div>
+<div id="autocompleteIntermFlete"></div>
 
 
 
