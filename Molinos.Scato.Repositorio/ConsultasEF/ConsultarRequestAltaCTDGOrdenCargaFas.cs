@@ -33,7 +33,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 DestinoCuit = (orden.Remitente != null || orden.Comisionista != null) ? long.Parse(orden.CuitDestinatario) : (!string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0),
                 DestinatarioCuit = (orden.Remitente != null || orden.Comisionista != null) ? long.Parse(orden.CuitDestinatario) : (!string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0),
                 DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
+                DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                 DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
                 KmRecorrer = !string.IsNullOrWhiteSpace(orden.KmRecorrer) ? int.Parse(orden.KmRecorrer) : 0,

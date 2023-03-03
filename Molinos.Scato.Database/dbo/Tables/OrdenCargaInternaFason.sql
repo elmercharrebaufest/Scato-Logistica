@@ -21,6 +21,7 @@
     [Comisionista_Id] INT NULL, 
     [Remitente_Id] INT NULL,
     [IntermediarioFlete_Id] INT NULL,
+    [TipoDomicilioDestino] INT NULL, 
     CONSTRAINT [PK_dbo.OrdenCargaInternaFason] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.OrdenCargaInternaFason_dbo.Chofer_Chofer_Id] FOREIGN KEY ([Chofer_Id]) REFERENCES [dbo].[Chofer] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaInternaFason_dbo.Cliente_Cliente_Id] FOREIGN KEY ([Cliente_Id]) REFERENCES [dbo].[Cliente] ([Id]),

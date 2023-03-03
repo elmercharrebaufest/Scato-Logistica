@@ -144,6 +144,11 @@ jQuery(document).ready(function () {
             $("#ordenCargaFas-form").submit();
         }
     })
+
+    $("#OrdenDomicilioDestino").change(function () {
+        let tipoDestino = $("#OrdenDomicilioDestino :selected").data().tipo;
+        $("#TipoDomicilioDestino").val(tipoDestino);
+    })
 });
 
 function deshabilitarKmRecorrerYLocalidad() {
@@ -454,7 +459,8 @@ function CargarPlantas() {
 }
 
 function CargarDomicilios() {
-    let domicilioSeleccionado = $("#DomicilioSeleccionado").val();
+    let ordenDomicilioSeleccionado = $("#DomicilioSeleccionado").val();
+    let tipoDomicilioSeleccionado = $("#TipoDomicilioDestino").val();
     let cliente = $("#ClienteId").val();
     let cuit = ''
     if ($('#RemitenteId').val() > 0 || $('#ComisionistaId').val() > 0) {
@@ -463,16 +469,17 @@ function CargarDomicilios() {
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente, clienteCuit: cuit },
             function (allData) {
-                let options = '<option value="">(domicilio)</option>';
+                let options = '<option data-tipo="" value="">(domicilio)</option>';
                 $('#OrdenDomicilioDestino').html(options);
                 if (!allData.HayErrores) {
                     for (let i = 0; i < allData.Domicilios.length; i++) {
-                        options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
+                        options += `<option data-tipo="${allData.Domicilios[i].Tipo}" value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
                     $('#OrdenDomicilioDestino').html(options);
-                    let ordenes = allData.Domicilios.map(domicilio => domicilio.Orden);
-                    if (domicilioSeleccionado.length > 0 && ordenes.includes(parseInt(domicilioSeleccionado))) {
-                        $('#OrdenDomicilioDestino').val(parseInt(domicilioSeleccionado))
+                    if (ordenDomicilioSeleccionado.length > 0
+                        && tipoDomicilioSeleccionado.length > 0
+                        && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
+                        $('#OrdenDomicilioDestino').val(parseInt(ordenDomicilioSeleccionado))
                     }
                 }
             }
