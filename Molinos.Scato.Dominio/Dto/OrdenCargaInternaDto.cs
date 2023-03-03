@@ -121,5 +121,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Rechazado { get; set; }
         public string MotivoRechazo { get; set; }
         public int? TipoDomicilioDestino { get; set; }
+        public string TipoYOrdenDestino { get; set; }
     }
 }

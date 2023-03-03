@@ -112,5 +112,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int? RemitenteId { get; set; }
         public string RemitenteCodigoSap { get; set; }
         public int? TipoDomicilioDestino { get; set; }
+        public string TipoYOrdenDestino { get; set; }
     }
 }
