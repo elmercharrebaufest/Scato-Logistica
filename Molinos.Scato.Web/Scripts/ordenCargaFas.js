@@ -232,11 +232,11 @@ function ObtenerDatosSap() {
         $.getJSON($("#PatenteCamion").data().numeroUrl, { numero: $('#PatenteCamion').val(), workflow: $("#WorkflowDescripcion").val() }, function (data) {
             if (data.datosSap == -1) {
                 $('.btn.btn-primary').attr('disabled', 'disabled');
+                
                 MostrarAlertaError(data.error);
             }
             else {
                 LlenarCombo(data.datosSap);
-                $('.btn').removeAttr('disabled');
             }
         }).complete(function () {
             $.unblockUI();
