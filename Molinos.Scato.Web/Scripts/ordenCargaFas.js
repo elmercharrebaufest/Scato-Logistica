@@ -51,6 +51,10 @@ jQuery(document).ready(function () {
         });
     });
 
+    $('#TipoYOrdenDestino').change(function () {
+        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
+    });
+
     if ($('#PagadorFlete').length > 0) {
         DefinirAutocompletarConSAP(
             '#PagadorFlete',
@@ -476,6 +480,7 @@ function CargarDomicilios() {
                         && tipoDomicilioSeleccionado.length > 0
                         && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
                         $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
+                        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
                 }
             }
