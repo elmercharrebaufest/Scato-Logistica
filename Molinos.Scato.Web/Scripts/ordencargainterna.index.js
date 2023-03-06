@@ -120,6 +120,20 @@
         );
     }
 
+    if($('#IntermediarioFlete').length > 0){
+        DefinirAutocompletarConSAP('#IntermediarioFlete', 
+        '#IntermediarioFleteId', 
+        '#autocompleteCorr', 
+        $('#links').data().urlBuscarProveedores,
+        $('#links').data().urlBuscarProveedor,
+        $('#links').data().urlObtenerProveedoresSap,
+        function () {
+        },
+        function () {
+        });
+    }
+
+
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;
     var obtenerProveedorSap = $('#links').data().urlObtenerProveedoresSap;

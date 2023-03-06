@@ -193,6 +193,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             kmRecorrer = orden.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(recorrido.Chofer.Cuil) ? long.Parse(recorrido.Chofer.Cuil.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = orden.PagadorFleteCuit,
+                            cuitIntermediarioFleteSpecified = orden.CuitIntermediarioFlete.GetValueOrDefault() != 0,
+                            cuitIntermediarioFlete = orden.CuitIntermediarioFlete.GetValueOrDefault(),
+
                         },
                         intervinientes = new IntervinientesAutomotorDGSolicitud
                         {

@@ -10353,5 +10353,22 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return domicilioId != null ? Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId) : null;
         }
+
+        public ProveedorDto ObtenerProveedor(string filtro)
+        {
+            Proveedor entidad;
+            try
+            {
+                entidad =
+                    repositorio.Obtener<Proveedor>(
+                        f =>
+                        f.Activo && (f.Descripcion.Contains(filtro) || f.Cuil.Contains(filtro)));
+            }
+            catch
+            {
+                entidad = null;
+            }
+            return entidad == null ? null : conversor.Convertir<Proveedor, ProveedorDto>(entidad);
+        }
     }
 }

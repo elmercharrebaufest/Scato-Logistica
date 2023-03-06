@@ -15,5 +15,6 @@ namespace Molinos.Scato.Dominio.Dto
         public long? CuitCorredor { get; set; }
         public long? CuitComisionista { get; set; }
         public long? CuitRemitente { get; set; }
+        public long? CuitIntermediarioFlete { get; set; }
     }
 }
