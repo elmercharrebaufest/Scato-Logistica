@@ -153,6 +153,10 @@
         ValidarDerivadoGranario();
     });
 
+    $('#TipoYOrdenDestino').change(function () {
+        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
+    });
+
     if ($('#DestinoId').length > 0 || $('#ClienteId').length > 0) {
         CargarPlantas();
         CargarDomicilios();
@@ -498,6 +502,7 @@ function CargarDomicilios() {
                         && tipoDomicilioSeleccionado.length > 0
                         && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
                         $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
+                        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
                 }
 
