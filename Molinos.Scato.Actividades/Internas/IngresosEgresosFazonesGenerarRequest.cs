@@ -66,6 +66,8 @@ namespace Molinos.Scato.Actividades.Internas
                 }
 
                 var recorrido = srvRepositorio.ObtenerRecorridoPorGuid(instanceId);
+                var intermediarioFleteId = srvRepositorio.ObtenerOrdenCargaInternaFasonPorInstanceId(instanceId)?.IntermediarioFleteId;
+
                 AlmacenDto almacen = null;
                 if (srvRepositorio.MaterialEnviaASapAlmacenPredeterminado(instanceId))
                 {
@@ -108,6 +110,11 @@ namespace Molinos.Scato.Actividades.Internas
                         }
                     };
 
+                if(intermediarioFleteId != null)
+                {
+                    var cuitIntermediario = srvRepositorio.ObtenerProveedor(intermediarioFleteId.GetValueOrDefault()).Cuil;
+                    request.IngresosEgresosFazones.Transportista = cuitIntermediario.Replace("-", "");
+                }
 
                 try
                 {
