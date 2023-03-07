@@ -10353,5 +10353,6 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return domicilioId != null ? Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId) : null;
         }
+
     }
 }
