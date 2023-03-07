@@ -218,11 +218,6 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("Almacen_Id", Textos.OrdenInterna_AlmacenRequerido);
             }
 
-            if(!material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.PagadorFleteId.HasValue))
-            {
-                ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
-            }
-
             if (material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
