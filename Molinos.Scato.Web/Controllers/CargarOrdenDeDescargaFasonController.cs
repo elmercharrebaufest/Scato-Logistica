@@ -92,8 +92,7 @@ namespace Molinos.Scato.Web.Controllers
 
             var ordenDeDescargaPorRemito = servicio.ObtenerOrdenDeDescargaFasonPorNumeroRemito(orden.NumeroRemito);
 
-            //if (ordenDeDescargaPorRemito != null && orden.NumeroRemito != Constantes.ValoresPorDefecto.NumeroRemitoGenerico)
-            if (ordenDeDescargaPorRemito != null)
+            if (ordenDeDescargaPorRemito != null && orden.NumeroRemito != Constantes.ValoresPorDefecto.NumeroRemitoGenerico)
             {
                 ModelState.AddModelError("NumeroRemito", Textos.IngresarRemito_Existente);
                 SetearVista(workflowObj, datosUsuario.CentroId);
