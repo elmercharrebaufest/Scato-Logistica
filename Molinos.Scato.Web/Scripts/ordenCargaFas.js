@@ -51,6 +51,10 @@ jQuery(document).ready(function () {
         });
     });
 
+    $('#TipoYOrdenDestino').change(function () {
+        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
+    });
+
     if ($('#PagadorFlete').length > 0) {
         DefinirAutocompletarConSAP(
             '#PagadorFlete',
@@ -294,7 +298,8 @@ function LlenarDatos(datos) {
             $('#KmARecorrer').val("")
         }
         $('#PlantaSeleccionada').val(datos.PlantaDGDestino);
-        $('#DomicilioSeleccionado').val(datos.OrdenDomicilioDestino);
+        $('#OrdenDomicilioDestino').val(datos.OrdenDomicilioDestino);
+        $('#TipoDomicilioDestino').val(datos.TipoDomicilioDestino);
         $('#PagadorFlete').val(datos.PagadorFlete);
         $('#PagadorFleteId').val(datos.PagadorFleteId);
         $('#Inhabilitado').val(datos.Inhabilitado);
@@ -454,7 +459,8 @@ function CargarPlantas() {
 }
 
 function CargarDomicilios() {
-    let domicilioSeleccionado = $("#DomicilioSeleccionado").val();
+    let ordenDomicilioSeleccionado = $("#OrdenDomicilioDestino").val();
+    let tipoDomicilioSeleccionado = $("#TipoDomicilioDestino").val();
     let cliente = $("#ClienteId").val();
     let cuit = ''
     if ($('#RemitenteId').val() > 0 || $('#ComisionistaId').val() > 0) {
@@ -464,15 +470,17 @@ function CargarDomicilios() {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente, clienteCuit: cuit },
             function (allData) {
                 let options = '<option value="">(domicilio)</option>';
-                $('#OrdenDomicilioDestino').html(options);
+                $('#TipoYOrdenDestino').html(options);
                 if (!allData.HayErrores) {
                     for (let i = 0; i < allData.Domicilios.length; i++) {
-                        options += `<option value="${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
+                        options += `<option value="${allData.Domicilios[i].Tipo}-${allData.Domicilios[i].Orden}">(${allData.Domicilios[i].Tipo} - ${allData.Domicilios[i].Orden}) ${allData.Domicilios[i].Descripcion}</option>`;
                     }
-                    $('#OrdenDomicilioDestino').html(options);
-                    let ordenes = allData.Domicilios.map(domicilio => domicilio.Orden);
-                    if (domicilioSeleccionado.length > 0 && ordenes.includes(parseInt(domicilioSeleccionado))) {
-                        $('#OrdenDomicilioDestino').val(parseInt(domicilioSeleccionado))
+                    $('#TipoYOrdenDestino').html(options);
+                    if (ordenDomicilioSeleccionado.length > 0
+                        && tipoDomicilioSeleccionado.length > 0
+                        && allData.Domicilios.some(domicilio => domicilio.Orden == ordenDomicilioSeleccionado && domicilio.Tipo == tipoDomicilioSeleccionado)) {
+                        $('#TipoYOrdenDestino').val(`${tipoDomicilioSeleccionado}-${ordenDomicilioSeleccionado}`)
+                        $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
                 }
             }
@@ -490,7 +498,7 @@ function ValidarDerivadoGranario() {
         $('#DerivadoGranarioHabilitado').val('false')
         $('.derivadoGranario').addClass('hidden');
         $('#PlantaDGDestino').val('');
-        $('#OrdenDomicilioDestino').val('');
+        $('#TipoYOrdenDestino').val('');
         $('#PagadorFlete').val('');
         $('#PagadorFleteId').val('');
     }

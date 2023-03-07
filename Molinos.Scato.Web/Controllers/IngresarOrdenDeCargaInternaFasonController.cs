@@ -106,6 +106,9 @@ namespace Molinos.Scato.Web.Controllers
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
                 var dominios = new List<string> { orden.PatenteCamion };
                 if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
                 {
@@ -118,7 +121,7 @@ namespace Molinos.Scato.Web.Controllers
                     MaterialId = orden.MaterialId,
                     DestinoId = orden.ClienteId,
                     DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                    DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
+                    DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                     DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
                     TransportistaId = orden.TransportistaId,
                     Dominios = dominios.ToArray(),
@@ -128,6 +131,7 @@ namespace Molinos.Scato.Web.Controllers
                     CorredorId = orden.CorredorId,
                     RemitenteId = orden.RemitenteId,
                     ComisionistaId = orden.ComisionistaId,
+                    IntermediarioFleteId = orden.IntermediarioFleteId
 
                 }) as ResultadoCartaPorteElectronicaDummy;
 
@@ -229,9 +233,9 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
             }
 
-            if (material.EsDerivadoGranario && !orden.OrdenDomicilioDestino.HasValue)
+            if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
             }
 
             if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))

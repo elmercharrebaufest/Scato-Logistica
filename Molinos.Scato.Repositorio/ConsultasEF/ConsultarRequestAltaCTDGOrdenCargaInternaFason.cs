@@ -26,13 +26,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 .Include(x => x.Corredor)
                                 .Include(x => x.Comisionista)
                                 .Include(x => x.Remitente)
+                                .Include(x => x.IntermediarioFlete)
                                 .Where(x => x.Recorrido.InstanciaWorkflow == workflowInstance)
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
             {
                 DestinoCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
                 DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                DestinoDomicilioTipo = Constantes.DerivadoGranario.TipoDomicilioPlanta,
+                DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                 DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
                 DestinatarioCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
@@ -41,6 +42,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 CuitCorredor = !string.IsNullOrEmpty(orden?.Corredor?.Cuil) ? long.Parse(orden?.Corredor?.Cuil?.Replace("-", string.Empty)) : 0,
                 CuitComisionista = !string.IsNullOrEmpty(orden?.Comisionista?.Cuit) ? long.Parse(orden?.Comisionista?.Cuit?.Replace("-", string.Empty)) : 0,
                 CuitRemitente = !string.IsNullOrEmpty(orden?.Remitente?.Cuit) ? long.Parse(orden?.Remitente?.Cuit?.Replace("-", string.Empty)) : 0,
+                CuitIntermediarioFlete = !string.IsNullOrEmpty(orden?.IntermediarioFlete?.Cuil) ? long.Parse(orden?.IntermediarioFlete?.Cuil.Replace("-", string.Empty)) : 0,
             };
             return request;
         }
