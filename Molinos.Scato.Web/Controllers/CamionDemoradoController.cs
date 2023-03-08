@@ -615,11 +615,6 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
-            if (!orden.Rechazado && !material.EsDerivadoGranario && (orden.PlantaDGDestino.HasValue || orden.OrdenDomicilioDestino.HasValue || orden.PagadorFleteId.HasValue))
-            {
-                ModelState.AddModelError("MaterialId", "El material no es un derivado granario.");
-            }
-
             if (!orden.Rechazado && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
             {
                 ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
