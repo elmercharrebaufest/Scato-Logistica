@@ -264,6 +264,7 @@ function LlenarCombo(datos) {
         }
         mySelect.append("<option value=" + text + ">" + text + "</option>");
     });
+    $('#NumeroOrden').removeAttr("readonly");
     $('#NumeroOrden').attr("disabled", false);
     $('#TipoComercialId').attr("disabled", false);
     if (textVal != '') {
