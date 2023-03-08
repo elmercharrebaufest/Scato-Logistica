@@ -144,6 +144,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             ordenCargaFas.PlantaDGDestino = comando.Orden.PlantaDGDestino;
             ordenCargaFas.OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino;
+            ordenCargaFas.TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino;
+
             ordenCargaFas.PagadorFlete = pagadorFlete;
 
             recorrido.Patente = comando.Orden.PatenteCamion;
