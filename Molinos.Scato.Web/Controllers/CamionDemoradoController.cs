@@ -520,14 +520,17 @@ namespace Molinos.Scato.Web.Controllers
                         if (material == null)
                         {
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_MaterialInexistente, ordenCargaFas[i].MATNR));
+                            break;
                         }
                         if (proveedor == null)
                         {
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE));
+                            break;
                         }
                         if (cliente == null && string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
                         {
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG));
+                            break;
                         }
 
                         var itemSap = new OrdenCargaFasDto
@@ -579,6 +582,7 @@ namespace Molinos.Scato.Web.Controllers
                             if(ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
                             {
                                 resultado.Error("", "El campo corredor no cumple el formato de 11 caracteres numérico.");
+                                break;
                             } else
                             {
                                 var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
