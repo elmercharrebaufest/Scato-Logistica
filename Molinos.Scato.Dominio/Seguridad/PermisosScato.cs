@@ -502,11 +502,6 @@ namespace Molinos.Scato.Dominio.Seguridad
         CamionesPendientesMesa = 236,
         [Display(ResourceType = typeof(Textos), Name = "CamionesPendientesNoGranos")]
         CamionesPendientesNoGranos = 258, 
-        [Display(ResourceType = typeof(Textos), Name = "ConfirmacionCargaDescarga")]
-        ConfirmacionCargaDescarga = 612,
-        [Display(ResourceType = typeof(Textos), Name = "ContingenciaPesosExcedentes")]
-        ContingenciaPesosExcedentes = 613,
-
         [Display(ResourceType = typeof(Textos), Name = "DestinoPuerto")]
         DestinoPuerto = 237,
         [Display(ResourceType = typeof(Textos), Name = "BodegaPuerto")]
@@ -750,5 +745,12 @@ namespace Molinos.Scato.Dominio.Seguridad
         EnvioCamaraInase = 610,
         [Display(ResourceType = typeof(Textos), Name = "ArmarLoteInase")]
         ArmarLoteInase = 611,
+        [Display(ResourceType = typeof(Textos), Name = "ConfirmacionCargaDescarga")]
+        ConfirmacionCargaDescarga = 612,
+        [Display(ResourceType = typeof(Textos), Name = "ContingenciaPesosExcedentes")]
+        ContingenciaPesosExcedentes = 613,
+        [Display(ResourceType = typeof(Textos), Name = "CrearClienteProvisorio")]
+        CrearClienteProvisorio = 614,
+
     }
 }

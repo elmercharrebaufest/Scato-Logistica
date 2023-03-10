@@ -1,7 +1,37 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+
+@model Molinos.Scato.Dominio.Dto.ClienteDto
 @{
     ViewBag.Title = Textos.Cliente_Titulo;
 }
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.maskedinput.js"></script>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        $("#btnGuardarClienteProvisorio").click(function () {
+
+            $("#registrarClienteProvisorio-form").submit();
+
+                $('#Descripcion').val('');
+                $('#Cuit').val('');
+                modalCrearCliente.close()
+            
+        })
+
+        $("#Cuit").mask("99-99999999-9");
+
+    })
+    var fnResponse = function (response) {
+        console.log(response)
+        if (response.error) {
+            MostrarAlertaError();
+        }
+    }
+
+</script>
 
 <div class="container-fluid">
     <div class="titSecciones">@Textos.Administracion_Clientes</div>
@@ -18,8 +48,70 @@
 
             }
         </div>
+        <div class="span3" style="float:right">
+            @if (PermisosHelper.Is(PermisosScato.CrearClienteProvisorio))
+            {
+                <button class="btn btn-success btnNuevoCliente" style="float:right" type="button" onclick="modalCrearCliente.showModal()">@Textos.NuevoClienteProvisorio</button>
+            }
+
+        </div>
     </div>
     <div id="gridContainer" data-grid-url="@Url.Action("Index")">
         @Html.Partial("Listar")
     </div>
 </div>
+
+<dialog id="modalCrearCliente" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.ClienteProvisorio</h4>
+    <div class="dialogModal__descripcion">
+
+        @using (Ajax.BeginForm("CrearClienteProvisorio", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fnResponse" , InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "registrarClienteProvisorio-form", @class = "form-horizontal", data_dialogo_titulo = Textos.ActIngresarClienteProvisorio }))
+        {
+            if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+            {
+                <div class="alert alert-error">
+                    @Html.ValidationSummary(true)
+                </div>
+
+            }
+
+
+            <div class="row-fluid" style="width:400px">
+                <div class="span4">
+                    @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+                </div>
+                <div class="span6">
+                    @Html.TextBoxFor(model => model.Descripcion)
+                    @Html.ValidationMessageFor(model => model.Descripcion)
+                </div>
+
+            </div>
+
+            <div class="row-fluid" style="width:400px">
+                <div class="span4">
+                    @Html.LabelFor(model => model.Cuit, new { @class = "control-label" })
+                </div>
+                <div class="span6">
+                    @Html.TextBox("Cuit")
+                    @Html.ValidationMessageFor(model => model.Cuit)
+                </div>
+
+            </div>
+
+
+        }
+
+
+
+
+    </div>
+    <div>
+        <span class="dialogModal__error" id="error-cliente-requerido">@string.Format(Textos.Error_Requerido, "Descripcion")</span>
+        <span class="dialogModal__error" id="error-cliente-largo">@string.Format(Textos.Error_LargoMensaje, "Descripcion", "10")</span>
+    </div>
+
+    <div class="dialogModal__botones">
+        <button class="btn btn-success agregar" type="button" id="btnGuardarClienteProvisorio">Guardar</button>
+        <button class="btn" type="button" onclick="modalCrearCliente.close()">Cancelar</button>
+    </div>
+</dialog>

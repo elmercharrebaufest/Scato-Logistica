@@ -11,6 +11,8 @@
         public string Localidad { get; set; }
         public string Provincia { get; set; }
         public bool Bloqueado { get; set; }
+        public bool EsClienteProvisorio { get; set; }
+
     }
 }
  

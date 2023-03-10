@@ -1618,6 +1618,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registrar cliente provisorio.
+        /// </summary>
+        public static string ActIngresarClienteProvisorio {
+            get {
+                return ResourceManager.GetString("ActIngresarClienteProvisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ingresar embarque.
         /// </summary>
         public static string ActIngresarEmbarque {
@@ -9538,6 +9547,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ya existe un Cliente con el Cuit ingresado.
+        /// </summary>
+        public static string Cliente_CuitExistente {
+            get {
+                return ResourceManager.GetString("Cliente_CuitExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Descripcion.
         /// </summary>
         public static string Cliente_Descripcion {
@@ -9579,6 +9597,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ClienteIngresarExistente {
             get {
                 return ResourceManager.GetString("ClienteIngresarExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cliente provisorio.
+        /// </summary>
+        public static string ClienteProvisorio {
+            get {
+                return ResourceManager.GetString("ClienteProvisorio", resourceCulture);
             }
         }
         
@@ -10866,6 +10893,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CrearAjusteStockBines {
             get {
                 return ResourceManager.GetString("CrearAjusteStockBines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Cliente Provisorio.
+        /// </summary>
+        public static string CrearClienteProvisorio {
+            get {
+                return ResourceManager.GetString("CrearClienteProvisorio", resourceCulture);
             }
         }
         
@@ -21898,6 +21934,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Nuevo_Stock {
             get {
                 return ResourceManager.GetString("Nuevo_Stock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuevo cliente provisorio.
+        /// </summary>
+        public static string NuevoClienteProvisorio {
+            get {
+                return ResourceManager.GetString("NuevoClienteProvisorio", resourceCulture);
             }
         }
         

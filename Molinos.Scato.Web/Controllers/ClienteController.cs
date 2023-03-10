@@ -3,15 +3,20 @@ using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using Ninject.Infrastructure.Language;
+using NPOI.OpenXml4Net.Util;
+using PdfSharp.Pdf.Filters;
 
 namespace Molinos.Scato.Web.Controllers
 {
+    
     [Autorizacion(PermisosScato.AbmCliente)]
     public class ClienteController : BaseController
     {
@@ -54,6 +59,7 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [DatosUsuario]
+        [Autorizacion(PermisosScato.AbmCliente)]
         public ActionResult Modificar(ClienteDto model, DatosUsuario datosUsuario)
         {
             if (ModelState.IsValid)
@@ -66,6 +72,37 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AgregarErrores(resultado);
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [DatosUsuario]
+        [Autorizacion(PermisosScato.CrearClienteProvisorio)]
+        public ActionResult CrearClienteProvisorio(ClienteDto model, DatosUsuario datosUsuario)
+        {
+            var paginacion = new Paginacion("Id", DirOrden.Asc, 1, 10);
+            if (ModelState.IsValid)
+            {
+              
+                var resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
+               
+                
+                if (!resultado.HayErrores)
+                {
+                    ViewBag.Items = servicio.ListarClientes(model.Cuit, paginacion);
+                    
+                    return View(model); 
+
+                }
+                ModelState.AgregarErrores(resultado);
+                
+            }
+            ViewBag.Items = servicio.ListarClientes(string.Empty, paginacion);
+            dynamic estadoRespuesta = new
+            {
+                error = true
+            };
+
+            return Json(estadoRespuesta, JsonRequestBehavior.AllowGet);
         }
 
 
