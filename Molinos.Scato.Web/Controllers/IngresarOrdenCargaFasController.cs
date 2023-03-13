@@ -546,6 +546,10 @@ namespace Molinos.Scato.Web.Controllers
                     ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
                 }
             }
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
+            {
+                ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
+            }
         }
     }
 }
