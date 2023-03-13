@@ -1,5 +1,7 @@
+using System;
 using System.Activities;
 using Molinos.Scato.Actividades.Behaviour;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Servicios;
 
 namespace Molinos.Scato.Actividades.Internas
@@ -58,6 +60,9 @@ namespace Molinos.Scato.Actividades.Internas
             var choferDNI = ChoferDNI.Get<string>(context);
             var choferNombre = ChoferNombre.Get<string>(context);
             var procedencia = Procedencia.Get<string>(context);
+
+            var recorrido = context.WorkflowInstanceId != null ? servicio.ObtenerRecorridoPorGuid(context.WorkflowInstanceId) : null;
+
             if (patente != null)
             {
                 context.GetExtension<ScatoPersistenceParticipant>().Patente = patente;
@@ -143,6 +148,16 @@ namespace Molinos.Scato.Actividades.Internas
             if (Procedencia != null)
             {
                 context.GetExtension<ScatoPersistenceParticipant>().Procedencia = procedencia;
+            }
+            if(recorrido != null)
+            {
+                var cartaPorte = servicio.ObtenerCartaDePortePorrecorrido(recorrido.Id);
+                if(cartaPorte != null)
+                {
+                    context.GetExtension<ScatoPersistenceParticipant>().Entregador = cartaPorte.Entregador;
+                }
+                context.GetExtension<ScatoPersistenceParticipant>().EsGrano = recorrido.Material.EsGrano.ToString();
+                context.GetExtension<ScatoPersistenceParticipant>().EsRechazado = recorrido.Rechazado.ToString();
             }
         }
     }

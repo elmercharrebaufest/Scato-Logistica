@@ -2,38 +2,36 @@
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.WebMobile.Helpers
-@using System.Web.Optimization
 @using Molinos.Scato.Dominio.Helpers;
-@using Molinos.Scato.WebMobile.Seguridad
-@using Molinos.Scato.Dominio.Seguridad
-@model IList<CalleDto>
+@model List<TipoCallePlantaDto>
 @{
     ViewBag.Title = Textos.EstadoDeCallePlayaInterna;
     Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoPlayaInterna.css")">
 
 <script>
-    urlEstadoDeCalles = '@Url.Action("EstadoDeCalle", "EstadoDeCalle")';
-    callesJson = '@Html.Raw(Model.ToJson())';
-    urlLLamarCalle = '@Url.Action("LlamarCalle", "EstadoDeCalle")';
-    urlCancelarLLamarCalle = '@Url.Action("CancelarLlamarCalle", "EstadoDeCalle")';
-    urlLLamarSiguienteCalle = '@Url.Action("LLamarSiguienteCalle", "EstadoDeCalle")';
-    urlLLamadoAutomaticoCalle = '@Url.Action("LLamadoAutomaticoCalle", "EstadoDeCalle")';
-    loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
-    urlMoverRechazado = '@Url.Action("MoverRechazado", "EstadoDeCalle")';
-    @*urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';*@
+    urlEstadoDeCalles = '@Url.Action("ObtenerCalles", "EstadoPlayaInterna")';
+    urlMostrarDetalleCamion = '@Url.Action("MostrarDetalleCamion", "EstadoPlayaInterna")';
+    urlConfirmarCargaDescarga = '@Url.Action("ConfirmarCargaDescarga", "EstadoPlayaInterna")';
 </script>
 <script type="text/javascript" src="~/Scripts/estadoPlayaInterna.js"></script>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" data-bind="click: Recalcular">
-        <a class="nav-link active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">@TipoCalle.PlayaInterna.DisplayEnum()</a>
+    <li class="nav-item" id="tabPlayaInternaGranos">
+        <a class="nav-link tabPanelEstadoPlayaInterna active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">Granos</a>
+    </li>
+    <li class="nav-item" id="tabPlayaInternaNoGranos">
+        <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playaInterna" role="tabpanel" aria-labelledby="playaInterna-tab">
-        @Html.Partial("Calles", TipoCalle.PlayaInterna)
+        @Html.Partial("_CallesGranos", Model)
+    </div>
+    <div class="tab-pane fade show" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
+        @Html.Partial("_CallesNoGranos", Model)
     </div>
 </div>
-<div id="div-rechazo-mover"></div>
+<div id="detalleCamion"></div>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,9 +14,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.WebMobile</RootNamespace>
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -29,6 +29,7 @@
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
     <TypeScriptToolsVersion>3.5</TypeScriptToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,8 +58,8 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.9.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.10\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -74,9 +75,14 @@
     <Reference Include="MiniProfiler.Mvc">
       <HintPath>..\packages\MiniProfiler.MVC4.3.0.11\lib\net40\MiniProfiler.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="NewRelic.Api.Agent, Version=8.50.0.0, Culture=neutral, PublicKeyToken=06552fced0b33d87, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.Agent.Api.8.32.0\lib\net45\NewRelic.Api.Agent.dll</HintPath>
+    </Reference>
+    <Reference Include="NewRelic.LogEnrichers.Log4Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0f1b6df23b18ab4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.LogEnrichers.Log4Net.1.1.1\lib\net45\NewRelic.LogEnrichers.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -101,6 +107,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Services" />
     <Reference Include="System.Drawing" />
@@ -128,8 +135,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -164,9 +170,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -181,6 +185,7 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
@@ -195,6 +200,7 @@
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
+    <Compile Include="Controllers\EficienciaCaladoController.cs" />
     <Compile Include="Controllers\EstadoPlayaInternaController.cs" />
     <Compile Include="Controllers\EstadoDeCalleController.cs" />
     <Compile Include="Controllers\EstadoDePlantaController.cs" />
@@ -206,6 +212,8 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
     <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\VisteoMobileController.cs" />
+    <Compile Include="Controllers\EstadoVolcadorasController.cs" />
     <Compile Include="Filtros\DateTimeModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -213,11 +221,18 @@
     <Compile Include="Helpers\ClaimData.cs" />
     <Compile Include="Helpers\ExtensionesInt.cs" />
     <Compile Include="Helpers\ExtensionesModelState.cs" />
+    <Compile Include="Helpers\ExtensionesSelectList.cs" />
     <Compile Include="Helpers\ExtensionesUrl.cs" />
     <Compile Include="Helpers\FormattingHtmlHelper.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\cartelesVolcables.css" />
+    <Content Include="Content\eficienciaCalado.css" />
+    <Content Include="Content\estadoPlayaInterna.css" />
+    <Content Include="Content\Images\logo-nuevo.png" />
+    <Content Include="Scripts\area\eficienciaCalado\index.js" />
+    <Content Include="Scripts\cartelesVolcables.js" />
     <Content Include="Scripts\estadoPlayaInterna.js" />
     <Content Include="Scripts\knockout-fast-foreach.min.js" />
     <Compile Include="Seguridad\FixedWsFederationAuthenticationModule.cs" />
@@ -408,6 +423,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ASVWPSCATMXX.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="VICSCATOQA.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -423,6 +442,7 @@
     <Content Include="Scripts\graficoCamionesHora.js" />
     <Content Include="Content\panels.less" />
     <Content Include="Scripts\graficoEficienciaHidraulicas.js" />
+    <Content Include="Scripts\visteo.js" />
     <Content Include="Scripts\bootstrap.min.js.map" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
@@ -504,8 +524,15 @@
     <Content Include="Views\EstadoDeCalle\Calador.cshtml" />
     <Content Include="Views\Shared\_LayoutSinMenu.cshtml" />
     <Content Include="Views\EstadoDeCalle\_MoverCamionRechazado.cshtml" />
-    <Content Include="Views\EstadoPlayaInterna\Calles.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\Index.cshtml" />
+    <Content Include="Views\EficienciaCalado\Index.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_DetalleCamion.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesBody.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesGranos.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesHeader.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_BuscadorPatente.cshtml" />
+    <Content Include="Views\EstadoVolcadoras\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

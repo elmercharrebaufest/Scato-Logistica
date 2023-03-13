@@ -10,8 +10,10 @@
     var cartelesLed = (IEnumerable<SelectListItem>)ViewBag.CartelesLed;
     var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
     var firmwares = (IEnumerable<SelectListItem>)ViewBag.Firmwares;
-    var concentradores = (IEnumerable<SelectListItem>)ViewBag.Concentradores;
+    var configSensores = (IEnumerable<SelectListItem>)ViewBag.ConfigSensores;
     var intercomunicadores = (IEnumerable<SelectListItem>)ViewBag.Intercomunicadores;
+    var gruposBarrera = (IEnumerable<SelectListItem>)ViewBag.GruposBarrera;
+    var visualizacionBarrera = (IEnumerable<SelectListItem>)ViewBag.VisualizacionBarrera;
 }
 <style>
     .validation-summary-errors {
@@ -152,10 +154,10 @@
 </div>
 
 <div class="control-group">
-    @Html.LabelFor(model => model.Concentrador, new { @class = "control-label" })
+    @Html.LabelFor(model => model.ConfigSensor_Id, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.Concentrador, concentradores, "")
-        @Html.ValidationMessageFor(model => model.Concentrador)
+        @Html.DropDownListFor(model => model.ConfigSensor_Id, configSensores, "")
+        @Html.ValidationMessageFor(model => model.ConfigSensor_Id)
     </div>
 </div>
 
@@ -224,6 +226,14 @@
 </div>
 
 <div class="control-group">
+    @Html.LabelFor(model => model.GrupoBarreraCodigo, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.GrupoBarreraCodigo, gruposBarrera, "")
+        @Html.ValidationMessageFor(model => model.GrupoBarreraCodigo)
+    </div>
+</div>
+
+<div class="control-group">
     @Html.LabelFor(model => model.IntercomunicadorCodigo, new { @class = "control-label" })
     <div class="controls">
         @Html.DropDownListFor(model => model.IntercomunicadorCodigo, intercomunicadores, "")
@@ -256,6 +266,14 @@
 </div>
 
 <div class="control-group">
+    @Html.LabelFor(model => model.VisualizacionBarrera_Id, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.VisualizacionBarrera_Id, visualizacionBarrera, "")
+        @Html.ValidationMessageFor(model => model.VisualizacionBarrera_Id)
+    </div>
+</div>
+
+<div class="control-group">
     @Html.LabelFor(model => model.NombrePc, new { @class = "control-label" })
     <div class="controls">
         @Html.TextBoxFor(model => model.NombrePc, new { @class = "input-large" })
@@ -272,7 +290,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.Automatizado, new { @class = "control-label" })
     <div class="controls">
-        @Html.CheckBoxFor(model => model.Automatizado, new { @class = "input-large",data_toggle="tooltip",title="En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
+        @Html.CheckBoxFor(model => model.Automatizado, new { @class = "input-large", data_toggle = "tooltip", title = "En Lista de Tareas Automatizada y en Pesada una vez que tiene los datos y son correctos hace el submit automaticamene, si hay un error muestra mensaje y espera que el usuario haga algo." })
         @Html.ValidationMessageFor(model => model.Automatizado)
     </div>
     @Html.LabelFor(model => model.AutomatizadoFull, new { @class = "control-label" })
@@ -321,5 +339,12 @@
     <div class="controls">
         @Html.CheckBoxFor(model => model.ActivarRegistroInactividad, new { @class = "input-large" })
         @Html.ValidationMessageFor(model => model.ActivarRegistroInactividad)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.RequiereComentarioGestionarBarrera, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.RequiereComentarioGestionarBarrera, new { @class = "input-large" })
+        @Html.ValidationMessageFor(model => model.RequiereComentarioGestionarBarrera)
     </div>
 </div>

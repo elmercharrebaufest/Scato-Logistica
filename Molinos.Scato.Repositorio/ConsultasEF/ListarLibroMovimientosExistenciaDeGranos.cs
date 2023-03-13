@@ -93,7 +93,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                               ObservacionesONCCA = ajusteStock.Observaciones,
                               PesoNetoCalculado = ((ajusteStock.PesoNetoEgreso != 0 || ajusteStock.PesoNetoIngreso != 0) ? (ajusteStock.PesoNetoEgreso != 0 ? ajusteStock.PesoNetoEgreso.Value : ajusteStock.PesoNetoIngreso.Value) : 0),
                               CPE = false,
-                              CTG = "",
+                              CTG = ajusteStock.NumeroCTG,
                               CartaDePorte = "",
                               Sucursal = (int?)null
 

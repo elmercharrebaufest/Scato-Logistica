@@ -22,6 +22,12 @@
             @Html.ActionLink(Textos.ExcepcionAlControl_Titulo, "Index", "ExcepcionAlControl")
         </li>
     }
+    @if (PermisosHelper.Is(PermisosScato.AbmExcepcionAlControlProveedor))
+    {
+        <li>
+            @Html.ActionLink(Textos.ExcepcionAlControlProveedor_Titulo, "Index", "ExcepcionAlControlProveedor")
+        </li>
+    }
 </ul>
 
 <div class="container-fluid content grillaPad">

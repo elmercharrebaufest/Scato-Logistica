@@ -279,6 +279,7 @@ div.card.parpadeo {
     border: 2px solid red;
     color: red;
     border-radius:5px;
+    position: relative;
 }
 
 .bg-harina {
@@ -313,4 +314,28 @@ div.card.parpadeo {
     border-radius: 5px;
     margin-top: 5px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+.bg-EnTransito {
+    background: #f2f3f8;
+}
+
+.bg-AceiteSj {
+    background: #92d050;
+}
+
+.bg-AceiteG {
+    background: #8faadc;
+}
+
+.bg-PelletG {
+    background: #f8cbad;
+}
+
+.bg-Lecitina {
+    background: #c9c9c9;
+}
+
+.bg-Salida {
+    background: #f2f3f8;
 }

@@ -23,16 +23,30 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(AgregarMarcaSustentable comando)
         {
-            var resultado = new Resultado();
+            if(comando.SoloDibujar)
+            {
+                var resultadoDibujo = new ResultadoCartaPorteElectronica();
+                Bitmap imagenBitmap;
+                using (var ms = new MemoryStream(comando.PdfImage))
+                {
+                        imagenBitmap = new Bitmap(ms);
+                }
+                var imagenConSelloSustentable = DibujarSustentable(imagenBitmap);
+                resultadoDibujo.PdfImageSustentable = ImageToByte(imagenConSelloSustentable);
+                return resultadoDibujo;
+            }
+
+            var resultado = new ResultadoGuardarFoto();
             try
             {
                 if (File.Exists(comando.RutaFotoCP))
                 {
-                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroDocumento, comando.Patente) + "-sustentable.png";
+                    var nombreFoto = FotoCamionHelper.GenerarNombre(comando.CodigoCentroSap, comando.NroDocumento, comando.Patente) + "-sustentable.jpeg";
                     var imagenCp = new Bitmap(comando.RutaFotoCP);
 
                     var imagenCpSustentable = DibujarSustentable(imagenCp);
-                    imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Png);
+                    imagenCpSustentable.Save(Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto), ImageFormat.Jpeg);
+                    resultado.Path = Path.Combine(Path.GetDirectoryName(comando.RutaFotoCP), nombreFoto);
                 }
             }
             catch (Exception e)
@@ -60,10 +74,36 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             using (Graphics graphics = Graphics.FromImage(imagenCP))
             {
-                graphics.DrawImage(imagenSustentable, posicionImagenSustentableX, posicionImagenSustentableY);
+                graphics.DrawImage(imagenSustentable, posicionImagenSustentableX, posicionImagenSustentableY, 300, 150);
             }
 
             return imagenCP;
+        }
+
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        private static byte[] ImageToByte(Image img)
+        {
+            ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+            var myEncoderParameters = new EncoderParameters(1);
+            myEncoderParameters.Param[0] = new EncoderParameter(myEncoder, 70L);
+            using (var stream = new MemoryStream())
+            {
+                img.Save(stream, jgpEncoder, myEncoderParameters);
+                return stream.ToArray();
+            }
         }
     }
 }

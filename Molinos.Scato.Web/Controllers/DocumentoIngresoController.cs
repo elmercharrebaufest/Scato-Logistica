@@ -14,7 +14,7 @@ namespace Molinos.Scato.Web.Controllers
         protected readonly IServicioComandos servicioComandos;
         protected readonly ILogger log;
 
-        protected DocumentoIngresoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos):base(servicio)
+        protected DocumentoIngresoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos) : base(servicio)
         {
             this.servicioComandos = servicioComandos;
             this.log = log;
@@ -24,6 +24,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                var Error = ModelState.Values.Where(c => c.Errors.Count > 0).ToList();
                 return false;
             }
             log.Info("SetearChofer para el chofer con el CUIL: " + choferDto.Cuil);
@@ -66,13 +67,16 @@ namespace Molinos.Scato.Web.Controllers
             return true;
         }
 
-        protected bool SetearTransportista(ref int transportistaId, int tipoComercialId, bool esTransportista)
+        protected bool SetearTransportista(ref int transportistaId, int tipoComercialId, bool esTransportista, bool esTransportistaTramo2 = false)
         {
             var tipoComercial = servicio.ObtenerTipoComercial(tipoComercialId);
             if (tipoComercial.TransportistaEsProveedor && (transportistaId == 0))
             {
                 log.Debug("El transportista es obligatorio para el tipo comercial");
-                ModelState.AddModelError("Transportista", string.Format(Textos.Error_Requerido, Textos.Transportista));
+                if (!esTransportistaTramo2)
+                    ModelState.AddModelError("Transportista", string.Format(Textos.Error_Requerido, Textos.Transportista));
+                else
+                    ModelState.AddModelError("TransportistaTramo2", string.Format(Textos.Error_Requerido, Textos.Transportista_Segundo_Tramo));
                 return false;
             }
 
@@ -81,7 +85,10 @@ namespace Molinos.Scato.Web.Controllers
                 var proveedor = servicio.ObtenerProveedor(transportistaId);
                 if (proveedor == null)
                 {
-                    ModelState.AddModelError("Transportista", string.Format(Textos.Error_ProveedorInvalido));
+                    if (!esTransportistaTramo2)
+                        ModelState.AddModelError("Transportista", string.Format(Textos.Error_ProveedorInvalido));
+                    else
+                        ModelState.AddModelError("TransportistaTramo2", string.Format(Textos.Error_ProveedorInvalido));
                     transportistaId = 0;
                     return false;
                 }
@@ -96,20 +103,19 @@ namespace Molinos.Scato.Web.Controllers
                     try
                     {
                         var resultadoTransportista = servicioComandos.Ejecutar(new CrearTransportista
+                        {
+                            Dto = new TransportistaDto
                             {
-                                Dto = new TransportistaDto
-                                    {
-                                        Cuit = proveedor.Cuil,
-                                        Domicilio = proveedor.Domicilio,
-                                        LocalidadId = proveedor.LocalidadId,
-                                        ProvinciaId = proveedor.ProvinciaId,
-                                        RazonSocial = proveedor.RazonSocial
-                                    }
-                            });
+                                Cuit = proveedor.Cuil,
+                                Domicilio = proveedor.Domicilio,
+                                LocalidadId = proveedor.LocalidadId,
+                                ProvinciaId = proveedor.ProvinciaId,
+                                RazonSocial = proveedor.RazonSocial
+                            }
+                        });
                         if (resultadoTransportista.HayErrores)
                         {
-                            resultadoTransportista.Errores.ToList()
-                                                  .ForEach(f => ModelState.AddModelError("Transportista", f.Value));
+                            resultadoTransportista.Errores.ToList().ForEach(f => ModelState.AddModelError("Transportista", f.Value));
                             ModelState.AgregarErrores(resultadoTransportista);
                             return false;
                         }

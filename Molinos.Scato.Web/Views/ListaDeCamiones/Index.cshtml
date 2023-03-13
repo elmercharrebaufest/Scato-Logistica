@@ -15,6 +15,39 @@
 <script src="@Url.Content("~/Scripts/accordion.icon.js")" type="text/javascript"></script>
 <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
 <script type="text/javascript" src="@Url.Script("~/scripts/listaDeCamiones.js")"></script>
+<link href="~/Styles/area/listaDeCamiones/filtroDeCamiones.css" rel="stylesheet" />
+
+<style>
+    .inputEspecial {
+        margin: 0;
+        display: flex !important;
+        align-items: center;
+        min-height: 30px;
+    }
+    .inputEspecial label,
+    .inputEspecial input {
+        margin: 0;
+    }
+    .inputEspecial input {
+        margin-right: 10px;
+    }
+</style>
+
+<style>
+    .inputEspecial {
+        margin: 0;
+        display: flex !important;
+        align-items: center;
+        min-height: 30px;
+    }
+    .inputEspecial label,
+    .inputEspecial input {
+        margin: 0;
+    }
+    .inputEspecial input {
+        margin-right: 10px;
+    }
+</style>
 
 @Html.Hidden("ListaAutomatizadaUrl", Url.Action("Index", "ListaDeTareasAutomatizada"))
 @Html.Hidden("BalanzaAutomatizadaUrl", Url.Action("Index", "BalanzaAutomatica"))
@@ -131,51 +164,100 @@
                 </div>
                 <div id="collapseOne" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <div class="row-fluid" style="margin-bottom:5px">
+                        <div class="rowFiltros" style="margin-bottom:5px">
                             @Html.ValidationSummary(true)
-                            <div class="span1">
-                                @Html.LabelFor(model => model.Workflow, new { @class = "control-label" })
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.Workflow, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.DropDownListFor(model => model.Workflow, workflows, Textos.Default_Workflow, new { @class = "responsivewidth" })
+                                    @Html.Hidden("filtroWorkflow", Model.Workflow)
+                                    @Html.Hidden("filtroTiempoMaxEntreActividades", Model.TiempoMaxEntreActividades)
+                                </div>
                             </div>
-                            <div class="span3 sinBorde">
-                                @Html.DropDownListFor(model => model.Workflow, workflows, Textos.Default_Workflow, new { @class = "responsivewidth" })
-                                @Html.Hidden("filtroWorkflow", Model.Workflow)
-                                @Html.Hidden("filtroTiempoMaxEntreActividades", Model.TiempoMaxEntreActividades)
+
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.TipoDocumentoDeIngreso, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.EnumDropDownListFor(model => model.TipoDocumentoDeIngreso, Textos.Default_Documento, new { @class = "responsivewidth" })
+                                    @Html.ValidationMessageFor(model => model.TipoDocumentoDeIngreso)
+                                    @Html.Hidden("filtroTipoDocumentoDeIngreso", Model.TipoDocumentoDeIngreso)
+                                </div>
                             </div>
-                            <div class="span1 span1-1">
-                                @Html.LabelFor(model => model.TipoDocumentoDeIngreso, new { @class = "control-label" })
-                            </div>
-                            <div class="span3 sinBorde">
-                                @Html.EnumDropDownListFor(model => model.TipoDocumentoDeIngreso, Textos.Default_Documento, new { @class = "responsivewidth" })
-                                @Html.ValidationMessageFor(model => model.TipoDocumentoDeIngreso)
-                                @Html.Hidden("filtroTipoDocumentoDeIngreso", Model.TipoDocumentoDeIngreso)
-                            </div>
-                            <div class="span1">
-                                @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
-                            </div>
-                            <div class="span2 sinBorde">
-                                @Html.TextBoxFor(model => model.Patente, new { @class = "patente-internacional uppercase responsivewidth" })
-                                @Html.Hidden("filtroPatente", Model.Patente)
+
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.TextBoxFor(model => model.Patente, new { @class = "patente-internacional uppercase responsivewidth" })
+                                    @Html.Hidden("filtroPatente", Model.Patente)
+                                </div>
                             </div>
                         </div>
-                        <div class="row-fluid">
-                            <div class="span1">
-                                @Html.LabelFor(model => model.ProximaAccion, new { @class = "control-label" })
+
+                        <div class="rowFiltros" style="margin-bottom:5px">
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.ProximaAccion, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.DropDownListFor(model => model.ProximaAccion, estados, Textos.Default_Estado, new { @class = "responsivewidth" })
+                                    @Html.Hidden("filtroProximaAccion", Model.ProximaAccion)
+                                </div>
                             </div>
-                            <div class="span3 sinBorde">
-                                @Html.DropDownListFor(model => model.ProximaAccion, estados, Textos.Default_Estado, new { @class = "responsivewidth" })
-                                @Html.Hidden("filtroProximaAccion", Model.ProximaAccion)
+
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.NumeroDocumentoDeIngreso, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.TextBoxFor(model => model.NumeroDocumentoDeIngreso, new { @class = "responsivewidth" })
+                                    @Html.Hidden("filtroNumeroDocumentoDeIngreso", Model.NumeroDocumentoDeIngreso)
+                                </div>
                             </div>
-                            <div class="span1 span1-1">
-                                @Html.LabelFor(model => model.NumeroDocumentoDeIngreso, new { @class = "control-label" })
+
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.TipoMaterial, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.EnumDropDownListFor(model => model.TipoMaterial, new { @class = "responsivewidth" })
+                                    @Html.ValidationMessageFor(model => model.TipoMaterial)
+                                    @Html.Hidden("filtroTipoMaterial", Model.TipoMaterial)
+                                </div>
                             </div>
-                            <div class="span3 sinBorde">
-                                @Html.TextBoxFor(model => model.NumeroDocumentoDeIngreso, new { @class = "responsivewidth" })
-                                @Html.Hidden("filtroNumeroDocumentoDeIngreso", Model.NumeroDocumentoDeIngreso)
+                        </div>
+
+                        <div class="rowFiltros">
+                            <div class="columnFiltro">
+                                <div class="labelFiltro">
+                                    @Html.LabelFor(model => model.TieneEntregador, new { @class = "control-label" })
+                                </div>
+                                <div>
+                                    @Html.EnumDropDownListFor(model => model.TieneEntregador, new { @class = "responsivewidth" })
+                                    @Html.ValidationMessageFor(model => model.TieneEntregador)
+                                    @Html.Hidden("filtroTieneEntregador", Model.TieneEntregador)
+                                </div>
                             </div>
-                            <div class="span3 sinBorde">
-                                @Html.CheckBoxFor(model => model.SoloDemorados)
-                                @Html.LabelFor(model => model.SoloDemorados)
-                                @Html.HiddenFor(model => model.SoloDemorados, new { id = "filtroSoloDemorados" })
+
+                            <div class="columnFiltro">
+                                <div class="inputEspecial">
+                                    @Html.CheckBoxFor(model => model.SoloDemorados)
+                                    @Html.LabelFor(model => model.SoloDemorados)
+                                    @Html.HiddenFor(model => model.SoloDemorados, new { id = "filtroSoloDemorados" })
+                                </div>
+                            </div>
+
+                            <div class="columnFiltro">
+                                <div class="inputEspecial">
+                                    @Html.CheckBoxFor(model => model.ExcluirRechazados)
+                                    @Html.LabelFor(model => model.ExcluirRechazados)
+                                    @Html.HiddenFor(model => model.ExcluirRechazados, new { id = "filtroExcluirRechazados" })
+                                </div>
                             </div>
                         </div>
                         <div class="row-fluid">

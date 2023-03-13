@@ -27,6 +27,8 @@ namespace Molinos.Scato.Dominio.Enums
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsAutomatizable")]
         EsAutomatizable,
         [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsInsectosVivos")]
-        EsInsectosVivos
+        EsInsectosVivos,
+        [Display(ResourceType = typeof(Textos), Name = "CaracteristicaDeCalidad_EsPesoHectolitrico")]
+        EsPesoHectolitrico
     }
 }

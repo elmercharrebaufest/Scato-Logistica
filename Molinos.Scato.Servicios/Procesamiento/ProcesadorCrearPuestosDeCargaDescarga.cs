@@ -23,7 +23,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Nombre = comando.Dto.Nombre,
                 PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.PuestoDeTrabajoId),
                 EsSojaSustentable = comando.Dto.EsSojaSustentable,
-                EsEspecial = comando.Dto.EsEspecial
+                EsEspecial = comando.Dto.EsEspecial,
+                CodigoSensorBajada = comando.Dto.CodigoSensorBajada
             };
         }
 
@@ -32,6 +33,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (Repositorio.Existe<PuestosDeCargaDescarga>(e => e.Codigo == comando.Dto.Codigo && e.Centro.Id == comando.Dto.CentroId && (e.Id != comando.Dto.Id)))
             {
                 resultado.Error("Codigo", Textos.Hidraulica_CodigoExistente);
+            }
+            if (Repositorio.Existe<PuestosDeCargaDescarga>(e => e.CodigoSensorBajada == comando.Dto.CodigoSensorBajada))
+            {
+                resultado.Error("CodigoSensorBajada", string.Format(Textos.Error_Existente, Textos.PuestosDeCargaDescarga_CodigoSensorBajada));
             }
         }
     }

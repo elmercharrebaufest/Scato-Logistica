@@ -16,7 +16,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                     .ForMember(x => x.AlmacenOrigenId, mat => mat.MapFrom(material => material.AlmacenOrigen.Id))
                     .ForMember(x => x.AlmacenOrigenDesc, mat => mat.MapFrom(material => material.AlmacenOrigen.Descripcion))
                     .ForMember(x => x.VariedadId, mat => mat.MapFrom(material => material.Variedad.Id))
-                    .ForMember(x => x.VariedadDesc, mat => mat.MapFrom(material => material.Variedad.Descripcion));
+                    .ForMember(x => x.VariedadDesc, mat => mat.MapFrom(material => material.Variedad.Descripcion))
+                    .ForMember(x => x.TipoEmbalajeId, mat => mat.MapFrom(material => material.TipoEmbalaje.Id));
             Mapper.CreateMap<MaterialDto, Material>();
         }
     }

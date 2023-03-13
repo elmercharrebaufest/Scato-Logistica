@@ -9,6 +9,7 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public int PuestoId { get; set; }
         public string Concentrador { get; set; }
+        public ConfigSensoresDto ConfigSensores { get; set; }
         public List<DispositivoGenericoDto> Sensores { get; set; }
         public EstadoSensoresBalanzaDto EstadoSensoresBalanzaDto{get;set;}
     }

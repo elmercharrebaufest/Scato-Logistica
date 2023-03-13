@@ -9,8 +9,11 @@ namespace Molinos.Scato.Dominio.Dto
         public long? CTG { get; set; }
         public int? CodigoONCA { get; set; }
         public string MaterialDescripcion { get; set; }
+        public int? TipoCartaPorte { get; set; }
         public bool TienePDF { get; set; }
+
         public DateTime? FechaCacheado { get; set; }
         public DateTime? FechaCPE { get; set; }
+        public DateTime? FechaUltimaActualizacion { get; set; }
     }
 }

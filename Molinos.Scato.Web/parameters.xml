@@ -232,4 +232,9 @@
 					    match="/configuration/appSettings/add[@key='ICWSServerUrl']
                             /@value" />
 	</parameter>
+	<parameter name="FotosPathLogALPR Config">
+		<parameterEntry kind="XmlFile" scope="Web.config"
+					    match="/configuration/appSettings/add[@key='FotosPathLogALPR']
+                            /@value" />
+	</parameter>
 </parameters>

@@ -257,9 +257,10 @@ $(document).ready(function () {
     $('#CTG').change(function () {
         var nroCTG = $('#CTG').val();
         var tarjeta = $('#Numero').val();
+        var esEpecial = $('#Especial').val();
         if ((nroCTG.length == 11 || nroCTG.length == 12) && $.isNumeric(nroCTG) && $('#cpe').is(':checked')) {
             BlockCupos($("#MensajeBuscandoCartaPorte").val());
-            $.getJSON($("#links").data().urlObtenerCpe, { numeroCtg: nroCTG, tarjeta: tarjeta }, function (data) {
+            $.getJSON($("#links").data().urlObtenerCpe, { numeroCtg: nroCTG, tarjeta: tarjeta, esEpecial: esEpecial}, function (data) {
                 if (data.CodigoDeError == 1) {
                     MostrarAlertaInfo(data.Error);
                 } else if (data.CodigoDeError == 3 || data.CodigoDeError == 4) {
@@ -276,6 +277,12 @@ $(document).ready(function () {
                         if (!data.Cpe.Cupo == null || !data.Cpe.Cupo == '') {
                             $("#Cupo").val(validacionLongitudCupoAFIP(data.Cpe.Cupo));
                         }
+                        if (!data.Cpe.RtteComercialCodigoSap == null || !data.Cpe.RtteComercialCodigoSap == '') {
+                            $("#RtteComercialCodigoSap").val(data.Cpe.RtteComercialCodigoSap);
+                        }
+                        if (!data.Cpe.TitularCartaPorteCodigoSap == null || !data.Cpe.TitularCartaPorteCodigoSap == '') {
+                            $("#TitularCartaPorteCodigoSap").val(data.Cpe.TitularCartaPorteCodigoSap);
+                        }
                     }
 
                     if (data.CodigoDeError == 4) {
@@ -283,7 +290,11 @@ $(document).ready(function () {
                     }
 
                     $('#checkSinCupo').prop('checked', false);
-                    SetearFotoCP(data.PdfImageBase64 ? "" : "error", data.PdfImageBase64, $("#CodigoCamaraCPDir").val());
+                    if (esEpecial == "true") {
+                        SetearFotoCP(data.PdfImageSustentableBase64 ? "" : "error", data.PdfImageSustentableBase64, $("#CodigoCamaraCPDir").val(), true);
+                    } else {
+                        SetearFotoCP(data.PdfImageBase64 ? "" : "error", data.PdfImageBase64, $("#CodigoCamaraCPDir").val(), false);
+                    }
                 } else {
                     MostrarAlertaError(data.Error);
                 }
@@ -383,9 +394,13 @@ function TomarFotoCP() {
     }
 }
 
-function SetearFotoCP(error, imagen, directorio) {
+function SetearFotoCP(error, imagen, directorio, esSustentable) {
     if (error === "") {
-        $('#ImagenCartaPorte').val(imagen);
+        if (esSustentable) {
+            $('#ImagenCartaPorteSustentable').val(imagen);
+        } else {
+            $('#ImagenCartaPorte').val(imagen);
+        }
         $('#FotoRutaDestino').val(directorio);
         $('#imagen-cp').load(function () {
             UnblockCupos();
@@ -515,6 +530,7 @@ function DisabledControlers(status) {
     $('#checkvalidarPatente').prop('checked', true);
     $('#checkvalidarPatente').trigger("change");
     $('#checkSinCupo').prop('checked', status);
+    $('[name="SinCupo"]').val(status);
     //$('#checkvalidarPatente').prop('disabled', status);
     $('#checkSinCupo').prop('disabled', status);
     $('#Cupo').prop('readonly', status);
@@ -612,6 +628,7 @@ function ConfiguracionNoGranosActiva() {
     $('#NumeroCartaPorte').attr('disabled', true);
     $('#CTG').attr('disabled', true);
     $('#checkSinCupo').attr('checked', true);
+    $('[name="SinCupo"]').val(true);
     $("#Cupo").val("MOL1111/11111111");
     $('#divSpan6').removeClass('error');
     $("label[for*='Patente']").text("Patente");
@@ -629,6 +646,7 @@ function ConfiguracionNoGranosInactiva() {
     //$('#NumeroCartaPorte').attr('disabled', false);
     $('#CTG').attr('disabled', false);
     $('#checkSinCupo').attr('checked', false)
+    $('[name="SinCupo"]').val(false);
     $("#Cupo").val("");
     $("label[for*='Patente']").text("Patente AFIP");
     $('#Patente').prop('readonly', true);

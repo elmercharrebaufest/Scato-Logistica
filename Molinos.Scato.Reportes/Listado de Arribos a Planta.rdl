@@ -207,7 +207,7 @@ SELECT r.Centro_Id
       ,ISNULL(r.PesoBruto - r.PesoTara,0) as Kilogramosneto
      ,r.TipoDocumentoIngreso
      ,cp.CodEstab
-	 ,CASE WHEN meac.id is not null and R.Rechazado = 0
+	 ,CASE WHEN meac.id is not null and R.Rechazado = 0 and meac.EsPreLote is null
 		  THEN 'SI'
 		  ELSE 'NO'
 	      END as Camara

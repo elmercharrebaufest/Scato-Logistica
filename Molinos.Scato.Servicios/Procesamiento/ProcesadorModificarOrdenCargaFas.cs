@@ -26,6 +26,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var material = Repositorio.Obtener<Material>(comando.Orden.MaterialId);
             var recorrido = Repositorio.Obtener<Recorrido>(comando.Orden.RecorridoId);
             var localidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId);
+            var pagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId);
+            var corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId);
+            var comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId);
+            var remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId);
 
             var ordenCargaFas = Repositorio.Obtener<OrdenCargaFas>(comando.Orden.Id);
 
@@ -51,7 +55,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Tipo Comercial",
-                    ValorOriginal = ordenCargaFas.TipoComercial.Descripcion,
+                    ValorOriginal = ordenCargaFas.TipoComercial?.Descripcion,
                     ValorNuevo = tipoComercial.Descripcion,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,
@@ -64,7 +68,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Material",
-                    ValorOriginal = ordenCargaFas.Material.Descripcion,
+                    ValorOriginal = ordenCargaFas.Material?.Descripcion,
                     ValorNuevo = material.Descripcion,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,
@@ -90,7 +94,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaCampos.Add(new LogModificacionDocumentoIngresoCampo
                 {
                     Nombre = "Chofer",
-                    ValorOriginal = ordenCargaFas.Chofer.Nombre + " " + ordenCargaFas.Chofer.Apellido,
+                    ValorOriginal = ordenCargaFas.Chofer != null ? ordenCargaFas.Chofer.Nombre + " " + ordenCargaFas.Chofer.Apellido : "",
                     ValorNuevo = chofer.Nombre + " " + chofer.Apellido,
                     LogModificacionDocumentoIngreso = logModificacionDocumento,
                     Fecha = DateTime.Now,
@@ -142,11 +146,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 recorrido.NumeroDocumentoIngreso = comando.Orden.NumeroOrden;
             }
 
+            #region Campos para Derivado Granario
+            ordenCargaFas.PlantaDGDestino = comando.Orden.PlantaDGDestino;
+            ordenCargaFas.OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino;
+            ordenCargaFas.TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino;
+            ordenCargaFas.PagadorFlete = pagadorFlete;
+            ordenCargaFas.CuitDestinatario = comando.Orden.CuitDestinatario;
+            ordenCargaFas.Corredor = corredor;
+            ordenCargaFas.Comisionista = comisionista;
+            ordenCargaFas.Remitente = remitente;
+            #endregion
+
             recorrido.Patente = comando.Orden.PatenteCamion;
             recorrido.Chofer = chofer;
             recorrido.Transportista = transportista;
             recorrido.TipoComercial = tipoComercial;
             recorrido.Material = material;
+            if(comando.Orden.ActualizarTipoVehiculo)
+            {
+                recorrido.TipoVehiculo = comando.Orden.TipoVehiculo;
+            }
         }
 
         protected override void Validar(ModificarOrdenCargaFas comando, Resultado resultado)

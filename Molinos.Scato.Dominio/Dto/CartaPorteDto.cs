@@ -392,10 +392,6 @@ namespace Molinos.Scato.Dominio.Dto
                 {
                     yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_FechaCP), new[] { "FechaCP" });
                 }
-                if (FechaVto == null)
-                {
-                    yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_FechaVto), new[] { "FechaVto" });
-                }
                 if (TipoDeWorkflow == TipoDeWorkflow.Ingreso && string.IsNullOrEmpty(CTG))
                 {
                     yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CTG), new[] { "CTG" });
@@ -439,12 +435,6 @@ namespace Molinos.Scato.Dominio.Dto
                 yield return new ValidationResult(string.Format(Textos.Error_FechaMenor + Textos.CartaPorte_FechaIngreso, Textos.CartaPorte_FechaCP), new[] { "FechaCP" });
             }
 
-            
-            if (FechaVto != null && FechaEmision.Date > FechaVto.Date)
-            {
-                yield return new ValidationResult(string.Format(Textos.Error_FechaMayor + FechaEmision.Date + FechaVto.Date, Textos.CartaPorte_FechaVto), new[] { "FechaVto" });
-            }
-
             if (RequiereCupo && (Cupo == null || !(new Regex(@"^MOL[0-9]{4}\/[0-9]{8}$").Match(Cupo).Success)))
             {
                 yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_Cupo), new[] { "Cupo" });
@@ -468,7 +458,7 @@ namespace Molinos.Scato.Dominio.Dto
             {
                 if (this.Cpe)
                 {
-                    return "000" + this.NroCartaPorte.Substring(Math.Max(0, this.NroCartaPorte.Length - 9));
+                    return "000" + this.NroCartaPorte.Trim().Substring(Math.Max(0, this.NroCartaPorte.Trim().Length - 9));
                 }
 
                 return this.NroCartaPorte;
@@ -536,5 +526,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string RepresentanteRecibidor { get; set; }
         public int? RepresentanteRecibidorId { get; set; }
         public string RepresentanteRecibidorCuil { get; set; }
+        public string FotoRutaSustentable { get; set; }
     }
 }

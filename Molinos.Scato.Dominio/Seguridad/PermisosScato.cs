@@ -210,6 +210,10 @@ namespace Molinos.Scato.Dominio.Seguridad
         DocumentoExterno = 99,
         [Display(ResourceType = typeof(Textos), Name = "AbmCategoriaCamiones")]
         AbmCategoriaCamiones = 604,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionCalleHidraulica")]
+        AbmConfiguracionCalleHidraulica = 701,
+        [Display(ResourceType = typeof(Textos), Name = "AbmExcepcionAlControlProveedor")]
+        AbmExcepcionAlControlProveedor = 702,
 
         //Permisos Actividades
         [Display(ResourceType = typeof(Textos), Name = "ActAutorizarDescuentosEntregador")]
@@ -412,6 +416,12 @@ namespace Molinos.Scato.Dominio.Seguridad
         CamionDemorado = 198,
         [Display(ResourceType = typeof(Textos), Name = "ActEnEsperaHB4")]
         EnEsperaHB4= 199,
+        [Display(ResourceType = typeof(Textos), Name = "ActEsperaConfirmacion")]
+        ActividadEsperaConfirmacion = 700,
+        [Display(ResourceType = typeof(Textos), Name = "ActAltaCTGDG")]
+        ActividadAltaCTGDG = 703,
+        [Display(ResourceType = typeof(Textos), Name = "ActBajaCTGDG")]
+        ActividadBajaCTGDG = 704, 
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]
@@ -491,7 +501,11 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "CamionesPendientesMesa")]
         CamionesPendientesMesa = 236,
         [Display(ResourceType = typeof(Textos), Name = "CamionesPendientesNoGranos")]
-        CamionesPendientesNoGranos = 258,
+        CamionesPendientesNoGranos = 258, 
+        [Display(ResourceType = typeof(Textos), Name = "ConfirmacionCargaDescarga")]
+        ConfirmacionCargaDescarga = 612,
+        [Display(ResourceType = typeof(Textos), Name = "ContingenciaPesosExcedentes")]
+        ContingenciaPesosExcedentes = 613,
 
         [Display(ResourceType = typeof(Textos), Name = "DestinoPuerto")]
         DestinoPuerto = 237,
@@ -546,6 +560,14 @@ namespace Molinos.Scato.Dominio.Seguridad
         VisualizarVideoCamarasExportacion = 263,
         [Display(ResourceType = typeof(Textos), Name = "MonitorCPECacheada")]
         MonitorCPECacheada = 264,
+        [Display(ResourceType = typeof(Textos), Name = "AbmBarrera")]
+        AbmBarrera = 265,
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionEficienciaCalado")]
+        AbmConfiguracionEficienciaCalado = 266,
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasCalador1")]
+        VisualizarVideoCamarasCalador1 = 267,
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasCalador2")]
+        VisualizarVideoCamarasCalador2 = 268,
 
         //Permisos Notificaciones
         Balanceros = 300,
@@ -722,5 +744,11 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "VerRevertirRechazoVagones")]
         VerRevertirRechazoVagones = 608,
 
+        [Display(ResourceType = typeof(Textos), Name = "AbmConfiguracionSensores")]
+        AbmConfiguracionSensores = 609,
+        [Display(ResourceType = typeof(Textos), Name = "Proveedor_EnvioCamaraInase")]
+        EnvioCamaraInase = 610,
+        [Display(ResourceType = typeof(Textos), Name = "ArmarLoteInase")]
+        ArmarLoteInase = 611,
     }
 }

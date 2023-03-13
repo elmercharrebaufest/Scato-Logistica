@@ -609,4 +609,179 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ErrorCacheoAfipCPE" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9b4a874e-e6d9-470b-b6e2-ecb7827dbf91" ChangeDateTime="08/15/2022 20:40:46">
+    <Property Name="ElementName" Value="[dbo].[LogDispositivo].[PuestroDeTrabajo_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogDispositivo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PuestoDeTrabajo_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="290f8694-c1ac-4c87-91c1-71b6f791395e" ChangeDateTime="08/24/2022 15:10:11">
+    <Property Name="ElementName" Value="[dbo].[LogDispositivo].[Valor]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogDispositivo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ValorAnterior" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f014e20f-fb49-4be9-b320-2ea5bc03728f" ChangeDateTime="09/06/2022 20:55:32">
+    <Property Name="ElementName" Value="[dbo].[Material].[Color]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Material]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ColorFondo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5e059e74-cc01-4bfb-b9bf-343afac3bff5" ChangeDateTime="10/18/2022 19:35:23">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[CodigoDispositivo]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Camara" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d096a0e5-bcc0-4b08-9e35-b3c919ced204" ChangeDateTime="10/18/2022 19:37:38">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoUrl]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FotoPath" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9a35db49-a488-4f34-b759-9e175082e72f" ChangeDateTime="10/18/2022 20:31:22">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoPath]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FotoRuta" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6b744c08-ffe4-4369-a647-43d70bcc7811" ChangeDateTime="10/18/2022 20:31:46">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[FotoFileName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Motivo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1308a5a2-ff83-4a02-b5bd-a2ab035d2796" ChangeDateTime="10/18/2022 20:32:14">
+    <Property Name="ElementName" Value="[dbo].[LogLecturaDeTarjeta].[Camara]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogLecturaDeTarjeta]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CodigoDispositivo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e470065c-1c90-4783-8f92-922a25323cf4" ChangeDateTime="10/31/2022 19:37:29">
+    <Property Name="ElementName" Value="[dbo].[LlamadoAutomaticoHidraulica].[FechaUltModificacion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LlamadoAutomaticoHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FechaUltimaModificacion" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="30a25a2f-5127-491e-976d-f65f591c4be2" ChangeDateTime="10/31/2022 19:39:09">
+    <Property Name="ElementName" Value="[dbo].[LlamadoAutomaticoHidraulica].[FechaUltimaModificacion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LlamadoAutomaticoHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UltimaPatenteLlamada" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0b991b39-fe42-4b89-84b2-19258bc760c6" ChangeDateTime="11/08/2022 15:58:52">
+    <Property Name="ElementName" Value="[dbo].[ConfiguracionCalleHidraulica].[CodigoGrupoHidraulicaAutomatica]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfiguracionCalleHidraulica]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CodigoSensorCamaraALPR" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="acd5ca91-601c-4722-b9b1-cae20e643c76" ChangeDateTime="11/23/2022 16:45:25">
+    <Property Name="ElementName" Value="[dbo].[ConfirmacionCargaDescarga].[Lote_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfirmacionCargaDescarga]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Recorrido_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8b169238-d5d4-4cd0-ab6b-4b7c3f62a77a" ChangeDateTime="11/25/2022 20:31:53">
+    <Property Name="ElementName" Value="[dbo].[ConfirmacionCargaDescarga].[EstaConfirmado]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ConfirmacionCargaDescarga]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Confirmado" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="00074de6-c57b-4d6e-bc7f-7a540bccfc86" ChangeDateTime="12/01/2022 19:06:32">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[FechaUltimaModificacion ]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FechaUltimaModificacion" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b4b550bf-d566-4c0f-8a56-efcd17e5415e" ChangeDateTime="12/05/2022 19:47:33">
+    <Property Name="ElementName" Value="[dbo].[HistorialMensajeCartelLed].[FilaId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HistorialMensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CalleId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="293109d0-5797-43fb-af90-8527d5228572" ChangeDateTime="12/12/2022 15:48:25">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[HistorialCartelLed_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HistorialCartelLedId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a5d3bba7-b599-4d03-8328-10cd284a7afa" ChangeDateTime="12/12/2022 15:48:37">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLed].[HistorialCartelLedId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLed]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HistorialMensajeCartelLedId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a19290fe-eb17-4f8c-8210-0c91845df0ef" ChangeDateTime="12/21/2022 20:21:18">
+    <Property Name="ElementName" Value="[dbo].[Balanza].[EstaContingenciaExcedentesHabilitada]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Balanza]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ContingenciaExcedentesHabilitada" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4221419f-1207-4523-adfc-9c8f5bab089d" ChangeDateTime="12/22/2022 20:45:17">
+    <Property Name="ElementName" Value="[dbo].[MensajeCartelLedCalador].[CalleCalador_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MensajeCartelLedCalador]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Calle_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="13f24517-544b-422d-a275-b4c0742a0cbc" ChangeDateTime="01/09/2023 22:30:12">
+    <Property Name="ElementName" Value="[dbo].[Domicilio].[CodigoSAP]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Domicilio]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Tipo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c0e5e450-6be7-4e32-9334-d3ced8a7329a" ChangeDateTime="01/09/2023 22:30:18">
+    <Property Name="ElementName" Value="[dbo].[Domicilio].[Descripcion]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Domicilio]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Orden" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="512f3edf-b98c-4904-99e9-2b3bbcd0e721" ChangeDateTime="01/11/2023 14:52:03">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaFas].[NroCPE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaFas]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Sucursal" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9adbb80a-e568-4764-bbba-95d0adb69499" ChangeDateTime="01/26/2023 15:49:36">
+    <Property Name="ElementName" Value="[dbo].[BajaCTG].[Orde]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[BajaCTG]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OrdenDeDescargaFason_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c7e811aa-bee6-4175-9879-c44d267ff5f6" ChangeDateTime="01/30/2023 19:49:04">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[CuitPagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="aaf6c0e5-b9e4-4b64-befe-00ee3772a87b" ChangeDateTime="01/30/2023 19:49:12">
+    <Property Name="ElementName" Value="[dbo].[OrdenCargaInternaFason].[PagadorFlete]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[OrdenCargaInternaFason]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PagadorFlete_Id" />
+  </Operation>
 </Operations>

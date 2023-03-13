@@ -18,28 +18,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public Calle Ejecutar(DbContext contexto)
         {
-            var ultimoCamionAsignado = UltimoCamionAsignado(contexto);
-            Calle calleDisponible = null;
-            if (ultimoCamionAsignado != null)
-            {
-                calleDisponible = ObtenerCalleIncompletaDelUltimoCamionAsignado(contexto, ultimoCamionAsignado.Calle.Id);
-            }
+            Calle calleDisponible = ObtenerCalleLibre(contexto);
 
             if (calleDisponible == null)
             {
-                calleDisponible = ObtenerSiguienteCalleVacia(contexto, ultimoCamionAsignado);
+                calleDisponible = ObtenerCalleSobreasignacion(contexto);
             }
-
-            if (calleDisponible == null)
-            {
-                calleDisponible = ObtenerSiguienteCalleIncompletaLiberada(contexto);
-            }
-
-            if (calleDisponible == null)
-            {
-                calleDisponible = ObtenerSiguienteCalleIncompleta(contexto);
-            }
-
+          
             return calleDisponible;
         }
 
@@ -138,6 +123,27 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             }
 
             return calle;
+        }
+
+        private Calle ObtenerCalleLibre(DbContext contexto)
+        {
+            return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle 
+                                               && !x.Deshabilitada 
+                                               && (x.Material.Id == materialId || x.Material == null) 
+                                               && contexto.Set<CallePorRecorrido>().Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id) < x.CantidadDeCamiones)
+                                              .FirstOrDefault();
+        }
+
+        private Calle ObtenerCalleSobreasignacion(DbContext contexto)
+        {
+            return contexto.Set<CallePorRecorrido>().Where(y => y.Calle.TipoCalle == tipoCalle
+                                                          && y.Calle.Material.Id == materialId
+                                                          && y.FechaEgreso == null 
+                                                          && (y.CargaDeCupo.Material.Id == materialId || y.Recorrido.Material.Id == materialId)
+                                                          && !y.Calle.Deshabilitada)
+                                                          .OrderByDescending(x => x.FechaIngeso)
+                                                          .Select(x => x.Calle)
+                                                          .FirstOrDefault();
         }
     }
 }

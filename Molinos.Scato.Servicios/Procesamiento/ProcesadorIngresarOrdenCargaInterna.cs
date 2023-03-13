@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var almacen = Repositorio.Obtener<Almacen>(comando.Orden.Almacen_Id);
                     var calle = Repositorio.Obtener<Calle>(comando.Orden.Calle_Id);
 
-                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId,Usuario = comando.Usuario, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaInterna, Material = material, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, FechaInicio = DateTime.Now, WorkflowDefinicion = workflowDefinicion, TipoVehiculo = comando.Orden.TipoVehiculo, Almacen = almacen, Calle = calle};
+                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId,Usuario = comando.Usuario, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaInterna, Material = material, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, FechaInicio = DateTime.Now, WorkflowDefinicion = workflowDefinicion, TipoVehiculo = comando.Orden.TipoVehiculo, Almacen = almacen, Calle = calle, MotivoDemora = comando.Orden.MotivoDemora, VehiculoDemorado = comando.Orden.Demorado, Rechazado = comando.Orden.Rechazado};
                     Repositorio.Agregar(recorrido);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);
 
@@ -53,8 +53,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Recorrido = recorrido,
                             FechaCreacion = DateTime.Now,
                             KmRecorrer = comando.Orden.KmARecorrer,
-                            LocalidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId)
-                        };
+                            LocalidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId),
+                            DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
+                            PlantaDGDestino = comando.Orden.PlantaDGDestino,
+                            OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
+                            PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
+                            TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
+                    };
 
                     Repositorio.Agregar(ordenCargaInterna);
                     Repositorio.GuardarCambios();

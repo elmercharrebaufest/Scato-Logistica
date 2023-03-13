@@ -16,7 +16,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string CEE { get; set; }
         [Required]
         public virtual DateTime FechaCP { get; set; }
-        [Required]
+        
         public virtual DateTime FechaVto { get; set; }
         [Required]
         public virtual DateTime FechaEmision { get; set; }
@@ -79,6 +79,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string NumeroPrecinto { get; set; }
         public virtual Transportista TransportistaTramo2 { get; set; }
         public virtual Proveedor PagadorFlete { get; set; }
-        public virtual Entregador RepresentanteRecibidor { get; set; }        
+        public virtual Entregador RepresentanteRecibidor { get; set; }
+        public virtual string FotoRutaSustentable { get; set; }
     }
 }

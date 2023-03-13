@@ -1,11 +1,11 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
     disableInputs();
     $(document).on('click', 'input:checkbox', function () {
         disableInputs();
     });
     $("td:nth-child(even)").addClass("even");
     $("td:nth-child(odd)").addClass("odd");
-    
+
     $("#VigenciaDesde").mask("99");
     $("#VigenciaHasta").mask("99");
     $.validator.addMethod("cosechaValida", function cosechaValidaF(EsCosecha, element) {
@@ -19,21 +19,20 @@
 
         return true;
     }, $('#EsCosecha').data().errorCosechaInvalida);
-    
+
     $.validator.addMethod("porcentajeValido", function (value, element) {
-        var valor = parseFloat(value.replace(',' , '.')).toFixed(2);
+        var valor = parseFloat(value.replace(',', '.')).toFixed(2);
         if (valor < 0 || valor > 100) {
             return false;
         }
         return true;
     }, $('#muestraAuditoria').data().errorPorcentajeInvalido);
-    
 
     $.validator.addMethod("dropDownVariedadId", function (value, element) {
         return value.length > 0 || ($('#esUva').is(':checked') == false);
     }, $('#dropDownVariedadId').data().errorRequerido);
 
-    $("#Clase").change(function() {
+    $("#Clase").change(function () {
         var $this = $(this);
         if ($this.val() == $this.data().claseGranel || $this.val() == "") {
             $("#Peso").val("").prop("disabled", true);
@@ -52,6 +51,16 @@ function disableInputs() {
     } else {
         $('.binpallet input').removeAttr('disabled');
         $('.binpallet select').removeAttr('disabled', 'disabled');
+    }
+
+    if ($('#esDerivadoGranario').is(':checked') == false) {
+        $('.esDerivadoGranario input').attr('disabled', 'disabled');
+        $('.esDerivadoGranario input').val(null);
+        $('.esDerivadoGranario select').attr('disabled', 'disabled');
+        $('.esDerivadoGranario select').val(null);
+    } else {
+        $('.esDerivadoGranario input').removeAttr('disabled');
+        $('.esDerivadoGranario select').removeAttr('disabled', 'disabled');
     }
 
     if ($('#esUva').is(':checked') == false) {

@@ -1,22 +1,25 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Enums;
+using System;
 using System.Collections.Generic;
-using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Dto
 {
     public sealed class MuestraEnvioACamaraDto
     {
         private string nroCartaPorte;
+
         //Mapeo Directo
         public int Id { get; set; }
+
         public string NombreUsuario { get; set; }
         public int CaladoId { get; set; }
         public int CamaraId { get; set; }
         public string NroMuestra { get; set; }
         public string NroMuestraTerceros { get; set; }
+
         public string NroCartaPorte
         {
-            get { return (nroCartaPorte ?? "0").Replace("-", "").Replace("R", "").PadLeft(12,'0'); }
+            get { return (nroCartaPorte ?? "0").Replace("-", "").Replace("R", "").PadLeft(12, '0'); }
             set { nroCartaPorte = value; }
         }
 
@@ -33,9 +36,10 @@ namespace Molinos.Scato.Dominio.Dto
         public string NroDocumento { get; set; }
         public bool GeneroMicroMuestras { get; set; }
         public bool HuboExcepcion { get; set; }
-        
+
         //Listar muestras consulta
         public string Actividad { get; set; }
+
         public string Material { get; set; }
         public string Vendedor { get; set; }
         public string Corredor { get; set; }
@@ -46,6 +50,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         //Listar muestra para archivo
         public string MaterialCodigoCamara { get; set; }
+
         public int? TitularCartaPorteId { get; set; }
         public string TitularCartaPorteCuil { get; set; }
         public string TitularCartaPorteMail { get; set; }
@@ -89,5 +94,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int? ProcedenciaCodigoPostal { get; set; }
         public int? ProcedenciaSubcodigoPostal { get; set; }
+        public bool? EsPreLote { get; set; }
     }
 }

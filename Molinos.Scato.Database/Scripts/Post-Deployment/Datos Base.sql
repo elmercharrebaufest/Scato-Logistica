@@ -140,6 +140,9 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 97) BEGIN INSERT INTO [Permi
 IF NOT EXISTS (select 1 from Permiso where Codigo = 98) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Transmision A Sap Manual', 0, 98, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 99) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('CP Otros Puertos', 0, 99, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 604) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Categoria Camiones',0,604, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 609) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Sensores',0,609, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 701) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Calle Hidraulica',0,701, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 702) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Excepcion Al Intermediario',0,702, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 100) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Descuentos Entregador', 1, 100, 'AutorizarDescuentosEntregador'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 101) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Autorizar Transportista Inhabilitado', 1, 101, 'AutorizarTransportistaInhabilitado'); END
@@ -241,7 +244,9 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 196) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 197) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Salida de centro Playa',1,197,'SalidaDeCentroPlaya'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 198) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Camion Demorado',1,198,'CamionDemorado'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 199) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('En Espera HB4',1,199,'EnEsperaHB4'); END
-
+IF NOT EXISTS (select 1 from Permiso where Codigo = 700) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Espera Confirmacion', 1, 700, 'EsperaConfirmacion'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 703) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Alta CTGDG', 1, 703, 'AltaCTGDG'); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 704) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Actividad Baja CTGDG', 1, 704, 'BajaCTGDG'); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 200) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('IniciarWorkflow', 1, 200, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 201) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Armar Lote', 0, 201, NULL); END
@@ -294,6 +299,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 247) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 248) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EmbarquesPorBuques', 1, 248, 'Embarques por Buques'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 262) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Pinchazos por Calada', 0, 262, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 263) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion', 0, 263, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 611) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Armar Lote de Inase', 0, 611, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 249) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalle', 1, 249, 'Estado De Calle'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 250) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('EstadoDeCalleLlamar', 1, 250, 'Estado De Calle - Llamar'); END
@@ -309,6 +315,10 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 259) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 260) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Llamado De Filas Automatico', 1, 260, 'LlamadoDeFilasAutomatico'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 261) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Cambio De Material En Filas', 1, 261, 'CambioDeMaterialEnFilas'); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 264) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Monitor CPEs Cacheadas', 0, 264, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 265) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Barrera', 0, 265, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 266) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Abm Configuracion Eficiencia Calado', 0, 266, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 267) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 1', 0, 267, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 268) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Visualizar Video Camaras Calador 2', 0, 268, NULL); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 300) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Balanceros', 2, 300, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 301) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Administradores', 2, 301, NULL); END
@@ -400,6 +410,10 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 606) BEGIN INSERT INTO [Perm
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ver Balanzas Pesada',1,607, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 608) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Ver Revertir Rechazo Vagones',1,608, NULL); END
+
+IF NOT EXISTS (select 1 from Permiso where Codigo = 610) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Envío Muestra INASE',1,610, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 612) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Confirmación Carga/Descarga', 1, 612, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 613) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Contingencia Pesos Excedentes', 1, 613, NULL); END
 
 --IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
@@ -538,6 +552,7 @@ IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'EtiquetaRubros
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'AsigRecorrCtrolCalid') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid', 'AsigRecorrCtrolCalid') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'ImpGaritaSalida') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('ImpGaritaSalida', 'ImpGaritaSalida', 'ImpGaritaSalida') END
 IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaDePorteElectronica') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaDePorteElectronica', 'Impresion de Carta de Porte Electronica', 'CartaDePorteElectronica') END
+IF NOT EXISTS (select 1 from DocumentoDeImpresion where Codigo = 'CartaPorteElectronicaDerivadoGranario') BEGIN INSERT INTO [DocumentoDeImpresion]([Codigo],[Descripcion],[DescripcionCorta]) VALUES ('CartaPorteElectronicaDerivadoGranario', 'Impresion de CPE Derivado Granario', 'CartaPorteElectronicaDerivadoGranario') END
 
 
 
@@ -1162,11 +1177,30 @@ BEGIN
 	INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('GaritaIngresoAsignarCalle', 3, 'PARE', '01', '02', '00', 0, 'Se limpia el cartel', 1)
 END
 
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador1' AND mcl.Orden = 1) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador1', 1, '{1}', '01', '01', '00', 0, '{1}: patente del camion', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador1' AND mcl.Orden = 2) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador1', 2, '{0}', '01', '01', '01', 0, '{0}: nombre de calle asignada', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador1' AND mcl.Orden = 3) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador1', 3, 'PARE', '01', '02', '00', 0, 'Se limpia el cartel', 1) END
+
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador2' AND mcl.Orden = 1) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador2', 1, '{1}', '01', '01', '00', 0, '{1}: patente del camion', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador2' AND mcl.Orden = 2) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador2', 2, '{0}', '01', '01', '01', 0, '{0}: nombre de calle asignada', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPrecaladoCalador2' AND mcl.Orden = 3) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPrecaladoCalador2', 3, 'PARE', '01', '02', '00', 0, 'Se limpia el cartel', 1) END
+
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 1) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 1, '', '01', '01', '01', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 2) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 2, '', '01', '01', '02', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 3) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 3, '', '01', '01', '03', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 4) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 4, '', '01', '01', '04', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 5) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 5, '', '01', '01', '05', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 6) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 6, '', '01', '01', '06', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 7) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 7, '', '01', '01', '07', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'CartelPreBalanza' AND mcl.Orden = 8) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('CartelPreBalanza', 8, '', '01', '01', '08', 0, '', 1) END
+
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaLimpiarCartelLed') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaLimpiarCartelLed', 1, '', '01', '01', '00', 0, 'Se limpia el cartel', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaAvanzarCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaAvanzarCamion', 1, 'Avance, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaRetrocederCamion') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('BalanzaRetrocederCamion', 1, 'Retroceda, no esta bien posicionado', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePrecaladoACalar') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePrecaladoACalar', 1, 'asignado a', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePostcalado') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePostcalado', 1, 'Avance a garita de salida - ', '01', '01', '00', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoAutomaticoVolcadoras') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoAutomaticoVolcadoras', 1, '', '01', '01', '00', 0, '', 1) END
 
-GO
 GO
 
 --Celdas de Mano de Embarque
@@ -1377,3 +1411,107 @@ GO
 --Entidades con Tipos De Actividad
 IF NOT EXISTS (SELECT 1 FROM EntidadTipoDeActividad WHERE Entidad_Id = (SELECT Id FROM Entidad WHERE Codigo = 'EVIST') AND TipoDeActividad_Id = (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) BEGIN INSERT INTO EntidadTipoDeActividad VALUES((SELECT Id FROM Entidad WHERE Codigo = 'EVIST'), (SELECT Id FROM TipoDeActividad WHERE Codigo = 'TRECH')) END
 GO
+
+--Configuraciones Generales
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'AFIP' AND  Nombre = 'ConsultasParalelas' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('AFIP', 'ConsultasParalelas', '1', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EficienciaCalado' AND  Nombre = 'EficienciaCalles' AND  Centro_Id = 5) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EficienciaCalado', 'EficienciaCalles', '[]', 5, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EficienciaCalado' AND  Nombre = 'HorarioTurno' AND  Centro_Id = 5) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EficienciaCalado', 'HorarioTurno', '{"HoraEntrada":"08:00","HoraSalida":"20:00"}', 5, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'LimiteFilasLlamadas' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'LimiteFilasLlamadas', '6', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MuestraInase' AND  Centro_Id IS NULL) 
+BEGIN INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) 
+VALUES	('MuestraInase', 'MailDestino', 'info@bolsatech.com.ar', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'MuestraInase' AND  Centro_Id = 5) 
+BEGIN INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) 
+VALUES	('MuestraInase', 'MailDestinatarios', 'carlos.cortina@molinosagro.com.ar;sergio.schoeder@molinosagro.com.ar;sergio.schoeder@molinosagro.com.ar', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Responsable', 'Carlos Cortina', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Contacto', 'Email: carlos.cortina@molinosagro.com.ar', 5, GETDATE(), 'SCATO'),
+		('MuestraInase', 'Horario', 'L a V de 8 a 14hs', 5, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'CartelLedCalador' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'CartelLedCalador', '', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'Calador 1' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'Calador 1', 'Calle 1 o 2', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePreCalado' AND  Nombre = 'Calador 2' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePreCalado', 'Calador 2', 'Calle 3 o 4', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PreLote' AND  Nombre = 'HorarioNocturnoDesde' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PreLote', 'HorarioNocturnoDesde', '21', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'PreLote' AND  Nombre = 'HorarioNocturnoHasta' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('PreLote', 'HorarioNocturnoHasta', '7', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoDeCallePostCalado' AND  Nombre = 'CartelLedPostCalado' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoDeCallePostCalado', 'CartelLedPostCalado', '', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoPlayaInterna' AND  Nombre = 'CartelLedPreBalanza' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoPlayaInterna', 'CartelLedPreBalanza', '', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoVolcadoras' AND  Nombre = 'CartelLedIntervalo' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoVolcadoras', 'CartelLedIntervalo', '5000', NULL, GETDATE(), 'SCATO')
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJVOL','MPSOJVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPTRPVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (13,'MPTRPVOL','MPTRPVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZVOL','MPMAZVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPGIRVOL') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (5,'MPGIRVOL','MPGIRVOL',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJINV','MPSOJINV',0)
+END
+
+IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZINV') 
+BEGIN 
+INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZINV','MPMAZINV',0)
+END

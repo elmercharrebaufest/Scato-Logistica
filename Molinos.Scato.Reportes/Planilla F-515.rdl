@@ -109,6 +109,7 @@ SET		@FechaSalidaDesdep = @FechaSalidaDesde
 SET		@FechaSalidaHastap = @FechaSalidaHasta
 SET		@Patentep = @Patente
 SET		@Usuariop = @Usuario
+SET		@Materialp = @Material
 SET		@RecorridosActivosp = @RecorridosActivos
 SET		@NivelDeDetallep = @NivelDeDetalle
 SET		@TipoVehiculop = @TipoVehiculo
@@ -116,7 +117,6 @@ SET		@Workflowp = @Workflow
 SET		@BalanzaBrutop = @BalanzaBruto
 SET		@BalanzaTarap =@BalanzaTara
 SET		@CentroIdp = @CentroId
-SET		@Materialp = @Material
 SET		@TipoPesadap = @TipoPesada
 SET		@TipoComercialp = @TipoComercial
 SET		@TitularCPp = @TitularCP
@@ -202,16 +202,16 @@ AND
 (@Usuariop is null or Recorrido.Usuario = @Usuariop)
 AND
 Recorrido.Rechazado &lt;&gt; 1
-AND (Recorrido.Terminado = 1  or (Recorrido.Terminado = CASE (@RecorridosActivosp) WHEN 'SI' THEN 0 END))
+AND ((@RecorridosActivosp = -1) OR (Recorrido.Terminado = @RecorridosActivosp))
 AND ((workflow.TipoDeWorkflow = 0 AND Recorrido.PesoTaraFecha IS NOT NULL)  or (workflow.TipoDeWorkflow = 1 AND Recorrido.PesoBrutoFecha IS NOT NULL))
 AND (@NivelDeDetallep = 1 or @NivelDeDetallep = 2 or (@NivelDeDetallep = 3 AND Recorrido.Establecimiento_Id IS NOT NULL) or (@NivelDeDetallep = 4 AND (CP.BocaDestino_Id = @BocaDestinop or @BocaDestinop = 0)))
-AND ((@TipoVehiculop = -1) OR (Recorrido.TipoVehiculo = @TipoVehiculop))
+AND ((Recorrido.TipoVehiculo = @TipoVehiculop) OR (@TipoVehiculop = -2 AND Recorrido.TipoVehiculo IN (0,1,2,3,4,5)) OR (@TipoVehiculop = -1 AND Recorrido.TipoVehiculo IN (0,3,4,5)))
 AND (Recorrido.Workflow_Id = @Workflowp or @Workflowp = 0)
 AND (Recorrido.balanzabruto_id = @BalanzaBrutop or @BalanzaBrutop = 0)
 AND (Recorrido.balanzatara_id = @BalanzaTarap or @BalanzaTarap = 0)
 AND (Recorrido.centro_id = @CentroIdp or @CentroIdp = 0)
-AND (Recorrido.material_id = @Materialp or @Materialp = 0)
-AND (tp2.Id = @TipoPesadap or @TipoPesadap = 0)
+AND ((@Materialp = -1 AND Material.Esgrano = 1) OR (@Materialp = -2 AND Material.EsGrano = 0 AND Material.EsInsumo = 0) OR (@Materialp = -3 AND Material.EsInsumo = 1) OR (@Materialp = Recorrido.Material_Id) OR (@Materialp = 0))
+AND (tp2.Id = @TipoPesadap or @TipoPesadap = -1)
 
 AND (Recorrido.TipoComercial_Id = @TipoComercialp or @TipoComercialp = 0)
 AND (recorrido.workflow_id = @Workflowp or @Workflowp = 0)

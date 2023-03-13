@@ -28,7 +28,10 @@
     </div>
     <div class="pull-right">
         @Html.ActionLink(Textos.Rechazar, "Rechazar", "PuestoComando", new { Id = "RechazarSeleccionados", @class = "rechazar-boton btn btn-primary topRight disabled" })
-        @Html.ActionLink(Textos.AsignarSeleccionado, "Asignar", "PuestoComando", new { Ids = "" }, new { Id = "AsignarSeleccionados", @class = "ajax-editar-asignacion-link btn btn-primary pull-right topRight", @data_url = Url.Action("Asignar", "PuestoComando") })
+
+        <button id="AsignarSeleccionados" class="btn btn-primary pull-right topRight" data-url="@Url.Action("ValidarAsignar", "PuestoComando")" onclick="PuestoComandoAsignar(this)">@Textos.AsignarSeleccionado</button>
+
+        @*@Html.ActionLink(Textos.AsignarSeleccionado, "Asignar", "PuestoComando", new { Ids = "" }, new { Id = "AsignarSeleccionados", @class = "ajax-editar-asignacion-link btn btn-primary pull-right topRight", @data_url = Url.Action("Asignar", "PuestoComando") })*@
         @Html.ValidationMessage("AsignarSeleccionados", new { @class = "pull-right topRight", Id = "AsignarSeleccionadosValid" })
         @Html.Hidden("InstanceIds")
 
@@ -184,7 +187,7 @@
                                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "wsmall" })
                                 <div class="" id="tiposComerciales">
                                     @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control" })
-                                    
+
                                     @Html.Hidden("filtroTipoComercialId", Model.TipoComercialId)
                                 </div>
                             </div>
@@ -192,7 +195,7 @@
                                 @Html.LabelFor(model => model.TipoMaterial, new { @class = "wsmall" })
                                 <div class="controls">
                                     @Html.EnumDropDownListFor(model => model.TipoMaterial, new { @class = "control" })
-                                   
+
                                     @Html.Hidden("filtroTipoMaterial", Model.TipoMaterial)
                                 </div>
                             </div>
@@ -201,7 +204,7 @@
                                 <div class="controls">
                                     @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control" })
                                     @Html.HiddenFor(model => model.MaterialId)
-                                   
+
                                     @Html.Hidden("filtroMaterialId", Model.MaterialId)
                                 </div>
                             </div>
@@ -253,7 +256,7 @@
                             <div class="control-group control-group-puesto-comando">
                                 @Html.LabelFor(model => model.CalleId, new { @class = "wsmall" })
                                 <div class="controls">
-                                    @Html.DropDownListFor(model => model.CalleId,(IList<SelectListItem>)ViewBag.Calles, "Calles",new { @class = "control" })
+                                    @Html.DropDownListFor(model => model.CalleId, (IList<SelectListItem>)ViewBag.Calles, "Calles", new { @class = "control" })
                                     @Html.Hidden("filtroCalleId", Model.CalleId)
                                 </div>
                                 <button id="btn-filtrar" type="submit" class="btn" style="margin-bottom: 4px;float: right;margin-right: 72px;margin-top: 9px;">@Textos.Filtrar</button>
@@ -268,3 +271,13 @@
     </div>
     <div id="mensajeRechazar"> </div>
 </div>
+
+<div id="containerPuestoComandoAsignacion" />
+
+<script>
+    var config = {
+        urlList : {
+            mostrarAsignar : "@Url.Action("MostrarAsignar", "PuestoComando")"
+        }
+    }
+</script>

@@ -1,4 +1,6 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
 @using Molinos.Scato.Web.Helpers
 @model Molinos.Scato.Dominio.Dto.BalanzaDto
 @{
@@ -208,5 +210,22 @@ else
                 @Html.ValidationMessageFor(model => model.Desactivado)
             </div>
         </div>
+        @if (PermisosHelper.Is(PermisosScato.ContingenciaPesosExcedentes))
+        {
+            <div class="control-group">
+                @Html.LabelFor(model => model.ContingenciaExcedentesHabilitada, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.ContingenciaExcedentesHabilitada, new { @class = "input-large" })
+                    @Html.ValidationMessageFor(model => model.ContingenciaExcedentesHabilitada)
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(m => m.ToleranciaExcedida, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.ToleranciaExcedida, new { @class = "campoNumerico" })
+                    @Html.ValidationMessageFor(m => m.ToleranciaExcedida)
+                </div>
+            </div>
+        }
     </div>
 </div>

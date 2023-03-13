@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.Web</RootNamespace>
     <AssemblyName>Molinos.Scato.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44301</IISExpressSSLPort>
@@ -29,6 +29,9 @@
     <SccProvider>SAK</SccProvider>
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="BrockAllen.CookieTempData, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BrockAllen.CookieTempData.dll.1.2.1\lib\net45\BrockAllen.CookieTempData.dll</HintPath>
@@ -77,14 +83,41 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Activities.Extensions, Version=2.0.6.9, Culture=neutral, PublicKeyToken=23b0c89d0d5ad43f, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Activities.UnitTesting, Version=2.0.6.9, Culture=neutral, PublicKeyToken=30c1df11edd2bb96, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Activities.UnitTesting.2.0.6.9\lib\Net45\Microsoft.Activities.UnitTesting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.20.0\lib\net452\Microsoft.AI.DependencyCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.20.0\lib\net452\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.20.0\lib\net452\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.20.0\lib\net452\Microsoft.AI.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.20.0\lib\net452\Microsoft.AI.WindowsServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.20.0\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Log4NetAppender.2.20.0\lib\net452\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationServer.StoreManagement, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -102,6 +135,12 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.8\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
@@ -152,9 +191,14 @@
     <Reference Include="MvcReportViewer, Version=0.8.5816.27247, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvcReportViewer.0.8.3\lib\net45\MvcReportViewer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="NewRelic.Api.Agent, Version=8.50.0.0, Culture=neutral, PublicKeyToken=06552fced0b33d87, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.Agent.Api.8.32.0\lib\net45\NewRelic.Api.Agent.dll</HintPath>
+    </Reference>
+    <Reference Include="NewRelic.LogEnrichers.Log4Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0f1b6df23b18ab4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewRelic.LogEnrichers.Log4Net.1.1.1\lib\net45\NewRelic.LogEnrichers.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -199,10 +243,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Services" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
@@ -212,6 +262,10 @@
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\netstandard1.1\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
@@ -221,6 +275,10 @@
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
       <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -232,7 +290,7 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -271,9 +329,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -287,6 +343,7 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
@@ -317,6 +374,8 @@
       <DependentUpon>Errores.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterTelemetryProcessor.cs" />
+    <Compile Include="App_Start\RoleTelemetryInitializer.cs" />
     <Compile Include="App_Start\SignalRStartup.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Log4NetConfig.cs" />
@@ -328,11 +387,19 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\BajaCTGDGController.cs" />
+    <Compile Include="Controllers\AltaCTGDGController.cs" />
+    <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />
+    <Compile Include="Controllers\ConfiguracionSensoresController.cs" />
+    <Compile Include="Controllers\BarreraController.cs" />
+    <Compile Include="Controllers\EsperaConfirmacionController.cs" />
+    <Compile Include="Controllers\ConfiguracionEficienciaCaladoController.cs" />
+    <Compile Include="Controllers\ExcepcionAlControlProveedorController.cs" />
+    <Compile Include="Controllers\LoteInaseController.cs" />
     <Compile Include="Controllers\MonitorCPECacheadaController.cs" />
     <Compile Include="Controllers\BalanzaAutomaticaController.cs" />
     <Compile Include="Controllers\CaladoRechazarController.cs" />
     <Compile Include="Controllers\CategoriaCamionesController.cs" />
-    <Compile Include="Controllers\EnEsperaHB4Controller.cs" />
     <Compile Include="Controllers\NotificacionAplicacionController.cs" />
     <Compile Include="Controllers\DevolucionDeReciboMunicipalController.cs" />
     <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
@@ -533,6 +600,7 @@
     <Compile Include="Controllers\ReimpresionDeDocumentosController.cs" />
     <Compile Include="Controllers\VerificacionSalidaFleteController.cs" />
     <Compile Include="Controllers\VinedoTercerosController.cs" />
+    <Compile Include="Controllers\EnEsperaHB4Controller.cs" />
     <Compile Include="Controllers\VisteoController.cs" />
     <Compile Include="Controllers\IngresarOrdenCargaFasController.cs" />
     <Compile Include="Controllers\RomaneoController.cs" />
@@ -585,6 +653,7 @@
     <Compile Include="Controllers\VerificacionCamionRechazadoController.cs" />
     <Compile Include="CultureAwareQueryStringValueProvider.cs" />
     <Compile Include="CultureAwareQueryStringValueProviderFactory.cs" />
+    <Compile Include="Atributos\AiHandleErrorAttribute.cs" />
     <Compile Include="EXCEL\ExcelDetalleDeMovimientos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosPendientes.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
@@ -608,6 +677,7 @@
     <Compile Include="Helpers\ZPLImageConveter.cs" />
     <Compile Include="Models\ArchivosTxt\BahiaBlanca.cs" />
     <Compile Include="Models\ArchivosTxt\ListadoCamiones.cs" />
+    <Compile Include="Models\ArchivosTxt\MuestraInase.cs" />
     <Compile Include="Models\ArchivosTxt\OnccaRecibidas.cs" />
     <Compile Include="Models\ArchivosTxt\OnccaEmitidas.cs" />
     <Compile Include="Models\ArchivosTxt\Rosario02.cs" />
@@ -636,6 +706,7 @@
     <Compile Include="Models\ImpresionTarjetaDeAccesoModel.cs" />
     <Compile Include="Models\IngresoCIUModel.cs" />
     <Compile Include="Models\CambioModalidadPuestoModel.cs" />
+    <Compile Include="Models\ConfiguracionEficienciaCaladoViewModel.cs" />
     <Compile Include="Models\MonitorCPECacheadaViewModel.cs" />
     <Compile Include="Models\PesadaCargaExportacion.cs" />
     <Compile Include="Models\PlanillaF515ViewModel.cs" />
@@ -794,14 +865,19 @@
     </Content>
     <Content Include="MvcReportViewer.aspx" />
     <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Scripts\area\configuracionEficienciaCalado\index.js" />
     <Content Include="Scripts\area\monitorCPECacheada\index.js" />
+    <Content Include="Scripts\area\enEsperaHB4\index.js" />
     <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
+    <Content Include="Scripts\altaCTGDG.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
+    <Content Include="Scripts\barrera.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
     <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\notificacionAplicacion.js" />
     <Content Include="Scripts\devolucionDeReciboMunicipal.js" />
     <Content Include="Scripts\documentoExterno.js" />
@@ -826,6 +902,9 @@
     <Content Include="Content\fonts\icomoon.eot" />
     <Content Include="Content\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon.woff" />
+    <Content Include="ApplicationInsights.QA.config" />
+    <Content Include="ApplicationInsights.PRD.config" />
+    <Content Include="ApplicationInsights.config" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
@@ -1001,6 +1080,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Styles\area\listaDeCamiones\filtroDeCamiones.css" />
+    <Content Include="Styles\area\enEsperaHB4\index.css" />
+    <Content Include="Styles\area\pesada\pesada.css" />
+    <Content Include="Styles\area\shared\dialogModal.css" />
     <Content Include="Styles\area\shared\intercomunicador.css" />
     <Content Include="VICSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
@@ -1882,7 +1965,7 @@
     <Content Include="Views\MotivoQuiebreBarrera\Index.cshtml" />
     <Content Include="Views\MotivoQuiebreBarrera\Listar.cshtml" />
     <Content Include="Views\MotivoQuiebreBarrera\Modificar.cshtml" />
-    <Content Include="Views\PuestoComando\Asignar.cshtml" />
+    <Content Include="Views\PuestoComando\_Asignar.cshtml" />
     <Content Include="Views\ImprimirTarjetaDeAcceso\Index.cshtml" />
     <Content Include="Views\PuestoComando\ConfigurarTabla.cshtml" />
     <Content Include="Views\ReasignacionDeTarjeta\Index.cshtml" />
@@ -2273,14 +2356,12 @@
     <Content Include="Views\BalanzaAutomatica\PesadaVagones.cshtml" />
     <Content Include="Views\CamionesPendientesNoGranos\Index.cshtml" />
     <Content Include="Views\CamionDemorado\OrdenCargaFas.cshtml" />
-    <Content Include="Views\CamionDemorado\_OrdenFas.cshtml" />
     <Content Include="Views\RegistroInactividad\_Index.cshtml" />
     <Content Include="Views\CategoriaCamiones\_CrearModificar.cshtml" />
     <Content Include="Views\CategoriaCamiones\Crear.cshtml" />
     <Content Include="Views\CategoriaCamiones\Index.cshtml" />
     <Content Include="Views\CategoriaCamiones\Listar.cshtml" />
     <Content Include="Views\CategoriaCamiones\Modificar.cshtml" />
-    <Content Include="Views\EnEsperaHB4\Index.cshtml" />
     <Content Include="Views\Shared\Intercomunicador\_Intercomunicador.cshtml" />
     <Content Include="Views\Shared\Intercomunicador\_IntercomunicadorDispositivo.cshtml" />
     <Content Include="Views\Visteo\_VehiculoRechazado.cshtml" />
@@ -2288,6 +2369,42 @@
     <Content Include="Views\MonitorCPECacheada\_Listado.cshtml" />
     <Content Include="Views\MonitorCPECacheada\_Filtro.cshtml" />
     <Content Include="Views\MonitorCPECacheada\CPE.cshtml" />
+    <Content Include="Views\Barrera\Index.cshtml" />
+    <Content Include="Views\Barrera\Listar.cshtml" />
+    <Content Include="Views\Barrera\Crear.cshtml" />
+    <Content Include="Views\Barrera\_CrearModificar.cshtml" />
+    <Content Include="Views\Barrera\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\_CrearModificar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Index.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionSensores\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\_CrearModificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Index.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionEficienciaCalado\HorarioDeTurno.cshtml" />
+    <Content Include="Views\LoteInase\BuscarLote.cshtml" />
+    <Content Include="Views\LoteInase\Listar.cshtml" />
+    <Content Include="Views\LoteInase\ListarMuestas.cshtml" />
+    <Content Include="Views\LoteInase\Seleccionar.cshtml" />
+    <Content Include="Views\EnEsperaHB4\Index.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Index.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Listar.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Crear.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\Modificar.cshtml" />
+    <Content Include="Views\ConfiguracionCalleHidraulica\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\_CrearModificar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Crear.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Index.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Listar.cshtml" />
+    <Content Include="Views\ExcepcionAlControlProveedor\Modificar.cshtml" />
+    <Content Include="Views\BajaCTGDG\Index.cshtml" />
+    <Content Include="Views\AltaCTGDG\Index.cshtml" />
+    <Content Include="Views\CamionDemorado\OrdenCargaInterna.cshtml" />
+    <Content Include="Views\CamionDemorado\OrdenCargaInternaFason.cshtml" />
+    <Content Include="Views\Shared\_LayoutSinMenu.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2401,6 +2518,23 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.20.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.20.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.20.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.20.0\build\Microsoft.ApplicationInsights.DependencyCollector.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.20.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.20.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.WindowsServer.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ApplicationInsights.Web.2.20.0\build\Microsoft.ApplicationInsights.Web.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ApplicationInsights.Web.2.20.0\build\Microsoft.ApplicationInsights.Web.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.20.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.20.0\build\Microsoft.ApplicationInsights.PerfCounterCollector.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.WindowsServer.2.20.0\build\Microsoft.ApplicationInsights.WindowsServer.targets')" />
+  <Import Project="..\packages\Microsoft.ApplicationInsights.Web.2.20.0\build\Microsoft.ApplicationInsights.Web.targets" Condition="Exists('..\packages\Microsoft.ApplicationInsights.Web.2.20.0\build\Microsoft.ApplicationInsights.Web.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

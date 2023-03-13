@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -17,6 +13,11 @@ using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -27,20 +28,22 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IConfiguracionProvider configuracion;
         private readonly ILogger log;
         private readonly IListaDeWorkflows workflows;
+        private readonly IServicioComandos servicioComandos;
 
-        public CoordinacionController(ILogger log, IServicioRepositorio servicio,IServicioActividadFactory<ICoordinacionService> factory, IConfiguracionProvider configuracion, IListaDeWorkflows workflows)
+        public CoordinacionController(ILogger log, IServicioRepositorio servicio, IServicioActividadFactory<ICoordinacionService> factory, IConfiguracionProvider configuracion, IListaDeWorkflows workflows, IServicioComandos servicioComandos)
             : base(servicio)
         {
             this.log = log;
             this.factory = factory;
             this.configuracion = configuracion;
             this.workflows = workflows;
+            this.servicioComandos = servicioComandos;
         }
 
         public ActionResult Index(Guid id, int pagina = 1, string ordenarPor = "AnalisisDeCalidad", DirOrden dirOrden = DirOrden.Asc)
         {
             var recorrido = servicio.ObtenerRecorridoPorGuid(id);
-            
+
             Listar(recorrido, pagina, ordenarPor, dirOrden);
             return View(recorrido);
         }
@@ -143,8 +146,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var camaraExcepcion = servicio.ObtenerCamaraDeExcepcionDescuento(instanceId, materialId, datosUsuario.CentroId);
 
-
-            ViewBag.Camaras = (camaraExcepcion != null ? new List<CamaraDto>{ camaraExcepcion } : servicio.ListarCamaras()).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+            ViewBag.Camaras = (camaraExcepcion != null ? new List<CamaraDto> { camaraExcepcion } : servicio.ListarCamaras()).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
             var material = servicio.ObtenerMaterialPorCentroPorInstanceId(instanceId);
             ViewBag.Workflow = codigoWf;
             ViewBag.WorkflowDefinicionId = workflowDefinicionId;
@@ -168,11 +170,11 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         [HttpPost]
         [HttpParamAction]
-        public ActionResult Aceptar(string codigoWf, int workflowDefinicionId, Guid instanceId, DatosUsuario datosUsuario)
+        public ActionResult Aceptar(string codigoWf, int workflowDefinicionId, Guid instanceId, int caladoId, DatosUsuario datosUsuario)
         {
             var instaceWorflow = workflows.ObtenerWorkflowPorGuid(instanceId);
 
-            if(instaceWorflow.ProximaAccion == "Coordinacion")
+            if (instaceWorflow.ProximaAccion == "Coordinacion")
             {
                 var serviciowf = factory.CrearServicio(workflowDefinicionId);
 
@@ -180,11 +182,13 @@ namespace Molinos.Scato.Web.Controllers
                 var resultado = serviciowf.Coordinacion(instanceId, DecisionCoordinacion.Aceptar, recorrido, new MuestraEnvioACamaraDto());
                 if (!resultado.HayErrores)
                 {
+                    EnviarAPreLote(caladoId, datosUsuario.NombreUsuario, codigoWf, instanceId, datosUsuario.CentroId);
                     return RedirectToAction("Index", "ListaDeCamiones");
                 }
                 ModelState.AgregarErrores(resultado);
                 return RedirectToAction("Index", new { id = recorrido.WorkflowInstanceId });
-            } else
+            }
+            else
             {
                 TempData["FlagMostrarValidacionEtapaAutomatica"] = true;
                 TempData["messageEtapaAutomatica"] = $"La tarea seleccionada se encuentra en otro etapa : {instaceWorflow.ProximaAccion}";
@@ -205,7 +209,7 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.AgregarErrores(resultado);
             return RedirectToAction("Index", new { id = controlRecorrido.WorkflowInstanceId });
         }
-        
+
         [HttpPost]
         public ActionResult TransportistaRecalar(ControlRecorridoDto controlRecorrido, int workflowDefinicionId, string workflow)
         {
@@ -233,7 +237,7 @@ namespace Molinos.Scato.Web.Controllers
                 Decision = true,
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId
             };
-            
+
             var resultado = serviciowf.Coordinacion(envioACamara.WorkflowInstanceId, DecisionCoordinacion.EnviarACamara, control, envioACamara);
             if (!resultado.HayErrores)
             {
@@ -261,6 +265,43 @@ namespace Molinos.Scato.Web.Controllers
         private void CargarMotivos()
         {
             ViewBag.Motivos = servicio.ListarMotivos().ToSelectList(x => x.Descripcion, x => x.Descripcion);
+        }
+
+        private void EnviarAPreLote(int caladoId, string nombreUsuario, string codigoWf, Guid instanceId, int centroId)
+        {
+            var muestraEnvioACamara = servicio.ObtenerMuestraEnvioACamaraPorCalado(caladoId);
+            if(muestraEnvioACamara == null)
+            {
+                var configuracionHorarioPreLote = servicio.ListarConfiguracionesGenerales(Constantes.ConfiguracionGeneral.Pantalla.PreLote);
+                var diaActual = DateTime.Now;
+                var confDesde = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoDesde)?.Valor;
+                var congHasta = configuracionHorarioPreLote.FirstOrDefault(q => q.Nombre == Constantes.ConfiguracionGeneral.PreLote.HorarioNocturnoHasta)?.Valor;
+
+                int desde = 0;
+                int hasta = 0;
+                if (int.TryParse(confDesde, out desde) && int.TryParse(congHasta, out hasta))
+                {
+                    if (diaActual.Hour >= desde || diaActual.Hour <= hasta)
+                    {
+                        var camaras = servicio.ListarCamaras();
+                        var muestra = new MuestraEnvioACamaraDto
+                        {
+                            NombreUsuario = nombreUsuario,
+                            CaladoId = caladoId,
+                            CamaraId = camaras.FirstOrDefault().Id, // obetener alguna camara,
+                            CaracteristicasDeCalidad = null,
+                            Actividad = codigoWf,
+                            WorkflowInstanceId = instanceId,
+                            FechaDescarga = DateTime.Now,
+                            CentroId = centroId,
+                            HuboExcepcion = false,
+                            EsPreLote = true
+                        };
+                        var resultado = servicioComandos.Ejecutar(new CrearEnvioACamara { Dto = muestra }) as ResultadoCrear;
+                    }
+                }
+
+            }
         }
     }
 }

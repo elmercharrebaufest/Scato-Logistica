@@ -10,5 +10,6 @@ namespace Molinos.Scato.Dominio.Comandos
 
         [DataMember]
         public string Mensaje { get; set; }
+        public string PathSustentable { get; set; }
     }
 }

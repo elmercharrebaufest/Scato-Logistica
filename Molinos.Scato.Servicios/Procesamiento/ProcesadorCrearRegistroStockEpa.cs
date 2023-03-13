@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -6,6 +6,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -21,7 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultado = new ResultadoCrear();
             try
             {
-                var codigoEstablecimientoYCosecha = Repositorio.ObtenerProyeccion<Recorrido, EstablecimientoYCosechaDto>(x => x.InstanciaWorkflow == comando.Dto.InstanceId, x => new EstablecimientoYCosechaDto() {CodigoEstablecimiento = x.Establecimiento.CodigoDeEstablecimiento, Cosecha = x.Vehiculo.CartaPorte.Cosecha});
+                var codigoEstablecimientoYCosecha = Repositorio.ObtenerProyeccion<Recorrido, EstablecimientoYCosechaDto>(x => x.InstanciaWorkflow == comando.Dto.InstanceId, x => new EstablecimientoYCosechaDto() { CodigoEstablecimiento = x.Establecimiento.CodigoDeEstablecimiento, Cosecha = x.Vehiculo.CartaPorte.Cosecha });
                 if (codigoEstablecimientoYCosecha.CodigoEstablecimiento == null || codigoEstablecimientoYCosecha.Cosecha == null)
                 {
                     resultado.Errores.Add("Error", "Falta Establecimiento o Cosecha");
@@ -30,15 +31,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 comando.Dto.CodigoEstablecimiento = codigoEstablecimientoYCosecha.CodigoEstablecimiento;
                 comando.Dto.Cosecha = codigoEstablecimientoYCosecha.Cosecha;
-                
-                var registroStockEpa = Conversor.Convertir<RegistroStockEPADto, RegistroStockEPA>(comando.Dto);
-                var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.Dto.InstanceId);
-                registroStockEpa.Recorrido = recorrido;
-                if (!resultado.HayErrores)
+
+                int.TryParse(comando.Dto.CodigoEstablecimiento, out int codigoEstablecimientoParse);
+                if (codigoEstablecimientoParse > Constantes.AsignacionDeEstablecimientoRangos.Desde
+                && codigoEstablecimientoParse < Constantes.AsignacionDeEstablecimientoRangos.Hasta)
                 {
-                    Repositorio.Agregar(registroStockEpa);
-                    Repositorio.GuardarCambios();
-                    Log.Debug("Se creó el registro stock EPA para recorrido {0}", comando.Dto.InstanceId);
+                    Log.Debug("Se omitio el registro stock EPA para recorrido {0}", comando.Dto.InstanceId);
+                }
+                else
+                {
+                    var registroStockEpa = Conversor.Convertir<RegistroStockEPADto, RegistroStockEPA>(comando.Dto);
+                    var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.Dto.InstanceId);
+                    registroStockEpa.Recorrido = recorrido;
+                    if (!resultado.HayErrores)
+                    {
+                        Repositorio.Agregar(registroStockEpa);
+                        Repositorio.GuardarCambios();
+                        Log.Debug("Se creó el registro stock EPA para recorrido {0}", comando.Dto.InstanceId);
+                    }
                 }
             }
             catch (Exception e)

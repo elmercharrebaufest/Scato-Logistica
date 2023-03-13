@@ -44,6 +44,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Index(ObservacionRDto observacion, string workflow, int workflowDefinicionId, DatosUsuario datosUsuario)
         {
+            log.Debug($"Actividad en Transito para workflow { workflow } identificado { observacion.WorkflowInstanceId }.");
             var controlRecorrido = new ControlRecorridoDto
             {
                 Actividad = Textos.ActEnTransito,

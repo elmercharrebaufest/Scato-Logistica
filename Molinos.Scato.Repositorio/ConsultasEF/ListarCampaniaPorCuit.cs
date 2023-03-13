@@ -48,7 +48,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     r.Cosecha == stockEstablecimeinto.Cosecha).Any() ? contexto.Set<RegistroStockOtrosPuertos>()
                                 .Where(r => r.CodigoEstablecimiento == stockEstablecimeinto.CodigoEstablecimiento &&  r.Cosecha == stockEstablecimeinto.Cosecha).Sum(r => r.PesoNeto) : 0),
                                 StockReservado = stockEstablecimeinto.StockReservado,
-                                NombreEstablecimiento = estab.NombreDeEstablecimiento
+                                NombreEstablecimiento = estab.NombreDeEstablecimiento,
+                                LocalidadId = estab.Localidad != null ? estab.Localidad.Id : 0,
+                                Localidad = estab.Localidad != null ? estab.Localidad.Descripcion : string.Empty,
+                                LocalidadCodigoAfip = estab.Localidad != null ? estab.Localidad.CodigoAfip : string.Empty,
+                                ProvinciaId = estab.Provincia != null ? estab.Provincia.Id : 0,
+                                Provincia = estab.Provincia != null ? estab.Provincia.Descripcion : string.Empty,
+                                ProvinciaCodigoAfip = estab.Provincia != null ? estab.Provincia.CodigoAfip : 0
                             }                               
                            
                 ).ToList();

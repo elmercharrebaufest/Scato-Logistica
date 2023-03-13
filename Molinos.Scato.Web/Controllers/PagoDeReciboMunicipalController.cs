@@ -167,6 +167,13 @@ namespace Molinos.Scato.Web.Controllers
 
         private ValidarProximaAccionDto ValidarTarjeta(ValoresPagarConMercadoPagoDto valoresDeEntrada, ResultadoPagarMercadoPago resultadoPago)
         {
+            var materialPagoRealizado = new List<string>
+            {
+                Constantes.MaterialPagoRealizado.BiodiselAgranel, 
+                Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
+                Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP
+            };
+
             var recorrido = servicio.ObtenerDatosRecorridoActivo(null, new List<string> { valoresDeEntrada.NumeroDeTarjeta });
             if (recorrido == null)
             {
@@ -190,7 +197,7 @@ namespace Molinos.Scato.Web.Controllers
             var material = servicio.ObtenerMaterialPorWorkflow(recorrido.WorkflowId);
 
             //validar que hizo el pago en el dia y es Biodisel (Revisar) 
-            if (validarPagoRealizado == false && material?.MaterialCodigoSap == "99319")
+            if (validarPagoRealizado == false && materialPagoRealizado.Contains(material?.MaterialCodigoSap))
             {
                 var mensaje = $"El vehículo {recorrido.Patente} ya realizó el pago de tasa municipal";
                 logger.Warn(mensaje);

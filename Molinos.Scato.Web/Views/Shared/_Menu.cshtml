@@ -12,7 +12,15 @@
     var workflows = (IList<WorkflowInfoDto>)ViewBag.Workflows;
     var idiomas = (IEnumerable<SelectListItem>)ViewBag.Idiomas;
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
+    var sensoresBarrera = (IList<SensorBarreraDto>)ViewBag.sensoresBarrera;
+    var totalSensoresBarrera = (int)ViewBag.totalSensoresBarrera;
+    var gestionarBarrera = (bool)(ViewBag.GestionarBarrera ?? false);
+    var requiereComentarioGestionarBarrera = (bool)(ViewBag.RequiereComentarioGestionarBarrera ?? false);
 }
+
+@Html.Hidden("cantidadBarreras", totalSensoresBarrera)
+@Html.Hidden("requiereComentarioGestionarBarrera", requiereComentarioGestionarBarrera)
+@Html.Hidden("gestionarBarrera", gestionarBarrera)
 
 
 @Scripts.Render("~/bundles/blockUI")
@@ -47,6 +55,8 @@
                     @Html.Hidden("ListaDeCamionesUrl", Url.Action("Index", "ListaDeCamiones"))
                     @Html.Hidden("BorrarPermisosCookie", Url.Action("BorrarPermisosCookie", "Menu"))
                     @Html.Hidden("ActualizarCookie", Url.Action("ActualizarCookiePermisos", "Menu"))
+                    @Html.Hidden("GestionarBarrera", Url.Action("GestionarBarrera"))
+                    @Html.Hidden("ActualizarEstadoBarrera", Url.Action("ActualizarEstadoBarreras"))
                 </li>
             </ul>
             <ul class="nav">
@@ -113,7 +123,7 @@
                                         {
                                             <li>@Html.ActionLink(Textos.ExcepcionEnvioCamara_Titulo, "Index", "ExcepcionEnvioCamara")</li>
                                         }
-                                       
+
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu">
@@ -180,6 +190,10 @@
                                         {
                                             <li>@Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")</li>
                                         }
+                                        @if (PermisosHelper.Is(PermisosScato.ArmarLoteInase))
+                                        {
+                                            <li>@Html.ActionLink(Textos.BuscarLoteInase, "BuscarLote", "LoteInase")</li>
+                                        }
                                     </ul>
                                 </li>
                             </ul>
@@ -238,6 +252,22 @@
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasExportacion))
                                         {
                                             <li>@Html.ActionLink(Textos.VisualizarVideoCamarasExportacion, "Index", "VideoCamara", new { nombrePc = "PuestoExportacionVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasCalador1))
+                                        {
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=Calador1VC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasCalador1</a></li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasCalador2))
+                                        {
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=Calador2VC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasCalador2</a></li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmBarrera))
+                                        {
+                                            <li>@Html.ActionLink(Textos.Barrera_Titulo, "Index", "Barrera")</li>
+                                        }
+                                        @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionSensores))
+                                        {
+                                            <li>@Html.ActionLink(Textos.ConfigSensores_Titulo, "Index", "ConfiguracionSensores")</li>
                                         }
                                     </ul>
                                 </li>
@@ -587,6 +617,14 @@
                                 @if (PermisosHelper.Is(PermisosScato.DocumentoExterno))
                                 {
                                     <li>@Html.ActionLink(Textos.DocumentoExterno, "Index", "DocumentoExterno")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionEficienciaCalado))
+                                {
+                                    <li>@Html.ActionLink(Textos.ConfiguracionEficienciaCalado_Titulo, "Index", "ConfiguracionEficienciaCalado")</li>
+                                }
+                                @if (PermisosHelper.Is(PermisosScato.AbmConfiguracionCalleHidraulica))
+                                {
+                                    <li>@Html.ActionLink(Textos.Configuracion_CalleHidraulica, "Index", "ConfiguracionCalleHidraulica")</li>
                                 }
                             </ul>
                         </li>
@@ -1043,7 +1081,22 @@
                         </li>
                     </ul>
                 </li>
+                @if (Enumerable.Count(sensoresBarrera) > 0)
+                {
+                    <li class="dropdown menu-adminrepo" id="barreraHeader">
+                        <div style="border: 1px solid #ccc; border-radius: 6px; text-align: center;">
+                            <span id="@("barrera-"+sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                            <span style="display: block;font-size: .75em; font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif; margin-top: 5px;">@sensoresBarrera[0].NombreBarrera</span>
+                        </div>
+                    </li>
+                }
 
+                @if (totalSensoresBarrera > 1)
+                {
+                    <li class="view-dashboard-barreras">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding: 10px 4px 10px;"><i class="icon-plus-sign"></i><b class="caret"></b></a>
+                    </li>
+                }
             </ul>
 
 
@@ -1135,3 +1188,141 @@
         </p>
     </div>
 }
+
+<div id="dashboardBarrerasModal" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 50%; top: 30%; width: 1005px; margin-top: -160.542px; margin-right: auto; margin-left: -460.005px;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h4>Visualización de Barreras :</h4>
+    </div>
+
+
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+            @foreach (var group in ViewBag.ModulosBarrera)
+            {
+                <div class="span6" style="height: auto; margin-bottom: 2px; margin-top: 15px; border: 1px solid #ccc; border-radius: 6px;">
+                    <label style="text-align: center; font-weight: bold; font-size: initial;">@group.Descripcion.ToUpper()</label>
+
+                    @foreach (var item in group.SensoresBarreras)
+                    {
+                        <div class="row">
+                            <div class="control-group" style="margin-left: 30px;">
+                                <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@item.NombreBarrera</label>
+                                <div class="controls">
+                                    <span id="@("barrera-" + item.Id + "-" + item.Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                                    <div style="margin-left: 30px;">
+                                        @if (gestionarBarrera)
+                                        {
+                                            <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                            <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                        }
+                                        else
+                                        {
+                                            foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
+                                            {
+                                                if (barreraSupervisor == item.Barrera)
+                                                {
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + item.Id + "-" + item.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + item.Id + "-" + item.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+<div id="gestionbarreraSupervisorModal" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="left: 23%; top: 30%; width: 750px; margin-top: -160.38px; margin-right: auto; margin-left: auto;">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>Indique motivo:</h3>
+    </div>
+
+    <div class="modal-body form-horizontal">
+        <div class="control-group">
+            @Html.Label("Motivo", new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextArea("Motivo", new { id = "motivoMenu", @class = "form-control", style = "width:350px;" })
+            </div>
+        </div>
+
+        <span id="error-requerido" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_Requerido, "Motivo")</span>
+        <span id="error-largo" style="color:rgb(185, 74, 72); display:none;">@string.Format(Textos.Error_LargoMensaje, "Motivo", "10")</span>
+
+        @Html.Hidden("elemento-id-Menu")
+        @Html.Hidden("elemento-barrera-Menu")
+        @Html.Hidden("url-Menu")
+        @Html.Hidden("elemento-accion-Menu")
+    </div>
+
+    <div class="modal-footer">
+        <a href="#" id="guardarEventoBarrera" class="btn btn-primary">Aceptar</a>
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
+    </div>
+</div>
+
+<div id="modalGestionBarrera" class="modal hide fade"
+     data-backdrop="static" data-keyboard="false" style="width: 405px; margin-right: auto; ">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="dialogo-editar-title">Opciones de Barrera</h4>
+    </div>
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            @if (Enumerable.Count(sensoresBarrera) > 0)
+            {
+                <div class="control-group" style="margin-left: 30px;">
+                    <label class="control-label" style="font-size: small; display: inline-block; word-wrap: break-word; word-break: break-all; ">@sensoresBarrera[0].NombreBarrera</label>
+                    <div class="controls">
+                        <span id="@("barrera-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Barrera)" class='bar-ico bar-ent icon-barrera-cerrada' style="font-size: 80px; margin-top: 5px; color: red;"></span>
+                        <div>
+                            @if (gestionarBarrera)
+                            {
+                                foreach (var sensor in sensoresBarrera)
+                                {
+                                    <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensor.Id + "-" + sensor.Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                    <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensor.Id + "-" + sensor.BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var barreraSupervisor in ViewBag.BarrerasSupervisor)
+                                {
+                                    if (barreraSupervisor == sensoresBarrera[0].Barrera)
+                                    {
+                                        <a class="btn tarjetaMaestroSupervisorBarrera apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@("A-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].Barrera)" style="margin-top: -44px; margin-left: 80px; color: #07c35f !important;"><i class="fa fa-unlock"> </i> </a>
+                                        <a class="btn tarjetaMaestroSupervisorBarrera cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@("C-" + sensoresBarrera[0].Id + "-" + sensoresBarrera[0].BarreraBajar)" style="margin-top: -44px; color: #ea1f1f !important;"><i class="fa fa-lock"> </i> </a>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a data-dismiss="modal" aria-hidden="true" href="#" id="cancelar" class="btn close">Cancelar </a>
+    </div>
+</div>

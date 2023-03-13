@@ -10,7 +10,6 @@
         border: '1px solid #B94A41',
         color: '#0055A5',
         padding: 10
-
     };
 
     $("#gridContainer").block({
@@ -22,13 +21,11 @@
     });
     CargarGrilla(function () { $("#gridContainer").unblock(); });
 
-
     var intervalo = Autorefresco(null);
     $('#modoDeRefresco').change(function () {
         CargarGrilla();
         intervalo = Autorefresco(intervalo);
     });
-
 
     $('#DropDownColumnas').bind('hide', function () {
         CargarGrilla();
@@ -49,15 +46,10 @@
 
     DefinirAutocompletar('#MaterialDesc', '#MaterialId', $('#links').data().urlBuscarMateriales, $('#links').data().urlBuscarMaterial);
 
-
     countChecked();
 
     $(document).on('click', ".columna-checkbox", countChecked);
 
-    $(document).on('click', '.ajax-editar-asignacion-link', function () {
-        $.get(this.href, cargarDialogoEditarAsignacion);
-        return false;
-    });
     //-------------------------------------------------------------
     $(document).on('click', '.rechazar-boton', function () {
         var n = $(".columna-checkbox:checked");
@@ -73,9 +65,7 @@
         });
 
         $.get(this.href, { instancesId: instanceIds }, cargarDialogoRechazar); return false;
-
     });
-
 
     $(document).on('click', '.dialogo-rechazar-cerrar', function () {
         $("#dialogo-rechazar").modal('hide');
@@ -127,7 +117,6 @@ function countChecked() {
     //Habilita el boton ASIGNNAR si hay seleccionados y con diferentes materiales
 
     if ($("#separarAlmacenSustentable").val() == "true") {
-
         if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonSustentables).length == 1) {
             $("#AsignarSeleccionados").attr("disabled", false);
         } else {
@@ -149,7 +138,6 @@ function countChecked() {
             $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
         }
     } else {
-
         if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1) {
             $("#AsignarSeleccionados").attr("disabled", false);
         } else {
@@ -258,7 +246,6 @@ function CargarGrilla(callback) {
                 if ($("#grid tbody tr").length == $(".columna-checkbox:checkbox:checked").length) {
                     $("#SeleccionarTodos").prop("checked", true);
                 }
-
             } else {
                 $("#SeleccionarTodos").prop("checked", false);
             }
@@ -303,7 +290,6 @@ function CopiarFiltros() {
     $("#filtroTipoVehiculo").val($("#TipoVehiculo").val());
     $("#filtroTipoMaterial").val($("#TipoMaterial").val());
     $("#filtroCalleId").val($("#CalleId").val());
-
 }
 
 function UpdateQueryString(key, value, url) {
@@ -359,16 +345,20 @@ function cargarDialogoEditarAsignacion(data) {
 }
 
 function editarRepuestaFormularioPuestoComando(respuesta) {
-    $('#dialogo-editar').modal('hide');
     if (respuesta != window.ajaxEditSuccess) {
-        cargarDialogoEditar(respuesta);
+        $('#dialogo-editar-body').html(respuesta);
+        $("#dialogo-editar-guardar").attr("disabled", true);
+        CargarGrilla();
     } else {
+        $('#dialogo-editar').modal('hide');
         MostrarAlertaExitosa();
         CargarGrilla();
     }
 }
 function editarRepuestaFormularioRechazado(respuesta) {
     $('#dialogo-rechazar').modal('hide');
+    $('.modal-backdrop').remove();
+    $('body').removeClass("modal-open");
     if (respuesta != window.ajaxEditSuccess) {
         cargarDialogoRechazar(respuesta);
     } else {
@@ -398,3 +388,44 @@ function cargarTiposVehiculo(bool) {
         });
 }
 
+function PuestoComandoAsignar(element) {
+    var url = element.attributes.href.value;
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        type: "GET",
+        success: function (data) {
+            if (data.EsValido == true) {
+                CargarModalAsignar(data.Data);
+            } else {
+                MostrarRespuestaMensajes(data);
+            }
+        }
+    });
+};
+
+function CargarModalAsignar(data) {
+    var url = config.urlList.mostrarAsignar;
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        success: function (data) {
+            cargarDialogoEditarAsignacion(data);
+        }
+    });
+}
+
+function MostrarRespuestaMensajes(response) {
+    response.Mensajes.forEach(function (item, index, array) {
+        if (!response.EsValido) {
+            if (item.TipoDeMensaje === 2) {
+                MostrarAlertaError(item.Mensaje);
+            }
+        } else {
+            if (item.TipoDeMensaje === 1) {
+                MostrarAlertaAdvertencia(item.Mensaje);
+            }
+        }
+    })
+}

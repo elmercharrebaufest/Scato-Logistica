@@ -1,0 +1,33 @@
+﻿.contenidoCentrado {
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+    .contenidoCentrado > div {
+        margin: 1rem 0;
+    }
+
+.grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-rows: minmax(auto, auto);
+    grid-row-gap: 20px;
+}
+
+.grilla__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.grilla__cell {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    font-size: 11px;
+}
+
+.grilla__cell--header {
+    font-weight: bold;
+    background: #f9f9f9;
+}

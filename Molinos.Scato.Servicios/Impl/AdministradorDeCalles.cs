@@ -7,6 +7,7 @@ using System.Configuration;
 
 namespace Molinos.Scato.Servicios.Impl
 {
+    //TODO : Refactorizar para que no reciba Material y sólo el Id en cada caso
     public class AdministradorDeCalles : IAdministradorDeCalles
     {
         private readonly IRepositorio repositorio;
@@ -44,6 +45,22 @@ namespace Molinos.Scato.Servicios.Impl
             if (tipoCalle == TipoCalle.NoGranos)
             {
                 return repositorio.ObtenerConsultaEscalar(new ObtenerCalleNoGranos(TipoCalle.NoGranos, material));
+            }
+
+            if (tipoCalle == TipoCalle.PlantaNoGranos || tipoCalle == TipoCalle.EnTransito || tipoCalle == TipoCalle.SalidaNoGranos || tipoCalle == TipoCalle.EsperaAduanaNoGranos || tipoCalle == TipoCalle.EnTransitoGranos || tipoCalle == TipoCalle.SalidaGranos)
+            {
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipoYMaterial(tipoCalle, material));
+            }
+
+            if(tipoCalle == TipoCalle.PreBalanzaGranos)
+            {
+                Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
+                if(calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material)){
+                    calle.Bloqueada = true;
+                    //calle.FechaLLamada = DateTime.Now;
+                    repositorio.GuardarCambios();
+                }
+                return calle;
             }
 
             return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(tipoCalle, material));
@@ -92,6 +109,18 @@ namespace Molinos.Scato.Servicios.Impl
 
                 repositorio.GuardarCambios();
             }
+        }
+
+        private bool LlegoLimiteDeCamiones(Calle calle)
+        {
+            return (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id && x.FechaEgreso == null) + 1) >= calle.CantidadDeCamiones;
+        }
+
+        private bool EsUltimaCalleDisponible(TipoCalle tipoCalle, Material material)
+        {
+            var callesTotales = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Material.Id == material.Id);
+            var callesBloqueadas = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Bloqueada && x.Material.Id == material.Id);
+            return (callesTotales - callesBloqueadas) == 1;
         }
     }
 }

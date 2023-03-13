@@ -31,7 +31,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             var fechaMinima = DateTime.Now.AddDays(-1);
             IQueryable<InstanciaWorkflowDto> resultado = (from x in contexto.Set<CargaDeCupo>()
                              
-                             where x.Recorrido == null && x.Centro.Id == centroId && x.Fecha > fechaMinima && x.Cupo != null && x.Numero != null
+                             where x.Recorrido == null && x.Centro.Id == centroId && x.Fecha > fechaMinima && x.Cupo != null && x.Numero != null && !x.EnProgresoAutomatico
                              select new InstanciaWorkflowDto
                              {
                                  Patente = x.Patente,

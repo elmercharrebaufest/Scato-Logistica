@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -13,6 +11,9 @@ using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Globalization;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(Guid id)
         {
             var recorrido = servicio.ObtenerDatosDeInstanciaAltaCTGPorGuid(id);
-            var cargaCupo = servicio.ObtenerCupoRecorridoId(recorrido.Id);
+            var cargaCupo = servicio.ObtenerCupoPorRecorrido(recorrido.Id);
             bool esCPE = cargaCupo is null ? servicio.ObtenerCartaDePortePorrecorrido(recorrido.Id)?.Cpe ?? false : cargaCupo?.CPE ?? false;
             var dto = new AltaCTGDto
                 {
@@ -52,24 +53,24 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (model.Cpe)
             {
-                if(string.IsNullOrEmpty(model.Sucursal))
+                if (string.IsNullOrEmpty(model.Sucursal))
                     ModelState.AddModelError("Sucursal", string.Format(Textos.Error_Requerido, "Sucursal CPE"));
-                if(string.IsNullOrEmpty(model.NroOrden))
+                if (string.IsNullOrEmpty(model.NroOrden))
                     ModelState.AddModelError("NroOrden", string.Format(Textos.Error_Requerido, "NroOrden CPE"));
             }
             if (ModelState.IsValid)
             {
                 var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActAltaCTG,
-                        ActividadXaml = "AltaCTG",
-                        WorkflowInstanceId = model.WorkflowId,
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
+                {
+                    Actividad = Textos.ActAltaCTG,
+                    ActividadXaml = "AltaCTG",
+                    WorkflowInstanceId = model.WorkflowId,
+                    PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                    NombreUsuario = datosUsuario.NombreUsuario
+                };
 
                 var serviciowf = factory.CrearServicio(workflowDefinicionId);
-                var resultado = serviciowf.AltaCTG(model.WorkflowId, DecisionCtg.DarDeAltaManual, model.CodigoCTG,model.TarifaReferencia.Value, controlRecorrido, model.Sucursal, model.NroOrden);
+                var resultado = serviciowf.AltaCTG(model.WorkflowId, DecisionCtg.DarDeAltaManual, model.CodigoCTG, model.TarifaReferencia.Value, controlRecorrido, model.Sucursal, model.NroOrden);
                 if (!resultado.HayErrores)
                 {
                     return RedirectToAction("Index", "ListaDeCamiones");
@@ -107,9 +108,61 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [HttpParamAction]
+        [DatosUsuario]
+        public ActionResult Rechazar(AltaCTGDto model, int workflowDefinicionId, bool verReintentar, DatosUsuario datosUsuario)
+        {
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                Actividad = Textos.ActAltaCTG,
+                ActividadXaml = "AltaCTG",
+                WorkflowInstanceId = model.WorkflowId,
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario
+            };
+            var serviciowf = factory.CrearServicio(workflowDefinicionId);
+            var resultado = serviciowf.AltaCTG(model.WorkflowId, DecisionCtg.Rechazar, "", 0, controlRecorrido, model.Sucursal, model.NroOrden);
+            if (!resultado.HayErrores)
+            {
+                return RedirectToAction("Index", "ListaDeCamiones");
+            }
+            SetearVista(model.WorkflowId, workflowDefinicionId, verReintentar, false);
+            ModelState.AgregarErrores(resultado);
+            return View("index", model);
+        }
+
+        [HttpPost]
+        [HttpParamAction]
         public ActionResult Cancelar()
         {
             return RedirectToAction("Index", "ListaDeCamiones");
+        }
+
+        [HttpGet]
+        public JsonResult ValidarCTGyCPE(string ctg, string cpe, string sucursal)
+        {
+            var respuesta = RespuestaEstandarDto.Crear<dynamic>();
+
+            if (!string.IsNullOrEmpty(ctg))
+            {
+                var ctgEnUso = servicio.ValidarAltaCTGRepetida(ctg);
+                if (ctgEnUso)
+                {
+                    var mensaje = string.Format(CultureInfo.InvariantCulture, Textos.AltaCTG_ValidarCTGRepetido, ctg);
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                }
+            }
+            var sucursalInt = 0;
+            if (!string.IsNullOrEmpty(cpe) && int.TryParse(sucursal, out sucursalInt))
+            {
+                var cpeEnUso = servicio.ValidarAltaCPERepetida(cpe, sucursalInt);
+                if (cpeEnUso)
+                {
+                    var mensaje = string.Format(CultureInfo.InvariantCulture, Textos.AltaCTG_ValidarCPERepetido, sucursal, cpe);
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                }
+            }
+
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         private void SetearVista(Guid id, int workflowDefinicionId, bool solicitaConfirmarCTG, bool postDeManual)

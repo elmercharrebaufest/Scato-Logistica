@@ -41,6 +41,12 @@ namespace Molinos.Scato.Web.Controllers
         {
             var puestosDeTrabajo = servicio.ListarPuestosDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId).ToArray();
 
+            foreach (var item in puestosDeTrabajo.Where(x => x.VisualizacionBarrera_Id != null))
+            {
+                item.VisualizacionBarrera.SensoresBarreras = servicio.ListarSensoresBarreras(item.VisualizacionBarrera.Id);
+
+            }
+
             var alertarAnalisisObligatorio = (ResultadoAlertarAnalisisObligatorio)comandos.Ejecutar(new AlertarAnalisisObligatorio { CentroId = datosUsuario.CentroId, ListaPuestoDeTrabajoId = puestosDeTrabajo.Select(x => x.Id).ToList() });
             ViewBag.AlertarAnalisisObligatorio = alertarAnalisisObligatorio.AlertarAnalisisObligatorio;
             ViewBag.MaterialAlertarAnalisisObligatorio = string.Join(" - ", alertarAnalisisObligatorio.Material);

@@ -1,0 +1,19 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<VisualizacionBarreraDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "Barrera"),
+    grilla.Columna("Codigo", Textos.Codigo, x => x.Codigo),
+    grilla.Columna("Descripcion", Textos.Descripcion, x => x.Descripcion),
+    grilla.Columna("RolDescripcion", "Rol"),
+    grilla.Columna("Deshabilitada", Textos.Activo, m => ((bool)!m.Deshabilitada).Formatted()),
+    grilla.Columna("Visible", "Visible", m => ((bool)m.Visible).Formatted())
+    ))

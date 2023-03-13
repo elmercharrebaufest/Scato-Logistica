@@ -36,6 +36,8 @@ namespace Molinos.Scato.Actividades.Internas
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
         public InArgument<string> PatenteAcoplado { get; set; }
+        public InArgument<string> ComisionistaCodigoSap { get; set; }
+        public InArgument<string> RemitenteCodigoSap { get; set; }
         public OutArgument<IngresosEgresosFazonesRequest> Request { get; set; }
         public OutArgument<Resultado> Resultado { get; set; }
         protected override void Execute(CodeActivityContext context)
@@ -47,7 +49,9 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 var instanceId = InstanceId.Get<Guid>(context);
                 var fechaIngreso = FechaIngreso.Get<DateTime>(context);
-                var cliente = ClienteCodigoSap.Get<string>(context);                
+                var cliente = ClienteCodigoSap.Get<string>(context);
+                var comisionista = ComisionistaCodigoSap.Get<string>(context);
+                var remitente = RemitenteCodigoSap.Get<string>(context);
                 var centroId = context.GetExtension<ScatoPersistenceParticipant>().CentroId ?? CentroId.Get<int>(context);
                 var materialId = MaterialId.Get<int>(context);
                 var patente = Patente.Get<string>(context);
@@ -62,6 +66,8 @@ namespace Molinos.Scato.Actividades.Internas
                 }
 
                 var recorrido = srvRepositorio.ObtenerRecorridoPorGuid(instanceId);
+                var intermediarioFleteId = srvRepositorio.ObtenerOrdenCargaInternaFasonPorInstanceId(instanceId)?.IntermediarioFleteId;
+
                 AlmacenDto almacen = null;
                 if (srvRepositorio.MaterialEnviaASapAlmacenPredeterminado(instanceId))
                 {
@@ -75,7 +81,7 @@ namespace Molinos.Scato.Actividades.Internas
                 
                 var provincia = srvRepositorio.ObtenerProvincia(ProvinciaId.Get<int?>(context) ?? 0);
                 var chofer = recorrido.Chofer;
-                
+                var orden = srvRepositorio.ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(recorrido.Id, recorrido.TipoDocumentoIngreso);
                 request = new IngresosEgresosFazonesRequest
                     {
                         IngresosEgresosFazones = new IngresosEgresosFazones
@@ -86,7 +92,7 @@ namespace Molinos.Scato.Actividades.Internas
                                 FechaIng = fechaIngreso.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                                 Km = km ?? 0,
                                 KmSpecified = km.HasValue,
-                                Destino = tipoMovimiento == "ENT" ? recorrido.Centro.CodigoSAP : cliente,
+                                Destino = tipoMovimiento == "ENT" ? recorrido.Centro.CodigoSAP : (!string.IsNullOrEmpty(comisionista) ? comisionista : (!string.IsNullOrEmpty(remitente) ? remitente : cliente)),
                                 Material = recorrido.Material.CodigoSAP,
                                 Patente = patente,
                                 Procedencia = tipoMovimiento == "ENT" ? cliente : recorrido.Centro.CodigoSAP,
@@ -98,10 +104,17 @@ namespace Molinos.Scato.Actividades.Internas
                                 NroDocumento = chofer.NumeroDeDocumento,
                                 TipoDoc = chofer.TipoDocumentoIdentidadCodigoSap,
                                 Patente2 = patenteAcoplado,
-                                IM_NUM_SCATO = recorrido.Id.ToString(CultureInfo.InvariantCulture)
-                            }
+                                IM_NUM_SCATO = recorrido.Id.ToString(CultureInfo.InvariantCulture) ,
+                                IM_CTG = orden != null ? orden.NroCTG : string.Empty,
+                                IM_CPEDG =  orden != null ? orden.Sucursal + orden.NroOrden : string.Empty,
+                        }
                     };
 
+                if(intermediarioFleteId != null)
+                {
+                    var cuitIntermediario = srvRepositorio.ObtenerProveedor(intermediarioFleteId.GetValueOrDefault()).Cuil;
+                    request.IngresosEgresosFazones.Transportista = cuitIntermediario.Replace("-", "");
+                }
 
                 try
                 {

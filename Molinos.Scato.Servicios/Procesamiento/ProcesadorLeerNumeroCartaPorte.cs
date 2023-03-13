@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Repositorio;
+using Molinos.Scato.Servicios.Conversiones;
+using Ninject.Extensions.Logging;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Repositorio;
-using Molinos.Scato.Servicios.Conversiones;
-using Ninject.Extensions.Logging;
 using ZXing;
 
 namespace Molinos.Scato.Servicios.Procesamiento
@@ -35,18 +33,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     {
                         if (comando.CalcularRecorte)
                         {
-                            comando.Width = img.Width; // (img.Width / 3) + 50;
-                            comando.Height = img.Height / 8;
-                            comando.OffsetX = 0;// comando.Width - 100;
-                            comando.OffsetY = 0;
+                            comando.Width = 600;
+                            comando.Height = 150;
+                            comando.OffsetX = 50;
+                            comando.OffsetY = img.Height - 250;
                         }
 
                         using (Image imagenCortada = CropImage(img, comando.OffsetX, comando.Width, comando.OffsetY, comando.Height))
                         {
-                            //imagenCortada.Save("c:/tmp/" + comando.NombreArchivo);
+                            //imagenCortada.Save("d:/tmp/" + comando.NombreArchivo);
                             var lecturas = reader.DecodeMultiple((Bitmap)imagenCortada);
-                            
-                            if(lecturas != null)
+                            if (lecturas != null)
                             {
                                 Log.Debug("Deteccion del barcode: " + string.Join(",", lecturas.Select(x => x.Text)));
                                 resultado.NumeroCartaPorte = ObtenerCP(lecturas);
@@ -55,7 +52,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
                 }
             }
-            
             catch (Exception e)
             {
                 Log.Error(e, "Error al reconocer el numero de Carta de Porte desde el Barcode para el archivo {0}", comando.NombreArchivo);
@@ -66,12 +62,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private static string ObtenerCP(Result[] lecturas)
         {
-
             if (lecturas != null)
             {
                 foreach (var lectura in lecturas)
                 {
-                    if (!string.IsNullOrEmpty(lectura?.Text) && (Regex.IsMatch(lectura.Text, "^\\d{12}$") || Regex.IsMatch(lectura.Text, "^\\d{9}$")))
+                    if (!string.IsNullOrEmpty(lectura?.Text) && ((Regex.IsMatch(lectura.Text, "^\\d{11}$")) || (Regex.IsMatch(lectura.Text, "^\\d{12}$"))))
+
                         return lectura.Text;
                 }
             }
@@ -108,7 +104,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     // Asginar nuevo color
                     Color newColor = System.Drawing.Color.FromArgb(value, value, value);
                     target.SetPixel(i, e, newColor);
-
                 }
             }
 

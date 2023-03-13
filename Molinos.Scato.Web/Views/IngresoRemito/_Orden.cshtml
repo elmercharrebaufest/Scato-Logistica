@@ -20,21 +20,20 @@
     }
     bool soloLectura = ViewBag.SoloLectura;
 }
-<div id ="links"
-    data-url-obtener-proveedores-sap ="@Url.Action("ObtenerProveedoresSap", "Consultas")"
-    data-url-buscar-proveedor ="@Url.Action("BuscarProveedor", "Consultas")"
-    data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
-    data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
-    data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"
-    data-url-buscar-choferes = "@Url.Action("BuscarChoferes", "Consultas")"
-    data-url-buscar-chofer-unico = "@Url.Action("BuscarChoferUnico", "Consultas")"
-    data-url-buscar-centros = "@Url.Action("BuscarCentros", "Consultas")"
-    data-url-buscar-centro-unico = "@Url.Action("BuscarCentroUnico", "Consultas")"
-    data-url-buscar-procedencias = "@Url.Action("BuscarProcedencias", "Consultas")"
-    data-url-buscar-procedencia-unica = "@Url.Action("BuscarProcedenciaUnica", "Consultas")"
-    data-url-obtenertiposvehiculo ="@Url.Action("ObtenerTiposVehiculo", "Consultas")"
-    data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
-/>
+<div id="links"
+     data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
+     data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"
+     data-url-buscar-transportistas="@Url.Action("BuscarTransportistas", "Consultas")"
+     data-url-buscar-transportista-unico="@Url.Action("BuscarTransportista", "Consultas")"
+     data-url-buscar-choferes="@Url.Action("BuscarChoferes", "Consultas")"
+     data-url-buscar-chofer-unico="@Url.Action("BuscarChoferUnico", "Consultas")"
+     data-url-buscar-centros="@Url.Action("BuscarCentros", "Consultas")"
+     data-url-buscar-centro-unico="@Url.Action("BuscarCentroUnico", "Consultas")"
+     data-url-buscar-procedencias="@Url.Action("BuscarProcedencias", "Consultas")"
+     data-url-buscar-procedencia-unica="@Url.Action("BuscarProcedenciaUnica", "Consultas")"
+     data-url-obtenertiposvehiculo="@Url.Action("ObtenerTiposVehiculo", "Consultas")"
+     data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")" />
 
 @Html.Hidden("deshabilitarCampos", deshabilitarCampos, new { id = "deshabilitarCampos" })
 @Html.Hidden("deshabilitarCamposRedespacho", deshabilitarCamposRedespacho, new { id = "deshabilitarCamposRedespacho" })
@@ -42,7 +41,7 @@
 @Html.HiddenFor(m => m.TipoDeWorkflow)
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.RecorridoId)
-<div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido"/>
+<div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <fieldset>
@@ -56,7 +55,7 @@
                 </div>
             </div>
         </fieldset>
-        
+
         <div class="control-group control-group-no-bottom">
             @Html.LabelFor(model => model.Remito, new { @class = "control-label small" })
             <div class="controls-small">
@@ -70,13 +69,13 @@
         <div class="row row-carta-porte">
             <div class="span6 control-group control-group-no-bottom">
                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "control-label small" })
-                <div class="controls-small" id ="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
+                <div class="controls-small" id="tiposComerciales" data-alta-rapida='@Html.Raw(Json.Encode(((IEnumerable<string>)ViewBag.TiposComercialesTransportista).Select(x => x)))'>
                     @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, new { @class = "control input" })
                     @Html.ValidationMessageFor(model => model.TipoComercialId)
                 </div>
             </div>
         </div>
-       
+
         <div class="row row-carta-porte">
             <div class="span6 control-group control-group-no-bottom">
                 @Html.LabelFor(model => model.FechaOD, new { @class = "control-label small" })
@@ -86,7 +85,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 <div class="row-fluid row-fluid-ie7">
@@ -133,7 +132,7 @@
                 <div class="span6 control-group control-group-no-bottom">
                     @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label small" })
                     <div class="controls-small">
-                        @Html.DropDownListFor(model => model.TipoVehiculo, tipoVehiculo, new { @id = "tipoVehiculoDropdown", @class = "control input-small", autocomplete = "off" })
+                        @Html.DropDownListFor(model => model.TipoVehiculo, tipoVehiculo, new { @id = "tipoVehiculoDropdown", @class = "control input-small", autocomplete = "off", style = "width: 200px;" })
                         @Html.ValidationMessageFor(model => model.TipoVehiculo)
                         @Html.HiddenFor(model => model.TipoVehiculoInt)
                     </div>
@@ -360,7 +359,7 @@
                 <button id="aceptar" class="btn btn-primary" type="submit">@Textos.Aceptar</button>
                 @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
             </div>
-        </div>        
+        </div>
     }
 </div>
 <div id="autocompleteProv"></div>

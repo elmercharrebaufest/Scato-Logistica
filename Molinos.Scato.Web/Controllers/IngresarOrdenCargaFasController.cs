@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -17,6 +13,12 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -46,13 +48,13 @@ namespace Molinos.Scato.Web.Controllers
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             SetearVista(workflowObj);
             ViewBag.AceptaPendiente = true;
-            
+
             if (cargaDeCupoId != 0)
             {
                 var cupo = servicio.ObtenerCupoPorId(cargaDeCupoId);
-                return View(new OrdenCargaFasDto { MaterialId = cupo.MaterialId, PatenteCamion = cupo.Patente, MaterialDesc = cupo.MaterialDescripcion });                
+                return View(new OrdenCargaFasDto { MaterialId = cupo.MaterialId, PatenteCamion = cupo.Patente, MaterialDesc = cupo.MaterialDescripcion });
             }
-            return View();
+            return View(new OrdenCargaFasDto());
         }
 
         [HttpPost]
@@ -60,6 +62,14 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaFasDto orden, DatosUsuario datosUsuario, string MotivoDemora, int? Material)
         {
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
+            Validar(orden);
+
+            if (!ModelState.IsValid)
+            {
+                SetearVista(workflowObj);
+                ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
+                return View(orden);
+            }
 
             if (orden.VehiculoDemorado)
             {
@@ -85,71 +95,117 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
-            if (ModelState.IsValid)
+            
+            if (servicio.ExisteOrdenCargaFas(orden.NumeroOrden))
             {
-                if (servicio.ExisteOrdenCargaFas(orden.NumeroOrden))
-                {
-                    TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
-                    TempData["TipoAlerta"] = TipoAlerta.Error;
-                    SetearVista(workflowObj);
-                    return View(orden);
-                }
-                if (orden.PatenteCamion != null)
-                {
-                    orden.PatenteCamion = orden.PatenteCamion.ToUpper();
-                }
-                if (orden.PatenteAcoplado != null)
-                {
-                    orden.PatenteAcoplado = orden.PatenteAcoplado.ToUpper();
-                }
-                if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
-                {
-                    TempData["Alerta"] = Textos.OrdenCargaInterna_PatenteEnOtroWorkflow;
-                    TempData["TipoAlerta"] = TipoAlerta.Advertencia;
-                    return RedirectToAction("Index", "ListaDeCamiones");
-                }
-                var resultadoChofer = SetearChofer(orden.Chofer);
-                if (resultadoChofer == false)
-                {
-                    SetearVista(workflowObj);
-                    return View(orden);
-                }
-
-                var transportistaId = orden.TransportistaId;
-                var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, false);
-                orden.TransportistaId = transportistaId;
-                if (!resultadoTransportista)
-                {
-                    SetearVista(workflowObj);
-                    return View(orden);
-                }
-
-                var controlRecorrido = new ControlRecorridoDto
-                    {
-                        Actividad = Textos.ActIngresarOrdenDeCargaFas,
-                        ActividadXaml = "IngresarOrdenCargaFas",
-                        PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                        NombreUsuario = datosUsuario.NombreUsuario
-                    };
-
-                if (!Validar(orden, datosUsuario))
-                {
-                    SetearVista(workflowObj);
-                    return View(orden);
-                }
-
-                var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
-                var servicioWf = factory.CrearServicio(workflowDefinicionId);
-                var resultadoActividad = servicioWf.IngresarOrdenCargaFas(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, orden.ValidaCompliance, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
-                if (!resultadoActividad.HayErrores)
-                {
-                    return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
-                }
-
-                ModelState.AgregarErrores(resultadoActividad);
+                TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
+                TempData["TipoAlerta"] = TipoAlerta.Error;
                 SetearVista(workflowObj);
                 return View(orden);
             }
+            if (orden.PatenteCamion != null)
+            {
+                orden.PatenteCamion = orden.PatenteCamion.ToUpper();
+            }
+            if (orden.PatenteAcoplado != null)
+            {
+                orden.PatenteAcoplado = orden.PatenteAcoplado.ToUpper();
+            }
+
+            if (workflows.ObtenerWorkflowPorPatente(orden.PatenteCamion) != null)
+            {
+                TempData["Alerta"] = Textos.OrdenCargaInterna_PatenteEnOtroWorkflow;
+                TempData["TipoAlerta"] = TipoAlerta.Advertencia;
+                return RedirectToAction("Index", "ListaDeCamiones");
+            }
+
+            var resultadoChofer = SetearChofer(orden.Chofer);
+            if (resultadoChofer == false)
+            {
+                SetearVista(workflowObj);
+                return View(orden);
+            }
+
+            var transportistaId = orden.TransportistaId;
+            var resultadoTransportista = SetearTransportista(ref transportistaId, orden.TipoComercialId, false);
+            orden.TransportistaId = transportistaId;
+            if (!resultadoTransportista)
+            {
+                SetearVista(workflowObj);
+                return View(orden);
+            }
+
+            if (orden.DerivadoGranarioHabilitado && !(orden.VehiculoDemorado || orden.Rechazado))
+            {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
+                var dominios = new List<string> { orden.PatenteCamion };
+                if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
+                {
+                    dominios.Add(orden.PatenteAcoplado);
+                }
+                var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+                {
+                    TipoVehiculo = orden.TipoVehiculo,
+                    CentroId = datosUsuario.CentroId,
+                    MaterialId = orden.MaterialId,
+                    DestinoId = orden.ClienteId,
+                    DestinoPlanta = orden.PlantaDGDestino ?? 0,
+                    DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
+                    DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
+                    TransportistaId = orden.TransportistaId,
+                    Dominios = dominios.ToArray(),
+                    KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
+                    ChoferCuit = orden.Chofer.Cuil,
+                    PagadorFleteId = orden.PagadorFleteId ?? 0,
+                    CorredorId = orden.CorredorId,
+                    RemitenteId = orden.RemitenteId,
+                    ComisionistaId = orden.ComisionistaId,
+                    CuitDestinatario = orden.CuitDestinatario
+
+                }) as ResultadoCartaPorteElectronicaDummy;
+                if (resultadoAltaDummy.HayErrores)
+                {
+                    SetearVista(workflowObj);
+                    ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+                    return View(orden);
+                }
+
+                var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+                {
+                    CentroId = datosUsuario.CentroId,
+                    NroOrden = (int)resultadoAltaDummy.NroOrden,
+                    Sucursal = resultadoAltaDummy.Sucursal,
+                    TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+                });
+                if (resultadoAnulacionDummy.HayErrores)
+                {
+                    SetearVista(workflowObj);
+                    ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+                    return View(orden);
+                }
+            }
+
+            var controlRecorrido = new ControlRecorridoDto
+            {
+                Actividad = Textos.ActIngresarOrdenDeCargaFas,
+                ActividadXaml = "IngresarOrdenCargaFas",
+                PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
+                NombreUsuario = datosUsuario.NombreUsuario,
+                Comentario = orden.Rechazado ? $"Vehiculo Rechazado. {orden.MotivoRechazo}" : string.Empty
+            };
+
+            var workflowDefinicionId = servicio.ObtenerUltimaWorkflowDefinicionPorCordigo(workflow);
+            var servicioWf = factory.CrearServicio(workflowDefinicionId);
+            var resultadoActividad = servicioWf.IngresarOrdenCargaFas(orden, datosUsuario.CentroId, workflow, workflowDefinicionId, orden.ValidaCompliance, datosUsuario.NombreUsuario, controlRecorrido) as ResultadoCrearWorkflow;
+            if (!resultadoActividad.HayErrores)
+            {
+                return RedirectToAction("Index", "ListaDeCamiones", new { id = resultadoActividad.InstanciaWorkflowId });
+            }
+
+            ModelState.AgregarErrores(resultadoActividad);
+            
             SetearVista(workflowObj);
             return View(orden);
         }
@@ -173,7 +229,7 @@ namespace Molinos.Scato.Web.Controllers
 
             var materiales = servicio.ListarMaterialesPorWorkflow(workflow.Id, workflow.CentroId);
             controller.ViewBag.Materiales = materiales.ToSelectList(f => f.MaterialId.ToString(), f => f.MaterialDesc);
-
+            controller.ViewBag.MaterialesDerivadoGranario = materiales.Where(x => x.EsDerivadoGranario).Select(x => x.MaterialId).ToList();
         }
 
         [DatosUsuario]
@@ -181,21 +237,22 @@ namespace Molinos.Scato.Web.Controllers
         {
             log.Info("Empieza el método FAS");
             var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
-                {
-                    Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
-                    Patente = numero.ToUpper()
-                };
+            {
+                Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
+                Patente = numero.ToUpper()
+            };
             log.Info("Termina ObetenerCentro()/ Centro: " + consultaOrdenDeCarga.Centro + " Patente: " + consultaOrdenDeCarga.Patente);
 
             var datosRequest = new ConsultaOrdenDeCargaRequest
-                {
-                    ConsultaOrdenDeCarga = consultaOrdenDeCarga
-                };
+            {
+                ConsultaOrdenDeCarga = consultaOrdenDeCarga
+            };
             log.Info("Crea Request/ Request Centro " + datosRequest.ConsultaOrdenDeCarga.Centro + " Request Patente: " + datosRequest.ConsultaOrdenDeCarga.Patente);
             try
             {
                 log.Info("Empieza la llamada a SAP: Consultar Orden de Carga");
                 var respuestaConsultaOrdenCarga = servicioSap.ConsultaOrdenDeCarga(datosRequest);
+                //var respuestaConsultaOrdenCarga = ObtenerDatosDePruebaDeSAP();
 
                 log.Info("Respuesta: " + respuestaConsultaOrdenCarga.ConsultaOrdenDeCargaResponse.Salida.ToXml());
                 var datosSap = new List<OrdenCargaFasDto>();
@@ -207,13 +264,29 @@ namespace Molinos.Scato.Web.Controllers
 
                     for (int i = 0; i < count; i++)
                     {
-                        var transportista = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_TR), new TiposProveedor {PR = true});
+                        var numeroDocumentoChofer = ordenCargaFas[i].NRO_DOC_CHOFER;
+                        if (ordenCargaFas[i].TIPO_DOC_CHOFER == TipoDocumentoChofer.Cuit && !string.IsNullOrEmpty(numeroDocumentoChofer))
+                        {
+                            if (numeroDocumentoChofer.Contains("-"))
+                            {
+                                var startPos = numeroDocumentoChofer.IndexOf("-");
+                                var endPos = numeroDocumentoChofer.LastIndexOf("-");
+                                numeroDocumentoChofer = numeroDocumentoChofer.Substring(startPos + 1, endPos - startPos - 1);
+                            }
+                            else if (numeroDocumentoChofer.Length >= 10)
+                            {
+                                numeroDocumentoChofer = numeroDocumentoChofer.Substring(2, 8);
+                            }
+                        }
+
+                        var transportista = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_TR), new TiposProveedor { PR = true });
                         var proveedor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].KUNDE.TrimStart(new[] { '0' }));
                         var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));
                         var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
-                        var chofer = servicio.ObtenerChoferPorNumeroDocumento(ordenCargaFas[i].NRO_DOC_CHOFER);
+                        var chofer = servicio.ObtenerChoferPorNumeroDocumento(numeroDocumentoChofer);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
-                        
+                        var pagadorFlete = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_PAGADOR_FLETE));
+
                         if (material == null)
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_MaterialInexistente, ordenCargaFas[i].MATNR) }, JsonRequestBehavior.AllowGet);
@@ -222,18 +295,21 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE) }, JsonRequestBehavior.AllowGet);
                         }
-                        if (cliente == null)
+                        if (cliente == null && string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
                         }
-                        //if (workflow.Contains("Venta") && !tipoComercial.Descripcion.ToLower().Contains("venta"))
-                        //{
-                        //    continue;
-                        //}
-                        //if (workflow.Contains("Expo") && !tipoComercial.Descripcion.ToLower().Contains("expo"))
-                        //{
-                        //    continue;
-                        //}
+                        if (workflow.Contains("Venta") && tipoComercial != null && !(tipoComercial.CodigoSap.Equals("998") || tipoComercial.CodigoSap.Equals("CYO")))
+                        {
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Venta fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}");
+                            continue;
+                        }
+                        if (workflow.Contains("Expo") && tipoComercial != null && !tipoComercial.CodigoSap.Equals("EFC"))
+                        {
+                            log.Debug($"{ordenCargaFas[i].VBELN} no es Expo fas y tiene tipo comercial {ordenCargaFas[i].TIPO_COMERCIAL}");
+                            continue;
+                        }
+
                         var itemSap = new OrdenCargaFasDto
                         {
                             CuitTransporte = ConvertirCuil(ordenCargaFas[i].CUIT_TR),
@@ -243,18 +319,58 @@ namespace Molinos.Scato.Web.Controllers
                             TransportistaId = transportista != null ? transportista.Id : proveedor.Id,
                             TransportistaDesc = transportista != null ? transportista.RazonSocial : proveedor.RazonSocial,
                             PatenteAcoplado = ordenCargaFas[i].ACOPL,
-                            ClienteId = cliente.Id,
+                            ClienteId = cliente?.Id ?? 0,
                             ClienteDesc = ordenCargaFas[i].SOLIC,
                             NumeroOrden = ordenCargaFas[i].VBELN,
                             ValidaCompliance = (ordenCargaFas[i].FLETEPROPIO != string.Empty),
                             Chofer = chofer,
                             TipoComercialDesc = tipoComercial != null ? tipoComercial.Descripcion : null,
-                            TipoComercialId = tipoComercial != null ? (int)(tipoComercial.Id != null ? tipoComercial.Id : 0) : 0                          
+                            TipoComercialId = tipoComercial != null ? (int)(tipoComercial.Id != null ? tipoComercial.Id : 0) : 0,
+                            DerivadoGranarioHabilitado = material.EsDerivadoGranario,
+                            PlantaDGDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : (int?)null,
+                            OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
+                            PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
+                            PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
+                            Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
+                            TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
-                       
+
+                        if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        {
+                            var comisionista = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
+                            itemSap.Comisionista = comisionista?.Descripcion;
+                            itemSap.ComisionistaId = comisionista?.Id;
+                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
+                            itemSap.ClienteId = 0;
+                            itemSap.ClienteDesc = string.Empty;
+                        }
+                        else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        {
+                            var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
+                            itemSap.Remitente = remitente?.Descripcion;
+                            itemSap.RemitenteId = remitente?.Id;
+                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
+                            itemSap.ClienteId = 0;
+                            itemSap.ClienteDesc = string.Empty;
+                        }
+
+                        if (material.EsDerivadoGranario 
+                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE) 
+                            && ordenCargaFas[i].CORRE != "NO POSEE")
+                        {
+                            if(ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            {
+                                return Json(new { datosSap = -1, error = "El campo corredor no cumple el formato de 11 caracteres numérico." }, JsonRequestBehavior.AllowGet);
+                            }
+
+                            var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
+                            itemSap.Corredor = corredor?.Descripcion;
+                            itemSap.CorredorId = corredor?.Id;
+                        }
+
                         datosSap.Add(itemSap);
                     }
-                    if(datosSap.Count > 0)
+                    if (datosSap.Count > 0)
                     {
                         return Json(new { datosSap }, JsonRequestBehavior.AllowGet);
                     }
@@ -270,7 +386,7 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(ex, "Ocurrió un error al obtener la orden de descarga");
                 return Json(new { datosSap = -1, error = Textos.OrdenCargaFas_Error }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new { datosSap = -1, error = Textos.OrdenCargaFAS_Inexistente }, JsonRequestBehavior.AllowGet); 
+            return Json(new { datosSap = -1, error = Textos.OrdenCargaFAS_Inexistente }, JsonRequestBehavior.AllowGet);
         }
 
         private string ConvertirCuil(string cuil)
@@ -284,18 +400,11 @@ namespace Molinos.Scato.Web.Controllers
             string validador2 = cuil.Substring(10, 1);
             return validador1 + "-" + documento + "-" + validador2;
         }
-        protected virtual bool Validar(OrdenCargaFasDto orden, DatosUsuario usuario)
-        {
-            return true;
-        }
+
         [DatosUsuario]
         public Resultado Demorado(OrdenCargaFasDto orden, string MotivoDemora, int? Material, WorkflowDto workflowObj, DatosUsuario datosUsuario)
         {
             var resultado = new Resultado();
-            foreach (var key in ModelState.Keys)
-            {
-                ModelState[key].Errors.Clear();
-            }
             if (orden.PatenteCamion != null)
             {
                 orden.PatenteCamion = orden.PatenteCamion.ToUpper();
@@ -309,7 +418,7 @@ namespace Molinos.Scato.Web.Controllers
                 resultado.Error("0", Textos.OrdenCargaInterna_PatenteEnOtroWorkflow);
                 return resultado;
             }
-            if (orden.Chofer!= null && orden.Chofer.Cuil != "99-99999999-9")
+            if (orden.Chofer != null && orden.Chofer.Cuil != "99-99999999-9")
             {
                 var resultadoChofer = SetearChofer(orden.Chofer);
                 if (resultadoChofer == false)
@@ -343,6 +452,94 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             return resultadoActividad;
+        }
+
+        // Utilizar método sólo para pruebas locales
+        private ConsultaOrdenDeCargaResponse1 ObtenerDatosDePruebaDeSAP()
+        {
+            var salida = new ZSDES0300 {
+                NRO_DOC_CHOFER = "20-14692893-6",
+                TIPO_DOC_CHOFER = TipoDocumentoChofer.Cuit,
+                CUIT_TR = "20-20686662-5",
+                KUNDE = "9950085862",
+                MATNR = "99704",
+                KUNAG = "9815870000",
+                TIPO_COMERCIAL = "CYO",
+                PATEN = "MAN622",
+                ACOPL = "MAN623",
+                CUIT = "27000000014",
+                SOLIC = "MUNICIPALIDAD DE AVELLANEDA",
+                VBELN = "0099814054",
+                FLETEPROPIO = string.Empty,
+                CODPLANTA = "1809",
+                TIPODOM = "1",
+                ORDENDOM = "3",
+                CUIT_PAGADOR_FLETE = "27000000014",
+                INHABILITADO = "",
+                CORRE = "123AEA",
+                CUIT_CTA_ORDEN = "27000000014",
+                TIPO_REVENTA = "C",
+            };
+            var consultaOrden = new ConsultaOrdenDeCargaResponse
+            {
+                Salida = new ZSDES0300[] { salida }
+            };
+            var orden = new ConsultaOrdenDeCargaResponse1
+            {
+                ConsultaOrdenDeCargaResponse = consultaOrden
+            };
+            return orden;
+        }
+
+        private void Validar(OrdenCargaFasDto orden)
+        {
+            var material = servicio.ObtenerMaterial(orden.MaterialId);
+            orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
+            {
+                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
+            {
+                ModelState.AddModelError("PlantaDGDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_PlantaDGDestino));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
+            {
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
+            {
+                ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.NumeroOrden))
+            {
+                ModelState.AddModelError("NumeroOrden", string.Format(Textos.Error_Requerido, Textos.OrdenCargaFAS_OrdenCargaFas));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.TransportistaId <= 0)
+            {
+                ModelState.AddModelError("TransportistaDesc", string.Format(Textos.Error_Requerido, Textos.Transportista));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
+            {
+                ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
+            {
+                if(orden.ComisionistaId.HasValue)
+                {
+                    ModelState.AddModelError("Comisionista", "No tiene cuit destinatario");
+                } else if(orden.RemitenteId.HasValue)
+                {
+                    ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
+                }
+            }
         }
     }
 }

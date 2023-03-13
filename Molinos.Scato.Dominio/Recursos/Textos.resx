@@ -6854,7 +6854,7 @@
     <value>Los siguientes campos no fueron editados</value>
   </data>
   <data name="ProcedenciaDistintaAEstablecimiento" xml:space="preserve">
-    <value>La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte</value>
+    <value>La localidad del establecimiento seleccionado difiere con la procedencia cargada en la Carta de Porte - La localidad que corresponde al establecimiento seleccionado es {0} código {1}.</value>
   </data>
   <data name="ModificarTransmisionSap_Error" xml:space="preserve">
     <value>La transmisión que intenta modificar no está en estado de Error</value>
@@ -7522,8 +7522,8 @@
   <data name="StockDeEstablecimiento_Nuevo" xml:space="preserve">
     <value>Nuevo Stock de Establecimiento</value>
   </data>
-  <data name="Filtrar_StockDeEstablecimientos" xml:space="preserve">
-    <value>Filtrar Stock de Establecimientos</value>
+  <data name="Filtrar_Codigo_de_Establecimiento" xml:space="preserve">
+    <value>Código de Establecimiento</value>
   </data>
   <data name="Error_NoExisteEstablecimiento" xml:space="preserve">
     <value>No existe ningún Establecimiento con ese código</value>
@@ -8597,7 +8597,7 @@
     <value>Nuevo Recibo Municipal</value>
   </data>
   <data name="ReciboMunicipal_OrdenanzaExistente" xml:space="preserve">
-    <value>Ya existe un Recibo Municipal con esta Ordenanza</value>
+    <value>Ya existe un Recibo Municipal con esta Fecha y Tipo de vehiculo</value>
   </data>
   <data name="ReciboMunicipal_FechaActivacion" xml:space="preserve">
     <value>Fecha de Activación</value>
@@ -9632,7 +9632,7 @@
     <value>Media</value>
   </data>
   <data name="ActEnEsperaHB4" xml:space="preserve">
-    <value>En Espera HB4</value>
+    <value>Pendiente Análisis HB4</value>
   </data>
   <data name="CartaPorte_PatenteAcoplado2" xml:space="preserve">
     <value>Patente Acoplado 2</value>
@@ -9798,5 +9798,371 @@
   </data>
   <data name="VerRevertirRechazoVagones" xml:space="preserve">
     <value>Ver Revertir Rechazo Vagones</value>
+  </data>
+  <data name="CambioModalidadBalanzaMotivo" xml:space="preserve">
+    <value>Camión avanza de etapa en forma manual sin cambio de modalidad balanza</value>
+  </data>
+  <data name="AbmBarrera" xml:space="preserve">
+    <value>ABM Barrera</value>
+  </data>
+  <data name="Administracion_Barrera" xml:space="preserve">
+    <value>Administración Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_Crear" xml:space="preserve">
+    <value>Crear Grupo Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_Nombre" xml:space="preserve">
+    <value>Barrera</value>
+  </data>
+  <data name="Barrera_Nuevo" xml:space="preserve">
+    <value> Nuevo Grupo</value>
+  </data>
+  <data name="Barrera_Sensor_Abajo" xml:space="preserve">
+    <value>Sensor Abajo</value>
+  </data>
+  <data name="Barrera_Sensor_Arriba" xml:space="preserve">
+    <value>Sensor Arriba</value>
+  </data>
+  <data name="Barrera_Titulo" xml:space="preserve">
+    <value>Visualización de Barreras</value>
+  </data>
+  <data name="Barrera_crear_codigo_Obligatorio" xml:space="preserve">
+    <value>El campo código es requerido</value>
+  </data>
+  <data name="Barrera_crear_descripcion_Obligatorio" xml:space="preserve">
+    <value>El campo descripcion es requerido</value>
+  </data>
+  <data name="Barrera_crear_Rol_Obligatorio" xml:space="preserve">
+    <value>El campo rol es requerido</value>
+  </data>
+  <data name="Barrera_Modificar" xml:space="preserve">
+    <value>Modificar Grupo Visualización de Barreras</value>
+  </data>
+  <data name="CaracteristicaDeCalidad_ValorPorDefectoCalado" xml:space="preserve">
+    <value>Valor por Defecto Calado</value>
+  </data>
+  <data name="Error_Invalido_ValorPorDefectoCalado" xml:space="preserve">
+    <value>El Valor ingresado no es válido, debe ser mayor al Valor Mínimo y menor al Máximo</value>
+  </data>
+  <data name="CaracteristicaDeCalidad_EsPesoHectolitrico" xml:space="preserve">
+    <value>Es Peso Hectolitrico</value>
+  </data>
+  <data name="ExistePesoHectolitrico" xml:space="preserve">
+    <value>Ya se cargó la característica Peso hectolitrico</value>
+  </data>
+  <data name="PH_AutomaticaError" xml:space="preserve">
+    <value>No se pudo tomar el Peso Hectolitríco de manera automática</value>
+  </data>
+  <data name="AbmConfiguracionSensores" xml:space="preserve">
+    <value>Abm Configuracion Sensores</value>
+  </data>
+  <data name="PuestoDeTrabajo_ConfigSensor" xml:space="preserve">
+    <value>Configuracion Sensores</value>
+  </data>
+  <data name="PuestoDeTrabajo_RequiereComentarioGestionarBarrera" xml:space="preserve">
+    <value>Requiere Comentario Gestionar Barrera</value>
+  </data>
+  <data name="PuestoDeTrabajo_VisualizacionBarrera" xml:space="preserve">
+    <value>Visualizacion Barrera</value>
+  </data>
+  <data name="AbmConfiguracionEficienciaCalado" xml:space="preserve">
+    <value>ABM Configuración Eficiencia Calado</value>
+  </data>
+  <data name="Administracion_ConfiguracionEficienciaCalado" xml:space="preserve">
+    <value>Administración de Eficiencia Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Titulo" xml:space="preserve">
+    <value>Configuración Eficiencia Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Nuevo" xml:space="preserve">
+    <value>Nueva Calle</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Crear" xml:space="preserve">
+    <value>Crear Eficiencia de Calle Calado</value>
+  </data>
+  <data name="ConfiguracionEficienciaCalado_Modificar" xml:space="preserve">
+    <value>Modificar Eficiencia de Calle Calado</value>
+  </data>
+  <data name="Barrera_Nombre_Bajar" xml:space="preserve">
+    <value>Barrera Bajar</value>
+  </data>
+  <data name="Barrera_Sensor_Quiebre" xml:space="preserve">
+    <value>Sensor de Quiebre</value>
+  </data>
+  <data name="TarjetaDeAcceso_EnUso_Pendiente" xml:space="preserve">
+    <value>Número de Tarjeta de Acceso en uso con la patente : {0}</value>
+  </data>
+  <data name="ConfigSensores_Titulo" xml:space="preserve">
+    <value>Configuracion Sensores</value>
+  </data>
+  <data name="SensorBarreraEntradaAbajo" xml:space="preserve">
+    <value>Sensor Barrera Entrada Abajo</value>
+  </data>
+  <data name="SensorBarreraEntradaArriba" xml:space="preserve">
+    <value>Sensor Barrera Entrada Arriba</value>
+  </data>
+  <data name="SensorBarreraSalidaAbajo" xml:space="preserve">
+    <value>Sensor Barrera Salida Abajo</value>
+  </data>
+  <data name="SensorBarreraSalidaArriba" xml:space="preserve">
+    <value>Sensor Barrera Salida Arriba</value>
+  </data>
+  <data name="SensorPosicionIngreso" xml:space="preserve">
+    <value>Sensor Posicion Ingreso</value>
+  </data>
+  <data name="SensorPosicionSalida" xml:space="preserve">
+    <value>Sensor Posicion Salida</value>
+  </data>
+  <data name="Workflow_TieneEntregador" xml:space="preserve">
+    <value>Entregador</value>
+  </data>
+  <data name="FiltroEntregador_Todos" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="FiltroEntregador_ConEntregador" xml:space="preserve">
+    <value>Con Entregador</value>
+  </data>
+  <data name="FiltroEntregador_SinEntregador" xml:space="preserve">
+    <value>Sin Entregador</value>
+  </data>
+  <data name="StockTolerancia" xml:space="preserve">
+    <value>Tolerancia</value>
+  </data>
+  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
+    <value>Omitir rechazados</value>
+  </data>
+  <data name="Workflow_TieneEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Entregador</value>
+  </data>
+  <data name="FiltroEntregador_Todos_Duplicate[1]" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="FiltroEntregador_ConEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Con Entregador</value>
+  </data>
+  <data name="FiltroEntregador_SinEntregador_Duplicate[1]" xml:space="preserve">
+    <value>Sin Entregador</value>
+  </data>
+  <data name="StockTolerancia_Duplicate[1]" xml:space="preserve">
+    <value>Tolerancia</value>
+  </data>
+  <data name="ContingenciaAvanceCpe" xml:space="preserve">
+    <value>Avanza Automatico Cpe</value>
+  </data>
+  <data name="AltaCTG_ValidarCTGRepetido" xml:space="preserve">
+    <value>Ya existe un registro con el Código CTG ingresado: {0}</value>
+  </data>
+  <data name="AltaCTG_ValidarCPERepetido" xml:space="preserve">
+    <value>Ya existe un registro para el CPE ingresado: Sucursal {0} - Número de Orden {1}</value>
+  </data>
+  <data name="Transportista_Segundo_Tramo" xml:space="preserve">
+    <value>Transportista segundo tramo</value>
+  </data>
+  <data name="Proveedor_ResolucionInase" xml:space="preserve">
+    <value>Resol 37/22 Muestra INASE</value>
+  </data>
+  <data name="CaladoMuestraInase" xml:space="preserve">
+    <value>Se debe tomar la muestra para INASE</value>
+  </data>
+  <data name="Proveedor_EnvioCamaraInase" xml:space="preserve">
+    <value>Envío Muestra INASE</value>
+  </data>
+  <data name="InfoPatenteDeCalle_CartaPorte" xml:space="preserve">
+    <value>Carta de Porte / Remito</value>
+  </data>
+  <data name="InfoPatenteDeCalle_FechaIngreso" xml:space="preserve">
+    <value>Fecha de Ingreso</value>
+  </data>
+  <data name="InfoPatenteDeCalle_NombreChofer" xml:space="preserve">
+    <value>Nombre de Chofer</value>
+  </data>
+  <data name="InfoPatenteDeCalle_NombreWorkflow" xml:space="preserve">
+    <value>Nombre de Workflow</value>
+  </data>
+  <data name="VisualizarVideoCamarasCalador1" xml:space="preserve">
+    <value>Visualizar Video Cámaras Calador 1</value>
+  </data>
+  <data name="VisualizarVideoCamarasCalador2" xml:space="preserve">
+    <value>Visualizar Video Cámaras Calador 2</value>
+  </data>
+  <data name="PuestoDeTrabajo_GrupoBarrera" xml:space="preserve">
+    <value>Grupo Barrera</value>
+  </data>
+  <data name="ArmarLoteInase" xml:space="preserve">
+    <value>Armar Lote de Inase</value>
+  </data>
+  <data name="BuscarLoteInase" xml:space="preserve">
+    <value>Buscar Lote Inase</value>
+  </data>
+  <data name="Lote_FechaEnvio" xml:space="preserve">
+    <value>Fecha Envío</value>
+  </data>
+  <data name="Material_ColorFondo" xml:space="preserve">
+    <value>Color de fondo</value>
+  </data>
+  <data name="Material_ColorTexto" xml:space="preserve">
+    <value>Color de texto</value>
+  </data>
+  <data name="Workflow_SalidaMercaderiaConSAP" xml:space="preserve">
+    <value>IngresarCartaPorteRedespachoMercaderia</value>
+  </data>
+  <data name="TipoCallePlayaInterna" xml:space="preserve">
+    <value>Playa Interna</value>
+  </data>
+  <data name="TipoCallePreCalado" xml:space="preserve">
+    <value>Pre Calado</value>
+  </data>
+  <data name="TipoCallePostCalado" xml:space="preserve">
+    <value>Post Calado</value>
+  </data>
+  <data name="TipoCalleReCalado" xml:space="preserve">
+    <value>Re Calado</value>
+  </data>
+  <data name="TipoCalleCalado" xml:space="preserve">
+    <value>Calado</value>
+  </data>
+  <data name="TipoCalleRechazadosDemorados" xml:space="preserve">
+    <value>Rechazados Demorados</value>
+  </data>
+  <data name="TipoCalleNoGranos" xml:space="preserve">
+    <value>No Granos</value>
+  </data>
+  <data name="TipoCalleCircular" xml:space="preserve">
+    <value>Circular</value>
+  </data>
+  <data name="TipoCallePlantaNoGranos" xml:space="preserve">
+    <value>Planta No Granos</value>
+  </data>
+  <data name="TipoCalleEnTransito" xml:space="preserve">
+    <value>En Tránsito No Granos</value>
+  </data>
+  <data name="TipoCalleSalidaNoGranos" xml:space="preserve">
+    <value>Salida No Granos</value>
+  </data>
+  <data name="TipoCalleEsperaAduanaNoGranos" xml:space="preserve">
+    <value>Espera Aduana No Granos</value>
+  </data>
+  <data name="TipoCalleEnTransitoGranos" xml:space="preserve">
+    <value>En Tránsito Granos</value>
+  </data>
+  <data name="TipoCallePreBalanzaGranos" xml:space="preserve">
+    <value>Pre Balanza Granos</value>
+  </data>
+  <data name="TipoCalleSalidaGranos" xml:space="preserve">
+    <value>Salida Granos</value>
+  </data>
+  <data name="EstadoHidraulica_Disponible" xml:space="preserve">
+    <value>Disponible</value>
+  </data>
+  <data name="EstadoHidraulica_Inhabilitado" xml:space="preserve">
+    <value>Inhabilitado</value>
+  </data>
+  <data name="EstadoHidraulica_Llamando" xml:space="preserve">
+    <value>Llamando</value>
+  </data>
+  <data name="EstadoHidraulica_Ocupado" xml:space="preserve">
+    <value>Ocupado</value>
+  </data>
+  <data name="PuestosDeCargaDescarga_CodigoSensorBajada" xml:space="preserve">
+    <value>Sensor de bajada</value>
+  </data>
+  <data name="EstadoVolcadoras_Titulo" xml:space="preserve">
+    <value>Llamado automático de hidraulicas</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica" xml:space="preserve">
+    <value>Configuracion de calle hidráulica</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_Titulo" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="ConfirmacionCargaDescarga" xml:space="preserve">
+    <value>Confirmación de Carga/Descarga</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoCamara" xml:space="preserve">
+    <value>Código Cámara</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensor" xml:space="preserve">
+    <value>Código Sensor</value>
+  </data>
+  <data name="ConfiguracionCalleHidraulica_CodigoSensorCirculacion" xml:space="preserve">
+    <value>Código Sensor Circulación</value>
+  </data>
+  <data name="Configuracion_CalleHidraulica_CodigoCartel" xml:space="preserve">
+    <value>Código Cartel</value>
+  </data>
+  <data name="Error_LimiteCallesLlamadas" xml:space="preserve">
+    <value>Llegó al límite de llamados que se pueden hacer</value>
+  </data>
+  <data name="Balanza_ContingenciaExcedentesHabilitada" xml:space="preserve">
+    <value>Habilitar Contingencia de Pesos Excedentes</value>
+  </data>
+  <data name="Balanza_ToleranciaExcedida" xml:space="preserve">
+    <value>Tolerancia Excedida</value>
+  </data>
+  <data name="ExcepcionAlControlProveedor_Titulo" xml:space="preserve">
+    <value>Excepciones a Intermediarios</value>
+  </data>
+  <data name="Material_EsDerivadoGranario" xml:space="preserve">
+    <value>Es Derivado Granario</value>
+  </data>
+  <data name="ActAltaCTGDG" xml:space="preserve">
+    <value>Alta de CTG Derivado Granario</value>
+  </data>
+  <data name="Material_CodigoGranoPadre" xml:space="preserve">
+    <value>Codigo grano padre</value>
+  </data>
+  <data name="Material_TipoEmbalaje" xml:space="preserve">
+    <value>Tipo Embalaje</value>
+  </data>
+  <data name="Centro_Domicilio" xml:space="preserve">
+    <value>Domicilio</value>
+  </data>
+  <data name="Default_Embalaje" xml:space="preserve">
+    <value>(Embalaje)</value>
+  </data>
+  <data name="Centro_PlantaDG" xml:space="preserve">
+    <value>Planta Derivado Granario</value>
+  </data>
+  <data name="Centro_ValidarAutomaticamenteCTGDG" xml:space="preserve">
+    <value>Alta Automática Derivado Granario</value>
+  </data>
+  <data name="Default_Domicilio" xml:space="preserve">
+    <value>(domicilio)</value>
+  </data>
+  <data name="ActBajaCTGDG" xml:space="preserve">
+    <value>Baja de CTG Derivado Granario</value>
+  </data>
+  <data name="ActBajaCTGDGDefinitivo" xml:space="preserve">
+    <value>Baja CTG Derivado Granario Definitivo</value>
+  </data>
+  <data name="CartaPorte_NumeroCTG" xml:space="preserve">
+    <value>Numero de CTG</value>
+  </data>
+  <data name="CartaPorte_NroCPE" xml:space="preserve">
+    <value>N° CPE (Sucursal - Orden)</value>
+  </data>
+  <data name="CartaPorte_NumeroCPE" xml:space="preserve">
+    <value>N° CPE (Sucursal - Orden)</value>
+  </data>
+  <data name="AltaCTGDG_Titulo" xml:space="preserve">
+    <value>Confirmación Manual de Alta CTG Derivado Granario</value>
+  </data>
+  <data name="OrdenCarga_CuitPagadorFlete" xml:space="preserve">
+    <value>Pagador Flete</value>
+  </data>
+  <data name="OrdenCarga_DerivadoGranarioHabilitado" xml:space="preserve">
+    <value>Derivado Granario</value>
+  </data>
+  <data name="OrdenCarga_OrdenDomicilioDestino" xml:space="preserve">
+    <value>Domicilio</value>
+  </data>
+  <data name="OrdenCarga_PlantaDGDestino" xml:space="preserve">
+    <value>Planta</value>
+  </data>
+  <data name="OrdenCarga_ErrorValidacion" xml:space="preserve">
+    <value>Existen validaciones dentro del formulario, favor de revisar</value>
+  </data>
+  <data name="Destinatario_Cuit" xml:space="preserve">
+    <value>Cuit Destino</value>
   </data>
 </root>

@@ -45,6 +45,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool GeneroMicroMuestras { get; set; }
 
         public virtual bool HuboExcepcion { get; set; }
-        
+        public bool? EsPreLote { get; set; }
+
     }
 }

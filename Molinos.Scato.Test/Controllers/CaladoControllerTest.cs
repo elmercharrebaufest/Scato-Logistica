@@ -248,6 +248,20 @@ namespace Molinos.Scato.Test.Controllers
             Assert.That(target.TempData["TipoAlerta"], Is.EqualTo(null));
         }
 
+        public void TomarPH()
+        {
+            const int ph = 4;
+            var resultado = new ResultadoEjecutar { Mensaje = new Mensaje { Codigo = 0 }, Valores = new Dictionary<string, decimal> { { "PH", ph } } };
+            orquestadorMock.Setup(s => s.Ejecutar(It.IsAny<EjecutarAnalisisHumedad>())).Returns(resultado);
+
+            var json = target.TomarPH(It.IsAny<string>(), It.IsAny<long>()) as JsonResult;
+            var serializer = new JavaScriptSerializer();
+            var output = serializer.Serialize(json.Data);
+            Assert.That(output, Is.EqualTo(ph.ToString(CultureInfo.InvariantCulture)));
+            Assert.That(target.TempData["TipoAlerta"], Is.EqualTo(null));
+        }
+
+
         [Test]
         public void TomarHumedadErrorOrquestadorDesconectado()
         {

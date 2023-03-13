@@ -1,17 +1,20 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
+using Molinos.Scato.Web.Atributos;
+using Molinos.Scato.Web.Helpers;
+using Molinos.Scato.Web.Models;
+using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IdentityModel.Services;
 using System.Linq;
 using System.Resources;
 using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Recursos;
-using Molinos.Scato.Servicios;
-using Molinos.Scato.Web.Atributos;
-using Molinos.Scato.Web.Helpers;
-using Molinos.Scato.Web.Models;
-using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -19,20 +22,66 @@ namespace Molinos.Scato.Web.Controllers
     {
         private readonly IServicioComandos servicioComandos;
         private ILogger log;
+        private readonly IServicioOrquestador orquestador;
+        private readonly IServicioEstadoPuesto servicioEstado;
 
-        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos)
+        public MenuController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioOrquestador orquestador, IServicioEstadoPuesto servicioEstado)
             : base(servicio)
         {
             this.log = log;
             this.servicioComandos = servicioComandos;
+            this.orquestador = orquestador;
+            this.servicioEstado = servicioEstado;
         }
 
         [DatosUsuario]
         public ActionResult Menu(DatosUsuario datosUsuario)
         {
             ViewBag.Workflows = servicio.ListarWorkflowsPorUsuarioYCentro(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-
             ViewBag.Grupos = ObtenerGrupos(datosUsuario);
+
+            #region VisualizacionBarreras
+
+            var puestoTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(datosUsuario.NombrePc, datosUsuario.CentroId);
+            if (puestoTrabajo?.VisualizacionBarrera_Id is null)
+            {
+                var grupoBarrera = servicio.ObtenerGruposBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
+                for (int i = 0; i < grupoBarrera?.Count; i++)
+                {
+                    var sensores = servicio.ListarSensoresBarreras(grupoBarrera[i].Id);
+                    grupoBarrera[i].SensoresBarreras = sensores;
+                }
+                ViewBag.ModulosBarrera = grupoBarrera;
+                var sensoresBarrera = servicio.ListarSensoresBarreras(grupoBarrera?.FirstOrDefault()?.Id ?? 0);
+                ViewBag.SensoresBarrera = sensoresBarrera;
+                ViewBag.TotalSensoresBarrera = servicio.ObtenerCantidadBarrerasPorUsuario(datosUsuario.NombreUsuario, datosUsuario.CentroId);
+            }
+            else
+            {
+                var configVisualizacionBarrera = servicio.ObtenerVisualizacionBarrera(Convert.ToInt32(puestoTrabajo?.VisualizacionBarrera_Id));
+                ViewBag.RequiereComentarioGestionarBarrera = puestoTrabajo.RequiereComentarioGestionarBarrera;
+                if (configVisualizacionBarrera != null && !configVisualizacionBarrera.Deshabilitada)
+                {
+                    configVisualizacionBarrera.SensoresBarreras = servicio.ListarSensoresBarreras(configVisualizacionBarrera.Id);
+                    ViewBag.ModulosBarrera = new List<VisualizacionBarreraDto> { configVisualizacionBarrera };
+                    ViewBag.SensoresBarrera = configVisualizacionBarrera?.SensoresBarreras;
+                    ViewBag.TotalSensoresBarrera = configVisualizacionBarrera.SensoresBarreras?.Count;
+                    ViewBag.GestionarBarrera = true;
+                }
+                else
+                {
+                    ViewBag.ModulosBarrera = new List<VisualizacionBarreraDto>();
+                    ViewBag.SensoresBarrera = new List<SensorBarreraDto>();
+                    ViewBag.TotalSensoresBarrera = 0;
+                }
+            }
+
+            var barreraSupervisor = puestoTrabajo?.EntradaSupervisor?.Split(',').ToList() ?? new List<string>();
+            barreraSupervisor.AddRange(puestoTrabajo?.CierreSupervisor?.Split(',').ToList() ?? new List<string>());
+            ViewBag.BarrerasSupervisor = barreraSupervisor;
+            ViewBag.PuestoId = puestoTrabajo?.Id;
+
+            #endregion VisualizacionBarreras
 
             var rm = new ResourceManager(typeof(Textos));
             ViewBag.Idiomas = CultureInfo.GetCultures(CultureTypes.AllCultures).Select(x => x).Where(x => ResourceManagerExist(rm, x)).ToSelectList(x => x.LCID.ToString(CultureInfo.InvariantCulture), x => x.NativeName.Split('(')[0]);
@@ -41,10 +90,10 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Mantenimiento = EstaEnMantenimiento();
             return PartialView("_Menu");
         }
-        
+
         public JsonResult MarcarLeidos(int? id)
         {
-            if (id != null)
+            if (id != null && id != 0)
             {
                 servicioComandos.Ejecutar(new ModificarNotificacion { Id = id.Value });
             }
@@ -67,8 +116,8 @@ namespace Molinos.Scato.Web.Controllers
 
         public JsonResult EliminarNotificacion(int id)
         {
-            servicioComandos.Ejecutar(new EliminarNotificacion {Id = id});
-            return Json(new {}, JsonRequestBehavior.AllowGet);
+            servicioComandos.Ejecutar(new EliminarNotificacion { Id = id });
+            return Json(new { }, JsonRequestBehavior.AllowGet);
         }
 
         [DatosUsuario]
@@ -118,12 +167,12 @@ namespace Molinos.Scato.Web.Controllers
             var culture = CultureInfo.GetCultureInfo(lcid);
             SessionManager.CurrentCulture = culture;
             //
-            // Cache the new current culture into the user HTTP session. 
+            // Cache the new current culture into the user HTTP session.
             //
             var cookie = new CookieUsuario();
             cookie.ActualizarValor("CurrentCulture", lcid.ToString(CultureInfo.InvariantCulture));
             //
-            // Redirect to the same page from where the request was made! 
+            // Redirect to the same page from where the request was made!
             //
             return Redirect(Request.UrlReferrer.ToString());
         }
@@ -131,11 +180,10 @@ namespace Molinos.Scato.Web.Controllers
         [AjaxOnly]
         public void BorrarPermisosCookie()
         {
-            if (FederatedAuthentication.SessionAuthenticationModule != null )
+            if (FederatedAuthentication.SessionAuthenticationModule != null)
             {
                 FederatedAuthentication.SessionAuthenticationModule.DeleteSessionTokenCookie();
             }
-            
         }
 
         private bool EstaEnMantenimiento()
@@ -167,6 +215,7 @@ namespace Molinos.Scato.Web.Controllers
                 return false;
             }
         }
+
         public void ActualizarCookiePermisos()
         {
             var cookie = new CookieUsuario();
@@ -180,6 +229,31 @@ namespace Molinos.Scato.Web.Controllers
                 cookie.ActualizarValor("Grupo", String.Join("|", grupos.ToArray()));
             }
         }
+
+        [DatosUsuario]
+        public ActionResult GestionarBarrera(DatosUsuario datosUsuario, int puestoId, string codigo, string motivo, string accion)
+        {
+            try
+            {
+                orquestador.Ejecutar(new EjecutarAperturaBarreraMaestro { CodigoDispositivo = codigo });
+            }
+            catch (Exception e)
+            {
+                log.Error(e, $"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera : {codigo}");
+                return Json($"Error al {(accion == "A" ? "abrir" : "cerrar")} la barrera", JsonRequestBehavior.AllowGet);
+            }
+            if (!string.IsNullOrEmpty(motivo))
+            {
+                servicioComandos.Ejecutar(new CrearLogTarjetaSupervisor { PuestoDeTrabajoId = puestoId, Motivo = $"{motivo} - {(accion == "A" ? "APERTURA" : "CIERRE")} ", Usuario = datosUsuario.NombreUsuario });
+            }
+
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
+        [DatosUsuario]
+        public void ActualizarEstadoBarreras(DatosUsuario datosUsuario)
+        {
+            servicioEstado.ActualizarBarreras(datosUsuario.NombrePc);
+        }
     }
 }
-

@@ -47,5 +47,7 @@ namespace Molinos.Scato.Actividades.Servicios
         IList<InstanciaWorkflowPuertoDto> ListarEmbarques(string filtroProximaAccion = null);
         [OperationContract]
         List<InstanciaWorkflowDto> ListarWorflows();
+        [OperationContract]
+        InstanciaWorkflowDto ObtenerWorkflowPendientePorNumeroTarjetaAcceso(string numeroTarjeta, int? centroId);
     }
 }

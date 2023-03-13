@@ -45,7 +45,7 @@ namespace Molinos.Scato.Actividades
                
 
 
-                var resultado = servicio.Ejecutar(new EnviarMensajeCarteLed
+                var resultado = servicio.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
                         Codigo = codigo

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.ServiceModel;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.AfipCPDigitalService;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using System.ServiceModel;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -19,12 +19,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly CpePortType serviceAfipCpe;
         private readonly IAccesoWsCtg accesoWsCtg;
+        private IServicioComandos servicioComandos;
+
         public ProcesadorConfirmacionArriboDefinitiva(IRepositorio repositorio, IConversor conversor, ILogger log,
-                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg)
+                                 CpePortType serviceAfipCpe, IAccesoWsCtg accesoWsCtg, IServicioComandos servicioComandos)
             : base(repositorio, conversor, log)
         {
             this.accesoWsCtg = accesoWsCtg;
             this.serviceAfipCpe = serviceAfipCpe;
+            this.servicioComandos = servicioComandos;
         }
 
         public override Resultado Ejecutar(ConfirmarArriboDefinitivo comando)
@@ -33,7 +36,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             System.Net.ServicePointManager.ServerCertificateValidationCallback =
                 ((sender, certificate, chain, sslPolicyErrors) => true);
             //////////////
-           
+
             var resultado = new Resultado();
 
             try
@@ -55,11 +58,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                 // Obtengo la autorizacion
-                var cuitRepresentado = centro.Cuit != null ? centro.Cuit.Replace("-", string.Empty): string.Empty;
+                var cuitRepresentado = centro.Cuit != null ? centro.Cuit.Replace("-", string.Empty) : string.Empty;
                 var auth = accesoWsCtg.ObtenerAuth(cuitRepresentado, resultado);
                 // Armo la consulta
                 Log.Debug("armo consulta dependiendo del tipo de vehiculo");
-                var response = new CartaPorteRespuesta();
                 var request = "";
 
                 var tipoCpe = ObtenerTipoCpe(comando.Dto.TipoVehiculo);
@@ -85,6 +87,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (consulta?.respuesta?.cabecera?.estado == "CN")
                     {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
                         return resultado;
                     }
                 }
@@ -102,11 +105,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (consulta?.respuesta?.cabecera?.estado == "CN")
                     {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
                         return resultado;
                     }
                 }
 
-                if (tipoCpe == 74 || tipoCpe == 274) {
+                if (tipoCpe == 74 || tipoCpe == 274)
+                {
                     var confirmarArriboRequest = new confirmacionDefinitivaCPEAutomotorRequest
                     {
                         auth = auth,
@@ -129,11 +134,42 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Log.Debug("Inicio la consulta");
                     // Realizo la consulta
                     var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEAutomotor(confirmarArriboRequest).respuesta;
-
+                    if(respuesta.pdf != null) // TODO - Revisar si es necesario, ya que PDF actualmente siempre es null
+                    {
+                        servicioComandos.Ejecutar(new GuardarImagenDescarga
+                        {
+                            NroCartaPorte = comando.Dto.NroCartaPorte,
+                            RutaFotoCP = comando.Dto.FotoRutaDestino,
+                            CodigoCentroSap = centro.CodigoSAP,
+                            Patente = recorrido.Patente,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
+                            Pdf = respuesta.pdf
+                        });
+                    } 
                     Log.Debug("Realizo la consulta ");
+
+                    Repositorio.Agregar(
+                    new LogAfipCpe
+                    {
+                        Servicio = "ConfirmarArriboDefinitivo",
+                        Consulta = request,
+                        Respuesta = respuesta.ToXml(),
+                        Fecha = DateTime.Now,
+                    });
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
-                if(tipoCpe == 75)
+                if (tipoCpe == 75)
                 {
+                    short codigoRamal = 5; // BELGRANO POR DEFECTO
+                    if (comando.Dto.CodigoRamalAfip != null)
+                    {
+                        codigoRamal = (short)comando.Dto.CodigoRamalAfip;
+                    }
+                   
                     var confirmarArriboRequest = new confirmacionDefinitivaCPEFerroviariaRequest
                     {
                         auth = auth,
@@ -150,23 +186,37 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             },
                             ramalDescarga = new Ramal
                             {
-                                codigo = (short)comando?.Dto?.CodigoRamalAfip
+                                codigo = codigoRamal
                             }
-
                         }
                     };
                     request = confirmarArriboRequest.ToXml();
                     Log.Debug("Inicio la consulta");
                     // Realizo la consulta
                     var respuesta = serviceAfipCpe.confirmacionDefinitivaCPEFerroviaria(confirmarArriboRequest).respuesta;
-
+                    if (respuesta.pdf != null)
+                    {
+                        servicioComandos.Ejecutar(new GuardarImagenDescarga
+                        {
+                            NroCartaPorte = comando.Dto.NroCartaPorte,
+                            RutaFotoCP = comando.Dto.FotoRutaDestino,
+                            CodigoCentroSap = centro.CodigoSAP,
+                            Patente = recorrido.Patente,
+                            TipoImagen = recorrido.Establecimiento != null ? TipoImagen.CPESustentable : TipoImagen.CPE,
+                            Pdf = respuesta.pdf
+                        });
+                    }
                     Log.Debug("Realizo la consulta ");
+
+                    if (respuesta?.cabecera?.estado == "CN")
+                    {
+                        UpdateBajaCTGDefinitiva(comando.WorkflowId);
+                    }
                 }
                 try
                 {
                     if (ConfigurationManager.AppSettings["LoguearRequestsCtg"] == "1")
                     {
-
                         Repositorio.Agregar(new ControlRecorrido
                         {
                             Actividad = "ProcesadorConfirmacionArriboDefinitivo",
@@ -181,29 +231,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 catch (Exception e)
                 {
                     Log.Debug("Error al loguear request Afip CTG", e.Message);
-                }
-
-                if (response != null && response.errores != null && response.errores.Any())
-                {
-                    resultado.Errores.Add(response.errores.FirstOrDefault().codigo, response.errores.FirstOrDefault().descripcion);
-                    Log.Error("Error en la Confirmacion: {0}", response.errores.FirstOrDefault().descripcion);
-                }
-                else if (response != null)
-                {
-                    //Si no hay errores, registro la baja del CTG
-                    var datos = response.cabecera;
-                    Repositorio.Agregar(
-                        new LogAfipCpe
-                            {
-                                Servicio= "ConfirmarArriboDefinitivo",
-                                Consulta= request,
-                                Respuesta= response.ToXml()
-                        });
-                    Log.Debug("La Confirmacion Definitiva {0}-{1} procesada correctamente", comando.Dto.Sucursal, comando.Dto.CTG);
-                }
-                else
-                {
-                    Log.Error("La Confirmacion Definitiva {0}-{1} respuesta invalida", comando.Dto.Sucursal, comando.Dto.CTG);
                 }
             }
             catch (FaultException e)
@@ -234,12 +261,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 case Dominio.Enums.TipoVehiculo.CamiónE:
                 case Dominio.Enums.TipoVehiculo.Bitren:
                     return 74;
-                case Dominio.Enums.TipoVehiculo.Tren:                
+
+                case Dominio.Enums.TipoVehiculo.Tren:
                 case Dominio.Enums.TipoVehiculo.Vapor:
                     return 75;
+
                 default:
                     return 74;
             }
+        }
+
+        private void UpdateBajaCTGDefinitiva(Guid workFlowId) {
+            var bajaCtg = Repositorio.ObtenerMasReciente<BajaCTG>(x => x.WorkflowId == workFlowId, x => x.Fecha);
+            if (bajaCtg != null)
+            {
+                if(string.IsNullOrEmpty(bajaCtg.CodigoDeBajaDefinitivo))
+                    bajaCtg.CodigoDeBajaDefinitivo = "ProcesadorConfirmacionArriboDefinitivo";
+            }
+            Repositorio.GuardarCambios();
         }
     }
 }

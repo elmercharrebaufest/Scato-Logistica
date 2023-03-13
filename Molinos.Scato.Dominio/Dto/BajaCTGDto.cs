@@ -19,5 +19,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string WorkflowCodigo { get; set; }
         public string Errores { get; set; }
         public bool Cpe { get; set; }
+        public int OrdenDeDescargaFasonId { get; set; }
     }
 }

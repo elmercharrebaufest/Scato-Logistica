@@ -18,7 +18,7 @@
 <style>
 </style>
 @Html.Hidden("FotoMesaDigitalizacion1", (byte[])ViewBag.FotoMesaDigitalizacion1)
-
+@Html.Hidden("FotoMesaDigitalizacionSustentable", (byte[])ViewBag.FotoMesaDigitalizacionSustentable)
 <div class="container-fluid">
     <div class="titSecciones">@Textos.Pendiente</div>
 </div>
@@ -43,19 +43,23 @@
             <h5>Patente: @Html.DisplayFor(x => x.Patente)</h5>
             <h5>Cupo: @Html.DisplayFor(x => x.Cupo)</h5>
 
-@Html.ActionLink(@Textos.ActIngresarCartaPorte, "Index", "CargarCartaPorte", new { workflow = ViewBag.IngresoPorCompra, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
-@Html.ActionLink(@Textos.ActIngresarCartaPorteRedespacho, "Index", "IngresarCartaPorteRedespacho", new { workflow = ViewBag.IngresoPorRedespacho, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block" })
+            @Html.ActionLink(@Textos.ActIngresarCartaPorte, "Index", "CargarCartaPorte", new { workflow = ViewBag.IngresoPorCompra, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
+            @Html.ActionLink(@Textos.ActIngresarCartaPorteRedespacho, "Index", "IngresarCartaPorteRedespacho", new { workflow = ViewBag.IngresoPorRedespacho, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block" })
         </div>
         <div class="span8 control-group control-group-no-bottom borde ocultar fondo">
             @if (!Model.CPE)
             {
-                <text> 
+                <text>
                     No se encontró la foto para la CCPP : <strong>@(!string.IsNullOrEmpty(Model.NumeroCartaPorte) ? Model.NumeroCartaPorte : "Numero de carta de porte no ingresado en garita") </strong>
                 </text>
             }
         </div>
         <div class="span8 control-group control-group-no-bottom sinBorde" id="fotoDiv">
-            @if (ViewBag.FotoMesaDigitalizacion1 != null)
+            @if (ViewBag.FotoMesaDigitalizacionSustentable != null)
+            {
+                <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacionSustentable))">
+            }
+            else if (ViewBag.FotoMesaDigitalizacion1 != null)
             {
                 <img id="foto1" src="@("data:image/jpeg;base64," + Convert.ToBase64String((byte[])ViewBag.FotoMesaDigitalizacion1))">
 
@@ -63,5 +67,5 @@
             <img src="" id="place-holder-1" style="margin-left: -1200px; position: absolute; z-index: 100;" />
         </div>
     </div>
-    
+
 </div>

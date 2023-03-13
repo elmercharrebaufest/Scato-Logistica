@@ -1,8 +1,9 @@
 ﻿CREATE TABLE [dbo].[Vapor] (
-    [Id]     INT            IDENTITY (1, 1) NOT NULL,
+    [Id]     INT           IDENTITY (1, 1) NOT NULL,
     [Nombre] NVARCHAR (60) NULL,
-    
-    CONSTRAINT [PK_dbo.Vapor] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [UK_Vapor_Nombre] UNIQUE (Nombre) 
+    CONSTRAINT [PK_dbo.Vapor] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
+    CONSTRAINT [UK_Vapor_Nombre] UNIQUE NONCLUSTERED ([Nombre] ASC) WITH (FILLFACTOR = 90, STATISTICS_NORECOMPUTE = ON)
 );
+
+
 GO

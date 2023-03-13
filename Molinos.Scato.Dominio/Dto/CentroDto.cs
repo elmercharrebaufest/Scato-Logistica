@@ -251,6 +251,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int? MinutosEsperaCircular { get; set; }
         public int? Sucursal { get; set; }
+
+        [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         public int? Planta { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "ContingenciaAfipCpe")]
@@ -265,5 +267,17 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Centro_Ruta_Imagenes")]        
         [StringLength(200, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string FotosPath { get; set; }
+       
+        public bool AvanzaCpe { get; set; }
+        public int? MinutosEsperaPrecalado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_Domicilio")]
+        public int? DomicilioId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_ValidarAutomaticamenteCTGDG")]
+        public bool ValidarAutomaticamenteCTGDG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Centro_PlantaDG")]
+        public int? PlantaDG { get; set; }
     }
 }

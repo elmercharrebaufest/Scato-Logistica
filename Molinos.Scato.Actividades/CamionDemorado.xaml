@@ -51,7 +51,9 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
       <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>Ninject</AssemblyReference>
       <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
@@ -146,8 +148,13 @@
                     <mca:CSharpValue x:TypeArguments="x:Boolean">rechazado</mca:CSharpValue>
                   </FlowDecision.Condition>
                   <FlowDecision.True>
-                    <FlowStep x:Name="__ReferenceID7">
-                      <local:RechazarCamion Rechazado="{x:Null}">
+                    <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                      <local:RechazarCamion sap2010:WorkflowViewState.IdRef="RechazarCamion_2">
+                        <local:RechazarCamion.Rechazado>
+                          <OutArgument x:TypeArguments="x:Boolean">
+                            <mca:CSharpReference x:TypeArguments="x:Boolean">rechazado</mca:CSharpReference>
+                          </OutArgument>
+                        </local:RechazarCamion.Rechazado>
                         <local:RechazarCamion.Result>
                           <OutArgument x:TypeArguments="msdc:Resultado">
                             <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
@@ -158,7 +165,6 @@
                             <mca:CSharpValue x:TypeArguments="s:Guid">workflowId</mca:CSharpValue>
                           </InArgument>
                         </local:RechazarCamion.WorkflowInstanceId>
-                        <sap2010:WorkflowViewState.IdRef>RechazarCamion_2</sap2010:WorkflowViewState.IdRef>
                       </local:RechazarCamion>
                       <FlowStep.Next>
                         <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_1">
@@ -202,7 +208,6 @@
                           </FlowStep.Next>
                         </FlowStep>
                       </FlowStep.Next>
-                      <sap2010:WorkflowViewState.IdRef>FlowStep_7</sap2010:WorkflowViewState.IdRef>
                     </FlowStep>
                   </FlowDecision.True>
                   <FlowDecision.False>
@@ -222,7 +227,7 @@
       <x:Reference>__ReferenceID6</x:Reference>
       <x:Reference>__ReferenceID7</x:Reference>
     </Flowchart>
-    <sads:DebugSymbol.Symbol>d0pDOlxtb2xpbm9zXE1vbGlub3MuU2NhdG8tREVWXE1vbGlub3MuU2NhdG8uQWN0aXZpZGFkZXNcQ2FtaW9uRGVtb3JhZG8ueGFtbBhTA+IBDgIBAVgFXhoDAYABXwXgARECAQJbC1vMAQMBgQFiC3sXAgFffg+OASgCAUaSARWSAV0CAT6lARurASkCATWvASGvAXQCAS22ASPGAToCARSWAReiAS4CAQNtEW1lAgF4chFydwIBcHURdV8CAWh4EXhhAgFggQEVgQFzAgFXhgEVhgFoAgFPiwEViwFqAgFHqAEhqAFuAgE2uQEpuQGHAQIBJb4BKb4BfAIBHcMBKcMBfwIBFZkBHZkBcgIBDJ4BHZ4BYwIBBA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0xDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xDYW1pb25EZW1vcmFkby54YW1sGVUD5wEOAgEBWgVgGgMBiAFhBeUBEQIBAl0LXcwBAwGJAWQLfRcCAWeAAQ+QASgCAU6UARWUAV0CAUarARuxASkCAT21ASG1AXQCATW8ASPMAToCARyYAReoAS4CAQNvEW9lAwGAAXQRdHcCAXh3EXdfAgFwehF6YQIBaIMBFYMBcwIBX4gBFYgBaAIBV40BFY0BagIBT64BIa4BbgIBPr8BKb8BhwECAS3EASnEAXwCASXJASnJAX8CAR2gAR2gAXICARSbAR2bAW0CAQylAR2lAWMCAQQ=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

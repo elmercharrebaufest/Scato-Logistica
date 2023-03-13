@@ -1,0 +1,29 @@
+CREATE NONCLUSTERED INDEX IX_Leido_Grupo ON Notificacion (
+                                [Leido],
+                                [Grupo]
+) WITH (PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON, SORT_IN_TEMPDB = ON, DROP_EXISTING = OFF, ONLINE = ON, ALLOW_ROW_LOCKS = ON,
+ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)
+ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX IX_Grupo_TipoAlerta_Leido_incl_varios ON Notificacion (
+                [Grupo],
+                [TipoAlerta],
+                [Leido]
+) INCLUDE ([Mensaje], [Hora], [PuestoId])
+WITH (PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON, SORT_IN_TEMPDB = ON, DROP_EXISTING = OFF, ONLINE = ON, ALLOW_ROW_LOCKS = ON,
+ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)
+ON [PRIMARY]
+
+GO
+
+CREATE NONCLUSTERED INDEX IX_Grupo_incl_varios ON Notificacion (
+                [Grupo]
+
+) INCLUDE ([TipoAlerta], [Mensaje], [Hora], [Leido], [PuestoId])
+WITH (PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON, SORT_IN_TEMPDB = ON, DROP_EXISTING = OFF, ONLINE = ON, ALLOW_ROW_LOCKS = ON,
+ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF)
+ON [PRIMARY]
+
+GO

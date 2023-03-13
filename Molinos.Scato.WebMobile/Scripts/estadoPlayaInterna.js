@@ -1,212 +1,130 @@
-﻿function Calle(item, context) {
-    var self = this;
-    self.Nombre = item.Nombre;
-    self.TipoCalle = item.TipoCalle;
-    self.CantidadDeCamiones = item.CantidadDeCamiones;
-    self.Id = item.Id;
-    self.FechaLLamada = item.FechaLLamada;
-    self.Deshabilitada = ko.observable(item.Deshabilitada);
-    self.Llamada = ko.observable(item.Bloqueada);
-    self.Automatica = ko.observable(item.Automatica); //para calles de calado
-    self.MaterialId = ko.observable(item.MaterialId.toString()); //solo trae valor para calles de calado
-    self.MaterialDesc = ko.observable(item.MaterialDesc);
-    self.CamionesEnCalle = ko.observable(0);
-    var posiciones = [];
-    for (var i = 0; i < self.CantidadDeCamiones; i++) {
-        posiciones.push(new Camion({ Id: 0, Patente: '', MaterialId: null }, self));
-    }
-    self.Posiciones = ko.observableArray(posiciones);
-    self.Bloqueada = ko.computed(function () {
-        return self.Llamada() && self.CamionesEnCalle() > 0;
-    });
-
-    self.TiempoEnCola = ko.computed(function () {
-        return self.Posiciones().length > 0 ? self.Posiciones()[0].TiempoEnCola : "";
-    });
-    self.CargarCamiones = function (camiones) {
-        if (self.Llamada() && camiones.length == 0) {
-            self.Llamada(false);
-        }
-        var posiciones = [];
-        $.each(camiones, function (key, value) {
-            posiciones.push(new Camion(value, self));
-            self.MaterialId(value.MaterialId);
-        });
-        posiciones = posiciones.sort(function (a, b) { return a.Id - b.Id; });
-        self.CamionesEnCalle(camiones.length);
-        if (camiones.length < self.CantidadDeCamiones) {
-            for (var i = camiones.length; i < self.CantidadDeCamiones; i++) {
-                posiciones.push(new Camion({ Id: 0, Patente: '', MaterialId: null }, self));
-            }
-        }
-        self.Posiciones(posiciones);
-    };
-    self.Actualizar = function (itemActualizado) {
-        if (itemActualizado && itemActualizado.length > 0) {
-            self.Deshabilitada(itemActualizado[0].Deshabilitada);
-            self.FechaLLamada = itemActualizado[0].FechaLLamada;
-            self.Llamada(itemActualizado[0].Bloqueada);
-            if (self.TipoCalle == 4) { //Si no es calle calado, el material se actualiza al traer los camiones
-                self.Automatica(itemActualizado[0].Automatica);
-            }
-        }
-    }
-    self.Color = item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId > 0 ? "bg-dark" : (self.TipoCalle == 1 ? 'bg-vacio' : "");
-    self.Icon = (item.TipoCalidad == 2 ? "fas fa-tint" : item.TipoCalidad == 3 ? "fas fa-vial" : item.TipoCalidad == 1 ? "fas fa-clipboard-check" : "");
-
-
+﻿function EstadoPlayaInternaDeCallesVM(config) {
+    this.containerId = config.containerId;
+    this.vmData = config.vmData;
+    this.tipoCalle = config.tipo;
 }
 
-function Camion(item, calle) {
-    var self = this;
-    self.Id = item.Id;
-    self.Patente = item.Patente;
-    self.MaterialId = item.MaterialId;
-    self.Calidad = item.Calidad;
-    self.CalleId = item.CalleId;
-    self.UltimoDeLaFila = item.UltimoDeLaFila;
-    self.AsignadoEnPuestoComando = item.AsignadoEnPuestoComando;
-    self.Calle = calle;
-    //
-    self.TiempoEnCola = null;
-    if (item.FechaIngeso) {
+EstadoPlayaInternaDeCallesVM.prototype = {
+    onReady: function () {
+        let self = this;
+        self.vm = {
+            mainModule: {},
+        };
 
-        var fechaActual = Date.now();
-        var fechaInicioDeCola = new Date(parseInt(item.FechaIngeso.substr(6)));
-
-        let diffMilli = fechaActual - fechaInicioDeCola;
-        let secondsInMilli = 1000;
-        let minutesInMilli = secondsInMilli * 60;
-        let hoursInMilli = minutesInMilli * 60;
-        //let daysInMilli = hoursInMilli * 24;
-
-        //let diffDays = Math.floor(different / daysInMilli);
-        //diffMilli = diffMilli % daysInMilli;
-
-        let diffHrs = Math.floor(diffMilli / hoursInMilli);
-        diffMilli = diffMilli % hoursInMilli;
-
-        let diffMins = Math.floor(diffMilli / minutesInMilli);
-        diffMilli = diffMilli % minutesInMilli;
-
-        diffHrs = (diffHrs < 10) ? "0" + diffHrs : diffHrs;
-        diffMins = (diffMins < 10) ? "0" + diffMins : diffMins;
-
-        self.TiempoEnCola = diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
+        self.init();
+    },
+    init: function () {
+        let self = this;
+        ko.applyBindings(new EstadoPlayaInternaDeCallesViewModel(self.vmData, self.tipoCalle, self.containerId), $("#" + self.containerId)[0]);
     }
-
-    self.Icon = item.Rechazado ? "fas fa-times-circle" : (item.Calidad == 2 ? "fas fa-tint" : item.Calidad == 3 ? "fas fa-vial" : item.Calidad == 1 ? "fas fa-clipboard-check" : "");
-    self.Color = item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
 }
 
-function EstadoDeCallesViewModel() {
+function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,containerId) {
     var self = this;
+    self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
-    self.Materiales = ko.observableArray([]);
-    self.PatenteBuscada = ko.observable('');
-    self.PatenteBuscada = ko.observable('');
     self.dummy = ko.observable();
 
-    var calles = jQuery.parseJSON(callesJson);
-    var mappedcalles = $.map(calles, function (item) {
-        return new Calle(item, self);
-    });
-    self.Calles(mappedcalles);
-    self.CallesFiltradas = function (tipoCalle, tipoCalle2) {
-        return ko.utils.arrayFilter(self.Calles(), function (customer) {
-            if (self.PatenteBuscada()) {
-                var patenteBuscada = self.PatenteBuscada();
-                return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2) && customer.Posiciones().filter(function (obj) { return obj.Patente.includes(patenteBuscada); }).length > 0;
-            }
-            return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2);
-        });
-    };
-    self.CallesLLamadas = function (tipoCalle, tipoCalle2, materialId) {
-        self.dummy();
-        var array = ko.utils.arrayFilter(self.Calles(), function (customer) {
-            return (customer.TipoCalle == tipoCalle || customer.TipoCalle == tipoCalle2) && (!materialId || materialId == customer.MaterialId()) && customer.Llamada();
-        });
-        return array.sort(function (a, b) { return a.FechaLLamada != null && b.FechaLLamada != null ? new Date(parseInt(a.FechaLLamada.substr(6))) - new Date(parseInt(b.FechaLLamada.substr(6))) : 1; });
-    };
-    self.UltimosCamiones = function (tipoCalle, tipoCalle2) {
-        var camiones = [];
-        self.dummy();
-        ko.utils.arrayForEach(self.Calles(), function (calle) {
-            if (calle.TipoCalle == tipoCalle || calle.TipoCalle == tipoCalle2) {
-                camiones = camiones.concat(calle.Posiciones());
-            }
-        });
+    let callesOrdenadas = reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, null);
+    self.Calles(callesOrdenadas);
 
-        return camiones
-            .sort(function (a, b) { return b.Id - a.Id; })
-            .slice(0, 5);
+    self.TiempoEnCola = function (item) {
+        if (item.Camiones.length > 0) {
+            return calcularTiempoEnCola(item.Camiones[0].FechaIngreso)
+        }
+        return "";
     };
+
+    setInterval(() => {
+        if ($(".tabPanelEstadoPlayaInterna.active").data().calle == containerId) {
+            let tiposCallesNuevasPlanta = actualizarCalles(tipoCalleEnUso);
+            let callesNuevas = reordernarCalles(tiposCallesNuevasPlanta, tipoCalleEnUso, self.PatenteBuscada());
+            self.Calles(callesNuevas);
+        }
+    }, 4000)
+
     self.sumarCamiones = function (materialId) {
-        var count = 0;
+        let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
-            if (calle.MaterialId() == materialId) {
-                count += calle.CamionesEnCalle();
-            }
+            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == materialId ? total + 1 : total, 0);
         });
         return count;
     };
-    self.Recalcular = function () {
-        self.dummy.notifySubscribers();
-    }; 
+
     self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(4); });
     self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
+}
 
-    self.ListarCamiones = function () {
-        console.log("listar");
-        $.ajax({
-            url: urlEstadoDeCalles,
-            type: 'POST',
-            contentType: 'application/json;',
-            dataType: 'json',
-            success: function (allData) {
-                ko.utils.arrayForEach(self.Calles(), function (calle) {
-                    calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
-                    calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
-                });
-                self.Materiales(allData.materiales);
-                
-            },
-            error: function (data) {
-                setTimeout(recargar, 2000);
-            },
-            complete: function (data) {
-                self.Recalcular();
-                setTimeout(self.ListarCamiones, 4000);
+function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
+    let calles = [];
+    let callesAgrupadas = [];
+    let tipoCalleEnUsoArray = tipoCalleEnUso.split(",");
+
+    $.each(tipoCalleEnUsoArray, function (index, data) {
+        let callesPorGrupo = tiposCallesPlanta.filter(tipoCalles => tipoCalles.TipoCalle == data);
+        if (callesPorGrupo.length > 0 && callesPorGrupo[0].Calles.length > 0) {
+            callesPorGrupo[0].Calles[0].EsPrimero = true;
+            callesPorGrupo[0].Calles[callesPorGrupo[0].Calles.length - 1].EsUltimo = true;
+        }
+        callesAgrupadas.push(...callesPorGrupo);
+    })
+
+    $.each(callesAgrupadas, function (index, data) {
+        $.each(data.Calles, function (indexCalle, calle) {
+            if (patenteBuscada) {
+                if (calle.Camiones.filter(camion => camion.Patente.includes(patenteBuscada)).length > 0) {
+                    calles.push(calle);
+                }
+            } else {
+                calles.push(calle);
             }
-        });
-    };
-    self.ListarCamiones();
+        })
+    })
+
+    return calles;
 }
 
-var recargar = function () {
-    window.location.reload(true);
+function obtenerClaseIcono(rechazado, calidad) {
+    let icon = rechazado ? "fas fa-times-circle" : (calidad == 2 ? "fas fa-tint" : calidad == 3 ? "fas fa-vial" : calidad == 1 ? "fas fa-clipboard-check" : "");
+    return icon;
 }
 
-$(document).ready(function () {
-    ko.applyBindings(new EstadoDeCallesViewModel());
- 
-});
+function actualizarCalles(tipo) {
+    let calles;
+    $.ajax({
+        url: urlEstadoDeCalles+"?tiposCalleStr="+tipo,
+        type: 'GET',
+        contentType: 'application/json;',
+        dataType: 'json',
+        async: false,
+        success: function (allData) {
+            calles = allData;
+        },
+        error: function (data) {
+        },
+        complete: function (data) {
+        }
+    });
+    return calles;
+}
 
 function abrirModal() {
     self = this;
     $.ajax({
-        url: urlMoverRechazado,
+        url: urlMostrarDetalleCamion,
         data: {
             patente: self.Patente,
             calleId: self.CalleId
         },
         type: "POST",
         success: function (result) {
-            $("#div-rechazo-mover").html(result);
-            $("#modal-rechazo-mover").modal("show");
+            $(".modal-backdrop").remove()
+            $(".detalleCamionModal").remove()
+            $("#detalleCamion").html(result);
+            $("#detalleCamionModal").modal("show");
         },
         error: function (error) {
             console.log(error);
@@ -214,24 +132,77 @@ function abrirModal() {
     });
 }
 
-function ConfirmarEnviarAFilaRechazado() {
-    console.log("Hola");
-    console.log("Vamos bien");
+function calcularTiempoEnCola(fechaIngeso) {
+    var fechaActual = Date.now();
+    var fechaInicioDeCola = new Date(parseInt(fechaIngeso.substr(6)));
+
+    let diffMilli = fechaActual - fechaInicioDeCola;
+    let secondsInMilli = 1000;
+    let minutesInMilli = secondsInMilli * 60;
+    let hoursInMilli = minutesInMilli * 60;
+
+    let diffHrs = Math.floor(diffMilli / hoursInMilli);
+    diffMilli = diffMilli % hoursInMilli;
+
+    let diffMins = Math.floor(diffMilli / minutesInMilli);
+    diffMilli = diffMilli % minutesInMilli;
+
+    diffHrs = (diffHrs < 10) ? "0" + diffHrs : diffHrs;
+    diffMins = (diffMins < 10) ? "0" + diffMins : diffMins;
+
+    return diffHrs < 01 && diffMins < 60 ? diffMins + 'm' : diffHrs + "h " + diffMins + 'm';
+}
+
+function obtenerClaseEscalable(escalable) {
+    return escalable ? "fas fa-truck" : "";
+}
+
+function ConfirmarCargaDescarga() {
+    DeshabilitarBotonVisual("btnConfirmarCargaDescarga")
     $.ajax({
-        url: urlConfirmarRechazado,
+        type: 'POST',
+        url: urlConfirmarCargaDescarga,
+        dataType: 'json',
         data: {
-            instanciaWorflow: $('#InstanciaWorflow').val()
-           
+            workflowInstance: $('#InstanciaWorflow').val(),
+            recorridoId: $('#RecorridoId').val()
         },
-        type: "POST",
-        success: function (result) {
-            $("#modal-rechazo-mover").modal("hide");
-            console.log("Aca Bien");
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("Se proceso correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+                HabilitarBotonVisual("btnConfirmarCargaDescarga")
+            }
         },
         error: function (error) {
-            console.log(error);
+            HabilitarBotonVisual("btnConfirmarCargaDescarga")
+        },
+        complete: function () {
+            document.getElementById('modalConfirmarCargaDescarga').close();
+            $.unblockUI();
         }
     });
 }
 
+function MostrarRespuestaMensajes(response) {
+    response.Mensajes.forEach(function (item, index, array) {
+        if (item.TipoDeMensaje === 2) {
+            MostrarAlertaError(item.Mensaje);
+        } else if (item.TipoDeMensaje === 1) {
+            MostrarAlertaAdvertencia(item.Mensaje);
+        }
+    })
+}
 
+function DeshabilitarBotonVisual(id) {
+    $("#" + id).attr('disabled', true);
+    $("#" + id).removeClass('btn-primary');
+    $("#" + id).addClass('btn-secondary');
+}
+
+function HabilitarBotonVisual(id) {
+    $("#" + id).attr('disabled', false);
+    $("#" + id).removeClass('btn-secondary');
+    $("#" + id).addClass('btn-primary');
+}

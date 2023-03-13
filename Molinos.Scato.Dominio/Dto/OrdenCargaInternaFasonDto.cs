@@ -79,5 +79,45 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_DerivadoGranarioHabilitado")]
+        public bool DerivadoGranarioHabilitado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_PlantaDGDestino")]
+        public int? PlantaDGDestino { get; set; }
+        public int? OrdenDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_CuitPagadorFlete")]
+        public string PagadorFlete { get; set; }
+        public int? PagadorFleteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCTG")]
+        public string NumeroCTG { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NumeroCPE")]
+        public string NumeroCPE { get; set; }
+
+        public bool Demorado { get; set; }
+        public string MotivoDemora { get; set; }
+        public bool Rechazado { get; set; }
+        public string MotivoRechazo { get; set; }
+        public string Corredor { get; set; }
+        public int? CorredorId { get; set; }
+        public string Comisionista { get; set; }
+        public int? ComisionistaId { get; set; }
+        public string ComisionistaCodigoSap { get; set; }
+        public string Remitente { get; set; }
+        public int? RemitenteId { get; set; }
+        public string RemitenteCodigoSap { get; set; }
+
+        public int? IntermediarioFleteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
+        public string IntermediarioFlete { get; set; }
+        
+        public int? TipoDomicilioDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
+        public string TipoYOrdenDestino { get; set; }
     }
 }

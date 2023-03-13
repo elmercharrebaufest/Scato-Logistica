@@ -24,7 +24,11 @@
     loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
     urlMoverRechazado = '@Url.Action("MoverRechazado", "EstadoDeCalle")';
     @*urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';*@
+    urlLLamarCallePostCalado = '@Url.Action("LlamarCallePostCalado", "EstadoDeCalle")';
     minutosEsperaCircular = @Html.Raw(ViewBag.MinutosEsperaCircular);
+    minutosEsperaPrecalado = @Html.Raw(ViewBag.MinutosEsperaPrecalado);
+    limiteFilasLlamadasTotal = @Html.Raw(ViewBag.LimiteFilasPrecaladoLlamadas);
+    urlLEstadoDeCallesBloqueada = '@Url.Action("EstadoDeCallesBloqueada", "EstadoDeCalle")';
 </script>
 <script type="text/javascript" src="@Url.Script("~/scripts/estadoDeCalle.js")"></script>
 

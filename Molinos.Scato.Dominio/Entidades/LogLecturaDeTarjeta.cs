@@ -15,5 +15,10 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual int CantidadDeDiferencias { get; set; }
         public virtual bool? ExisteOtroCamionEnPlanta { get; set; }
         public virtual bool ReconocimientoExitoso { get; set; }
+        public virtual string Tarjeta { get; set; }
+        public virtual float? Certeza { get; set; }
+        public virtual string CodigoDispositivo { get; set; }
+        public virtual string FotoRuta { get; set; }
+        public virtual string Motivo { get; set; }
     }
 }

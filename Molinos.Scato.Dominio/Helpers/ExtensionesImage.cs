@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageMagick;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -38,6 +39,16 @@ namespace Molinos.Scato.Dominio.Helpers
         public static Byte[] ToByteArray(this Image image)
         {
             return (byte[]) new ImageConverter().ConvertTo(image, typeof(byte[]));
+        }
+
+        public static byte[] Compress(byte[] data) // TODO : Mejorar método de compresión
+        {
+            using (var image = new MagickImage(data))
+            {
+                var percentage = new Percentage(50);
+                image.Resize(percentage);
+                return image.ToByteArray();
+            }
         }
     }
 }

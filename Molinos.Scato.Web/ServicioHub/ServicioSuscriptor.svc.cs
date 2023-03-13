@@ -8,12 +8,17 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Helpers;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Molinos.Scato.Web.ServicioHub
 {
@@ -222,6 +227,7 @@ namespace Molinos.Scato.Web.ServicioHub
             }
             else if (notificacion.CodigoEvento == "CambioEstadoIntercomunicador")
             {
+                log.Info("Intercomunicador - Entro a CambioEstadoIntercomunicador");
                 NotificarIntercomunicadorEstadoSignalR(notificacion);
             }
         }
@@ -257,6 +263,7 @@ namespace Molinos.Scato.Web.ServicioHub
             try
             {
                 log.Debug("Iniciando conexion signalR");
+                log.Debug($"Lectura de Puesto de Trabajo : {JsonConvert.SerializeObject(lecturaPuestoDeTrabajo)}");
                 hubClientLectura.Invoke("NotificarLectura", lecturaPuestoDeTrabajo);
                 log.Debug("Fin - Iniciando conexion signalR");
             }
@@ -308,6 +315,11 @@ namespace Molinos.Scato.Web.ServicioHub
                         var resultadoConPatente = resultado as ResultadoObtenerPatente;
                         if (resultadoConPatente != null)
                         {
+                            var fotoRuta = string.Empty;
+                            if(!fotoTemporal)
+                            {
+                                fotoRuta = GuardarFotoLogALPR(resultadoConPatente.Imagen, fileName);
+                            }
                             lecturaPuestoDeTrabajo.PatenteLeida = resultadoConPatente.Patente;
                             lecturaPuestoDeTrabajo.OcrActivo = true;
                             var resultadoPatente = comandos.Ejecutar(
@@ -316,7 +328,10 @@ namespace Molinos.Scato.Web.ServicioHub
                                     PuestoDeTrabajoId = lecturaPuestoDeTrabajo.PuestoDeTrabajoId,
                                     Lectura = lecturaPuestoDeTrabajo.NumeroDeTarjeta,
                                     PatenteLeida = resultadoConPatente.Patente,
-                                    Patente = patente
+                                    Patente = patente,
+                                    Certeza = resultadoConPatente.Confianza,
+                                    CodigoDispositivo = videoCamara.Codigo,
+                                    FotoRuta = fotoRuta
                                 });
                             if (!resultadoPatente.HayErrores)
                             {
@@ -471,16 +486,23 @@ namespace Molinos.Scato.Web.ServicioHub
                     if (!lecturaPuestoDeTrabajo.ReconocimientoExitoso)
                     {
                         lecturaPuestoDeTrabajo.MensajeError = "Patente no reconocida";
+                        var lecturas = servicio.ObtenerLogLecturasPorTarjeta(lecturaPuestoDeTrabajo.NumeroDeTarjeta);
+                        if (lecturas != null && lecturas.Count >= 1)
+                        {
+                            recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault().PatenteLeida;
+                        }
                         NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, proximaActividad.ProximaAccion);
                         return;
                     }
-                    //while (true)
-                    //{
-                    //    if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId))
-                    //        break;
 
-                    //    Thread.Sleep(5000);
-                    //}
+                    while (true)
+                    {
+                        var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) || valida != "1")
+                            break;
+                        var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                        Thread.Sleep(tiempoDeCiclo);
+                    }
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, resultado.ProximaActividad);
                     var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
@@ -627,7 +649,8 @@ namespace Molinos.Scato.Web.ServicioHub
                 TipoPesoOrigen = proximaActividad.Contains("Bruto") ? "Bruto Org:" : proximaActividad.Contains("Tara") ? "Tara Org:" : "Peso Org:",
                 DocumentoIngreso = recorrido.TipoDocumento.ToString(),
                 TipoComercial = recorrido.TipoComercial,
-                WorkflowDefinicionId = recorrido.WorkflowDefinicionId
+                WorkflowDefinicionId = recorrido.WorkflowDefinicionId,
+                PatentePrevia = recorrido.PatentePrevia
             };
             var notificacionDto = new NotificacionDto
             {
@@ -772,6 +795,7 @@ namespace Molinos.Scato.Web.ServicioHub
 
         private void NotificarIntercomunicadorEstadoSignalR(NotificacionEvento notificacion)
         {
+            log.Info("Intercomunicador - Entro a NotificarIntercomunicadorEstadoSignalR {0}", JsonConvert.SerializeObject(notificacion.Datos["Dato"]));
             var estados = notificacion.Datos["Dato"].Split(';');
             var notificacionIntercomunicador = new EstadoIntercomunicadorDto
             {
@@ -782,5 +806,24 @@ namespace Molinos.Scato.Web.ServicioHub
 
             hubClientLectura.Invoke("NotificarCambioEstadoIntercomunicador", notificacionIntercomunicador);
         }
+
+        private string GuardarFotoLogALPR(byte[] imagen, string fileName)
+        {
+            try
+            {
+                var baseUrl = ConfigurationManager.AppSettings["FotosPathLogALPR"];
+                var subpath = Path.Combine(DateTime.Today.ToString("yyyy"), DateTime.Today.ToString("MM"), DateTime.Today.ToString("dd"));
+                var fullPath = Path.Combine(baseUrl, subpath, (fileName + ".jpeg"));
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+                File.WriteAllBytes(fullPath, imagen);
+                return Path.Combine(subpath, (fileName + ".jpeg"));
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error al guardar log imagen ALPR");
+            }
+            return null;
+        }
+
     }
 }

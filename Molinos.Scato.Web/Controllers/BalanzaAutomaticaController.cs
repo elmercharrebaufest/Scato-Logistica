@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
-using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -21,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Mvc;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -67,9 +67,10 @@ namespace Molinos.Scato.Web.Controllers
             {
                 if (!string.IsNullOrEmpty(balanza.IntercomunicadorCodigo))
                 {
-                    var puertoDeAudio = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
-                    var intercomunicador = GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, puertoDeAudio);
+                    var intercomunicadorConfig = orquestador.ObtenerIntercomunicadorPuertoDeAudio(balanza.IntercomunicadorCodigo);
+                    var intercomunicador = GetIntercomunicadorDispositivoConfig(balanza.BalanzaId.ToString(), balanza.IntercomunicadorCodigo, intercomunicadorConfig.Sensor, intercomunicadorConfig.PuertoDeAudio);
                     balanza.IntercomunicadorDispositivo = intercomunicador;
+                    Suscribir(intercomunicadorConfig.Sensor, CodigosEventos.CambioEstadoIntercomunicador, balanza.RutaNotificacion);
                 }
             }
             ViewBag.Balanzas = balanzas.Where(x => x.Orden.HasValue).OrderBy(x => x.Orden).Union(balanzas.Where(x => !x.Orden.HasValue).OrderBy(x => x.NombreBalanza)).ToList();
@@ -164,16 +165,18 @@ namespace Molinos.Scato.Web.Controllers
 
             log.Debug($"Ejecutando etapa { proximaActividad.ProximaAccion }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
             log.Debug($"Peso tomado { peso }: Para vehiculo: { patente } y tarjeta: { tarjeta }");
-            
-            //if (recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren) {
-            //    while (true)
-            //    {
-            //        if (estadoPuesto.ValidarEstadoPuesto(puestoId))
-            //            break;
 
-            //        Thread.Sleep(5000);
-            //    }
-            //}
+            if (recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren)
+            {
+                while (true)
+                {
+                    var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                    if (estadoPuesto.ValidarEstadoPuesto(puestoId) || valida != "1")
+                        break;
+                    var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                    Thread.Sleep(tiempoDeCiclo);
+                }
+            }
 
             if (resultado.Valida)
             {
@@ -203,7 +206,9 @@ namespace Molinos.Scato.Web.Controllers
                              PesoBruto = recorrido.PesoBruto,
                              PesoTara = recorrido.PesoTara,
                              PesoOrigenNeto = recorrido.PesoNetoOrigen,
-                             Calle = recorrido.Calle
+                             Calle = recorrido.Calle,
+                             TipoDeWorkflow = recorrido.TipoDeWorkflow,
+                             RecorridoId = recorrido.Id
                          });
                     
                     EncenderSemaforoVagon(color, puestoId);
@@ -417,7 +422,6 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Info("Se tomará el peso en modalidad para la balanza con Id {0}", balanzaId);
                 var balanza = servicio.ObtenerBalanza(balanzaId);
-                
 
                 var resultado = EjecutarPesaje(balanza.CodigoCabezal);
 
@@ -571,10 +575,8 @@ namespace Molinos.Scato.Web.Controllers
             if (proximaActividad?.ProximaAccion?.ToUpper()?.Trim() == "PESADABRUTO")
             {
                 EncenderSemaforoVagon(color, puestoId);
-               
-                
             }
-         
+
             return new JsonResult()
             {
                 Data = new NotificacionPesadaAutomaticaDto
@@ -630,9 +632,9 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     var puestoTrabajo = servicio.ObtenerPuestoDeTrabajo(puestoId);
 
-                    semaforo = color == "ROJO"     ? puestoTrabajo?.SemaforoRojoCodigo :
+                    semaforo = color == "ROJO" ? puestoTrabajo?.SemaforoRojoCodigo :
                                color == "AMARILLO" ? puestoTrabajo?.SemaforoAmarilloCodigo :
-                               color == "VERDE"    ? puestoTrabajo?.SemaforoVerdeCodigo : string.Empty;
+                               color == "VERDE" ? puestoTrabajo?.SemaforoVerdeCodigo : string.Empty;
 
                     if (!string.IsNullOrEmpty(semaforo))
                     {
@@ -666,22 +668,62 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string uniqueId, string codigoIntercomunicador, int? puertoAudio)
+        private IntercomunicadorDispositivoDto GetIntercomunicadorDispositivoConfig(string uniqueId, string codigoIntercomunicador, string codigoSensor, int? puertoAudio)
         {
             var intercomunicadorDispositivo = new IntercomunicadorDispositivoDto
             {
                 UniqueId = uniqueId,
                 Codigo = codigoIntercomunicador,
-                AudioPort = (puertoAudio.HasValue) ? puertoAudio.Value.ToString() : string.Empty,
+                Sensor = codigoSensor,
+                PuertoDeAudio = puertoAudio,
                 ICPCConfig = ConfigurationManager.AppSettings["ICPCConfig"],
                 ICWebServerUrl = ConfigurationManager.AppSettings["ICWebServerUrl"],
                 ICWSServerUrl = ConfigurationManager.AppSettings["ICWSServerUrl"],
                 DeviceActivationUrl = Url.Action("PrenderApagarDispositivo", "BalanzaAutomatica"),
-                PublishingPathListen = codigoIntercomunicador + Constantes.IntercomunicadorDireccion.HaciaLaWeb,
-                PublishingPathSpeak = Constantes.IntercomunicadorDireccion.DesdeLaWeb + codigoIntercomunicador,
+                PublishingPathListen = codigoIntercomunicador + IntercomunicadorDireccion.HaciaLaWeb,
+                PublishingPathSpeak = IntercomunicadorDireccion.DesdeLaWeb + codigoIntercomunicador,
             };
 
             return intercomunicadorDispositivo;
         }
+
+        private void Suscribir(string codigoDisp, string codigoEvento, string urlSuscriptor)
+        {
+            log.Info("Intercomunicador - Entro a Suscribir {0}{1}{2}", codigoDisp, codigoEvento, urlSuscriptor);
+            try
+            {
+                var resultado = orquestador.Suscribir(new ComandoSuscribir
+                {
+                    CodigoDispositivo = codigoDisp,
+                    CodigoEvento = codigoEvento,
+                    RutaAccesoSuscriptor = urlSuscriptor
+                });
+
+                if (resultado.Mensaje.Codigo != 0)
+                {
+                    var mensaje = String.Format("{0}: {1}-{2}", codigoDisp, resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                    log.Warn(mensaje);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "No se pudo acceder al orquestador de dispositivos");
+            }
+        }
+
+        public void ActualizarEstadoSensores()
+        {
+            estadoPuesto.NotificarEstado();
+        }
+
+        //public JsonResult ConsultarEstadoSensores()
+        //{
+        //    var estados = estadoPuesto.ConsultarEstadoBarreras();
+        //    return new JsonResult()
+        //    {
+        //        Data = estados,
+        //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+        //    };
+        //}
     }
 }

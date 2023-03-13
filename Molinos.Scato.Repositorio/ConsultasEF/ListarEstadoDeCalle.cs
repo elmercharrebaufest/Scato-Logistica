@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Objects.SqlClient;
 using System.Linq;
 using System.Transactions;
-using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -16,41 +14,68 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         {
         }
 
-        private static List<CallePorRecorridoDto> ListadoCamiones(DbContext contexto)
+        private List<CallePorRecorridoDto> ListadoCamiones(DbContext contexto)
         {
-            ((IObjectContextAdapter) contexto).ObjectContext.CommandTimeout = 180;
-            var resultado = from x in contexto.Set<CallePorRecorrido>()
-                            where x.FechaEgreso == null
-                            select new CallePorRecorridoDto
-                            {
-                                Id = x.Id,
-                                Calidad = (int?)x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad ?? 0,
-                                MaterialId = x.Recorrido != null ? x.Recorrido.Material.Id : x.CargaDeCupo != null && x.CargaDeCupo.Material != null ? x.CargaDeCupo.Material.Id : 0,
-                                MaterialDesc = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null && x.CargaDeCupo.Material != null ? x.CargaDeCupo.Material.Descripcion : "Desconocido",
-                                Patente = x.Recorrido != null ? x.Recorrido.Patente : 
-                                (x.CargaDeCupo != null && x.CargaDeCupo.Patente  != null ? 
-                                    x.CargaDeCupo.Patente : 
-                                        (x.CargaDeCupo != null && x.CargaDeCupo.Recorrido != null ? 
-                                            x.CargaDeCupo.Recorrido.Patente : 
-                                                (x.CargaDeCupo != null ? 
-                                                    x.CargaDeCupo.Numero : SqlFunctions.StringConvert((double)x.Id)))),
-                                CalleId = x.Calle.Id,
-                                FechaIngeso = x.FechaIngeso,
-                                UltimoDeLaFila = x.UltimoDeLaFila,
-                                Rechazado = x.Recorrido != null & x.Recorrido.Rechazado,
-                                AsignadoEnPuestoComando = x.Recorrido != null && x.Recorrido.Calle != null,
-                                TipoCalle = x.Calle.TipoCalle,
-                                Escalable = x.Recorrido != null && (x.Recorrido.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC ||
-                                            x.Recorrido.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD ||
-                                            x.Recorrido.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE)
-                            };
+            ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
+            var listadoCamiones = contexto.Set<CallePorRecorrido>()
+                              .Where(x => x.FechaEgreso.Equals(null))
+                              .Select(x => new CallePorRecorridoListadoCamionesDto
+                              {
+                                  Id = x.Id,
+                                  Calidad = x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad,
+                                  RecorridoMaterialId = x.Recorrido.Material.Id,
+                                  CargaCupoMaterialId = x.CargaDeCupo.Material.Id,
+                                  RecorridoMaterialDescripcion = x.Recorrido.Material.Descripcion,
+                                  CargaCupoMaterialDescripcion = x.CargaDeCupo.Material.Descripcion,
+                                  RecorridoPatente = x.Recorrido.Patente,
+                                  CargaDeCupoPatente = x.CargaDeCupo.Patente,
+                                  CargaDeCupoRecorridoPatente = x.CargaDeCupo.Recorrido.Patente,
+                                  CalleId = x.Calle.Id,
+                                  FechaIngreso = x.FechaIngeso,
+                                  UltimoDeLaFila = x.UltimoDeLaFila,
+                                  Rechazado = x.Recorrido.Rechazado,
+                                  AsignadoEnPuestoComando = x.Recorrido.Calle != null,
+                                  TipoCalle = x.Calle.TipoCalle,
+                                  TipoVehiculo = x.Recorrido.TipoVehiculo,
+                                  ColorFondo = x.Recorrido.Material.ColorFondo,
+                                  ColorTexto = x.Recorrido.Material.ColorTexto
+                              })
+                              .OrderBy(q => q.FechaIngreso)
+                              .ToList();
 
-            return resultado.ToList();
+            var resultado = new List<CallePorRecorridoDto>();
+
+            foreach (var item in listadoCamiones)
+            {
+                var callePorRecorrido = new CallePorRecorridoDto
+                {
+                    Id = item.Id,
+                    Calidad = (item.Calidad != null) ? (int)item.Calidad : 0,
+                    MaterialId = item.RecorridoMaterialId ?? item.CargaCupoMaterialId ?? 0,
+                    MaterialDesc = item.RecorridoMaterialDescripcion ?? item.CargaCupoMaterialDescripcion ?? string.Empty,
+                    Patente = item.RecorridoPatente ?? item.CargaDeCupoPatente ?? item.CargaDeCupoRecorridoPatente ?? string.Empty,
+                    CalleId = item.CalleId,
+                    FechaIngeso = item.FechaIngreso,
+                    UltimoDeLaFila = item.UltimoDeLaFila,
+                    Rechazado = item.Rechazado ?? false,
+                    AsignadoEnPuestoComando = item.AsignadoEnPuestoComando,
+                    TipoCalle = item.TipoCalle,
+                    Escalable = item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC
+                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
+                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
+                    ColorFondo = item.ColorFondo,
+                    ColorTexto = item.ColorTexto
+                };
+
+                resultado.Add(callePorRecorrido);
+            }
+
+            return resultado;
         }
 
         public virtual List<CallePorRecorridoDto> Ejecutar(DbContext contexto)
         {
-            using (new TransactionScope(TransactionScopeOption.Required,new TransactionOptions {IsolationLevel = IsolationLevel.ReadUncommitted}))
+            using (new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted }))
             {
                 return ListadoCamiones(contexto);
             }

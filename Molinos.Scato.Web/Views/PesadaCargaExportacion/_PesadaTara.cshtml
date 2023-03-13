@@ -6,6 +6,7 @@
     Layout = null;
     var actividad = (PermisosScato)ViewBag.Etapa;
 }
+<input type="hidden" name="MotivoPesadaManual" value="Camión avanza de etapa en forma manual sin cambio de modalidad balanza">
 <div class="row-fluid row-fluid-ie7 " id="peso-tara-columna">
     <div id="peso-tara" class="span12 margin-top border text-center @(actividad != PermisosScato.ActividadPesadaTara ? "disabled-div" : "")" @(actividad != PermisosScato.ActividadPesadaTara ? "readonly" : "")>
 

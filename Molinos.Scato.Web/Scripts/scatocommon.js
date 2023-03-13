@@ -173,7 +173,7 @@ $(document).ready(function () {
     $("#alertaFija").hide();
 
     obtenerMensajesAplicacion();
-    setInterval(obtenerMensajesAplicacion, 5000);
+/*    setInterval(obtenerMensajesAplicacion, 60000);*/
 
 
     $("#alertaFija").click(function () {
@@ -359,7 +359,7 @@ function ActualizarEstadoServicios(mensaje) {
 $(document).ready(function () {
     /*Centrar la primera vez*/
     CentrarPosicionElemento();
-    /*Centrar por redimensión de pantalla*/
+    /*Centrar por redimensiÃ³n de pantalla*/
     $(window).resize(function (e) { e.preventDefault(); CentrarPosicionElemento(); });
 });
 
@@ -393,7 +393,7 @@ function ObtenerNombrePCPorActiveX() {
             }
         }
         nombre2 = nombre2.replace(' FIN', '');
-        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectó a traves de escritorio remoto
+        if (nombre2.indexOf('CLIENTNAME') == -1) //checkeo si se conectÃ³ a traves de escritorio remoto
             nombre = nombre2;
         $.cookie('NombrePc', nombre);
         if (nombre.length == 0) {
@@ -414,24 +414,26 @@ function ObtenerNombrePC() {
     if (cookie != undefined && cookie.length > 0) { //existe el valor en la cookie
         return cookie;
     }
-
+    var nombrePc;
     $.ajax({
         dataType: "json",
         url: $("#ObtenerNombrePcUrl").val(),
         async: false,
         data: {},
         success: function (nombre) {
-            $.cookie('NombrePc', nombre);
+            $.cookie('NombrePc', nombre, { expires: 365 });
             if (nombre.length == 0) {
-                ObtenerNombrePCPorActiveX();
+                nombrePc = ObtenerNombrePCPorActiveX();
             } else {
                 $("#nombrePc").text(nombre);
+                nombrePc = nombre;
             }
         },
         error: function () {
-            ObtenerNombrePCPorActiveX();
+            nombrePc = ObtenerNombrePCPorActiveX();
         }
     });
+    return nombrePc;
 
     //$.getJSON($("#ObtenerNombrePcUrl").val(), {},
     //    function (nombre) {
@@ -449,13 +451,13 @@ function ObtenerNombrePC() {
 function ObtenerPuestoDeTrabajo() {
     var cookiePuesto = $.cookie('PuestoDeTrabajoId');
     try {
-        if ((cookiePuesto != undefined && cookiePuesto.length > 0)) { //Ya existe el valor en la cookie
+        if (cookiePuesto != undefined && cookiePuesto.length > 0 && cookiePuesto != '0') { //Ya existe el valor en la cookie
             return;
         }
         var nombrePc = ObtenerNombrePC();
         $.getJSON($("#ObtenerPuestoDeTrabajoUrl").val(), { nombrePc: nombrePc },
             function (data) {
-                $.cookie('PuestoDeTrabajoId', data.Id);
+                $.cookie('PuestoDeTrabajoId', data.Id, { expires: 365 });
             }).error(function () {
                 $.cookie('PuestoDeTrabajoId', 0);
             });
@@ -675,4 +677,33 @@ function obtenerMensajesAplicacion() {
             $("#alertaFija").hide();
         }
     });
+}
+
+function NotificarCambioEstadoBarrera(mensaje) {
+    var estadoBarreras = JSON.parse(mensaje);
+
+    try {
+
+        for (var j = 0; j < estadoBarreras.SensoresArriba.length; j++) {
+            var item = estadoBarreras.SensoresArriba[j];
+            if (item.Estado) {
+                $("#barrera-" + item.Id + "-" + item.Barrera).removeClass("icon-barrera-cerrada");
+                $("#barrera-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
+                $("#barrera-" + item.Barrera).removeClass("icon-barrera-cerrada");
+                $("#barrera-" + item.Barrera).addClass("icon-barrera-abierta").css({ 'color': 'forestgreen' });
+            }
+        }
+
+        for (var k = 0; k < estadoBarreras.SensoresAbajo.length; k++) {
+            var item = estadoBarreras.SensoresAbajo[k];
+            if (item.Estado) {
+                $("#barrera-" + item.Id + "-" + item.Barrera).removeClass("icon-barrera-abierta");
+                $("#barrera-" + item.Id + "-" + item.Barrera).addClass("icon-barrera-cerrada").css({ 'color': 'red' });
+                $("#barrera-" + item.Barrera).removeClass("icon-barrera-abierta");
+                $("#barrera-" + item.Barrera).addClass("icon-barrera-cerrada").css({ 'color': 'red' });
+            }
+        }
+    } catch (e) {
+        console.log(e)
+    }
 }

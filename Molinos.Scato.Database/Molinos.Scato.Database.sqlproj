@@ -505,6 +505,25 @@
     <Build Include="dbo\Tables\MotivoInactividad.sql" />
     <Build Include="dbo\Tables\RegistroInactividad.sql" />
     <Build Include="dbo\Tables\RegistroStockOtrosPuertos.sql" />
+    <Build Include="dbo\Tables\VisualizacionBarrera.sql" />
+    <Build Include="dbo\Tables\SensorBarrera.sql" />
+    <Build Include="dbo\Tables\ConfiguracionGeneral.sql" />
+    <Build Include="dbo\Tables\ConfigSensores.sql" />
+    <Build Include="dbo\Tables\ImpEtiquetaMuestraInase.sql" />
+    <Build Include="dbo\Tables\MuestraDeInase.sql" />
+    <Build Include="dbo\Tables\LogDispositivo.sql" />
+    <Build Include="dbo\Tables\LoteInase.sql" />
+    <Build Include="dbo\Tables\ConfiguracionCalleHidraulica.sql" />
+    <Build Include="dbo\Tables\LlamadoAutomaticoHidraulica.sql" />
+    <Build Include="dbo\Tables\ConfirmacionCargaDescarga.sql" />
+    <Build Include="dbo\Tables\HistorialMensajeCartelLed.sql" />
+    <Build Include="dbo\Tables\CallePreBalanzaPlayaInterna.sql" />
+    <Build Include="dbo\Tables\PesosExc.sql" />
+    <Build Include="dbo\Tables\MensajeCartelLedCalador.sql" />
+    <Build Include="dbo\Tables\ExcepcionAlControlProveedor.sql" />
+    <Build Include="dbo\Tables\Domicilio.sql" />
+    <Build Include="dbo\Tables\CartaPorteDerivadoGranario.sql" />
+    <Build Include="dbo\Tables\TipoEmbalaje.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -22,14 +23,15 @@ namespace Molinos.Scato.Actividades.Internas
         {
             var servComando = context.GetExtension<IServicioComandos>();
             var servicio = context.GetExtension<IServicioNotificarUsuario>();
+            var repositorio = context.GetExtension<IServicioRepositorio>();
 
             var recorrido = Recorrido.Get<ControlRecorridoDto>(context);
 
             var pesaje = new ResultadoPesaje();
             Error.Set(context, new Resultado());
             var tipoPesada = TipoPesada.Get<TipoPesada>(context);
-            if ((recorrido.ActividadXaml == "PesadaBruto" && tipoPesada == Dominio.Enums.TipoPesada.Bruto) ||
-                (recorrido.ActividadXaml == "PesadaTara" && tipoPesada == Dominio.Enums.TipoPesada.Tara))
+            if ((recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto && tipoPesada == Dominio.Enums.TipoPesada.Bruto) ||
+                (recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaTara && tipoPesada == Dominio.Enums.TipoPesada.Tara))
             {
 
                 try
@@ -44,6 +46,12 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     else
                     {
+                        if(recorrido.ActividadXaml == Constantes.EtapaWorkflow.PesadaBruto 
+                            && tipoPesada == Dominio.Enums.TipoPesada.Bruto
+                            && recorrido.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
+                        {
+                            ContigenciaDePesosExcedidos(repositorio, servComando, pesaje, recorrido);
+                        }
                         Peso.Set(context, pesaje.Peso);
                         BalanzaId.Set(context, pesaje.BalanzaId);
                     }
@@ -131,6 +139,24 @@ namespace Molinos.Scato.Actividades.Internas
                 var mensaje = "La etapa a ejecutar no coincide con el estado del workflow.";
                 pesaje.Error("2", mensaje);
                 Error.Set(context, pesaje);
+            }
+        }
+
+        private void ContigenciaDePesosExcedidos(IServicioRepositorio repositorio, IServicioComandos servicioComando, ResultadoPesaje pesaje, ControlRecorridoDto recorrido)
+        {
+            var balanza = repositorio.ObtenerBalanza(pesaje.BalanzaId);
+            if (balanza.ContingenciaExcedentesHabilitada && balanza.ToleranciaExcedida != null && recorrido.RecorridoId != null)
+            {
+                var pesoMaximoPorTipoVehiculo = repositorio.LeerPesoMaximo(recorrido.WorkflowInstanceId, recorrido.TipoDeWorkflow);
+                if (pesaje.Peso > pesoMaximoPorTipoVehiculo && (pesaje.Peso - pesoMaximoPorTipoVehiculo <= balanza.ToleranciaExcedida))
+                {
+                    servicioComando.Ejecutar(new CrearPesosExc()
+                    {
+                        RecorridoId = recorrido.RecorridoId.Value,
+                        PesoTomado = pesaje.Peso
+                    });
+                    pesaje.Peso = pesoMaximoPorTipoVehiculo;
+                }
             }
         }
     }

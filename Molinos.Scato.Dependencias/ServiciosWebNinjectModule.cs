@@ -34,7 +34,7 @@ namespace Molinos.Scato.Dependencias
             Bind<ICalculadoraDescuento, CalculadoraDescuento>().To<CalculadoraDescuento>().InScope(ctx => OperationContext.Current);
             Bind<IConfiguracionProvider, ConfiguracionProvider>().To<ConfiguracionProvider>().InSingletonScope();
             Bind<IAccesoWsCtg, AccesoWsCtg>().To<AccesoWsCtg>();
-            Bind<IFirmaProvider, FirmaProvider>().To<FirmaProvider>().InSingletonScope();
+            Bind<IFirmaProvider, FirmaProvider>().To<FirmaProvider>().InScope(ctx => OperationContext.Current);
             Bind<IServicioImpresorFactory, ServicioImpresorFactory>().To<ServicioImpresorFactory>().InSingletonScope();
             Bind<IServicioMercadoPago, ServicioMercadoPago>().To<ServicioMercadoPago>().InScope(ctx => OperationContext.Current);
             Bind<IServicioCircular, ServicioCircular>().To<ServicioCircular>().InScope(ctx => OperationContext.Current);
@@ -42,7 +42,8 @@ namespace Molinos.Scato.Dependencias
             Bind<IAdministradorDeCalles, AdministradorDeCalles>().To<AdministradorDeCalles>().InScope(ctx => OperationContext.Current);
             
             this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
-            Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InSingletonScope();
+            Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InScope(ctx => OperationContext.Current);
+            Bind<ICache, Cache>().To<Cache>().InSingletonScope();
 
             this.BindChannelFactory<LoginCMS>("LoginCms");
             this.BindChannelFactory<CTGServicePortType>("CTGServiceHttpSoap11Endpoint");

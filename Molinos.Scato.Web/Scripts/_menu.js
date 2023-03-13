@@ -109,6 +109,43 @@ $(document).ready(function () {
     }));
 
     $(conectarSignalR());
+
+    $("li.view-dashboard-barreras").click(function () {
+        $("#dashboardBarrerasModal").modal("show");
+    });
+
+    $(document).on('click', ".tarjetaMaestroSupervisorBarrera", function () {
+        $("#elemento-id-Menu").val($(this).data().puestoId);
+        $("#elemento-barrera-Menu").val(obtenerDispositivoBarrera($(this).data().id, 3));
+        $("#url-Menu").val($("#GestionarBarrera").val());
+        $("#elemento-accion-Menu").val(obtenerDispositivoBarrera($(this).data().id, 1));
+        $("#actividades-modal").modal("hide");
+        $("#modalGestionBarrera").modal("hide");
+
+        if ($("#gestionarBarrera").val() == 'True') {
+            if ($("#requiereComentarioGestionarBarrera").val() == 'True') {
+                $("#gestionbarreraSupervisorModal").modal("show");
+            } else {
+                EjecutarComandoBarrera();
+            }
+        }
+        else {
+            $("#gestionbarreraSupervisorModal").modal("show");
+        }        
+    });
+
+    $("#guardarEventoBarrera").click(function () {
+        if (ValidarMotivoMenu()) { return false; }
+        EjecutarComandoBarrera();
+    });
+
+    $("#barreraHeader").click(function () {
+        if ($("#cantidadBarreras").val() && $("#cantidadBarreras").val() == 1) {
+            $("#modalGestionBarrera").modal("show");
+        }        
+    });
+    
+
 });
 
 function conectarSignalR() {
@@ -128,6 +165,11 @@ function conectarSignalR() {
     window.hubReady.done(function () {
         recargarNotificaciones(false, true, true);
         notificador.server.unirseAGrupo(grupos);
+        notificador.server.unirseAGrupo('NotificacionAplicacion');
+        notificador.server.unirseAGrupo('SENSORESBARRERA');
+        if ($("#barreraHeader")) {
+            $.post($("#ActualizarEstadoBarrera").val());
+        }
     });
 }
 
@@ -203,16 +245,20 @@ function mostrarAlertaPorPantalla(tipoAlerta, mensaje) {
     } else if (tipoAlerta == 3) {
         MostrarAlertaInfo(mensaje);
     } else if (tipoAlerta == 4) {
-        alert(mensaje);
+        obtenerMensajesAplicacion();
     } else if (tipoAlerta == 8) {
         ActualizarEstadoServicios(mensaje);
     } else if (tipoAlerta == 9) {
         NotificarCPMesaEntrada(mensaje);
+    } else if (tipoAlerta == 12) {
+        NotificarCambioEstadoBarrera(mensaje);
     }
 }
 
 function notificarLectura(id, grupo) {
-    $.getJSON($("#NotificacionesDropDown").data().marcarLeidosUrl, { id: id });
+    if (id > 0) {
+        $.getJSON($("#NotificacionesDropDown").data().marcarLeidosUrl, { id: id });
+    }
 }
 
 function notificarLecturaTodos(grupos) {
@@ -277,3 +323,55 @@ function actualizarTimeAgo(server, hora) {
         return $.when.apply($, deferreds);
     };
 })(jQuery);
+
+function obtenerDispositivoBarrera(id, length) {
+    var resultado = "";
+
+    try {
+        if (id != null && id != "") {
+            var splitId = id.split("-");
+            if (splitId.length >= length) {
+                resultado = splitId[length-1];
+            }
+        }
+    } catch (error) {
+
+    }
+
+    return resultado;
+}
+
+function ValidarMotivoMenu() {
+    $("#error-requerido").hide();
+    $("#error-largo").hide();
+    var motivo = $("#motivoMenu").val();
+    if (motivo == "") {
+        $("#error-requerido").show();
+        return true;
+    }
+    if (motivo.length < 10) {
+        $("#error-largo").show();
+        return true;
+    }
+    return false;
+}
+
+function EjecutarComandoBarrera() {
+    $.ajax({
+        url: $("#url-Menu").val(),
+        dataType: 'json',
+        data: {
+            puestoId: $("#elemento-id-Menu").val(),
+            codigo: $("#elemento-barrera-Menu").val(),
+            motivo: $("#motivoMenu").val(),
+            accion: $("#elemento-accion-Menu").val()
+        },
+        type: "GET",
+        success: function (data) {
+            if (data == "ok") {
+                $("#motivoMenu").val("");
+                $("#gestionbarreraSupervisorModal").modal("hide");
+            }
+        }
+    });
+}

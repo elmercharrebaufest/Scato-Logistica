@@ -33,10 +33,16 @@
     [VigenciaHasta]              INT        NULL,
     [EsInsumo] BIT NOT NULL DEFAULT 0, 
     [EsAsignableCalle] BIT NOT NULL DEFAULT 0, 
+    [ColorFondo] NVARCHAR(7) NULL, 
+    [ColorTexto] NVARCHAR(7) NULL, 
+    [EsDerivadoGranario] BIT NOT NULL DEFAULT 0,
+    [CodigoGranoPadre] INT NULL, 
+    [TipoEmbalaje_Id] INT NULL,
     CONSTRAINT [PK_dbo.Material] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Material_dbo.Almacen_AlmacenOrigen_Id] FOREIGN KEY ([AlmacenOrigen_Id]) REFERENCES [dbo].[Almacen] ([Id]),
     CONSTRAINT [FK_dbo.Material_dbo.Almacen_AlmacenPredeterminado_Id] FOREIGN KEY ([AlmacenPredeterminado_Id]) REFERENCES [dbo].[Almacen] ([Id]),
 	CONSTRAINT [FK_dbo.Material_dbo.Variedad_Variedad_Id] FOREIGN KEY ([Variedad_Id]) REFERENCES [dbo].[Variedad] ([Id]),
+	CONSTRAINT [FK_dbo.Material_dbo.TipoEmbalaje_TipoEmbalaje_Id] FOREIGN KEY ([TipoEmbalaje_Id]) REFERENCES [dbo].[TipoEmbalaje] ([Id]),
 );
 
 

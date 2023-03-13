@@ -8,6 +8,7 @@
     var mostrarAlertaExitosa = (bool)(ViewBag.MostrarAlertaExitosa ?? false);
     var disponibilidad = ViewBag.Disponibilidad;
     var esCircuitoNoGranos = ViewBag.EsCircuitoNoGranosSinMaterial;
+    var avanzaAutomatico = (bool)ViewBag.AvanzaAutomatico;
 }
 <script src="@Url.Script("~/Scripts/cargaDeCupo.form.js")" type="text/javascript"></script>
 
@@ -142,6 +143,12 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
         <span>@Html.ViewData.ModelState["PuestoDeTrabajoId"].Errors.FirstOrDefault().ErrorMessage</span>
     </div>
 }
+@if (ViewData.ModelState["avanceCpe"] != null && ViewData.ModelState["avanceCpe"].Errors.Any())
+{
+    <div class="alert alert-error">
+        <span>@Html.ViewData.ModelState["avanceCpe"].Errors.FirstOrDefault().ErrorMessage</span>
+    </div>
+}
 
 <div class="row-fluid" style="margin-bottom:5px;">
     <div class="span8">
@@ -151,13 +158,17 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                     <div class="titSecciones">@Textos.CargaDeCupo</div>
                 </div>
                 <br />
-                <div class="control-group sinMargen" >
+                <div class="control-group sinMargen">
+                    <div id="avance-cpe-check" style="width: 260px;" hidden>
+                        @Html.Label(@Textos.ContingenciaAvanceCpe, new { @class = "control-label inline" })
+                        @Html.CheckBox("AvanceCpe", avanzaAutomatico, new { id = "avanceCpe" })
+                    </div>
                     <div style="width: 260px; display: inline-flex;">
-                        @*Esto es de no granos. Se comenta por el momento*@
+
                         <div style="width: 160px;">
-                                @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
-                                @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
-                            </div>
+                            @Html.Label(@Textos.CircuitoGranos, new { @class = "control-label inline" })
+                            @Html.CheckBoxFor(x => x.CircuitoNoGranos, new { id = "circuitoNoGranos" })
+                        </div>
                         <div style="width: 100px; display: none">
                             @Html.Label(@Textos.CPE, new { @class = "control-label inline" })
                             @Html.CheckBoxFor(x => x.CPE, new { id = "cpe" })
@@ -185,7 +196,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                         @Html.ValidationMessageFor(model => model.CTG)
                     </div>
                 </div>
-                <div class="control-group sinMargen" style = "display: none;">
+                <div class="control-group sinMargen" style="display: none;">
                     @Html.Label(Textos.CUIT_Solicitante + ":", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
                         @Html.TextBoxFor(model => model.CUITSolicitante, new { @class = "control input-medium", @readonly = "readonly" })
@@ -235,7 +246,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                     @Html.Label("Material", new { @class = "control-label menosAncho" })
                     <div class="controls menosAncho">
                         @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control input-medium" })
-                        @Html.HiddenFor(model => model.MaterialId, new { @id="matId" })
+                        @Html.HiddenFor(model => model.MaterialId, new { @id = "matId" })
                         @Html.ValidationMessageFor(model => model.MaterialId)
                     </div>
                 </div>
@@ -261,13 +272,13 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
                 </div>
 
                 @*<div class="contenedor-barrera">
-                    <span>Estado de barrera: </span>
-                    <span class="bar-ico icon-barrera-cerrada" id="barreraCargaCupo"></span>
-                    <div class="botones-barrera">
-                        <a class="btn tarjetaMaestro apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-unlock"> </i> </a>
-                        <a class="btn tarjetaMaestro cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-lock"> </i> </a>
-                    </div>
-                </div>*@
+                        <span>Estado de barrera: </span>
+                        <span class="bar-ico icon-barrera-cerrada" id="barreraCargaCupo"></span>
+                        <div class="botones-barrera">
+                            <a class="btn tarjetaMaestro apertura" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-unlock"> </i> </a>
+                            <a class="btn tarjetaMaestro cierre" data-puesto-id="@ViewBag.PuestoId" data-id="@ViewBag.CodigoBarrera" ><i class="fa fa-lock"> </i> </a>
+                        </div>
+                    </div>*@
             </div>
         </div>
         <div class="row-fluid" style="margin-top:20px">
@@ -339,6 +350,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
             </div>
         </div>
     </div>
+    @Html.HiddenFor(x => x.ImagenCartaPorteSustentable)
 
 </div>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7b1d0fd4-ea6e-44d7-b0e4-30ed5a3d135e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="7b1d0fd4-ea6e-44d7-b0e4-30ed5a3d135e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://fwshomo.afip.gov.ar/wscpe/services/soap?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="wscpe.wsdl" MetadataType="Wsdl" ID="fb054874-7534-4ad3-b2e3-58bae4dc13df" SourceId="1" SourceUrl="https://fwshomo.afip.gov.ar/wscpe/services/soap?wsdl" />
+    <MetadataFile FileName="wscpe.wsdl" MetadataType="Wsdl" ID="fb054874-7534-4ad3-b2e3-58bae4dc13df" SourceId="1" SourceUrl="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

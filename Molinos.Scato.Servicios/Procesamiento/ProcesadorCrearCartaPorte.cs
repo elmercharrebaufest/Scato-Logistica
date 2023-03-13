@@ -133,7 +133,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 CodigoAnexo = comando.Orden.CodigoAnexo,
                                 Vehiculos = comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren && comando.Orden.Cpe ? vehiculos.Where(w => w.Patente == comando.Vehiculo.Patente).ToList() : vehiculos,
                                 Tecnologia = tecnologia,
-                                Cupo = comando.Orden.Cupo,
+                                Cupo = comando.Orden.Cupo != null ? comando.Orden.Cupo.ToUpper() : comando.Orden.Cupo,
                                 CorredorVendedor = corredorVendedor,
                                 Categoria = categoria,
                                 IntermediarioFlete = intermediarioFlete,
@@ -154,8 +154,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 NumeroPrecinto = cartaPorteFerroviario is null ? comando?.Orden?.NumeroPrecinto : cartaPorteFerroviario?.NumeroPrecinto,
                                 TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null,
                                 PagadorFlete = pagadorFlete,
-                                RepresentanteRecibidor = representanteRecibidor
+                                RepresentanteRecibidor = representanteRecibidor,
+                                FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
                         };
+                        cartaPorte.NroCartaPorte = cartaPorte.NroCartaPorte.Trim();
                         foreach (var vehiculo in vehiculos)
                         {
                             vehiculo.CartaPorte = cartaPorte;

@@ -5,8 +5,10 @@
 	[Fecha]       DATETIME NOT NULL,
 	[CartaPorte_Id]          INT            NULL,
     [WorkflowId]   UNIQUEIDENTIFIER NULL,
-    CONSTRAINT [PK_dbo.BajaCTG] PRIMARY KEY CLUSTERED ([Id] ASC),
-	CONSTRAINT [FK_dbo.BajaCTG_dbo.CartaPorte_CartaPorte_Id] FOREIGN KEY ([CartaPorte_Id]) REFERENCES [dbo].[CartaPorte] ([Id]) ON DELETE CASCADE
+    [OrdenDeDescargaFason_Id] INT NULL, 
+    CONSTRAINT [PK_dbo.BajaCTG] PRIMARY KEY CLUSTERED ([Id] ASC),                                                                                  
+	CONSTRAINT [FK_dbo.BajaCTG_dbo.CartaPorte_CartaPorte_Id] FOREIGN KEY ([CartaPorte_Id]) REFERENCES [dbo].[CartaPorte] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_dbo.BajaCTG_dbo.OrdenDeDescargaFason_OrdenDeDescargaFason_Id] FOREIGN KEY ([OrdenDeDescargaFason_Id]) REFERENCES [dbo].[OrdenDeDescargaFason] ([Id]) ON DELETE CASCADE
 );
 
 GO

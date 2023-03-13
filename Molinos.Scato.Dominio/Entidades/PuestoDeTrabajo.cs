@@ -82,6 +82,10 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string SemaforoRojo { get; set; }
         public virtual string SemaforoAmarillo { get; set; }
         public virtual string SemaforoVerde { get; set; }
+        public virtual ConfigSensores ConfigSensores { get; set; }
+        public virtual VisualizacionBarrera VisualizacionBarrera { get; set; }
+        public virtual bool RequiereComentarioGestionarBarrera { get; set; }
+        public virtual string GrupoBarreraCodigo { get; set; }
 
     }
 }

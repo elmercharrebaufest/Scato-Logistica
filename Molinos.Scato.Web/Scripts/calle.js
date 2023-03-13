@@ -88,11 +88,11 @@ function getCaracteristicaDeCalidad() {
 }
 
 function mostrarBloque() {
-    if ($('#TipoCalle').val() == "PreCalado" || $('#TipoCalle').val() == "Circular" || $('#TipoCalle').val() == "NoGranos") { // pre calado
+    if ($('#TipoCalle').val() == "PreCalado" || $('#TipoCalle').val() == "Circular" || $('#TipoCalle').val() == "NoGranos" || $('#TipoCalle').val() == "PlantaNoGranos" || $('#TipoCalle').val() == "PreBalanzaGranos") { // pre calado
         $('.material-group').css('display', '');
         $('.calidad-group').css('display', 'none');
         $('.caracteristicas-calidad-group').css('display', 'none');
-        if($('#TipoCalle').val() == "NoGranos") {
+        if($('#TipoCalle').val() == "NoGranos" || $('#TipoCalle').val() == "PlantaNoGranos" || $('#TipoCalle').val() == "PreBalanzaGranos") {
             $('#MaterialDesc').prop('required', true);
         }
     }

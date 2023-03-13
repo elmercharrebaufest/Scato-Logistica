@@ -35,6 +35,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Id = entidad.Id;
                     Finally(comando, entidad.Id);
                 }
+                if(resultado.Errores.Count == 1 && resultado.Errores.ContainsKey("Recorrido"))
+                {
+                    var entidad = ActualizarEntidad(comando, resultado);
+                    Repositorio.GuardarCambios();
+                    resultado.Id = entidad.Id;
+                }
             }
             catch (CrearException e)
             {
@@ -82,6 +88,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var materialDescripcion = entidadNueva.Calle.Material != null ? entidadNueva.Calle.Material.DescripcionCorta : "";
             Log.Debug($"{entidadNueva.Calle.Nombre} de {entidadNueva.Calle.TipoCalle} y  {calidad} o Material  {materialDescripcion}");
             return entidadNueva;
+        }
+
+        protected CallePorRecorrido ActualizarEntidad(CrearCallePorRecorrido comando, ResultadoCrearCalle resultado)
+        {
+            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow);
+            var entidad = Repositorio.Obtener<CallePorRecorrido>(x=> x.CargaDeCupo.Patente == recorrido.Patente && x.FechaEgreso == null && x.Recorrido == null);
+            entidad.Recorrido = recorrido;
+            var material = recorrido.Material;
+            var calidad = recorrido.CaracteristicasAnalizadas != null ? recorrido.CaracteristicasAnalizadas.Calidad : Dominio.Enums.TipoCalidad.Desconocida;
+
+            resultado.Disponibilidad = administradorDeCalles.ObtenerEspacioDisponible(comando.TipoCalle, material != null ? material.Id : 0, calidad) - 1; //porque aun no se guarda la asignacion actual
+            resultado.DisponibilidadCalles = administradorDeCalles.ObtenerEspacioDisponibleEnCalle(entidad.Calle.Id);
+            resultado.CentroId = entidad.Calle.CentroId;
+            resultado.CalleId = entidad.Calle.Id;
+            resultado.Calidad = calidad;
+            Log.Debug($"Espacio en calle {entidad.Calle.Nombre}: {resultado.Disponibilidad}, {(resultado.DisponibilidadCalles ? "Hay" : "No hay")} espacio en calle");
+            var materialDescripcion = entidad.Calle.Material != null ? entidad.Calle.Material.DescripcionCorta : "";
+            Log.Debug($"Actualizando Calle por recorrido para {entidad.Calle.Nombre} con recorrido {recorrido} de {entidad.Calle.TipoCalle} y  {calidad} o Material  {materialDescripcion}");
+            return entidad;
         }
 
         protected void Finally(CrearCallePorRecorrido comando, int id)

@@ -1,0 +1,77 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Helpers
+@using System.Web.Optimization
+@using Molinos.Scato.Dominio.Helpers;
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@{
+    ViewBag.Title = "Eficiencia Calado";
+    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/eficienciaCalado.css")">
+
+@section scripts {
+    <script src="~/Scripts/Chart.js" type="text/javascript"></script>
+    <script src="~/Scripts/Chart.bundle.js"></script>
+    <script src="~/Scripts/chartjs-plugin-annotation.min.js"></script>
+    <script src="~/Scripts/area/eficienciaCalado/index.js"></script>
+}
+
+<div id="eficienciaCaladoContenedor">
+    <div class="header-eficiencia">
+        <a href="@Url.Action("Index", "Index")" class="header-eficiencia--logo">
+            <img alt="Molinos" src=@Url.Content("~/Content/Images/logo-nuevo.png")>
+        </a>
+        <div class="header-eficiencia--pendiente">
+            Camiones pendientes
+            <span id="camionesPendientes">0</span>
+        </div>
+        <div class="header-eficiencia--sector">Sector<br />Calada</div>
+    </div>
+
+    <div class="body-eficiencia">
+        <div>
+            <h2>Utilización de calles (Última hora)</h2>
+            <div class="partialEficiencia" id="partialEficienciaPorHora">
+                <div>
+                    <canvas id="chartEficienciaPorHora"></canvas>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2>Utilización de calles (Turno actual)</h2>
+            <div class="partialEficiencia" id="partialEficienciaPorTurno">
+                <div>
+                    <canvas id="chartEficienciaPorTurno"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var eficienciaCaladoConfig = {
+        containerId: "eficienciaCaladoContenedor",
+        generalIds: {
+            graficoEficienciaPorHora: "chartEficienciaPorHora",
+            graficoEficienciaPorTurno: "chartEficienciaPorTurno",
+            cantidadCamionesPendientes: "camionesPendientes"
+        },
+        vmData: null,
+        labels: {},
+        messages: {},
+        models: {},
+        generalUrls: {
+            obtenerEficiencia: '@Url.Action("ObtenerEficiencia")',
+            obtenerCantidadCamiones: '@Url.Action("ObtenerCamionesPorCalar")',
+        },
+    };
+
+    var eficienciaCaladoVM = new EficienciaCaladoVM(eficienciaCaladoConfig);
+
+    $(function () {
+        eficienciaCaladoVM.onReady();
+    });
+</script>

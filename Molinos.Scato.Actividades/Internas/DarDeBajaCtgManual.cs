@@ -26,7 +26,7 @@ namespace Molinos.Scato.Actividades.Internas
                 {
                     CartaPorteId = orden.Id,
                     CodigoDeBaja = orden.Cpe ? orden.NroCartaPorte : codigoDeBaja,
-                    Fecha = DateTime.UtcNow,
+                    Fecha = DateTime.Now,
                     WorkflowId = workflowId
                 };
 

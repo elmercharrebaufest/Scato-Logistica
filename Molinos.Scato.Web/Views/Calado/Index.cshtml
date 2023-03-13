@@ -101,6 +101,7 @@
 @if (humedimetro != null)
 {
     @Html.Hidden("HumedimetroId", humedimetro.Id, new { data_url = @Url.Action("TomarHumedad", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
+    @Html.Hidden("HumedimetroHumedadPHId", humedimetro.Id, new { data_url = @Url.Action("TomarHumedadPH", new { humedimetro = humedimetro.Codigo, fecha = Model.Fecha.Ticks }), data_automatico = humedimetro.Modalidad == Modalidad.Automática })
 }
 @if (nirs != null)
 {
@@ -109,7 +110,7 @@
 <div class="container-fluid text-center">
     <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Calado_Titulo</div>
     <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
-        <h4 style="margin-top: 0; margin-bottom: 0" id= Material data-materialId=@ViewBag.MaterialId >@ViewBag.Material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+        <h4 style="margin-top: 0; margin-bottom: 0" id=Material data-materialId=@ViewBag.MaterialId>@ViewBag.Material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
     </span>
     @if ((bool)ViewBag.Rechazado)
     {
@@ -154,7 +155,12 @@
         @Html.ViewBag.EnvioDirectoACamara
     </div>
 }
-
+@if (ViewBag.EnvioCamaraInase != null)
+{
+    <div class="alert alert-error" style="text-align:center;">
+        <b>@Html.ViewBag.EnvioCamaraInase</b>
+    </div>
+}
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
         <div id="calado">
@@ -216,6 +222,9 @@
                 @Html.HiddenFor(model => model.CicloDeCalado)
                 @Html.HiddenFor(model => model.CentroId)
                 @Html.HiddenFor(model => model.NumeroDocumentoIngreso)
+                @Html.HiddenFor(model => model.EnvioAInase)
+
+
                 if (humedimetro != null)
                 {
                     @Html.Hidden("HumedimetroId", humedimetro.Id)
@@ -225,7 +234,7 @@
                 {
                     @Html.Hidden("NirsId", nirs.Id)
                 }
-                <div class="row row-bloqueable"style="margin-left:130px;">
+                <div class="row row-bloqueable" style="margin-left:130px;">
                     <div class="span9">
                         <table class="table table-striped" id="rubros">
                             <thead>
@@ -240,18 +249,25 @@
                                 @for (int i = 0; i < Model.CaladosPorCaracteristica.Count; i++)
                                 {
                                     var t = Model.CaladosPorCaracteristica[i];
-                                    
-                                    bool esGradoAutomatico = t.Caracteristica.ToLower() == "grado" && (materialId == 386 || materialId == 13) ;
+
+                                    bool esGradoAutomatico = t.Caracteristica.ToLower() == "grado" && (materialId == 386 || materialId == 13);
                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].CaracteristicaId)
                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].AnalisisAutomatico)
                                     <tr @(t.CaladoObligatorio ? "class=caladoObligatorio" : "")>
-                                        <td >@Html.DisplayFor(model => t.Caracteristica)</td>
+                                        <td>@Html.DisplayFor(model => t.Caracteristica)</td>
                                         @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ToleranciaSinAnalisis)
                                         @if (t.Dispositivo == TipoDispositivo.Humedimetro && t.EsHumedad && humedimetro != null && humedimetro.Modalidad == Modalidad.Automática)
                                         {
                                             <td>
                                                 <div>
-                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxHumedad" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ","") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere})
+                                                    @if (t.TieneValorCaladoPorDefecto)
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxHumedad" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere, @readonly = "readonly" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxHumedad" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere })
+                                                    }
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ValorAutomatico, new { @class = "textboxHumedad" })
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].NroDeToma, new { @class = "nroDeToma" })
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
@@ -263,11 +279,42 @@
                                                 </div>
                                             </td>
                                         }
+
+                                        else if (t.Dispositivo == TipoDispositivo.Humedimetro && t.EsPesoHelectrolitico && humedimetro != null && humedimetro.Modalidad == Modalidad.Automática)
+                                        {
+                                            <td>
+                                                <div>
+                                                    @if (t.TieneValorCaladoPorDefecto)
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxPH" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere, @readonly = "readonly" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxPH" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, placeholder = Textos.Pesada_Espere })
+                                                    }
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ValorAutomatico, new { @class = "textboxPH" })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].NroDeToma, new { @class = "nroDeToma" })
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
+                                                    @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].Dispositivo)
+
+                                                    @*<button type="button" class="btn btn-mini right boton-PH play" style="margin-left: 2px;"><i class="icon-play"></i></button>*@
+                                                    <button title="Toma Manual" type="button" class="btn btn-mini right boton-manual_PH nohabilitar" disabled style="margin-left: 2px;"><i class="icon-edit"></i></button>
+                                                    @Html.DropDownListFor(model => model.MotivoHumedadManualId, (IEnumerable<SelectListItem>)ViewBag.MotivoManual, new { @class = "input-large humedimetro-manual-PH hidden", style = "margin: 1px 0px; width: 100%;" })
+                                                </div>
+                                            </td>
+                                        }
                                         else if ((t.Dispositivo == TipoDispositivo.NIRS) && nirs != null && nirs.Modalidad == Modalidad.Automática)
                                         {
                                             <td>
                                                 <div>
-                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxnirs textboxnirs" + t.CaracteristicaNombreNirs + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, Data_EsHumedad = t.EsHumedad,  placeholder = Textos.Pesada_Espere })
+                                                    @if (t.TieneValorCaladoPorDefecto)
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxnirs textboxnirs" + t.CaracteristicaNombreNirs + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, Data_EsHumedad = t.EsHumedad, placeholder = Textos.Pesada_Espere, @readonly = "readonly" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica textboxnirs textboxnirs" + t.CaracteristicaNombreNirs + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, Data_EsHumedad = t.EsHumedad, placeholder = Textos.Pesada_Espere })
+                                                    }
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].ValorAutomatico, new { @class = "textboxnirs" + t.CaracteristicaNombreNirs })
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].NroDeToma, new { @class = "nroDeTomaNirs" })
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
@@ -287,7 +334,14 @@
 
                                             <td>
                                                 <div class="form-horizontal">
-                                                    @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") +" " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax,  Data_min = t.RangoMin })
+                                                    @if (t.TieneValorCaladoPorDefecto)
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin, @readonly = "readonly" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(model => Model.CaladosPorCaracteristica[i].ValorCalado, new { @class = "input-small campoNumericoCalado textboxCaracteristica" + (t.CaladoObligatorio ? " caracteristicaObligatoria " : "") + (t.EnviaAnalisisObligatorio ? " caracteristicaAnalisisObligatorio " : "") + " " + t.Caracteristica.ToLower().Replace(" ", "") + " " + (esGradoAutomatico ? "gradoAutomatico" : ""), Data_max = t.RangoMax, Data_min = t.RangoMin })
+                                                    }
                                                     @Html.HiddenFor(model => Model.CaladosPorCaracteristica[i].EsHumedad)
                                                 </div>
                                             </td>
@@ -313,7 +367,7 @@
                         </table>
                     </div>
                     <div class="span3">
-                        @Html.TextAreaFor(model => model.Comentario, new { rows = "5", cols = "100", maxlength = "100", placeholder = "Comentarios...", @style="margin-top:20px;" })
+                        @Html.TextAreaFor(model => model.Comentario, new { rows = "5", cols = "100", maxlength = "100", placeholder = "Comentarios...", @style = "margin-top:20px;" })
                     </div>
                 </div>
                 <div class="row row-bloqueable container" style="margin-left:130px;">

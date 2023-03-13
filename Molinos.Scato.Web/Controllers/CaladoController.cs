@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -17,8 +11,21 @@ using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Molinos.Scato.Web.Models.ArchivosTxt;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Dynamic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -45,7 +52,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(Guid id, DatosUsuario datosUsuario, bool? caladoObligatorio = null)
         {
             log.Info("{0} - Index", id);
-            if(!PermisosHelper.Is(PermisosScato.ActividadCalado) && PermisosHelper.Is(PermisosScato.ActividadCaladoRechazar))
+            if (!PermisosHelper.Is(PermisosScato.ActividadCalado) && PermisosHelper.Is(PermisosScato.ActividadCaladoRechazar))
             {
                 return RedirectToAction("Index", "CaladoRechazar", new { id });
             }
@@ -111,10 +118,9 @@ namespace Molinos.Scato.Web.Controllers
                     RecorridoId = recorrido.Id,
                     Usuario = datosUsuario.NombreUsuario
                 });
-            
+
                 caladoEsObligatorio = !resultadoConsultarCaladoObligatorio.HayErrores && ((ResultadoCorrespondeAnalisisObligatorio)resultadoConsultarCaladoObligatorio).CorrespondeAnalisisObligatorio;
             }
-
 
             return View(new CaladoPantallaDto
             {
@@ -129,14 +135,16 @@ namespace Molinos.Scato.Web.Controllers
                             Caracteristica = x.Descripcion,
                             CaracteristicaId = x.Id,
                             EsHumedad = x.EsHumedad,
-                            ValorCalado = null,
+                            EsPesoHelectrolitico = x.EsPesoHectolitrico,
+                            ValorCalado = (x.CaladoPorDefecto != null) ? x.CaladoPorDefecto : null,
                             EnviaAnalisisObligatorio = x.NoAceptarSiSeDefineUnValor,
                             NroDeToma = 1,
                             ToleranciaSinAnalisis = x.ToleranciaSinAnalisis,
                             ToleranciaSinMensaje = x.ToleranciaSinMensaje,
                             Dispositivo = x.Dispositivo,
                             CaracteristicaNombreNirs = x.NombreNirs,
-                            Modalidad = x.Dispositivo == TipoDispositivo.NIRS ? ((NirsDto)ViewBag.Nirs).Modalidad : (x.Dispositivo == TipoDispositivo.Humedimetro ? ((HumedimetroDto)ViewBag.Humedimetro).Modalidad : Modalidad.Manual)
+                            Modalidad = x.Dispositivo == TipoDispositivo.NIRS ? ((NirsDto)ViewBag.Nirs).Modalidad : (x.Dispositivo == TipoDispositivo.Humedimetro ? ((HumedimetroDto)ViewBag.Humedimetro).Modalidad : Modalidad.Manual),
+                            TieneValorCaladoPorDefecto = x.CaladoPorDefecto != null
                         }).ToList(),
                 MuestraConjunto = null,
                 NumeroOrden = recorrido.Centro.Descripcion.Substring(0, 3).Trim().ToUpper() + recorrido.Calado.Id.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0'),
@@ -150,7 +158,8 @@ namespace Molinos.Scato.Web.Controllers
                 CamionSeleccionadoAnalisisIntervalo = caladoEsObligatorio,
                 MaterialId = recorrido.Material.Id,
                 PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
-                RecorridoId = recorrido.Id
+                RecorridoId = recorrido.Id,
+                EnvioAInase = recorrido.EnvioMuestraInase
             });
         }
 
@@ -171,7 +180,7 @@ namespace Molinos.Scato.Web.Controllers
             var vehiculo = recorrido.Vehiculo;
             var info = servicio.ObtenerInformacionCartaPorte(recorrido.Id);
             var cupo = servicio.ObtenerCupoPorRecorrido(recorrido.Id);
-          
+
             ViewBag.PatenteOriginal = recorrido.Patente;
             ViewBag.Patente = recorrido.Centro.ReingresaPatenteEnCalado ? null : recorrido.Patente;
             ViewBag.PatenteAcoplado = vehiculo != null ? vehiculo.PatenteAcoplado : string.Empty;
@@ -202,7 +211,6 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.CupoEsFabrica = cupo.Camara == "03"; //03 es de fabrica (hasta el momento es el unico establecido)
             }
 
-           
             ViewBag.AnalisisGirasolOleico = recorrido.Material.Oleico;
 
             var desdeEsMenor = recorrido.Centro.HorarioDesde < recorrido.Centro.HorarioHasta;
@@ -213,6 +221,12 @@ namespace Molinos.Scato.Web.Controllers
                                (!desdeEsMenor && !(hasta <= DateTime.Now.Hour && DateTime.Now.Hour < desde))))
             {
                 ViewBag.EnvioDirectoACamara = string.Format(Textos.ProveedorRangoEnvioCamara);
+            }
+            if (info.EnvioCamaraInase && recorrido.Material.CodigoSAP == configuracion.AppSettings["CodigoSapSemillaSoja"]
+                && recorrido.TipoVehiculo != TipoVehiculo.Tren && recorrido.TipoVehiculo != TipoVehiculo.Bitren)
+            {
+                ViewBag.EnvioCamaraInase = string.Format(Textos.CaladoMuestraInase);
+                recorrido.EnvioMuestraInase = true;
             }
             log.Info("{0} - Fin - SetearVista", id);
             return recorrido;
@@ -263,6 +277,8 @@ namespace Molinos.Scato.Web.Controllers
                 log.Debug("{0} - Calado - no hay errores, guardo la muestra de humedad", caladopantalla.WorkflowInstanceId);
                 GuardarMuestraDeHumedad(caladopantalla, datosUsuario);
                 GuardarMuestraDeNirs(caladopantalla, datosUsuario);
+                if(caladopantalla.MaterialId == 4 && caladopantalla.EnvioAInase)
+                    GuardarMuestraInase(caladopantalla, datosUsuario);
                 log.Debug("{0} - Fin - Calado", caladopantalla.WorkflowInstanceId);
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
@@ -288,7 +304,6 @@ namespace Molinos.Scato.Web.Controllers
             }
             return muestraConj.HasValue &&
                    servicio.MuestraConjuntoFueUtilizada(caladopantalla.WorkflowInstanceId, muestraConj.Value);
-
         }
 
         public ActionResult TomarHumedad(string humedimetro, long fecha)
@@ -318,6 +333,98 @@ namespace Molinos.Scato.Web.Controllers
             {
                 log.Error(ex, "Error en tomar humedad para el humedimetro con Id {0}", humedimetro);
                 return Json(Textos.Humedad_AutomaticaError, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult TomarPH(string humedimetro, long fecha)
+        {
+            try
+            {
+                log.Info("Se tomará el peso hectolitrico en modalidad automática para el humedimetro {0}", humedimetro);
+                var ejecutarTomaDeHumedad = new EjecutarAnalisisHumedad { CodigoDispositivo = humedimetro, FechaDeInicio = new DateTime(fecha) };
+                var resultado = orquestador.Ejecutar(ejecutarTomaDeHumedad);
+                var hayPH = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "PH");
+                log.Info("Llamada al orquestador exitosa. Hay Peso Hectolitrico = {0}", hayPH);
+                if (resultado.Mensaje.Codigo == 207)
+                {
+                    return Json(null, JsonRequestBehavior.AllowGet);
+                }
+                if (resultado.Mensaje.Codigo != 0)
+                {
+                    log.Error("(" + Textos.Codigo + ":{0}) " + Textos.PH_AutomaticaError + "\r\n{1}", resultado.Mensaje.Codigo, resultado.Mensaje.Descripcion);
+                    return Json("(" + Textos.Codigo + ":" + resultado.Mensaje.Codigo + ") " + Textos.PH_AutomaticaError + "\r\n" + resultado.Mensaje.Descripcion, JsonRequestBehavior.AllowGet);
+                }
+
+                return hayPH
+                           ? Json(resultado.Valores.First(f => f.Key == "PH").Value, JsonRequestBehavior.AllowGet)
+                           : Json(Textos.PH_AutomaticaError, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error en tomar el peso hectolitríco para el humedimetro con Id {0}", humedimetro);
+                return Json(Textos.PH_AutomaticaError, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult TomarHumedadPH(string humedimetro, long fecha)
+        {
+            var respuesta = RespuestaEstandarDto.Crear<dynamic>();
+            try
+            {
+                log.Debug("Se tomará el la Humedad y PH en modalidad automática para el humedimetro {0}", humedimetro);
+                var ejecutarTomaDeHumedad = new EjecutarAnalisisHumedad { CodigoDispositivo = humedimetro, FechaDeInicio = new DateTime(fecha) };
+
+
+                var resultado = orquestador.Ejecutar(ejecutarTomaDeHumedad);
+                var hayHumedad = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "AnalisisHumedad");
+                var hayPH = resultado.Valores != null && resultado.Valores.Any(a => a.Key == "PH");
+
+                log.Debug("Llamada al orquestador exitosa. Hay Humedad = {0}", hayHumedad);
+                log.Debug("Llamada al orquestador exitosa. Hay PH = {0}", hayPH);
+
+                decimal? humedad = null;
+                decimal? ph = null;
+
+                if (hayHumedad)
+                {
+                    humedad = resultado.Valores.First(f => f.Key == "AnalisisHumedad").Value;
+                    log.Debug("Humedad = {0}", humedad);
+                }
+                else
+                {
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Humedad_AutomaticaError, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                }
+
+                if (hayPH)
+                {
+                    ph = resultado.Valores.First(f => f.Key == "PH").Value;
+                    log.Debug("PH = {0}", ph);
+                }
+                else
+                {
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.PH_AutomaticaError, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                }
+
+                var humedimetroRespuesta = new HumedimetroRespuestaDto
+                {
+                    Humedad = humedad,
+                    PH = ph
+                };
+                respuesta.Data = humedimetroRespuesta;
+
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex, "Error en tomar la Humedad y PH para el humedimetro con Id {0}", humedimetro);
+                var mensaje = new MensajeEstandarDto
+                {
+                    TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
+                    Mensaje = ex.Message
+                };
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -394,7 +501,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public void CancelarAnalisisObligatorio(DatosUsuario datosUsuario,int puestoDeTrabajoId, int materialId, int recorridoId, bool camionSeleccionadoAnalisisIntervalo)
+        public void CancelarAnalisisObligatorio(DatosUsuario datosUsuario, int puestoDeTrabajoId, int materialId, int recorridoId, bool camionSeleccionadoAnalisisIntervalo)
         {
             if (datosUsuario.PuestoDeTrabajoId > 0 && camionSeleccionadoAnalisisIntervalo)
             {
@@ -449,6 +556,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             log.Info("{0} - Calado Fin - GuardarMuestraDeHumedad", caladopantalla.WorkflowInstanceId);
         }
+
         private void GuardarMuestraDeNirs(CaladoPantallaDto caladopantalla, DatosUsuario datosUsuario)
         {
             log.Info("{0} - Calado GuardarMuestraDeNirs", caladopantalla.WorkflowInstanceId);
@@ -482,6 +590,18 @@ namespace Molinos.Scato.Web.Controllers
             log.Info("{0} - Nirs Fin - GuardarMuestraDeNirs", caladopantalla.WorkflowInstanceId);
         }
 
+        private void GuardarMuestraInase(CaladoPantallaDto caladopantalla, DatosUsuario datosUsuario)
+        {
+            log.Info("{0} - Calado GuardarMuestraDeInase", caladopantalla.WorkflowInstanceId);
 
+            servicioComandos.Ejecutar(new CrearMuestraDeInase
+            {
+                Dto = new MuestraDeInaseDto
+                {
+                    WorkflowInstanceId = caladopantalla.WorkflowInstanceId
+                }
+            });
+            log.Info("{0} - Inase - Muestra guardada", caladopantalla.WorkflowInstanceId);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime Fecha { get; set; }
         public virtual TipoComprobanteOncca TipoComprobanteOncca { get; set; }
         public virtual string NumeroDocumentoIngreso { get; set; }
+        public virtual string NumeroCTG { get; set; }
         public virtual Material Material { get; set; }
         public virtual decimal? PesoBrutoIngreso { get; set; }
         public virtual decimal? PesoNetoIngreso { get; set; }

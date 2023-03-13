@@ -34,6 +34,13 @@
           <QueryParameter Name="@TipoDestino">
             <Value>=Parameters!TipoDestino.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@TipoSustentable">
+            <Value>=Parameters!TipoSustentable.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@TipoVehiculo">
+            <Value>=Parameters!TipoVehiculo.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
+          </QueryParameter>
         </QueryParameters>
         <CommandText>declare 
 @FechaDesdep datetime, 
@@ -44,8 +51,10 @@
 @CuitMRP varchar(11),
 @TipoCompraIdp varchar(1),
 @CuitVicentin varchar(11),
-@CuitChivilcoy varchar(11),
-@TipoDestinoIdp varchar(1)
+@CuitChivilcoy varchar(13),
+@TipoDestinoIdp varchar(1),
+@TipoSustentableIdp varchar(1),
+@TipoVehiculoIdp int
 
 set @FechaDesdep = @FechaDesde
 set @FechaHastap = @FechaHasta
@@ -55,38 +64,47 @@ set @CuitMOA = '30715118773'
 set @CuitMRP = '30500858628'
 set @TipoCompraIdp = @TipoCompra
 set @CuitVicentin = '30500959629'
-set @CuitChivilcoy = '0001'
+set @CuitChivilcoy = '30500858628'
 set @TipoDestinoIdp = @TipoDestino
-
+set @TipoSustentableIdp = @TipoSustentable
+set @TipoVehiculoIdp = @TipoVehiculo
 
 SELECT DISTINCT
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 4, 1) Pref,
 	SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 5, 8) NroCartaPorte,
-	'A' TipoTransporte,
-	0 NroVagon,
+	CASE 
+		WHEN cp.NroCartaPorte LIKE '2%' THEN 'F' 
+		WHEN cp.NroCartaPorte LIKE '1%' THEN 'A' 
+		ELSE ''
+	END TipoTransporte,
+	CASE 
+		WHEN cp.NroCartaPorte LIKE '2%' THEN 2 
+		WHEN cp.NroCartaPorte LIKE '1%' THEN 0 
+		ELSE ''
+	END NroVagon,
 	cp.FechaCarga FechaCartaPorte,
 	cp.FechaVencimiento  FechaVencimiento,
 	CASE WHEN cp.CEE = 'null' THEN NULL ELSE cp.CEE END CEE,
 	CONCAT(RIGHT('00000' + CAST(cp.Sucursal AS VARCHAR(5)), 5), RIGHT('00000000' + CAST(cp.NroOrden AS VARCHAR(8)), 8))  NroCTG,
 	cp.FechaCarga  FechaCTG,
-	cp.TitularCuit TitularCuit,
+	REPLACE(cp.TitularCuit, '-','') TitularCuit,
 	cp.TitularRazonSocial TitularRS,
 	'' NroPlanta,
-	cp.IntermediarioCuit IntermediarioCuit,
+	REPLACE(cp.IntermediarioCuit, '-','') IntermediarioCuit,
 	cp.IntermediarioRazonSocial IntermediarioRS,
 	CASE
 		WHEN (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL 
 			AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaSecundaria2
+		THEN REPLACE(cp.CuitRemitenteComercialVentaSecundaria2, '-','')
 		WHEN (cp.CuitRemitenteComercialVentaSecundaria IS NOT NULL 
 			AND cp.CuitRemitenteComercialVentaSecundaria NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaSecundaria
+		THEN REPLACE(cp.CuitRemitenteComercialVentaSecundaria, '-','')
 		WHEN (cp.CuitRemitenteComercialVentaPrimaria IS NOT NULL
 			AND cp.CuitRemitenteComercialVentaPrimaria NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.CuitRemitenteComercialVentaPrimaria
+		THEN REPLACE(cp.CuitRemitenteComercialVentaPrimaria, '-','')
 		WHEN (cp.RemitenteCuit IS NOT NULL
 			AND cp.RemitenteCuit NOT IN(@CuitMOA,@CuitMRP, ''))
-		THEN cp.RemitenteCuit
+		THEN REPLACE(cp.RemitenteCuit, '-','')
 		ELSE NULL
 	END RemitenteCuit,
 	CASE
@@ -103,7 +121,7 @@ SELECT DISTINCT
 			AND cp.RemitenteCuit NOT IN(@CuitMOA,@CuitMRP, ''))
 		THEN cp.RemitenteRazonSocial
 	END RemitenteRS,
-	cp.CuitMercadoATermino AgenteDeComprasCuit,
+	REPLACE(cp.CuitMercadoATermino, '-','') AgenteDeComprasCuit,
 	cp.ProductoCodigo ProductoCodigo,
 	m.DescripcionCorta Mercaderia,
 	'' TipoGrano,
@@ -120,6 +138,8 @@ SELECT DISTINCT
 	CASE
 		WHEN  cp.DestinatarioCuit NOT IN(@CuitMOA,@CuitMRP)
 		THEN NULL
+		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP) AND cp.DestinoCuit = @CuitChivilcoy
+		THEN cp.CuitCorredorVentaSecundaria
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -130,7 +150,7 @@ SELECT DISTINCT
 			AND (cp.CuitRemitenteComercialVentaSecundaria2 IS NULL
 				OR cp.CuitRemitenteComercialVentaSecundaria2 IN(@CuitMOA,@CuitMRP ,''))
 			AND cp.CorredorCuit IS NOT NULL AND cp.CorredorCuit != ''
-		THEN cp.CorredorCuit
+		THEN REPLACE(cp.CorredorCuit, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -141,14 +161,14 @@ SELECT DISTINCT
 			OR (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL
 				AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP, '') ))
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Otro'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) != '01'
 			AND (cp.RemitenteCuit IS NULL  
 				OR cp.RemitenteCuit IN(@CuitMOA,@CuitMRP ,'') )
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Otro'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) != '01'
@@ -161,7 +181,7 @@ SELECT DISTINCT
 			AND (cp.CuitRemitenteComercialVentaSecundaria2 IS NULL
 				OR cp.CuitRemitenteComercialVentaSecundaria2 IN(@CuitMOA,@CuitMRP ,'') ))
 			AND cp.CorredorCuit IS NOT NULL AND cp.CorredorCuit != ''
-		THEN cp.CorredorCuit
+		THEN REPLACE(cp.CorredorCuit, '-','')
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			
 			--AND cp.CTG = 'Otro'
@@ -175,12 +195,14 @@ SELECT DISTINCT
 			OR (cp.CuitRemitenteComercialVentaSecundaria2 IS NOT NULL
 				AND cp.CuitRemitenteComercialVentaSecundaria2 NOT IN(@CuitMOA,@CuitMRP ,'') ))
 			AND cp.CuitCorredorVentaSecundaria IS NOT NULL AND cp.CuitCorredorVentaSecundaria != ''
-		THEN cp.CuitCorredorVentaSecundaria
+		THEN REPLACE(cp.CuitCorredorVentaSecundaria, '-','')
 		ELSE NULL
 	END CorredorCuit,
 	CASE
 		WHEN  cp.DestinatarioCuit NOT IN(@CuitMOA,@CuitMRP)
 		THEN NULL
+		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP) AND cp.DestinoCuit = @CuitChivilcoy
+		THEN cp.RazonSocialCorredorVentaSecundaria
 		WHEN cp.DestinatarioCuit IN (@CuitMOA,@CuitMRP)
 			--AND cp.CTG = 'Productor'
 			AND SUBSTRING(RIGHT('000000000000' + cp.NroCartaPorte, 12), 3, 2) = '01'
@@ -239,95 +261,297 @@ SELECT DISTINCT
 		THEN cp.RazonSocialCorredorVentaSecundaria
 		ELSE NULL
 	END CorredorRS,
-	cp.EntregadorCuit EntregadorCuit,
+	REPLACE(cp.EntregadorCuit, '-','') EntregadorCuit,
 	cp.EntregadorRazonSocial EntregadorRS,
-	cp.DestinatarioCuit DestinatarioCuit,
+	REPLACE(cp.DestinatarioCuit, '-','') DestinatarioCuit,
 	cp.DestinatarioRazonSocial DestinatarioRS,
-	cp.DestinoCuit DestinoCuit,
+	REPLACE(cp.DestinoCuit, '-','') DestinoCuit,
 	cp.DestinoRazonSocial DestinoRS,
 	CASE WHEN cp.Planta = '25567' THEN 'San Lorenzo' WHEN cp.Planta = '21832' THEN 'RICARDONE' ELSE '' END Planta,
-	cp.TransporteCuit TransporteCuit,
+	REPLACE(cp.TransporteCuit, '-','') TransporteCuit,
 	cp.TransporteRazonSocial TransporteRS,
 	cp.TransportePatente Patente,
 	'' PatenteAcoplado,
 	'' KmARecorrer,
 	'' TarfiaXTonelada,
-	cp.ChoferCuit ChoferCuit,
+	REPLACE(cp.ChoferCuit, '-','') ChoferCuit,
 	cp.ChoferRazonSocial ChoferRS,
 	DATEADD(HOUR,-3,cp.FechaArribo) FechaCompletaArribo,
 	DATEADD(HOUR,-3,cp.FechaDescarga) FechaCompletaDescarga,
 	cp.DestinoPB Bruto,
 	cp.DestinoPT Tara,
 	cp.DestinoPN Neto,
-	cp.MermaTotal Merma,
-	cp.NetoConvenido NetoAplicado,
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.MermaTotal) + (CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005)), 0) as INT)
+		 ELSE cp.MermaTotal 
+	END Merma,
+	CASE WHEN cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) - (CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005)), 0) as INT)
+		 ELSE cp.NetoConvenido 
+	END NetoAplicado,
 	'' Clasificacion,
 	'' InterFlete,
 	'' Cupo,
-	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND ccp.Valor &gt; 13.5 THEN 13.5 --soja
+	CASE WHEN ecc.EsHumedad = 1 then (case when m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 2  AND cp.DestinoCuit = @CuitChivilcoy AND ccp.CodigoExterno = 'HUMEDAD' THEN ccp.Valor
+										   when m.CodigoONCCA = 23 AND ccp.Valor &gt; 13.5 THEN 13.5 --soja
 										   when m.CodigoONCCA = 19 AND ccp.Valor &gt; 14.5 THEN 14.5 --maiz
 										   when m.CodigoONCCA = 15 AND ccp.Valor &gt; 14 THEN 14 --trigo
 										   when m.CodigoONCCA = 2 AND ccp.Valor &gt; 11 THEN 11 --girasol
 										   ELSE ccp.Valor END) else 0 end Humedad,
-	CASE WHEN ecc.CodigoSap = 'MPSOJHUM' THEN cp.MermaTotal -isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPSOJHUM,
- 
-	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor ELSE 0 END MPSOJGQU,
 
-	CASE WHEN ecc.CodigoSap = 'MPSOJGDA' THEN ccp.Valor ELSE 0 END MPSOJGDA,
-	CASE WHEN ecc.CodigoSap = 'MPSOJCEX' THEN ccp.Valor ELSE 0 END MPSOJCEX,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' THEN ccp.Valor ELSE 0 END MPSOJMCHA,
-	CASE WHEN ecc.CodigoSap = 'MPSOJTIE' THEN ccp.Valor ELSE 0 END MPSOJTIE,
-	CASE WHEN ecc.CodigoSap = 'MPSOJOLO' THEN ccp.Valor ELSE 0 END MPSOJOLO,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMCH' THEN ccp.Valor ELSE 0 END MPSOJMCH,
-	CASE WHEN ecc.CodigoSap = 'MPSOJREV' THEN ccp.Valor ELSE 0 END MPSOJREV,
-	CASE WHEN ecc.CodigoSap = 'MPSOJMOH' THEN ccp.Valor ELSE 0 END MPSOJMOH,
-	CASE WHEN ecc.CodigoSap = 'MPSOJAVE' THEN ccp.Valor ELSE 0 END MPSOJAVE,
-	CASE WHEN ecc.CodigoSap = 'MPSOJGVE' THEN ccp.Valor ELSE 0 END MPSOJGVE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor ELSE 0 END MPMAZGRA,
-	CASE WHEN ecc.CodigoSap = 'MPMAZPHE' THEN ccp.Valor ELSE 0 END MPMAZPHE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZGDA' THEN ccp.Valor ELSE 0 END MPMAZGDA,
-	CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor ELSE 0 END MPMAZQUE,
-	CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor ELSE 0 END MPMAZMEX,
-	CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor ELSE 0 END MPMAZTIP,
-	CASE WHEN ecc.CodigoSap = 'MPMAZHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPMAZHUM,
-	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor ELSE 0 END MPMAZOLO,
-	CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor ELSE 0 END MPMAZAMO,
-	CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor ELSE 0 END MPMAZMCH,
-	CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor ELSE 0 END MPTRPGRA,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPHE' THEN ccp.Valor ELSE 0 END MPTRPPHE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPCEX' THEN ccp.Valor ELSE 0 END MPTRPCEX,
-	CASE WHEN ecc.CodigoSap = 'MPTRPARD' THEN ccp.Valor ELSE 0 END MPTRPARD,
-	CASE WHEN ecc.CodigoSap = 'MPTRPTDA' THEN ccp.Valor ELSE 0 END MPTRPTDA,
-	CASE WHEN ecc.CodigoSap = 'MPTRPCAR' THEN ccp.Valor ELSE 0 END MPTRPCAR,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPZB' THEN ccp.Valor ELSE 0 END MPTRPPZB,
-	CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor ELSE 0 END MPTRPQUE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor ELSE 0 END MPTRPPIC,
-	CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor ELSE 0 END MPTRPTRE,
-	CASE WHEN ecc.CodigoSap = 'MPTRPHM' THEN  cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPTRPHM,
-	CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor ELSE 0 END MPTRPINS,
-	CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor ELSE 0 END MPTRPOLO,
-	CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor ELSE 0 END MPTRPPST,
-	CASE WHEN ecc.CodigoSap = 'MPTRPRTI' THEN ccp.Valor ELSE 0 END MPTRPRTI,
-	CASE WHEN ecc.CodigoSap = 'MPTRPRO' THEN ccp.Valor ELSE 0 END MPTRPRO,
-	CASE WHEN ecc.CodigoSap = 'MPGIRACI' THEN ccp.Valor ELSE 0 END MPGIRACI,
-	CASE WHEN ecc.CodigoSap = 'MPGIRAOL' THEN ccp.Valor ELSE 0 END MPGIRAOL,
-	CASE WHEN ecc.CodigoSap = 'MPGIRCEX' THEN ccp.Valor ELSE 0 END MPGIRCEX,
-	CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor ELSE 0 END MPGIRCHA,
-	CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor ELSE 0 END MPGIRESC,
-	CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor ELSE 0 END MPGIRGAR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRHUM' THEN cp.MermaTotal - isnull(SumCaracteristicas.Valor,0) ELSE 0 END MPGIRHUM,
-	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor ELSE 0 END MPGIRHUR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor ELSE 0 END MPGIRINV,
-	CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor ELSE 0 END MPGIRMGR,
-	CASE WHEN ecc.CodigoSap = 'MPGIRMOH' THEN ccp.Valor ELSE 0 END MPGIRMOH,
-	CASE WHEN ecc.CodigoSap = 'MPGIROLO' THEN ccp.Valor ELSE 0 END MPGIROLO,
-	CASE WHEN ecc.CodigoSap = 'MPGIRREV' THEN ccp.Valor ELSE 0 END MPGIRREV,
-	CASE WHEN ecc.CodigoSap = 'MPGIRTEM' THEN ccp.Valor ELSE 0 END MPGIRTEM,
-	CASE WHEN ecc.CodigoSap = 'MPGIRGCL' THEN ccp.Valor ELSE 0 END MPGIRGCL,
-	CASE WHEN ecc.CodigoSap = 'MPGIRTIE' THEN ccp.Valor ELSE 0 END MPGIRTIE
+	CASE WHEN ccp.CodigoExterno = 'MPSOJHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+		 WHEN ecc.CodigoSap = 'MPSOJHUM' AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPSOJHUM,
+ 
+	CASE WHEN ecc.CodigoSap = 'MPSOJGQU' THEN ccp.Valor
+		 ELSE 0 
+	END MPSOJGQU,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJGDA' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJGDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJCEX' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMCHA' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMCHA,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJTIE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJTIE,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJOLO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMCH' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMCH,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJREV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJREV,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJMOH' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJMOH,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJAVE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJAVE,
+
+	CASE WHEN ecc.CodigoSap = 'MPSOJGVE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJGVE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZGRA,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZPHE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZPHE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZGDA' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZGDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZQUE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZQUE,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZMEX' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZMEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZTIP' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZTIP,
+
+	CASE WHEN ccp.CodigoExterno = 'MPMAZHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+		 WHEN ecc.CodigoSap = 'MPMAZHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPMAZHUM,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZOLO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZAMO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZAMO,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZMCH' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZMCH,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPGRA' AND ccp.Valor &lt;= 3 THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPGRA,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPHE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPHE,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPCEX' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPARD' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPARD,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPTDA' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPTDA,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPCAR' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPCAR,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPZB' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPZB,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPQUE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPQUE,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPIC' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPIC,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPTRE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPTRE,
+
+	CASE WHEN ccp.CodigoExterno = 'MPTRPHM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+		 WHEN ecc.CodigoSap = 'MPTRPHM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPTRPHM,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPINS' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPINS,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPOLO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPOLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPPST' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPPST,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPRTI' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPRTI,
+
+	CASE WHEN ecc.CodigoSap = 'MPTRPRO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPTRPRO,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRACI' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRACI,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRAOL' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRAOL,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRCEX' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRCEX,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRCHA' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRCHA,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRESC' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRESC,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRGAR' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRGAR,
+
+	CASE WHEN ccp.CodigoExterno = 'MPGIRHUM' AND cp.DestinoCuit = @CuitChivilcoy THEN ccp.Valor
+		 WHEN ecc.CodigoSap = 'MPGIRHUM'  AND cp.DestinoCuit &lt;&gt; @CuitChivilcoy THEN CONVERT(Numeric(10,0), cp.DescuentosKgsHumedad) + CONVERT(Numeric(10,0), cp.DescuentosKgsSecada)
+		 ELSE 0 
+	END MPGIRHUM,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRHUR' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRHUR,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRINV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRINV,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRMGR' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRMGR,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRMOH' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRMOH,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIROLO' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIROLO,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRREV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRREV,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRTEM' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRTEM,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRGCL' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRGCL,
+
+	CASE WHEN ecc.CodigoSap = 'MPGIRTIE' THEN ccp.Valor 
+		 ELSE 0 
+	END MPGIRTIE,
+
+    CASE WHEN ecc.CodigoSap = 'MPSOJINV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPSOJINV,
+
+	CASE WHEN ecc.CodigoSap = 'MPMAZINV' THEN ccp.Valor 
+		 ELSE 0 
+	END MPMAZINV,
+
+	CASE WHEN m.CodigoONCCA = 23 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+		 ELSE 0 
+	END MPSOJVOL,
+
+	CASE WHEN m.CodigoONCCA = 19 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+		 ELSE 0 
+	END MPMAZVOL,
+
+	CASE WHEN m.CodigoONCCA = 15 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+		 ELSE 0 
+	END MPTRPVOL,
+
+	CASE WHEN m.CodigoONCCA = 2 AND cp.DestinoCuit = @CuitChivilcoy THEN CAST(ROUND((CONVERT(Numeric(10,0), cp.NetoConvenido) * 0.005), 0) as INT)
+		 ELSE 0 
+	END MPGIRVOL
+
 FROM CartaPorteOtrosPuertos cp
 LEFT JOIN Material m ON m.Id = cp.Material_Id
-LEFT JOIN (SELECT CartaPorteOtrosPuertos_Id, SUM(Valor) Valor FROM CaracteristicasCartaPorteOtrosPuertos WHERE CodigoExterno &lt;&gt; 'HUMEDAD' GROUP BY CartaPorteOtrosPuertos_Id) SumCaracteristicas ON SumCaracteristicas.CartaPorteOtrosPuertos_Id = cp.Id
+LEFT JOIN (
+	SELECT CartaPorteOtrosPuertos_Id, SUM(Valor) Valor 
+	FROM CaracteristicasCartaPorteOtrosPuertos 
+	WHERE CodigoExterno &lt;&gt; 'HUMEDAD' 
+	GROUP BY CartaPorteOtrosPuertos_Id
+) SumCaracteristicas ON SumCaracteristicas.CartaPorteOtrosPuertos_Id = cp.Id
 LEFT JOIN CaracteristicasCartaPorteOtrosPuertos ccp ON ccp.CartaPorteOtrosPuertos_Id = cp.Id 
 LEFT JOIN EquivalenciasCaracteristicasCpOtrosPuertos ecc ON ecc.CodigoExterno = ccp.CodigoExterno AND ecc.Material_Id = cp.Material_Id
 
@@ -335,7 +559,10 @@ WHERE CAST(DATEADD(HOUR,-3,cp.FechaDescarga) AS date) &gt;= CAST(@FechaDesdep AS
 AND cp.Material_Id = @MaterialIdp
 AND (@AlmacenIdp = '0' OR @AlmacenIdp = cp.Planta)
 AND (@TipoCompraIdp = '0' OR (@TipoCompraIdp = '1' AND cp.TitularCuit != @CuitMOA OR @TipoCompraIdp = '2' AND cp.TitularCuit = @CuitMOA))
-AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))</CommandText>
+AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitVicentin OR @TipoDestinoIdp = '2' AND cp.DestinoCuit = @CuitChivilcoy))
+AND (@TipoSustentableIdp = '0' OR (@TipoSustentableIdp = '1' AND cp.EsSustentable = 1 OR @TipoSustentableIdp = '2' AND (cp.EsSustentable = 0 OR cp.EsSustentable is null)))
+AND (@TipoVehiculoIdp = 0 OR (@TipoVehiculoIdp = 1 AND cp.NroCartaPorte LIKE '1%') OR (@TipoVehiculoIdp = 2 AND cp.NroCartaPorte LIKE '2%'))
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -549,11 +776,11 @@ AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitV
         </Field>
         <Field Name="Merma">
           <DataField>Merma</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="NetoAplicado">
           <DataField>NetoAplicado</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="Clasificacion">
           <DataField>Clasificacion</DataField>
@@ -787,6 +1014,30 @@ AND (@TipoDestinoIdp = '0' OR (@TipoDestinoIdp = '1' AND cp.DestinoCuit = @CuitV
           <DataField>MPGIRTIE</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
+        <Field Name="MPSOJINV">
+          <DataField>MPSOJINV</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MPSOJVOL">
+          <DataField>MPSOJVOL</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MPMAZINV">
+          <DataField>MPMAZINV</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="MPMAZVOL">
+          <DataField>MPMAZVOL</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MPTRPVOL">
+          <DataField>MPTRPVOL</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MPGIRVOL">
+          <DataField>MPGIRVOL</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="ImagenDs">
@@ -894,6 +1145,8 @@ ORDER BY ord</CommandText>
         <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoDestino, '0' AS ord
 UNION
 SELECT        '1' AS Id, 'Vicentin' AS TipoDestino, '1' AS ord
+UNION
+SELECT        '2' AS Id, 'Chivilcoy' AS TipoDestino, '2' AS ord
 ORDER BY ord</CommandText>
       </Query>
       <Fields>
@@ -903,6 +1156,31 @@ ORDER BY ord</CommandText>
         </Field>
         <Field Name="TipoDestino">
           <DataField>TipoDestino</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ord">
+          <DataField>ord</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="TipoSustentable">
+      <Query>
+        <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
+        <CommandText>SELECT        '0' AS Id, 'Todos' AS TipoSustentable, '0' AS ord
+UNION
+SELECT        '1' AS Id, 'Si' AS TipoSustentable, '1' AS ord
+UNION
+SELECT        '2' AS Id, 'No' AS TipoSustentable, '2' AS ord
+ORDER BY ord</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TipoSustentable">
+          <DataField>TipoSustentable</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ord">
@@ -4024,6 +4302,24 @@ ORDER BY ord</CommandText>
                 <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -4439,6 +4735,74 @@ ORDER BY ord</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="MPSOJVOL">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Avg(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPSOJVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>MPSOJVOL</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox167">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Sum(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPSOJINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox167</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox28">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -4764,6 +5128,74 @@ ORDER BY ord</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox51</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox158">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Avg(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPMAZVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox158</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox170">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Sum(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Sum(Round(Fields!MPMAZINV.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox170</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -5357,6 +5789,40 @@ ORDER BY ord</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox161">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Avg(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPTRPVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox161</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox117">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -5886,6 +6352,40 @@ ORDER BY ord</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox152</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>White</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>1pt</PaddingTop>
+                            <PaddingBottom>1pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox164">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIF(Avg(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte") &gt; 0,Avg(Round(Fields!MPGIRVOL.Value, System.MidpointRounding.ToEven), "NroCartaPorte"), "")</Value>
+                                  <Style>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox164</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>White</Color>
@@ -6521,6 +7021,108 @@ ORDER BY ord</CommandText>
                   <TablixHeader>
                     <Size>0.1875in</Size>
                     <CellContents>
+                      <Textbox Name="Textbox148">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPSOJVOL</Value>
+                                <Style>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox148</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox166">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPSOJINV</Value>
+                                <Style>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox166</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
                       <Textbox Name="Textbox27">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
@@ -7000,6 +7602,108 @@ ORDER BY ord</CommandText>
                           </Paragraph>
                         </Paragraphs>
                         <rd:DefaultName>Textbox49</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox149">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPMAZVOL</Value>
+                                <Style>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox149</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox169">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPMAZINV</Value>
+                                <Style>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox169</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
@@ -7898,6 +8602,61 @@ ORDER BY ord</CommandText>
                   <TablixHeader>
                     <Size>0.1875in</Size>
                     <CellContents>
+                      <Textbox Name="Textbox160">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPTRPVOL</Value>
+                                <Style>
+                                  <FontStyle>Normal</FontStyle>
+                                  <FontFamily>Arial</FontFamily>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                  <TextDecoration>None</TextDecoration>
+                                  <Color>#000000</Color>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox160</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
                       <Textbox Name="Textbox115">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
@@ -8710,6 +9469,57 @@ ORDER BY ord</CommandText>
                     </CellContents>
                   </TablixHeader>
                 </TablixMember>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>0.1875in</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox163">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>MPGIRVOL</Value>
+                                <Style>
+                                  <FontSize>8pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox163</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <BottomBorder>
+                            <Color>Black</Color>
+                          </BottomBorder>
+                          <LeftBorder>
+                            <Color>White</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>White</Color>
+                          </RightBorder>
+                          <BackgroundColor>LightGrey</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>1pt</PaddingTop>
+                          <PaddingBottom>1pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                </TablixMember>
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -8854,7 +9664,7 @@ ORDER BY ord</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Sum(Fields!NroVagon.Value)</Value>
+                                                <Value>=Fields!NroVagon.Value</Value>
                                                 <Style>
                                                   <FontFamily>Arial</FontFamily>
                                                   <FontSize>8pt</FontSize>
@@ -8878,6 +9688,7 @@ ORDER BY ord</CommandText>
                                           <PaddingBottom>1pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
+                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixHeader>
                                   <TablixMembers>
@@ -10938,7 +11749,7 @@ ORDER BY ord</CommandText>
                                                                                                                                                                                                                                                                       <Paragraph>
                                                                                                                                                                                                                                                                         <TextRuns>
                                                                                                                                                                                                                                                                           <TextRun>
-                                                                                                                                                                                                                                                                            <Value>=IIF(Sum(Fields!Humedad.Value, "NroCartaPorte") &gt; 0, Round(Sum(Fields!Humedad.Value, "NroCartaPorte"),1),"")</Value>
+                                                                                                                                                                                                                                                                            <Value>=IIF(Max(Fields!Humedad.Value, "NroCartaPorte") &gt; 0, Round(Max(Fields!Humedad.Value, "NroCartaPorte"),1),"")</Value>
                                                                                                                                                                                                                                                                             <Style>
                                                                                                                                                                                                                                                                               <FontFamily>Arial</FontFamily>
                                                                                                                                                                                                                                                                               <FontSize>8pt</FontSize>
@@ -11127,7 +11938,7 @@ ORDER BY ord</CommandText>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Height>0.37101in</Height>
-            <Width>104.38366in</Width>
+            <Width>110.38366in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -11138,7 +11949,7 @@ ORDER BY ord</CommandText>
         <Height>0.37101in</Height>
         <Style />
       </Body>
-      <Width>104.38366in</Width>
+      <Width>110.38366in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
@@ -11237,11 +12048,53 @@ ORDER BY ord</CommandText>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="TipoSustentable">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Sustentable</Prompt>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>TipoSustentable</DataSetName>
+          <ValueField>Id</ValueField>
+          <LabelField>TipoSustentable</LabelField>
+        </DataSetReference>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="TipoVehiculo">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Tipo Vehiculo</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>0</Value>
+            <Label>Todos</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>1</Value>
+            <Label>Camiones</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2</Value>
+            <Label>Vagones</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+      <UsedInQuery>False</UsedInQuery>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>3</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -11282,6 +12135,16 @@ ORDER BY ord</CommandText>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>TipoDestino</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>TipoSustentable</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>TipoVehiculo</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

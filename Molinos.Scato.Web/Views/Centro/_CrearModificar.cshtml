@@ -246,6 +246,10 @@
             @Html.LabelFor(model => model.ModificaAlmacenEnPesada, new { @class = "control-label" })
             @Html.CheckBoxFor(model => model.ModificaAlmacenEnPesada, new { @class = "control" })
             @Html.ValidationMessageFor(model => model.ModificaAlmacenEnPesada)
+
+            @Html.LabelFor(model => model.ValidarAutomaticamenteCTGDG, new { @class = "control-label" })
+            @Html.CheckBoxFor(model => model.ValidarAutomaticamenteCTGDG, new { @class = "control" })
+            @Html.ValidationMessageFor(model => model.ValidarAutomaticamenteCTGDG)
         </div>
         <div class="control-group">
             @Html.LabelFor(model => model.ProvinciaId, new { @class = "control-label" })
@@ -261,6 +265,13 @@
                 @Html.ValidationMessageFor(model => model.LocalidadId)
                 @Html.Hidden("CargarLocalidades", Url.Action("CargarLocalidades"))
                 @Html.Hidden("ValorDefault", Textos.Default_Localidad)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.DomicilioId, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(model => model.DomicilioId, (IEnumerable<SelectListItem>)ViewBag.Domicilios, Textos.Default_Domicilio, new { @class = "control input-medium" })
+                @Html.ValidationMessageFor(model => model.DomicilioId)
             </div>
         </div>
         <div class="control-group">
@@ -310,6 +321,20 @@
             <div class="controls">
                 @Html.TextBoxFor(model => model.ToleranciaPatenteLeida, new { @class = "control input-small" })
                 @Html.ValidationMessageFor(model => model.ToleranciaPatenteLeida)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.Planta, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.Planta, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.Planta)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.PlantaDG, new { @class = "control-label" })
+            <div class="controls">
+                @Html.TextBoxFor(model => model.PlantaDG, new { @class = "control input-small" })
+                @Html.ValidationMessageFor(model => model.PlantaDG)
             </div>
         </div>
     </div>
@@ -421,5 +446,5 @@
 </div>
 <div class="row right">
     <button type="submit" id="aceptar" class="btn btn-primary">@Textos.Aceptar</button>
-    <button type="button" id="cancelar" class="btn">@Textos.Cancelar</button>
+    <button type="button" id="regresar" class="btn">@Textos.Cancelar</button>
 </div>

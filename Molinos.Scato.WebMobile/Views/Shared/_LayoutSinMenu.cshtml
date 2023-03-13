@@ -1,4 +1,36 @@
 ﻿@using System.Web.Optimization
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile
+@using Molinos.Scato.WebMobile.Helpers
+@using StackExchange.Profiling
+
+@{
+    var mensaje = (string)TempData["Alerta"];
+    var tipoMensaje = TempData["TipoAlerta"] as TipoAlerta?;
+    var clase = string.IsNullOrEmpty(mensaje) ? "hide" : string.Empty;
+    var mensajeAplicacion = (string)TempData["MensajeAplicacion"];
+
+    if (tipoMensaje != null)
+    {
+        switch (tipoMensaje)
+        {
+            case TipoAlerta.Exito:
+                clase = "alert alert-success";
+                break;
+            case TipoAlerta.Advertencia:
+                clase = "alert alert-warning";
+                break;
+            case TipoAlerta.Error:
+                clase = "alert alert-error";
+                break;
+            case TipoAlerta.Informacion:
+                clase = "alert alert-info";
+                break;
+        }
+    }
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +55,7 @@
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/css")
+
     @RenderSection("content", required: false)
 
     <script>
@@ -31,6 +64,10 @@
     @Scripts.Render("~/bundles/jquery-common")
     @Scripts.Render("~/bundles/bootstrap")
 
+
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/mensajeria.css")">
+
+    <script src="@Url.Script("~/Scripts/scatocommon.js")" type="text/javascript"></script>
     @RenderSection("scripts", required: false)
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EDDB8K231H"></script>
@@ -44,6 +81,30 @@
 </head>
 <body id="body">
     <div class="container-fluid">
+        <div id="alertaError" data-mensaje="@Textos.Error_Generico"
+            class="alert alert-error fade-message hide-message centro-pantalla alerta-box">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaAdvertencia" data-mensaje="@Textos.Error_Generico"
+            class="alert alert-warning fade-message hide-message centro-pantalla alerta-box">
+            <a class="close" data-dismiss="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaExitosa" class="alert alert-success fade-message hide-message centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaInfo" class="alert alert-info fade-message hide-message centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaCancelada" class="alert alert-success fade-message hide-message  centro-pantalla alerta-box">
+            <span>@Textos.CanceladoExitoso_Generico</span>
+        </div>
+
+        <div class="alert alert-warning hide-message" id="alertaFija" role="alert">
+            <i class="icon-warning-sign"></i>
+            <span id="alertaFija-span">@mensajeAplicacion</span>
+        </div>
         @RenderBody()
     </div>
 </body>

@@ -1,29 +1,46 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorCrearBajaCTG : ProcesadorCrear<CrearBajaCTG, BajaCTG>
+    public class ProcesadorCrearBajaCTG : ProcesadorComando<CrearBajaCTG>
     {
         public ProcesadorCrearBajaCTG(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
         }
 
-        protected override BajaCTG CrearEntidad(CrearBajaCTG comando)
+        public override Resultado Ejecutar(CrearBajaCTG comando)
         {
-            var baja = Conversor.Convertir<BajaCTGDto, BajaCTG>(comando.Dto);
-            baja.CartaPorte = Repositorio.Obtener<CartaPorte>(x => x.Id == comando.Dto.CartaPorteId);
-            return baja;
-        }
-
-        protected override void Validar(CrearBajaCTG comando, Resultado resultado)
-        {
+            var resultado = new Resultado();
+            try
+            {
+                var baja = Repositorio.Obtener<BajaCTG>(x => x.WorkflowId == comando.Dto.WorkflowId);
+                if (baja == null)
+                {
+                    baja = Conversor.Convertir<BajaCTGDto, BajaCTG>(comando.Dto);
+                    baja.CartaPorte = Repositorio.Obtener<CartaPorte>(x => x.Id == comando.Dto.CartaPorteId);
+                    baja.OrdenDeDescargaFason = Repositorio.Obtener<OrdenDeDescargaFason>(x => x.Id == comando.Dto.OrdenDeDescargaFasonId);
+                    Repositorio.Agregar(baja);
+                }
+                else
+                {
+                    baja.CodigoDeBaja = comando.Dto.CodigoDeBaja;
+                    baja.Fecha = comando.Dto.Fecha;
+                }
+                Repositorio.GuardarCambios();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error al crear la baja CTG para el workflow {0}", comando.Dto.WorkflowId);
+                resultado.Error("", e.Message);
+            }
+            return resultado;
         }
     }
 }

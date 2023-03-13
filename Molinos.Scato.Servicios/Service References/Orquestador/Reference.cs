@@ -26,7 +26,13 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarComunicador))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCierreBarrera))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaCortinaAgua))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaSensor))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarJson))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.DetenerMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarNotificacionEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaBalanzadaPorRango))]
@@ -244,7 +250,13 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarComunicador))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarCierreBarrera))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarAperturaCortinaAgua))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaSensor))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEjecutarQuery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarJson))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.DetenerMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarEnviarMensajeIntervalo))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarNotificacionEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarObtenerDireccionViento))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarBorrarBalanzadasPorRango))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.EjecutarConsultaBalanzadaPorRango))]
@@ -351,6 +363,20 @@ namespace Molinos.Scato.Servicios.Orquestador {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarConsultaSensor", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarConsultaSensor : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarConsultaEstadoSensor", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarConsultaEstadoSensor : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEjecutarQuery", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     public partial class EjecutarEjecutarQuery : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
@@ -370,6 +396,146 @@ namespace Molinos.Scato.Servicios.Orquestador {
                 }
             }
         }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEnviarJson", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarEnviarJson : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string jsonField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string json {
+            get {
+                return this.jsonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.jsonField, value) != true)) {
+                    this.jsonField = value;
+                    this.RaisePropertyChanged("json");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DetenerMensajeIntervalo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class DetenerMensajeIntervalo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarEnviarMensajeIntervalo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarEnviarMensajeIntervalo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IntervaloField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroProgramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroTramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroVariableField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextSecundarioField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string TextoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Intervalo {
+            get {
+                return this.IntervaloField;
+            }
+            set {
+                if ((this.IntervaloField.Equals(value) != true)) {
+                    this.IntervaloField = value;
+                    this.RaisePropertyChanged("Intervalo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroPrograma {
+            get {
+                return this.NumeroProgramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroProgramaField, value) != true)) {
+                    this.NumeroProgramaField = value;
+                    this.RaisePropertyChanged("NumeroPrograma");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroTrama {
+            get {
+                return this.NumeroTramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroTramaField, value) != true)) {
+                    this.NumeroTramaField = value;
+                    this.RaisePropertyChanged("NumeroTrama");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroVariable {
+            get {
+                return this.NumeroVariableField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroVariableField, value) != true)) {
+                    this.NumeroVariableField = value;
+                    this.RaisePropertyChanged("NumeroVariable");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string TextSecundario {
+            get {
+                return this.TextSecundarioField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextSecundarioField, value) != true)) {
+                    this.TextSecundarioField = value;
+                    this.RaisePropertyChanged("TextSecundario");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Texto {
+            get {
+                return this.TextoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TextoField, value) != true)) {
+                    this.TextoField = value;
+                    this.RaisePropertyChanged("Texto");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EjecutarNotificacionEstadoSensor", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
+    [System.SerializableAttribute()]
+    public partial class EjecutarNotificacionEstadoSensor : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -860,6 +1026,7 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoBorrarBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEjecutarQuery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
@@ -1004,6 +1171,7 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoConsultaBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoBorrarBalanzada))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEjecutarQuery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoEstadoSensor))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoMeteorologica))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoObtenerPatente))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Molinos.Scato.Servicios.Orquestador.ResultadoTomarFoto))]
@@ -1120,6 +1288,45 @@ namespace Molinos.Scato.Servicios.Orquestador {
                 if ((object.ReferenceEquals(this.queryResultField, value) != true)) {
                     this.queryResultField = value;
                     this.RaisePropertyChanged("queryResult");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoEstadoSensor", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Resultados")]
+    [System.SerializableAttribute()]
+    public partial class ResultadoEstadoSensor : Molinos.Scato.Servicios.Orquestador.ResultadoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoDispositivoSensorField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool EstadoActivoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CodigoDispositivoSensor {
+            get {
+                return this.CodigoDispositivoSensorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoDispositivoSensorField, value) != true)) {
+                    this.CodigoDispositivoSensorField = value;
+                    this.RaisePropertyChanged("CodigoDispositivoSensor");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool EstadoActivo {
+            get {
+                return this.EstadoActivoField;
+            }
+            set {
+                if ((this.EstadoActivoField.Equals(value) != true)) {
+                    this.EstadoActivoField = value;
+                    this.RaisePropertyChanged("EstadoActivo");
                 }
             }
         }
@@ -1331,6 +1538,9 @@ namespace Molinos.Scato.Servicios.Orquestador {
         private bool EstadoCorrectoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SectorField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -1422,6 +1632,19 @@ namespace Molinos.Scato.Servicios.Orquestador {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Sector {
             get {
                 return this.SectorField;
@@ -1491,6 +1714,256 @@ namespace Molinos.Scato.Servicios.Orquestador {
                 if ((object.ReferenceEquals(this.UrlField, value) != true)) {
                     this.UrlField = value;
                     this.RaisePropertyChanged("Url");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="IntercomunicadorDispositivoBaseDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class IntercomunicadorDispositivoBaseDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> PuertoDeAudioField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Codigo {
+            get {
+                return this.CodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CodigoField, value) != true)) {
+                    this.CodigoField = value;
+                    this.RaisePropertyChanged("Codigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> PuertoDeAudio {
+            get {
+                return this.PuertoDeAudioField;
+            }
+            set {
+                if ((this.PuertoDeAudioField.Equals(value) != true)) {
+                    this.PuertoDeAudioField = value;
+                    this.RaisePropertyChanged("PuertoDeAudio");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Sensor {
+            get {
+                return this.SensorField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorField, value) != true)) {
+                    this.SensorField = value;
+                    this.RaisePropertyChanged("Sensor");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GrupoBarreraDto", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Dtos")]
+    [System.SerializableAttribute()]
+    public partial class GrupoBarreraDto : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AgrupadorClaseDriverField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AgrupadorCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BarreraAbajoCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BarreraArribaCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorAbajoCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorArribaCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorPrimerCruceCodigoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SensorSegundoCruceCodigoField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AgrupadorClaseDriver {
+            get {
+                return this.AgrupadorClaseDriverField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AgrupadorClaseDriverField, value) != true)) {
+                    this.AgrupadorClaseDriverField = value;
+                    this.RaisePropertyChanged("AgrupadorClaseDriver");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AgrupadorCodigo {
+            get {
+                return this.AgrupadorCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AgrupadorCodigoField, value) != true)) {
+                    this.AgrupadorCodigoField = value;
+                    this.RaisePropertyChanged("AgrupadorCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string BarreraAbajoCodigo {
+            get {
+                return this.BarreraAbajoCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BarreraAbajoCodigoField, value) != true)) {
+                    this.BarreraAbajoCodigoField = value;
+                    this.RaisePropertyChanged("BarreraAbajoCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string BarreraArribaCodigo {
+            get {
+                return this.BarreraArribaCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BarreraArribaCodigoField, value) != true)) {
+                    this.BarreraArribaCodigoField = value;
+                    this.RaisePropertyChanged("BarreraArribaCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SensorAbajoCodigo {
+            get {
+                return this.SensorAbajoCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorAbajoCodigoField, value) != true)) {
+                    this.SensorAbajoCodigoField = value;
+                    this.RaisePropertyChanged("SensorAbajoCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SensorArribaCodigo {
+            get {
+                return this.SensorArribaCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorArribaCodigoField, value) != true)) {
+                    this.SensorArribaCodigoField = value;
+                    this.RaisePropertyChanged("SensorArribaCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SensorPrimerCruceCodigo {
+            get {
+                return this.SensorPrimerCruceCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorPrimerCruceCodigoField, value) != true)) {
+                    this.SensorPrimerCruceCodigoField = value;
+                    this.RaisePropertyChanged("SensorPrimerCruceCodigo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SensorSegundoCruceCodigo {
+            get {
+                return this.SensorSegundoCruceCodigoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SensorSegundoCruceCodigoField, value) != true)) {
+                    this.SensorSegundoCruceCodigoField = value;
+                    this.RaisePropertyChanged("SensorSegundoCruceCodigo");
                 }
             }
         }
@@ -1726,12 +2199,46 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudioResponse")]
-        System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo);
+        Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudio", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerIntercomunicadorPue" +
             "rtoDeAudioResponse")]
-        System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTags", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTagsResponse")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarTags();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTags", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarTagsResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarTagsAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraResponse")]
+        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigoGrupoBarrera);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigoGrupoBarrera);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruce", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruceResponse")]
+        Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarreraPorSegundoCruce(string codigoSegundoCruce);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruce", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ObtenerConfiguracionGrupoB" +
+            "arreraPorSegundoCruceResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(string codigoSegundoCruce);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
+            "e")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarrera", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarGruposBarreraRespons" +
+            "e")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarGruposBarreraAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1993,12 +2500,44 @@ namespace Molinos.Scato.Servicios.Orquestador {
             return base.Channel.PrenderApagarDispositivoAsync(codigoDispositivo, activar, server);
         }
         
-        public System.Nullable<int> ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo) {
+        public Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto ObtenerIntercomunicadorPuertoDeAudio(string codigoDispositivo) {
             return base.Channel.ObtenerIntercomunicadorPuertoDeAudio(codigoDispositivo);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<int>> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo) {
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto> ObtenerIntercomunicadorPuertoDeAudioAsync(string codigoDispositivo) {
             return base.Channel.ObtenerIntercomunicadorPuertoDeAudioAsync(codigoDispositivo);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarTags() {
+            return base.Channel.ListarTags();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarTagsAsync() {
+            return base.Channel.ListarTagsAsync();
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto ObtenerConfiguracionGrupoBarrera(string codigoGrupoBarrera) {
+            return base.Channel.ObtenerConfiguracionGrupoBarrera(codigoGrupoBarrera);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto> ObtenerConfiguracionGrupoBarreraAsync(string codigoGrupoBarrera) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraAsync(codigoGrupoBarrera);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[] ObtenerConfiguracionGrupoBarreraPorSegundoCruce(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraPorSegundoCruce(codigoSegundoCruce);
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto[]> ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(string codigoSegundoCruce) {
+            return base.Channel.ObtenerConfiguracionGrupoBarreraPorSegundoCruceAsync(codigoSegundoCruce);
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarGruposBarrera() {
+            return base.Channel.ListarGruposBarrera();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarGruposBarreraAsync() {
+            return base.Channel.ListarGruposBarreraAsync();
         }
     }
 }

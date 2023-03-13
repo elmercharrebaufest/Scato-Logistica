@@ -1,13 +1,12 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -22,21 +21,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
             this.servicioCircular = servicioCircular;
             this.servicioRepositorio = servicioRepositorio;
         }
+
         public override Resultado Ejecutar(InformarSalidaCircular comando)
         {
             var resultado = new ResultadoCircular();
+            var camionesPermitidos = new List<TipoVehiculo> { TipoVehiculo.Camión, TipoVehiculo.CamiónC, TipoVehiculo.CamiónD, TipoVehiculo.CamiónE };
 
             try
             {
                 Log.Debug($"ProcesadorInformarSalidaCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.Rechazado, NoTieneCalado = x.Calado.CaladosPorCaracteristica.FirstOrDefault() == null });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.Rechazado, NoTieneCalado = x.Calado.CaladosPorCaracteristica.FirstOrDefault() == null, x.TipoDocumentoIngreso });
                 Log.Debug($"ProcesadorInformarSalidaCircular = InformaCircular: {recorrido.InformaCircular},  NumeroDocumentoIngreso: {recorrido.NumeroDocumentoIngreso}, WorkflowInstanceId: {comando.WorkflowInstanceId}");
+                var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
 
-                if (recorrido.InformaCircular)
+                if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && permitido)
                 {
                     servicioCircular.CamionSalioDePlanta(recorrido.NumeroDocumentoIngreso, recorrido.Rechazado && recorrido.NoTieneCalado);
                 }
-
             }
             catch (Exception e)
             {

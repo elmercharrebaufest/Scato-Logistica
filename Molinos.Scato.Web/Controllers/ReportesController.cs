@@ -74,7 +74,8 @@ namespace Molinos.Scato.Web.Controllers
                 FechaSalidaDesde = DateTime.Now.AddDays(-1),
                 FechaSalidaHasta = DateTime.Now,
                 TipoVehiculoInt = -1,
-                CentroId = datosUsuario.CentroId
+                CentroId = datosUsuario.CentroId,
+                TipoPesadaId = -1
             });
         }
 
@@ -130,6 +131,13 @@ namespace Molinos.Scato.Web.Controllers
         {
             SelectListItem todos = new SelectListItem() { Value = "0", Text = "Todos" };
             SelectListItem todosNegativo = new SelectListItem() { Value = "-1", Text = "Todos" };
+            SelectListItem todosVehiculos = new SelectListItem() { Value = "-2", Text = "Todos" };
+            var materialesGranosNoGranosInsumos = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value = "-1", Text = "Granos" },
+                new SelectListItem() { Value = "-2", Text = "No Granos" },
+                new SelectListItem() { Value = "-3", Text = "Insumos" }
+            };
 
             var tiposDeVehiculo = Enum.GetValues(typeof(TipoVehiculo)).Cast<TipoVehiculo>().Select(v => new SelectListItem
             {
@@ -142,12 +150,12 @@ namespace Molinos.Scato.Web.Controllers
             var almacenOrigen = servicio.ListarAlmacenesPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
             var workflows = servicio.ListarWorkflowsPorCentro(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             var bocasDestino = servicio.ListarBocasDestino().OrderBy(x => x.Localidad).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Localidad);
-            var tipoPesada = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "0" }, new SelectListItem { Text = "Manual", Value = "1" }, new SelectListItem { Text = "Automatico", Value = "2" } };
-            var recorridosActivos = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "0" }, new SelectListItem { Text = "No", Value = "1" }, new SelectListItem { Text = "Si", Value = "2" } };
+            var tipoPesada = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "Manual", Value = "0" }, new SelectListItem { Text = "Automatico", Value = "1" } };
+            var recorridosActivos = new List<SelectListItem>() { new SelectListItem { Text = "Todos", Value = "-1" }, new SelectListItem { Text = "No", Value = "1" }, new SelectListItem { Text = "Si", Value = "0" } };
             var nivelDetalle = new List<SelectListItem>() { new SelectListItem { Text = "Detallado", Value = "1" }, new SelectListItem { Text = "Resumido", Value = "2" }, new SelectListItem { Text = "Detallado Sustentable", Value = "3" }, new SelectListItem { Text = "Detallado Con Boca Destino", Value = "4" } };
             var materiales = servicio.ListarMaterialesFiltroF515(centroId).OrderBy(x => x.Descripcion).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => string.IsNullOrEmpty(x.Descripcion) ? (string.IsNullOrEmpty(x.DescripcionCorta) ? "" : x.DescripcionCorta) : x.Descripcion);
 
-            tiposDeVehiculo.Insert(0, todosNegativo);
+            tiposDeVehiculo.Insert(0, todosVehiculos);
             tiposDeVehiculo.First().Selected = true;
             tipoComercial.Insert(0, todos);
             balanzas.Insert(0, todos);
@@ -155,6 +163,7 @@ namespace Molinos.Scato.Web.Controllers
             workflows.Insert(0, todos);
             bocasDestino.Insert(0, todos);
             materiales.Insert(0, todos);
+            materiales.InsertRange(1, materialesGranosNoGranosInsumos);
 
             return new
             {

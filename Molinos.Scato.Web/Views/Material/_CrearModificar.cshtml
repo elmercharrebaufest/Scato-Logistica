@@ -26,6 +26,8 @@
     var ignoraContingencia = (bool)ViewBag.IgnoraContingencia;
     var orden = (int?)ViewBag.Orden;
     var variedades = (IEnumerable<SelectListItem>)ViewBag.Variedades;
+    var embalaje = (IEnumerable<SelectListItem>)ViewBag.Embalajes;
+
 }
 
 @using (Ajax.BeginForm("Modificar", "Material", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Material_Modificar, data_dialogo_extraclass = "dialog-grande", id = "formEditar" }))
@@ -86,7 +88,7 @@
             width: 400px;
         }
     </style>
-    
+
     <div class="row" style="height: auto;">
         <div class="span6">
             <div class="control-group">
@@ -189,9 +191,21 @@
                     @Html.ValidationMessageFor(model => model.EsInsumo)
                 </div>
             </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.ColorFondo, new { @class = "control-label" })
+                <div class="controls">
+                    <input type="color" name="ColorFondo" value="@Model.ColorFondo" style="height:25px; width:50px;" />
+                </div>
+            </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.ColorTexto, new { @class = "control-label" })
+                <div class="controls">
+                    <input type="color" name="ColorTexto" value="@Model.ColorTexto" style="height:25px; width:50px;" />
+                </div>
+            </div>
         </div>
         <div class="span6">
-            
+
             <div class="control-group">
                 @Html.LabelFor(model => model.RequiereAnexoInase, new { @class = "control-label" })
                 <div class="controls">
@@ -199,6 +213,29 @@
                     @Html.ValidationMessageFor(model => model.RequiereAnexoInase)
                 </div>
             </div>
+            <div class="control-group">
+                @Html.LabelFor(model => model.EsDerivadoGranario, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.EsDerivadoGranario, new { @class = "control", id = "esDerivadoGranario" })
+                </div>
+            </div>
+
+            <div class="control-group esDerivadoGranario">
+                @Html.LabelFor(model => model.CodigoGranoPadre, new { @class = "control-label" })
+                <div class="controls">
+
+                    @Html.TextBoxFor(model => model.CodigoGranoPadre, new { @class = "control input-small" })
+                    @Html.ValidationMessageFor(model => model.CodigoGranoPadre)
+                </div>
+            </div>
+            <div class="control-group esDerivadoGranario">
+                    @Html.LabelFor(model => model.TipoEmbalajeId, new { @class = "control-label" })
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.TipoEmbalajeId, embalaje, Textos.Default_Embalaje, new { @class = "dropDownTipoEmbalaje control input-medium", Id = "dropDownTipoEmbalaje", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_TipoEmbalaje) })
+                        @Html.ValidationMessageFor(model => model.TipoEmbalajeId)
+                    </div>
+                </div>
+
             <fieldset class="grupo-carta-porte">
                 @Textos.Material_DatosPorCentro
                 <div class="control-group">
@@ -208,13 +245,15 @@
                         <input type="hidden" name="almacenesEliminados" data-bind="value: ko.toJSON(almacenesEliminados)" />
                         <input type="hidden" name="almacenes" data-bind="value: ko.toJSON(almacenes)" />
                         @Html.Hidden("almacenPredId", almacenPredId, new { id = "almacenPredIdVal" })
-                        <select id="AlmacenPredId" class="control input-medium" data-val="true" data-val-number="@Textos.Error_SoloNumerico"
-                                data-bind=" options: almacenes, optionsValue: function (item) { return item.Id },
-    optionsText: function (item) { return item.Descripcion + ' (' + item.CodigoSAP + ')' },
-    optionsCaption: defaultAlmacen">
-                        </select>
+                        <div>
+                            <select id="AlmacenPredId" class="control input-medium" data-val="true" data-val-number="@Textos.Error_SoloNumerico"
+                                    data-bind=" options: almacenes, optionsValue: function (item) { return item.Id },
+                                optionsText: function (item) { return item.Descripcion + ' (' + item.CodigoSAP + ')' },
+                                optionsCaption: defaultAlmacen">
+                            </select>
+                            <input id="mostrarAlmat" class="btn btn-primary" type="button" value="@Textos.Agregar" />
+                        </div>
                     </div>
-                    <input id="mostrarAlmat" class="btn btn-primary" type="button" value="@Textos.Agregar" />
                 </div>
                 <div class="control-group">
                     @Html.Label(Textos.Material_CamaraPred, new { @class = "control-label" })
@@ -276,8 +315,10 @@
                     </div>
                 </div>
                 <div class="control-group">
+
                     @Html.Label(Textos.Material_AnalisisInterno, new { @class = "control-label" })
                     <div class="controls">
+
                         @Html.TextBox("analisisInterno", analisisInterno, new { @class = "control input-medium porcentajeValido" })
                         @Html.ValidationMessage("analisisInterno")
                     </div>
@@ -305,7 +346,7 @@
             </fieldset>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="span3">
             <div class="control-group">
@@ -347,17 +388,17 @@
 
             <div class="control-group" id="cosechaValida">
                 <label class="input-control checkbox">
-                    @Html.CheckBoxFor(model => model.EsCosecha, new { @class="cosechaValida", style = "padding-left: 0px", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaVigenciaInvalida) })
+                    @Html.CheckBoxFor(model => model.EsCosecha, new { @class = "cosechaValida", style = "padding-left: 0px", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaVigenciaInvalida) })
                     <span class="helper">@Textos.Material_EsCosecha</span>
                 </label>
                 @Html.ValidationMessageFor(model => model.EsCosecha)
             </div>
 
             @*<div class="control-group cosecha" id="cosechaValida">
-                @Html.LabelFor(model => model.Cosecha, new { @class = "control-label minilabel" })
-                @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-mini cosecha cosechaValida", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaInvalida) })
-                @Html.ValidationMessageFor(model => model.Cosecha)
-            </div>*@
+                    @Html.LabelFor(model => model.Cosecha, new { @class = "control-label minilabel" })
+                    @Html.TextBoxFor(model => model.Cosecha, new { @class = "control input-mini cosecha cosechaValida", data_error_cosecha_invalida = string.Format(Textos.Atencion_CosechaInvalida) })
+                    @Html.ValidationMessageFor(model => model.Cosecha)
+                </div>*@
             <div class="control-group cosecha">
                 @Html.LabelFor(model => model.VigenciaDesde, new { @class = "control-label minilabel" })
                 @Html.TextBoxFor(model => model.VigenciaDesde, new { @class = "control input-mini campoNumerico" })
@@ -401,7 +442,6 @@
         </div>
     </div>
 }
-
 
 <div class="modal fade hide" id="dialogo-almat">
     <div class="modal-header">

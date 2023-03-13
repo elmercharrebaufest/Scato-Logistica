@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Filtros;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -24,7 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var materialEditado = Repositorio.Obtener<Material>(comando.Dto.Id);
 
-            materialEditado.CodigoSAP = comando.Dto.CodigoSAP == null ? null : comando.Dto.CodigoSAP.TrimStart(new[] {'0'});
+            materialEditado.CodigoSAP = comando.Dto.CodigoSAP == null ? null : comando.Dto.CodigoSAP.TrimStart(new[] { '0' });
             materialEditado.Descripcion = comando.Dto.Descripcion;
             materialEditado.DescripcionCorta = comando.Dto.DescripcionCorta;
             materialEditado.CodigoEspecie = comando.Dto.CodigoEspecie;
@@ -51,6 +47,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             materialEditado.Oleico = comando.Dto.Oleico;
             materialEditado.EsGrano = comando.Dto.EsGrano;
             materialEditado.EsInsumo = comando.Dto.EsInsumo;
+            materialEditado.ColorFondo = comando.Dto.ColorFondo;
+            materialEditado.ColorTexto = comando.Dto.ColorTexto;
+            materialEditado.EsDerivadoGranario = comando.Dto.EsDerivadoGranario;
+            materialEditado.CodigoGranoPadre = comando.Dto.CodigoGranoPadre;
+            materialEditado.TipoEmbalaje = Repositorio.Obtener<TipoEmbalaje>(comando.Dto.TipoEmbalajeId.GetValueOrDefault());
 
             if (comando.Dto.VariedadId.HasValue)
             {
@@ -76,7 +77,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 materialPorCentroEditado.Orden = comando.MaterialPorCentroDto.Orden;
                 materialPorCentroEditado.IgnoraContingencia = comando.MaterialPorCentroDto.IgnoraContingencia;
                 Log.Debug("Se modificó el material por centro: {0}, valor ImprimeReciboMunicipal de: {1} a {2}, Usuario: {3}", comando.MaterialPorCentroDto.Id, materialPorCentroEditado.ImprimeReciboMunicipal, comando.MaterialPorCentroDto.ImprimeReciboMunicipal, comando.Usuario);
-
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             if (comando.Dto.CodigoSAP != null)
             {
-                var codigoSAP = comando.Dto.CodigoSAP.TrimStart(new[] {'0'});
+                var codigoSAP = comando.Dto.CodigoSAP.TrimStart(new[] { '0' });
                 if (Repositorio.Existe<Material>(e => e.CodigoSAP == codigoSAP && (e.Id != comando.Dto.Id)))
                 {
                     resultado.Error("CodigoSAP", Textos.Material_CodigoSAPExistente);

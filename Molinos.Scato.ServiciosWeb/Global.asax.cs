@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using Molinos.Scato.ServiciosWeb.App_Start;
 using log4net;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Molinos.Scato.ServiciosWeb
 {

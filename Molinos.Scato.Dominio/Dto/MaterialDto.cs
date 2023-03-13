@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -69,6 +68,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "Material_Variedad")]
         public int? VariedadId { get; set; }
+
         public string VariedadDesc { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Material_Commodity")]
@@ -117,12 +117,29 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "Material_EsGrano")]
         public bool EsGrano { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "OrdenDescripcionMaterialMobile")]
         [RegularExpression(@"^\d+$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
         public int? Orden { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Material_EsInsumo")]
         public bool EsInsumo { get; set; }
+
         public bool EsAsignableCalle { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Material_ColorFondo")]
+        public string ColorFondo { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Material_ColorTexto")]
+        public string ColorTexto { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Material_EsDerivadoGranario")]
+        public bool EsDerivadoGranario { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Material_CodigoGranoPadre")]
+        public int? CodigoGranoPadre { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Material_TipoEmbalaje")]
+        public int? TipoEmbalajeId { get; set; }
     }
 }

@@ -36,7 +36,8 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string Mail { get; set; }
         public virtual bool Activo { get; set; }
         public virtual bool EnvioCamaraDirecto { get; set; }
-
+        public virtual bool EnvioCamaraInase { get; set; }
+        
         [InverseProperty("Proveedor")]
         public virtual ICollection<BocaDestino> BocasDestino { get; set; }
     }

@@ -53,7 +53,7 @@ namespace Molinos.Scato.Actividades
                 var segundosDeEspera = SegundosDeEspera.Get<int>(context);
 
 
-                var resultado = servicio.Ejecutar(new EnviarMensajeCarteLed
+                var resultado = servicio.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
                         PuestoDeTrabajoId = puestoDeTrabajoId,

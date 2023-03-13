@@ -23,8 +23,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     Cosecha = comando.Dto.Cosecha,
                     FechaDesde = comando.Dto.FechaDesde,
                     FechaHasta = comando.Dto.FechaHasta,
-                    StockDeclarado = comando.Dto.StockDeclarado
-                };
+                    StockDeclarado = comando.Dto.StockDeclarado,
+                    Tolerancia = comando.Dto.Tolerancia
+            };
             return entidad;
         }
 

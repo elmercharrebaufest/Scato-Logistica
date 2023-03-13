@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.ModuloImpresor.Behavior;
 using Molinos.Scato.ModuloImpresor.Procesamiento;
 using Ninject;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.ModuloImpresor.Impl
 {
+    [AiErrorHandlerBehaviorAttribute]
     public class ServicioImpresion : IServicioImpresion
     {
         private readonly IKernel kernel;

@@ -25,6 +25,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "RequierePuestoDeTrabajo")]
         public int PuestoDeTrabajoId { get; set; }
+        public string PuestoDeTrabajo { get; set; }
         public bool SinFotoCartaPorte { get; set; }
         public bool ImprimeCartaPorte { get; set; }
         public bool ImprimeTarjetaDeAcceso { get; set; }
@@ -57,9 +58,10 @@ namespace Molinos.Scato.Dominio.Dto
         public string Patente { get; set; }
 
         public string ImagenCartaPorte { get; set; }
+        public string ImagenCartaPorteSustentable { get; set; }
 
         public string FotoRutaDestino { get; set; }
-        
+
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string CTG { get; set; }
         public string CodEstab { get; set; }
@@ -72,5 +74,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string CUITSolicitante { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_PatenteAcoplado")]
         public string PatenteAcoplado { get; set; }
+        public string FotoRutaSustentable { get; set; }
+        public bool IngresoAvanceCPEAutomatico { get; set; }
     }
 }

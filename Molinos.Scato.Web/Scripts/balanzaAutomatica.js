@@ -1,12 +1,14 @@
 ﻿var url;
 var error = {};
 var home;
+let flagEjecutarCancelarIntervalo = false;
 
 $(document).ready(function () {
     var notificador = $.connection.notificarUsuario;
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
     notificador.client.actualizarNotificaciones = function (notificacion) {
+
         if (notificacion !== null && (notificacion.TipoAlerta == 7 || notificacion.TipoAlerta == 6)) {
             var balanza = JSON.parse(notificacion.Mensaje);
             Acualizarfoto(false, balanza.FotoAlMarcarTarjeta, balanza.Tarjeta, balanza.Id);
@@ -20,6 +22,7 @@ $(document).ready(function () {
                 } else if (balanza.Error == "Espera Confirmacion") {
                     MostrarEspera(balanza, notificacion.Id);
                 } else {
+                    flagEjecutarCancelarIntervalo = true;
                     ErrorBalanza(balanza, notificacion.Id);
                 }
             } else {
@@ -34,6 +37,10 @@ $(document).ready(function () {
             }
         }
 
+        if (notificacion !== null && notificacion.TipoAlerta == 4) {
+            obtenerMensajesAplicacion();
+        }
+
         if (notificacion !== null && notificacion.TipoAlerta == 10) {
             var estadoSensores = JSON.parse(notificacion.Mensaje);
             ModificarEstados(estadoSensores);
@@ -44,11 +51,18 @@ $(document).ready(function () {
             var estadoSemaforos = JSON.parse(notificacion.Mensaje);
             ModificarEstadosSemaforo(estadoSemaforos);
         }
+
+        if (notificacion !== null && notificacion.TipoAlerta == 12) {
+            NotificarCambioEstadoBarrera(notificacion.Mensaje);
+        }
     };
 
     // Start the connection
     window.hubReady.done(function () {
         notificador.server.unirseAGrupo('Automaticas');
+
+        $.post($("#actualizarEstadoSensores").val());
+
     });
 
     $(".btn-aceptar").click(function () {
@@ -196,6 +210,7 @@ $(document).ready(function () {
     $(".btn.expo-btn").attr("disabled", true);
     $(".btn-balanza").attr("disabled", true);  
     $(document).on('click', ".btn-modal-finalizar", AbrirModalFinalizarPesaje);
+
 });
 
 function ValidarMotivo() {
@@ -310,7 +325,7 @@ function RecetearbalanzadaAutomatica(id) {
             PesoBrutoOrigen: "0",
             PesoNetoOrigen: "0"
         });
-        $(".btn-balanza").attr("disabled", true);
+        $(".btn-balanza:not(.tomarPeso)").attr("disabled", true);
     }
 }
 
@@ -318,7 +333,11 @@ function ErrorBalanza(b, id) {
     if (b.Error == "El puesto de trabajo actual no está habilitado para ejecutar la próxima actividad") {
         return;
     }
-    CargarbalanzadaAutomatica(b);
+    if ((b.Actividad == "" || b.Actividad == null) && flagEjecutarCancelarIntervalo == true) {
+        CancelarInterval(b.Id);
+    } else {
+        CargarbalanzadaAutomatica(b);
+    }
     $("#etapa" + b.Id).html(b.NoRedirecciona == false ? b.Actividad : "Error: " + b.Actividad);
 
     $('#' + b.Id).tooltip({ 'title': b.Error, 'trigger': 'manual' });
@@ -329,10 +348,7 @@ function ErrorBalanza(b, id) {
 
     ActivarInterval(b.Id);
     $('#' + b.Id).tooltip('show');
-    $("#" + b.Id).click(function (e) {
-        if ($(e.target).hasClass("intercomunicador"))
-            return true
-
+    $("#" + b.Id + " .estado-balanza").click(function (e) {
         //document.cookie = "PuestoDeTrabajoId=" + b.Id;
         if (b.NoRedirecciona == false) {
             $.cookie('PuestoDeTrabajoId', b.Id);
@@ -359,6 +375,13 @@ function ErrorBalanza(b, id) {
 
 function PatenteNoReconocida(b, id) {
     CargarbalanzadaAutomatica(b);
+    if (b.PatentePrevia != null && b.PatentePrevia != "") {
+        $("#patente" + b.Id).val(b.PatentePrevia);
+        $("#patente" + b.Id).html(b.PatentePrevia);
+    } else {
+        $("#patente" + b.Id).val(b.Patente);
+        $("#patente" + b.Id).html(b.Patente);
+    }
     $("#patente" + b.Id).prop('disabled', false);
     $("#aceptar" + b.Id).prop('disabled', false);
     $('#' + b.Id).tooltip({ 'title': b.Error, 'trigger': 'manual' });
@@ -470,7 +493,7 @@ function Parpadeo(id) {
 function CancelarInterval(id) {
     error[id] = false;
     $('#' + id).tooltip('destroy');
-    $('#' + id).unbind("click");
+    $('#' + id + " .estado-balanza").unbind("click");
     $('#' + id).css('cursor', 'auto');
 }
 function ActivarInterval(id) {
@@ -528,67 +551,68 @@ function cargarCanvas(id, foto) {
     var canvas = document.getElementById('canvas' + id);
     canvas.width = 380;
     canvas.height = 120;
-    var gkhead = new Image;
-    gkhead.src = 'data:image/jpeg;base64,' + foto;
     var ctx = canvas.getContext('2d');
-    trackTransforms(ctx);
-    redraw(ctx, gkhead, canvas);
+    var gkhead = new Image;
+    gkhead.onload = () => {
 
-    var lastX = 0, lastY = 0;
+        trackTransforms(ctx);
+        redraw(ctx, gkhead, canvas);
+        var lastX = 0, lastY = 0;
+        var dragStart, dragged;
+        canvas.addEventListener('mousedown', function (evt) {
+            document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
+            lastX = evt.pageX;
+            lastY = evt.pageY;
+            dragStart = ctx.transformedPoint(lastX, lastY);
+            dragged = false;
 
-    var dragStart, dragged;
+            $(document).attr('unselectable', 'on')
+                .css({
+                    '-moz-user-select': 'none',
+                    '-o-user-select': 'none',
+                    '-khtml-user-select': 'none', /* you could also put this in a class */
+                    '-webkit-user-select': 'none',/* and add the CSS class here instead */
+                    '-ms-user-select': 'none',
+                    'user-select': 'none'
+                }).bind('selectstart', function () { return false; });
+        }, false);
 
-    canvas.addEventListener('mousedown', function (evt) {
-        document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-        lastX = evt.pageX;
-        lastY = evt.pageY;
-        dragStart = ctx.transformedPoint(lastX, lastY);
-        dragged = false;
+        document.addEventListener('mousemove', function (evt) {
+            lastX = evt.pageX;
+            lastY = evt.pageY;
+            dragged = true;
+            if (dragStart) {
+                var pt = ctx.transformedPoint(lastX, lastY);
+                ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+                redraw(ctx, gkhead, canvas);
+            }
+        }, false);
 
-        $(document).attr('unselectable', 'on')
-            .css({
-                '-moz-user-select': 'none',
-                '-o-user-select': 'none',
-                '-khtml-user-select': 'none', /* you could also put this in a class */
-                '-webkit-user-select': 'none',/* and add the CSS class here instead */
-                '-ms-user-select': 'none',
-                'user-select': 'none'
-            }).bind('selectstart', function () { return false; });
-    }, false);
+        var zoom = function (clicks) {
+        }
 
-    document.addEventListener('mousemove', function (evt) {
-        lastX = evt.pageX;
-        lastY = evt.pageY;
-        dragged = true;
-        if (dragStart) {
-            var pt = ctx.transformedPoint(lastX, lastY);
-            ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+        document.addEventListener('mouseup', function (evt) {
+            $(document).removeAttr('unselectable');
+            $(document).removeAttr("style");
+            $(document).attr('unselectable', 'on');
+            $(document).unbind('selectstart');
+
+            dragStart = null;
+            if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+        }, false);
+
+        window.addEventListener('resize', resizeCanvas, false);
+
+        resizeCanvas();
+        function resizeCanvas() {
+
+            canvas.width = 380;
             redraw(ctx, gkhead, canvas);
         }
-    }, false);
 
-    var zoom = function (clicks) {
-    }
-
-    document.addEventListener('mouseup', function (evt) {
-        $(document).removeAttr('unselectable');
-        $(document).removeAttr("style");
-        $(document).attr('unselectable', 'on');
-        $(document).unbind('selectstart');
-
-        dragStart = null;
-        if (!dragged) zoom(evt.shiftKey ? -1 : 1);
-    }, false);
-
-    window.addEventListener('resize', resizeCanvas, false);
-    resizeCanvas();
-    function resizeCanvas() {
-
-        canvas.width = 380;
-        redraw(ctx, gkhead, canvas);
-    }
-
-    fitImage(ctx, gkhead, canvas);
+        fitImage(ctx, gkhead, canvas);
+    };
+    gkhead.src = 'data:image/jpeg;base64,' + foto;
 };
 
 function redraw(ctx, gkhead, canvas) {
@@ -602,7 +626,9 @@ function redraw(ctx, gkhead, canvas) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
-    ctx.drawImage(gkhead, -500, -100);
+    let ejeX = -((gkhead.width - canvas.width) / 2);
+    let ejeY = -((gkhead.height - canvas.height) / 2);
+    ctx.drawImage(gkhead, ejeX, ejeY);
 
 }
 
@@ -699,7 +725,7 @@ function MostrarEspera(b, notificacionId) {
 
     ActivarInterval(b.Id);
     $('#' + b.Id).tooltip('show');
-    $("#" + b.Id).click(function () {
+    $("#" + b.Id + " .estado-balanza").click(function () {
         $.ajax({
             url: $("#confirmarEspera").val(),
             dataType: 'json',
@@ -751,37 +777,46 @@ function ModificarEstados(estadoSensores) {
         }
     }
     else {
-        if (estadoSensores.BarreraEntradaActiva == true) {
-            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-        } else {
-            $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-            $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        if (estadoSensores.SensorModificado == 'BarreraEntradaActiva' ) {
+            if (estadoSensores.BarreraEntradaActiva == true) {
+                $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+                $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+            } else {
+                $("#barrera-entrada-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+                $("#barrera-entrada-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+            }
         }
 
-        if (estadoSensores.BarreraSalidaActiva == true) {
-            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
-            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
-        } else {
-            $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
-            $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+        if (estadoSensores.SensorModificado == 'BarreraSalidaActiva') {
+            if (estadoSensores.BarreraSalidaActiva == true) {
+                $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-cerrada");
+                $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-abierta");
+            } else {
+                $("#barrera-salida-" + estadoSensores.PuestoId).removeClass("icon-barrera-abierta");
+                $("#barrera-salida-" + estadoSensores.PuestoId).addClass("icon-barrera-cerrada");
+            }
         }
 
-        if (estadoSensores.SensorIngresoActiva == true) {
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-        } else {
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-            $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        if (estadoSensores.SensorModificado == 'SensorIngresoActiva') {
+            if (estadoSensores.SensorIngresoActiva == true) {
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            } else {
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-ingreso-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            }
         }
 
-        if (estadoSensores.SensorTrompaActiva == true) {
-            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
-            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
-        } else {
-            $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
-            $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+        if (estadoSensores.SensorModificado == 'SensorTrompaActiva') {
+            if (estadoSensores.SensorTrompaActiva == true) {
+                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-bloqueado");
+                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-disponible");
+            } else {
+                $("#sensor-trompa-" + estadoSensores.PuestoId).removeClass("sensor-disponible");
+                $("#sensor-trompa-" + estadoSensores.PuestoId).addClass("sensor-bloqueado");
+            }
         }
+
     }
 }
 
@@ -1019,3 +1054,4 @@ function StartWitch(input, validation) {
         return false;
     }
 }
+

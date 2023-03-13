@@ -46,5 +46,9 @@ namespace Molinos.Scato.Web.Models
         public string Mensaje { get; set; }
         public string Comentario { get; set; }
         public TipoDeWorkflow TipoDeWorkflow { get; internal set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Motivo")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        public string MotivoPesadaManual { get; set; }
     }
 }

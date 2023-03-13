@@ -1,0 +1,19 @@
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConfiguracionCalleHidraulicaDto>) ViewBag.Items;
+}
+
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificar(Html, "ConfiguracionCalleHidraulica"),
+        grilla.Columna("CalleNombre", @Textos.Calle),
+        grilla.Columna("CodigoCartel", @Textos.Configuracion_CalleHidraulica_CodigoCartel),
+        grilla.Columna("CodigoSensorCamaraALPR", @Textos.ConfiguracionCalleHidraulica_CodigoSensor),
+        grilla.Columna("CodigoSensorCirculacion", @Textos.ConfiguracionCalleHidraulica_CodigoSensorCirculacion),
+        grilla.Columna("CodigoCamaraALPR", @Textos.ConfiguracionCalleHidraulica_CodigoCamara)
+    ))

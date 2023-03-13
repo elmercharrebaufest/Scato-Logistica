@@ -1,0 +1,93 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@model Molinos.Scato.Dominio.Dto.FiltroLoteInaseDto
+@{
+    ViewBag.Title = Textos.BuscarLote_Titulo;
+}
+<script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+<ul class="nav nav-tabs">
+    @if (PermisosHelper.Is(PermisosScato.ArmarLote))
+    {
+        <li>
+            @Html.ActionLink(Textos.Lote_Titulo, "Index", "Lote")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.BuscarLote))
+    {
+        <li >
+            @Html.ActionLink(Textos.BuscarLote_Titulo, "BuscarLote", "Lote")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.TablaConversionMaterial))
+    {
+        <li>
+            @Html.ActionLink(Textos.TablaConversion, "Index", "ConversionMaterial")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+        {
+            <li>
+                @Html.ActionLink(Textos.ArmarLoteBiotecnologia, "Index", "LoteBiotecnologia")
+            </li>
+        }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteBiotecnologia))
+        {
+            <li>
+                @Html.ActionLink(Textos.BuscarLoteBiotecnologia, "BuscarLote", "LoteBiotecnologia")
+            </li>
+        }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteAuditoria))
+    {
+        <li>
+            @Html.ActionLink(Textos.BuscarLoteAuditoria, "BuscarLote", "LoteAuditoria")
+        </li>
+    }
+    @if (PermisosHelper.Is(PermisosScato.ArmarLoteInase))
+    {
+        <li class="active">
+            @Html.ActionLink(Textos.BuscarLoteInase, "BuscarLote", "LoteInase")
+        </li>
+    }
+</ul>
+<div class ="container">
+    <div class="titSecciones">@Textos.BuscarLote_Titulo</div>
+</div>
+
+<div class="container content grillaPad">
+    <div class="row">
+        <div class="span12search bordeGris">
+            @using (Ajax.BeginForm("BuscarLote", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" }))
+            {
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left;">
+                    <div style="width: 400px; float: left;">
+                        @Html.Label(Textos.FechaDesde)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.EditorFor(model => model.FechaDesde)
+                        </div>
+                        @Html.Label(Textos.FechaHasta)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.EditorFor(model => model.FechaHasta)
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="border: solid 1px #DDDDDD; padding: 5px; width: 450px; float: left; margin-left: 5px; height: 152px; margin-bottom: 5px;">
+                    <div style="float: left;">
+                        @Html.Label(Textos.Lote_NroLote)
+                        <div style="margin-top: -25px; margin-left: 70px;">
+                            @Html.TextBoxFor(model => model.NroLote, new {@class = "input-large"})
+                        </div>
+                    </div>
+                </fieldset>
+                <center>
+                    <button type="submit" class="btn">@Textos.BuscarLote</button>
+                </center>
+            }
+        </div>
+    </div>
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

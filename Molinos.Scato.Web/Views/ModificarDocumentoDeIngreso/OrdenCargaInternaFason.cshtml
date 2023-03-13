@@ -28,7 +28,6 @@
 
 <style>
     .content { padding-top: 20px;}
-
 </style>
 
 <div class="container">
@@ -48,8 +47,6 @@
                     @Html.ActionLink(Textos.Volver, "Index", "ModificarDocumentoDeIngreso", new { soloLectura = true, filtrarPorTarjeta = (bool)(ViewBag.FiltrarPorTarjeta ?? false) }, new { @class = "btn" })
                 </div>
             </div>
-
-
         }
         else
         {
@@ -95,14 +92,13 @@
             @if (esRechazado)
             {
                 <label class="text-right " style="color: #FF0000; font-size: 13pt ;position: relative; display: inline-block; float:right; top: 10px">@Textos.Rechazado</label>
-}
+            }
         </ul>
     </div>    
 }
 
-
-
 <script>
+    noCargar = true;
     $(document).ready(function () {
         if ($('#soloLectura').val() == "True") {
             $('input').attr("disabled", "disabled");

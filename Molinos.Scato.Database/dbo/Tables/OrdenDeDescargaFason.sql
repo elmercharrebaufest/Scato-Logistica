@@ -8,6 +8,10 @@
 	[PatenteAcoplado] VARCHAR(10) NULL,
     [TipoComercial_Id] INT NOT NULL,
 	[EsExtranjero] BIT NULL,
+    [NumeroCTG] CHAR(12) NULL,
+    [Sucursal] CHAR(5) NULL,
+    [NroOrden] CHAR(8) NULL
+
 	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.TipoComercial_TipoComercial_Id] FOREIGN KEY ([TipoComercial_Id]) REFERENCES [dbo].[TipoComercial] ([Id]),
     [Material_Id] INT NOT NULL, 
 	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Material_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
@@ -23,7 +27,9 @@
     [PesoBrutoOrigen] INT NULL, 
     [PesoNetoOrigen] INT NOT NULL,
 	[Recorrido_Id] INT NOT NULL,
-	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE
+	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Recorrido_Recorrido_Id] FOREIGN KEY ([Recorrido_Id]) REFERENCES [dbo].[Recorrido] ([Id]) ON DELETE CASCADE,
+    [Domicilio_Id] INT NULL, 
+	CONSTRAINT [FK_dbo.OrdenDeDescargaFason_dbo.Domicilio_Domicilio_Id] FOREIGN KEY ([Domicilio_Id]) REFERENCES [dbo].[Domicilio] ([Id]),
 );
 GO
 CREATE NONCLUSTERED INDEX [IX_Recorrido_Id]

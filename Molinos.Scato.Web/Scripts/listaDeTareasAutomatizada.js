@@ -7,7 +7,7 @@ function fitImage(ctx, gkhead, canvas) {
         ctx.clearRect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
 
         ctx.scale(0.5, 0.5);
-        
+
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -36,8 +36,14 @@ function PuestoDeTrabajo(id) {
     self.MostrarMensajeNoHayFoto = ko.observable(false);
     self.Patente = ko.observable();
     self.PatenteCorrecta = ko.observable(null);
+    self.VisualizacionBarrera_Id = id.VisualizacionBarrera_Id;
+    self.Sensores = ko.observableArray([]);
 
-    self.consultarPatenteVehiculo = function () {        
+    if (id.VisualizacionBarrera_Id) {
+        self.Sensores(id.VisualizacionBarrera.SensoresBarreras);
+    }
+
+    self.consultarPatenteVehiculo = function () {
         var data = { tarjetaDeAcceso: self.Lectura() };
         $.ajax({
             url: $("#DocumentoOrigenConsultaUrl").val(),
@@ -55,8 +61,8 @@ function PuestoDeTrabajo(id) {
             error: function (err) {
                 console.log(err);
             }
-        });        
-};
+        });
+    };
 
     self.Foto = ko.observable('');
     self.EsAutomatizado = ko.observable(false);
@@ -177,8 +183,7 @@ function PuestoDeTrabajo(id) {
 
     self.Lectura.valueHasMutated();
 
-    setInterval(function ()
-    {
+    setInterval(function () {
         //console.log("PatenteCorrecta", self.PatenteCorrecta() + "-" + self.Patente());
 
         if (self.PatenteCorrecta() && self.PatenteCorrecta() !== self.Patente()) {
@@ -190,7 +195,7 @@ function PuestoDeTrabajo(id) {
         }
     }, 500);
 
-    
+
     //if (sessionStorage.getItem('EsAutomatizado') === "true") {
     if (window.name === "true") {
         self.EsAutomatizado(true);
@@ -208,6 +213,7 @@ function PuestoDeTrabajo(id) {
         $("body").css("background-color", "rgb(169, 219, 169)");
     }
 }
+
 
 function compara(d1, d2) {
     if (d1.Automatico == d2.Automatico) return 0;
@@ -236,7 +242,7 @@ function cargarPatenteLeida(puesto, patenteLeida, patente, hayError, lectura, oc
             } else {
                 puesto.Patente(patenteLeida);
             }
-            
+
             if (puesto.EsAutomatizado()) {
                 if (reconocimientoExitoso) {
                     $("#search-form").submit();
@@ -271,6 +277,7 @@ function PuestoDeTrabajoViewModel() {
 
     self.puestosDeTrabajoGrouped = ko.computed(function () {
         var rows = [], current = [];
+        var rowsSen = [], currentSen = [];
         rows.push(current);
         for (var i = 0; i < self.puestosDeTrabajo().length; i += 1) {
             current.push(self.puestosDeTrabajo()[i]);
@@ -284,6 +291,7 @@ function PuestoDeTrabajoViewModel() {
 
     //////////////
     var notificaLectura = $.connection.notificaLectura;
+    var notificarUsuario = $.connection.notificarUsuario;
 
     notificaLectura.client.informarLectura = function (notificacion) {
         $("#validation-patente-alert").addClass("hide");
@@ -326,6 +334,13 @@ function PuestoDeTrabajoViewModel() {
         });
     };
 
+    notificarUsuario.client.actualizarNotificaciones = function (notificacion) {
+        if (notificacion !== null && notificacion.TipoAlerta == 13) {
+            var estadoSensores = JSON.parse(notificacion.Mensaje);
+            ModificarEstados(estadoSensores);
+        }
+    };
+
     self.removeLectura = function (puesto) {
         $.getJSON($('#eliminarUltimaLectura').val(), { puestoDeTrabajoId: puesto.Id },
             function (allData) {
@@ -356,6 +371,7 @@ function PuestoDeTrabajoViewModel() {
                     notificaLectura.server.escucharPuestosDeTrabajo($('#centroId').val(), value.Id);
                 }
             });
+            notificarUsuario.server.unirseAGrupo('SensoresBarreraHidraulica');
             $.unblockUI();
         }).fail(function (error) {
             window.location.href = window.location.href;
@@ -429,7 +445,7 @@ $(document).ready(function () {
         window.location = $("#home").val();
     });
 
-    
+
 
 });
 var formSubmit = null;
@@ -541,4 +557,64 @@ function trackTransforms(ctx) {
         pt.x = x; pt.y = y;
         return pt.matrixTransform(xform.inverse());
     }
+}
+
+$(document).on('click', ".barreraTareasAuto", function () {
+    $("#elemento-id").val($(this).data().puestoId);
+    $("#elemento-barrera").val($(this).data().id);
+    $("#actividades-modal").modal("hide");
+    $("#barreraModal").modal("show");
+
+    $("#aceptarComandoBarrera").click(function () {
+        if (ValidarMotivo()) { return false; }
+
+        $.ajax({
+            url: $("#GestionarBarreraUrl").val(),
+            dataType: 'json',
+            data: {
+                puestoId: $("#elemento-id").val(),
+                codigo: $("#elemento-barrera").val(),
+                motivo: $("#motivo").val(),
+                accion: 'levantar'
+            },
+            type: "GET",
+            success: function (data) {
+                if (data == "ok") {
+                    $("#motivo").val("");
+                    $("#barreraModal").modal("hide");
+                }
+            }
+        });
+    })
+});
+
+function ValidarMotivo() {
+    $("#error-requerido-hidraulica").hide();
+    $("#error-largo-hidraulica").hide();
+    var motivo = $("#motivo").val();
+    if (motivo == "") {
+        $("#error-requerido-hidraulica").show();
+        return true;
+    }
+    if (motivo.length < 10) {
+        $("#error-largo-hidraulica").show();
+        return true;
+    }
+    return false;
+}
+
+function ModificarEstados(estadoSensores) {
+    $.each(estadoSensores.SensoresArriba, function (index, sensor) {
+        if (sensor.Estado == true) {
+            $("#barrera-hidraulica-" + sensor.PuestoDeTrabajoId).removeClass("icon-barrera-cerrada");
+            $("#barrera-hidraulica-" + sensor.PuestoDeTrabajoId).addClass("icon-barrera-abierta");
+        }
+    })
+
+    $.each(estadoSensores.SensoresAbajo, function (index, sensor) {
+        if (sensor.Estado == true) {
+            $("#barrera-hidraulica-" + sensor.PuestoDeTrabajoId).removeClass("icon-barrera-abierta");
+            $("#barrera-hidraulica-" + sensor.PuestoDeTrabajoId).addClass("icon-barrera-cerrada");
+        }
+    })
 }

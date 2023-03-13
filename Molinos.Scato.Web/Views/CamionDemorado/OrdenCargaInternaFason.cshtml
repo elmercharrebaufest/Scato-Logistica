@@ -1,0 +1,74 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@{
+    ViewBag.Title = Textos.OrdenCargaInternaFason_Titulo;
+    var workflow = (string)ViewBag.Workflow;
+}
+<input id="ErrorAfip" type="hidden" name="ErrorAfip" value="@(ViewBag.ErrorAfip != null ? ViewBag.ErrorAfip.ToString() : string.Empty)" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#ErrorAfip").val() != '') {
+            MostrarAlertaError($("#ErrorAfip").val());
+            $(".btnValidacionCTG").removeAttr("disabled");
+        }
+
+        $('#FechaEmision').attr("readonly", "readonly");
+        $('#MaterialId').attr("readonly", "readonly");
+        $("#FechaEmision").datepicker("destroy");
+        $("#Id").val('@Model.Id');
+        let materialDropdown = document.getElementsById('MaterialId');
+        materialDropdown.addEventListener('mousedown', e => e.preventDefault());
+    })
+</script>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+    <script type="text/javascript">
+        noCargar = true;
+    </script>
+    <script src="@Url.Script("~/Scripts/ordencargainterna.index.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
+}
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaInternaFason_Titulo</div>
+</div>
+
+@using (Html.BeginForm("OrdenCargaInternaFason", "CamionDemorado", FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "ordenCargaInternaFason-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaInternaFason }))
+{
+    if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
+    {
+        <div class="alert alert-error">
+            @Html.ValidationSummary(true)
+        </div>
+    }
+    @Html.Partial("~/Views/IngresarOrdenCargaInternaFason/_Orden.cshtml")
+
+    <div class="control-group paddingRight cajaButtons">
+        <button class="btn btn-warning btnValidacionCTG" type="button" onclick="modalRechazarOrdenCargaInterna.showModal()" disabled>@Textos.Rechazar</button>
+        <button class="btn btn-primary" type="submit">@Textos.Aceptar</button>
+        @Html.ActionLink(Textos.Cancelar, "Index", "ListaDeCamiones", null, new { @class = "btn" })
+    </div>
+}
+
+<dialog id="modalRechazarOrdenCargaInterna" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Rechazado</h4>
+    <div class="dialogModal__descripcion">
+        <p>¿Está seguro que desea rechazar el camión?</p>
+        <div class="dialogModal__group">
+            <label for="MotivoRechazo">@Textos.Motivo:</label>
+            @Html.TextArea("MotivoRechazo", new { id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
+        </div>
+        <div class="row">
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoRechazo", style = "display:none; color:red; margin-left:18%" })
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeRechazo", style = "display:none; color:red;margin-left:18%" })
+        </div>
+    </div>
+    <div class="dialogModal__botones">
+        <button class="btn btn-warning" type="button" id="btnRechazarOrdenCargaInternaFason">Confirmar</button>
+        <button class="btn" type="button" onclick="modalRechazarOrdenCargaInterna.close()">Cerrar</button>
+    </div>
+</dialog>
+

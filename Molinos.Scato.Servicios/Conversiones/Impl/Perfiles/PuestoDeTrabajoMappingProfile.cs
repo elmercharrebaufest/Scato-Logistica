@@ -28,7 +28,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.MensajeConexion, mat => mat.MapFrom(puesto => puesto.Estados.Count > 0 ? puesto.Estados.Last().Mensaje : ""))
                   .ForMember(x => x.SemaforoRojoCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoRojo))
                   .ForMember(x => x.SemaforoAmarilloCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoAmarillo))
-                  .ForMember(x => x.SemaforoVerdeCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoVerde));
+                  .ForMember(x => x.SemaforoVerdeCodigo, mat => mat.MapFrom(puesto => puesto.SemaforoVerde))
+                  .ForMember(x => x.ConfigSensor_Id, mat => mat.MapFrom(puesto => puesto.ConfigSensores.Id))
+                  .ForMember(x => x.VisualizacionBarrera_Id, mat => mat.MapFrom(puesto => puesto.VisualizacionBarrera.Id));
             Mapper.CreateMap<PuestoDeTrabajoDto, PuestoDeTrabajo>()
                 .ForMember(x => x.SemaforoRojo, mat => mat.MapFrom(puesto => puesto.SemaforoRojoCodigo))
                 .ForMember(x => x.SemaforoAmarillo, mat => mat.MapFrom(puesto => puesto.SemaforoAmarilloCodigo))

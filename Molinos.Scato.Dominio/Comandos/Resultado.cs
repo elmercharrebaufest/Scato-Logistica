@@ -25,7 +25,13 @@ namespace Molinos.Scato.Dominio.Comandos
 
         public void Error(string clave, string descripcion)
         {
-            errores.Add(clave, descripcion);
+            if(errores.ContainsKey(clave))
+            {
+                errores[clave] = descripcion;
+            } else
+            {
+                errores.Add(clave, descripcion);
+            }
         }
 
         /// <summary>

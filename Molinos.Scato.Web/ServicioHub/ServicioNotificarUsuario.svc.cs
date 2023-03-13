@@ -29,7 +29,10 @@ namespace Molinos.Scato.Web.ServicioHub
             {
                 log.Debug("Iniciando- NotificarMensaje usuario: {0}, mensaje: {1}", notificacion.Grupo, notificacion.Mensaje);
                 notificacion.Hora = DateTime.Now;
-                if(notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.NotificacionEstadoWeb && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBalanzas)
+                if(notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.NotificacionEstadoWeb 
+                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBalanzas
+                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBarrera
+                    && notificacion.TipoAlerta != Dominio.Enums.TipoAlerta.CambioEstadoBarreraHidraulica)
                 {
                     var resultado = servicioComandos.Ejecutar(new CrearNotificacion { Dto = notificacion }) as ResultadoCrear;
                     if (resultado != null)

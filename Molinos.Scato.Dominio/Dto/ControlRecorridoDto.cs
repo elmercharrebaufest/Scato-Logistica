@@ -33,5 +33,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string Tarjeta { get; set; }
         public string Calle { get; set; }
         public bool RevierteRechazo { get; set; }
+        public TipoDeWorkflow TipoDeWorkflow { get; set; }
+        public int? RecorridoId { get; set; }
+        public bool PasoPorContingenciaPesosExc { get; set; }
     }
 }

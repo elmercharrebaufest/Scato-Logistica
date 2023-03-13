@@ -1,0 +1,21 @@
+@using Molinos.Scato.Dominio.Recursos
+@{
+    ViewBag.Title = Textos.Configuracion_CalleHidraulica_Titulo;
+}
+
+<div class ="container-fluid">
+    <div class="titSecciones">@Textos.Configuracion_CalleHidraulica</div>
+</div>
+<div class="container-fluid content grillaPad">
+    <div class="row">
+            @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form" ,@class = "form-search" }))
+            {
+                
+            }
+        @Html.ActionLink(Textos.Hidraulica_Crear, "Crear", "ConfiguracionCalleHidraulica", null , new {@class = "ajax-editar-link btn btn-primary pull-right"})
+    </div>
+    
+    <div id="gridContainer">
+        @Html.Partial("Listar")
+    </div>
+</div>

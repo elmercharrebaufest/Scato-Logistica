@@ -20,7 +20,7 @@
 @using (Html.BeginForm("Index", "IngresoDeObservaciones", FormMethod.Post, new { @class = "form-horizontal container-fluid causaBlock", data_mensaje_espera = Textos.ActIngresoDeObservaciones }))
 {
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
     @Html.HiddenFor(model => model.WorkflowInstanceId)
     @Html.Hidden("workflow", workflow)
     @Html.Hidden("workflowDefinicionId", (int)ViewBag.WorkflowDefinicionId)

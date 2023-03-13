@@ -10,6 +10,7 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.ServicioHub;
 using Ninject.Extensions.Logging;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 
@@ -104,13 +105,14 @@ namespace Molinos.Scato.Web.Firmware
                         NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, recorrido.ProximaAccion);
                         return;
                     }
-                    //while (true)
-                    //{
-                    //    if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId))
-                    //        break;
-
-                    //    Thread.Sleep(5000);
-                    //}
+                    while (true)
+                    {
+                        var valida = ConfigurationManager.AppSettings["ValidaCicloDePosicionamiento"];
+                        if (estadoPuesto.ValidarEstadoPuesto(lecturaPuestoDeTrabajo.PuestoDeTrabajoId) || valida != "1")
+                            break;
+                        var tiempoDeCiclo = int.Parse(ConfigurationManager.AppSettings["TiempoDeCicloPosicionamiento"]);
+                        Thread.Sleep(tiempoDeCiclo);
+                    }
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, resultado.ProximaActividad);
                     var serviciowf = pesadaFactory.CrearServicio(resultado.WorkflowDefinicionId);
                     var resultadoActividad = serviciowf.Pesada(resultado.InstanceId,
@@ -124,7 +126,6 @@ namespace Molinos.Scato.Web.Firmware
                              Decision = false,
                              PuestoDeTrabajoId = resultado.PuestoDeTrabajoId,
                              Automatizado = true,
-
                              CartaDePorte = recorrido.CartaDePorte,
                              Entregador = recorrido.Entregador,
                              Material = recorrido.Material,
@@ -136,7 +137,9 @@ namespace Molinos.Scato.Web.Firmware
                              PesoTara = recorrido.PesoTara,
                              TipoVehiculo = recorrido.TipoVehiculo,
                              Tarjeta = recorrido.TarjetaDeAcceso,
-                             Calle = recorrido.Calle
+                             Calle = recorrido.Calle,
+                             TipoDeWorkflow = recorrido.TipoDeWorkflow,
+                             RecorridoId = recorrido.Id
                          });
                     if (resultadoActividad != null && resultadoActividad.HayErrores)
                     {

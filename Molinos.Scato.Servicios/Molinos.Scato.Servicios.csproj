@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props" Condition="Exists('..\packages\PdfiumViewer.Native.x86_64.v8-xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.v8-xfa.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <AssemblyName>Molinos.Scato.Servicios</AssemblyName>
     <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <WcfConfigValidationEnabled>False</WcfConfigValidationEnabled>
     <XsdCodeGenEnabled>False</XsdCodeGenEnabled>
     <XsdCodeGenSerializerMode>XmlSerializer</XsdCodeGenSerializerMode>
@@ -35,6 +35,7 @@
     <SccProvider>SAK</SccProvider>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,10 +76,19 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\NPOI.Excel.2.1.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.20.0\lib\net452\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Log4NetAppender, Version=2.20.0.103, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Log4NetAppender.2.20.0\lib\net452\Microsoft.ApplicationInsights.Log4NetAppender.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
@@ -110,15 +120,27 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.5.0.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\netstandard1.1\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -143,16 +165,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behavior\AiErrorHandlerBehaviorAttribute.cs" />
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\DomicilioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CallePreBalanzaPlayaInternaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaControlPrivadoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionCalleHidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ExcepcionAlControlProveedorMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\HistorialMensajeCartelLedMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LlamadoAutomaticoHidraulicaMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfigSensoresMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ATAPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteElectronicaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CategoriaVehiculoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionAutomatizacionEtapasMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ConfiguracionGeneralMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EntidadTipoDeActividadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaMuestraInaseMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\LoteInaseMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\MuestraDeInaseMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CartaPorteDerivadoGranarioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MotivoInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
@@ -164,7 +199,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\DensidadPorTemperaturaDeMaterialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EstadoBuqueMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\EstadoPuertoMappingProfile.cs" />
-    <Compile Include="Conversiones\Impl\Perfiles\CallePorRecorridoProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\CallePorRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ContingenciaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CargaComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaPuertoMappingProfile.cs" />
@@ -259,12 +294,14 @@
     <Compile Include="Conversiones\Impl\Perfiles\BodegaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroBalanzaPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ReglaDeAnalisisObligatorioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\SensorBarreraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\SentidoManoDeEmbarqueMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoDeActividadMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoDeBuquePuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TurnoPuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\UbicacionDeBuquePuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VaporMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoEmbalajeMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VideoCamaraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CosechaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaRubrosAnalizarMappingProfile.cs" />
@@ -287,6 +324,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\LoteBiotecnologiaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\IngresosBodegaTransmisionASapMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\InformarCupoTransmisionASapMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VisualizacionBarreraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZE7550TransmisionASapMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\PinchazosPorCaladaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ZonaMappingProfile.cs" />
@@ -500,7 +538,36 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorAutorizarCpeDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorBajaCTGDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConfirmacionArriboDGDefinitiva.cs" />
+    <Compile Include="Procesamiento\ProcesadorConfirmacionArriboDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConfirmacionDefinitivaCPEAutomotorDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarDomiciliosDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarPlantasDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarCPEAutomotorDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAltaCTGDG.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorInsertarSlotMensajeCartelLed.cs" />
+    <Compile Include="Procesamiento\ProcesadoLimpiarHistorialMensajeCartelLed.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfirmacionCargaDescarga.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearPesosExc.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionCalleHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarCargaDeCupo.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarLlamadoAutomaticoHidraulica.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearLoteInase.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorSetearProgresoCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorConfirmacionArriboDefinitiva.cs" />
@@ -514,19 +581,28 @@
     <Compile Include="Procesamiento\ProcesadorConsultarEstadoCtg.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarImagenCpe.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarPDFCpe.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionSensores.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCargaDeCupoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCpOtrosPuertos.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearLogCambioDeModalidadCalleDto.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearMuestraDeInase.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCategoriaVehiculo.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearRegistroInactividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionGeneral.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarConfiguracionSensores.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEtiquetaPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajeCamioneroCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorEnviarMensajesAsincronoCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorGuardarEtiquetasPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorGuardarImagenDescarga.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirEtiquetaPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorImprimirFileGenerico.cs" />
+    <Compile Include="Procesamiento\ProcesadorImprimirMuestraInase.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarArriboCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarCaladoCircular.cs" />
     <Compile Include="Procesamiento\ProcesadorInformarPesadaCircular.cs" />
@@ -569,6 +645,8 @@
     <Compile Include="Procesamiento\ProcesadorModificarATAPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCargadoPlanoDeCarga.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCategoriaVehiculo.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionSensores.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarConfiguracionGeneral.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCoordinadorPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEmbarque.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearEstadoPuerto.cs" />
@@ -582,6 +660,8 @@
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoEstablecimientoDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRecorridoMuestraAuditoriaCamara.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarRegistroInactividad.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarMuestrasDeInase.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarVisualizacionBarrera.cs" />
     <Compile Include="Procesamiento\ProcesadorNotificarLecturaCPE.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerTickets.cs" />
     <Compile Include="Procesamiento\ProcesadorObtenerPesada.cs" />
@@ -592,6 +672,7 @@
     <Compile Include="Procesamiento\ProcesadorLiberarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorReasignarCamionPostcalado.cs" />
     <Compile Include="Procesamiento\ProcesadorSincronizarResultadosCamara.cs" />
+    <Compile Include="Procesamiento\ProcesadorCancelarSuscripcionDispositivos.cs" />
     <Compile Include="Procesamiento\ProcesadorSuscribirDispositivos.cs" />
     <Compile Include="Procesamiento\ProcesadorValidarStock.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarStock.cs" />
@@ -1124,10 +1205,31 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.aceptarEmisionDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.anularCPEResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEDuctosDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.autorizarCPEFerroviariaResponse.datasource">
@@ -1139,10 +1241,22 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.CartaPorteRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.cerrarContingenciaCPEResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEDuctosDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.confirmacionDefinitivaCPEFerroviariaResponse.datasource">
@@ -1154,7 +1268,31 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultaCPEFerroviariaPorNroOperativoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDGPendienteActivacionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEDGPendienteActivacionRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEDuctosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEEmitidasDestinoDGPendientesActivacionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEEmitidasDestinoDGPendientesActivacionRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarCPEFerroviariaResponse.datasource">
@@ -1172,6 +1310,18 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarCPEPPendientesDeResolucionRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarDerivadosGranariosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDerivadosGranariosRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarDomiciliosPorCUITResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarDomiciliosPorCUITRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarLocalidadesPorProvinciaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1182,6 +1332,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarLocalidadesProductorRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarPlantasDGRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarPlantasResponse.datasource">
@@ -1196,6 +1352,12 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarProvinciasRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposEmbalajeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarTiposEmbalajeRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarTiposGranoResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1208,16 +1370,43 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUltNroOrdenRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.consultarUnidadesMedidaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.ConsultarUnidadesMedidaRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.descargadoDestinoCPEResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEAutomotorResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.desvioCPEFerroviariaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorDGRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleAutomotorRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleDuctosDGRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleEmisionDestinoDGRespuesta.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaDGRespuesta.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.DetalleFerroviariaRespuesta.datasource">
@@ -1232,22 +1421,64 @@
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEAutomotorResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaDuctosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEConfirmadaFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGDuctosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEDGFerroviariaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.editarCPEFerroviariaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.informarContingenciaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.nuevoDestinoDestinatarioCPEFerroviariaResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.rechazarEmisionDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.rechazoCPEResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEAutomotorResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEEmisionDestinoDGResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaDGResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCPDigitalService\Molinos.Scato.Servicios.AfipCPDigitalService.regresoOrigenCPEFerroviariaResponse.datasource">
@@ -1255,127 +1486,10 @@
     </None>
     <None Include="Service References\AfipCPDigitalService\wscpe.wsdl" />
     <None Include="Service References\AfipCTGWebService\CTGService_v41.wsdl" />
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.anularCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.cambiarDestinoDestinatarioCTGRechazadoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarArriboResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.confirmarDefinitivoReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarConstanciaCTGPDFReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCosechasReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGActivosPorPatenteReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGExcelReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGRechazadosReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarDetalleCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEspeciesReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarEstablecimientosReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarLocalidadesPorProvinciaReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.consultarProvinciasReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.CTGsPendientesResolucionReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroDestinoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.desviarCTGAOtroEstablecimientoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.dummyReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.modificarRemitenteComercialReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.operacionCTGReturnType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.rechazarCTGResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.regresarAOrigenCTGRechazadoResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGDatoPendienteResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGInicialResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\AfipCTGWebService\Molinos.Scato.Servicios.AfipCTGWebService.solicitarCTGReturnType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\AfipWebService\LoginCms.wsdl" />
@@ -1434,6 +1548,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.DispositivoDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.GrupoBarreraDto.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.IntercomunicadorDispositivoBaseDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Orquestador\Molinos.Scato.Servicios.Orquestador.ResultadoCancelarSuscripcion.datasource">

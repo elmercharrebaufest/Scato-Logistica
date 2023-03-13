@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Molinos.Scato.Repositorio</RootNamespace>
     <AssemblyName>Molinos.Scato.Repositorio</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -17,6 +17,7 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="WebGrease">
@@ -69,6 +71,9 @@
     <Compile Include="ComandosEF\CrearArchivoDeMovimientos.cs" />
     <Compile Include="ComandosEF\CrearLoteAuditoria.cs" />
     <Compile Include="ConsultasEF\ConsultarEstadosWorkflows.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInternaFason.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInterna.cs" />
+    <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaFas.cs" />
     <Compile Include="ConsultasEF\ControlRecorridoLogActividadConsulta.cs" />
     <Compile Include="ComandosEF\CrearLoteBiotecnologia.cs" />
     <Compile Include="ConsultasEF\BajaCtgDefinitivaConsulta.cs" />
@@ -78,16 +83,21 @@
     <Compile Include="ConsultasEF\ListarBajaCTGConErrorConsulta.cs" />
     <Compile Include="ConsultasEF\ListarCaracteristicaConfiguracionDeTabla.cs" />
     <Compile Include="ConsultasEF\ListarDatosDeWorkflowsPendientesConsulta.cs" />
+    <Compile Include="ConsultasEF\ListarEficienciaCalado.cs" />
     <Compile Include="ConsultasEF\ListarEstadoDeCalle.cs" />
+    <Compile Include="ConsultasEF\ListarMuestraDeInaseParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaImpresionConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMuestraEnvioACamaraAuditoriaParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarCampaniaPorCuit.cs" />
+    <Compile Include="ConsultasEF\ListarMuestraInaseParaArchivoConsulta.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoEmbarques.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoCargas.cs" />
     <Compile Include="ConsultasEF\ListarDetalleMovimientoIngreso.cs" />
     <Compile Include="ConsultasEF\ListarCpeAfipCacheadas.cs" />
     <Compile Include="ConsultasEF\ListarVagonesEnPesada.cs" />
     <Compile Include="ConsultasEF\MonitorCPEsCacheadasConsulta.cs" />
+    <Compile Include="ConsultasEF\ObtenerUltimaCallePorTipoYMaterial.cs" />
+    <Compile Include="ConsultasEF\ObtenerCallePorTipoYMaterial.cs" />
     <Compile Include="ConsultasEF\ObtenerVehiculo.cs" />
     <Compile Include="ConsultasEF\ObtenerCalleNoGranos.cs" />
     <Compile Include="ConsultasEF\ObtenerCallePlayaInterna.cs" />
@@ -102,7 +112,6 @@
     <Compile Include="ConsultasEF\ListarReporteCargasPuerto.cs" />
     <Compile Include="ConsultasEF\ListarPaginadoExcepcionEnvioCamara.cs" />
     <Compile Include="ConsultasEF\ListarRecorridosRechazados.cs" />
-    <Compile Include="ConsultasEF\KgEPAUtilizados.cs" />
     <Compile Include="ConsultasEF\EficienciaHidraulicasConsulta.cs" />
     <Compile Include="ConsultasEF\ListarMovimientoDeTercerosPendientesConsulta.cs" />
     <Compile Include="ConsultasEF\ListarArchivoDeMovimientosEgresosParaArchivoConsulta.cs" />
@@ -153,10 +162,12 @@
     <Compile Include="Extensions\DataTableExtension.cs" />
     <Compile Include="Extensions\SqlBulkExtension.cs" />
     <Compile Include="IComando.cs" />
+    <Compile Include="ICache.cs" />
     <Compile Include="IConsultaEscalar.cs" />
     <Compile Include="IConsultaPaginada.cs" />
     <Compile Include="EntidadReferenciadaException.cs" />
     <Compile Include="IConsulta.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="RepositorioEF.cs" />
     <Compile Include="ScatoDbContext.cs" />
     <Compile Include="IRepositorio.cs" />

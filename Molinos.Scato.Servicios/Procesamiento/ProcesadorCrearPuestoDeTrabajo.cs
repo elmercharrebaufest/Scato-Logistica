@@ -38,6 +38,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var entidad = Conversor.Convertir<PuestoDeTrabajoDto, PuestoDeTrabajo>(comando.Dto);
             entidad.Centro = Repositorio.Obtener<Centro>(x => x.Id == comando.Dto.CentroId);
             entidad.Balanza = Repositorio.Obtener<Balanza>(x => x.Id == comando.Dto.BalanzaId);
+            entidad.VisualizacionBarrera = Repositorio.Obtener<VisualizacionBarrera>(comando.Dto.VisualizacionBarrera_Id);
+            entidad.ConfigSensores = Repositorio.Obtener<ConfigSensores>(comando.Dto.ConfigSensor_Id);
             var videocamarasAEliminar = Repositorio.Listar<VideoCamara>(x => x.PuestoDeTrabajo == null && x.ActividadPorDispositivo == null);
             Repositorio.RemoverTodos(videocamarasAEliminar);
 

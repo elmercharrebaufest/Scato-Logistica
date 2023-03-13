@@ -1,0 +1,120 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+@model Molinos.Scato.Dominio.Dto.AsignacionDto
+@{
+    Layout = null;
+    ViewBag.Title = Textos.Asignar;
+    var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
+    var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
+    var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
+    var hidraulicas = (MultiSelectList)ViewBag.Hidraulicas;
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript" src="@Url.Script("~/scripts/asignar.js")"></script>
+
+@using (Ajax.BeginForm("Asignar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Asignar }))
+{
+    if (Model.FalloWF)
+    {
+        <span class="alert-error">
+            @Html.Label(Model.Error, new { @class = "alert-label" })
+            <ul>
+                @foreach (var patente in Model.patentesInvalidas)
+                {
+                    <li>@patente</li>
+                }
+            </ul>
+        </span>
+    }
+    else
+    {
+        var soloCaladoenPlanta = PermisosHelper.Is(PermisosScato.PuestoDeComando_CaladoEnPlanta) && !PermisosHelper.Is(PermisosScato.ActividadPuestoComando);
+
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.InstanceIds)
+        @Html.HiddenFor(model => model.MaterialId)
+        @Html.HiddenFor(model => model.SonSustentables)
+        @Html.Hidden("balanzasObligatorias", (bool)ViewBag.BalanzasObligatorias)
+
+        <span class="alert-error">@Html.ValidationMessageFor(model => model.Error)</span>
+        <div class="control-group">
+            @Html.LabelFor(model => model.CalleId, new { @class = "control-label" })
+            <div class="controls">
+                @if (soloCaladoenPlanta)
+                {
+                    @Html.DropDownListFor(model => model.CalleId, calles, Textos.Default_Calle, new { @disabled = true })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.CalleId, calles, Textos.Default_Calle)
+                }
+                @Html.ValidationMessageFor(model => model.CalleId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.BalanzaTaraId, new { @class = "control-label" })
+            <div class="controls">
+                @if (soloCaladoenPlanta)
+                {
+                    @Html.DropDownListFor(model => model.BalanzaTaraId, balanzas, Textos.Default_BalanzaTara, new { @class = "balanzaTara", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.BalanzaTara), @disabled = soloCaladoenPlanta })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.BalanzaTaraId, balanzas, Textos.Default_BalanzaTara, new { @class = "balanzaTara", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.BalanzaTara) })
+                }
+                @Html.ValidationMessageFor(model => model.BalanzaTaraId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.BalanzaBrutoId, new { @class = "control-label" })
+            <div class="controls">
+                @if (soloCaladoenPlanta)
+                {
+                    @Html.DropDownListFor(model => model.BalanzaBrutoId, balanzas, Textos.Default_BalanzaBruto, new { @class = "balanzaBruto", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.BalanzaBruto), @disabled = soloCaladoenPlanta })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.BalanzaBrutoId, balanzas, Textos.Default_BalanzaBruto, new { @class = "balanzaBruto", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.BalanzaBruto) })
+                }
+                @Html.ValidationMessageFor(model => model.BalanzaBrutoId)
+            </div>
+        </div>
+        <div class="control-group">
+            @Html.LabelFor(model => model.AlmacenId, new { @class = "control-label" })
+            <div class="controls">
+                @if (soloCaladoenPlanta)
+                {
+                    @Html.DropDownListFor(model => model.AlmacenId, almacenes, Textos.Default_Almacen, new { @disabled = soloCaladoenPlanta })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.AlmacenId, almacenes, Textos.Default_Almacen)
+                }
+                @Html.ValidationMessageFor(model => model.AlmacenId)
+            </div>
+        </div>
+        @*<div class="control-group">
+                @Html.LabelFor(model => model.CorrespondeCaladoEnPlanta, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.CheckBoxFor(model => model.CorrespondeCaladoEnPlanta)
+                    @Html.ValidationMessageFor(model => model.CorrespondeCaladoEnPlanta)
+                </div>
+            </div>*@
+        <div class="control-group" data-requerido="@String.Format(Textos.Error_Requerido,Textos.PuestoComando_Hidraulicas)">
+            @Html.LabelFor(model => model.HidraulicasId, new { @class = "control-label" })
+            <div class="controls">
+                @if (soloCaladoenPlanta)
+                {
+                    @Html.CheckBoxListFor(model => model.HidraulicasId, hidraulicas, new { @disabled = soloCaladoenPlanta })
+                }
+                else
+                {
+                    @Html.CheckBoxListFor(model => model.HidraulicasId, hidraulicas)
+                }
+                @Html.ValidationMessageFor(model => model.HidraulicasId)
+            </div>
+        </div>
+    }
+}

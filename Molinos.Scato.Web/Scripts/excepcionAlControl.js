@@ -2,7 +2,6 @@
     enfocador();
 
     $('#dropdownTipos').change(function () {
-
         enfocador();
     });
 

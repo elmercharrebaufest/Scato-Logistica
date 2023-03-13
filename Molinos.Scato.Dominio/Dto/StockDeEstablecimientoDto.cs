@@ -35,6 +35,16 @@ namespace Molinos.Scato.Dominio.Dto
         public decimal StockReservado { get; set; }
         [Display(ResourceType =typeof(Textos), Name = "NombreEstablecimeinto")]
         public string NombreEstablecimiento { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "StockTolerancia")]
+        public decimal? Tolerancia { get; set; }
+
+        public string Localidad { get; set; }
+        public string LocalidadCodigoAfip { get; set; }
+        public int? LocalidadId { get; set; }
+
+        public string Provincia { get; set; }
+        public int? ProvinciaCodigoAfip { get; set; }
+        public int? ProvinciaId { get; set; }
 
         public StockDeEstablecimientoDto()
         {

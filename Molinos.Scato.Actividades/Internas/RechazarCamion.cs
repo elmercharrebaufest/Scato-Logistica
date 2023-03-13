@@ -1,5 +1,6 @@
 using System;
 using System.Activities;
+using Molinos.Scato.Actividades.Behaviour;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
@@ -23,6 +24,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 resultado = servicioComandos.Ejecutar(new Dominio.Comandos.RechazarCamion {WorkflowId = workflowInstanceId});
                 Rechazado.Set(context,true);
+                context.GetExtension<ScatoPersistenceParticipant>().EsRechazado = true.ToString();
             }
             catch (Exception)
             {

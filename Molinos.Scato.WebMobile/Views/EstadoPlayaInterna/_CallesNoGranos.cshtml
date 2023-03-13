@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Helpers;
+@model List<TipoCallePlantaDto>
+
+@{
+    var model = Model.Where(c => c.TipoCalle == TipoCalle.EnTransito || c.TipoCalle == TipoCalle.PlantaNoGranos || c.TipoCalle == TipoCalle.EsperaAduanaNoGranos || c.TipoCalle == TipoCalle.SalidaNoGranos).ToList();
+}
+
+<script>
+    let estadoPlayaInternaDeCallesNoGranosConfig = {
+        containerId: "plantaNoGranos",
+        tipo: "9,8,11,10",
+        vmData: @Html.Raw(model.ToJson()),
+    };
+
+    let estadoPlayaInternaDeCallesNoGranosVM = new EstadoPlayaInternaDeCallesVM(estadoPlayaInternaDeCallesNoGranosConfig);
+
+    $(function () {
+        (estadoPlayaInternaDeCallesNoGranosVM).onReady();
+    });
+</script>
+
+<div class="row" style="display:flex; justify-content:end;">
+    @Html.Partial("_BuscadorPatente")
+</div>
+@Html.Partial("_CallesBody")

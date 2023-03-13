@@ -5,12 +5,12 @@
 
   <setParameter name="LoginCms Service Endpoint Address" value="https://wsaa.afip.gov.ar/ws/services/LoginCms" />
   <setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wsctg/services/CTGService_v4.0" />
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gvicsapa3.molinosagro.ad:8000/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://sapprgap.molinosagro.ad:8080/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
   <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
   <!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoor.molinos.com.ar:8081/ServicioOrquestador" />-->
   <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://sibio-arg.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
   <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
-  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://serviciosjava.afip.gob.ar/wscpe/services/soap" />
+  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws.afip.gob.ar/wscpe/services/soap" />
   <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 
   <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
@@ -34,7 +34,7 @@
   <setParameter name="MailSettings Smtp Port" value="25" />
   <setParameter name="MailSettings Smtp EnableSsl" value="false" />
   <setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
-  <setParameter name="urlBaseCircularApp Config" value="http://services.appcircular.com/plantIntegration/" />
+  <setParameter name="urlBaseCircularApp Config" value="https://services.appcircular.com/plantIntegration/" />
   <setParameter name="apiTokenCircularApp Config" value="bnYYkHKgcsnYHXQ5HdeKvVSjKZxdJ3E9AmzG" />
   <setParameter name="SimularTurnoActivoCircular Config" value="false" />
   <setParameter name="PdfCpeDpiX Config" value="300" />

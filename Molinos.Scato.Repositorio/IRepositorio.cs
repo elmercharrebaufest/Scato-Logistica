@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Consultas;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Molinos.Scato.Dominio.Consultas;
 
 namespace Molinos.Scato.Repositorio
 {
@@ -74,18 +74,28 @@ namespace Molinos.Scato.Repositorio
         /// <param name="condicion">Expresion que dada una entidad devuelve si debe devolverse o no</param>
         /// <returns>Todas las entidades que cumplen con la condicion</returns>
         IList<TEntidad> Listar<TEntidad>(Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
+
         IList<TEntidad> Listar<TEntidad>(IEnumerable<Expression<Func<TEntidad, object>>> includes, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
+
         IList<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
+
+        IList<TEntidad> ListarNoTracking<TEntidad>(Expression<Func<TEntidad, bool>> filtro = null) where TEntidad : class;
+
+        IList<TProyeccion> ListarNoTracking<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion = null) where TEntidad : class;
+
         List<TProyeccion> ListarDistintos<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, int maxResultados) where TEntidad : class;
+
         IList<TEntidad> Listar<TEntidad>(Expression<Func<TEntidad, Boolean>> condicion, int maxResultados) where TEntidad : class;
+
         ListaPaginada<TProyeccion> Listar<TEntidad, TKey, TProyeccion>(Expression<Func<TProyeccion, TKey>> funcProyeccion, Expression<Func<TEntidad, TKey>> funcEntidad, Paginacion paginacion, Expression<Func<TEntidad, bool>> filtroEntidad = null, Expression<Func<TProyeccion, bool>> filtroProyeccion = null)
             where TEntidad : class
             where TProyeccion : class;
 
         ListaPaginada<TEntidad> Listar<TEntidad>(Expression<Func<TEntidad, Boolean>> condicion, Paginacion paginacion) where TEntidad : class;
-        ListaPaginada<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, Paginacion paginacion) where TEntidad : class;
-        List<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, int maxResultados) where TEntidad : class;
 
+        ListaPaginada<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, Paginacion paginacion) where TEntidad : class;
+
+        List<TProyeccion> Listar<TEntidad, TProyeccion>(Expression<Func<TEntidad, TProyeccion>> proyeccion, Expression<Func<TEntidad, Boolean>> condicion, int maxResultados) where TEntidad : class;
 
         ListaPaginada<TEntidad> ListarConsultaPaginada<TEntidad>(IConsultaPaginada<TEntidad> consulta) where TEntidad : class;
 
@@ -133,6 +143,7 @@ namespace Molinos.Scato.Repositorio
         /// <param name="entidad">Entidad a agregar</param>
         /// <returns>Entidad agregada</returns>
         TEntidad Agregar<TEntidad>(TEntidad entidad) where TEntidad : class;
+
         void ActualizarTodos<TEntidad>(IEnumerable<TEntidad> items, List<KeyValuePair<string, string>> properties = null, string columnaJoin = "Id", string where = "") where TEntidad : class;
 
         /// <summary>
@@ -232,6 +243,7 @@ namespace Molinos.Scato.Repositorio
         /// </summary>
         /// <returns>Ultima semilla de la tabla GeneradorNumeroOrdenDeCargaContenedor</returns>
         int ObtenerNumeroOrdenDeCargaContenedorGenerado();
+
         /// <summary>
         /// Retorna un numero aleatorio
         /// </summary>

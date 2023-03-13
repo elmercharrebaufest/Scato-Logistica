@@ -32,6 +32,7 @@
 @Html.Hidden("cargaExportacion", Url.Action("Carga"))
 @Html.Hidden("validarVagon", Url.Action("ValidarVagon"))
 @Html.Hidden("obtenerDatosExpo", Url.Action("ObtenerEtapaExpo"))
+@Html.Hidden("actualizarEstadoSensores", Url.Action("ActualizarEstadoSensores"))
 @Html.Hidden("mensajeAlertPaseAutomatico", mensajeAlertaPaseAutomatico)
 
 <script>
@@ -43,7 +44,7 @@
 
 
 <script type="text/javascript" src="@Url.Content("~/scripts/jquery.maskedinput.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/Scripts/balanzaAutomatica.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/Scripts/balanzaAutomatica.js")"></script>
 
 @if (mostrarAlertaPaseAutomatico && !string.IsNullOrEmpty(mensajeAlertaPaseAutomatico))
 {

@@ -3,6 +3,7 @@ using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
+using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
 using System;
 using System.Collections.Generic;
@@ -136,6 +137,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ObtenerAlmacenesPorCentro(int centroId);
+        
+        [OperationContract]
+        IList<TipoEmbalajeDto> ListarEmbalaje();
 
         [OperationContract]
         MaterialPorCentroDto ObtenerMaterialPorCentro(int centroId, int materialId);
@@ -975,7 +979,7 @@ namespace Molinos.Scato.Servicios
         MuestraEnvioACamaraDto ObtenerMuestraEnvioACamaraPorNumero(int centroId, string nroMuestra);
 
         [OperationContract]
-        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId);
+        MuestraEnvioACamaraYRecorridoDto ObtenerMuestraEnvioACamaraYRecorridoPorNumero(string nroMuestra, int centroId, bool incluirPreLote);
 
         [OperationContract]
         string ObtenerNumeroMuestraEnvioACamara(int muestraId);
@@ -993,7 +997,7 @@ namespace Molinos.Scato.Servicios
         NotificacionesDto ObtenerNotificaciones(string grupos, bool listarSobre, bool mostrarAlerta, bool contar);
 
         [OperationContract]
-        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId);
+        IList<MuestraEnvioACamaraDto> ListarMuestraEnvioACamaraSinLote(int centroId, bool incluirPreLote);
 
         [OperationContract]
         IList<MuestraEnvioACamaraBiotecnoligiaDto> ListarMuestraEnvioACamaraBiotecnologiaSinLote(int materialId, int camaraId, int centroId);
@@ -2262,6 +2266,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false);
+
         [OperationContract]
         IList<MaterialDto> ListarMaterialesFiltroF515(int centroId);
 
@@ -2410,7 +2415,7 @@ namespace Molinos.Scato.Servicios
         IList<CalleDto> ListarTodasLasCalles(int centroId);
 
         [OperationContract]
-        IList<CallePorRecorridoDto> ListarTodasLasCallesPorRecorrido(int calleId);
+        IList<CallePorRecorridoDto> ListarCallePorRecorridoPorCalleId(int calleId);
 
         [OperationContract]
         IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCentro(int centroId);
@@ -2530,9 +2535,6 @@ namespace Molinos.Scato.Servicios
         ProveedorDto ObtenerProveedorPorId(int Id);
 
         [OperationContract]
-        CargaDeCupoDto ObtenerCupoRecorridoId(int id);
-
-        [OperationContract]
         IList<PuestoDeTrabajoDto> ListarPuestosDeTrabajoPorCodigoLectorQR(string Codigo);
 
         [OperationContract]
@@ -2588,8 +2590,221 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         Resultado ActualizarFechaEstadoCacheadoCPECentro(int id, string mensaje);
-        
+
         [OperationContract]
         string ObtenerDispositivoBarreraEntrada(int puestoId);
+
+        [OperationContract]
+        string ObtenerPuestoDeLogLecturaDeTarjeta(string patente, int? analisisDeCalidadId);
+
+        [OperationContract]
+        ConfiguracionGeneralDto ObtenerConfiguracionGeneral(string pantalla, string nombre, int? centroId = null);
+
+        [OperationContract]
+        List<ConfiguracionGeneralDto> ListarConfiguracionesGenerales(string pantalla, int? centroId = null);
+
+        [OperationContract]
+        List<ConfiguracionGeneralDto> ListarConfiguracionesGeneralesPorNombres(string pantalla, List<string> nombres, int? centroId = null);
+
+        [OperationContract]
+        ListaPaginada<VisualizacionBarreraDto> ListarPaginadoVisualizacionBarrera(int centroId, Paginacion paginacion);
+
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarreras(int grupoId);
+
+        [OperationContract]
+        VisualizacionBarreraDto ObtenerVisualizacionBarrera(int id);
+
+        [OperationContract]
+        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorUsuario(string usuario, int centroId);
+
+        [OperationContract]
+        int ObtenerCantidadBarrerasPorUsuario(string usuario, int centroId);
+
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarrerasActivos();
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCupoPorCupoSap(string cupo);
+
+        [OperationContract]
+        ConfigSensoresDto ObtenerConfiguracionSensores(int id);
+
+        [OperationContract]
+        ListaPaginada<ConfigSensoresDto> ListarPaginadoConfigSensores(string filtro, Paginacion paginacion, int centroId);
+
+        [OperationContract]
+        IList<ConfigSensoresDto> ListarConfiguracionSensores(int centroId);
+
+        [OperationContract]
+        IList<VisualizacionBarreraDto> ObtenerGruposBarrerasPorCentro(int centroId);
+
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ObtenerEficienciaCalado(DateTime desde, DateTime hasta);
+
+        [OperationContract]
+        List<EficienciaCaladoValoresDto> ListarCallesCalado(int centroId);
+
+        [OperationContract]
+        EficienciaCaladoValoresDto ObtenerEficienciaCalle(int id, int centroId);
+
+        [OperationContract]
+        int ObtenerCantidadPendientesPorCalar(int centroId);
+
+        [OperationContract]
+        FotoDto ObtenerFotoSustentable(int centroId, string numeroDocumento, string actividad);
+
+        [OperationContract]
+        IList<LecturaPuestoDeTrabajoDto> ObtenerLogLecturasPorTarjeta(string tarjeta);
+
+        [OperationContract]
+        IList<SensorBarreraDto> ListarSensoresBarrerasActivosPorNombreDePC(string nombrePc);
+
+        [OperationContract]
+        bool AvanzaCpe(int centroId);
+
+        [OperationContract]
+        FotoDto ObtenerFotoDescargada(int centroId, string numeroDocumento, string actividad, bool esSustentable);
+
+        [OperationContract]
+        bool ValidarAltaCTGRepetida(string ctg);
+
+        [OperationContract]
+        bool ValidarAltaCPERepetida(string cpe, int sucursal);
+
+        [OperationContract]
+        MensajeCartelLedDto ObtenerMensajeCartelLedPorCodigo(string codigo);
+
+        [OperationContract]
+        IList<MuestraDeInaseDto> ObtenerLotesMuestrasInase();
+
+        [OperationContract]
+        IList<ConfiguracionGeneralDto> ObtenerConfiguracionMailInase(int centroId);
+
+        [OperationContract]
+        List<MuestraDeInaseDto> ObtenerMuestrasInaseParaArchivo();
+
+        [OperationContract]
+        Resultado ActualizarDispositivoLog(string codigo, string nombre, string valor, bool limpiarLogs);
+
+        [OperationContract]
+        List<string> ObtenerGruposBarreraEnUso(List<string> codigos);
+
+        [OperationContract]
+        List<LogDispositivoDto> ObtenerLogDispositivos(List<string> codigos);
+
+        [OperationContract]
+        ListaPaginada<LoteInaseDto> ListarPaginadoLoteInase(FiltroLoteInaseDto filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ListaPaginada<MuestraDeInaseDto> ListarMuestrasPorLoteInase(int loteId, Paginacion paginacion);
+
+        [OperationContract]
+        string ObtenerNumeroLoteInase(int loteId);
+
+        [OperationContract]
+        LoteInaseDto ObtenerLoteInaseParaImpresion(int loteId);
+
+        [OperationContract]
+        bool EsCupoReingresado(string cupo, string nroCartaPorte, int centroId);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCupoReingresado(string cupo, string nroCartaPorte, int centroId);
+
+        [OperationContract]
+        CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId);
+
+        [OperationContract]
+        List<SensorBarreraDto> ListarSensoresBarrerasHidraulicasActivos();
+
+        [OperationContract]
+        CaladoDto ObtenerCaladoPorId(int id);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCargaDeCupoPorGuid(Guid instanceId);
+
+        [OperationContract]
+        List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasPorEstado(EstadoHidraulica estado);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(string codigoSensor);
+
+        [OperationContract]
+        List<LlamadoAutomaticoHidraulicaDto> ListarHidraulicasAutomatizadas();
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerHidraulicaPorSensorBajada(string codigoSensorBajada);
+
+        [OperationContract]
+        RecorridoDto ObtenerRecorridoActivoPorPatente(string patente);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(string codigoSensor);
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId);
+        
+        [OperationContract]
+        ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica(Paginacion paginacion);
+
+        [OperationContract]
+        ConfiguracionCalleHidraulicaDto ObtenerCalleHidraulica(int id);
+
+        [OperationContract]
+        bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId);
+        
+        [OperationContract]
+        IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
+
+        [OperationContract]
+        string ObtenerCodigoMensaje(int calle);
+
+        [OperationContract]
+        int ObtenerOrdenCircular(string codigo);
+
+        [OperationContract]
+        int ObtenerCantidadCamionesEnCallePreBalanza(int calleId);
+
+        [OperationContract]
+        List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
+        
+        [OperationContract]
+        CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
+
+        [OperationContract]
+        ListaPaginada<ExcepcionAlControlProveedorDto> ListarExcepcionesAlControlProveedor(string filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ExcepcionAlControlProveedorDto ObtenerExcepcionAlControlProveedor(int id);
+
+        [OperationContract]
+        bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
+        
+        [OperationContract]
+        bool ValidacionAutomaticaCtgDG(int centroId);
+        
+        [OperationContract]
+        List<DomicilioDto> ListarDomicilios();
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorGuid(Guid instanceId);
+
+        [OperationContract]
+        IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
+
+ 		[OperationContract]
+        DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
+        
+        [OperationContract]
+        ClienteDto ObtenerClientePorCuit(string cuit);
+
+        [OperationContract]
+        CartaPorteDerivadoGranarioDto ObtenerCartaPorteDerivadoGranarioPorCTG(string nroCTG);
+
+        [OperationContract]
+        MaterialDto ObtenerMaterialDerivadoGranario(short codigoPadre, short codigoDreivadoGranario);
+
+        [OperationContract]
+        DomicilioDto ObtenerDomicilioDG(int plantaDG);
     }
 }

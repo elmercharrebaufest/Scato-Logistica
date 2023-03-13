@@ -24,9 +24,8 @@ namespace Molinos.Scato.Actividades.Internas
 
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
-
+        public InArgument<int?> IntermediarioId { get; set; }
         public OutArgument<bool> SalidaVerificada { get; set; }
-
         public OutArgument<string> MensajeError { get; set; }
 
         protected override bool Execute(CodeActivityContext context)
@@ -36,16 +35,19 @@ namespace Molinos.Scato.Actividades.Internas
             var patente = Patente.Get<string>(context);
             var choferId = ChoferId.Get<int>(context);
             var transportistaId = TransportistaId.Get<int>(context);
+            var intermediarioId = IntermediarioId.Get<int>(context);
             try
             {
                 ChoferDto chofer = repositorio.ObtenerChofer(choferId);
                 TransportistaDto transportista = repositorio.ObtenerTransportista(transportistaId);
+                ProveedorDto intermediario = repositorio.ObtenerProveedor(intermediarioId);
+                string cuit = intermediario != null ? intermediario.Cuil : transportista.Cuit;
 
                 if (chofer.NumeroDeDocumento.Length == 7)
                 {
                     chofer.NumeroDeDocumento = "0" + chofer.NumeroDeDocumento;
                 }
-                ComplianceV2(context, transportista, chofer, patente);
+                ComplianceV2(context, cuit, chofer, patente);
             }
             catch (Exception ex)
             {
@@ -55,14 +57,14 @@ namespace Molinos.Scato.Actividades.Internas
             return SalidaVerificada.Get<bool>(context);
         }
 
-        private void ComplianceV2(CodeActivityContext context, TransportistaDto transportista, ChoferDto chofer, string patente)
+        private void ComplianceV2(CodeActivityContext context, string cuit, ChoferDto chofer, string patente)
         {
             var servicioCompliance = context.GetExtension<DatosPort>();
 
             controlarDatosAgroacopiosRequest datosGranelesRequest = new controlarDatosAgroacopiosRequest()
             {
                 datos = new Datos() {
-                    cuit = transportista.Cuit,
+                    cuit = cuit,
                     dni = chofer.NumeroDeDocumento,
                     patente1 = patente,
                     planta = context.GetExtension<ScatoPersistenceParticipant>().CentroId.ToString()

@@ -22,12 +22,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ActualizarCargaDeCupo comando)
         {
             var resultado = new Resultado();
-            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanceId);            
+            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanceId);
+            Log.Debug($"Recorrido a actualizar Carga de cupo {recorrido.Id}");
             if (recorrido.Centro.RequiereCupo && recorrido.Vehiculo != null)
             {
+                Log.Debug($"Centro Requiere Cupo y existe vehiculo");
+
                 var cargaDecupo = Repositorio.Listar<CargaDeCupo>(x => x.Numero == comando.Numero && comando.Numero != "" && comando.Numero != null && x.Recorrido == null && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
                 if (cargaDecupo != null && !string.IsNullOrEmpty(cargaDecupo.Cupo))
                 {
+                    Log.Debug($"cargaDecupo Id {cargaDecupo.Id}");
                     cargaDecupo.Recorrido = recorrido;
                     if (cargaDecupo.Material == null)
                     {
@@ -39,9 +43,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (!string.IsNullOrEmpty(recorrido.Vehiculo.CartaPorte.Cupo))
                     {
-                        var cargaDecupoPorCartaDePorte = Repositorio.Listar<CargaDeCupo>(x => x.Cupo == recorrido.Vehiculo.CartaPorte.Cupo && x.Recorrido == null && x.Id != cargaDecupo.Id && x.SinCupo == false && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
+                        Log.Debug($"Vehiculo con Cupo {recorrido.Vehiculo.CartaPorte.Cupo}");
+                        var cargaDecupoPorCartaDePorte = Repositorio.Listar<CargaDeCupo>(x => x.Cupo == recorrido.Vehiculo.CartaPorte.Cupo && x.Recorrido == null && x.Id != cargaDecupo.Id && x.Material != null && x.Material.EsGrano && x.SinCupo == false && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
                         if (cargaDecupoPorCartaDePorte != null)
                         {
+                            Log.Debug($"Eliminando cargaDecupoPorCartaDePorte patente {cargaDecupoPorCartaDePorte.Patente} cupo {cargaDecupoPorCartaDePorte.Cupo} ");
                             if (cargaDecupo.SinCupo)
                             {
                                 cargaDecupo.Cupo = cargaDecupoPorCartaDePorte.Cupo;
@@ -56,6 +62,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
                         else if (cargaDecupo.SinCupo)
                         {
+                            Log.Debug($"Sin cargaDecupoPorCartaDePorte");
                             cargaDecupo.Especial = recorrido.Establecimiento != null || (recorrido.Vehiculo.CartaPorte.TrigoEspecial.HasValue && recorrido.Vehiculo.CartaPorte.TrigoEspecial.Value);
                             cargaDecupo.Material = recorrido.Material;
                         }
@@ -64,6 +71,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 else if (!string.IsNullOrEmpty(recorrido.Vehiculo.CartaPorte.Cupo) && recorrido.Vehiculo.CartaPorte.Cupo != configuracion.AppSettings["CupoDefault"])
                 {
+                    Log.Debug($"recorrido sin carga de Cupo y vehiculo con cupo no generico {recorrido.Vehiculo.CartaPorte.Cupo}");
+
                     var cargaDecupoPorCartaDePorte = Repositorio.Listar<CargaDeCupo>(x => x.Cupo == recorrido.Vehiculo.CartaPorte.Cupo && x.Recorrido == null && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
                     if (cargaDecupoPorCartaDePorte != null)
                     {
@@ -80,6 +89,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
                 else if (!string.IsNullOrEmpty(recorrido.Vehiculo.CartaPorte.Cupo) && recorrido.Vehiculo.CartaPorte.Cupo == configuracion.AppSettings["CupoDefault"])
                 {
+                    Log.Debug($"recorrido sin carga de Cupo y vehiculo con cupo generico {recorrido.Vehiculo.CartaPorte.Cupo}");
                     //Si una carga de cupo genérica no existe por tarjeta, es porque hay que crearla
                     var cupoDefault = new CargaDeCupo
                     {
@@ -98,6 +108,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                     if (cargaDecupo != null)
                     {
+                        Log.Debug($"Se elimina la carga de cupo: {cargaDecupo.Id}");
                         //Si existe una carga de cupo pendiente y el camión ya fue asignado, la quitamos
                         cupoDefault.EstuvoPendiente = true;
                         Repositorio.Remover(cargaDecupo);
@@ -108,6 +119,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             else if (recorrido.Centro.RequiereCupo && !recorrido.Material.EsGrano)
             {
+                Log.Debug($"Centro rquiere Cupo y Corresponde a no grano");
                 var cargaDecupo = Repositorio.Listar<CargaDeCupo>(x => x.Numero == comando.Numero && comando.Numero != "" && comando.Numero != null && x.Recorrido == null && x.Centro.Id == recorrido.Centro.Id).LastOrDefault();
                 if (cargaDecupo != null)
                 {

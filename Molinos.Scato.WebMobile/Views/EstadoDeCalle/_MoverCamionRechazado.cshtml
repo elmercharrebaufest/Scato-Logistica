@@ -1,156 +1,282 @@
 ﻿@using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Seguridad
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio
+@using Molinos.Scato.WebMobile.Helpers;
+
 
 @model Molinos.Scato.Dominio.Dto.InfoPatenteDeCalleDto
-@{    
+@{
     var callesPostCalado = ((IEnumerable<SelectListItem>)ViewBag.CallesPostCalado) ?? new List<SelectListItem>();
 }
+
+<script src="@Url.Script("~/Scripts/visteo.js")" type="text/javascript"></script>
+
 
 <script>
     urlConfirmarRechazado = '@Url.Action("ConfirmarRechazado", "EstadoDeCalle")';
     urlConfirmarReasignacionCalle = '@Url.Action("ConfirmarReasignacionCalle", "EstadoDeCalle")';
+    urlVisteoMobile = '@Url.Action("Index", "VisteoMobile")';    
+    urlVisteoRechazoMobile = '@Url.Action("RechazarNoGranos", "VisteoMobile")';  
+
+
     $(document).ready(function () {
-        $('#Boton-ConfirmarFilaRechazado').click(ConfirmarEnviarAFilaRechazado);
-        $('#Boton-AceptarReasignacionCalle').click(function () {
-            AceptarReasignacionCalle();
-        });
-        $('#dialogo-confirmar-confirmar').click(function () {
-            ConfirmarReasignacionCalle();
-        });
-        $('#dialogo-confirmar-cancelar').click(function () {
-            CancelarReasignacionCalle();
-        });
+    $('#Boton-ConfirmarFilaRechazado').click(ConfirmarEnviarAFilaRechazado);
+    $('#Boton-AceptarReasignacionCalle').click(function () {
+        AceptarReasignacionCalle();
+    });
+    $('#dialogo-confirmar-confirmar').click(function () {
+        ConfirmarReasignacionCalle();
+    });
+    $('#dialogo-confirmar-cancelar').click(function () {
+        CancelarReasignacionCalle();
     });
 
+});  
+
 </script>
+
+@Html.HiddenFor(model => model.InstanciaWorflow)
+@Html.HiddenFor(model => model.WorkflowDefinicionId)
 
 <div id="modal-rechazo-mover" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleMoverRechazado) && Model.Rechazado && Model.TipoCalle == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
-                {
-
-                    <h5 class="modal-title">Confirmar Mover a Rechazado</h5>
-                }
-                else
-                {
+            @if (Model.CalleNoGrano)
+            {
+                <div class="modal-header">
                     <h5 class="modal-title">Información del Vehiculo</h5>
-                }
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="dialogo-confirmar-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="dialogo-confirmar-body">
+                    <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                        <legend class="reset-this redo-legend">Información</legend>
+                        <div class="row">
+                            <div class="control-group col-4">
+                                @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                                <div id="div-patente" class="controls">
+                                    @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
+                                </div>
+                            </div>
+                            <div id="div-nomchofer" class="control-group col-4">
+                                @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
+                                </div>
+                            </div>
+                            <div id="div-cartaporte" class="control-group col-4">
+                                @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div id="div-descripcionAlmacen" class="control-group col-8">
+                                @Html.LabelFor(model => model.DescripcionAlmacen, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.DescripcionAlmacen, new { @class = "input-large" })
+                                </div>
+                            </div>
+                            <div id="div-tipoVehiculo" class="control-group col-4">
+                                @Html.LabelFor(model => model.TipoVehiculo, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.TipoVehiculo, new { @class = "input-large" })
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
 
-                @if (Model.PermisoReasignarCallePostCalado && Model.TipoCalle == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
-                {
-                <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
-                    <legend class="reset-this redo-legend">Información</legend>
-                    <div class="row">
-                        <div class="control-group col-3">
-                            @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
-                            <div id="div-patente" class="controls">
-                                @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
+                        <div class="row">
+                            <div class="control-group col-4">
+                                @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
+                                <div id="div-patente" class="controls">
+                                    @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                                </div>
+                            </div>
+                            <div id="div-nomchofer" class="control-group col-4">
+                                @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
+                                </div>
+                            </div>
+                            <div id="div-cartaporte" class="control-group col-4">
+                                @Html.LabelFor(model => model.FechaIngreso, new { @class = "control-label" })
+                                <div class="controls">
+                                    @{
+                                        var fecha = Model.FechaIngreso.ToString("dd/MM/yyyy");
+                                    }
+                                    @Html.DisplayFor(model => fecha, new { @class = "input-large" })
+                                </div>
                             </div>
                         </div>
-                        <div id="div-nomchofer" class="control-group col-5">
-                            @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
-                            <div class="controls">
-                                @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
+                        <hr />
+                        <div class="row">
+                            <div class="control-group col-4">
+                                @Html.LabelFor(model => model.Material, new { @class = "control-label" })
+                                <div id="div-patente" class="controls">
+                                    @Html.DisplayFor(model => model.Material, new { @class = "input-medium" })
+                                </div>
                             </div>
-                        </div>
-                        <div id="div-cartaporte" class="control-group col-4">
-                            @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
-                            <div class="controls">
-                                @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
+                            <div id="div-nomchofer" class="control-group col-4">
+                                @Html.LabelFor(model => model.NombreWorkflow, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.NombreWorkflow, new { @class = "input-large" })
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="control-group col-6">
-                            @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
-                            <div id="div-patente" class="controls">
-                                @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                            <div id="div-nomchofer" class="control-group col-4">
+                                @Html.LabelFor(model => model.Cliente, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.Cliente, new { @class = "input-large" })
+                                </div>
                             </div>
-                        </div>
-                        <div id="div-nomchofer" class="control-group col-6">
-                            @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
-                            <div class="controls">
-                                @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
-                            </div>
-                        </div>
-                        
-                    </div>
-                </fieldset>
-
-                    <fieldset class="reset-this redo-fieldset" style="margin-left: 10px; margin-top: 20px;">
-                        <legend class="reset-this redo-legend">Reasignación de Calle</legend>
-                        <div class="control-group">
-                            @Html.Label("Tipo de Calle", new { @class = "control-label" })
-                            <div class="">
-                                @Html.DropDownListFor(model => model.CalleId, callesPostCalado, new { @class = "selec-calle", id = "calleId" })
-                            </div>
-                        </div>
-                        <div class="botones-carta-porte centered" style="padding-top: 20px; padding-bottom: 10px;">
-                            <button id="Boton-AceptarReasignacionCalle" class="btn btn-primary aceptar-carga-porte" type="button" style="width: 100%;">Reasignar Camión</button>
                         </div>
                     </fieldset>
-                }
-                else
-                {
-            <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
-                <legend class="reset-this redo-legend">Información</legend>
-                <div class="row">
-                    <div class="control-group col-3">
-                        @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
-                        <div id="div-patente" class="controls">
-                            @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
-                        </div>
-                    </div>
-                    <div id="div-nomchofer" class="control-group col-5">
-                        @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
-                        <div class="controls">
-                            @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
-                        </div>
-                    </div>
-                    <div id="div-cartaporte" class="control-group col-4">
-                        @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
-                        <div class="controls">
-                            @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
-                        </div>
-                    </div>
                 </div>
-                <hr />
-                <div class="row">
-                    <div class="control-group col-6">
-                        @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
-                        <div id="div-patente" class="controls">
-                            @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
-                        </div>
-                    </div>
-                    <div id="div-nomchofer" class="control-group col-6">
-                        @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
-                        <div class="controls">
-                            @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
-                        </div>
-                    </div>
 
+            }
+            else
+            {
+                <div class="modal-header">
+                    @if (PermisosHelper.Is(PermisosScato.EstadoDeCalleMoverRechazado) && Model.Rechazado && Model.TipoCalle
+                   == Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
+                    {
+
+                        <h5 class="modal-title">Confirmar Mover a Rechazado</h5>
+                    }
+                    else
+                    {
+                        <h5 class="modal-title">Información del Vehiculo</h5>
+                    }
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </fieldset>
-                }
-            </div>
-            @Html.HiddenFor(model => model.RecorridoId)
-            @Html.HiddenFor(model => model.CalleId)
-            @Html.HiddenFor(model => model.InstanciaWorflow)
+                <div class="modal-body" id="dialogo-confirmar-body">
 
-            <div class="modal-footer">
+                    @if (Model.PermisoReasignarCallePostCalado && Model.TipoCalle ==
+                   Molinos.Scato.Dominio.Enums.TipoCalle.PostCalado)
+                    {
+                        <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                            <legend class="reset-this redo-legend">Información</legend>
+                            <div class="row">
+                                <div class="control-group col-3">
+                                    @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                                    <div id="div-patente" class="controls">
+                                        @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
+                                    </div>
+                                </div>
+                                <div id="div-nomchofer" class="control-group col-5">
+                                    @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
+                                    </div>
+                                </div>
+                                <div id="div-cartaporte" class="control-group col-4">
+                                    @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="control-group col-6">
+                                    @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
+                                    <div id="div-patente" class="controls">
+                                        @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                                    </div>
+                                </div>
+                                <div id="div-nomchofer" class="control-group col-6">
+                                    @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="reset-this redo-fieldset" style="margin-left: 10px; margin-top: 20px;">
+                            <legend class="reset-this redo-legend">Reasignación de Calle</legend>
+                            <div class="control-group">
+                                @Html.Label("Tipo de Calle", new { @class = "control-label" })
+                                <div class="">
+                                    @Html.DropDownListFor(model => model.CalleId, callesPostCalado, new { @class =
+                            "selec-calle", id = "calleId" })
+                                </div>
+                            </div>
+                            <div class="botones-carta-porte centered" style="padding-top: 20px; padding-bottom: 10px;">
+                                <button id="Boton-AceptarReasignacionCalle" class="btn btn-primary aceptar-carga-porte"
+                            type="button" style="width: 100%;">Reasignar Camión</button>
+                            </div>
+                        </fieldset>
+                    }
+                    else
+                    {
+                        <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                            <legend class="reset-this redo-legend">Información</legend>
+                            <div class="row">
+                                <div class="control-group col-3">
+                                    @Html.LabelFor(model => model.Patente, new { @class = "control-label" })
+                                    <div id="div-patente" class="controls">
+                                        @Html.DisplayFor(model => model.Patente, new { @class = "input-medium" })
+                                    </div>
+                                </div>
+                                <div id="div-nomchofer" class="control-group col-5">
+                                    @Html.LabelFor(model => model.NombreChofer, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.NombreChofer, new { @class = "input-large" })
+                                    </div>
+                                </div>
+                                <div id="div-cartaporte" class="control-group col-4">
+                                    @Html.LabelFor(model => model.CartaPorte, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.CartaPorte, new { @class = "input-large" })
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="control-group col-6">
+                                    @Html.LabelFor(model => model.Tarjeta, new { @class = "control-label" })
+                                    <div id="div-patente" class="controls">
+                                        @Html.DisplayFor(model => model.Tarjeta, new { @class = "input-medium" })
+                                    </div>
+                                </div>
+                                <div id="div-nomchofer" class="control-group col-6">
+                                    @Html.LabelFor(model => model.Etapa, new { @class = "control-label" })
+                                    <div class="controls">
+                                        @Html.DisplayFor(model => model.Etapa, new { @class = "input-large" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+                @Html.HiddenFor(model => model.RecorridoId)
+                @Html.HiddenFor(model => model.CalleId)
+            }
+            <div class="modal-footer d-flex justify-content-around">
+                @if (Model.CalleNoGrano && Model.Etapa == Constantes.EtapaWorkflow.Visteo){
+                    <div class="centered">
+                        @Textos.VehiculoEnCondiciones_Pregunta:
+                        <button id="btn-noGranos-confirm" onclick="modalConfirmarVisteo.showModal()" class="btn btn-primary rechazar">@Textos.Si</button>
+                        <button id="btn-noGranos-no" onclick="rechazo()" class="btn btn-outline-dark rechazar-boton no-rechazar">@Textos.No</button>
+                    </div>
+                }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
+
+<div id="mensajeRechazar">
 </div>
 
 <div id="dialogo-confirmar" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -167,9 +293,21 @@
             </div>
 
             <div class="modal-footer">
-                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction" value="">Confirmar</button>
+                <button id="dialogo-confirmar-confirmar" type="submit" class="btn " name="submitAction"
+                    value="">Confirmar</button>
                 <button id="dialogo-confirmar-cancelar" data-dismiss="modal" class="btn btn-warning">Cancelar</button>
             </div>
         </div>
     </div>
 </div>
+
+<dialog id="modalConfirmarVisteo">
+    <h4>@Textos.Confirmacion</h4>
+    <p>
+        ¿Está seguro de que el vehiculo está en condiciones?
+    </p>
+    <div>
+        <button type="button" id="btn-noGranos-confirm" onclick="enCondiciones(true)" class="btn btn-warning">Confirmar</button>
+        <button class="btn" onclick="modalConfirmarVisteo.close()">Cerrar</button>
+    </div>
+</dialog>

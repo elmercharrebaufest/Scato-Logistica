@@ -23,8 +23,10 @@ namespace Molinos.Scato.Actividades.Internas
         {
             var resultado = new Resultado();
             PesaNetoRequest request = null;
+            var servicioRepositorio = context.GetExtension<IServicioRepositorio>();
             try
             {
+                var cartaPorteDerivadoGranario = servicioRepositorio.ObtenerCartaPorteDerivadoGranarioPorGuid(context.WorkflowInstanceId);
                 request = new PesaNetoRequest
                     { 
                         PesaNeto = new PesaNeto
@@ -33,8 +35,10 @@ namespace Molinos.Scato.Actividades.Internas
                                 PesoBruto = PesoBruto.Get<Decimal>(context),
                                 PesoNeto = PesoNeto.Get<Decimal>(context),
                                 PesoBrutoSpecified = true,
-                                PesoNetoSpecified = true
-                            }
+                                PesoNetoSpecified = true,
+                                IM_CTG = cartaPorteDerivadoGranario != null ? cartaPorteDerivadoGranario.NroCTG : string.Empty,
+                                IM_CPEDG = cartaPorteDerivadoGranario != null ? ($"{cartaPorteDerivadoGranario.Sucursal}{cartaPorteDerivadoGranario.NroOrden}") : string.Empty
+                        }
                     };
 
 

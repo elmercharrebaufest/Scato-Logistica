@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Test.Mock;
 using Molinos.Scato.Web.Controllers;
 using Molinos.Scato.Web.Models;
-using Molinos.Scato.Web.Models.ArchivosXml;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Molinos.Scato.Test.Controllers
 {
@@ -90,40 +85,40 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void TestImprimirLote()
         {
-            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>())).Returns(new MuestraEnvioACamaraYRecorridoDto());
+            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(new MuestraEnvioACamaraYRecorridoDto());
             var result = target.ImprimirLote(It.IsAny<int>());
             Assert.That(result, Is.Not.Null.Or.Empty);
         }
-        
+
         [Test]
         public void TestListarPendientes()
         {
-            servRepositorioMock.Setup(s => s.ListarMuestraEnvioACamaraSinLote(It.IsAny<int>())).Returns(new List<MuestraEnvioACamaraDto>());
+            servRepositorioMock.Setup(s => s.ListarMuestraEnvioACamaraSinLote(It.IsAny<int>(), It.IsAny<bool>())).Returns(new List<MuestraEnvioACamaraDto>());
             var result = target.ListarPendientes(new DatosUsuario { CentroId = 3 });
             Assert.That(result, Is.Not.Null.Or.Empty);
         }
-        
+
         [Test]
         public void ObtenerMuestraCamionNoEgresado()
         {
             var muestra = new MuestraEnvioACamaraYRecorridoDto()
-                {
-                    Patente = "AAA111",
-                    Rechazado = false,
-                    Terminado = false,
-                    MuestraEnvioACamara = new MuestraEnvioACamaraDto
             {
-                Id = 1,
-                NroCartaPorte = "111",
-                FechaCartaPorte = new DateTime(2010, 1, 1),
-                Material = "Material",
-                Vendedor = "Vendedor",
-                NroMuestra = "123"
-            }
-                };
+                Patente = "AAA111",
+                Rechazado = false,
+                Terminado = false,
+                MuestraEnvioACamara = new MuestraEnvioACamaraDto
+                {
+                    Id = 1,
+                    NroCartaPorte = "111",
+                    FechaCartaPorte = new DateTime(2010, 1, 1),
+                    Material = "Material",
+                    Vendedor = "Vendedor",
+                    NroMuestra = "123"
+                }
+            };
             recorrido.FechaEgreso = null;
             recorrido.Terminado = false;
-            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>())).Returns(muestra);
+            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(muestra);
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
             var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(), new DatosUsuario()) as JsonResult;
             var serializer = new JavaScriptSerializer();
@@ -135,25 +130,25 @@ namespace Molinos.Scato.Test.Controllers
         public void ObtenerMuestraCamionRechazado()
         {
             var muestra = new MuestraEnvioACamaraYRecorridoDto()
-                {
-                    Patente = "AAA111",
-                    Rechazado = true,
-                    Terminado = true,
-                    MuestraEnvioACamara = new MuestraEnvioACamaraDto
             {
-                Id = 1,
-                NroCartaPorte = "111",
-                FechaCartaPorte = new DateTime(2010, 1, 1),
-                Material = "Material",
-                Vendedor = "Vendedor",
-                NroMuestra = "123"
-            }
-                };
+                Patente = "AAA111",
+                Rechazado = true,
+                Terminado = true,
+                MuestraEnvioACamara = new MuestraEnvioACamaraDto
+                {
+                    Id = 1,
+                    NroCartaPorte = "111",
+                    FechaCartaPorte = new DateTime(2010, 1, 1),
+                    Material = "Material",
+                    Vendedor = "Vendedor",
+                    NroMuestra = "123"
+                }
+            };
             recorrido.FechaEgreso = null;
             recorrido.Rechazado = true;
-            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>())).Returns(muestra);
+            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(muestra);
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
-            var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(),new DatosUsuario()) as JsonResult;
+            var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(), new DatosUsuario()) as JsonResult;
             var serializer = new JavaScriptSerializer();
             var output = serializer.Serialize(resultado.Data);
             Assert.That(output, Is.EqualTo("{\"MuestraId\":-3}"));
@@ -163,23 +158,23 @@ namespace Molinos.Scato.Test.Controllers
         public void ObtenerMuestraYaAnalizada()
         {
             var muestra = new MuestraEnvioACamaraYRecorridoDto()
+            {
+                Patente = "AAA111",
+                Rechazado = false,
+                Terminado = true,
+                MuestraEnvioACamara = new MuestraEnvioACamaraDto
                 {
-                    Patente = "AAA111",
-                    Rechazado = false,
-                    Terminado = true,
-                    MuestraEnvioACamara = new MuestraEnvioACamaraDto
-                        {
-                            Id = 1,
-                            NroCartaPorte = "111",
-                            FechaCartaPorte = new DateTime(2010, 1, 1),
-                            Material = "Material",
-                            Vendedor = "Vendedor",
-                            NroMuestra = "123",
-                            EstadoMuestra = EstadoMuestra.Enviada
-                        }
-                };
+                    Id = 1,
+                    NroCartaPorte = "111",
+                    FechaCartaPorte = new DateTime(2010, 1, 1),
+                    Material = "Material",
+                    Vendedor = "Vendedor",
+                    NroMuestra = "123",
+                    EstadoMuestra = EstadoMuestra.Enviada
+                }
+            };
 
-            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>())).Returns(muestra);
+            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(muestra);
 
             var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(), new DatosUsuario()) as JsonResult;
             var serializer = new JavaScriptSerializer();
@@ -191,24 +186,24 @@ namespace Molinos.Scato.Test.Controllers
         public void ObtenerMuestraBien()
         {
             var muestra = new MuestraEnvioACamaraYRecorridoDto()
-                {
-                    Patente = "AAA111",
-                    Rechazado = false,
-                    Terminado = true,
-                    MuestraEnvioACamara = new MuestraEnvioACamaraDto
             {
-                Id = 1,
-                NroCartaPorte = "111",
-                FechaCartaPorte = new DateTime(2010, 1, 1),
-                Material = "Material",
-                Vendedor = "Vendedor",
-                NroMuestra = "123",
-                EstadoMuestra = EstadoMuestra.Pendiente,
-                PesoNeto = 0
-            }
-                };
+                Patente = "AAA111",
+                Rechazado = false,
+                Terminado = true,
+                MuestraEnvioACamara = new MuestraEnvioACamaraDto
+                {
+                    Id = 1,
+                    NroCartaPorte = "111",
+                    FechaCartaPorte = new DateTime(2010, 1, 1),
+                    Material = "Material",
+                    Vendedor = "Vendedor",
+                    NroMuestra = "123",
+                    EstadoMuestra = EstadoMuestra.Pendiente,
+                    PesoNeto = 0
+                }
+            };
 
-            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>())).Returns(muestra);
+            servRepositorioMock.Setup(s => s.ObtenerMuestraEnvioACamaraYRecorridoPorNumero(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(muestra);
             servRepositorioMock.Setup(s => s.ObtenerRecorridoPorGuid(It.IsAny<Guid>())).Returns(recorrido);
             var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(), new DatosUsuario()) as JsonResult;
             var serializer = new JavaScriptSerializer();
@@ -219,19 +214,18 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void ObtenerMuestraInexistente()
         {
-            var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(),new DatosUsuario()) as JsonResult;
+            var resultado = target.ObtenerMuestra(It.IsAny<string>(), It.IsAny<int>(), new DatosUsuario()) as JsonResult;
             var serializer = new JavaScriptSerializer();
             var output = serializer.Serialize(resultado.Data);
             Assert.That(output, Is.EqualTo("{\"MuestraId\":-2}"));
         }
-
 
         [Test]
         public void ArmarLoteTest_SinMuestras()
         {
             servRepositorioMock.Setup(s => s.ListarCamaras()).Returns(new List<CamaraDto> { new CamaraDto { Id = 1, Descripcion = "1" }, new CamaraDto { Id = 2, Descripcion = "2" } });
             const string json = "[]";
-            var result = target.ArmarLote(loteDto, json, false, new DatosUsuario{CentroId = 1}) as ViewResult;
+            var result = target.ArmarLote(loteDto, json, false, new DatosUsuario { CentroId = 1 }) as ViewResult;
             var model = (LoteDto)result.Model;
             Assert.That(target.ModelState.IsValid, Is.EqualTo(false));
             Assert.That(target.ModelState.Values.Where(w => w.Errors.Count > 0).SelectMany(s => s.Errors).First().ErrorMessage, Is.EqualTo(Textos.Lote_NoHayMuestras));
@@ -394,7 +388,7 @@ namespace Molinos.Scato.Test.Controllers
             Assert.That(new StreamReader(archive.Entries[0].Open()).ReadToEnd(), Is.EqualTo("0001           0000Soja                     3050085862822222222222000000000001000000012000000333L                              100202            02SAAA111  Americo                                 0000000000000000012340000000012345678912Americo                                 00                                                                                                    0000000000C 00AAA111         0000000000Corredor                                20156783215Palermo S.A.                            22222222222Gonzalez                                1216\r\n"));
             Assert.That(new StreamReader(archive.Entries[1].Open()).ReadToEnd(), Is.EqualTo("0001           22222222222Gonzalez                                000\r\n"));
         }
-        
+
         [Test]
         public void GenerarArchivosTestLoteInvalido()
         {
@@ -432,40 +426,39 @@ namespace Molinos.Scato.Test.Controllers
                                        new List<LoteListaDto> { new LoteListaDto { Id = 1, CamaraId = 1, NumeroDeLote = "123" } }, 1,
                                        1, 1));
 
-            var result = target.GenerarArchivos(1234, "Lote2", new DatosUsuario{NombreUsuario = "w",CentroId = 1}) as ViewResult;
+            var result = target.GenerarArchivos(1234, "Lote2", new DatosUsuario { NombreUsuario = "w", CentroId = 1 }) as ViewResult;
             Assert.NotNull(result);
-            Assert.AreEqual(result.ViewName,"Lote2");
+            Assert.AreEqual(result.ViewName, "Lote2");
             Assert.That(result.ViewName, Is.EqualTo("Lote2"));
             Assert.That(target.TempData["TipoAlerta"], Is.EqualTo(TipoAlerta.Advertencia));
             Assert.That(target.TempData["Alerta"], Is.EqualTo(Textos.Lote_FormatoCamaraError));
         }
-        
+
         [Test]
         public void LoteCreado()
         {
-            var result = target.LoteCreado(1234,"LOTE1") as ViewResult;
+            var result = target.LoteCreado(1234, "LOTE1") as ViewResult;
 
             Assert.NotNull(result);
-            Assert.AreEqual(result.Model,1234);
+            Assert.AreEqual(result.Model, 1234);
         }
 
         [Test]
         public void DescargarBuenosAires()
         {
-
-            firmaMock.Setup(s => s.ObtenerFirmaSinLogo()).Returns(new FirmaDto { Cuit = "30-50085862-8" ,RazonSocial = "A"});
+            firmaMock.Setup(s => s.ObtenerFirmaSinLogo()).Returns(new FirmaDto { Cuit = "30-50085862-8", RazonSocial = "A" });
             servRepositorioMock.Setup(s => s.ObtenerCentro(It.IsAny<int>()))
                                .Returns(new CentroDto { Descripcion = "Centro", Id = 1, NumeroOrigenCamaraBsAs = "1" });
-            servRepositorioMock.Setup(s => s.ObtenerSecuenciaEnvioACamara()).Returns( 1 );
+            servRepositorioMock.Setup(s => s.ObtenerSecuenciaEnvioACamara()).Returns(1);
             servRepositorioMock.Setup(s => s.ObtenerProveedorPorCodigoSap(It.IsAny<string>()))
                                .Returns(new ProveedorDto());
 
             var result =
                 target.DescargarBuenosAires(
                     new LoteDto
-                        {
-                            Id = 1,
-                            Muestras =
+                    {
+                        Id = 1,
+                        Muestras =
                                 new List<MuestraEnvioACamaraDto>
                                     {
                                         new MuestraEnvioACamaraDto
@@ -495,7 +488,7 @@ namespace Molinos.Scato.Test.Controllers
                                        GrupoCodigoCamara = "1"
                                         }
                                     }
-                        }, new DatosUsuario());
+                    }, new DatosUsuario());
 
             Assert.NotNull(result);
             Assert.AreEqual(((FileResult)(result)).FileDownloadName, "AS-CABC-001-0000165-0000001-0000001.xml");
@@ -504,12 +497,11 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void DescargarBahiaBlanca()
         {
-
             firmaMock.Setup(s => s.ObtenerFirmaSinLogo()).Returns(new FirmaDto { Cuit = "30-50085862-8", RazonSocial = "A" });
             var result = target.DescargarBahiaBlanca(new LoteDto
-                {
-                    CamaraFormatoDeArchivo = CamaraFormatoDeArchivo.BahiaBlanca,
-                    Muestras =
+            {
+                CamaraFormatoDeArchivo = CamaraFormatoDeArchivo.BahiaBlanca,
+                Muestras =
                         new List<MuestraEnvioACamaraDto>
                             {
                                 new MuestraEnvioACamaraDto
@@ -537,12 +529,9 @@ namespace Molinos.Scato.Test.Controllers
                                        CentroCodigoPostal = "1234",
                                        TipoVehiculo = TipoVehiculo.Camión,
                                        GrupoCodigoCamara = "1",
-                                       
-
-                                       
                                     }
                             }
-                });
+            });
             var nombre = DateTime.Now.Day.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
                              DateTime.Now.Month.ToString(CultureInfo.InvariantCulture).PadLeft(2, '0') +
                              DateTime.Now.Year.ToString(CultureInfo.InvariantCulture).Substring(2, 2);
@@ -553,7 +542,7 @@ namespace Molinos.Scato.Test.Controllers
         [Test]
         public void BuscarLote()
         {
-            var result = target.BuscarLote(new DatosUsuario(),new BuscarLoteDto()) as ViewResult;
+            var result = target.BuscarLote(new DatosUsuario(), new BuscarLoteDto()) as ViewResult;
             Assert.NotNull(result);
             Assert.AreEqual(result.ViewName, "");
 
@@ -581,7 +570,7 @@ namespace Molinos.Scato.Test.Controllers
             IEnumerable<SelectListItem> camaras = result.ViewBag.Camaras;
             Assert.NotNull(camaras);
             Assert.AreEqual(camaras.First(s => s.Value == "1").Text, "Camara1");
-            Assert.AreEqual(result.ViewName,"Listar");
+            Assert.AreEqual(result.ViewName, "Listar");
         }
     }
 }

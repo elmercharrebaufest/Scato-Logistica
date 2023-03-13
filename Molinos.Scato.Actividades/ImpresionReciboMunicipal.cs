@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Activities;
+using System.Collections.Generic;
 using System.Globalization;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -52,38 +54,62 @@ namespace Molinos.Scato.Actividades
 
             try
             {
+                var materialPagoRealizado = new List<string>
+                {
+                    Constantes.MaterialPagoRealizado.BiodiselAgranel,
+                    Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
+                    Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP
+                };
+
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
-                if (documento == null){throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo));}
+                if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
                 var recorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(workflowId);
-                
+
+                var datosRecorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
+                var material = datosRecorrido.Material;
+
                 bool pagoRealizado = false;
-                //string numPuestoDeTrabajo = string.Empty;
-                //string numDeTicket = string.Empty; 
-             
-                var numPuestoDeTrabajo = repositorio.ObtenerNumGaritaEntrada(puestoDeTrabajoId).PadLeft(4, '0');
-                var numDeTicket = (pagoRealizado == false) ? repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0') : "0";
-                //var numDeTicket = repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0');
-         
-                numPuestoDeTrabajo = (recorrido.PagoConMercadoPago) ? numPuestoDeTrabajo : string.Concat("1", numPuestoDeTrabajo.Substring(1));
-                numDeTicket = (recorrido.PagoConMercadoPago && pagoRealizado == false) ? string.Concat(numDeTicket, " MP") : numDeTicket;
-                //numDeTicket = (recorrido.PagoConMercadoPago) ? string.Concat(numDeTicket, " MP") : numDeTicket
-                    
+                var aplicaPago = true;
+                if (materialPagoRealizado.Contains(material.CodigoSAP))
+                {
+                    pagoRealizado = repositorio.ExistePagoRealizado(datosRecorrido.Patente);
+
+                    if (pagoRealizado)
+                    {
+                        aplicaPago = false;
+                    }
+                }
+
+                string numPuestoDeTrabajo = string.Empty;
+                string numDeTicket = string.Empty;
+                var ticketNumber = "Tasa abonada dentro del día";
+
+                if (aplicaPago)
+                {
+                    numPuestoDeTrabajo = repositorio.ObtenerNumGaritaEntrada(puestoDeTrabajoId).PadLeft(4, '0');
+                    numDeTicket = repositorio.ObtenerNumeroDeTicketGenerado(puestoDeTrabajoId, recorrido.PagoConMercadoPago).ToString(CultureInfo.InvariantCulture).PadLeft(7, '0');
+                    numPuestoDeTrabajo = recorrido.PagoConMercadoPago ? numPuestoDeTrabajo : string.Concat("1", numPuestoDeTrabajo.Substring(1));
+                    numDeTicket = (recorrido.PagoConMercadoPago && pagoRealizado == false) ? string.Concat(numDeTicket, " MP") : numDeTicket;
+                    ticketNumber = $"{numPuestoDeTrabajo}-{numDeTicket}";
+                }
+                
+
                 var dto = new ImpReciboMunicipalDto
                 {
                     Impresora = documento.ImpresoraDireccion ?? "",
                     Codigo = codigo,
-                    TicketNro = (pagoRealizado == true && recorrido.Material.CodigoSAP == "99319") ? "Tasa abonada dentro del día" : $"{numPuestoDeTrabajo}-{numDeTicket}",
+                    TicketNro = ticketNumber,
                     Ordenanza = recorrido.Ordenanza,
-                    Valor = (pagoRealizado == true && recorrido.Material.CodigoSAP == "99319") ? "0" : recorrido.Monto,
+                    Valor = aplicaPago ? recorrido.Monto : "0",
                     FechaImpresion = DateTime.Now,
                     WorkflowId = workflowId,
                     Patente = recorrido.Patente,
                     TipoVehiculo = recorrido.TipoVehiculo,
-                    NroDocumentoLegal = recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.Remito ? recorrido.DocumentoInternoSap ?? "" : recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte ? recorrido.NumeroDocumentoIngreso ?? "" :recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenDeDescargaFason ? recorrido.NumeroDocumentoIngreso : ""
+                    NroDocumentoLegal = recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.Remito ? recorrido.DocumentoInternoSap ?? "" : recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte ? recorrido.NumeroDocumentoIngreso ?? "" : recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenDeDescargaFason ? recorrido.NumeroDocumentoIngreso : ""
                 };
 
                 resultado = servicio.Ejecutar(new ImprimirReciboMunicipal { Dto = dto, CantidadCopias = cantCopias });
-                
+
             }
             catch (Exception e)
             {

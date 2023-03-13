@@ -21,13 +21,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public ListaPaginada<MonitorCPECacheadaListadoDto> Ejecutar(DbContext contexto)
         {
+            var estadosValidos = new List<string>() { "AC", "CO", "CF" };
+
             var centro = contexto.Set<Centro>().FirstOrDefault(q => q.Id == _filtro.CentroId);
 
             var materialList = contexto.Set<Material>().Where(q => q.EsGrano && !q.CodigoONCCA.Equals(null)).ToList();
 
-            var camionesPendientes = ObtenerCamionesCacheadosPendientes(contexto, centro.Planta);
-
-            var query = contexto.Set<CartaPorteElectronica>().Where(q => q.PlantaDestino == centro.Planta).AsQueryable();
+            var query = contexto.Set<CartaPorteElectronica>().Where(q => q.PlantaDestino == centro.Planta && estadosValidos.Contains(q.Estado) && (q.NoEncontradaAFIP == null || q.NoEncontradaAFIP == false)).AsQueryable();
 
             if (_filtro.CTG.HasValue)
                 query = query.Where(x => x.NroCTG == _filtro.CTG);
@@ -49,6 +49,12 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 query = query.Where(x => x.Material == codigoONCAInt);
             }
 
+            var camionesPendientes = new List<int>();
+            if (!_filtro.EsJobAutomatico && centro.Planta.HasValue)
+            {
+                camionesPendientes = ObtenerCamionesCacheadosPendientes(contexto, centro.Planta);
+            }
+
             if (_filtro.VerCamionesPorLlegar)
             {
                 query = query.Where(x => camionesPendientes.Contains(x.Id));
@@ -62,6 +68,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 CodigoONCA = x.Material,
                 FechaCacheado = x.FechaCacheado,
                 FechaCPE = x.FechaCP,
+                TipoCartaPorte = x.TipoCartaPorte,
                 TienePDF = (x.Pdf != null) ? true : false
             });
 
@@ -76,7 +83,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             }
 
             resultQuery = resultQuery.Skip((_paginacion.Pagina - 1) * _paginacion.ItemsPorPagina).Take(_paginacion.ItemsPorPagina);
-
 
             var result = resultQuery.ToList();
 
@@ -93,7 +99,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             var sqlQuery = @"SELECT CPE.Id FROM CartaPorteElectronica CPE
                         LEFT JOIN CartaPorte CP
                         ON CP.NroCartaPorte = CAST(CPE.NroCTG AS varchar)
-                        WHERE CP.NroCartaPorte IS NULL AND CPE.PlantaDestino = @planta";
+                        WHERE CP.NroCartaPorte IS NULL AND CPE.PlantaDestino = @planta AND CPE.Estado IN ('AC', 'CO', 'CF')";
 
             var sqlEjecucion = contexto.Database.SqlQuery<int>(sqlQuery,
                 new SqlParameter("@planta", planta));

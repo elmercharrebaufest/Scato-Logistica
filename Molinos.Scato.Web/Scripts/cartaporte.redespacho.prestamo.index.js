@@ -6,13 +6,11 @@
 
     $('#Cpe').change(function () {
         if ($('#Cpe').is(':checked')) {
-            console.log('cpe');
             $('#NroCartaPorte').prop('required', false);
             $('#NroCartaPorte').rules('remove', 'required');
             $('#Sucursal').prop('required', false);
             $('#Sucursal').rules('remove', 'required');
         } else {
-            console.log('no cpe');
             $('#NroCartaPorte').prop('required', true);
             $('#NroCartaPorte').rules('add', 'required');
             $('#Sucursal').prop('required', true);

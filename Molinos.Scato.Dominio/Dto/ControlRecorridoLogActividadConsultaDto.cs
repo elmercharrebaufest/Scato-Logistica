@@ -9,5 +9,6 @@ namespace Molinos.Scato.Dominio.Dto
         public DateTime Fecha { get; set; }
         public string Actividad { get; set; }
         public string Usuario { get; set; }
+        public string Plataforma { get; set; }
     }
 }

@@ -51,12 +51,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultadoComando;
         }
 
-        private async void AsynchronousEnviarMensajesCartelLEd(List<EnviarMensajeCarteLed> comando)
+        private async void AsynchronousEnviarMensajesCartelLEd(List<EnviarMensajeCartelLed> comando)
         {
             await AsyncEnviarMensajes(comando);
         }
 
-        public async Task AsyncEnviarMensajes(List<EnviarMensajeCarteLed> listaMensajes)
+        public async Task AsyncEnviarMensajes(List<EnviarMensajeCartelLed> listaMensajes)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private void EnviarMensaje(EnviarMensajeCarteLed comando)
+        private void EnviarMensaje(EnviarMensajeCartelLed comando)
         {
             Log.Debug($"Mensaje {comando.Mensaje}, Codigo {comando.Codigo} puesto {comando.PuestoDeTrabajoId} segundosEspera {comando.SegundosDeEspera}");
             using (var channelFactory = new ChannelFactory<IServicioOrquestador>("Orquestador"))

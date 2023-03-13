@@ -1,6 +1,7 @@
 ﻿@model Molinos.Scato.Dominio.Dto.PuestosDeCargaDescargaDto
 @{
     var puestosDeTrabajo = (IEnumerable<SelectListItem>)ViewBag.PuestosDeTrabajo;
+    var sensoresBajada = (IEnumerable<SelectListItem>)ViewBag.SensoresBajada;
 }
 
 <div class="control-group">
@@ -15,6 +16,13 @@
     <div class="controls">
         @Html.DropDownListFor(model => model.PuestoDeTrabajoId, puestosDeTrabajo, new {@class = "input-large"})
         @Html.ValidationMessageFor(model => model.PuestoDeTrabajoId)
+    </div>
+</div>
+<div class="control-group">
+    @Html.LabelFor(model => model.CodigoSensorBajada, new { @class = "control-label" })
+    <div class="controls">
+        @Html.DropDownListFor(model => model.CodigoSensorBajada, sensoresBajada, string.Empty)
+        @Html.ValidationMessageFor(model => model.CodigoSensorBajada)
     </div>
 </div>
 <div class="control-group">

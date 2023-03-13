@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ConfigSensoresDto>)ViewBag.Items;
+}
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+    grilla.ColumnaEliminarModificar(Html, "ConfiguracionSensores"),
+    grilla.Columna("Descripcion", Textos.Descripcion, x => x.Descripcion),
+    grilla.Columna("SensorBarreraEntradaArriba", Textos.SensorBarreraEntradaArriba, x => x.SensorBarreraEntradaArriba),
+    grilla.Columna("SensorBarreraEntradaAbajo", Textos.SensorBarreraEntradaAbajo, x => x.SensorBarreraEntradaAbajo),
+    grilla.Columna("SensorPosicionIngreso", Textos.SensorPosicionIngreso, x => x.SensorPosicionIngreso),
+    grilla.Columna("SensorPosicionSalida", Textos.SensorPosicionSalida, x => x.SensorPosicionSalida),
+    grilla.Columna("SensorBarreraSalidaArriba", Textos.SensorBarreraSalidaArriba, x => x.SensorBarreraSalidaArriba),
+    grilla.Columna("SensorBarreraSalidaAbajo", Textos.SensorBarreraSalidaAbajo, x => x.SensorBarreraSalidaAbajo)
+    ))

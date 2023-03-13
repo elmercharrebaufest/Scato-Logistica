@@ -26,9 +26,8 @@ namespace Molinos.Scato.Actividades.Internas
             try{
 
                 var servicioComandos = context.GetExtension<IServicioComandos>();
-                var resultado = orden.Cpe ?
-                    servicioComandos.Ejecutar(new ConfirmarArriboDefinitivo { Dto = orden, CentroId = centroId, WorkflowId = workflowId }):
-                    servicioComandos.Ejecutar(new DarDeBajaCTGDefinitivo { Dto = orden, CentroId = centroId, WorkflowId = workflowId});
+                var resultado = servicioComandos.Ejecutar(new ConfirmarArriboDefinitivo { Dto = orden, CentroId = centroId, WorkflowId = workflowId });
+                    
                 Resultado.Set(context, resultado);
 
             }

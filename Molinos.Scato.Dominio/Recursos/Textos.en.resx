@@ -1104,4 +1104,7 @@
   <data name="PuestoDeTrabajo_Intercomunicador" xml:space="preserve">
     <value>Intercomunicador</value>
   </data>
+  <data name="Workflow_ExcluirRechazados" xml:space="preserve">
+    <value>Exclude rejected</value>
+  </data>
 </root>

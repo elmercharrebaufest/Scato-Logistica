@@ -1,6 +1,5 @@
 ﻿namespace Molinos.Scato.Dominio.Enums
 {
-
     public enum TipoAlerta
     {
         Exito = 0,
@@ -14,6 +13,8 @@
         NotificacionEstadoWeb = 8,
         CartaPorte = 9,
         CambioEstadoBalanzas = 10,
-        CambioEstadoSemaforo = 11
+        CambioEstadoSemaforo = 11,
+        CambioEstadoBarrera = 12,
+        CambioEstadoBarreraHidraulica = 13
     }
 }

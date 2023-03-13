@@ -13,5 +13,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime FechaHasta { get; set; }
         public virtual decimal StockDeclarado { get; set; }
         public virtual decimal StockReservado { get; set; }
+        public virtual decimal? Tolerancia { get; set; }
     }
 }
