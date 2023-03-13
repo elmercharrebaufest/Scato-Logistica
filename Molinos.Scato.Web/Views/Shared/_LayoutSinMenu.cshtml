@@ -1,0 +1,211 @@
+﻿@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web
+@using Molinos.Scato.Web.Helpers
+
+@{
+    var mensaje = (string)TempData["Alerta"];
+    var tipoMensaje = TempData["TipoAlerta"] as TipoAlerta?;
+    var clase = string.IsNullOrEmpty(mensaje) ? "hide" : string.Empty;
+    var mensajeAplicacion = (string)TempData["MensajeAplicacion"];
+
+    if (tipoMensaje != null)
+    {
+        switch (tipoMensaje)
+        {
+            case TipoAlerta.Exito:
+                clase = "alert alert-success";
+                break;
+            case TipoAlerta.Advertencia:
+                clase = "alert alert-warning";
+                break;
+            case TipoAlerta.Error:
+                clase = "alert alert-error";
+                break;
+            case TipoAlerta.Informacion:
+                clase = "alert alert-info";
+                break;
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="@Html.Action("Favicon", "Firma")" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/site.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/fontawesome-all.min.css")">
+    <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/icomoon.css")" />
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Styles.Render("~/Content/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery-common")
+    <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render(String.Format("~/Scripts/jquery.globalize/cultures/globalize.culture.{0}.js", Culture))
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.hubReady = $.connection.hub.start();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var ajaxEditSuccess = '@Html.Raw(AjaxEditSuccessResult.SuccessValue)';
+        Globalize.culture("@Culture");
+        var btn = $.fn.button.noConflict(); // reverts $.fn.button to jqueryui btn
+        $.fn.btn = btn; // assigns bootstrap button functionality to $.fn.btn
+    </script>
+    <script src="@Url.Script("~/Scripts/scatocommon.globalize.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/scatocommon.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/jquery.showCredits.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/jquery.mousetrap.js")" type="text/javascript"></script>
+    <script src="@Url.Script("~/Scripts/popUpMotivoInactividad.js")" type="text/javascript"></script>
+    <style>
+        .field-validation-error {
+            color: #b94a48;
+            font-size: 10px;
+        }
+
+        .validation-summary-errors {
+            color: #ff0000;
+        }
+
+        #alertaFija {
+            border: solid;
+            cursor: pointer;
+        }
+    </style>
+    @RenderSection("scripts", required: false)
+</head>
+
+<body>
+    <div class="@System.Configuration.ConfigurationManager.AppSettings["FondoAmbiente"]"></div>
+    <div class="container-fluid">
+        <div id="alertaError" data-mensaje="@Textos.Error_Generico" class="alert alert-error fade hide centro-pantalla alerta-box">
+            <a class="close" data-hide="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaAdvertencia" data-mensaje="@Textos.Error_Generico" class="alert fade hide centro-pantalla alerta-box">
+            <a class="close" data-hide="alert">×</a>
+            <span></span>
+        </div>
+        <div id="alertaExitosa" class="alert alert-success fade hide centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaInfo" class="alert alert-info fade hide centro-pantalla alerta-box">
+            <span>@Textos.Exito_Generico</span>
+        </div>
+        <div id="alertaCancelada" class="alert alert-success fade hide" style="width: 50%; margin: 0 auto;position: absolute;left: 25%; text-align: center; font-weight: bold; top:14%">
+            <span>@Textos.CanceladoExitoso_Generico</span>
+        </div>
+
+        <div class="alert alert-warning hide" id="alertaFija" role="alert">
+            <i class="icon-warning-sign"></i>
+            <span id="alertaFija-span">@mensajeAplicacion</span>
+        </div>
+
+
+        @Html.Hidden("ValorSi", Textos.Si)
+        @Html.Hidden("ValorNo", Textos.No)
+        @Html.Hidden("ObtenerPuestoDeTrabajoUrl", Url.Action("ObtenerPuestoDeTrabajo", "Consultas"))
+        @Html.Hidden("ObtenerNombrePcUrl", Url.Action("ObtenerNombrePc", "Consultas"))
+        @Html.Hidden("RedireccionarAListaAutomatizadaUrl", Url.Action("RedireccionarAListaAutomatizada", "Consultas"))
+        @Html.Hidden("RedireccionarABalanzaAutomatizadaUrl", Url.Action("RedireccionarABalanzaAutomatizada", "Consultas"))
+        @Html.Hidden("MensajeBuscandoDatos", Textos.Buscando)
+        @Html.Hidden("PuestoDeTrabajoErrorMensaje", Textos.Pesada_ErrorPuestoDeTrabajo)
+        @Html.Hidden("PuestoDeTrabajoSinBalanzasErrorMensaje", Textos.Pesada_ErrorNoHayBalanzas)
+        @Html.Hidden("PuestoDeTrabajoPcBalanzaErrorMensaje", Textos.Pesada_ErrorBalanzaPuestoDeTrabajo)
+        @Html.Hidden("ObtenerMensajeFijoUrl", Url.Action("ObtenerMensajeFijo", "Consultas"))
+        @Html.Hidden("RegistroInactividadModalUrl", Url.Action("Index", "RegistroInactividad"))
+        @RenderBody()
+    </div>
+    <div class="alerta-box centro-pantalla @clase" id="alerta">
+        @if (clase != "alert alert-success")
+        {
+            <a class="close" data-dismiss="alert">×</a>
+        }
+        <div>@mensaje</div>
+    </div>
+
+
+    <div class="modal hide fade" id="dialogo-borrar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4>@Textos.Confirmacion</h4>
+        </div>
+        <div class="modal-body">
+            <h4>@Textos.ConfirmacionBorrado</h4>
+            <div id="dialogo-borrar-motivo">
+                <br />
+                <br />
+                @Textos.Motivo : @Html.TextArea("dialogo-borrar-motivo-text", new { @class = "input-xlarge textarea-large pull-right", maxlength = 255 })
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input id="dialogo-borrar-confirmar" type="button" class="btn btn-warning" value="@Textos.Eliminar" />
+            <input id="dialogo-borrar-cancelar" type="button" class="btn" value="@Textos.Cancelar" />
+        </div>
+    </div>
+
+    <div class="modal hide fade " id="dialogo-editar">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="dialogo-editar-title"></h4>
+        </div>
+        <div class="modal-body" id="dialogo-editar-body">
+        </div>
+        <div class="modal-footer">
+            <input id="dialogo-editar-boton" type="button" class="hide btn" value="" />
+            <input id="dialogo-editar-guardar" type="button" class="btn btn-primary" value="@Textos.Guardar" />
+            <input id="dialogo-editar-cancelar" type="button" class="btn" value="@Textos.Cancelar" />
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="dialogo-ver">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <span id="dialogo-ver-header" style="font-weight:bold"></span>
+        </div>
+        <div class="modal-body" id="dialogo-ver-body">
+        </div>
+        <div class="modal-footer">
+            <input id="dialogo-ver-ok" type="button" class="btn" value="@Textos.Ok" />
+        </div>
+    </div>
+
+    <div class="modal fade" id="dialog-credits" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" id="header-credits"></div>
+                <div class="modal-body" id="body-credits"></div>
+                <div class="modal-footer" id="footer-credits"></div>
+            </div>
+        </div>
+    </div>
+    <div id="riModal" data-url-registro-inactividad-modal="@Url.Action("Index", "RegistroInactividad")">
+
+    </div>
+    <div id="linksRegistrarInactividad"
+         data-url-consultar-ultimo-camion-calado="@Url.Action("ConsultarUltimoCamionCalado", "RegistroInactividad")"
+        data-url-valida-inactividad="@Url.Action("ValidaInactividad", "RegistroInactividad")">
+    </div>
+
+    @Html.Hidden("Procesando", Textos.Procesando)
+    @Html.Hidden("PorFavorEspere", Textos.PorFavorEspere)
+    @Html.Hidden("Cargando", Textos.Cargando)
+
+    <div style="font-weight: bold; padding:10px;width: auto" id="loading" class="hide centered">
+    </div>
+    @*@MiniProfiler.RenderIncludes()*@
+    @*@Html.RenderPartial("~/Views/PanelSugerencia/Index.cshtml")*@
+    @Html.Partial("~/Views/Sugerencia/Index.cshtml")
+
+</body>
+</html>
