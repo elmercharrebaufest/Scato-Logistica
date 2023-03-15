@@ -663,10 +663,6 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
             }
 
-            if (!orden.Rechazado && material.EsDerivadoGranario && !orden.TipoDomicilioDestino.HasValue)
-            {
-                ModelState.AddModelError("OrdenDomicilioDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
-            }
         }
 
         // Utilizar método sólo para pruebas locales
