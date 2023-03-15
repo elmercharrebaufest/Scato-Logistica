@@ -25,5 +25,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int? RemitenteId { get; set; }
         public string CuitDestinatario { get; set; }
         public int? IntermediarioFleteId { get; set; }
+        public int? DestinatarioId { get; set; }
     }
 }

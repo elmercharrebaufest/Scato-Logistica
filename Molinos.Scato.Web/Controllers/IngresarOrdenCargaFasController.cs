@@ -507,7 +507,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
