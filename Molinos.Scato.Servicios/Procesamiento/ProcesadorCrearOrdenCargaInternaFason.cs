@@ -60,6 +60,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId),
                         IntermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId),
                         TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
+                        Destinatario = Repositorio.Obtener<Cliente>(comando.Orden.DestinatarioId),
                     };
 
                     Repositorio.Agregar(ordenCargaInternaFason);

@@ -424,6 +424,7 @@ namespace Molinos.Scato.Web.Controllers
                         CentroId = datosUsuario.CentroId,
                         MaterialId = model.MaterialId,
                         DestinoId = model.ClienteId,
+                        DestinatarioId = model.DestinatarioId,
                         DestinoPlanta = model.PlantaDGDestino ?? 0,
                         DestinoDomicilioTipo = model.TipoDomicilioDestino ?? 0,
                         DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
@@ -634,7 +635,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!orden.Rechazado && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
             if (!orden.Rechazado && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))

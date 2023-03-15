@@ -5,11 +5,9 @@ using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
-using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -128,6 +126,7 @@ namespace Molinos.Scato.Web.Controllers
                     CentroId = datosUsuario.CentroId,
                     MaterialId = orden.MaterialId,
                     DestinoId = orden.ClienteId,
+                    DestinatarioId = orden.DestinatarioId,
                     DestinoPlanta = orden.PlantaDGDestino ?? 0,
                     DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                     DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
@@ -238,7 +237,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
             if (material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
@@ -249,6 +248,11 @@ namespace Molinos.Scato.Web.Controllers
             if(material.EsDerivadoGranario && orden.ClienteId <= 0)
             {
                 ModelState.AddModelError("Cliente", string.Format(Textos.Error_Requerido, Textos.Cliente));
+            }
+
+            if (material.EsDerivadoGranario && !orden.DestinatarioId.HasValue)
+            {
+                ModelState.AddModelError("Destinatario", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));
             }
         }
     }

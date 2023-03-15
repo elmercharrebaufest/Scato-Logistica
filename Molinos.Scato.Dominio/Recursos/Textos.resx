@@ -10153,7 +10153,7 @@
   <data name="OrdenCarga_DerivadoGranarioHabilitado" xml:space="preserve">
     <value>Derivado Granario</value>
   </data>
-  <data name="OrdenCarga_OrdenDomicilioDestino" xml:space="preserve">
+  <data name="OrdenCarga_TipoYOrdenDestino" xml:space="preserve">
     <value>Domicilio</value>
   </data>
   <data name="OrdenCarga_PlantaDGDestino" xml:space="preserve">
@@ -10188,5 +10188,8 @@
   </data>
   <data name="Error_NoSojaEPA" xml:space="preserve">
     <value>Seleccione Recorridos con soja EPA</value>
+  </data>
+  <data name="OrdenCarga_Destinatario" xml:space="preserve">
+    <value>Destinatario</value>
   </data>
 </root>

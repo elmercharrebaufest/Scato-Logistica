@@ -87,9 +87,6 @@
         );
     }
 
-    
-
-
     if ($('#Comisionista').length > 0) {
         DefinirAutocompletarConSAP(
             '#Comisionista',
@@ -133,6 +130,20 @@
         });
     }
 
+    if ($('#Destinatario').length > 0) {
+        DefinirAutocompletarConSAP(
+            '#Destinatario',
+            '#DestinatarioId',
+            '#autocompleteDestinatario',
+            $('#links').data().urlBuscarClientes,
+            $('#links').data().urlBuscarClienteUnico,
+            $('#links').data().urlObtenerClientesSap,
+            function () {
+            },
+            function () {
+            }
+        );
+    }
 
     var listarProveedores = $('#links').data().urlBuscarProveedores;
     var obtenerProveedor = $('#links').data().urlBuscarProveedor;

@@ -22523,6 +22523,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destinatario.
+        /// </summary>
+        public static string OrdenCarga_Destinatario {
+            get {
+                return ResourceManager.GetString("OrdenCarga_Destinatario", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Existen validaciones dentro del formulario, favor de revisar.
         /// </summary>
         public static string OrdenCarga_ErrorValidacion {
@@ -22532,20 +22541,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Domicilio.
-        /// </summary>
-        public static string OrdenCarga_OrdenDomicilioDestino {
-            get {
-                return ResourceManager.GetString("OrdenCarga_OrdenDomicilioDestino", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Planta.
         /// </summary>
         public static string OrdenCarga_PlantaDGDestino {
             get {
                 return ResourceManager.GetString("OrdenCarga_PlantaDGDestino", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Domicilio.
+        /// </summary>
+        public static string OrdenCarga_TipoYOrdenDestino {
+            get {
+                return ResourceManager.GetString("OrdenCarga_TipoYOrdenDestino", resourceCulture);
             }
         }
         
