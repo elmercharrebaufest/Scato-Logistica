@@ -16,5 +16,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsTanqueVino { get; set; }
         public virtual bool EsSojaSustentable { get; set; }
         public virtual ICollection<Material> Materiales { get; set; }
+        public virtual bool EPA { get; set; }
     }
 }

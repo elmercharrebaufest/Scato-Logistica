@@ -22,5 +22,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Localidad Localidad { get; set; }
 
         public virtual Provincia Provincia { get; set; }
+
+        public virtual bool EPA { get; set; }
     }
 }

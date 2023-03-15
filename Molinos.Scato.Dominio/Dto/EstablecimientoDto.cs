@@ -47,6 +47,9 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Establecimiento_Anulado")]
         public bool Anulado { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEPA")]
+        public bool EsSojaEPA { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (ProveedorId == 0)

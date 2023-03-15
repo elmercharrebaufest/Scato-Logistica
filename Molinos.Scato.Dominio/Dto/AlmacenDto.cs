@@ -29,5 +29,8 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsSojaSustentable { get; set; }
         public bool? EsNuevo { get; set; }
         public bool FueEliminado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEPA")]
+        public bool EsSojaEPA { get; set; }
     }
 }

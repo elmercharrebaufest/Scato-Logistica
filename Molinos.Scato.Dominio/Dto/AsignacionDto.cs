@@ -42,5 +42,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool SustentableMixto { get; set; }
 
         public TipoVehiculo TipoVehiculo { get; set; }
+
+        public bool SonSojaEPA { get; set; }
     }
 }

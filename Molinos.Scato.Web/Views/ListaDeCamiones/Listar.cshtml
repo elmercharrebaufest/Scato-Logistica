@@ -31,7 +31,19 @@
     }
     if (Model.Columnas.Contains("ProximaEtapa"))
     {
-        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Rechazado ? " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) + (item.Sustentable ? " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty) + (item.ProximaAccion.Contains("Pendiente") ? Html.BotonLink(Textos.Eliminar, "Eliminar", "CargaDeCupo", new { Id = item.RecorridoId }, " ajax-borrar-link", "icon-trash", true).ToHtmlString() : string.Empty) + (item.EsEspecial && !item.CaracteristicasNoCorrenspodenEspecial ? " <strong style='color: #ffe135;' >" + Textos.CalidadEspecial + "</strong>" : string.Empty) + (item.AnalisisObligatorio ? " <span  class='label label-warning'> <strong  >" + Textos.AnalisisObligatorio + "</strong> </span>" : string.Empty) + (item.VehiculoDemorado ? "<i class=\"fa fa-hourglass-half\"/>" : "") + (item.LlegoEnHorario ? "<i class=\"icon-time\" title=\"Priorizar\"></i>" : ""))));
+        columnas.Add(grid.Columna("ProximaAccion", Textos.Workflow_ProximaAccion, 
+        (item) => new MvcHtmlString((Textos.ResourceManager.GetString("Act" + item.ProximaAccion) ?? 
+        item.ProximaAccion + (item.DatosProximaActividad != "0" && !string.IsNullOrEmpty(item.DatosProximaActividad) ? 
+        " (" + item.DatosProximaActividad + ")" : string.Empty)) + (item.Rechazado ? 
+        " <strong style='color: #b94a48;' >" + Textos.Rechazos + "</strong>" : string.Empty) + 
+        (item.SojaEPA ? " <strong style='color: #2986cc;' >" + Textos.Soja_EPA + "</strong>" :
+                         (item.Sustentable ?  " <strong style='color: #006302;' >" + Textos.Sustentable + "</strong>" : string.Empty)) 
+        + (item.ProximaAccion.Contains("Pendiente") ? 
+        Html.BotonLink(Textos.Eliminar, "Eliminar", "CargaDeCupo", new { Id = item.RecorridoId }, " ajax-borrar-link", "icon-trash", true).ToHtmlString() : string.Empty) +
+        (item.EsEspecial && !item.CaracteristicasNoCorrenspodenEspecial ? 
+        " <strong style='color: #ffe135;' >" + Textos.CalidadEspecial + "</strong>" : string.Empty) + (item.AnalisisObligatorio ? " <span  class='label label-warning'> <strong  >" +
+        Textos.AnalisisObligatorio + "</strong> </span>" : string.Empty) + (item.VehiculoDemorado ? 
+        "<i class=\"fa fa-hourglass-half\"/>" : "") + (item.LlegoEnHorario ? "<i class=\"icon-time\" title=\"Priorizar\"></i>" : ""))));
     }
     if (Model.Columnas.Contains("Workflow"))
     {

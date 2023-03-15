@@ -105,7 +105,7 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         public ActionResult MostrarAsignar(AsignacionDto asignacion, DatosUsuario datosUsuario)
         {
-            SetearVista(datosUsuario, asignacion.MaterialId, asignacion.SonSustentables, asignacion.SustentableMixto);
+            SetearVista(datosUsuario, asignacion.MaterialId, asignacion.SonSustentables, asignacion.SustentableMixto, asignacion.SonSojaEPA);
             return View("_Asignar",asignacion);
         }
 
@@ -142,7 +142,7 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AgregarErrores(resultado);
 
             }
-            SetearVista(datosUsuario, model.MaterialId, model.SonSustentables, true);
+            SetearVista(datosUsuario, model.MaterialId, model.SonSustentables, true, model.SonSojaEPA);
             return View("_Asignar",model);
         }
 
@@ -259,20 +259,21 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void SetearVista(DatosUsuario datosUsuario, int? materialId, bool esSustentable, bool sustentableMixto)
+        private void SetearVista(DatosUsuario datosUsuario, int? materialId, bool esSustentable, bool sustentableMixto, bool sojaEPA)
         {
             esSustentable = ConfigurationManager.AppSettings["SepararAlmacenSustentable"] == "false" ? false : esSustentable;
             ViewBag.BalanzasObligatorias = servicio.BalanzasObligatoriasEnPuestoComando(datosUsuario.CentroId);
             ViewBag.Calles = servicio.ListarCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             ViewBag.Balanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
-            ViewBag.Almacenes = materialId.HasValue ?
+            var almacenes = materialId.HasValue ?
                                 sustentableMixto ? servicio.ListarAlmacenesPorMaterialYCentroSustentableMixto(datosUsuario.CentroId, materialId.Value)
-                                    .ToSelectList(x => x.Id.ToString(), x => x.Descripcion) :
-                        servicio.ListarAlmacenesPorMaterialYCentro(datosUsuario.CentroId, materialId.Value, esSustentable)
-                                    .ToSelectList(x => x.Id.ToString(), x => x.Descripcion)
-                        : servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId, esSustentable)
-                                    .ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-            
+                                    : servicio.ListarAlmacenesPorMaterialYCentro(datosUsuario.CentroId, materialId.Value, esSustentable)
+                                : servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId, esSustentable);
+
+            almacenes = sojaEPA ? servicio.ListarAlmacenesPorMaterialYCentroEPA(datosUsuario.CentroId, materialId.Value) : almacenes;
+
+            ViewBag.Almacenes = almacenes.ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
+
             var hidraulicas = new List<PuestosDeCargaDescargaDto>();
             if (!PermisosHelper.Is(PermisosScato.HidraulicasEspeciales))
             {

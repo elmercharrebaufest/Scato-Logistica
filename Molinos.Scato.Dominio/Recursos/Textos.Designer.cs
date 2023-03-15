@@ -13907,6 +13907,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seleccione Recorridos con soja EPA.
+        /// </summary>
+        public static string Error_NoSojaEPA {
+            get {
+                return ResourceManager.GetString("Error_NoSojaEPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El Campo &apos;{0}&apos; debe ser numérico y dentro del rango permitido.
         /// </summary>
         public static string Error_NumericoYRango {
@@ -14587,6 +14596,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Establecimiento_Nuevo {
             get {
                 return ResourceManager.GetString("Establecimiento_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soja EPA.
+        /// </summary>
+        public static string Establecimiento_SojaEPA {
+            get {
+                return ResourceManager.GetString("Establecimiento_SojaEPA", resourceCulture);
             }
         }
         
@@ -27120,6 +27138,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string SN {
             get {
                 return ResourceManager.GetString("SN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EPA.
+        /// </summary>
+        public static string Soja_EPA {
+            get {
+                return ResourceManager.GetString("Soja_EPA", resourceCulture);
             }
         }
         

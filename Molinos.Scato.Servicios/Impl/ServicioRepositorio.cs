@@ -4883,6 +4883,7 @@ namespace Molinos.Scato.Servicios.Impl
                 asignacion.SustentableMixto = true;
             }
             asignacion.SonSustentables = recorridos.Any(x => x.Establecimiento != null);
+            asignacion.SonSojaEPA = recorridos.Any(x => x.Establecimiento != null && x.Establecimiento.EPA == true);
 
             var materiales = recorridos.Select(x => x.Material).ToList();
             foreach (var recorrido in recorridos)
@@ -6120,9 +6121,10 @@ namespace Molinos.Scato.Servicios.Impl
                         LlegoEnHorario = x.LlegoEnHorario,
                         Proteina = "",
                         AlmacenDestino = x.Almacen.DescripcionCorta != null ? x.Almacen.DescripcionCorta : "",
-                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null
+                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null,
+                        SojaEPA = x.Establecimiento != null ? x.Establecimiento.EPA : false
                     }, x => instanceIds.Contains(x.InstanciaWorkflow),
-                    instanceIds.Count);
+                    instanceIds.Count); ;
             foreach (var dato in datos)
             {
                 dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
@@ -10352,6 +10354,14 @@ namespace Molinos.Scato.Servicios.Impl
                 throw;
             }
             return domicilioId != null ? Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId) : null;
+        }
+
+        public IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId)
+        {
+            return
+                Listar<Almacen, AlmacenDto>(
+                    f =>
+                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && f.EPA == true);
         }
 
     }

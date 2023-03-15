@@ -2806,5 +2806,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         DomicilioDto ObtenerDomicilioDG(int plantaDG);
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId);
     }
 }

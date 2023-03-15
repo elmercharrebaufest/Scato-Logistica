@@ -16,7 +16,9 @@ namespace Molinos.Scato.Dominio.Dto
         public string Workflow { set; get; }
         [Display(ResourceType = typeof(Textos), Name = "Establecimiento")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
-        public int RecorridoId { get; set; } 
+        public int RecorridoId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento")]
         public int EstablecimientoId { set; get; }
 
         public IList<EstablecimientoDto> Establecimientos { set; get; }

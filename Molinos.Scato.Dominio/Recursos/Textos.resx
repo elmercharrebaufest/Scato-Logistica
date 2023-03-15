@@ -10179,5 +10179,14 @@
   </data>
   <data name="CrearClienteProvisorio" xml:space="preserve">
     <value>Crear Cliente Provisorio</value>
+  </data>  
+  <data name="Establecimiento_SojaEPA" xml:space="preserve">
+    <value>Soja EPA</value>
+  </data>
+  <data name="Soja_EPA" xml:space="preserve">
+    <value>EPA</value>
+  </data>
+  <data name="Error_NoSojaEPA" xml:space="preserve">
+    <value>Seleccione Recorridos con soja EPA</value>
   </data>
 </root>

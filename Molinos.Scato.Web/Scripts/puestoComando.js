@@ -99,10 +99,12 @@ function countChecked() {
     var nSonSustentables = [];
     var instanceIds = "InstanceIds=";
     var instanceIdsHidden = "";
+    var nSonEPA = [];
     //Armo el Actionlink para Asignar
     $.each(n, function (index, value) {
         nMaterialesId.push(value.getAttribute('data-materialid'));
         nSonSustentables.push(value.getAttribute('data-esSustentable'));
+        nSonEPA.push(value.getAttribute('data-SojaEPA'));
         if (instanceIds == "InstanceIds=") {
             instanceIds += $(value).attr('id');
             instanceIdsHidden = $(value).attr('id');
@@ -128,17 +130,18 @@ function countChecked() {
         } else {
             $("#RechazarSeleccionados").addClass("disabled");
         }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1) {
+        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1 && jQuery.unique(nSonEPA).length <= 1) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
         } else {
-            $("#AsignarSeleccionadosValid").html((jQuery.unique(nMaterialesId).length > 1) ? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable);
+            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1);
+            $("#AsignarSeleccionadosValid").html(mensajeError);
             $("#AsignarSeleccionadosValid").addClass('field-validation-error');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
         }
     } else {
-        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1) {
+        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonEPA).length <= 1) {
             $("#AsignarSeleccionados").attr("disabled", false);
         } else {
             $("#AsignarSeleccionados").attr("disabled", true);
@@ -149,17 +152,30 @@ function countChecked() {
         } else {
             $("#RechazarSeleccionados").addClass("disabled");
         }
-        if (jQuery.unique(nMaterialesId).length <= 1) {
+        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
         } else {
-            $("#AsignarSeleccionadosValid").html((jQuery.unique(nMaterialesId).length > 1) ? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable);
+            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1);
+            $("#AsignarSeleccionadosValid").html(mensajeError);
             $("#AsignarSeleccionadosValid").addClass('field-validation-error');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
         }
     }
 };
+
+
+function ArmarMensajeError(sojaEPAFlag, materialFlag)
+{
+    let mensajeError = !materialFlag? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable
+
+    if(!sojaEPAFlag && materialFlag){
+       mensajeError = $("#gridContainer").data().errorSojaEpa;
+    }
+
+    return mensajeError;
+}
 
 function Autorefresco(intervalo) {
     if ($("#modoDeRefresco").is(':checked')) {
