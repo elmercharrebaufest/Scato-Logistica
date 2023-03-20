@@ -69,16 +69,14 @@ namespace Molinos.Scato.Actividades.Internas
                 var intermediarioFleteId = srvRepositorio.ObtenerOrdenCargaInternaFasonPorInstanceId(instanceId)?.IntermediarioFleteId;
 
                 AlmacenDto almacen = null;
-
-                var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
-                almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
-
-                if(!almacen.EsSojaEPA && !almacen.EsSojaSustentable)
+                if (srvRepositorio.MaterialEnviaASapAlmacenPredeterminado(instanceId))
                 {
-                    if (srvRepositorio.MaterialEnviaASapAlmacenPredeterminado(instanceId))
-                    {
-                        almacen = srvRepositorio.ObtenerAlmacenPredeterminado(centroId, materialId);
-                    }
+                    almacen = srvRepositorio.ObtenerAlmacenPredeterminado(centroId, materialId);
+                }
+                else
+                {
+                    var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
+                    almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
                 }
                 else
                 {
