@@ -10153,7 +10153,7 @@
   <data name="OrdenCarga_DerivadoGranarioHabilitado" xml:space="preserve">
     <value>Derivado Granario</value>
   </data>
-  <data name="OrdenCarga_OrdenDomicilioDestino" xml:space="preserve">
+  <data name="OrdenCarga_TipoYOrdenDestino" xml:space="preserve">
     <value>Domicilio</value>
   </data>
   <data name="OrdenCarga_PlantaDGDestino" xml:space="preserve">
@@ -10164,5 +10164,8 @@
   </data>
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
+  </data>
+  <data name="OrdenCarga_Destinatario" xml:space="preserve">
+    <value>Destinatario</value>
   </data>
 </root>
