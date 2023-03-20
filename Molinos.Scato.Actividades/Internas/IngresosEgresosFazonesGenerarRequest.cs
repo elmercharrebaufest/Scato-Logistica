@@ -78,11 +78,6 @@ namespace Molinos.Scato.Actividades.Internas
                     var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
                     almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
                 }
-                else
-                {
-                    var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
-                    almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
-                }
 
 
                 var provincia = srvRepositorio.ObtenerProvincia(ProvinciaId.Get<int?>(context) ?? 0);
