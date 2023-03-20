@@ -3,9 +3,9 @@ using System.Activities;
 using System.Configuration;
 using System.Globalization;
 using Molinos.Scato.Actividades.Behaviour;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.ServiciosSap;
@@ -88,7 +88,7 @@ namespace Molinos.Scato.Actividades.Internas
                             {
                                 Almacen = almacen.CodigoSAP,
                                 Cantidad = pesoNeto.ToString(CultureInfo.InvariantCulture),
-                                DocLegal = nroDocumento,
+                                DocLegal = tipoMovimiento == "ENT" && nroDocumento == Constantes.ValoresPorDefecto.NumeroRemitoGenerico && orden != null ? orden.NroCTG : nroDocumento,
                                 FechaIng = fechaIngreso.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                                 Km = km ?? 0,
                                 KmSpecified = km.HasValue,
