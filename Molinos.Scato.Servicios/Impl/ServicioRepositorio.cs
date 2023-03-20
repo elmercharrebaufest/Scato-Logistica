@@ -7309,7 +7309,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EsRecorridoSustentable(Guid instanceId)
         {
-            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null);
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null && !f.Establecimiento.EPA);
         }
 
         public bool ValidaStockEPA(Guid instanceId)
@@ -10358,11 +10358,19 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId)
         {
-            return
-                Listar<Almacen, AlmacenDto>(
-                    f =>
-                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && f.EPA == true);
+            return Listar<Almacen, AlmacenDto>(
+                f =>
+                f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && f.EPA == true);
         }
 
+        public bool EsRecorridoConEstablecimiento(Guid instanceId)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null);
+        }
+
+        public bool EsRecorridoSojaEPA(Guid instanceId)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null && f.Establecimiento.EPA == true); ;
+        }
     }
 }

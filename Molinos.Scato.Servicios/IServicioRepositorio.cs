@@ -2809,5 +2809,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId);
+
+        [OperationContract]
+        bool EsRecorridoConEstablecimiento(Guid instanceId);
+
+        [OperationContract]
+        bool EsRecorridoSojaEPA(Guid instanceId);
     }
 }
