@@ -68,6 +68,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 SetearVista(workflowObj);
                 ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
+                ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
 
@@ -79,18 +80,19 @@ namespace Molinos.Scato.Web.Controllers
                     TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
                     TempData["TipoAlerta"] = TipoAlerta.Error;
                     SetearVista(workflowObj);
+                    ViewBag.AceptaPendiente = true;
                     return View(orden);
                 }
                 if (res.HayErrores)
                 {
                     SetearVista(workflowObj);
-                    ViewBag.AceptaPendiente = true;
                     var ordenDemorada = new OrdenCargaFasDto
                     {
                         Chofer = orden.Chofer.Cuil == "99-99999999-9" ? new ChoferDto() : orden.Chofer,
                         PatenteCamion = orden.PatenteCamion,
                         PatenteAcoplado = orden.PatenteAcoplado
                     };
+                    ViewBag.AceptaPendiente = true;
                     return View(ordenDemorada);
                 }
                 return RedirectToAction("Index", "ListaDeCamiones");
@@ -101,6 +103,7 @@ namespace Molinos.Scato.Web.Controllers
                 TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
                 TempData["TipoAlerta"] = TipoAlerta.Error;
                 SetearVista(workflowObj);
+                ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
             if (orden.PatenteCamion != null)
@@ -123,6 +126,7 @@ namespace Molinos.Scato.Web.Controllers
             if (resultadoChofer == false)
             {
                 SetearVista(workflowObj);
+                ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
 
@@ -132,6 +136,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!resultadoTransportista)
             {
                 SetearVista(workflowObj);
+                ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
 
@@ -207,6 +212,7 @@ namespace Molinos.Scato.Web.Controllers
             ModelState.AgregarErrores(resultadoActividad);
             
             SetearVista(workflowObj);
+            ViewBag.AceptaPendiente = true;
             return View(orden);
         }
 
