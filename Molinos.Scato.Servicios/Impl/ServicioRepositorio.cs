@@ -10368,9 +10368,9 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null);
         }
 
-        public bool EsRecorridoSojaEPA(Guid instanceId)
+        public int? EsRecorridoSojaEPA(Guid instanceId)
         {
-            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null && f.Establecimiento.EPA == true); ;
+            return repositorio.ObtenerProyeccion<Recorrido, int>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true, x => x.Almacen.Id); ;
         }
     }
 }

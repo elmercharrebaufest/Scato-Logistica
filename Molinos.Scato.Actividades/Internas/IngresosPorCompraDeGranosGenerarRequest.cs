@@ -91,15 +91,16 @@ namespace Molinos.Scato.Actividades.Internas
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
                 var balanza = srvRepositorio.ObtenerBalanza(asignacion.BalanzaTaraId ?? 0);
                 AlmacenDto almacen = null;
+                var almacenEPAId = srvRepositorio.EsRecorridoSojaEPA(instanceId);
 
                 if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId))
                 {
                     almacen = srvRepositorio.ListarAlmacenesPorCentroYesSustentable(centro.Id, true).FirstOrDefault();
                 }
 
-                if (srvRepositorio.EsRecorridoSojaEPA(instanceId))
+                if (almacenEPAId != null)
                 {
-                    almacen = srvRepositorio.ListarAlmacenesPorMaterialYCentroEPA(centro.Id, cartaPorte.MaterialId).FirstOrDefault();
+                    almacen = srvRepositorio.ObtenerAlmacen(almacenEPAId.Value);
                 }
 
                 if (almacen == null)

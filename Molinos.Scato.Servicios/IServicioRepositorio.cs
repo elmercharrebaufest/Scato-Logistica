@@ -2814,6 +2814,6 @@ namespace Molinos.Scato.Servicios
         bool EsRecorridoConEstablecimiento(Guid instanceId);
 
         [OperationContract]
-        bool EsRecorridoSojaEPA(Guid instanceId);
+        int? EsRecorridoSojaEPA(Guid instanceId);
     }
 }
