@@ -28,7 +28,8 @@
      data-url-obtener-materiales="@Url.Action("ListarMaterialesPorCliente", "Consultas")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
      data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
-     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
+     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")"
+     data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")">
 </div>
 
 <script type="text/javascript">
@@ -41,14 +42,18 @@
 @Html.HiddenFor(model => model.RecorridoId)
 @Html.HiddenFor(model => model.Rechazado)
 @Html.HiddenFor(model => model.Demorado)
-@Html.HiddenFor(model => model.OrdenDomicilioDestino)
-@Html.HiddenFor(model => model.TipoDomicilioDestino)
+@* @Html.HiddenFor(model => model.OrdenDomicilioDestino) *@
+@* @Html.HiddenFor(model => model.TipoDomicilioDestino) *@
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
 @Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 @Html.Hidden("MaterialSeleccionado", Model.MaterialId)
+
+<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
+
+<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">

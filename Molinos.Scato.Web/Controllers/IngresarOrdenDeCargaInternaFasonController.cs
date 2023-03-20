@@ -59,6 +59,14 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Index(string workflow, OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var workflowObje = servicio.ObtenerWorkflowPorCodigo(workflow);
+
+            if (orden.TipoYOrdenDestino != null)
+            {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
+            }
+
             Validar(orden, datosUsuario);
 
             if (!ModelState.IsValid)
@@ -104,9 +112,6 @@ namespace Molinos.Scato.Web.Controllers
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
-                var domicilio = orden.TipoYOrdenDestino.Split('-');
-                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
-                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
                 var dominios = new List<string> { orden.PatenteCamion };
                 if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
                 {
