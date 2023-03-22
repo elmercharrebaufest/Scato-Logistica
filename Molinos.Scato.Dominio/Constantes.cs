@@ -171,5 +171,11 @@
             public const string AceiteGirasolCrudoSAP = "94687";
             public const string AceiteSojaCrudoGranelSAP = "94705";
         }
+
+        public struct TipoSoja
+        {
+            public const string Sustentable = "sust";
+            public const string EPA = "epa";
+        }
     }
 }

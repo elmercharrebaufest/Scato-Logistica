@@ -32,5 +32,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEPA")]
         public bool EsSojaEPA { get; set; }
+
+        public string TipoSoja { get; set; }
+
     }
 }

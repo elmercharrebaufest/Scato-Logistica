@@ -62,8 +62,7 @@
         <div class="control-group">
             @Html.LabelFor(m => m.EsSojaSustentable, new {@class = "control-label"})
             <div class="controls">
-                @Html.CheckBoxFor(m => m.EsSojaSustentable, new {@class = "control"})
-                @Html.ValidationMessageFor(m => m.EsSojaSustentable)
+                 @Html.RadioButtonFor(m => m.TipoSoja, "sust")
             </div>
         </div>
     </div>
@@ -71,15 +70,8 @@
         <div class="control-group">
             @Html.LabelFor(m => m.EsSojaEPA, new {@class = "control-label"})
             <div class="controls">
-                @Html.CheckBoxFor(m => m.EsSojaEPA, new {@class = "control"})
-                @Html.ValidationMessageFor(m => m.EsSojaEPA)
+                 @Html.RadioButtonFor(m => m.TipoSoja, "epa")
             </div>
         </div>
     </div>
 </div>
-
-@*@Html.Grilla(materiales,
-grid => grid.Columns(
-grid.Columna("CodigoSAP", Textos.Codigo),
-grid.Columna("Descripcion", Textos.Descripcion),
-grid.ColumnaModificar(Html, "Material"))) *@
