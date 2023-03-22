@@ -1,9 +1,13 @@
-﻿using Molinos.Scato.Dominio.Entidades;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Repositorio.ConsultasEF;
+using NPOI.Util;
 using System;
 using System.Configuration;
+using System.Linq;
+using static Molinos.Scato.Dominio.Constantes.ConfiguracionGeneral;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -54,10 +58,21 @@ namespace Molinos.Scato.Servicios.Impl
 
             if(tipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
+                Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipo(tipoCalle));
                 if(calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material)){
                     calle.Bloqueada = true;
                     //calle.FechaLLamada = DateTime.Now;
+                    repositorio.GuardarCambios();
+                }
+                return calle;
+            }
+
+            if (tipoCalle == TipoCalle.PreBalanzaGranos && EsPasoDirecto())
+            {
+                Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
+                if (calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material))
+                {
+                    calle.Bloqueada = true;
                     repositorio.GuardarCambios();
                 }
                 return calle;
@@ -121,6 +136,14 @@ namespace Molinos.Scato.Servicios.Impl
             var callesTotales = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Material.Id == material.Id);
             var callesBloqueadas = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Bloqueada && x.Material.Id == material.Id);
             return (callesTotales - callesBloqueadas) == 1;
+        }
+
+        private bool EsPasoDirecto()
+        {
+           string configuracion =  repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
+           string[] configuracionMateriales = configuracion.Split(',');
+           return configuracionMateriales.Any(a => !a.Equals("0"));
+
         }
     }
 }

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Web.Mvc;
 using static Molinos.Scato.Dominio.Constantes;
 
@@ -49,12 +50,29 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         public ActionResult Index()
+
         {
             var tipoCallePlantaLista = ObtenerTiposDeCallesPlanta();
+            var configuraciones = ObtenerConfiguracionSwitch().Valor.Split(',');
+            ViewBag.ConfiguracionSwitch = configuraciones;
+            ViewBag.IdConfiguracion = ObtenerConfiguracionSwitch().Id;
             return View(tipoCallePlantaLista);
         }
 
         public JsonResult EstadoDeCalle()
+        {
+            var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
+            var centroId = int.Parse(centro.Value);
+            var camiones = servicio.ObtenerEstadoDeCalle();
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle));
+            var materiales = camiones.Where(x => listaCalles.Contains(x.TipoCalle))
+                .Select(x => new { x.MaterialId, x.MaterialDesc })
+                .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0);
+
+            return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult EstadoSwitch()
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
@@ -146,6 +164,43 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult GuardarEstadoSwitch(int id , bool configuracionSoja , bool configuracionMaiz , bool configuracionTrigo , bool configuracionGirasol)
+        {
+            var response = new RespuestaEstandarDto();
+            try
+            {
+                var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
+                var centroId = int.Parse(centro.Value);
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                
+                servicioComandos.Ejecutar(new ModificarConfiguracionGeneral
+                {
+                    Dto = new ConfiguracionGeneralDto
+                    {
+                        CentroId = centroId,
+                        UsuarioUltimaModificacion = usuario.Value,
+                        Valor = GenerarValorConfiguracion(configuracionSoja, configuracionMaiz, configuracionTrigo, configuracionGirasol),
+                        Id= id
+                    }
+                });
+
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error al guardar la configuracion";
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(response, JsonRequestBehavior.AllowGet);
+
+        }
+
+        private ConfiguracionGeneralDto ObtenerConfiguracionSwitch()
+        {
+              return servicio.ObtenerConfiguracionGeneral("EstadoPlayaInterna" , "PaseDirecto"); 
+        }
+
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
@@ -174,7 +229,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                     LimiteDeCamiones = calle.CantidadDeCamiones,
                     Bloqueada = calle.Bloqueada,
                     EsPrimero = false,
-                    EsUltimo = false
+                    EsUltimo = false,
+                    EsPasoDirecto = calle.EsPasoDirecto
                 };
                 tipoCallePlanta.Calles.Add(callePlanta);
 
@@ -217,6 +273,16 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 log.Error(e, "Error al desbloquear calle PreBalanzaGranos");
             }
+        }
+
+        private string GenerarValorConfiguracion(bool configuracionSoja, bool configuracionMaiz, bool configuracionTrigo, bool configuracionGirasol)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(configuracionSoja ? "1," : "0,");
+            stringBuilder.Append(configuracionMaiz ? "1," : "0,");
+            stringBuilder.Append(configuracionTrigo ? "1," : "0,");
+            stringBuilder.Append(configuracionGirasol ? "1" : "0");
+            return stringBuilder.ToString();
         }
     }
 }

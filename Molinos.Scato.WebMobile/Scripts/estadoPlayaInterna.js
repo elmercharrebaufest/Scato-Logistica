@@ -206,3 +206,47 @@ function HabilitarBotonVisual(id) {
     $("#" + id).removeClass('btn-secondary');
     $("#" + id).addClass('btn-primary');
 }
+
+
+
+$(document).ready(function () {
+
+    $("#pasoDirectoSoja").click(function () { EstadoSwitch('pasoDirectoSoja'); GuardarConfiguracion() })
+    $("#pasoDirectoMaiz").click(function () { EstadoSwitch('pasoDirectoMaiz'); GuardarConfiguracion() })
+    $("#pasoDirectoTrigo").click(function () { EstadoSwitch('pasoDirectoTrigo'); GuardarConfiguracion() })
+    $("#pasoDirectoGirasol").click(function () { EstadoSwitch('pasoDirectoGirasol'); GuardarConfiguracion() })
+
+});
+
+function EstadoSwitch(id) { $("#" + id).val($("#" + id).is(":checked") ? 'True' : 'False') }
+
+function GuardarConfiguracion() {
+
+    $.ajax({
+        type: 'POST',
+        url: urlGuardarConfiguracion,
+        dataType: 'json',
+        data: {
+            id: $("#idConfiguracion").val(),
+            configuracionSoja: $("#pasoDirectoSoja").val(),
+            configuracionMaiz: $("#pasoDirectoMaiz").val(),
+            configuracionTrigo: $("#pasoDirectoTrigo").val(),
+            configuracionGirasol: $("#pasoDirectoGirasol").val()
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("Se proceso correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+
+            }
+        },
+        error: function (error) {
+
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+}
+
