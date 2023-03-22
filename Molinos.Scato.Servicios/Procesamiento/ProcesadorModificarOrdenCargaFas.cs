@@ -155,6 +155,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             ordenCargaFas.Corredor = corredor;
             ordenCargaFas.Comisionista = comisionista;
             ordenCargaFas.Remitente = remitente;
+            ordenCargaFas.DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado;
             #endregion
 
             recorrido.Patente = comando.Orden.PatenteCamion;

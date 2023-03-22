@@ -28,7 +28,8 @@
      data-url-obtener-materiales="@Url.Action("ListarMaterialesPorCliente", "Consultas")"
      data-url-obtener-tipovehiculo-por-patente="@Url.Action("ObtenerTipoVehiculoPorPatente", "CargarCartaPorte")"
      data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
-     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")">
+     data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")"
+     data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")">
 </div>
 
 <script type="text/javascript">
@@ -41,14 +42,18 @@
 @Html.HiddenFor(model => model.RecorridoId)
 @Html.HiddenFor(model => model.Rechazado)
 @Html.HiddenFor(model => model.Demorado)
-@Html.HiddenFor(model => model.OrdenDomicilioDestino)
-@Html.HiddenFor(model => model.TipoDomicilioDestino)
+@* @Html.HiddenFor(model => model.OrdenDomicilioDestino) *@
+@* @Html.HiddenFor(model => model.TipoDomicilioDestino) *@
 @Html.Hidden("WorkflowDescripcion", WorkflowDescripcion)
 @Html.Hidden("ListaMaterialesDerivadoGranario", Json.Encode(listaMaterialesDerivadoGranario))
 @Html.Hidden("DerivadoGranarioHabilitado", Model.DerivadoGranarioHabilitado)
 @Html.Hidden("PlantaSeleccionada", Model.PlantaDGDestino)
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 @Html.Hidden("MaterialSeleccionado", Model.MaterialId)
+
+<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
+
+<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
@@ -94,6 +99,14 @@
                     @Html.TextBoxFor(model => model.Cliente, new { @class = "control  autocompletado-obligatorio clienteRequerido" })
                     @Html.ValidationMessageFor(model => model.Cliente)
                     @Html.HiddenFor(model => model.ClienteId)
+                </div>
+            </div>
+            <div id="controlComisionista" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.Destinatario, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.Destinatario, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.Destinatario)
+                    @Html.HiddenFor(model => model.DestinatarioId)
                 </div>
             </div>
             <div id="controlComisionista" class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
@@ -149,14 +162,14 @@
                     @Html.HiddenFor(model => model.EsTransportista)
                 </div>
             </div>
-             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
-                    @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
-                    <div class="controls-small">
-                        @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
-                        @Html.ValidationMessageFor(model => model.IntermediarioFlete)
-                        @Html.HiddenFor(model => model.IntermediarioFleteId)
-                    </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.IntermediarioFlete)
+                    @Html.HiddenFor(model => model.IntermediarioFleteId)
                 </div>
+            </div>
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
@@ -278,7 +291,7 @@
 <div id="autocompleteComisionista"></div>
 <div id="autocompleteRemitente"></div>
 <div id="autocompleteIntermFlete"></div>
-
+<div id="autocompleteDestinatario"></div>
 
 
 
