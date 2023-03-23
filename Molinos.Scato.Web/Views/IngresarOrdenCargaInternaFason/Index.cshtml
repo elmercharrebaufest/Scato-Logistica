@@ -1,5 +1,6 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
+
 @{
     ViewBag.Title = Textos.OrdenCargaInternaFason_Titulo;
     var workflow = (string)ViewBag.Workflow;
@@ -51,11 +52,11 @@
         <p>¿Está seguro que desea rechazar el camión?</p>
         <div class="dialogModal__group">
             <label for="MotivoRechazo">@Textos.Motivo:</label>
-            @Html.TextArea("MotivoRechazo", new {  id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
+            @Html.TextArea("MotivoRechazo", new { id = "motivoRechazo", @class = "form-control", style = "width:350px;" })
             <br />
         </div>
         <div class="row">
-            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo),  new { @id = "requeridoRechazo", style = "display:none; color:red; margin-left:18%"})
+            @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_Requerido, Textos.Motivo), new { @id = "requeridoRechazo", style = "display:none; color:red; margin-left:18%" })
             @Html.ValidationMessage("MotivoRechazo", string.Format(Textos.Error_LargoMensaje, Textos.Motivo, "10"), new { @id = "largoMensajeRechazo", style = "display:none; color:red;margin-left:18%" })
         </div>
     </div>
