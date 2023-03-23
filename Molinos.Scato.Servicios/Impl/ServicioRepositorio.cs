@@ -675,7 +675,7 @@ namespace Molinos.Scato.Servicios.Impl
                 Listar<Almacen, AlmacenDto>(
                     f =>
                     f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) &&
-                    f.EsSojaSustentable == esSustentable);
+                    f.EsSojaSustentable == esSustentable && !f.EPA);
         }
 
         public IList<CentroDto> ListarCentros()
@@ -8610,7 +8610,7 @@ namespace Molinos.Scato.Servicios.Impl
             return
                 Listar<Almacen, AlmacenDto>(
                     f =>
-                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId));
+                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && !f.EPA);
         }
 
         public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false)
