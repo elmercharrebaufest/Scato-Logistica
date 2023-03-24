@@ -24,6 +24,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 PuestoDeTrabajo = Repositorio.Obtener<PuestoDeTrabajo>(comando.Dto.PuestoDeTrabajoId),
                 EsSojaSustentable = comando.Dto.EsSojaSustentable,
                 EsEspecial = comando.Dto.EsEspecial,
+                EsSojaEPA = comando.Dto.EsSojaEPA,
                 CodigoSensorBajada = comando.Dto.CodigoSensorBajada
             };
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
@@ -15,8 +10,13 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
-using Ninject.Extensions.Logging;
 using Molinos.Scato.Web.Seguridad;
+using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -41,6 +41,7 @@ namespace Molinos.Scato.Web.Controllers
             this.factoryejecutar = factoryejecutar;
             this.factoryPesada = factoryPesada;
         }
+
         [DatosUsuario]
         public ActionResult Index(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaInicio", DirOrden dirOrden = DirOrden.Desc)
         {
@@ -49,12 +50,13 @@ namespace Molinos.Scato.Web.Controllers
                 filtro.ProximaAccion = "PuestoComando";
                 filtro.CantidadDeResultados = CantidadDeResultados.Veinticinco;
             }
-            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden,true);
+            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden, true);
 
             ViewBag.SepararAlmacenSustentable = ConfigurationManager.AppSettings["SepararAlmacenSustentable"];
 
             return View(filtro);
         }
+
         [DatosUsuario]
         [AjaxOnly]
         [ActionName("Index")]
@@ -64,7 +66,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 filtro.Patente = filtro.Patente.ToUpper();
             }
-            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden,false);
+            ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden, false);
             return View("Listar", filtro);
         }
 
@@ -90,20 +92,20 @@ namespace Molinos.Scato.Web.Controllers
                 var mensaje = string.Format(@"No es posible asignar un Puesto de Comando para las siguientes patentes porque el Workflow falló: {0}", string.Join(",", asignacion.patentesInvalidas));
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            else {
+            else
+            {
                 respuesta.Data = asignacion;
             }
 
             return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
-
         [DatosUsuario]
         [HttpPost]
         public ActionResult MostrarAsignar(AsignacionDto asignacion, DatosUsuario datosUsuario)
         {
             SetearVista(datosUsuario, asignacion.MaterialId, asignacion.SonSustentables, asignacion.SustentableMixto, asignacion.SonSojaEPA);
-            return View("_Asignar",asignacion);
+            return View("_Asignar", asignacion);
         }
 
         [DatosUsuario]
@@ -137,10 +139,9 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 log.Error("Hubo un error al asignar el puesto comando: {0}", resultado.Errores.FirstOrDefault());
                 ModelState.AgregarErrores(resultado);
-
             }
             SetearVista(datosUsuario, model.MaterialId, model.SonSustentables, true, model.SonSojaEPA);
-            return View("_Asignar",model);
+            return View("_Asignar", model);
         }
 
         private void AvanzarWorkflow(ResultadoPuestoComando resultado, DatosUsuario datosUsuario)
@@ -236,7 +237,6 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
 
-
             ViewBag.Caracteristicas = servicio.ListarCaracteristicaConfiguracionDeTabla(datosUsuario.CentroId, filtro.MaterialId ?? 0, datosUsuario.NombreUsuario);
             ViewBag.Items = datosWorkflow.Workflows;
 
@@ -273,10 +273,15 @@ namespace Molinos.Scato.Web.Controllers
 
             var hidraulicas = new List<PuestosDeCargaDescargaDto>();
             if (!PermisosHelper.Is(PermisosScato.HidraulicasEspeciales))
-            {
                 hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto, true).ToList();
-            } else
+            else
                 hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto).ToList();
+
+
+            if (sojaEPA)
+                hidraulicas = hidraulicas.Where(q => q.EsSojaEPA).ToList();
+            else
+                hidraulicas = hidraulicas.Where(q => !q.EsSojaEPA).ToList();
 
             ViewBag.Hidraulicas = new MultiSelectList(hidraulicas, "Id", "Nombre");
         }
@@ -285,6 +290,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             return View();
         }
+
         [DatosUsuario]
         public ActionResult Rechazar(string instancesId, DatosUsuario datosUsuario)
         {
@@ -310,7 +316,6 @@ namespace Molinos.Scato.Web.Controllers
 
             var controlRecorrido = SetearVistaRechazar(instancesId, datosUsuario);
             return View("TransportistaRechazado", controlRecorrido);
-
         }
 
         private ControlRecorridoDto SetearVistaRechazar(string instancesId, DatosUsuario datosUsuario)
@@ -400,13 +405,10 @@ namespace Molinos.Scato.Web.Controllers
             return View(controlRecorrido);
         }
 
-
-
         [DatosUsuario]
         [HttpPost]
         public ActionResult ConfigurarTabla(ConfiguracionDeTablaDto model, DatosUsuario datosUsuario)
         {
-
             if (ModelState.IsValid)
             {
                 model.CentroId = datosUsuario.CentroId;

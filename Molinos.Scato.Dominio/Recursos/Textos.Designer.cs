@@ -24458,6 +24458,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código Sensor Bajada.
+        /// </summary>
+        public static string PuestoComando_CodigoSensorBajada {
+            get {
+                return ResourceManager.GetString("PuestoComando_CodigoSensorBajada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config. Tabla.
         /// </summary>
         public static string PuestoComando_ConfigTabla {
@@ -24472,6 +24481,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoComando_CorrespondeCaladoEnPlanta {
             get {
                 return ResourceManager.GetString("PuestoComando_CorrespondeCaladoEnPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es Soja EPA.
+        /// </summary>
+        public static string PuestoComando_EsSojaEPA {
+            get {
+                return ResourceManager.GetString("PuestoComando_EsSojaEPA", resourceCulture);
             }
         }
         

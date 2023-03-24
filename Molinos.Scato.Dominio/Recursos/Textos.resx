@@ -10179,7 +10179,7 @@
   </data>
   <data name="CrearClienteProvisorio" xml:space="preserve">
     <value>Crear Cliente Provisorio</value>
-  </data>  
+  </data>
   <data name="Establecimiento_SojaEPA" xml:space="preserve">
     <value>Soja EPA</value>
   </data>
@@ -10191,5 +10191,11 @@
   </data>
   <data name="OrdenCarga_Destinatario" xml:space="preserve">
     <value>Destinatario</value>
+  </data>
+  <data name="PuestoComando_EsSojaEPA" xml:space="preserve">
+    <value>Es Soja EPA</value>
+  </data>
+  <data name="PuestoComando_CodigoSensorBajada" xml:space="preserve">
+    <value>Código Sensor Bajada</value>
   </data>
 </root>
