@@ -167,8 +167,9 @@ function Camion(item, calle) {
     self.CalleId = item.CalleId;
     self.UltimoDeLaFila = item.UltimoDeLaFila;
     self.AsignadoEnPuestoComando = item.AsignadoEnPuestoComando;
+    self.ColorFondo = item.ColorFondo;
+    self.ColorTexto = item.ColorTexto;
     self.Calle = calle;
-
     self.TiempoEnCola = null;
     self.TiempoEnColaEnMinutos = 0;
 

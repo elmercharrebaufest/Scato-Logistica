@@ -158,7 +158,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     TipoVehiculo = x.TipoVehiculo,
                     PagaTicketMunicipal = x.PagaTicketMunicipal != null && x.PagaTicketMunicipal.Value,
                     Calle = x.CallePorRecorridos.Where(o => o.FechaEgreso == null).Select(y => y.Calle.Nombre).FirstOrDefault(),
-                    SojaEPA = x.Establecimiento != null ? x.Establecimiento.EPA : false,
+                    SojaEPA = x.Establecimiento != null && x.Establecimiento.EPA,
                 }).ToList();
 
             LlenarDatosCaracteristicasAnalizadas(datos, contexto);

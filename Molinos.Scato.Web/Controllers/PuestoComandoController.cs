@@ -17,9 +17,6 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using Molinos.Scato.Web.Seguridad;
-using Molinos.Scato.Dominio;
-using Molinos.Scato.Servicios.Orquestador;
-using Molinos.Scato.Servicios.Procesamiento;
 
 namespace Molinos.Scato.Web.Controllers
 {
