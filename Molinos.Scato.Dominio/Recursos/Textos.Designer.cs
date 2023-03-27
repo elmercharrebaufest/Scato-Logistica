@@ -9700,6 +9700,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comisionista.
+        /// </summary>
+        public static string Comisionista {
+            get {
+                return ResourceManager.GetString("Comisionista", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comparacion Calidad.
         /// </summary>
         public static string ComparacionCalidad {
@@ -25554,6 +25563,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Reintentar {
             get {
                 return ResourceManager.GetString("Reintentar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remitente.
+        /// </summary>
+        public static string Remitente {
+            get {
+                return ResourceManager.GetString("Remitente", resourceCulture);
             }
         }
         

@@ -9,29 +9,9 @@
 }
 <link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.maskedinput.js"></script>
-<script type="text/javascript">
-    $(document).ready(function ($) {
-        $("#btnGuardarClienteProvisorio").click(function () {
+<script type="text/javascript" src="@Url.Script("~/scripts/cliente.crearModificar.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/validarCuil.js")"></script>
 
-            $("#registrarClienteProvisorio-form").submit();
-
-                $('#Descripcion').val('');
-                $('#Cuit').val('');
-                modalCrearCliente.close()
-            
-        })
-
-        $("#Cuit").mask("99-99999999-9");
-
-    })
-    var fnResponse = function (response) {
-        console.log(response)
-        if (response.error) {
-            MostrarAlertaError();
-        }
-    }
-
-</script>
 
 <div class="container-fluid">
     <div class="titSecciones">@Textos.Administracion_Clientes</div>
@@ -65,7 +45,7 @@
     <h4 class="dialogModal__titulo">@Textos.ClienteProvisorio</h4>
     <div class="dialogModal__descripcion">
 
-        @using (Ajax.BeginForm("CrearClienteProvisorio", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fnResponse" , InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "registrarClienteProvisorio-form", @class = "form-horizontal", data_dialogo_titulo = Textos.ActIngresarClienteProvisorio }))
+        @using (Ajax.BeginForm("CrearClienteProvisorio", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "registrarClienteProvisorio-form", @class = "form-horizontal", data_dialogo_titulo = Textos.ActIngresarClienteProvisorio }))
         {
             if (ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Any())
             {
@@ -75,14 +55,14 @@
 
             }
 
-
             <div class="row-fluid" style="width:400px">
                 <div class="span4">
                     @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
                 </div>
                 <div class="span6">
                     @Html.TextBoxFor(model => model.Descripcion)
-                    @Html.ValidationMessageFor(model => model.Descripcion)
+                    <span class="dialogModal__error" id="error-descripcion">@string.Format(Textos.Error_Requerido, "Descripcion")</span>
+
                 </div>
 
             </div>
@@ -93,7 +73,7 @@
                 </div>
                 <div class="span6">
                     @Html.TextBox("Cuit")
-                    @Html.ValidationMessageFor(model => model.Cuit)
+                    <span class="dialogModal__error" id="error-cuit">@string.Format(Textos.Error_Requerido, "Cuit")</span>
                 </div>
 
             </div>
@@ -106,12 +86,12 @@
 
     </div>
     <div>
-        <span class="dialogModal__error" id="error-cliente-requerido">@string.Format(Textos.Error_Requerido, "Descripcion")</span>
-        <span class="dialogModal__error" id="error-cliente-largo">@string.Format(Textos.Error_LargoMensaje, "Descripcion", "10")</span>
+        @*<span class="dialogModal__error" id="error-cliente-requerido">@string.Format(Textos.Error_Requerido, "Descripcion")</span>
+            <span class="dialogModal__error" id="error-cliente-largo">@string.Format(Textos.Error_LargoMensaje, "Descripcion", "10")</span>*@
     </div>
 
     <div class="dialogModal__botones">
         <button class="btn btn-success agregar" type="button" id="btnGuardarClienteProvisorio">Guardar</button>
-        <button class="btn" type="button" onclick="modalCrearCliente.close()">Cancelar</button>
+        <button class="btn" type="button" id="btnCerrarClienteProvisorio">Cancelar</button>
     </div>
 </dialog>

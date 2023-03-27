@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
@@ -17,7 +18,7 @@ using PdfSharp.Pdf.Filters;
 namespace Molinos.Scato.Web.Controllers
 {
     
-    [Autorizacion(PermisosScato.AbmCliente)]
+    [Autorizacion(PermisosScato.AbmCliente, PermisosScato.CrearClienteProvisorio)]
     public class ClienteController : BaseController
     {
         private readonly ILogger log;
@@ -59,7 +60,7 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [DatosUsuario]
-        [Autorizacion(PermisosScato.AbmCliente)]
+        [Autorizacion(PermisosScato.AbmCliente, PermisosScato.CrearClienteProvisorio)]
         public ActionResult Modificar(ClienteDto model, DatosUsuario datosUsuario)
         {
             if (ModelState.IsValid)
@@ -79,11 +80,12 @@ namespace Molinos.Scato.Web.Controllers
         [Autorizacion(PermisosScato.CrearClienteProvisorio)]
         public ActionResult CrearClienteProvisorio(ClienteDto model, DatosUsuario datosUsuario)
         {
+            var resultado = new Resultado();
             var paginacion = new Paginacion("Id", DirOrden.Asc, 1, 10);
             if (ModelState.IsValid)
             {
               
-                var resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
+                 resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
                
                 
                 if (!resultado.HayErrores)
@@ -93,16 +95,28 @@ namespace Molinos.Scato.Web.Controllers
                     return View(model); 
 
                 }
-                ModelState.AgregarErrores(resultado);
                 
             }
             ViewBag.Items = servicio.ListarClientes(string.Empty, paginacion);
             dynamic estadoRespuesta = new
             {
-                error = true
+                error = true,
+                mensajeError = LeerErrores(resultado)
             };
 
             return Json(estadoRespuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        private string LeerErrores(Resultado resultado)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            foreach(string error in resultado.Errores.Values)
+            {
+                builder.AppendLine(error);
+            }
+
+            return builder.ToString();
         }
 
 

@@ -10197,5 +10197,11 @@
   </data>
   <data name="PuestoComando_CodigoSensorBajada" xml:space="preserve">
     <value>Código Sensor Bajada</value>
+   </data>
+  <data name="Comisionista" xml:space="preserve">
+    <value>Comisionista</value>
+  </data>
+  <data name="Remitente" xml:space="preserve">
+    <value>Remitente</value>
   </data>
 </root>

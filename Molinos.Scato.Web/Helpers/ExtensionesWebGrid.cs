@@ -319,5 +319,14 @@ namespace Molinos.Scato.Web.Helpers
                                 );
         }
 
+        public static WebGridColumn ColumnaModificarClienteProvisorio(this WebGrid grid, HtmlHelper html, string controller, string style = "")
+        {
+            return  grid.Column("editar", "", f => f.EsClienteProvisorio ? 
+                                                html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString()) 
+                                                :  
+                                                html.Raw("<span disabled></span>"), "editar-borrar-columna", false);
+                                   
+        }
+
     }
 }

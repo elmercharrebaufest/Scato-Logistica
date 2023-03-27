@@ -432,7 +432,7 @@
                                 {
                                     <li>@Html.ActionLink(Textos.AvisoDeQuiebre_Titulo, "Index", "AvisoDeQuiebre")</li>
                                 }
-                                @if (PermisosHelper.Is(PermisosScato.AbmCliente))
+                                @if (PermisosHelper.Is(PermisosScato.AbmCliente, PermisosScato.CrearClienteProvisorio))
                                 {
                                     <li>@Html.ActionLink(Textos.Cliente_Titulo, "Index", "Cliente")</li>
                                 }
