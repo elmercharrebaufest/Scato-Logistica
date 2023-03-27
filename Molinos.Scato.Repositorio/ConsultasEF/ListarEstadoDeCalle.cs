@@ -40,6 +40,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
                                   ColorFondo = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA :  (x.Recorrido.Material.ColorFondo ?? x.CargaDeCupo.Material.ColorFondo),
                                   ColorTexto = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA :  (x.Recorrido.Material.ColorTexto ?? x.CargaDeCupo.Material.ColorTexto),
+                                  EsSojaEPA = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
@@ -65,7 +66,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
                     ColorFondo = item.ColorFondo,
-                    ColorTexto = item.ColorTexto
+                    ColorTexto = item.ColorTexto,
+                    EsSojaEPA = item.EsSojaEPA,
                 };
 
                 resultado.Add(callePorRecorrido);
