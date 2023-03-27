@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.5.33502.453</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-03-27T15:51:36.3820445Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2023-03-27T20:43:41.7499679Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -142,8 +142,9 @@ SELECT ISNULL(tv.descripcion,'Camión') AS 'TipoVehiculo',
        TipoDocumentoIngreso.Descripcion as TipoDocumentoIngreso,
        TipoDocumentoIngreso.Id as TipoDocumentoIngresoId,
       (CASE establecimiento.EPA
-            WHEN 1 THEN (material.descripcion + 'EPA')
+            WHEN 1 THEN (material.descripcion + ' EPA')
             WHEN 0 THEN (material.descripcion)
+            ELSE material.descripcion
       END) AS Material, 
        Recorrido.NumeroDocumentoIngreso,
        Recorrido.Patente,
