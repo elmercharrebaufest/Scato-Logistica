@@ -2,20 +2,31 @@
 @using Molinos.Scato.Dominio.Dto
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Web.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
 
 
 @{
     Layout = null;
     var items = (ListaPaginada<ClienteDto>)ViewBag.Items;
+
 }
+
 
 @Html.Grilla(items,
     grilla => grilla.Columns(
-    grilla.ColumnaModificar(Html, "Cliente"),
+    PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && !PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificarClienteProvisorio(Html, "Cliente") 
+                                                               : !PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificar(Html, "Cliente") 
+                                                               : grilla.ColumnaModificar(Html, "Cliente"),
     grilla.Columna("Descripcion", Textos.Cliente_Descripcion),
     grilla.Columna("Cuit", Textos.Cliente_Cuit),
     grilla.Columna("CodigoSap", Textos.CodigoSap),
     grilla.Columna("Activo", Textos.Cliente_Activo, m => ((bool)m.Activo).Formatted()),
-    grilla.Columna("Bloqueado", Textos.Cliente_Bloqueado, m => ((bool)m.Bloqueado).Formatted())
-    ))
+    grilla.Columna("Bloqueado", Textos.Cliente_Bloqueado, m => ((bool)m.Bloqueado).Formatted()),
+    grilla.Columna("EsClienteProvisorio", Textos.ClienteProvisorio, m => ((bool)m.EsClienteProvisorio).Formatted())
+))
+
+
+
+
 

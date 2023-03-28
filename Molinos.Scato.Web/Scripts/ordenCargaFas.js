@@ -139,15 +139,22 @@ jQuery(document).ready(function () {
             $("#VehiculoDemorado").val("False");
         }
 
-        if ($("#Rechazado").length > 0) {
-            $("#Rechazado").val("True");
-        }
-
         if (valido) {
+            $("#Rechazado").val("True");
             modalRechazarOrdenCargaFas.close();
             $("#ordenCargaFas-form").submit();
+           
         }
     })
+
+    $("#btn-aceptar").click(function () {
+        
+            $("#Rechazado").val("False");
+            $("#ordenCargaFas-form").submit();
+
+    })
+
+
 });
 
 function deshabilitarKmRecorrerYLocalidad() {
@@ -264,6 +271,7 @@ function LlenarCombo(datos) {
         }
         mySelect.append("<option value=" + text + ">" + text + "</option>");
     });
+    $('#NumeroOrden').removeAttr("readonly");
     $('#NumeroOrden').attr("disabled", false);
     $('#TipoComercialId').attr("disabled", false);
     if (textVal != '') {

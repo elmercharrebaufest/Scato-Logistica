@@ -120,6 +120,7 @@ namespace Molinos.Scato.Web.Controllers
             establecimientos.Insert(0, new SelectListItem { Selected = false, Text = Textos.Default_Establecimiento, Value = "-1" });
             ViewBag.Establecimientos = establecimientos;
             ViewBag.RecorridoId = model.RecorridoId;
+            ViewBag.EstablecimientosEPAId = model.Establecimientos.Where(x => x.EsSojaEPA).Select(x => x.Id).ToList();
 
             var foto = servicio.ObtenerFotoCPDeCartaDePortePorrecorrido(instanceId);
             if (foto.Fotos.Any())

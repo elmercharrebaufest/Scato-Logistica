@@ -2806,5 +2806,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         DomicilioDto ObtenerDomicilioDG(int plantaDG);
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId);
+
+        [OperationContract]
+        bool EsRecorridoConEstablecimiento(Guid instanceId);
+
+        [OperationContract]
+        int? EsRecorridoSojaEPAConAlmacen(Guid instanceId);
+
+        [OperationContract]
+        bool EsRecorridoSojaEPA(Guid instanceId);
     }
 }

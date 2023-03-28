@@ -7,6 +7,8 @@
             public const string CupoGenerico = "MOL1111/11111111";
             public const long CuitMOA = 30715118773;
             public const string NumeroRemitoGenerico = "1111-11111111";
+            public const string ColorFondoSojaEPA = "#1E21EF";
+            public const string ColorTextoSojaEPA = "#FFFFFF";
         }
 
         public struct IntercomunicadorDireccion
@@ -170,6 +172,12 @@
             public const string BiodiselAgranel = "99319";
             public const string AceiteGirasolCrudoSAP = "94687";
             public const string AceiteSojaCrudoGranelSAP = "94705";
+        }
+
+        public struct TipoSoja
+        {
+            public const string Sustentable = "sust";
+            public const string EPA = "epa";
         }
     }
 }

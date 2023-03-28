@@ -190,12 +190,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var remitente = Repositorio.Obtener<Cliente>(x => x.Id == comando.RemitenteId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercial = !string.IsNullOrEmpty(remitente.Cuit) ? long.Parse(remitente.Cuit.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercialSpecified = true;
-                } 
-                
-                if(!string.IsNullOrEmpty(comando.CuitDestinatario))
+                }
+
+                if (!string.IsNullOrEmpty(comando.CuitDestinatario))
                 {
                     autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
                     autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
+                } else if (comando.DestinatarioId.HasValue) 
+                {
+                    var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
+                    autorizarCpeRequest.solicitud.destino.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
+                    var destinatario = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinatarioId);
+                    autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destinatario.Cuit) ? long.Parse(destinatario.Cuit.Replace("-", string.Empty)) : 0;
                 } else
                 {
                     var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);

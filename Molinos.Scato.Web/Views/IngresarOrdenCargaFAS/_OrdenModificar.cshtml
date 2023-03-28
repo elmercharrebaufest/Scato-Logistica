@@ -33,7 +33,6 @@
 @Html.HiddenFor(model => model.OrdenDomicilioDestino)
 @Html.HiddenFor(model => model.TipoDomicilioDestino)
 @Html.HiddenFor(model => model.RecorridoId)
-@Html.HiddenFor(model => model.CuitDestinatario)
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
         <div class="control paddingRight">
@@ -62,18 +61,25 @@
             </div>
         </div>
         <div class="control paddingRight">
-            @Html.LabelFor(model => model.Comisionista, new { @class = "control-label", @readonly = "readonly" })
+            @Html.LabelFor(model => model.Comisionista, new { @class = "control-label"})
             <div class="controls">
                 @Html.DisplayFor(model => model.Comisionista)
                 @Html.HiddenFor(model => model.ComisionistaId)
             </div>
         </div>
         <div class="control paddingRight">
-            @Html.LabelFor(model => model.Remitente, new { @class = "control-label", @readonly = "readonly" })
+            @Html.LabelFor(model => model.Remitente, new { @class = "control-label" })
             <div class="controls">
                 @Html.DisplayFor(model => model.Remitente)
                 @Html.HiddenFor(model => model.RemitenteId)
             </div>
+        </div>
+  	<div class="control paddingRight">
+                @Html.LabelFor(model => model.CuitDestinatario, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DisplayFor(model => model.CuitDestinatario)
+                    @Html.ValidationMessageFor(model => model.CuitDestinatario)
+                </div>
         </div>
         <div class="control paddingRight">
             @Html.LabelFor(model => model.TransportistaDesc, new { @class = "control-label" })

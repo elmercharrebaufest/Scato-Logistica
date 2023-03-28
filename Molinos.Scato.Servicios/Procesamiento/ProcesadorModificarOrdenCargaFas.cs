@@ -27,6 +27,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var recorrido = Repositorio.Obtener<Recorrido>(comando.Orden.RecorridoId);
             var localidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId);
             var pagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId);
+            var corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId);
+            var comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId);
+            var remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId);
 
             var ordenCargaFas = Repositorio.Obtener<OrdenCargaFas>(comando.Orden.Id);
 
@@ -142,11 +145,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 ordenCargaFas.NumeroOrden = comando.Orden.NumeroOrden;
                 recorrido.NumeroDocumentoIngreso = comando.Orden.NumeroOrden;
             }
+
+            #region Campos para Derivado Granario
             ordenCargaFas.PlantaDGDestino = comando.Orden.PlantaDGDestino;
             ordenCargaFas.OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino;
             ordenCargaFas.TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino;
-
             ordenCargaFas.PagadorFlete = pagadorFlete;
+            ordenCargaFas.CuitDestinatario = comando.Orden.CuitDestinatario;
+            ordenCargaFas.Corredor = corredor;
+            ordenCargaFas.Comisionista = comisionista;
+            ordenCargaFas.Remitente = remitente;
+            ordenCargaFas.DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado;
+            #endregion
 
             recorrido.Patente = comando.Orden.PatenteCamion;
             recorrido.Chofer = chofer;

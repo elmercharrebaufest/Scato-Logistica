@@ -333,15 +333,15 @@ namespace Molinos.Scato.Web.Controllers
                             TipoComercialDesc = tipoComercial != null ? tipoComercial.Descripcion : null,
                             TipoComercialId = tipoComercial != null ? (int)(tipoComercial.Id != null ? tipoComercial.Id : 0) : 0,
                             DerivadoGranarioHabilitado = material.EsDerivadoGranario,
-                            PlantaDGDestino = !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : 0,
-                            OrdenDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : 0,
-                            PagadorFleteId = pagadorFlete?.Id,
-                            PagadorFlete = pagadorFlete?.Descripcion,
+                            PlantaDGDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : (int?)null,
+                            OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
+                            PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
+                            PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
                             Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
-                            TipoDomicilioDestino = !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : 0,
+                            TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var comisionista = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Comisionista = comisionista?.Descripcion;
@@ -350,7 +350,7 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.ClienteId = 0;
                             itemSap.ClienteDesc = string.Empty;
                         }
-                        else if (ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Remitente = remitente?.Descripcion;
@@ -360,8 +360,15 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.ClienteDesc = string.Empty;
                         }
 
-                        if (!string.IsNullOrEmpty(ordenCargaFas[i].CORRE))
+                        if (material.EsDerivadoGranario 
+                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE) 
+                            && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
+                            if(ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            {
+                                return Json(new { datosSap = -1, error = "El campo corredor no cumple el formato de 11 caracteres numérico." }, JsonRequestBehavior.AllowGet);
+                            }
+
                             var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
                             itemSap.Corredor = corredor?.Descripcion;
                             itemSap.CorredorId = corredor?.Id;
@@ -496,7 +503,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
-                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
+                ModelState.AddModelError((!string.IsNullOrEmpty(orden.CuitDestinatario) ? "CuitDestinatario" : "ClienteDesc"), "El cliente está inhabilitado.");
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
@@ -506,7 +513,7 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && string.IsNullOrEmpty(orden.TipoYOrdenDestino))
             {
-                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_OrdenDomicilioDestino));
+                ModelState.AddModelError("TipoYOrdenDestino", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_TipoYOrdenDestino));
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.PagadorFleteId.HasValue || orden.PagadorFleteId <= 0))
@@ -531,13 +538,11 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
             {
-                if(orden.ComisionistaId.HasValue)
-                {
-                    ModelState.AddModelError("Comisionista", "No tiene cuit destinatario");
-                } else if(orden.RemitenteId.HasValue)
-                {
-                    ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
-                }
+                ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
+            }
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
+            {
+                ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
             }
         }
     }

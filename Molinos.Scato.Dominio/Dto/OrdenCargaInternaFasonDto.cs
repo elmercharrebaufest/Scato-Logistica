@@ -117,7 +117,11 @@ namespace Molinos.Scato.Dominio.Dto
         
         public int? TipoDomicilioDestino { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_OrdenDomicilioDestino")]
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_TipoYOrdenDestino")]
         public string TipoYOrdenDestino { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_Destinatario")]
+        public string Destinatario { get; set; }
+        public int? DestinatarioId { get; set; }
     }
 }

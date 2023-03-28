@@ -7,6 +7,7 @@
 	[EsSojaSustentable]     BIT            NOT NULL default 0,
     [EsEspecial] BIT NULL DEFAULT 0, 
     [CodigoSensorBajada] NVARCHAR(50) NULL, 
+    [EsSojaEPA] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [PK_dbo.PuestosDeCargaDescarga] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_dbo.PuestosDeCargaDescarga_dbo.Hidraulica_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id]),
 	CONSTRAINT [FK_dbo.PuestosDeCargaDescarga_dbo.Hidraulica_PuestoDeTrabajo_Id] FOREIGN KEY ([PuestoDeTrabajo_Id]) REFERENCES [dbo].[PuestoDeTrabajo] ([Id]),

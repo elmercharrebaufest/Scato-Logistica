@@ -108,6 +108,7 @@
     <Compile Include="Comandos\InsertarSlotMensajeCartelLed.cs" />
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
+    <Compile Include="Comandos\CrearClienteProvisorio.cs" />
     <Compile Include="Comandos\ModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />

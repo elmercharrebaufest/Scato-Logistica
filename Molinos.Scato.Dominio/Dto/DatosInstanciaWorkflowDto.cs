@@ -41,5 +41,8 @@ namespace Molinos.Scato.Dominio.Dto
         public string AlmacenDestino { get; set; }
         public int? DiferenciaPesoNeto { get; set; }
         public bool EsGrano { get; set; }
+
+        public bool SojaEPA { get; set; }
+
     }
 }

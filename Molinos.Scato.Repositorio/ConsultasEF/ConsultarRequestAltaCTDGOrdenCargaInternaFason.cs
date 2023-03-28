@@ -27,6 +27,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 .Include(x => x.Comisionista)
                                 .Include(x => x.Remitente)
                                 .Include(x => x.IntermediarioFlete)
+                                .Include(x => x.Destinatario)
                                 .Where(x => x.Recorrido.InstanciaWorkflow == workflowInstance)
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
@@ -35,7 +36,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 DestinoPlanta = orden.PlantaDGDestino ?? 0,
                 DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                 DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
-                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0,
+                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Destinatario?.Cuit) ? long.Parse(orden?.Destinatario?.Cuit?.Replace("-", string.Empty)) : 0,
                 Dominios = new List<string> { orden.PatenteCamion, orden.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
                 KmRecorrer = !string.IsNullOrWhiteSpace(orden.KmRecorrer) ? int.Parse(orden.KmRecorrer) : 0,
                 PagadorFleteCuit = !string.IsNullOrEmpty(orden?.PagadorFlete?.Cuit) ? long.Parse(orden?.PagadorFlete?.Cuit?.Replace("-", string.Empty)) : 0,

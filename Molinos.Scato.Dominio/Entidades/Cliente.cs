@@ -14,5 +14,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string Localidad { get; set; }
         public virtual string Provincia { get; set; }
         public virtual bool Bloqueado { get; set; }
+        public virtual bool EsClienteProvisorio { get; set; }
     }
 }

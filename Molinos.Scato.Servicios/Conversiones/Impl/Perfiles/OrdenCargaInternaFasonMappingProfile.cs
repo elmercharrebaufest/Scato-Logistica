@@ -42,7 +42,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.Remitente, c => c.MapFrom(o => o.Remitente.Descripcion))
                 .ForMember(x => x.RemitenteCodigoSap, c => c.MapFrom(o => o.Remitente.CodigoSap))
                 .ForMember(x => x.IntermediarioFleteId, c => c.MapFrom(o => o.IntermediarioFlete.Id))
-                .ForMember(x => x.IntermediarioFlete, c => c.MapFrom(o => o.IntermediarioFlete.Descripcion));
+                .ForMember(x => x.IntermediarioFlete, c => c.MapFrom(o => o.IntermediarioFlete.Descripcion))
+                .ForMember(x => x.DestinatarioId, c => c.MapFrom(o => o.Destinatario.Id))
+                .ForMember(x => x.Destinatario, c => c.MapFrom(o => o.Destinatario.Descripcion));
 
             Mapper.CreateMap<OrdenCargaInternaFasonDto, OrdenCargaInternaFason>();
         }
