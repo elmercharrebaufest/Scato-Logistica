@@ -91,7 +91,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
                 var balanza = srvRepositorio.ObtenerBalanza(asignacion.BalanzaTaraId ?? 0);
                 AlmacenDto almacen = null;
-                var almacenEPAId = srvRepositorio.EsRecorridoSojaEPA(instanceId);
+                var almacenEPAId = srvRepositorio.EsRecorridoSojaEPAConAlmacen(instanceId);
 
                 if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId))
                 {
