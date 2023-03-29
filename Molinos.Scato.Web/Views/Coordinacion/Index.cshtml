@@ -9,8 +9,20 @@
     var caracteristicasNoAceptables = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasNoAceptables);
     var caracteristicasMensajes = ((IList<AnalisisPorCaracteristicaDto>)ViewBag.CaracteristicasMensajes);
     var agente = (string)ViewBag.AgenteCompras;
+    var esSojaSustentable = (bool)ViewBag.EsSojaSustentable;
+    var esSojaEPA = (bool)ViewBag.EsSojaEPA;
+    var trigoEspecial = (bool)ViewBag.TrigoEspecial;
+    var label = esSojaEPA ? "label-azul" : esSojaSustentable ? "label-success" : trigoEspecial ? "label-yellow" : "label-default";
+    var tituloTipoMaterial = esSojaEPA ? Textos.Soja_EPA : esSojaSustentable ? Textos.Sustentable : trigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty;
 }
 <script type="text/javascript" src="@Url.Script("~/scripts/coordinacion.js")"></script>
+
+<style>
+    .label-azul {
+        background-color: #1E21EF;
+        color: white;
+    }
+</style>
 
 <div class="container text-center">
     <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Coordinacion_Titulo</div>
@@ -20,8 +32,8 @@
             <h4 style="margin-top: 0; margin-bottom: 0">@(Textos.NoCumpleCaracteristicasEspeciales)</h4>
         </span>
     }
-    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
-        <h4 style="margin-top: 0; margin-bottom: 0">@Model.Material.Descripcion @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+    <span class="label @label text-center">
+        <h4 style="margin-top: 0; margin-bottom: 0">@Model.Material.Descripcion @tituloTipoMaterial</h4>
     </span>
 
     @if ((bool)ViewBag.CupoEsFabrica)
