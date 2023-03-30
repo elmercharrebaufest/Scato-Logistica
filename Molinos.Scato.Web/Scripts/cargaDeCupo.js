@@ -139,46 +139,53 @@
         $("#matId").val("");
 });
 var patenteNoReconocida = 'Patente no reconocida';
+
+var iniciarLoopFotoPatenteActivo = false;
 function TomarFotoConPatente() {
-    if ($('#checkvalidarPatente').is(':checked')) {
-        $.ajax({
-            url: $("#links").data().urlObtenerPatente,
-            dataType: 'json',
-            data: { puestodetrabajoid: $("#PuestoDeTrabajoId").val(), codigoCamara: $("#CodigoCamaraPatente").val(), directorio: $("#CodigoCamaraPatenteDir").val() },
-            type: "GET",
-            success: function (data) {
-                if (data.error === "") {
-                    if (data.patente !== 'NULL') {
-                        $("#patenteALPR").html(data.patente);
-                        if ($('#circuitoNoGranos').is(':checked') && !$('#Patente').val()) {
-                            $('#Patente').val(data.patente);
-                            validarEgresoVentaFas();
-                        }
-                        if ($('#cpe').is(':checked') && !$('#Patente').val()) {
-                            $('#Patente').val(data.patente);
-                        }
-                    } else {
-                        $("#patenteALPR").text(patenteNoReconocida);
-                    }
-                    $('#imagen-patente').attr('src', data.imagen);
-                    $('#imagen-patente').attr('alt', "Cargando...");
-                } else {
-                    $("#patenteALPR").html('');
-                    $('#imagen-patente').attr('alt', "Error al obtener la imagen");
-                    $('#imagen-patente').attr('src', '');
-                }
-                ValidarPatentesIguales();
-            },
-            complete: function (data) {
-                setTimeout(TomarFotoConPatente, 4000);
-            }
-        });
-    } else {
-        errorPatente = false;
-        setTimeout(TomarFotoConPatente, 4000);
+    if ($('#checkvalidarPatente').is(':checked') && !iniciarLoopFotoPatenteActivo) {
+        RefrescarFotoPatente();
     }
 }
 
+function RefrescarFotoPatente() {
+    iniciarLoopFotoPatenteActivo = true;
+    $.ajax({
+        url: $("#links").data().urlObtenerPatente,
+        dataType: 'json',
+        data: { puestodetrabajoid: $("#PuestoDeTrabajoId").val(), codigoCamara: $("#CodigoCamaraPatente").val(), directorio: $("#CodigoCamaraPatenteDir").val() },
+        type: "GET",
+        success: function (data) {
+            if (data.error === "") {
+                if (data.patente !== 'NULL') {
+                    $("#patenteALPR").html(data.patente);
+                    if ($('#circuitoNoGranos').is(':checked') && !$('#Patente').val()) {
+                        $('#Patente').val(data.patente);
+                        validarEgresoVentaFas();
+                    }
+                    if ($('#cpe').is(':checked') && !$('#Patente').val()) {
+                        $('#Patente').val(data.patente);
+                    }
+                } else {
+                    $("#patenteALPR").text(patenteNoReconocida);
+                }
+                $('#imagen-patente').attr('src', data.imagen);
+                $('#imagen-patente').attr('alt', "Cargando...");
+            } else {
+                $("#patenteALPR").html('');
+                $('#imagen-patente').attr('alt', "Error al obtener la imagen");
+                $('#imagen-patente').attr('src', '');
+            }
+            ValidarPatentesIguales();
+        },
+        complete: function (data) {
+            if ($('#checkvalidarPatente').is(':checked')) {
+                setTimeout(RefrescarFotoPatente, 3000);
+            } else {
+                iniciarLoopFotoPatenteActivo = false;
+            }
+        }
+    });
+}
 
 function validarEgresoVentaFas() {
     const existePatenteYesNoGranos = $('#Patente').val().length > 0 && $('#circuitoNoGranos').is(':checked')

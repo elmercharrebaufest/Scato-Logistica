@@ -531,10 +531,6 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoTomarFoto = resultadoEjecutar as ResultadoTomarFoto;
                 if (resultado != null)
                 {
-                    if (!fotoPatente && model != null)
-                    {
-                        resultado.Imagen = DibujarEtiqueta(resultado.Imagen, model);
-                    }
                     return Json(new
                     {
                         imagen = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(resultado.Imagen)),
