@@ -728,7 +728,7 @@ namespace Molinos.Scato.Web.ServicioHub
 
             if (puestoTrabajo == null)
             {
-                log.Error($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
                 return;
             }
 
