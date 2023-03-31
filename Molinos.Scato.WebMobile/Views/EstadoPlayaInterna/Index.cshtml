@@ -7,11 +7,6 @@
 @{
     ViewBag.Title = Textos.EstadoDeCallePlayaInterna;
     Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
-    List<CallePlantaDto> calles = new List<CallePlantaDto>();
-    Model.ForEach(i => { calles.AddRange(i.Calles); });
-    string[] configuracion = ViewBag.ConfiguracionSwitch;
-    int id = ViewBag.IdConfiguracion;
-
 }
 
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
@@ -27,49 +22,15 @@
 </script>
 
 
-
-
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    @Html.Hidden("idConfiguracion", id);
     <li class="nav-item" id="tabPlayaInternaGranos">
         <a class="nav-link tabPanelEstadoPlayaInterna active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">Granos</a>
     </li>
     <li class="nav-item" id="tabPlayaInternaNoGranos">
         <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
     </li>
-
-    <li class="nav-item">
-        <a class="nav-link tabPanelEstadoPlayaInterna">
-            <label class="switch">
-                <input type="checkbox" id="pasoDirectoSoja" value=@Html.AttributeEncode(configuracion[0].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[0].Equals("0")  ? string.Empty : "Checked")  @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled" )>
-                <span class="slider round"></span>
-            </label>
-        </a>
-
-    </li>
-    <li class="nav-item">
-        <a class="nav-link tabPanelEstadoPlayaInterna">
-            <label class="switch">
-                <input type="checkbox" id="pasoDirectoMaiz" value=@Html.AttributeEncode(configuracion[1].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[1].Equals("0")  ? string.Empty : "Checked")  @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                <span class="slider round"></span>
-            </label>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link tabPanelEstadoPlayaInterna">
-            <label class="switch">
-                <input type="checkbox" id="pasoDirectoTrigo" value=@Html.AttributeEncode(configuracion[2].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[2].Equals("0")  ? string.Empty : "Checked")  @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                <span class="slider round"></span>
-            </label>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link tabPanelEstadoPlayaInterna">
-            <label class="switch">
-                <input type="checkbox" id="pasoDirectoGirasol" value=@Html.AttributeEncode(configuracion[3].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[3].Equals("0")  ? string.Empty : "Checked")  @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                <span class="slider round"></span>
-            </label>
-        </a>
+    <li class="nav-item" id="tabConfiguracion">
+        <a class="nav-link tabPanelEstadoPlayaInterna" id="configuracion-tab" data-toggle="tab" href="#configuracion" role="tab" aria-selected="false">Configuracion</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -78,6 +39,9 @@
     </div>
     <div class="tab-pane fade show" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
         @Html.Partial("_CallesNoGranos", Model)
+    </div> 
+    <div class="tab-pane fade show" id="configuracion" role="tabpanel" aria-labelledby="configuracion-tab">
+        @Html.Partial("_Configuracion", Model)
     </div>
 </div>
 <div id="detalleCamion"></div>

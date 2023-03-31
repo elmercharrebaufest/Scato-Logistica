@@ -1,0 +1,83 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Helpers;
+@model List<TipoCallePlantaDto>
+
+@{
+    List<CallePlantaDto> calles = new List<CallePlantaDto>();
+    Model.ForEach(i => { calles.AddRange(i.Calles); });
+    string[] configuracion = ViewBag.ConfiguracionSwitch;
+    int id = ViewBag.IdConfiguracion;
+}
+
+    
+<div class="content">
+    <div class="row" style="display:flex; justify-content:left; margin-left:auto;">
+        <div class="col-5">
+            <h6>Configuracion de materiales con paso directo a balanza</h6>
+            @Html.Hidden("idConfiguracion", id)
+        </div>
+
+    </div>
+    <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+        <div class="col-5">
+
+            <ul>
+                <li>
+                    <div class="row">
+                        <div class="nav-link nav-material bg-soja col-md-2">Soja</div>
+                        <div class="col-md-6">
+                            <label class="switch">
+                                <input type="checkbox" id="pasoDirectoSoja" value=@Html.AttributeEncode(configuracion[0].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[0].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="nav-link nav-material bg-maiz text-white col-md-2">Maiz</div>
+                        <div class="col-md-6">
+                            <label class="switch">
+                                <input type="checkbox" id="pasoDirectoMaiz" value=@Html.AttributeEncode(configuracion[1].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[1].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="nav-link nav-material bg-naranja text-white col-md-2">Trigo</div>
+                        <div class="col-md-6">
+                            <label class="switch">
+                                <input type="checkbox" id="pasoDirectoTrigo" value=@Html.AttributeEncode(configuracion[2].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[2].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="nav-link nav-material bg-warning text-white col-md-2">Girasol</div>
+                        <div class="col-md-6">
+                            <label class="switch">
+                                <input type="checkbox" id="pasoDirectoGirasol" value=@Html.AttributeEncode(configuracion[3].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[3].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <br />
+    </div>
+</div>
+   
+
+
+

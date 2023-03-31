@@ -16,7 +16,7 @@
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -533,6 +533,7 @@
     <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_BuscadorPatente.cshtml" />
     <Content Include="Views\EstadoVolcadoras\Index.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_Configuracion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
