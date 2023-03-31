@@ -911,7 +911,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception e)
             {
-                log.Error(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
+                log.Info(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
                 throw;
             }
         }

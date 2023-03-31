@@ -254,6 +254,7 @@ namespace Molinos.Scato.Web.Helpers
                 f.Id,
                 data_materialId = f.MaterialId,
                 data_EsSustentable = f.EsSustentable,
+                data_SojaEPA = f.SojaEPA,
                 @class = "columna-checkbox " +
             (f.Rechazado ? "estado-rechazado " : "") +
             (f.FueAsignado ? "estado-asignado " : f.TieneDescuentos ? "estado-descuento " : "") +
@@ -316,6 +317,15 @@ namespace Molinos.Scato.Web.Helpers
                                 , "editar-pdf-columna"
                                 , false
                                 );
+        }
+
+        public static WebGridColumn ColumnaModificarClienteProvisorio(this WebGrid grid, HtmlHelper html, string controller, string style = "")
+        {
+            return  grid.Column("editar", "", f => f.EsClienteProvisorio ? 
+                                                html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString()) 
+                                                :  
+                                                html.Raw("<span disabled></span>"), "editar-borrar-columna", false);
+                                   
         }
 
     }

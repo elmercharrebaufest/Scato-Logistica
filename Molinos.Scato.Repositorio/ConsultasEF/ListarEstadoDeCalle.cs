@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Dto;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -37,8 +38,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   AsignadoEnPuestoComando = x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
-                                  ColorFondo = x.Recorrido.Material.ColorFondo,
-                                  ColorTexto = x.Recorrido.Material.ColorTexto
+                                  ColorFondo = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA :  (x.Recorrido.Material.ColorFondo ?? x.CargaDeCupo.Material.ColorFondo),
+                                  ColorTexto = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA :  (x.Recorrido.Material.ColorTexto ?? x.CargaDeCupo.Material.ColorTexto),
+                                  EsSojaEPA = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
@@ -64,7 +66,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
                     ColorFondo = item.ColorFondo,
-                    ColorTexto = item.ColorTexto
+                    ColorTexto = item.ColorTexto,
+                    EsSojaEPA = item.EsSojaEPA,
                 };
 
                 resultado.Add(callePorRecorrido);

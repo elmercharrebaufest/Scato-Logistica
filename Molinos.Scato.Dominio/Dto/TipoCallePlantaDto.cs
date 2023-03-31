@@ -46,5 +46,6 @@ namespace Molinos.Scato.Dominio.Dto
         public int CalleId { get; set; }
         public DateTime FechaIngreso { get; set; }
         public int MaterialId { get; set; }
+        public bool EsSojaEPA { get; set; }
     }
 }

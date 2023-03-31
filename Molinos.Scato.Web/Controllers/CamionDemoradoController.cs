@@ -625,7 +625,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (!orden.Rechazado && orden.Inhabilitado)
             {
-                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
+                ModelState.AddModelError((!string.IsNullOrEmpty(orden.CuitDestinatario) ? "CuitDestinatario" : "ClienteDesc"), "El cliente está inhabilitado.");
             }
 
             if (!orden.Rechazado && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
@@ -642,6 +642,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
+
             if (!orden.Rechazado && string.IsNullOrEmpty(orden.NumeroOrden))
             {
                 ModelState.AddModelError("NumeroOrden", string.Format(Textos.Error_Requerido, Textos.OrdenCargaFAS_OrdenCargaFas));
@@ -652,22 +653,16 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("TransportistaDesc", string.Format(Textos.Error_Requerido, Textos.Transportista));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
+            if (!orden.Rechazado && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
             {
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
+            if (!orden.Rechazado && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
             {
-                if (orden.ComisionistaId.HasValue)
-                {
-                    ModelState.AddModelError("Comisionista", "No tiene cuit destinatario");
-                }
-                else if (orden.RemitenteId.HasValue)
-                {
-                    ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
-                }
+                ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
             }
+
         }
 
         // Utilizar método sólo para pruebas locales

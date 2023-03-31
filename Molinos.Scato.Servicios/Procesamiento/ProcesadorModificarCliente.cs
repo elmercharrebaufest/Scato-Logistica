@@ -26,6 +26,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             cliente.Provincia = comando.Dto.Provincia;
             cliente.Activo = comando.Dto.Activo;
             cliente.CodigoSap = comando.Dto.CodigoSap;
+            cliente.EsClienteProvisorio = comando.Dto.EsClienteProvisorio;
+        
         }
 
         protected override void Validar(ModificarCliente comando, Resultado resultado)

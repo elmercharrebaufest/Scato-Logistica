@@ -112,6 +112,9 @@ namespace Molinos.Scato.Web.Controllers
 
             if(orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
                 var dominios = new List<string> { orden.PatenteCamion };
                 if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
                 {

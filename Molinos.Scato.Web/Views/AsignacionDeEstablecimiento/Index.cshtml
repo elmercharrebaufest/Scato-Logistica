@@ -8,6 +8,7 @@
     var hayErrores = (bool)ViewBag.HayErrores;
     var establecimientos = (IEnumerable<SelectListItem>)ViewBag.Establecimientos;
     var noMostrarBoton = (bool?)ViewBag.NoReemplazarCp ?? false;
+    var establecimientosEPA = (List<int>)ViewBag.EstablecimientosEPAId;
 }
 @section scripts
 {
@@ -98,6 +99,26 @@
                     }, "json");
             }
         });
+        $('#BotonAceptar').click(function (ev) {
+            ev.preventDefault();
+            let establecimientosEPA = JSON.parse($("#EstablecimientosEPA").val())
+            if (establecimientosEPA.includes(parseInt($("#dropdownEstablecimientos").val()))) {
+                $(".dialogWrapper").css("display", "flex");
+                $("#nombreEstablecimientoEPA").text($('#dropdownEstablecimientos :selected').text())
+                modalAsignacionDeEstablecimientoEPA.show();
+            } else {
+                $("#asignacionDeEstablecimiento-form").submit();
+            }
+        });
+
+        $("#btnAceptarAsignacionDeEstablecimientoEPA").click(function () {
+            $("#asignacionDeEstablecimiento-form").submit();
+        })
+
+        $("#btnCancelarAsignacionDeEstablecimientoEPA").click(function () {
+            $(".dialogWrapper").css("display", "none");
+            modalAsignacionDeEstablecimientoEPA.close();
+        })
     });
     function tomarFotoMesaDigitalizacion() {
         $.getJSON($("#links").data().urlObtenerFotoMesa, null,
@@ -113,6 +134,7 @@
     }
 </script>
 <script type="text/javascript" src="@Url.Script("~/scripts/asignacionDeEstablecimiento.js")"></script>
+<link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <style>
     #errorProcedenciaLocalidad {
         color: #ff0000;
@@ -137,8 +159,9 @@
         <div class="span6">
 
 
+            @Html.Hidden("EstablecimientosEPA", Json.Encode(establecimientosEPA))
             @Html.Hidden("hayErrores", hayErrores)
-            @using (Html.BeginForm("Index", "AsignacionDeEstablecimiento", FormMethod.Post, new { @class = "form-horizontal causaBlock", data_mensaje_espera = Textos.ActAsignacionDeEstablecimiento }))
+            @using (Html.BeginForm("Index", "AsignacionDeEstablecimiento", FormMethod.Post, new { @class = "form-horizontal causaBlock", id = "asignacionDeEstablecimiento-form", data_mensaje_espera = Textos.ActAsignacionDeEstablecimiento }))
             {
                 @Html.HiddenFor(m => m.InstanceId, new { @class = "", id = "InstanciaWorkflow" })
                 @Html.HiddenFor(m => m.WorkflowDefinicionId)
@@ -246,4 +269,17 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="dialogWrapper">
+    <dialog id="modalAsignacionDeEstablecimientoEPA" class="dialogModal">
+        <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
+        <div class="dialogModal__descripcion">
+            <p>Seleccionaste el establecimiento <span id="nombreEstablecimientoEPA"></span>, que es de soja EPA, ¿estas de acuerdo?</p>
+        </div>
+        <div class="dialogModal__botones">
+            <button class="btn btn-warning" type="button" id="btnAceptarAsignacionDeEstablecimientoEPA">SI</button>
+            <button class="btn" type="button" id="btnCancelarAsignacionDeEstablecimientoEPA">NO</button>
+        </div>
+    </dialog>
 </div>

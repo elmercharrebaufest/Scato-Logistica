@@ -9,6 +9,7 @@ using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -218,6 +219,11 @@ namespace Molinos.Scato.Web.Controllers
             var almacenes = recorrido.Material != null
                                 ? servicio.ListarAlmacenesPorMaterialYCentro(recorrido.Centro.Id, recorrido.Material.Id, recorrido.EsSustentable)
                                 : servicio.ListarAlmacenesPorCentroYesSustentable(recorrido.Centro.Id, recorrido.EsSustentable);
+
+            almacenes = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA ? 
+                                    servicio.ListarAlmacenesPorMaterialYCentroEPA(datosUsuario.CentroId, recorrido.Material.Id)
+                                    : almacenes;
+
             ViewBag.Almacenes = almacenes.ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture),
                                                        f => f.DescripcionCorta);
             ViewBag.DocumentoIngreso = recorrido.TipoDocumentoIngreso;
