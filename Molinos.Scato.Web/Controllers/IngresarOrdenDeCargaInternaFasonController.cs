@@ -112,6 +112,9 @@ namespace Molinos.Scato.Web.Controllers
 
             if (orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
             {
+                var domicilio = orden.TipoYOrdenDestino.Split('-');
+                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
                 var dominios = new List<string> { orden.PatenteCamion };
                 if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
                 {
@@ -220,6 +223,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var material = servicio.ObtenerMaterial(orden.MaterialId);
+            var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
             if (otroRecorridoDelChofer != null)
@@ -241,12 +245,13 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
-
-            if(material.EsDerivadoGranario && orden.ClienteId <= 0)
+            
+            if(esClienteProvisorio &&  (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
             {
-                ModelState.AddModelError("Cliente", string.Format(Textos.Error_Requerido, Textos.Cliente));
+                ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
             }
-
+            
             if (material.EsDerivadoGranario && !orden.DestinatarioId.HasValue)
             {
                 ModelState.AddModelError("Destinatario", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));

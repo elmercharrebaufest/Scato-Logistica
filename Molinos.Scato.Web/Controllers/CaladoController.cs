@@ -180,6 +180,7 @@ namespace Molinos.Scato.Web.Controllers
             var vehiculo = recorrido.Vehiculo;
             var info = servicio.ObtenerInformacionCartaPorte(recorrido.Id);
             var cupo = servicio.ObtenerCupoPorRecorrido(recorrido.Id);
+            var esEpa = servicio.EsRecorridoSojaEPA(id);
 
             ViewBag.PatenteOriginal = recorrido.Patente;
             ViewBag.Patente = recorrido.Centro.ReingresaPatenteEnCalado ? null : recorrido.Patente;
@@ -203,7 +204,8 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.NoRechazaEnCalado = recorrido.TipoComercial.NoRechazaEnCalado;
             ViewBag.Rechazado = recorrido.Rechazado;
             ViewBag.TrigoEspecial = info.TrigoEspecial;
-            ViewBag.EsSojaSustentable = recorrido.Establecimiento != null;
+            ViewBag.EsSojaSustentable = recorrido.Establecimiento != null && !esEpa;
+            ViewBag.EsSojaEPA = recorrido.Establecimiento != null && esEpa;
             ViewBag.RecorridoId = recorrido.Id;
             ViewBag.CupoEsFabrica = false;
             if (cupo != null)

@@ -167,8 +167,10 @@ function Camion(item, calle) {
     self.CalleId = item.CalleId;
     self.UltimoDeLaFila = item.UltimoDeLaFila;
     self.AsignadoEnPuestoComando = item.AsignadoEnPuestoComando;
+    self.ColorFondo = item.ColorFondo;
+    self.ColorTexto = item.ColorTexto;
+    self.EsSojaEPA = item.EsSojaEPA;
     self.Calle = calle;
-
     self.TiempoEnCola = null;
     self.TiempoEnColaEnMinutos = 0;
 
@@ -252,7 +254,7 @@ function EstadoDeCallesViewModel() {
             .slice(0, 5);
     };
     self.sumarCamiones = function (materialId) {
-        var count = 0;
+        let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
             let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
@@ -262,16 +264,33 @@ function EstadoDeCallesViewModel() {
         });
         return count;
     };
+    self.sumarCamionesSoja = function (contarEPA) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaEPA == contarEPA) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
     self.Recalcular = function () {
         self.dummy.notifySubscribers();
     };
-    self.CantidadSoja = ko.computed(function () { return self.sumarCamiones(4); });
+    self.CantidadSoja = ko.computed(function () { return self.sumarCamionesSoja(false); });
     self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
     self.CantidadHarina = ko.computed(function () { return self.sumarCamiones(81223); });
     self.CantidadPellet = ko.computed(function () { return self.sumarCamiones(63750); });
     self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
+    self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSoja(true); });
 
     self.ListarCamiones = function () {
         $.ajax({

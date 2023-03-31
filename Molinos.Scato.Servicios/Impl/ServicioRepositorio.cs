@@ -675,7 +675,7 @@ namespace Molinos.Scato.Servicios.Impl
                 Listar<Almacen, AlmacenDto>(
                     f =>
                     f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) &&
-                    f.EsSojaSustentable == esSustentable);
+                    f.EsSojaSustentable == esSustentable && !f.EPA);
         }
 
         public IList<CentroDto> ListarCentros()
@@ -2129,9 +2129,9 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<CaladoPorCaracteristica, CaladoPorCaracteristicaDto>(expresionFiltro);
         }
 
-        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion)
+        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA)
         {
-            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId && x.Calle.Id != calleId && x.Calle.TipoCalle == TipoCalle.PostCalado && !x.Calle.Deshabilitada && x.Calle.TipoCalidad != TipoCalidad.Otros && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion && x.FechaEgreso == null;
+            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId && x.Calle.Id != calleId && x.Calle.TipoCalle == TipoCalle.PostCalado && !x.Calle.Deshabilitada && x.Calle.TipoCalidad != TipoCalidad.Otros && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion && x.FechaEgreso == null && esSojaEPA == x.Recorrido.Establecimiento.EPA;
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
         }
@@ -4883,6 +4883,7 @@ namespace Molinos.Scato.Servicios.Impl
                 asignacion.SustentableMixto = true;
             }
             asignacion.SonSustentables = recorridos.Any(x => x.Establecimiento != null);
+            asignacion.SonSojaEPA = recorridos.Any(x => x.Establecimiento != null && x.Establecimiento.EPA == true);
 
             var materiales = recorridos.Select(x => x.Material).ToList();
             foreach (var recorrido in recorridos)
@@ -6120,9 +6121,10 @@ namespace Molinos.Scato.Servicios.Impl
                         LlegoEnHorario = x.LlegoEnHorario,
                         Proteina = "",
                         AlmacenDestino = x.Almacen.DescripcionCorta != null ? x.Almacen.DescripcionCorta : "",
-                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null
+                        DiferenciaPesoNeto = x.PesoTara.HasValue && x.PesoBruto.HasValue ? x.PesoBruto - x.PesoTara - (x.PesoBrutoOrigen - x.PesoTaraOrigen) : null,
+                        SojaEPA = x.Establecimiento != null ? x.Establecimiento.EPA : false
                     }, x => instanceIds.Contains(x.InstanciaWorkflow),
-                    instanceIds.Count);
+                    instanceIds.Count); ;
             foreach (var dato in datos)
             {
                 dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
@@ -7307,7 +7309,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EsRecorridoSustentable(Guid instanceId)
         {
-            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null);
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null && !f.Establecimiento.EPA);
         }
 
         public bool ValidaStockEPA(Guid instanceId)
@@ -8608,7 +8610,7 @@ namespace Molinos.Scato.Servicios.Impl
             return
                 Listar<Almacen, AlmacenDto>(
                     f =>
-                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId));
+                    f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && !f.EPA);
         }
 
         public IList<PuestosDeCargaDescargaDto> ListarHidraulicasPorCriterioSustentable(int centroId, bool esSustentable, bool sustentableMixta, bool excluirEspeciales = false)
@@ -8970,7 +8972,8 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
                  Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : string.Empty,
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
-                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty
+                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty,
+                 EsSojaEPA = x.Recorrido != null && x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
              });
 
             if (camion == null)
@@ -10354,5 +10357,26 @@ namespace Molinos.Scato.Servicios.Impl
             return domicilioId != null ? Obtener<Domicilio, DomicilioDto>(x => x.Id == domicilioId) : null;
         }
 
+        public IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId)
+        {
+            return Listar<Almacen, AlmacenDto>(
+                f =>
+                f.Centro.Id == centroId && f.Materiales.Any(x => x.Id == materialId) && f.EPA == true);
+        }
+
+        public bool EsRecorridoConEstablecimiento(Guid instanceId)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, bool>(x => x.InstanciaWorkflow == instanceId, f => f.Establecimiento != null);
+        }
+
+        public int? EsRecorridoSojaEPAConAlmacen(Guid instanceId)
+        {
+            return repositorio.ObtenerProyeccion<Recorrido, int>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true, x => x.Almacen.Id);
+        }
+
+        public bool EsRecorridoSojaEPA(Guid instanceId)
+        {
+            return repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true); 
+        }
     }
 }

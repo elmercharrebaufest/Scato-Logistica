@@ -20,6 +20,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ColorFondo { get; set; }
         public string ColorTexto { get; set; }
         public int? CalleRecorridoId { get; set; }
+        public bool EsSojaEPA { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -42,5 +43,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo? TipoVehiculo { get; set; }
         public string ColorFondo { get; set; }
         public string ColorTexto { get; set; }
+        public bool EsSojaEPA { get; set; }
     }
 }

@@ -30,6 +30,11 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsEspecial { get; set; }
 
         public int CentroId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "PuestoComando_CodigoSensorBajada")]
         public string CodigoSensorBajada { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "PuestoComando_EsSojaEPA")]
+        public bool EsSojaEPA { get; set; }
     }
 }

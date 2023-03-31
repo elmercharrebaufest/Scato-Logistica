@@ -192,7 +192,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                         Rechazado = camion.Rechazado,
                         FechaIngreso = camion.FechaIngeso,
                         MaterialId = camion.MaterialId,
-                        Calidad = camion.Calidad
+                        Calidad = camion.Calidad,
+                        EsSojaEPA = camion.EsSojaEPA
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }

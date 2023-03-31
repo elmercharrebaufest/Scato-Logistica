@@ -28,6 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             hidraulica.EsSojaSustentable = comando.Dto.EsSojaSustentable;
             hidraulica.EsEspecial = comando.Dto.EsEspecial;
+            hidraulica.EsSojaEPA = comando.Dto.EsSojaEPA;
             hidraulica.CodigoSensorBajada = comando.Dto.CodigoSensorBajada;
         }
 
