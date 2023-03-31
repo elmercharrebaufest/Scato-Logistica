@@ -2129,9 +2129,9 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<CaladoPorCaracteristica, CaladoPorCaracteristicaDto>(expresionFiltro);
         }
 
-        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion)
+        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA)
         {
-            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId && x.Calle.Id != calleId && x.Calle.TipoCalle == TipoCalle.PostCalado && !x.Calle.Deshabilitada && x.Calle.TipoCalidad != TipoCalidad.Otros && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion && x.FechaEgreso == null;
+            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId && x.Calle.Id != calleId && x.Calle.TipoCalle == TipoCalle.PostCalado && !x.Calle.Deshabilitada && x.Calle.TipoCalidad != TipoCalidad.Otros && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion && x.FechaEgreso == null && esSojaEPA == x.Recorrido.Establecimiento.EPA;
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
         }
@@ -8972,7 +8972,8 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoDocumento = x.Recorrido != null ? x.Recorrido.TipoDocumentoIngreso : (TipoDocumentoIngreso?)null,
                  Material = x.Recorrido != null ? x.Recorrido.Material.Descripcion : x.CargaDeCupo != null ? x.CargaDeCupo.Material.Descripcion : string.Empty,
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
-                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty
+                 DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty,
+                 EsSojaEPA = x.Recorrido != null && x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
              });
 
             if (camion == null)
