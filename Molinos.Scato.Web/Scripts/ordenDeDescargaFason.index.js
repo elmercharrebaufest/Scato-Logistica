@@ -255,6 +255,7 @@ function BuscarCliente(cuitOrigen){
     }).complete(function (data) {
         if(data.responseJSON != null && data.responseJSON.Id != null){
             var descripcion = data.responseJSON.Descripcion;
+            
             $("#Cliente").val(descripcion);  
             $('#Cliente').focusout();      
         }

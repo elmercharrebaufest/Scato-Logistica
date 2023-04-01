@@ -70,6 +70,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.CaracteristicasNoAceptables = caracteristicas;
             ViewBag.CaracteristicasMensajes = mensajes;
             ViewBag.EsSojaSustentable = recorrido.Establecimiento != null;
+            ViewBag.EsSojaEPA = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA;
             ViewBag.AgenteCompras = !string.IsNullOrEmpty(info.AgenteCompras) ? info.AgenteCompras : Textos.No;
             ViewBag.TrigoEspecial = info.TrigoEspecial;
             ViewBag.PatenteAcoplado = recorrido.Vehiculo != null ? recorrido.Vehiculo.PatenteAcoplado : string.Empty;

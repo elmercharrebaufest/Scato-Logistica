@@ -149,9 +149,12 @@ namespace Molinos.Scato.Dominio.Dto
         public bool CPE { get; set; }
         public string CTG { get; set; }
         public string Proteina { get; set; }
-         public string AlmacenDestino { get; set; }
+        public string AlmacenDestino { get; set; }
         public string DiferenciaPesoNeto { get; set; }
         public string EsGrano { get; set; }
         public string EsRechazado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Establecimiento_SojaEPA")]
+        public bool SojaEPA { get; set; }
     }
 }

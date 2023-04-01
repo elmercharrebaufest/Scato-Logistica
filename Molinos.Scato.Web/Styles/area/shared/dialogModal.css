@@ -1,4 +1,16 @@
-﻿.dialogModal {
+﻿.dialogWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.1);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.dialogModal {
     padding: 0;
     border-radius: 6px;
     border: 1px solid #999;

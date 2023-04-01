@@ -25,7 +25,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Localidad = Repositorio.Obtener<Localidad>(x => x.Id == comando.Dto.LocalidadId),
                 Domicilio = comando.Dto.Domicilio,
                 CodigoPostal = comando.Dto.CodigoPostal,
-                Anulado = comando.Dto.Anulado
+                Anulado = comando.Dto.Anulado,
+                EPA = comando.Dto.EsSojaEPA,
             };
             return ent;
         }

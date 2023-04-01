@@ -1618,6 +1618,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registrar cliente provisorio.
+        /// </summary>
+        public static string ActIngresarClienteProvisorio {
+            get {
+                return ResourceManager.GetString("ActIngresarClienteProvisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ingresar embarque.
         /// </summary>
         public static string ActIngresarEmbarque {
@@ -9538,6 +9547,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ya existe un Cliente con el Cuit ingresado.
+        /// </summary>
+        public static string Cliente_CuitExistente {
+            get {
+                return ResourceManager.GetString("Cliente_CuitExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Descripcion.
         /// </summary>
         public static string Cliente_Descripcion {
@@ -9579,6 +9597,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ClienteIngresarExistente {
             get {
                 return ResourceManager.GetString("ClienteIngresarExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cliente provisorio.
+        /// </summary>
+        public static string ClienteProvisorio {
+            get {
+                return ResourceManager.GetString("ClienteProvisorio", resourceCulture);
             }
         }
         
@@ -9669,6 +9696,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Comentario_LargoMinimo_5 {
             get {
                 return ResourceManager.GetString("Comentario_LargoMinimo_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comisionista.
+        /// </summary>
+        public static string Comisionista {
+            get {
+                return ResourceManager.GetString("Comisionista", resourceCulture);
             }
         }
         
@@ -10866,6 +10902,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CrearAjusteStockBines {
             get {
                 return ResourceManager.GetString("CrearAjusteStockBines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Cliente Provisorio.
+        /// </summary>
+        public static string CrearClienteProvisorio {
+            get {
+                return ResourceManager.GetString("CrearClienteProvisorio", resourceCulture);
             }
         }
         
@@ -13871,6 +13916,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seleccione Recorridos con soja EPA.
+        /// </summary>
+        public static string Error_NoSojaEPA {
+            get {
+                return ResourceManager.GetString("Error_NoSojaEPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El Campo &apos;{0}&apos; debe ser numérico y dentro del rango permitido.
         /// </summary>
         public static string Error_NumericoYRango {
@@ -14551,6 +14605,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Establecimiento_Nuevo {
             get {
                 return ResourceManager.GetString("Establecimiento_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soja EPA.
+        /// </summary>
+        public static string Establecimiento_SojaEPA {
+            get {
+                return ResourceManager.GetString("Establecimiento_SojaEPA", resourceCulture);
             }
         }
         
@@ -21902,6 +21965,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nuevo cliente provisorio.
+        /// </summary>
+        public static string NuevoClienteProvisorio {
+            get {
+                return ResourceManager.GetString("NuevoClienteProvisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Número.
         /// </summary>
         public static string Numero {
@@ -24395,6 +24467,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código Sensor Bajada.
+        /// </summary>
+        public static string PuestoComando_CodigoSensorBajada {
+            get {
+                return ResourceManager.GetString("PuestoComando_CodigoSensorBajada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config. Tabla.
         /// </summary>
         public static string PuestoComando_ConfigTabla {
@@ -24409,6 +24490,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string PuestoComando_CorrespondeCaladoEnPlanta {
             get {
                 return ResourceManager.GetString("PuestoComando_CorrespondeCaladoEnPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Es Soja EPA.
+        /// </summary>
+        public static string PuestoComando_EsSojaEPA {
+            get {
+                return ResourceManager.GetString("PuestoComando_EsSojaEPA", resourceCulture);
             }
         }
         
@@ -25473,6 +25563,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Reintentar {
             get {
                 return ResourceManager.GetString("Reintentar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remitente.
+        /// </summary>
+        public static string Remitente {
+            get {
+                return ResourceManager.GetString("Remitente", resourceCulture);
             }
         }
         
@@ -27084,6 +27183,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string SN {
             get {
                 return ResourceManager.GetString("SN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EPA.
+        /// </summary>
+        public static string Soja_EPA {
+            get {
+                return ResourceManager.GetString("Soja_EPA", resourceCulture);
             }
         }
         

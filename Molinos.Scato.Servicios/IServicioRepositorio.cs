@@ -595,7 +595,7 @@ namespace Molinos.Scato.Servicios
         IList<CaladoPorCaracteristicaDto> ListarCaladoPorCaracteristicas(int caladoId);
 
         [OperationContract]
-        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion);
+        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA);
 
         [OperationContract]
         ListaPaginada<CaladoPorCaracteristicaDto> ListarPaginadoCaladoPorCaracteristica(int caladoId, Paginacion paginacion);
@@ -2806,5 +2806,17 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         DomicilioDto ObtenerDomicilioDG(int plantaDG);
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialYCentroEPA(int centroId, int materialId);
+
+        [OperationContract]
+        bool EsRecorridoConEstablecimiento(Guid instanceId);
+
+        [OperationContract]
+        int? EsRecorridoSojaEPAConAlmacen(Guid instanceId);
+
+        [OperationContract]
+        bool EsRecorridoSojaEPA(Guid instanceId);
     }
 }

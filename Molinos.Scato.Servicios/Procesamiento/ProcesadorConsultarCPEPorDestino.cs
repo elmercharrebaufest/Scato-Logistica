@@ -114,7 +114,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             catch (Exception e)
             {
-                Log.Error(e, "o se pudo hacer la consulta de CPE por destino");
+                Log.Error(e, "No se pudo hacer la consulta de CPE por destino");
                 resultado.Errores.Add("2", Textos.Error_Generico);
             }
             return resultado;

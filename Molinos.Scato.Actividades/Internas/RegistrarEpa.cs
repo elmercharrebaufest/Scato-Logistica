@@ -25,7 +25,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var servicioRepositorio = context.GetExtension<IServicioRepositorio>();
                 if (servicioRepositorio.ValidaStockEPA(instanceId))
                 {
-                    if (servicioRepositorio.EsRecorridoSustentable(instanceId))
+                    if (servicioRepositorio.EsRecorridoConEstablecimiento(instanceId))
                     {
                         var descuentaPesoDescontado = servicioRepositorio.DescuentaPesoDescontado(cosecha);
                         var pesoNeto = descuentaPesoDescontado

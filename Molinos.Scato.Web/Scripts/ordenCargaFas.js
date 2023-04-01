@@ -139,15 +139,22 @@ jQuery(document).ready(function () {
             $("#VehiculoDemorado").val("False");
         }
 
-        if ($("#Rechazado").length > 0) {
-            $("#Rechazado").val("True");
-        }
-
         if (valido) {
+            $("#Rechazado").val("True");
             modalRechazarOrdenCargaFas.close();
             $("#ordenCargaFas-form").submit();
+           
         }
     })
+
+    $("#btn-aceptar").click(function () {
+        
+            $("#Rechazado").val("False");
+            $("#ordenCargaFas-form").submit();
+
+    })
+
+
 });
 
 function deshabilitarKmRecorrerYLocalidad() {
@@ -236,11 +243,11 @@ function ObtenerDatosSap() {
         $.getJSON($("#PatenteCamion").data().numeroUrl, { numero: $('#PatenteCamion').val(), workflow: $("#WorkflowDescripcion").val() }, function (data) {
             if (data.datosSap == -1) {
                 $('.btn.btn-primary').attr('disabled', 'disabled');
+                
                 MostrarAlertaError(data.error);
             }
             else {
                 LlenarCombo(data.datosSap);
-                $('.btn').removeAttr('disabled');
             }
         }).complete(function () {
             $.unblockUI();

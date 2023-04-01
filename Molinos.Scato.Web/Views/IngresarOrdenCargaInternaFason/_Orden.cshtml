@@ -51,9 +51,9 @@
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 @Html.Hidden("MaterialSeleccionado", Model.MaterialId)
 
-<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
+<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino"/>
 
-<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
+<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino"/>
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
@@ -162,14 +162,14 @@
                     @Html.HiddenFor(model => model.EsTransportista)
                 </div>
             </div>
-            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
-                @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
-                <div class="controls-small">
-                    @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
-                    @Html.ValidationMessageFor(model => model.IntermediarioFlete)
-                    @Html.HiddenFor(model => model.IntermediarioFleteId)
+             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                    @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
+                    <div class="controls-small">
+                        @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
+                        @Html.ValidationMessageFor(model => model.IntermediarioFlete)
+                        @Html.HiddenFor(model => model.IntermediarioFleteId)
+                    </div>
                 </div>
-            </div>
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">

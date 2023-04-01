@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
@@ -52,6 +55,8 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Crear(DatosUsuario datosUsuario)
         {
             var asd = new AlmacenDto {CentroId = datosUsuario.CentroId};
+            GetTipoSoja(asd);
+
             return View(asd);
         }
 
@@ -59,6 +64,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Crear(AlmacenDto model, DatosUsuario datosUsuario)
         {
+            PostTipoSoja(model);
             if (ModelState.IsValid)
             {
                 var resultado = servicioComandos.Ejecutar(new CrearAlmacen { Dto = model, Usuario = datosUsuario.NombreUsuario});
@@ -74,6 +80,8 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult Modificar(int id)
         {
             var almacen = servicio.ObtenerAlmacen(id);
+            GetTipoSoja(almacen);
+           
             return View(almacen);
         }
 
@@ -81,6 +89,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Modificar(AlmacenDto almacen, DatosUsuario datosUsuario)
         {
+            PostTipoSoja( almacen);
             if (ModelState.IsValid)
             {
                 var resultado = servicioComandos.Ejecutar(new ModificarAlmacen { Dto = almacen, Usuario = datosUsuario.NombreUsuario});
@@ -99,6 +108,24 @@ namespace Molinos.Scato.Web.Controllers
         {
             var resultado = servicioComandos.Ejecutar(new EliminarAlmacen { Id = id, Usuario = datosUsuario.NombreUsuario});
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
+        }
+
+        private void GetTipoSoja(AlmacenDto almacen)
+        {
+            if (almacen.EsSojaSustentable == true)
+            {
+                almacen.TipoSoja = Constantes.TipoSoja.Sustentable;
+            }
+            else if (almacen.EsSojaEPA != false)
+            {
+                almacen.TipoSoja = Constantes.TipoSoja.EPA;
+            }
+        }
+
+        private void PostTipoSoja(AlmacenDto almacen)
+        {
+             almacen.EsSojaSustentable = almacen.TipoSoja == Constantes.TipoSoja.Sustentable;
+             almacen.EsSojaEPA = almacen.TipoSoja == Constantes.TipoSoja.EPA;
         }
     }
 }

@@ -8,6 +8,7 @@
     [Localidad_Id]            INT           NULL,
     [Provincia_Id]            INT           NULL,
     [Anulado]                 BIT           DEFAULT ((0)) NOT NULL,
+    [EPA]                     BIT           DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_dbo.Establecimiento] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (FILLFACTOR = 90, STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Establecimiento_dbo.Localidad_Localidad_Id] FOREIGN KEY ([Localidad_Id]) REFERENCES [dbo].[Localidad] ([Id]),
     CONSTRAINT [FK_dbo.Establecimiento_dbo.Proveedor_Proveedor_Id] FOREIGN KEY ([Proveedor_Id]) REFERENCES [dbo].[Proveedor] ([Id]),

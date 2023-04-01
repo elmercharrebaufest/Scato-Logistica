@@ -503,7 +503,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
-                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
+                ModelState.AddModelError((!string.IsNullOrEmpty(orden.CuitDestinatario) ? "CuitDestinatario" : "ClienteDesc"), "El cliente está inhabilitado.");
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
@@ -538,13 +538,11 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
             {
-                if(orden.ComisionistaId.HasValue)
-                {
-                    ModelState.AddModelError("Comisionista", "No tiene cuit destinatario");
-                } else if(orden.RemitenteId.HasValue)
-                {
-                    ModelState.AddModelError("Remitente", "No tiene cuit destinatario");
-                }
+                ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
+            }
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
+            {
+                ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
             }
         }
     }

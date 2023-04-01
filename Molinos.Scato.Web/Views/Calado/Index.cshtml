@@ -13,6 +13,11 @@
     var nirs = (NirsDto)ViewBag.Nirs;
     var material = ViewBag.Material;
     var materialId = ViewBag.MaterialId;
+    var esSojaSustentable = (bool)ViewBag.EsSojaSustentable;
+    var esSojaEPA = (bool)ViewBag.EsSojaEPA;
+    var trigoEspecial = (bool)ViewBag.TrigoEspecial;
+    var label = esSojaEPA ? "label-azul" : esSojaSustentable ? "label-success" : trigoEspecial ? "label-yellow" : "label-default";
+    var tituloTipoMaterial = esSojaEPA ? Textos.Soja_EPA : esSojaSustentable ? Textos.Sustentable : trigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty;
 }
 
 @section scripts
@@ -88,6 +93,11 @@
         width: 100%;
         margin-bottom: 5px;
     }
+
+    .label-azul {
+        background-color: #1E21EF;
+        color: white;
+    }
 </style>
 
 @Html.Hidden("patenteOriginal", patenteOriginal, new { @class = "patenteOriginal" })
@@ -109,8 +119,8 @@
 }
 <div class="container-fluid text-center">
     <div class="titSecciones pull-left" style="display:inline-block;">@Textos.Calado_Titulo</div>
-    <span class="label @((bool)ViewBag.EsSojaSustentable ? "label-success" : (bool)ViewBag.TrigoEspecial ? "label-yellow" : "label-default")  text-center">
-        <h4 style="margin-top: 0; margin-bottom: 0" id=Material data-materialId=@ViewBag.MaterialId>@ViewBag.Material @((bool)ViewBag.EsSojaSustentable ? Textos.Sustentable : (bool)ViewBag.TrigoEspecial ? Textos.CartaPorte_TrigoEspecial : string.Empty)</h4>
+    <span class="label @(label) text-center">
+        <h4 style="margin-top: 0; margin-bottom: 0" id=Material data-materialId=@ViewBag.MaterialId>@ViewBag.Material @(tituloTipoMaterial)</h4>
     </span>
     @if ((bool)ViewBag.Rechazado)
     {

@@ -80,7 +80,7 @@ namespace Molinos.Scato.Web.Controllers
                             ViewBag.HayErrores = resultado.HayErrores;
                             if (resultado.HayErrores)
                             {
-                                log.Error("AsignacionDeEstablecimiento Error : {0} , id = {1}", resultado.Errores.FirstOrDefault().Value, vagon);
+                                log.Info("AsignacionDeEstablecimiento Error : {0} , id = {1}", resultado.Errores.FirstOrDefault().Value, vagon);
                                 TempData["Alerta"] = resultado.Errores.FirstOrDefault().Value;
                                 TempData["TipoAlerta"] = TipoAlerta.Error;
                                 SetearVista(model.InstanceId);
@@ -96,7 +96,7 @@ namespace Molinos.Scato.Web.Controllers
                     ViewBag.HayErrores = resultado.HayErrores;
                     if (resultado.HayErrores)
                     {
-                        log.Error("AsignacionDeEstablecimiento Error : {0} , id = {1}", resultado.Errores.FirstOrDefault().Value, model.InstanceId);
+                        log.Info("AsignacionDeEstablecimiento Error : {0} , id = {1}", resultado.Errores.FirstOrDefault().Value, model.InstanceId);
                         TempData["Alerta"] = resultado.Errores.FirstOrDefault().Value;
                         TempData["TipoAlerta"] = TipoAlerta.Error;
                     }
@@ -120,6 +120,7 @@ namespace Molinos.Scato.Web.Controllers
             establecimientos.Insert(0, new SelectListItem { Selected = false, Text = Textos.Default_Establecimiento, Value = "-1" });
             ViewBag.Establecimientos = establecimientos;
             ViewBag.RecorridoId = model.RecorridoId;
+            ViewBag.EstablecimientosEPAId = model.Establecimientos.Where(x => x.EsSojaEPA).Select(x => x.Id).ToList();
 
             var foto = servicio.ObtenerFotoCPDeCartaDePortePorrecorrido(instanceId);
             if (foto.Fotos.Any())

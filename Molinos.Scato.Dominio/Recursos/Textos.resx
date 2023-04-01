@@ -10165,7 +10165,43 @@
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
   </data>
+  <data name="ClienteProvisorio" xml:space="preserve">
+    <value>Cliente provisorio</value>
+  </data>
+  <data name="NuevoClienteProvisorio" xml:space="preserve">
+    <value>Nuevo cliente provisorio</value>
+  </data>
+  <data name="ActIngresarClienteProvisorio" xml:space="preserve">
+    <value>Registrar cliente provisorio</value>
+  </data>
+  <data name="Cliente_CuitExistente" xml:space="preserve">
+    <value>Ya existe un Cliente con el Cuit ingresado</value>
+  </data>
+  <data name="CrearClienteProvisorio" xml:space="preserve">
+    <value>Crear Cliente Provisorio</value>
+  </data>
+  <data name="Establecimiento_SojaEPA" xml:space="preserve">
+    <value>Soja EPA</value>
+  </data>
+  <data name="Soja_EPA" xml:space="preserve">
+    <value>EPA</value>
+  </data>
+  <data name="Error_NoSojaEPA" xml:space="preserve">
+    <value>Seleccione Recorridos con soja EPA</value>
+  </data>
   <data name="OrdenCarga_Destinatario" xml:space="preserve">
     <value>Destinatario</value>
+  </data>
+  <data name="PuestoComando_EsSojaEPA" xml:space="preserve">
+    <value>Es Soja EPA</value>
+  </data>
+  <data name="PuestoComando_CodigoSensorBajada" xml:space="preserve">
+    <value>Código Sensor Bajada</value>
+   </data>
+  <data name="Comisionista" xml:space="preserve">
+    <value>Comisionista</value>
+  </data>
+  <data name="Remitente" xml:space="preserve">
+    <value>Remitente</value>
   </data>
 </root>

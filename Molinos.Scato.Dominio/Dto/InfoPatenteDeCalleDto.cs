@@ -48,5 +48,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "DescripcionAlmacen")]
         public string DescripcionAlmacen { get; set; }
         public bool CorrespondeConfirmarCargaDescarga { get; set; }
+        public bool EsSojaEPA { get; set; }
     }
 }

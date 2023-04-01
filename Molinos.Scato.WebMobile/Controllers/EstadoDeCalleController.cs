@@ -163,31 +163,36 @@ namespace Molinos.Scato.WebMobile.Controllers
                 model.PermisoReasignarCallePostCalado = servicio.TienePermiso(usuario.Value, PermisosScato.ReasignacionCallesPostCalado);
             var calle = servicio.ObtenerCalle(calleId);
             var caracteristicasAnalizadas = model.CaladoId.HasValue ? servicio.ListarCaladoPorCaracteristicas(model.CaladoId.Value) : null;
-            List<Dominio.Dto.CalleDto> calles = null;
+            List<CalleDto> calles = new List<CalleDto>();
 
+            // Sólo si el camión ya esta en una calle con alguna calidad específica o en pendiente
             if (model.TipoCalidad == TipoCalidad.Otros || model.TipoCalidad == TipoCalidad.PendientesPostCalado)
             {
+                // Obtiene calle rechazado o calle con mismas características
                 calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado
                 ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada
-                : (x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad == TipoCalidad.Otros && model.MaterialId == x.MaterialId && !x.Deshabilitada && (caracteristicasAnalizadas.Any(ca => ca.CaracteristicaId == x.CaracteristicaDeCalidadId && ca.ValorCalado <= x.RangoCaracteristicaCalidadMaximo && ca.ValorCalado >= x.RangoCaracteristicaCalidadMinimo)))
+                : (x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad == TipoCalidad.Otros && model.MaterialId == x.MaterialId && !x.Deshabilitada && caracteristicasAnalizadas.Any(ca => ca.CaracteristicaId == x.CaracteristicaDeCalidadId && ca.ValorCalado <= x.RangoCaracteristicaCalidadMaximo && ca.ValorCalado >= x.RangoCaracteristicaCalidadMinimo) && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Select(c => c.EsSojaEPA).FirstOrDefault() == model.EsSojaEPA)
                     ).ToList();
             }
-            if (calles == null || calles.Count() == 0)
+            if (!calles.Any())
             {
-                List<Dominio.Dto.CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Count() == 0).ToList();
-
+                // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
+                List<CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
+                
+                // Obtiene calle rechazado o calle con camiones con mismas características
                 var callesConCamionesConMismaCalidad = model.Rechazado
                      ? servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada).ToList()
-                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
-                if ((callesVacias != null || callesVacias.Count() > 0) && (callesConCamionesConMismaCalidad != null || callesConCamionesConMismaCalidad.Count() > 0) && !model.Rechazado)
+                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion, model.EsSojaEPA).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
+                if (callesVacias != null && callesConCamionesConMismaCalidad != null && !model.Rechazado)
                 {
                     calles = callesConCamionesConMismaCalidad.Concat(callesVacias).ToList();
                 }
             }
 
-            if (calles == null || calles.Count() == 0)
+            if (!calles.Any())
             {
-                calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Count() == 0).ToList();
+                // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
+                calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
             }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
             ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
