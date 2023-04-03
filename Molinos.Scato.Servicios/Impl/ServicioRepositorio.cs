@@ -2131,7 +2131,14 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA)
         {
-            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId && x.Calle.Id != calleId && x.Calle.TipoCalle == TipoCalle.PostCalado && !x.Calle.Deshabilitada && x.Calle.TipoCalidad != TipoCalidad.Otros && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion && x.FechaEgreso == null && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
+            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId 
+                && x.Calle.Id != calleId 
+                && x.Calle.TipoCalle == TipoCalle.PostCalado 
+                && !x.Calle.Deshabilitada 
+                && x.Calle.TipoCalidad != TipoCalidad.Otros 
+                && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion 
+                && x.FechaEgreso == null 
+                && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
         }
