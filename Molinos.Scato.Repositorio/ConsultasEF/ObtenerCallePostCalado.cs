@@ -103,16 +103,21 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private CallePorRecorrido UltimoCamionAsignado(DbContext contexto, bool esSojaEPA)
         {
-            return contexto.Set<CallePorRecorrido>()
+            var query = contexto.Set<CallePorRecorrido>()
                             .Where(x => x.Calle.TipoCalle == TipoCalle.PostCalado
                                     && x.FechaEgreso == null
                                     && (x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
                                     && x.Recorrido.Material.Id == material.Id
                                     && x.Calle.TipoCalidad != TipoCalidad.Otros
-                                    && x.Calle.TipoCalidad != TipoCalidad.PendientesPostCalado
-                                    && x.Recorrido.Establecimiento.EPA == esSojaEPA)
-                            .OrderByDescending(x => x.Id)
-                            .FirstOrDefault();
+                                    && x.Calle.TipoCalidad != TipoCalidad.PendientesPostCalado);
+            if(esSojaEPA)
+            {
+                query = query.Where(x => x.Recorrido.Establecimiento.EPA);
+            } else
+            {
+                query = query.Where(x => x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA);
+            }
+            return query.OrderByDescending(x => x.Id).FirstOrDefault();
         }
 
         private Calle ObtenerCalleIncompletaDelUltimoCamionAsignado(DbContext contexto, int ultimoCamionAsignadoCalleId)
@@ -148,7 +153,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                 .Any(y => (y.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
                                         && y.Recorrido.Material.Id == material.Id
                                         && y.FechaEgreso == null && y.Calle.Id == x.Id
-                                        && y.Recorrido.Establecimiento.EPA == esSojaEPA)
+                                        && (esSojaEPA ? y.Recorrido.Establecimiento.EPA : (y.Recorrido.Establecimiento == null || !y.Recorrido.Establecimiento.EPA)))
                         && contexto.Set<CallePorRecorrido>()
                                 .Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id) < x.CantidadDeCamiones)
                 .OrderByDescending(x => x.Id)
