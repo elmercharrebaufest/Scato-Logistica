@@ -12,6 +12,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -96,6 +97,10 @@ namespace Molinos.Scato.Actividades.Internas
                 if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId))
                 {
                     almacen = srvRepositorio.ListarAlmacenesPorCentroYesSustentable(centro.Id, true).Where(x => x.Id == asignacion.AlmacenId).FirstOrDefault();
+                    if(centro.CodigoSAP == Constantes.Centro.CodigoSAPSanLorenzo && almacen != null)
+                    {
+                        almacen.CodigoSAP = Constantes.TipoSoja.Sustentable.ToUpper(); 
+                    }
                 }
 
                 if (almacenEPAId != null)
