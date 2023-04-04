@@ -179,5 +179,10 @@
             public const string Sustentable = "sust";
             public const string EPA = "epa";
         }
+
+        public struct Centro
+        {
+            public const string CodigoSAPSanLorenzo = "1029";
+        }
     }
 }
