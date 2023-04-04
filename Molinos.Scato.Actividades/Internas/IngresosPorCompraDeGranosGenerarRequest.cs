@@ -95,7 +95,7 @@ namespace Molinos.Scato.Actividades.Internas
 
                 if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId))
                 {
-                    almacen = srvRepositorio.ListarAlmacenesPorCentroYesSustentable(centro.Id, true).FirstOrDefault();
+                    almacen = srvRepositorio.ListarAlmacenesPorCentroYesSustentable(centro.Id, true).Where(x => x.Id == asignacion.AlmacenId).FirstOrDefault();
                 }
 
                 if (almacenEPAId != null)
