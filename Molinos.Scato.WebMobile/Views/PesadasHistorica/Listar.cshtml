@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ReportePesadaDto>)ViewBag.Items;
+}
+
+<script>
+    $(document).ready(function () {
+        $("th:contains('Bodega')").addClass("th-hide");
+        $("th:contains('Destino')").addClass("th-hide");
+    })
+</script>
+
+@Html.Grilla(items,
+    grilla => grilla.Columns(
+       grilla.ColumnaSeleccionarBalanzada(Html, "PesadasHistorica", "btn",true),
+       grilla.Columna("Fecha", Textos.AFIP_ListarCarga_Fecha),
+         grilla.Columna("NumeroBalanza", Textos.AFIP_ListarCarga_Balanza),
+         grilla.Columna("TotalEmbarcado", Textos.AFIP_ListarCarga_TotalEmbarcado),
+         grilla.Columna("Commodity", Textos.AFIP_ListarCarga_Commodity),
+         grilla.Columna("Bodega", Textos.AFIP_ListarCarga_Bodega, null, "th-hide", true),
+         grilla.Columna("Destino", Textos.AFIP_ListarCarga_Destino, null, "th-hide", true),
+         grilla.Columna("Exportador", Textos.AFIP_ListarCarga_Exportador),
+         grilla.Columna("Vapor", Textos.AFIP_ListarCarga_Vapor),
+         grilla.Columna("PesoProgramado", Textos.AFIP_ListarCarga_PesoProgramado)
+))
+
+<style>
+    th a {
+        color: #244232 !important;
+    }
+</style>

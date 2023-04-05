@@ -1,0 +1,56 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@model Molinos.Scato.WebMobile.ViewModel.PesadaHistoricaViewModel
+
+@{
+    ViewBag.Title = Textos.AFIP_MenuTitulo_PesadasHistoricas;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="mx-1">
+    <div class="col-12">
+        <h1 class="titulo-center">@ViewBag.Title</h1>
+    </div>
+    <br />
+    <div class="col-12">
+        @using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { id = "search-form", @class = "form-search" }))
+        {
+            <div class="navbar-form navbar-default text-center form-inline">
+                @Html.Label(@Textos.AFIP_PesadaHistorica_FechaInicio)
+                <div class="input-group date col-12 col-sm-4 col-md-2">
+                    @Html.EditorFor(model => model.DateStart, Model != null ? Model.DateStart.FormattedFixed() : string.Empty)
+                </div>
+                @Html.Label(@Textos.AFIP_PesadaHistorica_FechaFin)
+                <div class="input-group date col-12 col-sm-5 col-md-2">
+                    @Html.EditorFor(model => model.DateFin, Model != null ? Model.DateFin.FormattedFixed() : string.Empty)
+                </div>
+
+                @Html.Label(@Textos.AFIP_PesadaHistorica_HoraInicio)
+                <div class="input-group date col-12 col-sm-4 col-md-1">
+                    @Html.EditorFor(model => model.BeginTime, Model.BeginTime != null ? Model.BeginTime.ToString() : string.Empty)
+                </div>
+                <div class="input-group date col-6 col-sm-2 col-md-1"></div>
+                @Html.Label(@Textos.AFIP_PesadaHistorica_HoraFin)
+                <div class="input-group date col-12 col-sm-5 col-md-1">
+                    @Html.EditorFor(model => model.EndTime, Model.EndTime != null ? Model.EndTime.ToString() : string.Empty)
+                </div>
+                <div class="input-group date col-6 col-sm-2 col-md-1"></div>
+                <div class="input-group col-12 col-lg">
+                    <input class="btn btn-outline-success col-12 col-lg" value="@Textos.Aceptar" type="submit" />
+                </div>
+            </div>
+                }
+            </div>
+    <div class=" mt-1" id="gridContainer" data-grid-url="@Url.Action("Index")">
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#search-form").submit();
+            });
+        </script>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Script("~/scripts/_datePickerRangeValidator.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/_timePickerRangeValidator.js")"></script>
+<script type="text/javascript" src="@Url.Script("~/scripts/bloquearPantalla.js")"></script>
+
