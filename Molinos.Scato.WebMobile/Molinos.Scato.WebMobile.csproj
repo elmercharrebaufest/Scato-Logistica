@@ -542,6 +542,8 @@
     <Content Include="Views\PesadasHistorica\DetalleCarga.cshtml" />
     <Content Include="Views\PesadasHistorica\Index.cshtml" />
     <Content Include="Views\PesadasHistorica\Listar.cshtml" />
+    <Content Include="Views\Shared\_LayoutPesadas.cshtml" />
+    <Content Include="Views\Shared\_MenuPesadas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
