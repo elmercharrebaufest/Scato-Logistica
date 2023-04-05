@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.5.33414.496</am:Version>
+      <am:Version>17.4.33103.184</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-04-03T19:41:40.6298047Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2023-04-05T16:50:36.9588272Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -45,11 +45,12 @@
 					left join (
 					--camiones
 					SELECT CASE
-					when m.id = 4 and Establecimiento_Id is null then 'Soja'
+					when m.id = 4 and estab.Id is not null and estab.EPA = 1 and alm.EPA = 1 then 'Soja EPA'
+					when m.id = 4 and estab.Id is not null then 'Soja Sustentable'
+					when m.id = 4 and estab.Id is null then 'Soja'
 					else m.Descripcion end
 					as 'IngresoxD',
 					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
-
 					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
 					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
 					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
@@ -58,47 +59,14 @@
 					FROM [Recorrido] as r WITH(NOLOCK)
 					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
 					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
-
+					left join Establecimiento as estab WITH(NOLOCK) on estab.Id = r.Establecimiento_Id
+					inner join Almacen as alm WITH(NOLOCK) on alm.Id = r.Almacen_Id
 					where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
 					and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
 					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
 					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
 					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-					group by m.Descripcion,m.Id, Establecimiento_Id
-					UNION ALL
-
-					SELECT CASE
-					
-					when m.id = 4 and Establecimiento_Id is not null and e.EPA = 0 then 'Soja Sustentable'
-					when m.id = 4 and Establecimiento_Id is not null and e.EPA = 1 then 'Soja EPA'
-
-					else m.Descripcion end
-					as 'IngresoxD',
-					--Cantidad D
-					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
-					--Tons D
-					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
-					--Cantidad M
-					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
-					--Tons M
-					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
-					--Cantidad A
-					count(*) as 'CantidadxA',
-					--Tons A
-					cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-
-					FROM [Recorrido] as r WITH(NOLOCK)
-					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
-					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
-					join Establecimiento as e WITH(NOLOCK) on r.Establecimiento_Id =  e.Id
-
-					where w.TipoDeWorkflow = 0 and r.Centro_Id = 5
-					and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
-					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-					group by m.Descripcion,m.Id, Establecimiento_Id, e.EPA
-
+					group by m.Descripcion,m.Id, estab.Id, estab.EPA, alm.EPA
 					UNION ALL
 					--vagones
 					SELECT CASE
