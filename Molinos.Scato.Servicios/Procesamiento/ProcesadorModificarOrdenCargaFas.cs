@@ -163,10 +163,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             recorrido.Transportista = transportista;
             recorrido.TipoComercial = tipoComercial;
             recorrido.Material = material;
-            if(comando.Orden.ActualizarTipoVehiculo)
-            {
-                recorrido.TipoVehiculo = comando.Orden.TipoVehiculo;
-            }
+            recorrido.TipoVehiculo = comando.Orden.TipoVehiculo;
+
         }
 
         protected override void Validar(ModificarOrdenCargaFas comando, Resultado resultado)

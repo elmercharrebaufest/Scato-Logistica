@@ -16,7 +16,7 @@
     <AssemblyName>Molinos.Scato.WebMobile</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>52900</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
@@ -199,12 +199,14 @@
     <Compile Include="App_Start\Log4NetConfig.cs" />
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="Atributos\AjaxOnlyAttribute.cs" />
     <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
     <Compile Include="Controllers\EficienciaCaladoController.cs" />
     <Compile Include="Controllers\EstadoPlayaInternaController.cs" />
     <Compile Include="Controllers\EstadoDeCalleController.cs" />
     <Compile Include="Controllers\EstadoDePlantaController.cs" />
     <Compile Include="Controllers\HealthTestController.cs" />
+    <Compile Include="Controllers\PesadasHistoricaController.cs" />
     <Compile Include="Controllers\TiempoEnTransitoController.cs" />
     <Compile Include="Controllers\CupoController.cs" />
     <Compile Include="Controllers\CamionesRechazadosController.cs" />
@@ -219,14 +221,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ClaimData.cs" />
+    <Compile Include="Helpers\ExtensionesHtml.cs" />
     <Compile Include="Helpers\ExtensionesInt.cs" />
     <Compile Include="Helpers\ExtensionesModelState.cs" />
     <Compile Include="Helpers\ExtensionesSelectList.cs" />
     <Compile Include="Helpers\ExtensionesUrl.cs" />
+    <Compile Include="Helpers\ExtensionesWebGrid.cs" />
     <Compile Include="Helpers\FormattingHtmlHelper.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientBehavior.cs" />
     <Compile Include="Helpers\WcfProfiling\WcfMiniProfilerClientInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\PesadaHistoricaViewModel.cs" />
+    <Compile Include="ViewModel\PesadaOnlineViewModel.cs" />
     <Content Include="Content\cartelesVolcables.css" />
     <Content Include="Content\eficienciaCalado.css" />
     <Content Include="Content\estadoPlayaInterna.css" />
@@ -533,6 +539,11 @@
     <Content Include="Views\EstadoPlayaInterna\_CallesNoGranos.cshtml" />
     <Content Include="Views\EstadoPlayaInterna\_BuscadorPatente.cshtml" />
     <Content Include="Views\EstadoVolcadoras\Index.cshtml" />
+    <Content Include="Views\PesadasHistorica\DetalleCarga.cshtml" />
+    <Content Include="Views\PesadasHistorica\Index.cshtml" />
+    <Content Include="Views\PesadasHistorica\Listar.cshtml" />
+    <Content Include="Views\Shared\_LayoutPesadas.cshtml" />
+    <Content Include="Views\Shared\_MenuPesadas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
