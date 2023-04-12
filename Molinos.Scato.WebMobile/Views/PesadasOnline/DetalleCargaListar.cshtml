@@ -1,0 +1,30 @@
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@{
+    /**/
+
+    Layout = null;
+    var items = (ListaPaginada<BalanzadaDto>)ViewBag.Items;
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(function () {
+            var container = $('#lista');
+            $.ajax(window.location.href)
+                .done(function (data) {
+                    container.html(data);
+                })
+        }, 5000)
+    });
+</script>
+<div id="gridContainer">
+    @Html.Grilla(items,
+        grilla => grilla.Columns(
+            grilla.Columna("Fecha", Textos.AFIP_Balanzada_Fecha),
+            grilla.Columna("PesoBruto", Textos.AFIP_Balanzada_PesoBruto),
+                grilla.Columna("PesoTara", Textos.AFIP_Balanzada_PesoTara),
+                grilla.Columna("PesoNeto", Textos.AFIP_Balanzada_PesoNeto),
+                grilla.Columna("Capacidad", Textos.AFIP_Balanzada_Capacidad)    ))
+</div>
