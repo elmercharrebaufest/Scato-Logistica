@@ -565,7 +565,7 @@ left join (
   Workflow AS w WITH (NOLOCK) ON r.Workflow_Id = w.Id JOIN
   Almacen AS a WITH (NOLOCK) ON a.Id = r.Almacen_Id JOIN
   Material AS m WITH (NOLOCK) ON m.Id = r.material_id right join
-  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion
+  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion or (ar.Almacen = TRIM('EPA' FROM a.Descripcion) and a.Descripcion like '%EPA')
   WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND
   r.PesoTaraFecha &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' AND r.PesoTaraFecha &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
   GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Descripcion
@@ -5318,7 +5318,6 @@ order by orden</CommandText>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Top>1.19944cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>10cm</Width>
             <ZIndex>7</ZIndex>
