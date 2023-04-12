@@ -201,12 +201,15 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Atributos\AjaxOnlyAttribute.cs" />
     <Compile Include="Atributos\AvoidCacheFilterAttribute.cs" />
+    <Compile Include="Controllers\CamaraController.cs" />
     <Compile Include="Controllers\EficienciaCaladoController.cs" />
     <Compile Include="Controllers\EstadoPlayaInternaController.cs" />
     <Compile Include="Controllers\EstadoDeCalleController.cs" />
     <Compile Include="Controllers\EstadoDePlantaController.cs" />
     <Compile Include="Controllers\HealthTestController.cs" />
+    <Compile Include="Controllers\InformacionMeteorologicaController.cs" />
     <Compile Include="Controllers\PesadasHistoricaController.cs" />
+    <Compile Include="Controllers\PesadasOnlineController.cs" />
     <Compile Include="Controllers\TiempoEnTransitoController.cs" />
     <Compile Include="Controllers\CupoController.cs" />
     <Compile Include="Controllers\CamionesRechazadosController.cs" />
@@ -238,7 +241,10 @@
     <Content Include="Content\estadoPlayaInterna.css" />
     <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
+    <Content Include="Scripts\bloquearPantalla.js" />
+    <Content Include="Scripts\camara.js" />
     <Content Include="Scripts\cartelesVolcables.js" />
+    <Content Include="Scripts\DetalleCarga.js" />
     <Content Include="Scripts\estadoPlayaInterna.js" />
     <Content Include="Scripts\knockout-fast-foreach.min.js" />
     <Compile Include="Seguridad\FixedWsFederationAuthenticationModule.cs" />
@@ -420,6 +426,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\Webgrids-AjaxFix.js" />
+    <Content Include="Scripts\_datePickerRangeValidator.js" />
+    <Content Include="Scripts\_timePickerRangeValidator.js" />
     <Content Include="service-worker.js" />
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
@@ -542,6 +551,14 @@
     <Content Include="Views\PesadasHistorica\DetalleCarga.cshtml" />
     <Content Include="Views\PesadasHistorica\Index.cshtml" />
     <Content Include="Views\PesadasHistorica\Listar.cshtml" />
+    <Content Include="Views\Shared\_LayoutPesadas.cshtml" />
+    <Content Include="Views\Shared\_MenuPesadas.cshtml" />
+    <Content Include="Views\PesadasOnline\DetalleCarga.cshtml" />
+    <Content Include="Views\PesadasOnline\DetalleCargaListar.cshtml" />
+    <Content Include="Views\PesadasOnline\Index.cshtml" />
+    <Content Include="Views\PesadasOnline\Listar.cshtml" />
+    <Content Include="Views\Camara\Index.cshtml" />
+    <Content Include="Views\InformacionMeteorologica\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -91,8 +91,9 @@ namespace Molinos.Scato.Actividades.Internas
 
                 var asignacion = srvRepositorio.ObtenerAsignacionDePuestoComando(instanceId.ToString("D"));
                 var balanza = srvRepositorio.ObtenerBalanza(asignacion.BalanzaTaraId ?? 0);
-                AlmacenDto almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId); ;
+                AlmacenDto almacen = null;
 
+                almacen = srvRepositorio.ObtenerAlmacen(asignacion.AlmacenId);
                 if (ConfigurationManager.AppSettings["SepararAlmacenSustentable"].ToLower() == "false" && srvRepositorio.EsRecorridoSustentable(instanceId) && centro.CodigoSAP == Constantes.Centro.CodigoSAPSanLorenzo)
                 {      
                     almacen.CodigoSAP = Constantes.TipoSoja.Sustentable.ToUpper();            

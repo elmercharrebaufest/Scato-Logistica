@@ -1,0 +1,75 @@
+﻿@using System.Web.Optimization
+@using Molinos.Scato.WebMobile.Helpers
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="@Html.Action("Favicon","Index")" type="image/x-icon" />
+    <link rel="apple-touch-icon" src="@Html.Action("Favicon","Index")">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @RenderSection("scripts", required: false)
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KJ8RCFTH3M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KJ8RCFTH3M');
+    </script>
+
+
+</head>
+<body>
+    <script>
+            var loadingGift = "@Url.Content("~/Content/Images/loading.gif")";
+    </script>
+
+    @Scripts.Render("~/bundles/jquery-common")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script type="text/javascript" src="@Url.Script("~/scripts/Webgrids-AjaxFix.js")"></script>
+    <script type="text/javascript">
+        menuUrl = "@Html.Raw(Url.Action("MenuPesadas","Menu"))";
+        setTimeout(RecargarMenu, 10000);
+        function RecargarMenu() {
+            $.ajax({
+                url: menuUrl,
+                data: {},
+                type: "GET",
+                success: function (data) {
+                    $('#container-menu').append("<div style='display:none' class='nuevo' >" + data + "</div>");
+                },
+                complete: function (data) {
+                    setTimeout(function () {
+                        var nuevo = $('.nuevo');
+                        var viejo = $('.viejo');
+                        
+                        nuevo.removeAttr("style");
+                        viejo.css("display", "none");
+                        viejo.remove();
+                        nuevo.addClass('viejo')
+                        nuevo.removeClass('nuevo');
+                    }, 500);
+                    setTimeout(RecargarMenu, 10000);
+                }
+            });
+        }
+    </script>
+    <div id="container-menu">
+        <div class="viejo">
+            @Html.Action("MenuPesadas", "Menu")
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+</body>
+</html>
