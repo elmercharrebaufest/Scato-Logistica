@@ -6,7 +6,7 @@
     /**/
 
     ViewBag.Title = "Detalle de Carga";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutPesadas.cshtml";
     var items = (ListaPaginada<BalanzadaDto>)ViewBag.Items;
 }
 
@@ -14,7 +14,7 @@
 
     <div class="content form">
         <div>
-            <h1 class="titulo-center">@ViewBag.Title</h1>
+            <h1 style="text-align:center">@ViewBag.Title</h1>
         </div>
         <br />
         <div id="gridContainer">
@@ -32,3 +32,9 @@
         </div>
     </div>
 </div>
+
+<style>
+    th a {
+        color: #244232 !important;
+    }
+</style>
