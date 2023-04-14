@@ -257,5 +257,13 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("Destinatario", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));
             }
         }
+
+        [HttpGet]
+        public JsonResult MostrarMensajeRecorridoAnterior(string patente)
+        {
+            var recorridoAnterior = servicio.RecorridoRepetidoEnElDia(patente);
+            var mensajeIngresoRepetido = recorridoAnterior ? String.Format(Textos.IngresoRepetido) : string.Empty;
+            return Json(new { mensaje = mensajeIngresoRepetido},JsonRequestBehavior.AllowGet);
+        }
     }
 }

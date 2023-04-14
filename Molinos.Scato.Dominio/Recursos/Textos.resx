@@ -10197,11 +10197,14 @@
   </data>
   <data name="PuestoComando_CodigoSensorBajada" xml:space="preserve">
     <value>Código Sensor Bajada</value>
-   </data>
+  </data>
   <data name="Comisionista" xml:space="preserve">
     <value>Comisionista</value>
   </data>
   <data name="Remitente" xml:space="preserve">
     <value>Remitente</value>
+  </data>
+  <data name="IngresoRepetido" xml:space="preserve">
+    <value>Este camión ya fue ingresado en el día de hoy</value>
   </data>
 </root>

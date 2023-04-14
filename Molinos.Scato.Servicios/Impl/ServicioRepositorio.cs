@@ -10385,5 +10385,16 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true); 
         }
+
+        public bool RecorridoRepetidoEnElDia(string patente)
+        {
+            DateTime now = DateTime.Now;
+            DateTime yesterday = now.AddHours(-24);
+            return repositorio.Existe<Recorrido>(x => x.Patente == patente && 
+            x.Terminado && 
+            x.FechaEgreso != null && 
+            x.FechaEgreso > yesterday && 
+            x.FechaEgreso <= now);
+        }
     }
 }

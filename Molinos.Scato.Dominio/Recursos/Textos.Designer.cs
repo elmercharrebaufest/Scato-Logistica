@@ -17813,6 +17813,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Este camión ya fue ingresado en el día de hoy.
+        /// </summary>
+        public static string IngresoRepetido {
+            get {
+                return ResourceManager.GetString("IngresoRepetido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ha ocurrido un error al conectarse con SAP - Ingresos Bodega..
         /// </summary>
         public static string IngresosBodega_Titulo {

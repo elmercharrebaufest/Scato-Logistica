@@ -2818,5 +2818,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool EsRecorridoSojaEPA(Guid instanceId);
+
+        [OperationContract]
+        bool RecorridoRepetidoEnElDia(string patente);
     }
 }
