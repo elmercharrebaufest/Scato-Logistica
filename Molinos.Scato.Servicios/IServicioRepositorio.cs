@@ -2821,5 +2821,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool RecorridoRepetidoEnElDia(string patente);
+
+        [OperationContract]
+        bool EstablecimientoEnRangoEPA(string codigo);
     }
 }

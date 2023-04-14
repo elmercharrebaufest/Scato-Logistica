@@ -184,5 +184,10 @@
         {
             public const string CodigoSAPSanLorenzo = "1029";
         }
+
+        public struct PantallaEstablecimiento
+        {
+            public const string NombrePantalla = "Establecimiento";
+        }
     }
 }

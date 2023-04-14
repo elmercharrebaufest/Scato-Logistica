@@ -2131,13 +2131,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA)
         {
-            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId 
-                && x.Calle.Id != calleId 
-                && x.Calle.TipoCalle == TipoCalle.PostCalado 
-                && !x.Calle.Deshabilitada 
-                && x.Calle.TipoCalidad != TipoCalidad.Otros 
-                && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion 
-                && x.FechaEgreso == null 
+            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId
+                && x.Calle.Id != calleId
+                && x.Calle.TipoCalle == TipoCalle.PostCalado
+                && !x.Calle.Deshabilitada
+                && x.Calle.TipoCalidad != TipoCalidad.Otros
+                && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion
+                && x.FechaEgreso == null
                 && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
@@ -3345,10 +3345,10 @@ namespace Molinos.Scato.Servicios.Impl
             if (
                 repositorio.Existe<Recorrido>(
                     x =>
-                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && 
+                    x.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte &&
                     x.NumeroDocumentoIngreso == numero &&
-                    x.Centro.Id == centroId && 
-                    x.Workflow.TipoDeWorkflow != workflow.TipoDeWorkflow && 
+                    x.Centro.Id == centroId &&
+                    x.Workflow.TipoDeWorkflow != workflow.TipoDeWorkflow &&
                     !x.Rechazado))
             {
                 if (workflow.TipoDeWorkflow == TipoDeWorkflow.Ingreso)
@@ -10383,18 +10383,30 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EsRecorridoSojaEPA(Guid instanceId)
         {
-            return repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true); 
+            return repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == instanceId && x.Establecimiento != null && x.Establecimiento.EPA == true);
         }
 
         public bool RecorridoRepetidoEnElDia(string patente)
         {
             DateTime now = DateTime.Now;
             DateTime yesterday = now.AddHours(-24);
-            return repositorio.Existe<Recorrido>(x => x.Patente == patente && 
-            x.Terminado && 
-            x.FechaEgreso != null && 
-            x.FechaEgreso > yesterday && 
+            return repositorio.Existe<Recorrido>(x => x.Patente == patente &&
+            x.Terminado &&
+            x.FechaEgreso != null &&
+            x.FechaEgreso > yesterday &&
             x.FechaEgreso <= now);
+        }
+
+        public bool EstablecimientoEnRangoEPA(string codigo)
+        {
+            var rangos = repositorio.Listar<ConfiguracionGeneral>(x => x.Pantalla == Constantes.PantallaEstablecimiento.NombrePantalla)
+                .OrderBy(x => x.Valor)
+                .Select(x => x.Valor);
+
+            var rangoMax = rangos.LastOrDefault();
+            var rangoMin = rangos.FirstOrDefault();
+
+            return Int64.Parse(rangoMin) <= Int64.Parse(codigo) && Int64.Parse(codigo) <= Int64.Parse(rangoMax);
         }
     }
 }
