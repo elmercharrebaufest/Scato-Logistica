@@ -10399,7 +10399,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool EstablecimientoEnRangoEPA(string codigo)
         {
-            var rangos = repositorio.Listar<ConfiguracionGeneral>(x => x.Pantalla == Constantes.PantallaEstablecimiento.NombrePantalla)
+            var rangos = repositorio.Listar<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstablecimientoPantalla)
                 .OrderBy(x => x.Valor)
                 .Select(x => x.Valor);
 

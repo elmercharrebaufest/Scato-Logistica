@@ -70,6 +70,7 @@
                 public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
                 public const string EstadoPlayaInterna = "EstadoPlayaInterna";
                 public const string EstadoVolcadoras = "EstadoVolcadoras";
+                public const string EstablecimientoPantalla = "Establecimiento";
             }
 
             public struct EficienciaCalado
@@ -183,11 +184,6 @@
         public struct Centro
         {
             public const string CodigoSAPSanLorenzo = "1029";
-        }
-
-        public struct PantallaEstablecimiento
-        {
-            public const string NombrePantalla = "Establecimiento";
         }
     }
 }
