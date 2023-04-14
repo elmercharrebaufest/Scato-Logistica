@@ -29,7 +29,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 Log.Debug($"ProcesadorInformarPesadaCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso, x.TipoVehiculo });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId,
+                    x => new
+                    {
+                        x.NumeroDocumentoIngreso,
+                        x.Centro.InformaCircular,
+                        x.TipoDocumentoIngreso,
+                        x.TipoVehiculo
+                    });
                 Log.Debug($"ProcesadorInformarPesadaCircular= InformaCircular: {recorrido.InformaCircular}, NumeroDocumentoIngreso: {recorrido.NumeroDocumentoIngreso} WorkflowInstanceId: {comando.WorkflowInstanceId}");
                 var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
 
