@@ -70,6 +70,7 @@
                 public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
                 public const string EstadoPlayaInterna = "EstadoPlayaInterna";
                 public const string EstadoVolcadoras = "EstadoVolcadoras";
+                public const string EstablecimientoPantalla = "Establecimiento";
             }
 
             public struct EficienciaCalado
