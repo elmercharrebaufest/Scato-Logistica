@@ -10396,17 +10396,5 @@ namespace Molinos.Scato.Servicios.Impl
             x.FechaEgreso > yesterday &&
             x.FechaEgreso <= now);
         }
-
-        public bool EstablecimientoEnRangoEPA(string codigo)
-        {
-            var rangos = repositorio.Listar<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstablecimientoPantalla)
-                .OrderBy(x => x.Valor)
-                .Select(x => x.Valor);
-
-            var rangoMax = rangos.LastOrDefault();
-            var rangoMin = rangos.FirstOrDefault();
-
-            return Int64.Parse(rangoMin) <= Int64.Parse(codigo) && Int64.Parse(codigo) <= Int64.Parse(rangoMax);
-        }
     }
 }

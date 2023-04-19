@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -50,7 +51,7 @@ namespace Molinos.Scato.Web.Controllers
 
         public ActionResult Crear()
         {
-            CargarProvincias();
+            CargarVistas();
             return View();
         }
         [HttpPost]
@@ -66,14 +67,14 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 ModelState.AgregarErrores(resultado);
             }
-            CargarProvincias(model);
+            CargarVistas(model);
             return View(model);
         }
 
         public ActionResult Modificar(int id)
         {
             var establecimientoAModificar = servicio.ObtenerEstablecimiento(id);
-            CargarProvincias(establecimientoAModificar);
+            CargarVistas(establecimientoAModificar);
             return View(establecimientoAModificar);
 
         }
@@ -92,7 +93,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 ModelState.AgregarErrores(resultado);
             }
-            CargarProvincias(model);
+            CargarVistas(model);
             return View(model);
         }
 
@@ -116,7 +117,7 @@ namespace Molinos.Scato.Web.Controllers
             return Json(new List<SelectList>(), JsonRequestBehavior.AllowGet);
         }
 
-        private void CargarProvincias(EstablecimientoDto model = null)
+        private void CargarVistas(EstablecimientoDto model = null)
         {
             var provincias = servicio.ListarProvincias();
 
@@ -129,6 +130,10 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Provincias = provincias.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
             ViewBag.Localidades = servicio.ListarLocalidadesPorProvincia(provinciaId).OrderBy(x => x.Descripcion)
                             .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion + "(" + x.CodigoAfip + ")");
+
+            var configuracionEPA = servicio.ListarConfiguracionesGenerales(Constantes.ConfiguracionGeneral.Pantalla.EstablecimientoPantalla);
+            ViewBag.RangoMaxEPA = configuracionEPA.Where(c => c.Nombre == "RangoMax").FirstOrDefault().Valor;
+            ViewBag.RangoMinEPA = configuracionEPA.Where(c => c.Nombre == "RangoMin").FirstOrDefault().Valor;
         }
     }
 }
