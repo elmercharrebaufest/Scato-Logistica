@@ -1591,7 +1591,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingresar Carta Porte Redespacho Importaciones.
+        ///   Looks up a localized string similar to Ingreso por Impo Granos.
         /// </summary>
         public static string ActIngresarCartaPorteRedespachoImportaciones {
             get {

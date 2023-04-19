@@ -173,6 +173,7 @@
             public const string BiodiselAgranel = "99319";
             public const string AceiteGirasolCrudoSAP = "94687";
             public const string AceiteSojaCrudoGranelSAP = "94705";
+            public const string SojaSAP = "19908017";
         }
 
         public struct TipoSoja

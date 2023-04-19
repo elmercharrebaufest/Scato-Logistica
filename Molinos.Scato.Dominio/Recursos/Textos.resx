@@ -7973,7 +7973,7 @@
     <value>X</value>
   </data>
   <data name="ActIngresarCartaPorteRedespachoImportaciones" xml:space="preserve">
-    <value>Ingresar Carta Porte Redespacho Importaciones</value>
+    <value>Ingreso por Impo Granos</value>
   </data>
   <data name="Error_TiempoDeDemoraExportaciones" xml:space="preserve">
     <value>El vehículo llegó con demoras ya que egresó del centro origen hace {0}.</value>
