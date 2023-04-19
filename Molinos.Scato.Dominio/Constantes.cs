@@ -7,7 +7,7 @@
             public const string CupoGenerico = "MOL1111/11111111";
             public const long CuitMOA = 30715118773;
             public const string NumeroRemitoGenerico = "1111-11111111";
-            public const string ColorFondoSojaEPA = "#1E21EF";
+            public const string ColorFondoSojaEPA = "#FC4D75";
             public const string ColorTextoSojaEPA = "#FFFFFF";
         }
 
