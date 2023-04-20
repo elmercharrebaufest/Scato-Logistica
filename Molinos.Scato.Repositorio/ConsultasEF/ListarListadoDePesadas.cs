@@ -96,7 +96,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         Cosecha = cp.Cosecha,
                         Usuario = r.PesoBrutoUsuario,
                         ModalidadBruto =case when  r.PesoBrutoModalidad is null then '' when r.PesoBrutoModalidad= 0 then 'Manual' else 'Automatica' end,
-                        ModalidadTara = case when  r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad= 0 then 'Manual' else 'Automatica' end
+                        ModalidadTara = case when  r.PesoTaraModalidad is null then '' when r.PesoTaraModalidad= 0 then 'Manual' else 'Automatica' end,
+                        CPEDG = case when cpdg.NroCTG is null then '' else cpdg.NroCTG end,
+						CTGDG = case when cpdg.Sucursal is null or cpdg.NroOrden is null then '' else cpdg.Sucursal + cpdg.NroOrden end
 
                     from
 	                    Recorrido r
@@ -157,6 +159,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 	                    left join Balanza rbtara on rbtara.id = r.BalanzaTara_Id
                         left join Cliente ofasonCliR on ofasonCliR.Id = ofason.Remitente_Id
                         left join Cliente ofasonCliC on ofasonCliC.Id = ofason.Comisionista_Id
+                        left join CartaPorteDerivadoGranario cpdg on r.Id = cpdg.Recorrido_Id
                     where
 	                    r.Terminado=1
 	                    and r.Centro_Id IN (" + String.Join(",", centros) + ")"

@@ -40,7 +40,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.DeshabilitarDestinatario = true;
             ViewBag.DeshabilitarEntregador = false;
             ViewBag.ControlarTiempoPorCTG = true;
-            ViewBag.RequiereNumeroAduana = true;
+            ViewBag.RequiereNumeroAduana = false;
             ViewBag.HabilitarSiemprePeso = true;
             ViewBag.HabilitarSiempreProcedencia = true;
             ViewBag.HabilitarSiempreCTG = true;

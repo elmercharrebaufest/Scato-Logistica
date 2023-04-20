@@ -44,7 +44,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         x.TipoVehiculo
                     });
                 Log.Debug($"ProcesadorInformarCaladoCircular= InformaEstadosACircular: {recorrido.InformaCircular}, WorkflowInstanceId: {comando.WorkflowInstanceId}, resultadoCaladoEncontrados: {resultadoCalado.Count()}, Recorrido-CartaPorte: {recorrido.NumeroDocumentoIngreso} Recorrido-Rechazado: {recorrido.Rechazado} Recorrido-Calidad: {Convert.ToString(recorrido.Calidad)} ");
-                var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
+                var permitido = camionesPermitidos.Any(x => x == recorrido.TipoVehiculo);
 
                 if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && permitido)
                 {

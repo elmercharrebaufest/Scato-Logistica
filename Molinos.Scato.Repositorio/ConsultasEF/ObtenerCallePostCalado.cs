@@ -134,12 +134,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private Calle ObtenerSiguienteCalleVacia(DbContext contexto, CallePorRecorrido ultimaAsignacion)
         {
             IQueryable<Calle> calleDisponibleqry = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PostCalado && !x.Deshabilitada);
+            Calle calle = null;
             if (ultimaAsignacion != null)
             {
                 var idCalle = ultimaAsignacion.Calle.Id;
-                calleDisponibleqry = calleDisponibleqry.Where(x => x.Id >= idCalle);
+                calle = FiltrarCalleVacia(contexto, calleDisponibleqry.Where(x => x.Id >= idCalle));
             }
-            return FiltrarCalleVacia(contexto, calleDisponibleqry);
+            
+            return calle ??  FiltrarCalleVacia(contexto, calleDisponibleqry);
         }
 
         private Calle ObtenerSiguienteCalleIncompleta(DbContext contexto, bool esSojaEPA)
