@@ -563,11 +563,5 @@ namespace Molinos.Scato.Web.Controllers
             return domicilio != null ? Json(new { label = domicilio.Descripcion, domicilio.Id, domicilio.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
         }
 
-
-        public ActionResult CodigoDeEstablecimientoEnRangoEPA(string codigoEstablecimiento)
-        {
-            var enRango = servicio.EstablecimientoEnRangoEPA(codigoEstablecimiento);
-            return Json(new { flag = enRango }, JsonRequestBehavior.AllowGet);
-        }
     }
 }
