@@ -2822,5 +2822,10 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         bool RecorridoRepetidoEnElDia(string patente);
 
+        [OperationContract]
+        List<ClienteDto> ListarClientesPorCuit(string cuit);
+
+        [OperationContract]
+        List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo);
     }
 }

@@ -10397,5 +10397,19 @@ namespace Molinos.Scato.Servicios.Impl
             x.FechaEgreso <= now);
         }
 
+        public List<ClienteDto> ListarClientesPorCuit(string cuit)
+        {
+            return Listar<Cliente, ClienteDto>(x => x.Cuit.Equals(cuit) && x.Activo).ToList();
+        }
+
+        public List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo)
+        {
+            return Listar<Proveedor, ProveedorDto>(x => x.Cuil == cuit
+                                                         && (!tipo.PR || x.PR) 
+                                                         && (!tipo.AM || x.AM) 
+                                                         && (!tipo.CM || x.CM) 
+                                                         && x.Activo)
+                .ToList();
+        }
     }
 }
