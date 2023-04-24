@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
@@ -203,9 +204,16 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LlamarCallePostCalado(int calleId)
         {
+            var response = new RespuestaEstandarDto();
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
+                if(calle.FechaLLamada.HasValue)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 calle.Bloqueada = true;
                 calle.FechaLLamada = DateTime.Now;
 
@@ -215,8 +223,9 @@ namespace Molinos.Scato.WebMobile.Controllers
             catch (Exception e)
             {
                 log.Error(e, $"No se pudo llamar la calle {calleId}");
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Ocurrió un error en el llamado.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            return Json("ok", JsonRequestBehavior.AllowGet);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ConfirmarRechazado(Guid instanciaWorflow)

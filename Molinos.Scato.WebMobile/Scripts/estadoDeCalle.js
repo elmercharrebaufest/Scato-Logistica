@@ -456,9 +456,15 @@ function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada) {
 
     if (tipoCalle == 2) {
         $.getJSON(urlLLamarCallePostCalado, { calleId: calleId },
-            function () {
-                $.unblockUI();
+            function (data) {
+                if (!data.EsValido) {
+                    $.unblockUI();
+                    MostrarAlertaInfo(data.Mensajes[0].Mensaje);
+                    return;
+                }
+
                 llamada(true);
+                $.unblockUI();
             }
         );
     }
@@ -466,19 +472,20 @@ function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada) {
     else {
         $.getJSON(urlLLamarCalle, { calleId: calleId, calleCaladoId: calleCaladoId },
             function (data) {
-                $.unblockUI();
                 if (data.Mensaje == "1") {
+                    $.unblockUI();
                     MostrarAlertaInfo('Llamado de calles llegó al máximo');
                     return
                 }
 
                 if (data.Mensaje == "2") {
+                    $.unblockUI();
                     MostrarAlertaInfo('Llamado de calles circulares llegó al máximo');
                     return
                 }
                 llamada(true);
+                $.unblockUI();
             }
         );
     }
-    $.unblockUI();
 }
