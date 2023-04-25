@@ -32,7 +32,7 @@
 	<setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GSLOFSPRD00\Scato\ScatoQA\Ingresos\" />
 	<setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GSLOFSPRD00\Scato\ScatoQA\Redespachos\" />
 	<setParameter name="Ambiente Config" value="QA" />
-	<setParameter name="UrlExternaOperacionesPuerto Config" value="/Scato.WebOperaciones" />
+	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://scatoqa.molinosagro.com.ar/Scato.WebMobile/PesadasHistorica" />
 	<setParameter name="FondoAmbiente Config" value="body-background-QA" />
 	<setParameter name="WorkflowIngresoPorCompra Config" value="1029-IngresoPorCompraDeGranosCaladaExterna" />
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
