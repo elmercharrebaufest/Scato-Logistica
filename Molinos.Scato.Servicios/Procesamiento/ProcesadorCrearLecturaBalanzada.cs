@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -9,6 +6,9 @@ using Molinos.Scato.Repositorio.ComandosEF;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -37,7 +37,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 var id = Int32.Parse(comando.Informacion["id"]) + offsetBalanza;
                 var fecha = DateTime.ParseExact(comando.Informacion["fecha"], "dd-MM-yyyyHH:mm", CultureInfo.InvariantCulture);
 
-                if (Repositorio.Existe<RegistroBalanzaPuerto>(e => e.Id == id && e.NumeroBalanza == numeroBalanza)) //error, creo que no puede pasar 
+                if (Repositorio.Existe<RegistroBalanzaPuerto>(e => e.Id == id && e.NumeroBalanza == numeroBalanza)) //error, creo que no puede pasar
                 {
                     resultado.Error("IdDeBalanzada: " + id, Textos.BalanzaPuerto_IdExistente);
                     return resultado;
@@ -55,17 +55,34 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             NumeroBalanza = numeroBalanza,
                             Tipo = "inicioError"
                         });
-                        var actualizarCargaInicio = Repositorio.ObtenerMayor<Carga, int>(x => 
-                            x.Id < id && 
-                            x.NumeroBalanza == numeroBalanza && 
-                            x.Tipo == "inicio" && 
-                            !x.CargaOpuesta_Id.HasValue &&
-                            x.Bodega.Nombre == comando.Informacion["vapor"] &&
-                            x.Vapor.Nombre == comando.Informacion["bodega"] &&
-                            x.Destino.Nombre == comando.Informacion["destino"] &&
-                            x.Exportador.Nombre == comando.Informacion["exportador"] &&
-                            x.Material.Descripcion == comando.Informacion["commodity"]
-                            , x => x.Id);
+
+                        var vapor = comando.Informacion["vapor"];
+                        Log.Debug("vapor: " + vapor);
+
+                        var bodega = comando.Informacion["bodega"];
+                        Log.Debug("bodega: " + bodega);
+
+                        var destino = comando.Informacion["destino"];
+                        Log.Debug("destino: " + destino);
+
+                        var exportador = comando.Informacion["exportador"];
+                        Log.Debug("exportador: " + exportador);
+
+                        var commodity = comando.Informacion["commodity"];
+                        Log.Debug("commodity: " + commodity);
+
+                        var actualizarCargaInicio = Repositorio.ObtenerMayor<Carga, int>(x =>
+                           x.Id < id &&
+                           x.NumeroBalanza == numeroBalanza &&
+                           x.Tipo == "inicio" &&
+                           !x.CargaOpuesta_Id.HasValue &&
+                           x.Bodega.Nombre == vapor &&
+                           x.Vapor.Nombre == bodega &&
+                           x.Destino.Nombre == destino &&
+                           x.Exportador.Nombre == exportador &&
+                           x.Material.Descripcion == commodity
+                           , x => x.Id);
+
                         if (actualizarCargaInicio != null)
                         {
                             actualizarCargaInicio.PesoProgramado = string.IsNullOrEmpty(comando.Informacion["pesoProgramado"]) ? 0 : int.Parse(comando.Informacion["pesoProgramado"]);
@@ -121,12 +138,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 else if (tipoBalanzada == "balanzada")
                 {
                     var inicio = Repositorio.ObtenerMayor<Carga, int>(x => x.Id < id && x.NumeroBalanza == numeroBalanza && x.Tipo == "inicio", x => x.Id);
-                    if(inicio != null)
+                    if (inicio != null)
                     {
-                        var fin = Repositorio.ObtenerMayor<Carga, int>(x => x.Id > inicio.Id  && x.NumeroBalanza == numeroBalanza && x.Tipo == "fin" && x.Id < id, x => x.Id);
+                        var fin = Repositorio.ObtenerMayor<Carga, int>(x => x.Id > inicio.Id && x.NumeroBalanza == numeroBalanza && x.Tipo == "fin" && x.Id < id, x => x.Id);
                         inicio = fin == null ? inicio : null;
                     }
-                    
+
                     var balanzada = new Balanzada
                     {
                         Id = id,
@@ -175,9 +192,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private bool EsInicioFalso(int id, string numeroBalanza, string codigoDispositivo)
         {
             var registroAnterior = Repositorio.Obtener<RegistroBalanzaPuerto>(x => x.Id == id - 1 && x.NumeroBalanza == numeroBalanza);
-            if(registroAnterior == null)
+            if (registroAnterior == null)
             {
-                servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = codigoDispositivo, CodigoDispositivo = codigoDispositivo, Desde = id - 1, Hasta = id});
+                servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = codigoDispositivo, CodigoDispositivo = codigoDispositivo, Desde = id - 1, Hasta = id });
                 registroAnterior = Repositorio.Obtener<RegistroBalanzaPuerto>(x => x.Id == id - 1 && x.NumeroBalanza == numeroBalanza);
             }
 
@@ -186,13 +203,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void EnviarASap(List<Balanzada> balanzadas)
         {
-            if(balanzadas != null)
+            if (balanzadas != null)
             {
                 foreach (var b in balanzadas)
                 {
                     EnviarASap(b);
                 }
-            }            
+            }
         }
 
         private void EnviarASap(Balanzada b)
@@ -239,9 +256,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
             }
             var esPatron = false;
-            if(nombreVapor == string.Empty && 
-                nombreBodega == string.Empty && 
-                nombreDestino == string.Empty && 
+            if (nombreVapor == string.Empty &&
+                nombreBodega == string.Empty &&
+                nombreDestino == string.Empty &&
                 nombreExportador == string.Empty &&
                 nombreCommodity == string.Empty)
             {
@@ -293,13 +310,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado = comando.Informacion["bodega"];
                 if (!Repositorio.Existe<Bodega>(e => e.Nombre == resultado))
-            {
-                var nuevaBodega = new Bodega
                 {
-                    Nombre = resultado
-                };
-                Repositorio.Agregar(nuevaBodega);
-                Repositorio.GuardarCambios();
+                    var nuevaBodega = new Bodega
+                    {
+                        Nombre = resultado
+                    };
+                    Repositorio.Agregar(nuevaBodega);
+                    Repositorio.GuardarCambios();
                 }
             }
             return resultado;
