@@ -49,27 +49,32 @@ namespace Molinos.Scato.Web.Controllers
                     log.Debug("Obteniendo carta de porte nro {0} workflow {1}", numero, workflow);
                     return ObtenerCartaPorte(numero, workflow, datosUsuario);
                 }
-                
-                var cartaPorteResponse = new CartaPorteResponseDto();
-                log.Debug("Obteniendo carta de porte en AFIP nro {0} workflow {1}", numero, workflow);
-                var responseCP = servicioComandos.Ejecutar(new ConsultarCPDigital { NroCtg = Convert.ToInt64(numero), Usuario = datosUsuario.NombreUsuario, CentroId = datosUsuario.CentroId, TipoVehiculo = tipoVehiculo, ConsultaFerroviarioPorCtg = consultactg }) as ResultadoCartaPorteElectronica;
-                cartaPorteResponse.CodigoDeError = responseCP.HayErrores ? 1 : 0;
+                log.Debug("Obteniendo carta de porte redespacho nro {0} workflow {1}", numero, workflow);
+                var cartaPorteResponse = servicio.ObtenerCartaPorteRedespachoPorNumero(numero, datosUsuario.CentroId, workflow, tipoVehiculo, cpe, consultactg);
 
-                log.Debug("Se Obtuvo la carta de porte nro {0} workflow {1}", numero, workflow);
-
-                if (responseCP.HayErrores)
+                if (cartaPorteResponse.CartaPorte != null)
                 {
-                    cartaPorteResponse.CodigoDeError = 1;
-                    foreach (var item in responseCP.Errores)
+                    log.Debug("Se Obtuvo la carta de porte redespacho nro {0} workflow {1}", numero, workflow);
+                    var respuestaAFIP = servicioComandos.Ejecutar(new ConsultarAFIP
                     {
-                        log.Error(item.Key + " - " + item.Value);
+                        CentroId = datosUsuario.CentroId,
+                        TipoVehiculoId = tipoVehiculo,
+                        NumeroCartaOrden = numero,
+                    }) as ResultadoConsultarAFIP;
+
+                    if (!respuestaAFIP.HayErrores && respuestaAFIP?.TarifaReferencia != null)
+                    {
+                        log.Debug("Se uso la Tarifa Referencia de AFIP {0} para el Numero Carta Porte {1}", respuestaAFIP.TarifaReferencia, numero);
+                        cartaPorteResponse.CartaPorte.TarifaReferencia = (decimal)respuestaAFIP.TarifaReferencia;
+                    }
+                    else if (respuestaAFIP.HayErrores)
+                    {
+                        foreach (var item in respuestaAFIP.Errores)
+                        {
+                            log.Error(item.Key + " - " + item.Value);
+                        }
                     }
                 }
-                else
-                {
-                    cartaPorteResponse.CartaPorte = responseCP.Cpe;
-                }
-
                 return Json(cartaPorteResponse, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
