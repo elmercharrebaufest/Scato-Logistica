@@ -84,8 +84,11 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
-        public JsonResult LlamarCalle(int calleId, int calleCaladoId)
+        public JsonResult LlamarCalle(int calleId, int? calleCaladoId)
         {
+
+            calleCaladoId = calleCaladoId ?? 0;
+
             var response = new MensajeEstandarDto();
             try
             {
@@ -97,10 +100,10 @@ namespace Molinos.Scato.WebMobile.Controllers
                     calle.FechaLLamada = DateTime.Now;
                     if (calleCaladoId > 0 && (calle.TipoCalle == TipoCalle.PreCalado || calle.TipoCalle == TipoCalle.Circular))
                     {
-                        calle.CalleCaladoId = calleCaladoId;
+                        calle.CalleCaladoId = calleCaladoId.Value;
                     }
                     servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = true });
-                    EnviarMensajeLlamadoACartel(calle, calleCaladoId);
+                    EnviarMensajeLlamadoACartel(calle);
                 }
             }
             catch (Exception e)
@@ -256,7 +259,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return cantBloqueadas;
         }
 
-        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado, int calleCaladoId)
+        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado)
         {
             try
             {
@@ -266,7 +269,13 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                 var historialMensajeCartel = new HistorialMensajeCartelLedDto();
 
-                var codigo = servicio.ObtenerCodigoMensaje(calleCaladoId);
+
+                var codigo = string.Empty;
+
+                if(callePrecalado.CalleCaladoId != 0)
+                    codigo = servicio.ObtenerCodigoMensaje(callePrecalado.CalleCaladoId);
+                else
+                    codigo = servicio.ObtenerCodigoMensajeSinCalador();
 
                 var orden = callePrecalado.MaterialId == 4 ? servicio.ObtenerOrdenCircular(codigo) : (int?)null;
 

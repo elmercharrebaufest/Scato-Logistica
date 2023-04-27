@@ -137,7 +137,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ObtenerAlmacenesPorCentro(int centroId);
-        
+
         [OperationContract]
         IList<TipoEmbalajeDto> ListarEmbalaje();
 
@@ -2743,7 +2743,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId);
-        
+
         [OperationContract]
         ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica(Paginacion paginacion);
 
@@ -2752,12 +2752,15 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId);
-        
+
         [OperationContract]
         IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
 
         [OperationContract]
         string ObtenerCodigoMensaje(int calle);
+
+        [OperationContract]
+        string ObtenerCodigoMensajeSinCalador();
 
         [OperationContract]
         int ObtenerOrdenCircular(string codigo);
@@ -2767,7 +2770,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
-        
+
         [OperationContract]
         CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
 
@@ -2779,10 +2782,10 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
-        
+
         [OperationContract]
         bool ValidacionAutomaticaCtgDG(int centroId);
-        
+
         [OperationContract]
         List<DomicilioDto> ListarDomicilios();
 
@@ -2792,9 +2795,9 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
 
- 		[OperationContract]
+        [OperationContract]
         DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
-        
+
         [OperationContract]
         ClienteDto ObtenerClientePorCuit(string cuit);
 

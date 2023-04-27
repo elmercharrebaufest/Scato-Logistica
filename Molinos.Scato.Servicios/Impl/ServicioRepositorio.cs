@@ -10200,6 +10200,28 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerPrimero<MensajeCartelLedCalador>(x => x.Calle.Id == calleCaladoId).MensajeCartelLed.Codigo;
         }
 
+        public string ObtenerCodigoMensajeSinCalador()
+        {
+            var mensajeCarteLedCaladorList = repositorio.Listar<MensajeCartelLedCalador>().ToList();
+            var calles = mensajeCarteLedCaladorList.Select(q => q.CalleId).Distinct().ToList();
+            
+            var mensajeCartelLedCodigo = string.Empty;
+            int? calleConMenosMensajesCount = null;
+            
+            foreach (var calle in calles)
+            {
+                var historialMensajeCartelLedCount = repositorio.Contar<HistorialMensajeCartelLed>(q => q.Calle.CalleCalado.Id == calle);
+
+                if (historialMensajeCartelLedCount < calleConMenosMensajesCount || calleConMenosMensajesCount == null)
+                {
+                    calleConMenosMensajesCount = historialMensajeCartelLedCount;
+                    mensajeCartelLedCodigo = mensajeCarteLedCaladorList.FirstOrDefault(q => q.CalleId == calle).MensajeCartelLed.Codigo;
+                }
+            }
+
+            return mensajeCartelLedCodigo;
+        }
+
         public int ObtenerOrdenCircular(string codigo)
         {
             var lista = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo);
@@ -10405,9 +10427,9 @@ namespace Molinos.Scato.Servicios.Impl
         public List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo)
         {
             return Listar<Proveedor, ProveedorDto>(x => x.Cuil == cuit
-                                                         && (!tipo.PR || x.PR) 
-                                                         && (!tipo.AM || x.AM) 
-                                                         && (!tipo.CM || x.CM) 
+                                                         && (!tipo.PR || x.PR)
+                                                         && (!tipo.AM || x.AM)
+                                                         && (!tipo.CM || x.CM)
                                                          && x.Activo)
                 .ToList();
         }
