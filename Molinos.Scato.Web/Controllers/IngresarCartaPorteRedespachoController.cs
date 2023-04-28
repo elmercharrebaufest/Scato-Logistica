@@ -51,7 +51,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 log.Debug("Obteniendo carta de porte redespacho nro {0} workflow {1}", numero, workflow);
                 var cartaPorteResponse = servicio.ObtenerCartaPorteRedespachoPorNumero(numero, datosUsuario.CentroId, workflow, tipoVehiculo, cpe, consultactg);
-              
+
                 if (cartaPorteResponse.CartaPorte != null)
                 {
                     log.Debug("Se Obtuvo la carta de porte redespacho nro {0} workflow {1}", numero, workflow);

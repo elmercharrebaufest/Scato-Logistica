@@ -70,50 +70,50 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View(model);
         }
-        //ANS-2382
-        //[HttpPost]
-        //[DatosUsuario]
-        //[Autorizacion(PermisosScato.CrearClienteProvisorio)]
-        //public ActionResult CrearClienteProvisorio(ClienteDto model, DatosUsuario datosUsuario)
-        //{
-        //    var resultado = new Resultado();
-        //    var paginacion = new Paginacion("Id", DirOrden.Asc, 1, 10);
-        //    if (ModelState.IsValid)
-        //    {
+       
+        [HttpPost]
+        [DatosUsuario]
+        [Autorizacion(PermisosScato.CrearClienteProvisorio)]
+        public ActionResult CrearClienteProvisorio(ClienteDto model, DatosUsuario datosUsuario)
+        {
+            var resultado = new Resultado();
+            var paginacion = new Paginacion("Id", DirOrden.Asc, 1, 10);
+            if (ModelState.IsValid)
+            {
 
-        //         resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
+                resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
 
 
-        //        if (!resultado.HayErrores)
-        //        {
-        //            ViewBag.Items = servicio.ListarClientes(model.Cuit, paginacion);
+                if (!resultado.HayErrores)
+                {
+                    ViewBag.Items = servicio.ListarClientes(model.Cuit, paginacion);
 
-        //            return View(model); 
+                    return View(model);
 
-        //        }
+                }
 
-        //    }
-        //    ViewBag.Items = servicio.ListarClientes(string.Empty, paginacion);
-        //    dynamic estadoRespuesta = new
-        //    {
-        //        error = true,
-        //        mensajeError = LeerErrores(resultado)
-        //    };
+            }
+            ViewBag.Items = servicio.ListarClientes(string.Empty, paginacion);
+            dynamic estadoRespuesta = new
+            {
+                error = true,
+                mensajeError = LeerErrores(resultado)
+            };
 
-        //    return Json(estadoRespuesta, JsonRequestBehavior.AllowGet);
-        //}
+            return Json(estadoRespuesta, JsonRequestBehavior.AllowGet);
+        }
 
-        //private string LeerErrores(Resultado resultado)
-        //{
-        //    StringBuilder builder = new StringBuilder();
+        private string LeerErrores(Resultado resultado)
+        {
+            StringBuilder builder = new StringBuilder();
 
-        //    foreach(string error in resultado.Errores.Values)
-        //    {
-        //        builder.AppendLine(error);
-        //    }
+            foreach (string error in resultado.Errores.Values)
+            {
+                builder.AppendLine(error);
+            }
 
-        //    return builder.ToString();
-        //}
+            return builder.ToString();
+        }
 
 
     }

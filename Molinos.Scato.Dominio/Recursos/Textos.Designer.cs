@@ -1591,7 +1591,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ingresar Carta Porte Redespacho Importaciones.
+        ///   Looks up a localized string similar to Ingreso por Impo Granos.
         /// </summary>
         public static string ActIngresarCartaPorteRedespachoImportaciones {
             get {
@@ -17809,6 +17809,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string IngresoRemitoTerceros_MensajeDeEspera {
             get {
                 return ResourceManager.GetString("IngresoRemitoTerceros_MensajeDeEspera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Este camión ya fue ingresado en el día de hoy.
+        /// </summary>
+        public static string IngresoRepetido {
+            get {
+                return ResourceManager.GetString("IngresoRepetido", resourceCulture);
             }
         }
         

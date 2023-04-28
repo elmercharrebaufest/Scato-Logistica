@@ -562,5 +562,6 @@ namespace Molinos.Scato.Web.Controllers
             var domicilio = servicio.ObtenerDomicilioDG(plantaDG);
             return domicilio != null ? Json(new { label = domicilio.Descripcion, domicilio.Id, domicilio.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
         }
+
     }
 }

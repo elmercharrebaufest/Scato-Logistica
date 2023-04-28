@@ -1,13 +1,13 @@
-using System;
-using System.Activities;
-using System.Configuration;
-using System.Globalization;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.ServiciosSap;
+using System;
+using System.Activities;
+using System.Configuration;
+using System.Globalization;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -15,42 +15,59 @@ namespace Molinos.Scato.Actividades.Internas
     {
         [RequiredArgument]
         public InArgument<Guid> InstanceId { get; set; }
+
         //[RequiredArgument]
         //public InArgument<int> AlmacenReceptorId { get; set; }
         [RequiredArgument]
         public InArgument<int> Cantidad { get; set; }
+
         [RequiredArgument]
         public InArgument<int> CentroEmisorId { get; set; }
+
         [RequiredArgument]
         public InArgument<int> CentroReceptorId { get; set; }
+
         [RequiredArgument]
         public InArgument<string> ClaseExp { get; set; }
+
         [RequiredArgument]
         public InArgument<int> TransportistaId { get; set; }
+
         public InArgument<string> NroDocumento { get; set; }
         public InArgument<string> Lote { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaContab { get; set; }
+
         [RequiredArgument]
         public InArgument<DateTime> FechaDoc { get; set; }
+
         [RequiredArgument]
         public InArgument<int> Kilometros { get; set; }
+
         [RequiredArgument]
         public InArgument<int> MaterialId { get; set; }
+
         [RequiredArgument]
         public InArgument<int> ChoferId { get; set; }
+
         [RequiredArgument]
         public InArgument<string> Patente { get; set; }
+
         public InArgument<string> PatenteAcoplado { get; set; }
+
         [RequiredArgument]
         public InArgument<int> Precinto1Id { get; set; }
+
         [RequiredArgument]
         public InArgument<int> Precinto2Id { get; set; }
+
         [RequiredArgument]
         public InArgument<TipoDocumentoIngreso> TipoDoc { get; set; }
 
         public OutArgument<Mov975Request> Request { get; set; }
         public OutArgument<Resultado> Resultado { get; set; }
+
         protected override void Execute(CodeActivityContext context)
         {
             var srvRepositorio = context.GetExtension<IServicioRepositorio>();
@@ -94,7 +111,13 @@ namespace Molinos.Scato.Actividades.Internas
                 var cartaPorte = srvRepositorio.ObtenerCartaDePortePorrecorrido(recorrido.Id);
 
                 var almacenEmisorSap = almacenEmisor != null ? almacenEmisor.CodigoSAP : "";
-                var almacenReceptorSap = almacenReceptor != null ? almacenReceptor.CodigoSAP : "REDE";
+                var almacenReceptorSap = string.Empty;
+
+                if (almacenEmisor != null && almacenEmisor.EsSojaEPA)
+                    almacenReceptorSap = almacenEmisorSap;
+                else
+                    almacenReceptorSap = almacenReceptor != null ? almacenReceptor.CodigoSAP : "REDE";
+
                 var centroEmisorSap = centroEmisor != null ? centroEmisor.CodigoSAP : "";
                 var centroReceptorSap = centroReceptor != null ? centroReceptor.CodigoSAP : "";
                 var materialeSap = material != null ? material.CodigoSAP : "";
@@ -113,7 +136,7 @@ namespace Molinos.Scato.Actividades.Internas
                         chofer, almacenEmisorSap, almacenReceptorSap, centroEmisorSap, centroReceptorSap, materialeSap,
                         unindadDeMedida, precintonum1, precintonum2, factorConversion, nroDocumento,
                         cartaPorte?.IntermediarioFleteCuil?.Replace("-", ""), cartaPorte?.IntermediarioFlete);
-                } 
+                }
                 else
                 {
                     request = SetMov975Request(cantidad, claseExp, lote, fechaContab, fechaDoc, kilometros, patente, patenteAcoplado,
@@ -143,12 +166,10 @@ namespace Molinos.Scato.Actividades.Internas
                 catch
                 {
                 }
-
             }
             catch (Exception e)
             {
                 resultado.Errores.Add("", e.Message);
-
             }
             Request.Set(context, request);
             Resultado.Set(context, resultado);

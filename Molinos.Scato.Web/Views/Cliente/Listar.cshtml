@@ -15,10 +15,10 @@
 
 @Html.Grilla(items,
     grilla => grilla.Columns(
-    //ANS-2382
-    //PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && !PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificarClienteProvisorio(Html, "Cliente") 
-    //                                                           : !PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificar(Html, "Cliente") 
-    //                                                           : grilla.ColumnaModificar(Html, "Cliente"),
+    
+    PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && !PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificarClienteProvisorio(Html, "Cliente")
+                                                               : !PermisosHelper.Is(PermisosScato.CrearClienteProvisorio) && PermisosHelper.Is(PermisosScato.AbmCliente) ? grilla.ColumnaModificar(Html, "Cliente")
+                                                               : grilla.ColumnaModificar(Html, "Cliente"),
     grilla.ColumnaModificar(Html, "Cliente"),
     grilla.Columna("Descripcion", Textos.Cliente_Descripcion),
     grilla.Columna("Cuit", Textos.Cliente_Cuit),

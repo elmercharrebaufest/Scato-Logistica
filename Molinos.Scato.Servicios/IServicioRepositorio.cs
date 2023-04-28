@@ -137,7 +137,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ObtenerAlmacenesPorCentro(int centroId);
-        
+
         [OperationContract]
         IList<TipoEmbalajeDto> ListarEmbalaje();
 
@@ -2743,7 +2743,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescargaPorPuestoId(int puestoDeTrabajoId);
-        
+
         [OperationContract]
         ListaPaginada<ConfiguracionCalleHidraulicaDto> ListarPaginadoCalleHidraulica(Paginacion paginacion);
 
@@ -2752,7 +2752,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteConfirmacionCargaDescargaDeRecorrido(int recorridoId);
-        
+
         [OperationContract]
         IList<CalleDto> ListarCallesPorTipo(TipoCalle tipo);
 
@@ -2767,7 +2767,7 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
-        
+
         [OperationContract]
         CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
 
@@ -2779,10 +2779,10 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool BuscarExcepcionAlControlProveedor(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? clienteDestinoId);
-        
+
         [OperationContract]
         bool ValidacionAutomaticaCtgDG(int centroId);
-        
+
         [OperationContract]
         List<DomicilioDto> ListarDomicilios();
 
@@ -2792,9 +2792,9 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         IList<VideoCamaraDto> ListarVideoCamarasPuesto(int idPuesto);
 
- 		[OperationContract]
+        [OperationContract]
         DatosDerivadoGranarioDto ObtenerDatoDerivadoGranarioPorRecorridoTipoDocumento(int recorridoId, TipoDocumentoIngreso tipoDocumentoIngreso);
-        
+
         [OperationContract]
         ClienteDto ObtenerClientePorCuit(string cuit);
 
@@ -2818,5 +2818,14 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool EsRecorridoSojaEPA(Guid instanceId);
+
+        [OperationContract]
+        bool RecorridoRepetidoEnElDia(string patente);
+
+        [OperationContract]
+        List<ClienteDto> ListarClientesPorCuit(string cuit);
+
+        [OperationContract]
+        List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo);
     }
 }
