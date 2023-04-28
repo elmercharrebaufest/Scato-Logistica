@@ -2760,9 +2760,6 @@ namespace Molinos.Scato.Servicios
         string ObtenerCodigoMensaje(int calle);
 
         [OperationContract]
-        string ObtenerCodigoMensajeSinCalador();
-
-        [OperationContract]
         int ObtenerOrdenCircular(string codigo);
 
         [OperationContract]

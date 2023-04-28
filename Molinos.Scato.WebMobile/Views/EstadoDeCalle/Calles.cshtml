@@ -114,9 +114,25 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        @if (Model == TipoCalle.PreCalado)
+                        {
+                        <div class="modal-body">
+                            <div class="control-group">
+                                <label class="control-label">Calle Calado</label>
+                                <div class="controls">
+                                        <select class="selec-calle">
+                                            @foreach (var item in ViewBag.CallesCalado)
+                                            { 
+                                                <option value="@item.Id">@item.Nombre</option>
+                                            }
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        }
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" data-bind="click: LLamar" data-dismiss="modal">LLamar</button>
+                            <button type="button" class="btn btn-primary" data-bind="click: LLamarManual" data-dismiss="modal">LLamar</button>
                         </div>
                     </div>
                 </div>

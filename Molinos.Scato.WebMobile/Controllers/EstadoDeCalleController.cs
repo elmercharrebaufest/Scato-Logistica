@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
@@ -47,6 +46,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centroDto = this.servicio.ObtenerCentro(centroId);
             ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
             ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
+            ViewBag.CallesCalado = servicio.ListarCallesPorTipo(TipoCalle.Calado);
 
             var limiteFilasPrecaladoLlamadas = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
             ViewBag.LimiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadas != null ? int.Parse(limiteFilasPrecaladoLlamadas) : 3;
@@ -182,7 +182,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
                 List<CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
-                
+
                 // Obtiene calle rechazado o calle con camiones con mismas características
                 var callesConCamionesConMismaCalidad = model.Rechazado
                      ? servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada).ToList()
@@ -211,7 +211,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
-                if(calle.FechaLLamada.HasValue)
+                if (calle.FechaLLamada.HasValue)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -269,13 +269,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                 var historialMensajeCartel = new HistorialMensajeCartelLedDto();
 
-
-                var codigo = string.Empty;
-
-                if(callePrecalado.CalleCaladoId != 0)
-                    codigo = servicio.ObtenerCodigoMensaje(callePrecalado.CalleCaladoId);
-                else
-                    codigo = servicio.ObtenerCodigoMensajeSinCalador();
+                var codigo = servicio.ObtenerCodigoMensaje(callePrecalado.CalleCaladoId);
 
                 var orden = callePrecalado.MaterialId == 4 ? servicio.ObtenerOrdenCircular(codigo) : (int?)null;
 

@@ -39,7 +39,15 @@ function Calle(item, context) {
 
     self.LLamar = function () {
         LlamarCalle(self.Nombre, self.TipoCalle, self.Id, self.CalleCalado?.Id, self.Llamada);
-    }
+    };
+
+    self.LLamarManual = function (item, event) {
+        let calleCaladoId = null;
+        if (self.TipoCalle != 2)
+            calleCaladoId = $(event.target).parent().parent().find('select').val();
+
+        LlamarCalle(self.Nombre, self.TipoCalle, self.Id, calleCaladoId, self.Llamada);
+    };
 
     self.CancelarLLamado = function () {
         $.blockUI({
