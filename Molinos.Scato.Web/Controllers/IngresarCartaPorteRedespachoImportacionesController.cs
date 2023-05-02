@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Configuration;
+using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -56,6 +58,32 @@ namespace Molinos.Scato.Web.Controllers
                     PuestoDeTrabajoId = usuario.PuestoDeTrabajoId,
                     NombreUsuario = usuario.NombreUsuario
                 };
+        }
+
+        protected override bool Validar(CartaPorteDto orden, DatosUsuario usuario)
+        {
+            if (orden.TipoDeWorkflow == TipoDeWorkflow.Egreso && !servicio.ProcedenciaYCodigoValido(usuario.CentroId, orden.CodEstab, orden.ProcedenciaId))
+            {
+                ModelState.AddModelError("", Textos.Error_ProcedenciaInvalida);
+                return false;
+            }
+
+            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
+            var codigoSapTitular = servicio.ObtenerProveedor(orden.TitularCartaPorteId).CodigoSap;
+            if (codigoSapTitular != codigoSapPuertoRosario)
+            {
+                ModelState.AddModelError("", Textos.Error_CCPPRedespacho);
+                return false;
+            }
+            
+            var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
+            if (otroRecorridoDelChofer != null)
+            {
+                ModelState.AddModelError("", string.Format(Textos.Error_ChoferYaEstaEnPlanta, orden.Chofer.NombreCompleto, otroRecorridoDelChofer.NumeroDocumentoIngreso, otroRecorridoDelChofer.Patente));
+                return false;
+            }
+
+            return true;
         }
     }
 }
