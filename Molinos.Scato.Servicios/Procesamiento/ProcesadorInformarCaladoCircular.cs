@@ -33,9 +33,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 var resultadoCalado = servicioRepositorio.ListarAnalisisYCaladoPorCaracteristica(comando.WorkflowInstanceId);
                 Log.Debug($"ProcesadorInformarCaladoCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}, resultadoCaladoEncontrados: {resultadoCalado.Count()}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, x.Rechazado, Calidad = x.CaracteristicasAnalizadasList.Any() ? x.CaracteristicasAnalizadasList.FirstOrDefault().Calidad : TipoCalidad.Desconocida, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso, x.TipoVehiculo });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId,
+                    x => new
+                    {
+                        x.NumeroDocumentoIngreso,
+                        x.Rechazado,
+                        Calidad = x.CaracteristicasAnalizadasList.Any() ? x.CaracteristicasAnalizadasList.FirstOrDefault().Calidad : TipoCalidad.Desconocida,
+                        x.Centro.InformaCircular,
+                        x.TipoDocumentoIngreso,
+                        x.TipoVehiculo
+                    });
                 Log.Debug($"ProcesadorInformarCaladoCircular= InformaEstadosACircular: {recorrido.InformaCircular}, WorkflowInstanceId: {comando.WorkflowInstanceId}, resultadoCaladoEncontrados: {resultadoCalado.Count()}, Recorrido-CartaPorte: {recorrido.NumeroDocumentoIngreso} Recorrido-Rechazado: {recorrido.Rechazado} Recorrido-Calidad: {Convert.ToString(recorrido.Calidad)} ");
-                var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
+                var permitido = camionesPermitidos.Any(x => x == recorrido.TipoVehiculo);
 
                 if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && permitido)
                 {

@@ -4,6 +4,18 @@
     $("#ordenCargaInternaFason-form").find(':input:not([readonly]):enabled:visible:first').focus();
     $(".patente-internacional").mask("?*******", { placeholder: "" });
 
+    $('#PatenteCamion').on("focusout", function () {
+        if($('#WorkflowDescripcion').val().search('Fasón') > 0){
+            $.getJSON($('#links').data().urlObtenerMensaje, { patente: $('#PatenteCamion').val()})
+            .done(function (response) {
+                if (response.mensaje != "") {
+                    MostrarAlertaAdvertencia(response.mensaje);
+                }
+            })
+        }    
+    });
+
+
     DefinirAutocompletarChofer();
     var formatoFecha = Globalize.culture().calendars.standard.patterns.d.replace(/[a-z]/g, '9');
     formatoFecha = formatoFecha.replace(/[A-Z]/g, '9');

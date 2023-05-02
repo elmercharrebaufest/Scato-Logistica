@@ -34,11 +34,16 @@ namespace Molinos.Scato.Web.Controllers
             }
             var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
             var codigoSapMolinosAgro = configuracion.ObtenerFirmaSinLogo().CodigoSAP;
+            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
 
             if ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMRP && (cargaDeCupo.RtteComercialCodigoSap == null || cargaDeCupo.RtteComercialCodigoSap == codigoSapMRP || cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro)) ||
                 ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMolinosAgro) && (cargaDeCupo.RtteComercialCodigoSap == null || (cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro))))
             {
                 return RedirectToAction("Index", "IngresarCartaPorteRedespacho", new { workflow = ConfigurationManager.AppSettings["workflowRedespacho"], cargaDeCupoId = id });
+            }
+            else if(cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapPuertoRosario)
+            {
+                return RedirectToAction("Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"], cargaDeCupoId = id });
             }
             else if(!string.IsNullOrEmpty(cargaDeCupo.TitularCartaPorteCodigoSap))
             {
@@ -46,6 +51,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             ViewBag.IngresoPorCompra = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
             ViewBag.IngresoPorRedespacho = ConfigurationManager.AppSettings["workflowRedespacho"];
+            ViewBag.IngresoPorImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
             if (!string.IsNullOrEmpty(cargaDeCupo.FotoRutaDestino))
             {
                 var foto = servicio.ObtenerFotoPorPath(cargaDeCupo.FotoRutaDestino);

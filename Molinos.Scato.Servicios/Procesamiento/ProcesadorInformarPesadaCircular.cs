@@ -6,6 +6,7 @@ using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -29,9 +30,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 Log.Debug($"ProcesadorInformarPesadaCircular: WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId, x => new { x.NumeroDocumentoIngreso, InformaCircular = x.Centro.InformaCircular, x.TipoDocumentoIngreso, x.TipoVehiculo });
+                var recorrido = Repositorio.ObtenerProyeccion<Recorrido, dynamic>(x => x.InstanciaWorkflow == comando.WorkflowInstanceId,
+                    x => new
+                    {
+                        x.NumeroDocumentoIngreso,
+                        x.Centro.InformaCircular,
+                        x.TipoDocumentoIngreso,
+                        x.TipoVehiculo
+                    });
                 Log.Debug($"ProcesadorInformarPesadaCircular= InformaCircular: {recorrido.InformaCircular}, NumeroDocumentoIngreso: {recorrido.NumeroDocumentoIngreso} WorkflowInstanceId: {comando.WorkflowInstanceId}");
-                var permitido = camionesPermitidos.Find(recorrido.TipoVehiculo);
+                var permitido = camionesPermitidos.Any(x => x == recorrido.TipoVehiculo);
 
                 if (recorrido.InformaCircular && recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.CartaPorte && permitido)
                 {

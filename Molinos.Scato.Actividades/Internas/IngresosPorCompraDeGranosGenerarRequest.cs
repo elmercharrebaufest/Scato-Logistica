@@ -258,7 +258,7 @@ namespace Molinos.Scato.Actividades.Internas
                                         NRODOCHOFER = cartaPorte?.Chofer?.NumeroDeDocumento.ToString(CultureInfo.InvariantCulture),
                                         NUMCARPOR = cartaPorte?.NroCartaPorteSAP, //CPE
                                         PATENTE = vehiculo?.Patente,
-                                        PESADA = balanza?.Modalidad == Modalidad.Autom·tica ? "A" : "M",
+                                        PESADA = balanza?.Modalidad == Modalidad.Autom√°tica ? "A" : "M",
                                         PRESTADOR = PadProveedor(cartaPorte?.PrestadorCodigoSap),
                                         PROVEEDOR = PadProveedor(cartaPorte?.TitularCartaPorteCodigoSap),
                                         PROCEDENCIA = cartaPorte?.ProcedenciaCodigoSap,
@@ -415,7 +415,7 @@ namespace Molinos.Scato.Actividades.Internas
                              CUIT_DESTINO = cartaPorte.DestinoCuit?.Replace("-", ""),
                              ESPECIE = cartaPorte?.MaterialCodigoSap,
                              ESTABLECIMIENTO = cartaPorte.CodEstab,
-                             ESTADO = !string.IsNullOrEmpty(bajaCTG?.CodigoDeBaja) && string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmado" : (!string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "ConfirmaciÛn Definitiva" : "Activo"),
+                             ESTADO = !string.IsNullOrEmpty(bajaCTG?.CodigoDeBaja) && string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmado" : (!string.IsNullOrEmpty(bajaCTG?.CodigoDeBajaDefinitivo) ? "Confirmaci√≥n Definitiva" : "Activo"),
                              FE_HR_CONF = fechaEgreso != null ? fechaEgreso.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) : string.Empty,
                              PESO_NETO_CARGA = pesoNeto,
                              SOLICITANTE = cartaPorte.TitularCartaPorteCuil?.Replace("-", ""),
@@ -472,7 +472,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 return string.Empty;
             }
-            // Si el cÛdigo de proveedor no es numÈrico no hace el padd con ceros. Este es el caso de los corrredores.
+            // Si el c√≥digo de proveedor no es num√©rico no hace el padd con ceros. Este es el caso de los corrredores.
             return Numeric.IsMatch(codigoSap) ? codigoSap.PadLeft(10, '0') : codigoSap;
         }
 

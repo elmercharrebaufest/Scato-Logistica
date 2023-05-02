@@ -7,7 +7,7 @@
     var fila = ViewBag.FilaAsignadaNombre ?? "";
     var mostrarAlertaExitosa = (bool)(ViewBag.MostrarAlertaExitosa ?? false);
     var disponibilidad = ViewBag.Disponibilidad;
-    var esCircuitoNoGranos = ViewBag.EsCircuitoNoGranosSinMaterial;
+    var esCircuitoNoGranos = (bool)(ViewBag.EsCircuitoNoGranosSinMaterial ?? false);
     var avanzaAutomatico = (bool)ViewBag.AvanzaAutomatico;
 }
 <script src="@Url.Script("~/Scripts/cargaDeCupo.form.js")" type="text/javascript"></script>
@@ -106,7 +106,7 @@ else if (mostrarAlertaExitosa && !string.IsNullOrEmpty(fila))
     </script>
 }
 
-@if (!string.IsNullOrEmpty(ViewBag.FilaAsignadaNombre) && disponibilidad <= 5 && disponibilidad > 0)
+@if (!string.IsNullOrEmpty(fila) && disponibilidad <= 5 && disponibilidad > 0)
 {
     <script type="text/javascript">
     MostrarAlertaExitosa('Carga Exitosa, se asignó @fila, <br> ESPACIO DISPONIBLE: @disponibilidad camiones', 1000);

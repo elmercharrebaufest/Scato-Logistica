@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
-  <am:AuthoringMetadata>
-    <am:CreatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.5.33414.496</am:Version>
-    </am:CreatedBy>
-    <am:UpdatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.4.33103.184</am:Version>
-    </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2023-04-05T16:50:36.9588272Z</am:LastModifiedTimestamp>
-  </am:AuthoringMetadata>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
@@ -44,6 +33,7 @@
 					left join (
 					--camiones
 					SELECT CASE
+                    when m.id = 4 and w.Id = 233 then 'Soja Exportacion/Importacion'
 					when m.id = 4 and estab.Id is not null and estab.EPA = 1 and alm.EPA = 1 then 'Soja EPA'
 					when m.id = 4 and estab.Id is not null then 'Soja Sustentable'
 					when m.id = 4 and estab.Id is null then 'Soja'
@@ -65,41 +55,7 @@
 					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
 					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
 					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-					UNION ALL
-
-					SELECT CASE
-					
-					when m.id = 4 and Establecimiento_Id is not null and e.EPA = 0 then 'Soja Sustentable'
-					when m.id = 4 and Establecimiento_Id is not null and e.EPA = 1 then 'Soja EPA'
-
-					else m.Descripcion end
-					as 'IngresoxD',
-					--Cantidad D
-					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
-					--Tons D
-					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
-					--Cantidad M
-					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
-					--Tons M
-					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
-					--Cantidad A
-					count(*) as 'CantidadxA',
-					--Tons A
-					cast( (sum(cast(r.PesoBruto- PesoTara as numeric(18,2)))/1000) as numeric(18,2)) as 'TonsxA'
-
-					FROM [Recorrido] as r WITH(NOLOCK)
-					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
-					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
-					join Establecimiento as e WITH(NOLOCK) on r.Establecimiento_Id =  e.Id
-
-					where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
-					and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
-					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
-					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
-					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-					group by m.Descripcion,m.Id, Establecimiento_Id, e.EPA
-
-					group by m.Descripcion,m.Id, estab.Id, estab.EPA, alm.EPA
+					group by m.Descripcion,m.Id, estab.Id, estab.EPA, alm.EPA,w.Id
 					UNION ALL
 					--vagones
 					SELECT CASE
@@ -565,7 +521,7 @@ left join (
   Workflow AS w WITH (NOLOCK) ON r.Workflow_Id = w.Id JOIN
   Almacen AS a WITH (NOLOCK) ON a.Id = r.Almacen_Id JOIN
   Material AS m WITH (NOLOCK) ON m.Id = r.material_id right join
-  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion
+  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion or (ar.Almacen = TRIM('EPA' FROM a.Descripcion) and a.Descripcion like '%EPA')
   WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND
   r.PesoTaraFecha &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' AND r.PesoTaraFecha &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
   GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Descripcion
@@ -5318,7 +5274,6 @@ order by orden</CommandText>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Top>1.19944cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>10cm</Width>
             <ZIndex>7</ZIndex>

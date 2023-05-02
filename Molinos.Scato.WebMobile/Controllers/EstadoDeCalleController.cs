@@ -178,7 +178,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
                 List<CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
-                
+
                 // Obtiene calle rechazado o calle con camiones con mismas características
                 var callesConCamionesConMismaCalidad = model.Rechazado
                      ? servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada).ToList()
@@ -203,9 +203,16 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LlamarCallePostCalado(int calleId)
         {
+            var response = new RespuestaEstandarDto();
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
+                if (calle.FechaLLamada.HasValue)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 calle.Bloqueada = true;
                 calle.FechaLLamada = DateTime.Now;
 
@@ -215,8 +222,9 @@ namespace Molinos.Scato.WebMobile.Controllers
             catch (Exception e)
             {
                 log.Error(e, $"No se pudo llamar la calle {calleId}");
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Ocurrió un error en el llamado.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            return Json("ok", JsonRequestBehavior.AllowGet);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ConfirmarRechazado(Guid instanciaWorflow)

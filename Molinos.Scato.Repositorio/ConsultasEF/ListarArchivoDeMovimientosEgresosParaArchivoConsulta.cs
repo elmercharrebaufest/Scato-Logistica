@@ -47,7 +47,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     select new
                     {
                          AlmEmisor = muestra.Recorrido.Almacen.CodigoSAP,
-                         AlmReceptor = materialPorCentro.AlmacenPredeterminado.CodigoSAP ?? "REDE",
+                         AlmReceptor = muestra.Recorrido.Almacen.EPA ? muestra.Recorrido.Almacen.CodigoSAP : materialPorCentro.AlmacenPredeterminado.CodigoSAP ?? "REDE",
                          Cantidad = muestra.Recorrido.Material.FactorConversion == null ? SqlFunctions.StringConvert((double)(muestra.Recorrido.PesoBruto - muestra.Recorrido.PesoTara)) : SqlFunctions.StringConvert((muestra.Recorrido.PesoBruto - muestra.Recorrido.PesoTara) / muestra.Recorrido.Material.FactorConversion,20,2),
                          CentroEmisor = muestra.Recorrido.Centro.CodigoSAP,
                          CentroReceptor = ordenEntrePlantas.CentroDestino.CodigoSAP ?? muestra.Recorrido.Vehiculo.CartaPorte.CentroDestino.CodigoSAP,

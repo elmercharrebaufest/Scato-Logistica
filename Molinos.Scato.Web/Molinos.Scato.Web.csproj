@@ -940,6 +940,7 @@
     <Content Include="Scripts\caracteristicaPorWorkflow.js" />
     <Content Include="Scripts\exportador.crear.js" />
     <Content Include="Scripts\MvcReportViewer.js" />
+    <Content Include="Scripts\sojaEpaCodigo.js" />
     <Content Include="Scripts\src\annotation.js" />
     <Content Include="Scripts\src\element.js" />
     <Content Include="Scripts\src\events.js" />
