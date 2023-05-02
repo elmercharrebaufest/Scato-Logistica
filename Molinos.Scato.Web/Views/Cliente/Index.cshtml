@@ -28,13 +28,13 @@
 
             }
         </div>
-        @* ANS-2382 *@
-        @*<div class="span3" style="float:right">
+        
+        <div class="span3" style="float:right">
             @if (PermisosHelper.Is(PermisosScato.CrearClienteProvisorio))
             {
                 <button class="btn btn-success btnNuevoCliente" style="float:right" type="button" onclick="modalCrearCliente.showModal()">@Textos.NuevoClienteProvisorio</button>
             }
-        </div>*@
+        </div>
     </div>
     <div id="gridContainer" data-grid-url="@Url.Action("Index")">
         @Html.Partial("Listar")

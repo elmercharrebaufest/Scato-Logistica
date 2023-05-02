@@ -223,7 +223,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var material = servicio.ObtenerMaterial(orden.MaterialId);
-            //ANS-2382 var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
+            var esClienteProvisorio = orden.ClienteId == 0 ? false : servicio.ObtenerCliente(orden.ClienteId).EsClienteProvisorio;
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
 
             if (otroRecorridoDelChofer != null)
@@ -245,12 +245,12 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
-            //ANS-2382
-            //if(esClienteProvisorio &&  (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
-            //{
-            //    ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
-            //    ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
-            //}
+            
+            if (esClienteProvisorio && (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
+            {
+                ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+                ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
+            }
 
             if (material.EsDerivadoGranario && !orden.DestinatarioId.HasValue)
             {
