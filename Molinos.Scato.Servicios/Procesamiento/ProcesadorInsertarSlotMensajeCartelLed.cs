@@ -19,6 +19,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(InsertarSlotMensajeCartelLed comando)
         {
             var resultado = new ResultadoMensajeCartelLed();
+            if(!Validar(comando))
+                return resultado;
+            
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
             CrearHistorialMensajeCartelLedSiNoTiene(listaMensajes);
             var mensajeCartelLedEntity = new MensajeCartelLed();
@@ -29,7 +32,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             } else if(comando.EsCircular && comando.OrdenCircular != null) // Circular
             {
                 mensajeCartelLedEntity = InsertarSlotCartelCircular(listaMensajes, comando.OrdenCircular.Value);
-            } else // PreBalanza
+            } else // PreBalanza, PostCalado
             {
                 mensajeCartelLedEntity = InsertarSlotCartel(listaMensajes);
             }
@@ -51,9 +54,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Repositorio.GuardarCambios();
             }
 
-
-
             return resultado;
+        }
+
+        private bool Validar(InsertarSlotMensajeCartelLed comando)
+        {
+            if(Repositorio.Existe<HistorialMensajeCartelLed>(x => x.Calle.Id == comando.CalleId))
+                return false;
+
+            return true;
         }
 
         private void CrearHistorialMensajeCartelLedSiNoTiene(List<MensajeCartelLed> listaMensajes)

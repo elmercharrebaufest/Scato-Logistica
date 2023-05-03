@@ -45,6 +45,7 @@
 
             @Html.ActionLink(@Textos.ActIngresarCartaPorte, "Index", "CargarCartaPorte", new { workflow = ViewBag.IngresoPorCompra, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block btn-primary" })
             @Html.ActionLink(@Textos.ActIngresarCartaPorteRedespacho, "Index", "IngresarCartaPorteRedespacho", new { workflow = ViewBag.IngresoPorRedespacho, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block" })
+            @Html.ActionLink(@Textos.ActIngresarCartaPorteRedespachoImportaciones, "Index", "IngresarCartaPorteRedespachoImportaciones", new { workflow = ViewBag.IngresoPorImpoGranos, cargaDeCupoId = Model.Id }, new { @class = "btn btn-large btn-block" })
         </div>
         <div class="span8 control-group control-group-no-bottom borde ocultar fondo">
             @if (!Model.CPE)
