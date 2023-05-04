@@ -22,6 +22,7 @@
     [Remitente_Id] INT NULL, 
     [CuitDestinatario] VARCHAR(11) NULL, 
     [TipoDomicilioDestino] INT NULL, 
+    [IntermediarioFlete_Id] INT NULL, 
     CONSTRAINT [PK_dbo.OrdenCargaFas] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Chofer_Chofer_Id] FOREIGN KEY ([Chofer_Id]) REFERENCES [dbo].[Chofer] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Cliente_Id] FOREIGN KEY ([Cliente_Id]) REFERENCES [dbo].[Cliente] ([Id]),
@@ -33,8 +34,8 @@
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_PagadorFlete_Id] FOREIGN KEY ([PagadorFlete_Id]) REFERENCES [dbo].[Cliente] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Proveedor_Corredor_Id] FOREIGN KEY ([Corredor_Id]) REFERENCES [dbo].[Proveedor] ([Id]),
     CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Comisionista_Id] FOREIGN KEY ([Comisionista_Id]) REFERENCES [dbo].[Cliente] ([Id]),
-    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Remitente_Id] FOREIGN KEY ([Remitente_Id]) REFERENCES [dbo].[Cliente] ([Id])
-
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Cliente_Remitente_Id] FOREIGN KEY ([Remitente_Id]) REFERENCES [dbo].[Cliente] ([Id]),
+    CONSTRAINT [FK_dbo.OrdenCargaFas_dbo.Proveedor_IntermediarioFlete_Id] FOREIGN KEY ([IntermediarioFlete_Id]) REFERENCES [dbo].[Proveedor] ([Id])
 );
 
 

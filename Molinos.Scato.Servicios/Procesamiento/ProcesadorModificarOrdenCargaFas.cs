@@ -30,6 +30,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId);
             var comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId);
             var remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId);
+            var intermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId);
 
             var ordenCargaFas = Repositorio.Obtener<OrdenCargaFas>(comando.Orden.Id);
 
@@ -156,6 +157,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             ordenCargaFas.Comisionista = comisionista;
             ordenCargaFas.Remitente = remitente;
             ordenCargaFas.DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado;
+            ordenCargaFas.IntermediarioFlete = intermediarioFlete;
             #endregion
 
             recorrido.Patente = comando.Orden.PatenteCamion;

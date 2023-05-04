@@ -110,5 +110,9 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "OrdenCarga_TipoYOrdenDestino")]
         public string TipoYOrdenDestino { get; set; }
+        public int? IntermediarioFleteId { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "CartaPorte_IntermediarioFlete")]
+        public string IntermediarioFlete { get; set; }
     }
 }

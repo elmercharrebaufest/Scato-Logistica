@@ -28,5 +28,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Cliente Remitente { get; set; }
         public virtual string CuitDestinatario { get; set; }
         public virtual int? TipoDomicilioDestino { get; set; }
+        public virtual Proveedor IntermediarioFlete { get; set; }
     }
 }

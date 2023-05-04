@@ -63,6 +63,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId),
                             CuitDestinatario = comando.Orden.CuitDestinatario,
                             TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
+                            IntermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId),
                     };
 
                     if (!comando.Orden.VehiculoDemorado && Repositorio.Existe<OrdenCargaFas>(x => x.Id == comando.Orden.Id))
