@@ -380,7 +380,7 @@ namespace Molinos.Scato.Web.Controllers
                             var intermediarioFlete = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].PROV_INT_FLETE.TrimStart(new[] { '0' }));
                             if (intermediarioFlete == null)
                             {
-                                return Json(new { datosSap = -1, error = "No se encontró el intermediario en SCATO" }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = $"El Intermediario Flete con código {ordenCargaFas[i].PROV_INT_FLETE} no está registrado en SCATO." }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.IntermediarioFleteId = intermediarioFlete.Id;
