@@ -517,7 +517,7 @@ namespace Molinos.Scato.Web.Controllers
                         var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                         var chofer = servicio.ObtenerChoferPorNumeroDocumento(ordenCargaFas[i].NRO_DOC_CHOFER);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
-                        //var pagadorFlete = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_PAGADOR_FLETE));
+                        var pagadorFlete = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].PAGADOR_FLETE);
 
                         if (material == null)
                         {
@@ -532,6 +532,11 @@ namespace Molinos.Scato.Web.Controllers
                         if (cliente == null && string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
                         {
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG));
+                            break;
+                        }
+                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null)
+                        {
+                            resultado.Error("", string.Format(Textos.OrdenCargaFAS_PagadorFleteInexistente, ordenCargaFas[i].PAGADOR_FLETE));
                             break;
                         }
 
@@ -556,8 +561,8 @@ namespace Molinos.Scato.Web.Controllers
                             DerivadoGranarioHabilitado = material.EsDerivadoGranario,
                             PlantaDGDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].CODPLANTA) ? int.Parse(ordenCargaFas[i].CODPLANTA) : (int?)null,
                             OrdenDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].ORDENDOM) ? int.Parse(ordenCargaFas[i].ORDENDOM) : (int?)null,
-                            //PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
-                            //PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
+                            PagadorFleteId = material.EsDerivadoGranario ? pagadorFlete?.Id : (int?)null,
+                            PagadorFlete = material.EsDerivadoGranario ? pagadorFlete?.Descripcion : null,
                             Inhabilitado = !string.IsNullOrEmpty(ordenCargaFas[i].INHABILITADO),
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
@@ -699,7 +704,7 @@ namespace Molinos.Scato.Web.Controllers
                 CODPLANTA = "1809",
                 TIPODOM = "1",
                 ORDENDOM = "3",
-                //CUIT_PAGADOR_FLETE = "27000000014",
+                PAGADOR_FLETE = "7153750000",
                 INHABILITADO = "X",
                 CORRE = "123AEA",
                 CUIT_CTA_ORDEN = "27000000014",

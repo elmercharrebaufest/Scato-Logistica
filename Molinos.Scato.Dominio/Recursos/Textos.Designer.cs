@@ -22676,6 +22676,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El pagador flete {0} no se encuentra dado de alta en Scato. Hacer la actualización manual..
+        /// </summary>
+        public static string OrdenCargaFAS_PagadorFleteInexistente {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_PagadorFleteInexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patente.
         /// </summary>
         public static string OrdenCargaFAS_Patente {

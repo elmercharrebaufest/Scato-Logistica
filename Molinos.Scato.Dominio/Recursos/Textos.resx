@@ -10207,4 +10207,7 @@
   <data name="IngresoRepetido" xml:space="preserve">
     <value>Este camión ya fue ingresado en el día de hoy</value>
   </data>
+  <data name="OrdenCargaFAS_PagadorFleteInexistente" xml:space="preserve">
+    <value>El pagador flete {0} no se encuentra dado de alta en Scato. Hacer la actualización manual.</value>
+  </data>
 </root>
