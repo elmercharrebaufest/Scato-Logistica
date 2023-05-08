@@ -615,17 +615,14 @@ namespace Molinos.Scato.Web.Controllers
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            if (ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            if (corredor == null)
                             {
-                                resultado.Error("", "El campo corredor no cumple el formato de 11 caracteres numérico.");
+                                resultado.Error("", $"No se encontro un corredor con el codigo SAP {ordenCargaFas[i].CORRE}");
                                 break;
                             }
-                            else
-                            {
-                                var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
-                                itemSap.Corredor = corredor?.Descripcion;
-                                itemSap.CorredorId = corredor?.Id;
-                            }
+                            itemSap.Corredor = corredor?.Descripcion;
+                            itemSap.CorredorId = corredor?.Id;
                         }
 
                         if (material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].PROV_INT_FLETE))

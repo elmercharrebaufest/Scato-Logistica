@@ -166,7 +166,7 @@ namespace Molinos.Scato.Web.Controllers
                     RemitenteId = orden.RemitenteId,
                     DestinoId = orden.ClienteId,
                     ComisionistaId = orden.ComisionistaId,
-   
+
                     IntermediarioFleteId = orden.IntermediarioFleteId,
 
                     DestinatarioId = orden.DestinatarioId,
@@ -302,8 +302,8 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE) }, JsonRequestBehavior.AllowGet);
                         }
-           
-                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null )
+
+                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null)
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_PagadorFleteInexistente, ordenCargaFas[i].PAGADOR_FLETE) }, JsonRequestBehavior.AllowGet);
                         }
@@ -396,12 +396,12 @@ namespace Molinos.Scato.Web.Controllers
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            if (ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            if (corredor == null)
                             {
-                                return Json(new { datosSap = -1, error = "El campo corredor no cumple el formato de 11 caracteres numérico." }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = $"No se encontro un corredor con el codigo SAP {ordenCargaFas[i].CORRE}" }, JsonRequestBehavior.AllowGet);
                             }
 
-                            var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
                             itemSap.Corredor = corredor?.Descripcion;
                             itemSap.CorredorId = corredor?.Id;
                         }
