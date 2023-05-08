@@ -2827,5 +2827,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo);
+
+        [OperationContract]
+        bool CaladorLleno(int calleCaladoId, int limiteFilasPrecaladoLlamadas);
+
+        [OperationContract]
+        int CaladoresActivos();
     }
 }

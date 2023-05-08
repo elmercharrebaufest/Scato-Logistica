@@ -10411,5 +10411,28 @@ namespace Molinos.Scato.Servicios.Impl
                                                          && x.Activo)
                 .ToList();
         }
+
+        public bool CaladorLleno(int calleCaladoId, int limiteFilasPrecaladoLlamadas)
+        {
+            var caladorLleno = false;
+            var cantCalles = Listar<Calle, CalleDto>(x => x.CalleCalado.Id == calleCaladoId && x.Bloqueada).Count();
+            var cantCaladores = CaladoresActivos();
+
+            if (cantCalles == limiteFilasPrecaladoLlamadas / cantCaladores)
+            {
+                caladorLleno = true;
+            }
+
+            return caladorLleno;
+
+        }
+
+        public int CaladoresActivos()
+        {
+            var cantCaladores = Listar<Calle, CalleDto>(x => x.TipoCalle == TipoCalle.Calado && !x.Deshabilitada).Count();
+
+            return cantCaladores;
+
+        }
     }
 }

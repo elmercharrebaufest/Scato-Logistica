@@ -48,8 +48,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
             ViewBag.CallesCalado = servicio.ListarCallesPorTipo(TipoCalle.Calado);
 
-            var limiteFilasPrecaladoLlamadas = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
-            ViewBag.LimiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadas != null ? int.Parse(limiteFilasPrecaladoLlamadas) : 3;
+            ViewBag.CantFilasPorCalador = EstadoCaladoresActivos();
 
             return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos
                         ? materialesNoGranos.Any(a => a.Id == x.MaterialId)
@@ -80,6 +79,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0)
                 .OrderBy(x => x.MaterialId);
 
+            ViewBag.CantFilasPorCalador = EstadoCaladoresActivos();
+
             return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);
         }
 
@@ -93,6 +94,12 @@ namespace Molinos.Scato.WebMobile.Controllers
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
+                if (calle.FechaLLamada.HasValue)
+                {
+                    response = (new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 response = LlamadasPrecaladoLimiteFilas(calle);
                 if (response.TipoDeMensaje != TipoDeMensajeDeRespuesta.Error)
                 {
@@ -145,7 +152,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var calle = servicio.ObtenerCalle(calleId);
             calle.Bloqueada = false;
             calle.FechaLLamada = null;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = false });
             if (calle.TipoCalle != TipoCalle.Circular)
             {
                 servicioComandos.Ejecutar(new MarcarUltimaCallePorRecorrido { CalleId = calleId });
@@ -253,6 +260,24 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult CambioCalleCalado(int calleCaladoId)
+        {
+            var limiteFilasPrecalado = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
+            var limiteFilasPrecaladoLlamadas = limiteFilasPrecalado != null ? int.Parse(limiteFilasPrecalado) : 3;
+
+            var result = servicio.CaladorLleno(calleCaladoId, limiteFilasPrecaladoLlamadas);
+ 
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private int EstadoCaladoresActivos()
+        {
+            var caladoresActivos = servicio.CaladoresActivos();
+            var limiteFilasPrecaladoLlamadasMensaje = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
+            var limiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadasMensaje != null ? int.Parse(limiteFilasPrecaladoLlamadasMensaje) : 3;
+            return limiteFilasPrecaladoLlamadas / caladoresActivos;
+        }
+
         private CantidadPrecaladoCircularHelper EstadoDeCallesBloqueada()
         {
             var cantBloqueadas = servicio.ContarCallesBloqueadas();
@@ -304,14 +329,21 @@ namespace Molinos.Scato.WebMobile.Controllers
                         CalleId = callePostCalado.Id
                     }) as ResultadoMensajeCartelLed;
 
-                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                    if (!resultadoInsertarCartelLed.HayErrores)
                     {
-                        Mensaje = resultadoInsertarCartelLed.Mensaje,
-                        Codigo = cartel?.Valor,
-                        NumeroTrama = resultadoInsertarCartelLed.NumeroTrama,
-                        NumeroPrograma = resultadoInsertarCartelLed.NumeroPrograma,
-                        NumeroVariable = resultadoInsertarCartelLed.NumeroVariable,
-                    });
+                        servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                        {
+                            Mensaje = resultadoInsertarCartelLed.Mensaje,
+                            Codigo = cartel?.Valor,
+                            NumeroTrama = resultadoInsertarCartelLed.NumeroTrama,
+                            NumeroPrograma = resultadoInsertarCartelLed.NumeroPrograma,
+                            NumeroVariable = resultadoInsertarCartelLed.NumeroVariable,
+                        });
+                    }
+                    else
+                    {
+                        log.Error(resultadoInsertarCartelLed.Errores.First().Value);
+                    }
                 }
             }
             catch (Exception e)
