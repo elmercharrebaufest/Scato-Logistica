@@ -1,11 +1,11 @@
-﻿using System;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -35,35 +35,36 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var workflowDefinicion = Repositorio.Obtener<WorkflowDefinicion>(comando.WorkflowDefinicionId);
                     var localidadDestino = Repositorio.Obtener<Localidad>(comando.Orden.LocalidadDestinoId);
 
-                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaFas, Material = material, WorkflowDefinicion = workflowDefinicion, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, DatosProximaActividad = "Visteo",TipoVehiculo = comando.Orden.TipoVehiculo, VehiculoDemorado = comando.Orden.VehiculoDemorado, MotivoDemora = comando.Orden.MotivoDemora, Rechazado = comando.Orden.Rechazado};
+                    var recorrido = new Recorrido { InstanciaWorkflow = comando.InstanciaWorkflowId, Usuario = comando.Usuario, FechaInicio = DateTime.Now, Workflow = workflow, Chofer = chofer, Centro = centro, Patente = comando.Orden.PatenteCamion, Transportista = transportista, TipoComercial = tipoComercial, TipoDocumentoIngreso = TipoDocumentoIngreso.OrdenCargaFas, Material = material, WorkflowDefinicion = workflowDefinicion, NumeroDocumentoIngreso = comando.Orden.NumeroOrden, DatosProximaActividad = "Visteo", TipoVehiculo = comando.Orden.TipoVehiculo, VehiculoDemorado = comando.Orden.VehiculoDemorado, MotivoDemora = comando.Orden.MotivoDemora, Rechazado = comando.Orden.Rechazado };
                     Repositorio.Agregar(recorrido);
                     Log.Info("Se creó exitosamente el recorrido para el workflow {0}", comando.NombreWorkflow);
 
                     var orden = new OrdenCargaFas
-                        {
-                            Cliente = comando.Orden.VehiculoDemorado ? null : cliente,
-                            Chofer = chofer,
-                            Id = comando.Orden.Id,
-                            Material = material,
-                            PatenteAcoplado = comando.Orden.PatenteAcoplado,
-                            PatenteCamion = comando.Orden.PatenteCamion,
-                            TipoComercial = tipoComercial,
-                            Transportista = comando.Orden.VehiculoDemorado ? null : transportista,
-                            ValidaCompliance = comando.Orden.VehiculoDemorado ? false : comando.Orden.ValidaCompliance,
-                            NumeroOrden = comando.Orden.VehiculoDemorado ? "" : comando.Orden.NumeroOrden,
-                            Recorrido = recorrido,
-                            KmRecorrer = comando.Orden.KmARecorrer,
-                            LocalidadDestino = comando.Orden.VehiculoDemorado ? null : localidadDestino,
-                            DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
-                            PlantaDGDestino = comando.Orden.PlantaDGDestino,
-                            OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
-                            PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
-                            Corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId),
-                            Comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId),
-                            Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId),
-                            CuitDestinatario = comando.Orden.CuitDestinatario,
-                            TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
-                            IntermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId),
+                    {
+                        Cliente = comando.Orden.VehiculoDemorado ? null : cliente,
+                        Chofer = chofer,
+                        Id = comando.Orden.Id,
+                        Material = material,
+                        PatenteAcoplado = comando.Orden.PatenteAcoplado,
+                        PatenteCamion = comando.Orden.PatenteCamion,
+                        TipoComercial = tipoComercial,
+                        Transportista = comando.Orden.VehiculoDemorado ? null : transportista,
+                        ValidaCompliance = comando.Orden.VehiculoDemorado ? false : comando.Orden.ValidaCompliance,
+                        NumeroOrden = comando.Orden.VehiculoDemorado ? "" : comando.Orden.NumeroOrden,
+                        Recorrido = recorrido,
+                        KmRecorrer = comando.Orden.KmARecorrer,
+                        LocalidadDestino = comando.Orden.VehiculoDemorado ? null : localidadDestino,
+                        DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado,
+                        PlantaDGDestino = comando.Orden.PlantaDGDestino,
+                        OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino,
+                        PagadorFlete = Repositorio.Obtener<Cliente>(comando.Orden.PagadorFleteId),
+                        Corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId),
+                        Comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId),
+                        Remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId),
+                        Destinatario = Repositorio.Obtener<Cliente>(comando.Orden.DestinatarioId),
+                        TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino,
+  						IntermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId),
+
                     };
 
                     if (!comando.Orden.VehiculoDemorado && Repositorio.Existe<OrdenCargaFas>(x => x.Id == comando.Orden.Id))

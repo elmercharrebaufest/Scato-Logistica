@@ -9,6 +9,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual string PatenteCamion { get; set; }
         public virtual string PatenteAcoplado { get; set; }
         public virtual Cliente Cliente { get; set; }
+        public virtual Cliente Destinatario { get; set; }
         public virtual Material Material { get; set; }
         public virtual TipoComercial TipoComercial { get; set; }
         public virtual Transportista Transportista { get; set; }
@@ -26,7 +27,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Proveedor Corredor { get; set; }
         public virtual Cliente Comisionista { get; set; }
         public virtual Cliente Remitente { get; set; }
-        public virtual string CuitDestinatario { get; set; }
         public virtual int? TipoDomicilioDestino { get; set; }
         public virtual Proveedor IntermediarioFlete { get; set; }
     }

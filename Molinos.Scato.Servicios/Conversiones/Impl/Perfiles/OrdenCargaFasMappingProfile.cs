@@ -15,6 +15,10 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
             Mapper.CreateMap<OrdenCargaFas, OrdenCargaFasDto>()
                   .ForMember(x => x.ClienteDesc, c => c.MapFrom(o => o.Cliente.Descripcion))
                   .ForMember(x => x.ClienteId, c => c.MapFrom(o => o.Cliente.Id))
+
+                  .ForMember(x => x.DestinatarioDesc, c => c.MapFrom(o => o.Destinatario.Descripcion))
+                  .ForMember(x => x.DestinatarioId, c => c.MapFrom(o => o.Destinatario.Id))
+
                   .ForMember(x => x.TransportistaId, c => c.MapFrom(o => o.Transportista.Id))
                   .ForMember(x => x.TransportistaDesc, c => c.MapFrom(o => o.Transportista.RazonSocial))
                   .ForMember(x => x.CuitTransporte, c => c.MapFrom(o => o.Transportista.Cuit))

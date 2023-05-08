@@ -33,7 +33,6 @@
 @Html.HiddenFor(model => model.OrdenDomicilioDestino)
 @Html.HiddenFor(model => model.TipoDomicilioDestino)
 @Html.HiddenFor(model => model.RecorridoId)
-@Html.HiddenFor(model => model.CuitDestinatario)
 
 <div class="row-fluid row-fluid-ie7">
     <div class="span6">
@@ -79,6 +78,13 @@
                 @Html.HiddenFor(model => model.ClienteId)
             </div>
         </div>
+        <div class="control paddingRight derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+            @Html.LabelFor(model => model.DestinatarioDesc, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DisplayFor(model => model.DestinatarioDesc)
+                @Html.HiddenFor(model => model.DestinatarioId)
+            </div>
+        </div>
         <div class="control paddingRight">
             @Html.LabelFor(model => model.Comisionista, new { @class = "control-label" })
             <div class="controls">
@@ -93,13 +99,13 @@
                 @Html.HiddenFor(model => model.RemitenteId)
             </div>
         </div>
-        <div class="control paddingRight">
+        @*<div class="control paddingRight">
             @Html.LabelFor(model => model.CuitDestinatario, new { @class = "control-label" })
             <div class="controls">
                 @Html.DisplayFor(model => model.CuitDestinatario)
                 @Html.ValidationMessageFor(model => model.CuitDestinatario)
             </div>
-        </div>
+        </div>*@
         <div class="control paddingRight">
             @Html.LabelFor(model => model.TransportistaDesc, new { @class = "control-label" })
             <div class="controls">

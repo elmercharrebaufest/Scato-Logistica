@@ -96,6 +96,14 @@
                     @Html.HiddenFor(model => model.ClienteId)
                 </div>
             </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.DestinatarioDesc, new { @class = "control-label small margin10" })
+                <div>
+                    @Html.TextBoxFor(model => model.DestinatarioDesc, new { @class = "control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.DestinatarioDesc)
+                    @Html.HiddenFor(model => model.DestinatarioId)
+                </div>
+            </div>
             <div id="controlComisionista" class="control">
                 @Html.LabelFor(model => model.Comisionista, new { @class = "control-label small margin10" })
                 <div>
@@ -110,13 +118,6 @@
                     @Html.TextBoxFor(model => model.Remitente, new { @class = "control", @readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.Remitente)
                     @Html.HiddenFor(model => model.RemitenteId)
-                </div>
-            </div>
-            <div id="controlCuitDestinatario" class="control">
-                @Html.LabelFor(model => model.CuitDestinatario, new { @class = "control-label small margin10" })
-                <div>
-                    @Html.TextBoxFor(model => model.CuitDestinatario, new { @class = "control", @readonly = "readonly" })
-                    @Html.ValidationMessageFor(model => model.CuitDestinatario)
                 </div>
             </div>
             <div class="control">

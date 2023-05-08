@@ -22631,6 +22631,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No se encontró el cliente con el CUIT {0} en la base de datos..
+        /// </summary>
+        public static string OrdenCargaFAS_ClienteInexistenteCUIT {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_ClienteInexistenteCUIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontró el cliente con el Código SAP {0} en la base de datos..
+        /// </summary>
+        public static string OrdenCargaFAS_ClienteInexistenteSAP {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_ClienteInexistenteSAP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CUIT del Transporte.
         /// </summary>
         public static string OrdenCargaFAS_CuitTransporte {

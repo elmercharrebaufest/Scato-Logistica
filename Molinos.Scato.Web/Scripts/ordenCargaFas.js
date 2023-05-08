@@ -317,7 +317,11 @@ function LlenarDatos(datos) {
         $('#ComisionistaId').val(datos.ComisionistaId);
         $('#Remitente').val(datos.Remitente);
         $('#RemitenteId').val(datos.RemitenteId);
-        $('#CuitDestinatario').val(datos.CuitDestinatario);
+        $('#DestinatarioDesc').val(datos.DestinatarioDesc);
+        $('#DestinatarioId').val(datos.DestinatarioId);
+        $('#IntermediarioFlete').val(datos.IntermediarioFlete);
+        $('#IntermediarioFleteId').val(datos.IntermediarioFleteId);
+/*        $('#CuitDestinatario').val(datos.CuitDestinatario);*/
         ValidarDerivadoGranario();
         CargarPlantas();
         CargarDomicilios();

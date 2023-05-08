@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
@@ -19,6 +15,10 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.Web.Controllers
@@ -30,7 +30,7 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<ICamionDemoradoService> actividadFactory;
         private readonly ZSDWS_SCATO servicioSap;
 
-        public CamionDemoradoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos, 
+        public CamionDemoradoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows listaDeWorkflows, IServicioActividadFactory<ICamionDemoradoService> actividadFactory,
             ZSDWS_SCATO servicioSap)
             : base(log, servicio, servicioComandos)
@@ -39,7 +39,7 @@ namespace Molinos.Scato.Web.Controllers
             this.actividadFactory = actividadFactory;
             this.servicioSap = servicioSap;
         }
-        
+
         [DatosUsuario]
         public ActionResult Index(Guid id, DatosUsuario datosUsuario)
         {
@@ -75,14 +75,12 @@ namespace Molinos.Scato.Web.Controllers
                 IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
                 return View("OrdenCargaInterna", orden);
             }
-
             else if (recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaInternaFason)
             {
                 var orden = servicio.ObtenerOrdenCargaInternaFasonPorInstanceId(recorrido.InstanciaWorkflow);
                 IngresarOrdenCargaInternaFasonController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
                 return View("OrdenCargaInternaFason", orden);
             }
-
 
             var documentoDeIngresoAux = servicio.ObtenerCartaPorte(recorrido.Vehiculo.CartaPorteId);
             var centro = servicio.ObtenerCentro(recorrido.Centro.Id);
@@ -95,7 +93,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ViewBag.FotoMesaDigitalizacion1 = foto.Fotos.First().Foto;
             }
-            
+
             ViewBag.DeshabilitarTitular = true;
             ViewBag.DeshabilitarEntregador = true;
             ViewBag.DeshabilitarDestinatario = true;
@@ -174,7 +172,7 @@ namespace Molinos.Scato.Web.Controllers
 
         [HttpPost]
         [DatosUsuario]
-        public ActionResult OrdenCargaFas(string workflow, OrdenCargaFasDto orden,Guid WorkflowId, DatosUsuario datosUsuario)
+        public ActionResult OrdenCargaFas(string workflow, OrdenCargaFasDto orden, Guid WorkflowId, DatosUsuario datosUsuario)
         {
             ViewBag.SoloLectura = false;
             ViewBag.RecorridoId = orden.RecorridoId;
@@ -183,7 +181,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Rechazado = false;
             ViewBag.WorkflowInstanceUid = WorkflowId;
 
-            log.Debug($"Camion no granos demorado { orden.PatenteCamion }, con orden nro {orden.NumeroOrden} ({WorkflowId})");
+            log.Debug($"Camion no granos demorado {orden.PatenteCamion}, con orden nro {orden.NumeroOrden} ({WorkflowId})");
 
             var workflowObjt = servicio.ObtenerWorkflowPorCodigo(workflow);
 
@@ -213,7 +211,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var resultadoChofer = SetearChofer(orden.Chofer);
-            log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: chofer { (resultadoChofer ? "" : "no") } seteado.");
+            log.Debug($"({WorkflowId}) - {orden.PatenteCamion}: chofer {(resultadoChofer ? "" : "no")} seteado.");
             if (!resultadoChofer)
             {
                 IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
@@ -228,7 +226,7 @@ namespace Molinos.Scato.Web.Controllers
                 IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
                 return View(orden);
             }
-            log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: transportista { (resultadoChofer ? "" : "no") } seteado.");
+            log.Debug($"({WorkflowId}) - {orden.PatenteCamion}: transportista {(resultadoChofer ? "" : "no")} seteado.");
 
             if (orden.DerivadoGranarioHabilitado && !orden.Rechazado)
             {
@@ -242,7 +240,6 @@ namespace Molinos.Scato.Web.Controllers
                     TipoVehiculo = orden.TipoVehiculo,
                     CentroId = datosUsuario.CentroId,
                     MaterialId = orden.MaterialId,
-                    DestinoId = orden.ClienteId,
                     DestinoPlanta = orden.PlantaDGDestino ?? 0,
                     DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                     DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
@@ -253,10 +250,13 @@ namespace Molinos.Scato.Web.Controllers
                     PagadorFleteId = orden.PagadorFleteId ?? 0,
                     CorredorId = orden.CorredorId,
                     RemitenteId = orden.RemitenteId,
+                    DestinoId = orden.ClienteId,
                     ComisionistaId = orden.ComisionistaId,
-                    CuitDestinatario = orden.CuitDestinatario,
+
                     IntermediarioFleteId = orden.IntermediarioFleteId,
 
+                    DestinatarioId = orden.DestinatarioId,
+                    AplicaDestinaratio = true,
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
                 {
@@ -281,7 +281,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
-            log.Debug($"({WorkflowId}) - { orden.PatenteCamion }: modificacion orden fas { orden.NumeroOrden} {(resultado.HayErrores ? "con" : "sin")} error.");
+            log.Debug($"({WorkflowId}) - {orden.PatenteCamion}: modificacion orden fas {orden.NumeroOrden} {(resultado.HayErrores ? "con" : "sin")} error.");
             if (!resultado.HayErrores)
             {
                 var recorrido = servicio.ObtenerDatosDeInstanciaPorGuid(WorkflowId);
@@ -337,7 +337,7 @@ namespace Molinos.Scato.Web.Controllers
         public ActionResult OrdenCargaInterna(OrdenCargaInternaDto model, DatosUsuario datosUsuario)
         {
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (model.DerivadoGranarioHabilitado && !model.Rechazado)
                 {
@@ -360,7 +360,6 @@ namespace Molinos.Scato.Web.Controllers
                         KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
                         ChoferCuit = model.Chofer.Cuil,
                         PagadorFleteId = model.PagadorFleteId ?? 0,
-
                     }) as ResultadoCartaPorteElectronicaDummy;
                     if (resultadoAltaDummy.HayErrores)
                     {
@@ -434,7 +433,7 @@ namespace Molinos.Scato.Web.Controllers
                         KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
                         ChoferCuit = model.Chofer.Cuil,
                         PagadorFleteId = model.PagadorFleteId ?? 0,
-
+                        AplicaDestinaratio = true,
                     }) as ResultadoCartaPorteElectronicaDummy;
                     if (resultadoAltaDummy.HayErrores)
                     {
@@ -479,7 +478,7 @@ namespace Molinos.Scato.Web.Controllers
             return View(model);
         }
 
-        private ResultadoFas ObtenerDatos(string numero, DatosUsuario datosUsuario, OrdenCargaFasDto orden )
+        private ResultadoFas ObtenerDatos(string numero, DatosUsuario datosUsuario, OrdenCargaFasDto orden)
         {
             log.Info("Empieza el método FAS");
             var resultado = new ResultadoFas();
@@ -514,7 +513,6 @@ namespace Molinos.Scato.Web.Controllers
                         var transportista = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_TR), new TiposProveedor { PR = true });
                         var proveedor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].KUNDE.TrimStart(new[] { '0' }));
                         var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));
-                        var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                         var chofer = servicio.ObtenerChoferPorNumeroDocumento(ordenCargaFas[i].NRO_DOC_CHOFER);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
                         var pagadorFlete = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].PAGADOR_FLETE);
@@ -529,11 +527,7 @@ namespace Molinos.Scato.Web.Controllers
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE));
                             break;
                         }
-                        if (cliente == null && string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
-                        {
-                            resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG));
-                            break;
-                        }
+
                         if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null)
                         {
                             resultado.Error("", string.Format(Textos.OrdenCargaFAS_PagadorFleteInexistente, ordenCargaFas[i].PAGADOR_FLETE));
@@ -549,8 +543,6 @@ namespace Molinos.Scato.Web.Controllers
                             TransportistaId = transportista != null ? transportista.Id : proveedor.Id,
                             TransportistaDesc = transportista != null ? transportista.RazonSocial : proveedor.RazonSocial,
                             PatenteAcoplado = ordenCargaFas[i].ACOPL,
-                            ClienteId = cliente?.Id ?? 0,
-                            ClienteDesc = ordenCargaFas[i].SOLIC,
                             NumeroOrden = ordenCargaFas[i].VBELN,
                             ValidaCompliance = (ordenCargaFas[i].FLETEPROPIO != string.Empty),
                             Chofer = chofer,
@@ -567,30 +559,68 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
+                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))//NO ES REMITENTE NI COMISIONISTA
+                        {
+                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNNR);
+
+                            if (cliente == null)
+                            {
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNNR));
+                                break;
+                            }
+
+                            itemSap.ClienteId = cliente.Id;
+                            itemSap.ClienteDesc = cliente.Descripcion;
+                        }
+                        else
+                        {
+                            var cliente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
+                            if (cliente == null)
+                            {
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT));
+                            }
+
+                            itemSap.ClienteId = cliente.Id;
+                            itemSap.ClienteDesc = cliente.Descripcion;
+                        }
+
                         if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var comisionista = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Comisionista = comisionista?.Descripcion;
                             itemSap.ComisionistaId = comisionista?.Id;
-                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
                         }
                         else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Remitente = remitente?.Descripcion;
                             itemSap.RemitenteId = remitente?.Id;
-                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
                         }
 
-                        if (material.EsDerivadoGranario 
-                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE) 
+                        if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        {
+                            var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO));
+
+                            if (destinatario == null)
+                            {
+                                resultado.Error("", $"El Destinatario con CUIT {ordenCargaFas[i].CUIT_DESTINATARIO} no está registrado en SCATO");
+                                break;
+                            }
+
+                            itemSap.DestinatarioId = destinatario.Id;
+                            itemSap.DestinatarioDesc = destinatario.Descripcion;
+                        }
+
+                        if (material.EsDerivadoGranario
+                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            if(ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            if (ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
                             {
                                 resultado.Error("", "El campo corredor no cumple el formato de 11 caracteres numérico.");
                                 break;
-                            } else
+                            }
+                            else
                             {
                                 var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
                                 itemSap.Corredor = corredor?.Descripcion;
@@ -626,6 +656,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return resultado;
         }
+
         private string ConvertirCuil(string cuil)
         {
             if (String.IsNullOrEmpty(cuil))
@@ -644,7 +675,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (!orden.Rechazado && orden.Inhabilitado)
             {
-                ModelState.AddModelError((!string.IsNullOrEmpty(orden.CuitDestinatario) ? "CuitDestinatario" : "ClienteDesc"), "El cliente está inhabilitado.");
+                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
             if (!orden.Rechazado && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
@@ -672,16 +703,10 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("TransportistaDesc", string.Format(Textos.Error_Requerido, Textos.Transportista));
             }
 
-            if (!orden.Rechazado && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
+            if (!orden.Rechazado && orden.ClienteId <= 0)
             {
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
-
-            if (!orden.Rechazado && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
-            {
-                ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
-            }
-
         }
 
         // Utilizar método sólo para pruebas locales
@@ -694,7 +719,7 @@ namespace Molinos.Scato.Web.Controllers
                 CUIT_TR = "20-20686662-5",
                 KUNDE = "9950085862",
                 MATNR = "99704",
-                KUNAG = "3815870000",
+                KUNNR = "3815870000",
                 TIPO_COMERCIAL = "CYO",
                 PATEN = "ALO660",
                 ACOPL = "ALO661",
