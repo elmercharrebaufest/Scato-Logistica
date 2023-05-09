@@ -22622,7 +22622,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se encontró el cliente {0} en la base de datos..
+        ///   Looks up a localized string similar to No se encontró el cliente {0} en la base de datos, por favor dale de alta en el ABM &quot;clientes provisorios&quot;..
         /// </summary>
         public static string OrdenCargaFAS_ClienteInexistente {
             get {
@@ -22631,7 +22631,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se encontró el cliente con el CUIT {0} en la base de datos..
+        ///   Looks up a localized string similar to No se encontró el cliente con el CUIT {0} en la base de datos, por favor dale de alta en el ABM &quot;clientes provisorios&quot;..
         /// </summary>
         public static string OrdenCargaFAS_ClienteInexistenteCUIT {
             get {
@@ -22640,7 +22640,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se encontró el cliente con el Código SAP {0} en la base de datos..
+        ///   Looks up a localized string similar to No se encontró el cliente con el Código SAP {0} en la base de datos, por favor dale de alta en el ABM &quot;clientes provisorios&quot;..
         /// </summary>
         public static string OrdenCargaFAS_ClienteInexistenteSAP {
             get {

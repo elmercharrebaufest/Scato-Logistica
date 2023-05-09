@@ -3851,7 +3851,7 @@
     <value>No se encontró el chofer {0} en la base de datos.</value>
   </data>
   <data name="OrdenCargaFAS_ClienteInexistente" xml:space="preserve">
-    <value>No se encontró el cliente {0} en la base de datos.</value>
+    <value>No se encontró el cliente {0} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
   </data>
   <data name="OrdenCargaFAS_MaterialInexistente" xml:space="preserve">
     <value>No se encontró el material {0} en la base de datos.</value>
@@ -10208,10 +10208,10 @@
     <value>Este camión ya fue ingresado en el día de hoy</value>
   </data>
   <data name="OrdenCargaFAS_ClienteInexistenteSAP" xml:space="preserve">
-    <value>No se encontró el cliente con el Código SAP {0} en la base de datos.</value>
+    <value>No se encontró el cliente con el Código SAP {0} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
   </data>
   <data name="OrdenCargaFAS_ClienteInexistenteCUIT" xml:space="preserve">
-    <value>No se encontró el cliente con el CUIT {0} en la base de datos.</value>
+    <value>No se encontró el cliente con el CUIT {0} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
    </data>
   <data name="OrdenCargaFAS_PagadorFleteInexistente" xml:space="preserve">
     <value>El pagador flete {0} no se encuentra dado de alta en Scato. Hacer la actualización manual.</value>
