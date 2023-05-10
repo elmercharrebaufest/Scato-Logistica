@@ -572,10 +572,11 @@ namespace Molinos.Scato.Web.Controllers
                         } 
                         else
                         {
-                            var cliente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT));
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT));
+                                break;
                             }
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
@@ -596,11 +597,11 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
                         {
-                            var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO));
+                            var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
 
                             if (destinatario == null)
                             {
-                                resultado.Error("", $"El Destinatario con CUIT {ordenCargaFas[i].CUIT_DESTINATARIO} no está registrado en SCATO");
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO));
                                 break;
                             }
 

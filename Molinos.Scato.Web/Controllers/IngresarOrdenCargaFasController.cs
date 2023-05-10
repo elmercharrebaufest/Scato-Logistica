@@ -353,10 +353,10 @@ namespace Molinos.Scato.Web.Controllers
                         }
                         else
                         {
-                            var cliente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
                             }
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
@@ -382,7 +382,7 @@ namespace Molinos.Scato.Web.Controllers
 
                             if (destinatario == null)
                             {
-                                return Json(new { datosSap = -1, error = $"El Destinatario con CUIT {ordenCargaFas[i].CUIT_DESTINATARIO} no está registrado en SCATO" }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO) }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.DestinatarioId = destinatario.Id;
@@ -402,7 +402,7 @@ namespace Molinos.Scato.Web.Controllers
                             var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
                             if (corredor == null)
                             {
-                                return Json(new { datosSap = -1, error = $"No se encontro un corredor con el codigo SAP {ordenCargaFas[i].CORRE}" }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.Corredor, ordenCargaFas[i].CORRE) }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.Corredor = corredor?.Descripcion;
@@ -414,7 +414,7 @@ namespace Molinos.Scato.Web.Controllers
                             var intermediarioFlete = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].PROV_INT_FLETE.TrimStart(new[] { '0' }));
                             if (intermediarioFlete == null)
                             {
-                                return Json(new { datosSap = -1, error = $"El Intermediario Flete con código {ordenCargaFas[i].PROV_INT_FLETE} no está registrado en SCATO." }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.CartaPorte_IntermediarioFlete, ordenCargaFas[i].PROV_INT_FLETE) }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.IntermediarioFleteId = intermediarioFlete.Id;

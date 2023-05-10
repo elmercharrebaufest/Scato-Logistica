@@ -10211,9 +10211,12 @@
     <value>No se encontró el cliente con el Código SAP {0} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
   </data>
   <data name="OrdenCargaFAS_ClienteInexistenteCUIT" xml:space="preserve">
-    <value>No se encontró el cliente con el CUIT {0} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
-   </data>
+    <value>No se encontró el {0} con el CUIT {1} en la base de datos, por favor dale de alta en el ABM "clientes provisorios".</value>
+  </data>
   <data name="OrdenCargaFAS_PagadorFleteInexistente" xml:space="preserve">
     <value>El pagador flete {0} no se encuentra dado de alta en Scato. Hacer la actualización manual.</value>
+  </data>
+  <data name="OrdenCargaFAS_ProveedorInexistenteCodigoSAP" xml:space="preserve">
+    <value>El {0} con código SAP {1} no está registrado en SCATO.</value>
   </data>
 </root>
