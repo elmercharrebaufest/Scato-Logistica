@@ -170,7 +170,7 @@ namespace Molinos.Scato.Web.Controllers
                     IntermediarioFleteId = orden.IntermediarioFleteId,
 
                     DestinatarioId = orden.DestinatarioId,
-                    AplicaDestinaratio = true
+                    AplicaDestinatario = true
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
                 {
@@ -341,15 +341,13 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
-                        { //NO ES REMITENTE NI COMISIONISTA
+                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
+                        {
                             var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNNR);
-
                             if (cliente == null)
                             {
                                 return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNNR) }, JsonRequestBehavior.AllowGet);
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
@@ -360,7 +358,6 @@ namespace Molinos.Scato.Web.Controllers
                             {
                                 return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
@@ -390,6 +387,12 @@ namespace Molinos.Scato.Web.Controllers
 
                             itemSap.DestinatarioId = destinatario.Id;
                             itemSap.DestinatarioDesc = destinatario.Descripcion;
+                        }
+
+                        if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        {
+                            itemSap.DestinatarioId = itemSap.ClienteId;
+                            itemSap.DestinatarioDesc = itemSap.ClienteDesc;
                         }
 
                         if (material.EsDerivadoGranario
@@ -586,6 +589,11 @@ namespace Molinos.Scato.Web.Controllers
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
             {
                 ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            {
+                ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
         }
     }
