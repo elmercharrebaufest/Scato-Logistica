@@ -22,6 +22,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
             Log.Debug("Ejecutando ModificarHistorialMensajeCartelLed");
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
+            Log.Debug($"Lista de mensajes ModificarHistorialMensajeCartelLed - {listaMensajes.ToJson()}");
             LimpiarSlotCartel(listaMensajes, comando.CalleId);
             resultadoMensajeCartelLed.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
             Log.Debug($"Finalizando ModificarHistorialMensajeCartelLed - {resultadoMensajeCartelLed.ToJson()}");
