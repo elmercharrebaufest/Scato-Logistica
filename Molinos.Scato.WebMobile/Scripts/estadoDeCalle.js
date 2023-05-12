@@ -48,27 +48,26 @@ function Calle(item, context) {
         if (self.TipoCalle != 2){
             calleCaladoId = $(event.target).parent().parent().find('select').val();
 
-            $.ajax({
-                url: urlCambioCalleCalado,
-                data: {
-                    calleCaladoId: calleCaladoId,
-                },
-                async: false,
-                type: "POST",
-                success: function (data) {
-                    caladorLleno = data;
+            // $.ajax({
+            //     url: urlCambioCalleCalado,
+            //     data: {
+            //         calleCaladoId: calleCaladoId,
+            //     },
+            //     async: false,
+            //     type: "POST",
+            //     success: function (data) {
+            //         caladorLleno = data;
         
-                    if(caladorLleno){
-                        MostrarAlertaInfo("El calador seleccionado llegó a su límite");
-                    }
-                },
-            });
+            //         if(caladorLleno){
+            //             MostrarAlertaInfo("El calador seleccionado llegó a su límite");
+            //         }
+            //     },
+            // });
         }    
 
-        if(caladorLleno == false){
 
-            LlamarCalle(self.Nombre, self.TipoCalle, self.Id, calleCaladoId, self.Llamada);
-        }
+        LlamarCalle(self.Nombre, self.TipoCalle, self.Id, calleCaladoId, self.Llamada);
+        
     };
 
 
@@ -510,6 +509,12 @@ function LlamarCalle(nombre, tipoCalle, calleId, calleCaladoId, llamada) {
                 if (data.Mensaje == "2") {
                     $.unblockUI();
                     MostrarAlertaInfo('Llamado de calles circulares llegó al máximo');
+                    return
+                }
+
+                if (data.Mensaje == "3") {
+                    $.unblockUI();
+                    MostrarAlertaInfo('Llamado de calles precalado llegó al máximo');
                     return
                 }
                 llamada(true);

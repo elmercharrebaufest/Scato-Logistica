@@ -10223,14 +10223,14 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Calle, CalleDto>(x => callePreBalanzaIdList.Contains(x.Id)).ToList();
         }
 
-        public CantidadPrecaladoCircularHelper ContarCallesBloqueadas()
+        public CantidadPrecaladoCircularHelper ContarCallesBloqueadas(int? calleCaladoId)
         {
             var listaPreCaladoCircular = Listar<Calle, CalleDto>(x => (x.TipoCalle == TipoCalle.PreCalado || x.TipoCalle == TipoCalle.Circular));
 
             var cantidadPrecaladoCircularHelper = new CantidadPrecaladoCircularHelper();
             cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => x.Bloqueada);
             cantidadPrecaladoCircularHelper.CantidadCircular = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.Circular && x.Bloqueada);
-
+            
             return cantidadPrecaladoCircularHelper;
         }
 
@@ -10416,9 +10416,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var caladorLleno = false;
             var cantCalles = Listar<Calle, CalleDto>(x => x.CalleCalado.Id == calleCaladoId && x.Bloqueada).Count();
-            var cantCaladores = CaladoresActivos();
+            var cantCallesCirc = Listar<Calle, CalleDto>(x => x.CalleCalado.Id == calleCaladoId && x.Bloqueada && x.TipoCalle == TipoCalle.Circular).Count();
 
-            if (cantCalles == limiteFilasPrecaladoLlamadas / cantCaladores)
+            var cantCaladores = CaladoresActivos();
+            var limiteCalles = limiteFilasPrecaladoLlamadas / cantCaladores;
+            if (cantCallesCirc == 1 && cantCalles == limiteCalles - 1)
             {
                 caladorLleno = true;
             }

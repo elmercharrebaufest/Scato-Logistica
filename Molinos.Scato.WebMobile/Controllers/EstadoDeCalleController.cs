@@ -100,7 +100,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
-                response = LlamadasPrecaladoLimiteFilas(calle);
+                response = LlamadasPrecaladoLimiteFilas(calle, calleCaladoId);
                 if (response.TipoDeMensaje != TipoDeMensajeDeRespuesta.Error)
                 {
                     calle.Bloqueada = true;
@@ -278,9 +278,9 @@ namespace Molinos.Scato.WebMobile.Controllers
             return limiteFilasPrecaladoLlamadas / caladoresActivos;
         }
 
-        private CantidadPrecaladoCircularHelper EstadoDeCallesBloqueada()
+        private CantidadPrecaladoCircularHelper EstadoDeCallesBloqueada(int? calleCaladoId)
         {
-            var cantBloqueadas = servicio.ContarCallesBloqueadas();
+            var cantBloqueadas = servicio.ContarCallesBloqueadas(calleCaladoId);
             return cantBloqueadas;
         }
 
@@ -406,42 +406,42 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
         }
 
-        private MensajeEstandarDto LlamadasPrecaladoLimiteFilas(CalleDto calle)
+        private MensajeEstandarDto LlamadasPrecaladoLimiteFilas(CalleDto calle, int? calleCaladoId)
         {
             var mensaje = new MensajeEstandarDto() { TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            var cantBloqueadas = EstadoDeCallesBloqueada();
+            var cantBloqueadas = EstadoDeCallesBloqueada(calleCaladoId);
             int.TryParse(servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.LimiteFilasLlamadas).Valor, out int limiteDeFilasTotales);
+            var cantFilasPorCalador = EstadoCaladoresActivos();
+            var maxFilasPrecalado = cantFilasPorCalador - 1;
+
+            if (cantBloqueadas.CantidadTotal == cantFilasPorCalador)
+            {
+                mensaje = new MensajeEstandarDto
+                {
+                    TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
+                    //limite de filas totales
+                    Mensaje = "1"
+                };
+            }
+
+
             switch (calle.TipoCalle)
             {
                 case TipoCalle.PreCalado:
                     {
-                        if (cantBloqueadas.CantidadTotal == limiteDeFilasTotales)
-                        {
+                        if (cantBloqueadas.CantidadPrecalado == maxFilasPrecalado)
                             mensaje = new MensajeEstandarDto
                             {
                                 TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
-                                //limite de filas totales
-                                Mensaje = "1"
+                                //limite de filas circulares para material soja
+                                Mensaje = "3"
                             };
-                        }
-
                         break;
                     }
-
                 case TipoCalle.Circular:
                     {
-                        if (cantBloqueadas.CantidadTotal == limiteDeFilasTotales)
-                        {
-                            mensaje = new MensajeEstandarDto
-                            {
-                                TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
-                                //limite de filas totales
-                                Mensaje = "1"
-                            };
-                        }
-
                         //material de soja reserva dos slots del cartel para circular
-                        if (calle.MaterialId == 4 && cantBloqueadas.CantidadCircular == limiteDeFilasTotales - 4)
+                        if (calle.MaterialId == 4 && cantBloqueadas.CantidadCircular == 1)
                         {
                             mensaje = new MensajeEstandarDto
                             {

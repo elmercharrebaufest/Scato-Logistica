@@ -2769,7 +2769,7 @@ namespace Molinos.Scato.Servicios
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
 
         [OperationContract]
-        CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
+        CantidadPrecaladoCircularHelper ContarCallesBloqueadas(int? caladorId);
 
         [OperationContract]
         ListaPaginada<ExcepcionAlControlProveedorDto> ListarExcepcionesAlControlProveedor(string filtro, Paginacion paginacion);
