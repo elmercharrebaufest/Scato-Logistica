@@ -22622,11 +22622,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No se encontró el cliente {0} en la base de datos..
+        ///   Looks up a localized string similar to No se encontró el cliente {0} en la base de datos, por favor darlo de alta en el ABM &quot;clientes provisorios&quot;..
         /// </summary>
         public static string OrdenCargaFAS_ClienteInexistente {
             get {
                 return ResourceManager.GetString("OrdenCargaFAS_ClienteInexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontró el {0} con CUIT {1} en la base de datos, por favor darlo de alta en el ABM &quot;clientes provisorios&quot;..
+        /// </summary>
+        public static string OrdenCargaFAS_ClienteInexistenteCUIT {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_ClienteInexistenteCUIT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se encontró el cliente con Código SAP {0} en la base de datos, por favor darlo de alta en el ABM &quot;clientes provisorios&quot;..
+        /// </summary>
+        public static string OrdenCargaFAS_ClienteInexistenteSAP {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_ClienteInexistenteSAP", resourceCulture);
             }
         }
         
@@ -22676,6 +22694,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El pagador flete {0} no se encuentra dado de alta en Scato. Hacer la actualización manual..
+        /// </summary>
+        public static string OrdenCargaFAS_PagadorFleteInexistente {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_PagadorFleteInexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patente.
         /// </summary>
         public static string OrdenCargaFAS_Patente {
@@ -22699,6 +22726,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string OrdenCargaFAS_ProveedorInexistente {
             get {
                 return ResourceManager.GetString("OrdenCargaFAS_ProveedorInexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El {0} con código SAP {1} no está registrado en SCATO..
+        /// </summary>
+        public static string OrdenCargaFAS_ProveedorInexistenteCodigoSAP {
+            get {
+                return ResourceManager.GetString("OrdenCargaFAS_ProveedorInexistenteCodigoSAP", resourceCulture);
             }
         }
         

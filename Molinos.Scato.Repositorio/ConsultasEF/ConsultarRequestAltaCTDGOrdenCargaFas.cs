@@ -22,16 +22,18 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
             var orden = contexto.Set<OrdenCargaFas>()
                                 .Include(x => x.Cliente)
+                                .Include(x => x.Destinatario)
                                 .Include(x => x.PagadorFlete)
                                 .Include(x => x.Corredor)
                                 .Include(x => x.Comisionista)
                                 .Include(x => x.Remitente)
+                                .Include(x => x.IntermediarioFlete)
                                 .Where(x => x.Recorrido.InstanciaWorkflow == workflowInstance)
                                 .FirstOrDefault();
             var request = new RequestAltaCTGDGDto()
             {
-                DestinoCuit = (orden.Remitente != null || orden.Comisionista != null) ? long.Parse(orden.CuitDestinatario) : (!string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0),
-                DestinatarioCuit = (orden.Remitente != null || orden.Comisionista != null) ? long.Parse(orden.CuitDestinatario) : (!string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0),
+                DestinoCuit = (!string.IsNullOrEmpty(orden?.Cliente?.Cuit) ? long.Parse(orden?.Cliente?.Cuit?.Replace("-", string.Empty)) : 0),
+                DestinatarioCuit = !string.IsNullOrEmpty(orden?.Destinatario?.Cuit) ? long.Parse(orden?.Destinatario?.Cuit?.Replace("-", string.Empty)) : 0,
                 DestinoPlanta = orden.PlantaDGDestino ?? 0,
                 DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                 DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
@@ -41,6 +43,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 CuitCorredor = !string.IsNullOrEmpty(orden?.Corredor?.Cuil) ? long.Parse(orden?.Corredor?.Cuil?.Replace("-", string.Empty)) : 0,
                 CuitComisionista = !string.IsNullOrEmpty(orden?.Comisionista?.Cuit) ? long.Parse(orden?.Comisionista?.Cuit?.Replace("-", string.Empty)) : 0,
                 CuitRemitente = !string.IsNullOrEmpty(orden?.Remitente?.Cuit) ? long.Parse(orden?.Remitente?.Cuit?.Replace("-", string.Empty)) : 0,
+                CuitIntermediarioFlete = !string.IsNullOrEmpty(orden?.IntermediarioFlete.Cuil) ? long.Parse(orden?.IntermediarioFlete?.Cuil?.Replace("-", string.Empty)) : 0,
             };
             return request;
         }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -30,6 +30,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var corredor = Repositorio.Obtener<Proveedor>(comando.Orden.CorredorId);
             var comisionista = Repositorio.Obtener<Cliente>(comando.Orden.ComisionistaId);
             var remitente = Repositorio.Obtener<Cliente>(comando.Orden.RemitenteId);
+            var destinatario = Repositorio.Obtener<Cliente>(comando.Orden.DestinatarioId);
+            var intermediarioFlete = Repositorio.Obtener<Proveedor>(comando.Orden.IntermediarioFleteId);
 
             var ordenCargaFas = Repositorio.Obtener<OrdenCargaFas>(comando.Orden.Id);
 
@@ -147,16 +149,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             #region Campos para Derivado Granario
+
             ordenCargaFas.PlantaDGDestino = comando.Orden.PlantaDGDestino;
             ordenCargaFas.OrdenDomicilioDestino = comando.Orden.OrdenDomicilioDestino;
             ordenCargaFas.TipoDomicilioDestino = comando.Orden.TipoDomicilioDestino;
             ordenCargaFas.PagadorFlete = pagadorFlete;
-            ordenCargaFas.CuitDestinatario = comando.Orden.CuitDestinatario;
             ordenCargaFas.Corredor = corredor;
             ordenCargaFas.Comisionista = comisionista;
             ordenCargaFas.Remitente = remitente;
+            ordenCargaFas.Destinatario = destinatario;
             ordenCargaFas.DerivadoGranarioHabilitado = comando.Orden.DerivadoGranarioHabilitado;
-            #endregion
+            ordenCargaFas.IntermediarioFlete = intermediarioFlete;
+
+            #endregion Campos para Derivado Granario
 
             recorrido.Patente = comando.Orden.PatenteCamion;
             recorrido.Chofer = chofer;
@@ -164,7 +169,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             recorrido.TipoComercial = tipoComercial;
             recorrido.Material = material;
             recorrido.TipoVehiculo = comando.Orden.TipoVehiculo;
-
         }
 
         protected override void Validar(ModificarOrdenCargaFas comando, Resultado resultado)

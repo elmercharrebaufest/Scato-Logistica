@@ -70,7 +70,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             return View(model);
         }
-       
+
         [HttpPost]
         [DatosUsuario]
         [Autorizacion(PermisosScato.CrearClienteProvisorio)]
@@ -114,7 +114,5 @@ namespace Molinos.Scato.Web.Controllers
 
             return builder.ToString();
         }
-
-
     }
 }
