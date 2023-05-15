@@ -166,11 +166,11 @@ namespace Molinos.Scato.Web.Controllers
                     RemitenteId = orden.RemitenteId,
                     DestinoId = orden.ClienteId,
                     ComisionistaId = orden.ComisionistaId,
-   
+
                     IntermediarioFleteId = orden.IntermediarioFleteId,
 
                     DestinatarioId = orden.DestinatarioId,
-                    AplicaDestinaratio = true
+                    AplicaDestinatario = true
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
                 {
@@ -302,8 +302,8 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE) }, JsonRequestBehavior.AllowGet);
                         }
-           
-                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null )
+
+                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null)
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_PagadorFleteInexistente, ordenCargaFas[i].PAGADOR_FLETE) }, JsonRequestBehavior.AllowGet);
                         }
@@ -341,26 +341,23 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
-                        { //NO ES REMITENTE NI COMISIONISTA
+                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
+                        {
                             var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNNR);
-
                             if (cliente == null)
                             {
                                 return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNNR) }, JsonRequestBehavior.AllowGet);
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
                         else
                         {
-                            var cliente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
@@ -385,23 +382,29 @@ namespace Molinos.Scato.Web.Controllers
 
                             if (destinatario == null)
                             {
-                                return Json(new { datosSap = -1, error = $"El Destinatario con CUIT {ordenCargaFas[i].CUIT_DESTINATARIO} no está registrado en SCATO" }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO) }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.DestinatarioId = destinatario.Id;
                             itemSap.DestinatarioDesc = destinatario.Descripcion;
                         }
 
+                        if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        {
+                            itemSap.DestinatarioId = itemSap.ClienteId;
+                            itemSap.DestinatarioDesc = itemSap.ClienteDesc;
+                        }
+
                         if (material.EsDerivadoGranario
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            if (ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            if (corredor == null)
                             {
-                                return Json(new { datosSap = -1, error = "El campo corredor no cumple el formato de 11 caracteres numérico." }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.Corredor, ordenCargaFas[i].CORRE) }, JsonRequestBehavior.AllowGet);
                             }
 
-                            var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
                             itemSap.Corredor = corredor?.Descripcion;
                             itemSap.CorredorId = corredor?.Id;
                         }
@@ -411,7 +414,7 @@ namespace Molinos.Scato.Web.Controllers
                             var intermediarioFlete = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].PROV_INT_FLETE.TrimStart(new[] { '0' }));
                             if (intermediarioFlete == null)
                             {
-                                return Json(new { datosSap = -1, error = $"El Intermediario Flete con código {ordenCargaFas[i].PROV_INT_FLETE} no está registrado en SCATO." }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.CartaPorte_IntermediarioFlete, ordenCargaFas[i].PROV_INT_FLETE) }, JsonRequestBehavior.AllowGet);
                             }
 
                             itemSap.IntermediarioFleteId = intermediarioFlete.Id;
@@ -586,6 +589,11 @@ namespace Molinos.Scato.Web.Controllers
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
             {
                 ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            {
+                ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
         }
     }

@@ -139,7 +139,7 @@ namespace Molinos.Scato.Web.Controllers
                     RemitenteId = orden.RemitenteId,
                     ComisionistaId = orden.ComisionistaId,
                     IntermediarioFleteId = orden.IntermediarioFleteId,
-                    AplicaDestinaratio = true,
+                    AplicaDestinatario = true,
 
                 }) as ResultadoCartaPorteElectronicaDummy;
 

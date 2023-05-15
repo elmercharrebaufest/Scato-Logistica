@@ -194,7 +194,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercialSpecified = true;
                 }
 
-                if (comando.DestinatarioId.HasValue)
+                if (comando.AplicaDestinatario)
                 {
                     var destinatario = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinatarioId);
                     autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destinatario.Cuit) ? long.Parse(destinatario.Cuit.Replace("-", string.Empty)) : 0;
@@ -282,7 +282,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var pagadorFlete = Repositorio.Existe<Cliente>(x => x.Id == comando.PagadorFleteId);
             var destinatario = Repositorio.Existe<Cliente>(x => x.Id == comando.DestinatarioId);
 
-            if (comando.AplicaDestinaratio && !destinatario)
+            if (comando.AplicaDestinatario && !destinatario)
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Destinatario));
             }

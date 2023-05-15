@@ -256,7 +256,7 @@ namespace Molinos.Scato.Web.Controllers
                     IntermediarioFleteId = orden.IntermediarioFleteId,
 
                     DestinatarioId = orden.DestinatarioId,
-                    AplicaDestinaratio = true,
+                    AplicaDestinatario = true,
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
                 {
@@ -433,7 +433,7 @@ namespace Molinos.Scato.Web.Controllers
                         KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
                         ChoferCuit = model.Chofer.Cuil,
                         PagadorFleteId = model.PagadorFleteId ?? 0,
-                        AplicaDestinaratio = true,
+                        AplicaDestinatario = true,
                     }) as ResultadoCartaPorteElectronicaDummy;
                     if (resultadoAltaDummy.HayErrores)
                     {
@@ -559,27 +559,25 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))//NO ES REMITENTE NI COMISIONISTA
+                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
                         {
                             var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNNR);
-
                             if (cliente == null)
                             {
                                 resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNNR));
                                 break;
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
-                        }
+                        } 
                         else
                         {
-                            var cliente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, ordenCargaFas[i].CUIT));
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT));
+                                break;
                             }
-
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
@@ -599,11 +597,11 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
                         {
-                            var destinatario = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO));
+                            var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
 
                             if (destinatario == null)
                             {
-                                resultado.Error("", $"El Destinatario con CUIT {ordenCargaFas[i].CUIT_DESTINATARIO} no está registrado en SCATO");
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO));
                                 break;
                             }
 
@@ -611,21 +609,24 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.DestinatarioDesc = destinatario.Descripcion;
                         }
 
+                        if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        {
+                            itemSap.DestinatarioId = itemSap.ClienteId;
+                            itemSap.DestinatarioDesc = itemSap.ClienteDesc;
+                        }
+
                         if (material.EsDerivadoGranario
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            if (ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            if (corredor == null)
                             {
-                                resultado.Error("", "El campo corredor no cumple el formato de 11 caracteres numérico.");
+                                resultado.Error("", $"No se encontro un corredor con el codigo SAP {ordenCargaFas[i].CORRE}");
                                 break;
                             }
-                            else
-                            {
-                                var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
-                                itemSap.Corredor = corredor?.Descripcion;
-                                itemSap.CorredorId = corredor?.Id;
-                            }
+                            itemSap.Corredor = corredor?.Descripcion;
+                            itemSap.CorredorId = corredor?.Id;
                         }
 
                         if (material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].PROV_INT_FLETE))
@@ -706,6 +707,11 @@ namespace Molinos.Scato.Web.Controllers
             if (!orden.Rechazado && orden.ClienteId <= 0)
             {
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
+            }
+
+            if (!orden.Rechazado && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            {
+                ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
         }
 
