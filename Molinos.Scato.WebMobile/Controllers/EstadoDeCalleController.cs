@@ -44,6 +44,16 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centroId = int.Parse(centro.Value);
             var materialesNoGranos = servicio.ObtenerMaterialNoGranoAsignableCalle();
             var centroDto = this.servicio.ObtenerCentro(centroId);
+
+            var tiposCalleValidas = new List<TipoCalle>() {
+                TipoCalle.PreCalado,
+                TipoCalle.Circular,
+                TipoCalle.PostCalado,
+                TipoCalle.RechazadosDemorados,
+                TipoCalle.ReCalado,
+                TipoCalle.Calado
+            };
+
             ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
             ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
             ViewBag.CallesCalado = servicio.ListarCallesPorTipo(TipoCalle.Calado);
@@ -52,12 +62,8 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos
                         ? materialesNoGranos.Any(a => a.Id == x.MaterialId)
-                                && x.TipoCalle != TipoCalle.PlayaInterna
-                                && x.TipoCalle != TipoCalle.EnTransito
-                                && x.TipoCalle != TipoCalle.PlantaNoGranos
-                        : x.TipoCalle != TipoCalle.PlayaInterna
-                                && x.TipoCalle != TipoCalle.EnTransito
-                                && x.TipoCalle != TipoCalle.PlantaNoGranos).ToList());
+                                && tiposCalleValidas.Contains(x.TipoCalle)
+                        : tiposCalleValidas.Contains(x.TipoCalle)).ToList());
         }
 
         public JsonResult EstadoDeCalle()
@@ -65,16 +71,21 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != TipoCalle.PlayaInterna
-                                                                                && x.TipoCalle != TipoCalle.PlantaNoGranos
-                                                                                && x.TipoCalle != TipoCalle.EnTransito);
-            var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos
-                                                    && x.TipoCalle != TipoCalle.EnTransito
-                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+
+            var tiposCalleValidas = new List<TipoCalle>() {
+                TipoCalle.PreCalado,
+                TipoCalle.Circular,
+                TipoCalle.PostCalado,
+                TipoCalle.RechazadosDemorados,
+                TipoCalle.ReCalado,
+                TipoCalle.Calado
+            };
+
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => tiposCalleValidas.Contains(x.TipoCalle));
+
+            var materiales = camiones.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
-                .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos
-                                                    && x.TipoCalle != TipoCalle.EnTransito
-                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+                .Union(calles.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc }))
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0)
                 .OrderBy(x => x.MaterialId);
@@ -87,7 +98,6 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LlamarCalle(int calleId, int? calleCaladoId)
         {
-
             calleCaladoId = calleCaladoId ?? 0;
 
             var response = new MensajeEstandarDto();
@@ -266,7 +276,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var limiteFilasPrecaladoLlamadas = limiteFilasPrecalado != null ? int.Parse(limiteFilasPrecalado) : 3;
 
             var result = servicio.CaladorLleno(calleCaladoId, limiteFilasPrecaladoLlamadas);
- 
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -423,7 +433,6 @@ namespace Molinos.Scato.WebMobile.Controllers
                     Mensaje = "1"
                 };
             }
-
 
             switch (calle.TipoCalle)
             {
