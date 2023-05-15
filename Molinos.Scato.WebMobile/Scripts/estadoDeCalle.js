@@ -336,8 +336,8 @@ function EstadoDeCallesViewModel() {
                 if (filasCalador != undefined && filasCalador != null && filasCalador.length > 0) {
                     $.each(filasCalador, function (key, value) {
                         value.FilasPrecalado = allData.calles.filter(x => (x.TipoCalle == 1 || x.TipoCalle == 7) && x.MaterialId == value.MaterialId && x.Id != value.Id);
-                        value.FilasPrecaladoLlamadas = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada).length;
-                        value.FilasCircularLlamadas = allData.calles.filter(x => x.TipoCalle == 7 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada).length;
+                        value.FilasPrecaladoLlamadas = allData.calles.filter(x => x.TipoCalle == 1 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada && x.CalleCaladoId == value.Id).length;
+                        value.FilasCircularLlamadas = allData.calles.filter(x => x.TipoCalle == 7 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada & x.CalleCaladoId == value.Id).length;
                     });
                 }
 
@@ -349,12 +349,13 @@ function EstadoDeCallesViewModel() {
                     var filaCalador = null;
                     if (filasCalador != null && filasCalador.length > 0) {
                         $.each(filasCalador, function (key, value) {
-                            if (value.FilasPrecalado.find(x => x.Id == calle.Id)) {
-                                filaCalador = value;
-                                if (calle.CalleCalado != null) {
+                            var callePorEvaluar = value.FilasPrecalado.find(x => x.Id == calle.Id);
+                            if (callePorEvaluar != null) {
+                               
+                                if (callePorEvaluar.CalleCaladoId != 0) {
                                     return true;
                                 }
-
+                                filaCalador = value;
                                 var limiteCalador = cantFilasPorCalador;
 
                                 if (caladoAutomatico && calle.TipoCalle == 7) {

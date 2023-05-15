@@ -10228,9 +10228,9 @@ namespace Molinos.Scato.Servicios.Impl
             var listaPreCaladoCircular = Listar<Calle, CalleDto>(x => (x.TipoCalle == TipoCalle.PreCalado || x.TipoCalle == TipoCalle.Circular));
 
             var cantidadPrecaladoCircularHelper = new CantidadPrecaladoCircularHelper();
-            cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => x.Bloqueada);
-            cantidadPrecaladoCircularHelper.CantidadCircular = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.Circular && x.Bloqueada);
-            
+            cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.PreCalado && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
+            cantidadPrecaladoCircularHelper.CantidadCircular = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.Circular && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
+
             return cantidadPrecaladoCircularHelper;
         }
 
@@ -10426,7 +10426,6 @@ namespace Molinos.Scato.Servicios.Impl
             }
 
             return caladorLleno;
-
         }
 
         public int CaladoresActivos()
@@ -10434,7 +10433,6 @@ namespace Molinos.Scato.Servicios.Impl
             var cantCaladores = Listar<Calle, CalleDto>(x => x.TipoCalle == TipoCalle.Calado && !x.Deshabilitada).Count();
 
             return cantCaladores;
-
         }
     }
 }
