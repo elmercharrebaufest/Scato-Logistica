@@ -15,6 +15,10 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
             Mapper.CreateMap<OrdenCargaFas, OrdenCargaFasDto>()
                   .ForMember(x => x.ClienteDesc, c => c.MapFrom(o => o.Cliente.Descripcion))
                   .ForMember(x => x.ClienteId, c => c.MapFrom(o => o.Cliente.Id))
+
+                  .ForMember(x => x.DestinatarioDesc, c => c.MapFrom(o => o.Destinatario.Descripcion))
+                  .ForMember(x => x.DestinatarioId, c => c.MapFrom(o => o.Destinatario.Id))
+
                   .ForMember(x => x.TransportistaId, c => c.MapFrom(o => o.Transportista.Id))
                   .ForMember(x => x.TransportistaDesc, c => c.MapFrom(o => o.Transportista.RazonSocial))
                   .ForMember(x => x.CuitTransporte, c => c.MapFrom(o => o.Transportista.Cuit))
@@ -45,7 +49,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.ComisionistaId, c => c.MapFrom(o => o.Comisionista.Id))
                   .ForMember(x => x.Comisionista, c => c.MapFrom(o => o.Comisionista.Descripcion))
                   .ForMember(x => x.RemitenteId, c => c.MapFrom(o => o.Remitente.Id))
-                  .ForMember(x => x.Remitente, c => c.MapFrom(o => o.Remitente.Descripcion));
+                  .ForMember(x => x.Remitente, c => c.MapFrom(o => o.Remitente.Descripcion))
+                  .ForMember(x => x.IntermediarioFleteId, c => c.MapFrom(o => o.IntermediarioFlete.Id))
+                  .ForMember(x => x.IntermediarioFlete, c => c.MapFrom(o => o.IntermediarioFlete.Descripcion));
             Mapper.CreateMap<OrdenCargaFasDto, OrdenCargaFas>();
 
         }

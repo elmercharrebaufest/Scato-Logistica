@@ -38,6 +38,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             where !impresion.Eliminada
                             && (string.IsNullOrEmpty(numerodoc) || rec.NumeroDocumentoIngreso == numerodoc)
                             && (string.IsNullOrEmpty(patente) || rec.Patente == patente)
+                            && (tipodoc == null || rec.TipoDocumentoIngreso == tipodoc)
+                            && (tipoImpresion == null || impresion.TipoImpresion == tipoImpresion)
+
+
                             select new ImpresionDto
                             {
                                 Id = impresion.Id,
