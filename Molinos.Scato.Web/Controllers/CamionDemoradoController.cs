@@ -619,7 +619,7 @@ namespace Molinos.Scato.Web.Controllers
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            var corredor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].CORRE);
                             if (corredor == null)
                             {
                                 resultado.Error("", $"No se encontro un corredor con el codigo SAP {ordenCargaFas[i].CORRE}");
