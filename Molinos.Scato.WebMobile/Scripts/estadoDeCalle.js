@@ -19,7 +19,6 @@ function Calle(item, context) {
     }
     self.Posiciones = ko.observableArray(posiciones);
     self.Bloqueada = ko.computed(function () {
-
         return self.Llamada() && self.CamionesEnCalle() > 0;
     });
 
@@ -45,7 +44,7 @@ function Calle(item, context) {
         let calleCaladoId = null;
         var caladorLleno = false;
 
-        if (self.TipoCalle != 2){
+        if (self.TipoCalle != 2) {
             calleCaladoId = $(event.target).parent().parent().find('select').val();
 
             // $.ajax({
@@ -57,19 +56,16 @@ function Calle(item, context) {
             //     type: "POST",
             //     success: function (data) {
             //         caladorLleno = data;
-        
+
             //         if(caladorLleno){
             //             MostrarAlertaInfo("El calador seleccionado llegó a su límite");
             //         }
             //     },
             // });
-        }    
-
+        }
 
         LlamarCalle(self.Nombre, self.TipoCalle, self.Id, calleCaladoId, self.Llamada);
-        
     };
-
 
     self.CancelarLLamado = function () {
         $.blockUI({
@@ -120,7 +116,6 @@ function Calle(item, context) {
         });
         $.getJSON(urlLLamadoAutomaticoCalle, { calleId: self.Id, materialId: self.MaterialId(), activar: true, motivo: "" },
             function (itemActualizado) {
-
                 self.Automatica(itemActualizado.Automatica);
                 self.MaterialId(itemActualizado.MaterialId.toString());
 
@@ -176,7 +171,6 @@ function AceptarCambioModalidad(calle) {
     var automatica = !calle.Automatica();
     $.getJSON(urlLLamadoAutomaticoCalle, { calleId: calle.Id, materialId: calle.MaterialId(), activar: automatica, motivo: $("#motivo").val() },
         function (itemActualizado) {
-
             calle.Automatica(itemActualizado.Automatica);
             calle.MaterialId(itemActualizado.MaterialId.toString());
             $("#motivo").val("")
@@ -220,7 +214,6 @@ function Camion(item, calle) {
 
         let diffMins = Math.floor(diffMilli / minutesInMilli);
         diffMilli = diffMilli % minutesInMilli;
-
 
         self.TiempoEnColaEnMinutos = diffMins + (diffHrs * 60);
 
@@ -351,7 +344,6 @@ function EstadoDeCallesViewModel() {
                         $.each(filasCalador, function (key, value) {
                             var callePorEvaluar = value.FilasPrecalado.find(x => x.Id == calle.Id);
                             if (callePorEvaluar != null) {
-                               
                                 if (callePorEvaluar.CalleCaladoId != 0) {
                                     return true;
                                 }
@@ -359,7 +351,6 @@ function EstadoDeCallesViewModel() {
                                 var limiteCalador = cantFilasPorCalador;
 
                                 if (caladoAutomatico && calle.TipoCalle == 7) {
-
                                     var limite = (filaCalador.MaterialId == 4) ? 1 : limiteCalador;
 
                                     if (filaCalador.FilasCircularLlamadas < limite) {
@@ -370,7 +361,6 @@ function EstadoDeCallesViewModel() {
                                 }
 
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
-
                                     var limite = (filaCalador.MaterialId == 4) ? limiteCalador - 1 : limiteCalador;
 
                                     if (filaCalador.FilasPrecaladoLlamadas < limite) {
@@ -382,12 +372,8 @@ function EstadoDeCallesViewModel() {
                             }
                         });
                     }
-
-
-
                 });
                 self.Materiales(allData.materiales);
-
             },
             error: function (data) {
                 setTimeout(recargar, 2000);
@@ -465,7 +451,6 @@ function ConfirmarEnviarAFilaRechazado() {
         url: urlConfirmarRechazado,
         data: {
             instanciaWorflow: $('#InstanciaWorflow').val()
-
         },
         type: "POST",
         success: function (result) {
