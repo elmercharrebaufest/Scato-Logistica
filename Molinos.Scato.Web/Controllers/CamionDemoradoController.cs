@@ -561,10 +561,10 @@ namespace Molinos.Scato.Web.Controllers
 
                         if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
                         {
-                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNNR);
+                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                             if (cliente == null)
                             {
-                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNNR));
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNAG));
                                 break;
                             }
                             itemSap.ClienteId = cliente.Id;
