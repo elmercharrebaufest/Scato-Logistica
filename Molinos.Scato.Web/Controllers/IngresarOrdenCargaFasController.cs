@@ -399,7 +399,7 @@ namespace Molinos.Scato.Web.Controllers
                             && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
                             && ordenCargaFas[i].CORRE != "NO POSEE")
                         {
-                            var corredor = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].CORRE);
+                            var corredor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].CORRE);
                             if (corredor == null)
                             {
                                 return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.Corredor, ordenCargaFas[i].CORRE) }, JsonRequestBehavior.AllowGet);
