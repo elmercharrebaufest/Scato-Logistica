@@ -46,22 +46,6 @@ function Calle(item, context) {
 
         if (self.TipoCalle != 2) {
             calleCaladoId = $(event.target).parent().parent().find('select').val();
-
-            // $.ajax({
-            //     url: urlCambioCalleCalado,
-            //     data: {
-            //         calleCaladoId: calleCaladoId,
-            //     },
-            //     async: false,
-            //     type: "POST",
-            //     success: function (data) {
-            //         caladorLleno = data;
-
-            //         if(caladorLleno){
-            //             MostrarAlertaInfo("El calador seleccionado llegó a su límite");
-            //         }
-            //     },
-            // });
         }
 
         LlamarCalle(self.Nombre, self.TipoCalle, self.Id, calleCaladoId, self.Llamada);
@@ -204,10 +188,6 @@ function Camion(item, calle) {
         let secondsInMilli = 1000;
         let minutesInMilli = secondsInMilli * 60;
         let hoursInMilli = minutesInMilli * 60;
-        //let daysInMilli = hoursInMilli * 24;
-
-        //let diffDays = Math.floor(different / daysInMilli);
-        //diffMilli = diffMilli % daysInMilli;
 
         let diffHrs = Math.floor(diffMilli / hoursInMilli);
         diffMilli = diffMilli % hoursInMilli;
@@ -333,7 +313,8 @@ function EstadoDeCallesViewModel() {
                         value.FilasCircularLlamadas = allData.calles.filter(x => x.TipoCalle == 7 && x.MaterialId == value.MaterialId && x.Id != value.Id && x.FechaLLamada != null && x.Bloqueada & x.CalleCaladoId == value.Id).length;
                     });
                 }
-
+                var circularLlamado = false;
+                var normalLlamado = false;
                 ko.utils.arrayForEach(self.Calles(), function (calle) {
                     calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
                     calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
@@ -344,7 +325,7 @@ function EstadoDeCallesViewModel() {
                         $.each(filasCalador, function (key, value) {
                             var callePorEvaluar = value.FilasPrecalado.find(x => x.Id == calle.Id);
                             if (callePorEvaluar != null) {
-                                if (callePorEvaluar.CalleCaladoId != 0) {
+                                if (callePorEvaluar.CalleCaladoId != 0 || (circularLlamado == true && normalLlamado == true)) {
                                     return true;
                                 }
                                 filaCalador = value;
@@ -353,7 +334,8 @@ function EstadoDeCallesViewModel() {
                                 if (caladoAutomatico && calle.TipoCalle == 7) {
                                     var limite = (filaCalador.MaterialId == 4) ? 1 : limiteCalador;
 
-                                    if (filaCalador.FilasCircularLlamadas < limite) {
+                                    if (filaCalador.FilasCircularLlamadas < limite && !circularLlamado) {
+                                        circularLlamado = true;
                                         calle.CalleCalado = filaCalador;
                                         filaCalador.FilasCircularLlamadas++;
                                         calle.LlamarCircular();
@@ -363,7 +345,8 @@ function EstadoDeCallesViewModel() {
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
                                     var limite = (filaCalador.MaterialId == 4) ? limiteCalador - 1 : limiteCalador;
 
-                                    if (filaCalador.FilasPrecaladoLlamadas < limite) {
+                                    if (filaCalador.FilasPrecaladoLlamadas < limite && !normalLlamado) {
+                                        normalLlamado = true;
                                         calle.CalleCalado = filaCalador;
                                         filaCalador.FilasPrecaladoLlamadas++;
                                         calle.LlamarPrecalado();
