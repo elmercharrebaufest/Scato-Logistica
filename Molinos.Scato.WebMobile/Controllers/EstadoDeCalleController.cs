@@ -392,24 +392,27 @@ namespace Molinos.Scato.WebMobile.Controllers
                 case TipoCalle.PreCalado:
                 case TipoCalle.Circular:
                     {
-                        var codigo = servicio.ObtenerCodigoMensaje(calle.CalleCaladoId);
-                        var resultado = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
+                        if (calle.CalleCaladoId != 0)
                         {
-                            Codigo = codigo,
-                            CalleId = calle.Id,
-                        }) as ResultadoMensajeCartelLedReordenado;
-
-                        var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
-                        foreach (var mensajeCartelLed in resultado.ListaDeMensajes)
-                        {
-                            servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                            var codigo = servicio.ObtenerCodigoMensaje(calle.CalleCaladoId);
+                            var resultado = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
                             {
-                                Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
-                                Codigo = cartel?.Valor,
-                                NumeroTrama = mensajeCartelLed.Trama,
-                                NumeroPrograma = mensajeCartelLed.Programa,
-                                NumeroVariable = mensajeCartelLed.Variable,
-                            });
+                                Codigo = codigo,
+                                CalleId = calle.Id,
+                            }) as ResultadoMensajeCartelLedReordenado;
+
+                            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
+                            foreach (var mensajeCartelLed in resultado.ListaDeMensajes)
+                            {
+                                servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                                {
+                                    Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
+                                    Codigo = cartel?.Valor,
+                                    NumeroTrama = mensajeCartelLed.Trama,
+                                    NumeroPrograma = mensajeCartelLed.Programa,
+                                    NumeroVariable = mensajeCartelLed.Variable,
+                                });
+                            }
                         }
                         break;
                     }
