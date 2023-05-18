@@ -10219,4 +10219,7 @@
   <data name="OrdenCargaFAS_ProveedorInexistenteCodigoSAP" xml:space="preserve">
     <value>El {0} con código SAP {1} no está registrado en SCATO.</value>
   </data>
+  <data name="Soja_IMPO" xml:space="preserve">
+    <value>IMPO</value>
+  </data>
 </root>

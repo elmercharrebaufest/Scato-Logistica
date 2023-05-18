@@ -9,6 +9,8 @@
             public const string NumeroRemitoGenerico = "1111-11111111";
             public const string ColorFondoSojaEPA = "#FC4D75";
             public const string ColorTextoSojaEPA = "#FFFFFF";
+            public const string ColorFondoSojaIMPO = "##00D9D9";
+            public const string ColorTextoSojaIMPO = "#FFFFFF";
         }
 
         public struct IntercomunicadorDireccion

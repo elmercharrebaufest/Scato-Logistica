@@ -18,6 +18,7 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
+using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -188,6 +189,14 @@ namespace Molinos.Scato.Web.Controllers
 
             var instancias = workflows.ListarWorkFlows(paginacion, filtro);
 
+            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+
+            instancias.InstanciasWorkflowDto.ForEach(i => 
+            {
+                i.SojaIMPO = i.Codigo.Equals(workflowImpoGranos);
+            });
+
+
             ViewBag.Items = instancias.InstanciasWorkflowDto;
         }
 
@@ -275,5 +284,7 @@ namespace Molinos.Scato.Web.Controllers
             cookie.ActualizarValor("TieneEntregador", filtro.TieneEntregador.ToString());
             return filtro;
         }
+
+        
     }
 }
