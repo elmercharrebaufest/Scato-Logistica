@@ -102,6 +102,7 @@
     <Compile Include="Comandos\ConsultarCPEAutomotorDG.cs" />
     <Compile Include="Comandos\CrearAltaCTGDG.cs" />
     <Compile Include="Comandos\DarDeBajaCTGDG.cs" />
+    <Compile Include="Comandos\EliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\EliminarExcepcionAlControlProveedor.cs" />

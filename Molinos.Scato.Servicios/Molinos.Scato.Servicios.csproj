@@ -551,6 +551,7 @@
     <Compile Include="Procesamiento\ProcesadorConsultarCPEAutomotorDG.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAltaCTGDG.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearClienteProvisorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControlProveedor.cs" />
