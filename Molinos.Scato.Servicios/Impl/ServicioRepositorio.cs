@@ -2489,7 +2489,7 @@ namespace Molinos.Scato.Servicios.Impl
                 expresionFiltro =
                 (x =>
                  x.Fecha <= filtro.FechaHasta && x.Fecha >= filtro.FechaDesde &&
-                 (x.Camara.Id.Equals(filtro.CamaraId) || filtro.CamaraId == 0) && x.Muestras.FirstOrDefault().Centro.Id == filtro.CentroId);
+                 (x.Camara.Id.Equals(filtro.CamaraId) || filtro.CamaraId == 0) && x.Muestras.Any(q=>q.Centro.Id == filtro.CentroId));
             }
 
             return Listar<Lote, LoteListaDto>(expresionFiltro, paginacion);
