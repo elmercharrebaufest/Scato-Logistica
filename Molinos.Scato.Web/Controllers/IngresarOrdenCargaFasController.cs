@@ -66,7 +66,6 @@ namespace Molinos.Scato.Web.Controllers
             if (!ModelState.IsValid)
             {
                 SetearVista(workflowObj);
-                ViewBag.ErrorAfip = Textos.OrdenCarga_ErrorValidacion;
                 ViewBag.AceptaPendiente = true;
                 return View(orden);
             }
