@@ -314,7 +314,7 @@ function EstadoDeCallesViewModel() {
                     });
                 }
                 var circularLlamado = false;
-                var normalLlamado = false;
+                var precaladoLlamado = false;
                 ko.utils.arrayForEach(self.Calles(), function (calle) {
                     calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
                     calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
@@ -325,7 +325,7 @@ function EstadoDeCallesViewModel() {
                         $.each(filasCalador, function (key, value) {
                             var callePorEvaluar = value.FilasPrecalado.find(x => x.Id == calle.Id);
                             if (callePorEvaluar != null) {
-                                if (callePorEvaluar.CalleCaladoId != 0 || (circularLlamado == true && normalLlamado == true)) {
+                                if (callePorEvaluar.CalleCaladoId != 0 || (circularLlamado == true && precaladoLlamado == true) || (calle.Deshabilitada() === true)) {
                                     return true;
                                 }
                                 filaCalador = value;
@@ -345,8 +345,8 @@ function EstadoDeCallesViewModel() {
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
                                     var limite = (filaCalador.MaterialId == 4) ? limiteCalador - 1 : limiteCalador;
 
-                                    if (filaCalador.FilasPrecaladoLlamadas < limite && !normalLlamado) {
-                                        normalLlamado = true;
+                                    if (filaCalador.FilasPrecaladoLlamadas < limite && !precaladoLlamado) {
+                                        precaladoLlamado = true;
                                         calle.CalleCalado = filaCalador;
                                         filaCalador.FilasPrecaladoLlamadas++;
                                         calle.LlamarPrecalado();
