@@ -10434,5 +10434,12 @@ namespace Molinos.Scato.Servicios.Impl
 
             return cantCaladores;
         }
+
+        public int ObtenerCalleInicial(Guid instanciaWorkflow)
+        {
+            var calleRecorrido = repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == instanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
+            return calleRecorrido.Calle.Id;
+
+        }
     }
 }

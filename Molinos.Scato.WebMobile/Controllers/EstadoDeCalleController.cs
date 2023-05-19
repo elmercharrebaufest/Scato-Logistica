@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
@@ -261,12 +262,21 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public JsonResult ConfirmarReasignacionCalle(Guid instanciaWorflow, int calleId)
         {
+            var calleInicioId = servicio.ObtenerCalleInicial(instanciaWorflow);
+
             var result = servicioComandos.Ejecutar(
                new ReasignarCamionPostcalado
                {
                    InstanciaWorkflow = instanciaWorflow,
                    CalleId = calleId
                });
+
+            var calleInicialVacia = servicio.ListarCallePorRecorridoPorCalleId(calleInicioId).Count();
+            if (calleInicialVacia == 0)
+            {
+                LimpiarCartelReasignacionUltimoCamion(calleInicioId);
+            }
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -467,6 +477,16 @@ namespace Molinos.Scato.WebMobile.Controllers
                     }
             }
             return mensaje;
+        }
+
+        private void LimpiarCartelReasignacionUltimoCamion(int calleId)
+        {
+            var calle = servicio.ObtenerCalle(calleId);
+            calle.Bloqueada = false;
+            calle.FechaLLamada = null;
+            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = false });
+          
+            CancelarLlamadoPorTipo(calle);
         }
     }
 }

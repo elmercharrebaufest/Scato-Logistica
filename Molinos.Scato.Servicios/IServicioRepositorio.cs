@@ -2833,5 +2833,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int CaladoresActivos();
+
+        [OperationContract]
+        int ObtenerCalleInicial(Guid instanciaWorkflow);
     }
 }
