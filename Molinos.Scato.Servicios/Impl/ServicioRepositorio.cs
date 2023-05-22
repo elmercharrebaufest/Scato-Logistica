@@ -10228,8 +10228,9 @@ namespace Molinos.Scato.Servicios.Impl
             var listaPreCaladoCircular = Listar<Calle, CalleDto>(x => (x.TipoCalle == TipoCalle.PreCalado || x.TipoCalle == TipoCalle.Circular));
 
             var cantidadPrecaladoCircularHelper = new CantidadPrecaladoCircularHelper();
-            cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.PreCalado && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
+            cantidadPrecaladoCircularHelper.CantidadPrecalado = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.PreCalado && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
             cantidadPrecaladoCircularHelper.CantidadCircular = listaPreCaladoCircular.Count(x => x.TipoCalle == TipoCalle.Circular && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
+            cantidadPrecaladoCircularHelper.CantidadTotal = listaPreCaladoCircular.Count(x => (x.TipoCalle == TipoCalle.PreCalado || x.TipoCalle == TipoCalle.Circular) && x.Bloqueada && x.CalleCaladoId == calleCaladoId);
 
             return cantidadPrecaladoCircularHelper;
         }
