@@ -10222,4 +10222,7 @@
   <data name="Soja_IMPO" xml:space="preserve">
     <value>IMPO</value>
   </data>
+  <data name="Error_NoSojaIMPO" xml:space="preserve">
+    <value>Seleccione Recorridos con soja IMPO</value>
+  </data>
 </root>
