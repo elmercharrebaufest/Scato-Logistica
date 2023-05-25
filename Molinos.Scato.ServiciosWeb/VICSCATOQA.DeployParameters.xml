@@ -1,43 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
-  <setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
-  <setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSQA.molinosagro.ad,1450;Initial Catalog=MOAScato;Integrated Security=True" />
+	<setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
+	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCATOAGLSQA.molinosagro.ad,1450;Initial Catalog=MOAScato;Integrated Security=True" />
 
-  <setParameter name="LoginCms Service Endpoint Address" value="https://wsaahomo.afip.gov.ar/ws/services/LoginCms" />
-  <setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
-  <!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoqaor.molinos.com.ar:8081/ServicioOrquestador" />-->
-  <setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wsctg/services/CTGService_v4.0" />
-  <!--<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://GVICECCDES.ar.molinos.local:8010/sap/bc/srt/rfc/sap/zsdws_scato/220/zsdws_scato/zsdws_scato" />-->
-  <setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8001/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
-  <setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
-  <setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
-  <setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
-  <setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
+	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaahomo.afip.gov.ar/ws/services/LoginCms" />
+	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
+	<!--<setParameter name="Orquestador Service Endpoint Address" value="net.tcp://scatoqaor.molinos.com.ar:8081/ServicioOrquestador" />-->
+	<setParameter name="CTGServiceHttpSoap11Endpoint Service Endpoint Address" value="https://fwshomo.afip.gov.ar/wsctg/services/CTGService_v4.0" />
+	<!--<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://GVICECCDES.ar.molinos.local:8010/sap/bc/srt/rfc/sap/zsdws_scato/220/zsdws_scato/zsdws_scato" />-->
+	<setParameter name="ZSDWS_SCATO Service Endpoint Address" value="http://gviceccqa.molinosagro.ad:8001/sap/bc/srt/rfc/sap/zsdws_scato/400/zsdws_scato/zsdws_scato" />
+	<setParameter name="WaybillManagementPODImplPort Service Endpoint Address" value="https://industriatest.com.ar/industrysystem-ws-ar/services/GestionarCartasDePortePE/v2" />
+	<setParameter name="calpesSoap Service Endpoint Address" value="http://imgup.entreganet.com/calpes.asmx" />
+	<setParameter name="CpeEndPoint Service Endpoint Address" value="https://cpea-ws-qaext.afip.gob.ar/wscpe/services/soap" />
+	<setParameter name="UnreportAu Config" value="0x49492A00E6BA0000F96B95" />
 
-  <setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
-  <setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
-  <setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
+	<setParameter name="SapServiceUsername Config" value="GWEBSRV_SCA" />
+	<setParameter name="SapServicePassword Config" value="h88WYKNtezwGAqJMt205vw==" />
+	<setParameter name="SapServiceDomain Config" value="MOLINOSSA" />
 
-  <setParameter name="CertificadoWsCtg Config" value="Certificados\alias.p12" />
+	<setParameter name="CertificadoWsCtg Config" value="Certificados\alias.p12" />
 
-  <!--Nunca hacer esto por localhost. Se pierde el balanceo de las notificaciones, esto dificulta el deploy en caliente ya que la capa nunca sale realmente del farm -->
-  <setParameter name="UrlNotificaciones Config" value="http://localhost/Scato.serviciosWeb/ServicioSuscriptor.svc" />
-  <setParameter name="UrlNotificacionesWeb Config" value="http://localhost/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
+	<!--Nunca hacer esto por localhost. Se pierde el balanceo de las notificaciones, esto dificulta el deploy en caliente ya que la capa nunca sale realmente del farm -->
+	<setParameter name="UrlNotificaciones Config" value="http://localhost/Scato.serviciosWeb/ServicioSuscriptor.svc" />
+	<setParameter name="UrlNotificacionesWeb Config" value="http://localhost/Scato.web/ServicioHub/ServicioSuscriptor.svc" />
 
-  <setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
-  <setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
+	<setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
+	<setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
 
-  <setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
-  <setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
+	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
+	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
 
-  <setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
-  <setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
-  <setParameter name="MailSettings Smtp Port" value="25" />
-  <setParameter name="MailSettings Smtp EnableSsl" value="false" />
-  <setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
-  <setParameter name="urlBaseCircularApp Config" value="https://testservices.appcircular.com/plantIntegration/" />
-  <setParameter name="apiTokenCircularApp Config" value="8kWn2EBLeKrkL6qC7tmZKFcKNBnHKEnH74fz" />
-  <setParameter name="SimularTurnoActivoCircular Config" value="true" />
-  <setParameter name="PdfCpeDpiX Config" value="300" />
-  <setParameter name="PdfCpeDpiY Config" value="300" />
+	<setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
+	<setParameter name="MailSettings Smtp Port" value="25" />
+	<setParameter name="MailSettings Smtp EnableSsl" value="false" />
+	<setParameter name="ServicioCNRTTipoVehiculoRest Config" value="https://api.cnrt.gob.ar/dut/v1/public/equipos?dominios=" />
+	<setParameter name="urlBaseCircularApp Config" value="https://testservices.appcircular.com/plantIntegration/" />
+	<setParameter name="apiTokenCircularApp Config" value="8kWn2EBLeKrkL6qC7tmZKFcKNBnHKEnH74fz" />
+	<setParameter name="SimularTurnoActivoCircular Config" value="true" />
+	<setParameter name="PdfCpeDpiX Config" value="300" />
+	<setParameter name="PdfCpeDpiY Config" value="300" />
+	<setParameter name="UrlBaseWebAPI Config" value="http://gsloscatoapq01.molinosagro.ad/Scato.WebApiCore/" />
 </parameters>

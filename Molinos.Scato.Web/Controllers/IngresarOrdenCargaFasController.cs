@@ -148,6 +148,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     dominios.Add(orden.PatenteAcoplado);
                 }
+                ConfirmarCTGVencidos(datosUsuario.CentroId);
                 var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                 {
                     TipoVehiculo = orden.TipoVehiculo,
@@ -165,9 +166,7 @@ namespace Molinos.Scato.Web.Controllers
                     RemitenteId = orden.RemitenteId,
                     DestinoId = orden.ClienteId,
                     ComisionistaId = orden.ComisionistaId,
-
                     IntermediarioFleteId = orden.IntermediarioFleteId,
-
                     DestinatarioId = orden.DestinatarioId,
                     AplicaDestinatario = true
                 }) as ResultadoCartaPorteElectronicaDummy;
@@ -355,7 +354,7 @@ namespace Molinos.Scato.Web.Controllers
                             var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
                             }
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
@@ -594,6 +593,15 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
+        }
+
+        private void ConfirmarCTGVencidos(int centroId)
+        {
+            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            {
+                CentroId = centroId,
+                TipoPerfil = TipoPerfil.Solicitante,
+            });
         }
     }
 }
