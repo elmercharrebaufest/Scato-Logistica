@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Seguridad;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
+using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -72,6 +72,16 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
+            camiones.ForEach(camion =>
+            {
+
+                if (camion.EsSojaIMPO)
+                {
+                    camion.ColorFondo = Constantes.ValoresPorDefecto.ColorFondoSojaIMPO;
+                    camion.ColorTexto = Constantes.ValoresPorDefecto.ColorTextoSojaIMPO;
+                }
+            });
+
 
             var tiposCalleValidas = new List<TipoCalle>() {
                 TipoCalle.PreCalado,
@@ -204,7 +214,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 // Obtiene calle rechazado o calle con camiones con mismas características
                 var callesConCamionesConMismaCalidad = model.Rechazado
                      ? servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada).ToList()
-                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion, model.EsSojaEPA).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
+                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion, model.EsSojaEPA, model.EsSojaIMPO).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
                 if (callesVacias != null && callesConCamionesConMismaCalidad != null && !model.Rechazado)
                 {
                     calles = callesConCamionesConMismaCalidad.Concat(callesVacias).ToList();
@@ -218,7 +228,10 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
             ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
-
+            if (model.EsSojaIMPO)
+            {
+                model.InstanciaWorflow = new Guid();
+            }
             return PartialView("_MoverCamionRechazado", model);
         }
 
@@ -260,7 +273,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ConfirmarReasignacionCalle(Guid instanciaWorflow, int calleId)
+        public JsonResult ConfirmarReasignacionCalle(Guid instanciaWorflow, int calleId , int cargaDeCupoId)
         {
             var calleInicioId = servicio.ObtenerCalleInicial(instanciaWorflow);
 
@@ -268,7 +281,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                new ReasignarCamionPostcalado
                {
                    InstanciaWorkflow = instanciaWorflow,
-                   CalleId = calleId
+                   CalleId = calleId,
+                   CargaDeCupoId = cargaDeCupoId
                });
 
             var calleInicialVacia = servicio.ListarCallePorRecorridoPorCalleId(calleInicioId).Count();

@@ -19,6 +19,7 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Objects;
 using System.Data.Objects.SqlClient;
 using System.Diagnostics;
@@ -2129,16 +2130,17 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<CaladoPorCaracteristica, CaladoPorCaracteristicaDto>(expresionFiltro);
         }
 
-        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA)
+        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA , bool esSojaIMPO)
         {
-            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => x.Recorrido.Material.Id == materialId
+            Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => (esSojaIMPO ? x.CargaDeCupo.Material.Id == materialId : x.Recorrido.Material.Id == materialId)
                 && x.Calle.Id != calleId
                 && x.Calle.TipoCalle == TipoCalle.PostCalado
                 && !x.Calle.Deshabilitada
                 && x.Calle.TipoCalidad != TipoCalidad.Otros
-                && x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion
+                && (esSojaIMPO || x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion)
                 && x.FechaEgreso == null
-                && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
+                && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : esSojaIMPO  ? x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
+                
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
         }
@@ -8981,6 +8983,8 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
                  DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty,
                  EsSojaEPA = x.Recorrido != null && x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
+                 EsSojaIMPO = x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR 
+
              });
 
             if (camion == null)
@@ -9509,7 +9513,7 @@ namespace Molinos.Scato.Servicios.Impl
         }
 
         public IList<CallePorRecorridoDto> ObtenerEstadoDeCalle()
-        {
+        { 
             return repositorio.ListarConsulta(new ListarEstadoDeCalle());
         }
 

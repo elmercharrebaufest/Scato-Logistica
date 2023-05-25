@@ -595,7 +595,7 @@ namespace Molinos.Scato.Servicios
         IList<CaladoPorCaracteristicaDto> ListarCaladoPorCaracteristicas(int caladoId);
 
         [OperationContract]
-        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA);
+        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA , bool esSojaIMPO);
 
         [OperationContract]
         ListaPaginada<CaladoPorCaracteristicaDto> ListarPaginadoCaladoPorCaracteristica(int caladoId, Paginacion paginacion);
