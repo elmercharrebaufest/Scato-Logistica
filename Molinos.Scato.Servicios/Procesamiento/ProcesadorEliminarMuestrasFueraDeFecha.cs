@@ -22,13 +22,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public sealed override Resultado Ejecutar(EliminarMuestrasFueraDeFecha comando)
         {
             var resultado = new Resultado();
-            DateTime fechaActual = DateTime.Now;
+            DateTime fechaActual = DateTime.Now.AddDays(-1);
             int year = fechaActual.Year;
             int mes = fechaActual.Month;
             int dia = fechaActual.Day;
             int hora = comando.HrDiaAnterior;
 
-            var fechaAyer = new DateTime(year , mes , dia - 1 , hora , 0 , 0);
+            var fechaAyer = new DateTime(year , mes , dia , hora , 0 , 0);
             var muestras  = Repositorio.Listar<MuestraEnvioACamara>(c => c.EsPreLote == comando.EsPreLote &&  c.FechaDescarga < fechaAyer && c.Lote == null);
             
             
