@@ -273,7 +273,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ConfirmarReasignacionCalle(Guid instanciaWorflow, int calleId , int cargaDeCupoId)
+        public JsonResult ConfirmarReasignacionCalle(Guid instanciaWorflow, int calleId , int? cargaDeCupoId)
         {
             var calleInicioId = servicio.ObtenerCalleInicial(instanciaWorflow);
 
