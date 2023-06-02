@@ -228,6 +228,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.CentroId = datosUsuario.CentroId;
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
             var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
+            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
 
             foreach (var instancia in datosWorkflow.Workflows)
             {
@@ -235,6 +236,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     instancia.EsSemillaSoja = true;
                 }
+                instancia.SojaIMPO = instancia.Codigo.Equals(workflowImpoGranos);
             }
 
             ViewBag.Caracteristicas = servicio.ListarCaracteristicaConfiguracionDeTabla(datosUsuario.CentroId, filtro.MaterialId ?? 0, datosUsuario.NombreUsuario);

@@ -235,6 +235,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     dominios.Add(orden.PatenteAcoplado);
                 }
+                ConfirmarCTGVencidos(datosUsuario.CentroId);
                 var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                 {
                     TipoVehiculo = orden.TipoVehiculo,
@@ -346,6 +347,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         dominios.Add(model.PatenteAcoplado);
                     }
+                    ConfirmarCTGVencidos(datosUsuario.CentroId);
                     var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                     {
                         TipoVehiculo = model.TipoVehiculo,
@@ -418,6 +420,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         dominios.Add(model.PatenteAcoplado);
                     }
+                    ConfirmarCTGVencidos(datosUsuario.CentroId);
                     var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                     {
                         TipoVehiculo = model.TipoVehiculo,
@@ -750,6 +753,15 @@ namespace Molinos.Scato.Web.Controllers
                 ConsultaOrdenDeCargaResponse = consultaOrden
             };
             return orden;
+        }
+
+        private void ConfirmarCTGVencidos(int centroId)
+        {
+            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            {
+                CentroId = centroId,
+                TipoPerfil = TipoPerfil.Solicitante,
+            });
         }
     }
 }

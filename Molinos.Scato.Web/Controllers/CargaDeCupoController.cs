@@ -152,7 +152,7 @@ namespace Molinos.Scato.Web.Controllers
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
 
                         if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap))
-                            AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                            AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente , model.TitularCartaPorteCodigoSap);
                         
                         log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
                         AperturaDeBarrera(codigoBarrera);
@@ -244,7 +244,7 @@ namespace Molinos.Scato.Web.Controllers
                     {
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, true);
+                        AsignarCalle(resultado.Id, turnoActivo, model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente, model.TitularCartaPorteCodigoSap , true);
                     }
                     if (!model.NoAsignaCalleEnGaritaEntrada && model.MaterialId == 0 && ModelState.IsValid)
                     {
@@ -275,13 +275,14 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form", model);
         }
 
-        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, bool circuitoNoGranos = false)
+        private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
         {
             try
             {
+                var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
                 var resultado = servicioComandos.Ejecutar(new CrearCallePorRecorrido
                 {
-                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos : TipoCalle.PreCalado,
+                    TipoCalle = circuitoNoGranos ? TipoCalle.NoGranos : titular.Equals(codigoSapPuertoRosario) ? TipoCalle.PostCalado : TipoCalle.PreCalado,
                     CargaDeCupoId = cargaDeCupoId,
                     TurnoActivo = turnoActivo,
                     CentroId = centroId

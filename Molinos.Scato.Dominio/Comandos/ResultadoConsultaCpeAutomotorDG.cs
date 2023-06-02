@@ -49,5 +49,8 @@ namespace Molinos.Scato.Dominio.Comandos
 
         [DataMember]
         public int PlantaDG { get; set; }
+
+        [DataMember]
+        public int TipoCPE { get; set; }
     }
 }

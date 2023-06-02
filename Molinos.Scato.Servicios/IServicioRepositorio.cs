@@ -595,7 +595,7 @@ namespace Molinos.Scato.Servicios
         IList<CaladoPorCaracteristicaDto> ListarCaladoPorCaracteristicas(int caladoId);
 
         [OperationContract]
-        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA);
+        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA , bool esSojaIMPO);
 
         [OperationContract]
         ListaPaginada<CaladoPorCaracteristicaDto> ListarPaginadoCaladoPorCaracteristica(int caladoId, Paginacion paginacion);
@@ -2769,7 +2769,7 @@ namespace Molinos.Scato.Servicios
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
 
         [OperationContract]
-        CantidadPrecaladoCircularHelper ContarCallesBloqueadas();
+        CantidadPrecaladoCircularHelper ContarCallesBloqueadas(int? caladorId);
 
         [OperationContract]
         ListaPaginada<ExcepcionAlControlProveedorDto> ListarExcepcionesAlControlProveedor(string filtro, Paginacion paginacion);
@@ -2827,5 +2827,14 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<ProveedorDto> ListarProveedoresPorCuit(string cuit, TiposProveedor tipo);
+
+        [OperationContract]
+        bool CaladorLleno(int calleCaladoId, int limiteFilasPrecaladoLlamadas);
+
+        [OperationContract]
+        int CaladoresActivos();
+
+        [OperationContract]
+        int ObtenerCalleInicial(Guid instanciaWorkflow);
     }
 }
