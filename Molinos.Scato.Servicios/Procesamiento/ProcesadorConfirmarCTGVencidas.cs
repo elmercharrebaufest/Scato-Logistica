@@ -34,14 +34,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ConfirmarCTGVencidas comando)
         {
             var resultado = new Resultado();
+            Log.Debug("ProcesadorConfirmarCTGVencidas Inicio");
             try
             {
                 var client = GenerarClienteWebAPI();
+                Log.Debug("ProcesadorConfirmarCTGVencidas - Se generó cliente web API");
                 var ctgsVencidos = ObtenerCTGVencidos(comando, client);
+                Log.Debug($"ProcesadorConfirmarCTGVencidas - Se obtuvo CTGs vencidos {ctgsVencidos.ToJson()}");
                 foreach (var ctg in ctgsVencidos)
                 {
                     var resultadoCpe = ObtenerDatosCPEDG(comando.CentroId, ctg);
-                    if(!resultadoCpe.HayErrores)
+                    Log.Debug($"ProcesadorConfirmarCTGVencidas - Se obtuvo CTGs vencidos NroCTG:{resultadoCpe.NroCTG} Sucursal:{resultadoCpe.Sucursal} NroOrden:{resultadoCpe.NroOrden} TipoCPE:{resultadoCpe.TipoCPE} Patente:{resultadoCpe.PatenteCamion}");
+                    if (!resultadoCpe.HayErrores)
                         ConfirmarCPEDescargadoEnDestino(client, resultadoCpe);
                 }
             }
@@ -49,6 +53,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Log.Error($"Error al Confirmar CTG Vencido ${ex.Message}");
             }
+            Log.Debug("ProcesadorConfirmarCTGVencidas Fin");
             return resultado;
         }
 
