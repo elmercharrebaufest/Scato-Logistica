@@ -40,5 +40,5 @@
 	<setParameter name="SimularTurnoActivoCircular Config" value="true" />
 	<setParameter name="PdfCpeDpiX Config" value="300" />
 	<setParameter name="PdfCpeDpiY Config" value="300" />
-	<setParameter name="UrlBaseWebAPI Config" value="http://gsloscatoapq01.molinosagro.ad/Scato.WebApiCore/" />
+	<setParameter name="UrlBaseWebAPI Config" value="https://scatoqa.molinosagro.com.ar/Scato.WebApiCore/" />
 </parameters>
