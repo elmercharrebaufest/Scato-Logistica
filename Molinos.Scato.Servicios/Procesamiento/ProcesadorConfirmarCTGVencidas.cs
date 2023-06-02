@@ -82,6 +82,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (responseWebAPI.IsSuccessful)
                     resultado = JsonConvert.DeserializeObject<ResponseWebAPIDto<List<ResultadoCPEPendienteResolucion>>>(responseWebAPI.Content);
 
+                Log.Debug($"Resultado ObtenerCTGVencidos: {resultado.ToJson()}");
+
                 if (resultado.IsValid)
                     ctgs.AddRange(resultado.Data.Where(x => x.NroCTG.ToString().StartsWith("3")).Select(x => x.NroCTG));
             }
