@@ -255,6 +255,7 @@ namespace Molinos.Scato.Web.Helpers
                 data_materialId = f.MaterialId,
                 data_EsSustentable = f.EsSustentable,
                 data_SojaEPA = f.SojaEPA,
+                data_SojaIMPO = f.SojaIMPO,
                 @class = "columna-checkbox " +
             (f.Rechazado ? "estado-rechazado " : "") +
             (f.FueAsignado ? "estado-asignado " : f.TieneDescuentos ? "estado-descuento " : "") +

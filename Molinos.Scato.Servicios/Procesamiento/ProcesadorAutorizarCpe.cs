@@ -206,7 +206,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             cuitTransportista = !string.IsNullOrEmpty(comando?.Dto?.TransportistaCUIT) ? long.Parse(comando?.Dto?.TransportistaCUIT?.Replace("-", string.Empty)) : default(long),
                             dominio = new List<string> { comando?.Vehiculo?.Patente, comando?.Vehiculo?.PatenteAcoplado }.Where(d => !string.IsNullOrEmpty(d)).ToArray(),
-                            fechaHoraPartida = DateTime.Now.AddMinutes(10),
+                            fechaHoraPartida = DateTime.Now.AddMinutes(4),
                             kmRecorrer = comando?.Dto?.KmRecorrer ?? 0,
                             codigoTurno = comando.Dto?.Cupo == "MOL1111/11111111" ? null : comando.Dto?.Cupo ?? null,
                             cuitChofer = !string.IsNullOrEmpty(comando?.Dto?.Chofer?.Cuil) ? long.Parse(comando?.Dto?.Chofer?.Cuil?.Replace("-", string.Empty)) : default(long),

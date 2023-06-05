@@ -24,10 +24,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ReasignarCamionPostcalado comando)
         {
             var resultado = new Resultado();
-            var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow);
-            var calleRecorrido = Repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
+            CallePorRecorrido calleRecorrido = null;
+            
             try
             {
+                if (comando.CargaDeCupoId.HasValue)
+                {
+                    calleRecorrido = Repositorio.Obtener<CallePorRecorrido>(x => x.CargaDeCupo.Id == comando.CargaDeCupoId && x.FechaEgreso == null);
+                }
+                else
+                {
+                    calleRecorrido = Repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
+                }
                 Validar(comando, resultado, calleRecorrido);
                 if (!resultado.HayErrores)
                 {
@@ -66,7 +74,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("CalleId", Textos.Calle_Inexistente);
             }
-            if (!Repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow))
+            if (!comando.CargaDeCupoId.HasValue && !Repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow))
             {
                 resultado.Error("InstanciaWorkflow", Textos.Recorrido_Inexistente);
             }

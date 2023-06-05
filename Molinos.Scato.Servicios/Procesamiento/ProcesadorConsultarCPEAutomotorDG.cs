@@ -15,7 +15,6 @@ using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Text;
-using System.Web;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -64,13 +63,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                if(responseCp.respuesta.errores.Any())
+                if (responseCp.respuesta.errores.Any())
                 {
                     var error = responseCp.respuesta.errores.FirstOrDefault();
                     resultado.Errores.Add("2", $"{error.codigo} - {error.descripcion}");
                     return resultado;
                 }
-                
+
                 resultado.NroCTG = responseCp.respuesta.cabecera.nroCTG;
                 resultado.NroOrden = responseCp.respuesta.cabecera.nroOrden;
                 resultado.Sucursal = responseCp.respuesta.cabecera.sucursal;
@@ -80,12 +79,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.CuitChofer = responseCp.respuesta.transporte.cuitChofer;
                 resultado.PesoBruto = responseCp.respuesta.datosCarga.pesoBruto;
                 resultado.PesoTara = responseCp.respuesta.datosCarga.pesoTara;
-                resultado.Pdf =  responseCp.respuesta.pdf;
+                resultado.Pdf = responseCp.respuesta.pdf;
                 resultado.CodigoGranario = responseCp.respuesta.datosCarga.codDerivadoGranario;
                 resultado.CodigoPadre = responseCp.respuesta.datosCarga.codGrano;
                 resultado.CuitOrigen = formatoCuitCuit(responseCp.respuesta.origen.cuitOrigen);
                 resultado.PlantaDG = responseCp.respuesta.origen.planta;
-
+                resultado.TipoCPE = responseCp.respuesta.cabecera.tipoCartaPorte;
 
                 var imagen = ConvertirPDFaPNG(responseCp.respuesta.pdf);
                 resultado.PdfBase = Convert.ToBase64String(imagen);
@@ -103,7 +102,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private string  formatoCuitCuit(long cuitCuil)
+        private string formatoCuitCuit(long cuitCuil)
         {
             StringBuilder cuilBuilder = new StringBuilder();
 
@@ -111,12 +110,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             for (int i = 0; i < cuil.Length; i++)
             {
-                if(i == 2 || i == 10)
+                if (i == 2 || i == 10)
                 {
                     cuilBuilder.Append("-" + cuil[i]);
                 }
                 else
-                cuilBuilder.Append(cuil[i]);
+                    cuilBuilder.Append(cuil[i]);
             }
 
             return cuilBuilder.ToString();

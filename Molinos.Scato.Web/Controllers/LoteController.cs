@@ -872,5 +872,34 @@ namespace Molinos.Scato.Web.Controllers
 
             return result;
         }
+
+        [AllowAnonymous]
+        public JsonResult LimpiezaMuestrasFueraFechaEstablecida( bool esPreLote, int hrDiaAnterior)
+        {
+            var result = new JsonResult();
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+           
+            try
+            {
+                var resultado = servicioComandos.Ejecutar(new EliminarMuestrasFueraDeFecha 
+                { 
+                   EsPreLote = esPreLote,
+                   HrDiaAnterior = hrDiaAnterior
+                }) as Resultado;
+
+                if (resultado != null && resultado.HayErrores)
+                {
+                    result.Data = resultado.Errores.First();
+                }
+                
+            }
+            catch (Exception e)
+            {
+                log.Error(e, "Error al limpiar el lote");
+                result.Data = e.Message;
+            }
+
+            return result;
+        }
     }
 }

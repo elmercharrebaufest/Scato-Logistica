@@ -24,6 +24,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 calle.CalleCalado = Repositorio.Obtener<Calle>(comando.Dto.CalleCaladoId);
             }
+            //cancelar llamado de calle
+            if (!comando.Llamada) 
+            {
+                calle.CalleCalado = null;
+            }
+
         }
 
         protected override void Validar(ModificarCalle comando, Resultado resultado)

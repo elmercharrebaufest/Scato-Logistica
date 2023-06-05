@@ -189,7 +189,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             cuitTransportista = !string.IsNullOrEmpty(recorrido.Transportista.Cuit) ? long.Parse(recorrido.Transportista.Cuit.Replace("-", string.Empty)) : 0,
                             dominio = orden.Dominios,
-                            fechaHoraPartida = DateTime.Now.AddMinutes(10),
+                            fechaHoraPartida = DateTime.Now.AddMinutes(4),
                             kmRecorrer = orden.KmRecorrer,
                             cuitChofer = !string.IsNullOrEmpty(recorrido.Chofer.Cuil) ? long.Parse(recorrido.Chofer.Cuil.Replace("-", string.Empty)) : 0,
                             cuitPagadorFlete = orden.PagadorFleteCuit,
