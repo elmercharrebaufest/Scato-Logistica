@@ -44,20 +44,26 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centroId = int.Parse(centro.Value);
             var materialesNoGranos = servicio.ObtenerMaterialNoGranoAsignableCalle();
             var centroDto = this.servicio.ObtenerCentro(centroId);
+
+            var tiposCalleValidas = new List<TipoCalle>() {
+                TipoCalle.PreCalado,
+                TipoCalle.Circular,
+                TipoCalle.PostCalado,
+                TipoCalle.RechazadosDemorados,
+                TipoCalle.ReCalado,
+                TipoCalle.Calado
+            };
+
             ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
             ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
+            ViewBag.CallesCalado = servicio.ListarCallesPorTipo(TipoCalle.Calado);
 
-            var limiteFilasPrecaladoLlamadas = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
-            ViewBag.LimiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadas != null ? int.Parse(limiteFilasPrecaladoLlamadas) : 3;
+            ViewBag.CantFilasPorCalador = EstadoCaladoresActivos();
 
             return View(servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.NoGranos
                         ? materialesNoGranos.Any(a => a.Id == x.MaterialId)
-                                && x.TipoCalle != TipoCalle.PlayaInterna
-                                && x.TipoCalle != TipoCalle.EnTransito
-                                && x.TipoCalle != TipoCalle.PlantaNoGranos
-                        : x.TipoCalle != TipoCalle.PlayaInterna
-                                && x.TipoCalle != TipoCalle.EnTransito
-                                && x.TipoCalle != TipoCalle.PlantaNoGranos).ToList());
+                                && tiposCalleValidas.Contains(x.TipoCalle)
+                        : tiposCalleValidas.Contains(x.TipoCalle)).ToList());
         }
 
         public JsonResult EstadoDeCalle()
@@ -65,41 +71,56 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle != TipoCalle.PlayaInterna
-                                                                                && x.TipoCalle != TipoCalle.PlantaNoGranos
-                                                                                && x.TipoCalle != TipoCalle.EnTransito);
-            var materiales = camiones.Where(x => x.TipoCalle != TipoCalle.NoGranos
-                                                    && x.TipoCalle != TipoCalle.EnTransito
-                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+
+            var tiposCalleValidas = new List<TipoCalle>() {
+                TipoCalle.PreCalado,
+                TipoCalle.Circular,
+                TipoCalle.PostCalado,
+                TipoCalle.RechazadosDemorados,
+                TipoCalle.ReCalado,
+                TipoCalle.Calado
+            };
+
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => tiposCalleValidas.Contains(x.TipoCalle));
+
+            var materiales = camiones.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
-                .Union(calles.Where(x => x.TipoCalle != TipoCalle.NoGranos
-                                                    && x.TipoCalle != TipoCalle.EnTransito
-                                                    && x.TipoCalle != TipoCalle.PlantaNoGranos)
+                .Union(calles.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc }))
                 .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0)
                 .OrderBy(x => x.MaterialId);
+
+            ViewBag.CantFilasPorCalador = EstadoCaladoresActivos();
 
             return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);
         }
 
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
-        public JsonResult LlamarCalle(int calleId, int calleCaladoId)
+        public JsonResult LlamarCalle(int calleId, int? calleCaladoId)
         {
+            calleCaladoId = calleCaladoId ?? 0;
+
             var response = new MensajeEstandarDto();
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
-                response = LlamadasPrecaladoLimiteFilas(calle);
+                if (calle.FechaLLamada.HasValue)
+                {
+                    response = (new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
+                response = LlamadasPrecaladoLimiteFilas(calle, calleCaladoId);
                 if (response.TipoDeMensaje != TipoDeMensajeDeRespuesta.Error)
                 {
                     calle.Bloqueada = true;
                     calle.FechaLLamada = DateTime.Now;
                     if (calleCaladoId > 0 && (calle.TipoCalle == TipoCalle.PreCalado || calle.TipoCalle == TipoCalle.Circular))
                     {
-                        calle.CalleCaladoId = calleCaladoId;
+                        calle.CalleCaladoId = calleCaladoId.Value;
                     }
                     servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = true });
-                    EnviarMensajeLlamadoACartel(calle, calleCaladoId);
+                    EnviarMensajeLlamadoACartel(calle);
                 }
             }
             catch (Exception e)
@@ -141,7 +162,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var calle = servicio.ObtenerCalle(calleId);
             calle.Bloqueada = false;
             calle.FechaLLamada = null;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = false });
             if (calle.TipoCalle != TipoCalle.Circular)
             {
                 servicioComandos.Ejecutar(new MarcarUltimaCallePorRecorrido { CalleId = calleId });
@@ -163,31 +184,36 @@ namespace Molinos.Scato.WebMobile.Controllers
                 model.PermisoReasignarCallePostCalado = servicio.TienePermiso(usuario.Value, PermisosScato.ReasignacionCallesPostCalado);
             var calle = servicio.ObtenerCalle(calleId);
             var caracteristicasAnalizadas = model.CaladoId.HasValue ? servicio.ListarCaladoPorCaracteristicas(model.CaladoId.Value) : null;
-            List<Dominio.Dto.CalleDto> calles = null;
+            List<CalleDto> calles = new List<CalleDto>();
 
+            // Sólo si el camión ya esta en una calle con alguna calidad específica o en pendiente
             if (model.TipoCalidad == TipoCalidad.Otros || model.TipoCalidad == TipoCalidad.PendientesPostCalado)
             {
+                // Obtiene calle rechazado o calle con mismas características
                 calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado
                 ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada
-                : (x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad == TipoCalidad.Otros && model.MaterialId == x.MaterialId && !x.Deshabilitada && (caracteristicasAnalizadas.Any(ca => ca.CaracteristicaId == x.CaracteristicaDeCalidadId && ca.ValorCalado <= x.RangoCaracteristicaCalidadMaximo && ca.ValorCalado >= x.RangoCaracteristicaCalidadMinimo)))
+                : (x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad == TipoCalidad.Otros && model.MaterialId == x.MaterialId && !x.Deshabilitada && caracteristicasAnalizadas.Any(ca => ca.CaracteristicaId == x.CaracteristicaDeCalidadId && ca.ValorCalado <= x.RangoCaracteristicaCalidadMaximo && ca.ValorCalado >= x.RangoCaracteristicaCalidadMinimo) && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Select(c => c.EsSojaEPA).FirstOrDefault() == model.EsSojaEPA)
                     ).ToList();
             }
-            if (calles == null || calles.Count() == 0)
+            if (!calles.Any())
             {
-                List<Dominio.Dto.CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Count() == 0).ToList();
+                // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
+                List<CalleDto> callesVacias = servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
 
+                // Obtiene calle rechazado o calle con camiones con mismas características
                 var callesConCamionesConMismaCalidad = model.Rechazado
                      ? servicio.ObtenerCallesPorCentro(centroId).Where(x => x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada).ToList()
-                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
-                if ((callesVacias != null || callesVacias.Count() > 0) && (callesConCamionesConMismaCalidad != null || callesConCamionesConMismaCalidad.Count() > 0) && !model.Rechazado)
+                     : servicio.ObtenerCallesDeCallesPorRecorridoSegunMaterial(model.MaterialId, calle.Id, model.CalidadCamion, model.EsSojaEPA).ToList().FindAll(c => servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
+                if (callesVacias != null && callesConCamionesConMismaCalidad != null && !model.Rechazado)
                 {
                     calles = callesConCamionesConMismaCalidad.Concat(callesVacias).ToList();
                 }
             }
 
-            if (calles == null || calles.Count() == 0)
+            if (!calles.Any())
             {
-                calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && servicio.ListarCallePorRecorridoPorCalleId(x.Id).Count() == 0).ToList();
+                // Obtiene calles vacias sin contar las calles con alguna calidad específica y pendiente
+                calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
             }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
             ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
@@ -198,9 +224,16 @@ namespace Molinos.Scato.WebMobile.Controllers
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
         public JsonResult LlamarCallePostCalado(int calleId)
         {
+            var response = new RespuestaEstandarDto();
             try
             {
                 var calle = servicio.ObtenerCalle(calleId);
+                if (calle.FechaLLamada.HasValue)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La fila {calle.Nombre} ya está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 calle.Bloqueada = true;
                 calle.FechaLLamada = DateTime.Now;
 
@@ -210,8 +243,9 @@ namespace Molinos.Scato.WebMobile.Controllers
             catch (Exception e)
             {
                 log.Error(e, $"No se pudo llamar la calle {calleId}");
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Ocurrió un error en el llamado.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            return Json("ok", JsonRequestBehavior.AllowGet);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ConfirmarRechazado(Guid instanciaWorflow)
@@ -236,13 +270,31 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        private CantidadPrecaladoCircularHelper EstadoDeCallesBloqueada()
+        public JsonResult CambioCalleCalado(int calleCaladoId)
         {
-            var cantBloqueadas = servicio.ContarCallesBloqueadas();
+            var limiteFilasPrecalado = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
+            var limiteFilasPrecaladoLlamadas = limiteFilasPrecalado != null ? int.Parse(limiteFilasPrecalado) : 3;
+
+            var result = servicio.CaladorLleno(calleCaladoId, limiteFilasPrecaladoLlamadas);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private int EstadoCaladoresActivos()
+        {
+            var caladoresActivos = servicio.CaladoresActivos();
+            var limiteFilasPrecaladoLlamadasMensaje = this.servicio.ObtenerConfiguracionGeneral("EstadoDeCallePreCalado", "LimiteFilasLlamadas").Valor;
+            var limiteFilasPrecaladoLlamadas = limiteFilasPrecaladoLlamadasMensaje != null ? int.Parse(limiteFilasPrecaladoLlamadasMensaje) : 3;
+            return limiteFilasPrecaladoLlamadas / caladoresActivos;
+        }
+
+        private CantidadPrecaladoCircularHelper EstadoDeCallesBloqueada(int? calleCaladoId)
+        {
+            var cantBloqueadas = servicio.ContarCallesBloqueadas(calleCaladoId);
             return cantBloqueadas;
         }
 
-        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado, int calleCaladoId)
+        private void EnviarMensajeLlamadoACartel(CalleDto callePrecalado)
         {
             try
             {
@@ -252,7 +304,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                 var historialMensajeCartel = new HistorialMensajeCartelLedDto();
 
-                var codigo = servicio.ObtenerCodigoMensaje(calleCaladoId);
+                var codigo = servicio.ObtenerCodigoMensaje(callePrecalado.CalleCaladoId);
 
                 var orden = callePrecalado.MaterialId == 4 ? servicio.ObtenerOrdenCircular(codigo) : (int?)null;
 
@@ -287,14 +339,21 @@ namespace Molinos.Scato.WebMobile.Controllers
                         CalleId = callePostCalado.Id
                     }) as ResultadoMensajeCartelLed;
 
-                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                    if (!resultadoInsertarCartelLed.HayErrores)
                     {
-                        Mensaje = resultadoInsertarCartelLed.Mensaje,
-                        Codigo = cartel?.Valor,
-                        NumeroTrama = resultadoInsertarCartelLed.NumeroTrama,
-                        NumeroPrograma = resultadoInsertarCartelLed.NumeroPrograma,
-                        NumeroVariable = resultadoInsertarCartelLed.NumeroVariable,
-                    });
+                        servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                        {
+                            Mensaje = resultadoInsertarCartelLed.Mensaje,
+                            Codigo = cartel?.Valor,
+                            NumeroTrama = resultadoInsertarCartelLed.NumeroTrama,
+                            NumeroPrograma = resultadoInsertarCartelLed.NumeroPrograma,
+                            NumeroVariable = resultadoInsertarCartelLed.NumeroVariable,
+                        });
+                    }
+                    else
+                    {
+                        log.Error(resultadoInsertarCartelLed.Errores.First().Value);
+                    }
                 }
             }
             catch (Exception e)
@@ -333,66 +392,68 @@ namespace Molinos.Scato.WebMobile.Controllers
                 case TipoCalle.PreCalado:
                 case TipoCalle.Circular:
                     {
-                        var codigo = servicio.ObtenerCodigoMensaje(calle.CalleCaladoId);
-                        var resultado = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
+                        if (calle.CalleCaladoId != 0)
                         {
-                            Codigo = codigo,
-                            CalleId = calle.Id,
-                        }) as ResultadoMensajeCartelLedReordenado;
-
-                        var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
-                        foreach (var mensajeCartelLed in resultado.ListaDeMensajes)
-                        {
-                            servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                            var codigo = servicio.ObtenerCodigoMensaje(calle.CalleCaladoId);
+                            var resultado = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
                             {
-                                Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
-                                Codigo = cartel?.Valor,
-                                NumeroTrama = mensajeCartelLed.Trama,
-                                NumeroPrograma = mensajeCartelLed.Programa,
-                                NumeroVariable = mensajeCartelLed.Variable,
-                            });
+                                Codigo = codigo,
+                                CalleId = calle.Id,
+                            }) as ResultadoMensajeCartelLedReordenado;
+
+                            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
+                            foreach (var mensajeCartelLed in resultado.ListaDeMensajes)
+                            {
+                                servicioComandos.Ejecutar(new EnviarMensajeCartelLed
+                                {
+                                    Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
+                                    Codigo = cartel?.Valor,
+                                    NumeroTrama = mensajeCartelLed.Trama,
+                                    NumeroPrograma = mensajeCartelLed.Programa,
+                                    NumeroVariable = mensajeCartelLed.Variable,
+                                });
+                            }
                         }
                         break;
                     }
             }
         }
 
-        private MensajeEstandarDto LlamadasPrecaladoLimiteFilas(CalleDto calle)
+        private MensajeEstandarDto LlamadasPrecaladoLimiteFilas(CalleDto calle, int? calleCaladoId)
         {
             var mensaje = new MensajeEstandarDto() { TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            var cantBloqueadas = EstadoDeCallesBloqueada();
+            var cantBloqueadas = EstadoDeCallesBloqueada(calleCaladoId);
             int.TryParse(servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.LimiteFilasLlamadas).Valor, out int limiteDeFilasTotales);
+            var cantFilasPorCalador = EstadoCaladoresActivos();
+            var maxFilasPrecalado = cantFilasPorCalador - 1;
+
+            if (cantBloqueadas.CantidadTotal == cantFilasPorCalador)
+            {
+                mensaje = new MensajeEstandarDto
+                {
+                    TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
+                    //limite de filas totales
+                    Mensaje = "1"
+                };
+            }
+
             switch (calle.TipoCalle)
             {
                 case TipoCalle.PreCalado:
                     {
-                        if (cantBloqueadas.CantidadTotal == limiteDeFilasTotales)
-                        {
+                        if (cantBloqueadas.CantidadPrecalado == maxFilasPrecalado)
                             mensaje = new MensajeEstandarDto
                             {
                                 TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
-                                //limite de filas totales
-                                Mensaje = "1"
+                                //limite de filas circulares para material soja
+                                Mensaje = "3"
                             };
-                        }
-
                         break;
                     }
-
                 case TipoCalle.Circular:
                     {
-                        if (cantBloqueadas.CantidadTotal == limiteDeFilasTotales)
-                        {
-                            mensaje = new MensajeEstandarDto
-                            {
-                                TipoDeMensaje = TipoDeMensajeDeRespuesta.Error,
-                                //limite de filas totales
-                                Mensaje = "1"
-                            };
-                        }
-
                         //material de soja reserva dos slots del cartel para circular
-                        if (calle.MaterialId == 4 && cantBloqueadas.CantidadCircular == limiteDeFilasTotales - 4)
+                        if (calle.MaterialId == 4 && cantBloqueadas.CantidadCircular == 1)
                         {
                             mensaje = new MensajeEstandarDto
                             {

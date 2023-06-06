@@ -150,7 +150,10 @@ namespace Molinos.Scato.Web.Controllers
                         log.Debug("Asignar Calle: Resultado Id= {0}, Patente: {1}, MaterialId: {2}", resultado.Id, model.Patente, model.MaterialId);
                         var turnoActivo = InformarArribo(model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, model.Patente, model.MaterialId);
                         var codigoBarrera = servicio.ObtenerDispositivoBarreraEntrada(model.PuestoDeTrabajoId);
-                        AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+
+                        if (PermitirAsignarCalleGrano(model.TitularCartaPorteCodigoSap))
+                            AsignarCalle(resultado.Id, turnoActivo, model.CPE ? model.CTG : model.NumeroCartaPorte, datosUsuario.CentroId, datosUsuario.NombrePc, model.Patente);
+                        
                         log.Info($"Ejecutando Apertura Barrera Garita con CodigoBarrera : {codigoBarrera} y Patente : {model.Patente}");
                         AperturaDeBarrera(codigoBarrera);
                     }
@@ -531,10 +534,6 @@ namespace Molinos.Scato.Web.Controllers
                 var resultadoTomarFoto = resultadoEjecutar as ResultadoTomarFoto;
                 if (resultado != null)
                 {
-                    if (!fotoPatente && model != null)
-                    {
-                        resultado.Imagen = DibujarEtiqueta(resultado.Imagen, model);
-                    }
                     return Json(new
                     {
                         imagen = String.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(resultado.Imagen)),
@@ -915,7 +914,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception e)
             {
-                log.Error(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
+                log.Info(e, "No se pudo obtener la carta de porte CTG-CPE en carga de Cupo. {0}", numeroCtg);
                 throw;
             }
         }
@@ -949,26 +948,15 @@ namespace Molinos.Scato.Web.Controllers
         private void CargarCartaPorte(int id, DatosUsuario datosUsuario, string imagenCpBase64)
         {
             var cargaDeCupo = servicio.ObtenerCupoPorId(id);
-            var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
-            var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
-            var workflow = "";
-            var tipoComercialId = 0;
-            if ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMRP && (cargaDeCupo.RtteComercialCodigoSap == null || cargaDeCupo.RtteComercialCodigoSap == codigoSapMRP || cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro)) ||
-                ((cargaDeCupo.TitularCartaPorteCodigoSap == codigoSapMolinosAgro) && (cargaDeCupo.RtteComercialCodigoSap == null || (cargaDeCupo.RtteComercialCodigoSap == codigoSapMolinosAgro))))
-            {
-                workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
-                tipoComercialId = 8;
-            }
-            else if (!string.IsNullOrEmpty(cargaDeCupo.TitularCartaPorteCodigoSap))
-            {
-                workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
-                tipoComercialId = 4;
-            }
+            var workflow = ObtenerWorkflowSegunTitularCartaPorte(cargaDeCupo.TitularCartaPorteCodigoSap, cargaDeCupo.RtteComercialCodigoSap);
+            var tipoComercialId = ObtenerTipoComercialSegunWorkflow(workflow);
+
             if (cargaDeCupo == null || string.IsNullOrEmpty(workflow))
             {
                 ModelState.AddModelError("avanceCpe", "No hay Carga De Cupo");
                 return;
             }
+            
             var puesto = servicio.ObtenerPuestoDeTrabajo(cargaDeCupo.PuestoDeTrabajoId);
             var orden = servicioComandos.Ejecutar(new ConsultarCPDigital { CentroId = datosUsuario.CentroId, NroCtg = long.Parse(cargaDeCupo.CTG), Usuario = datosUsuario.NombreUsuario }) as ResultadoCartaPorteElectronica;
             if (orden != null && orden.Cpe != null)
@@ -1436,6 +1424,64 @@ namespace Molinos.Scato.Web.Controllers
                 esValido = false;
 
             return esValido;
+        }
+
+        private bool PermitirAsignarCalleGrano(string codigoSapTitularCartaPorte)
+        {
+            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
+            return codigoSapTitularCartaPorte != codigoSapPuertoRosario;
+        }
+
+        private string ObtenerWorkflowSegunTitularCartaPorte(string codigoSapTitularCartaPorte, string codigoSapRemitenteComercial)
+        {
+            var codigoSapMRP = ConfigurationManager.AppSettings["CodigoSapMRP"];
+            var codigoSapPuertoRosario = ConfigurationManager.AppSettings["CodigoSapPuertoRosario"];
+            var codigoSapMolinosAgro = firma.ObtenerFirmaSinLogo().CodigoSAP;
+
+            var workflow = string.Empty;
+
+            if ((codigoSapTitularCartaPorte == codigoSapMRP 
+                    && (codigoSapRemitenteComercial == null 
+                        || codigoSapRemitenteComercial == codigoSapMRP 
+                        || codigoSapRemitenteComercial == codigoSapMolinosAgro)) 
+                || (codigoSapTitularCartaPorte == codigoSapMolinosAgro
+                    && (codigoSapRemitenteComercial == null 
+                        || codigoSapRemitenteComercial == codigoSapMolinosAgro)))
+            {
+                workflow = ConfigurationManager.AppSettings["workflowRedespacho"];
+            }
+            else if (codigoSapTitularCartaPorte == codigoSapPuertoRosario)
+            {
+                workflow = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+            }
+            else if (!string.IsNullOrEmpty(codigoSapTitularCartaPorte))
+            {
+                workflow = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+            }
+
+            return workflow;
+        }
+
+        private int ObtenerTipoComercialSegunWorkflow(string workflow)
+        {
+            var tipoComercialId = 0;
+            const int TIPO_COMERCIAL_REDESPACHO = 8;
+            const int TIPO_COMERCIAL_COMPRA_GRANOS = 4;
+
+            var workflowRedespacho = ConfigurationManager.AppSettings["workflowRedespacho"];
+            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+            var workflowCompraGranos = ConfigurationManager.AppSettings["WorkflowIngresoPorCompra"];
+
+            if (workflow == workflowRedespacho || workflow == workflowImpoGranos)
+            {
+                tipoComercialId = TIPO_COMERCIAL_REDESPACHO;
+            }
+            else if (workflow == workflowCompraGranos)
+            {
+                tipoComercialId = TIPO_COMERCIAL_COMPRA_GRANOS;
+            }
+
+            return tipoComercialId;
         }
     }
 }

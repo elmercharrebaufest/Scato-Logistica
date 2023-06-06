@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.5.33502.453</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.5.33502.453</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2023-04-05T20:45:00.9281499Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
@@ -57,6 +68,7 @@ set @ReciboDesdep = @ReciboDesde
 set @ReciboHastap = @ReciboHasta
 
 
+
 SELECT
 Recorrido.TarjetaDeAcceso as 'Tarjeta',
 SUBSTRING(ImpReciboMunicipal.TicketNro,1,13) as 'Recibo',
@@ -67,10 +79,25 @@ Material.Descripcion as 'Producto',
 Chofer.Cuil as 'Doc Chofer',
 Chofer.Nombre + ' ' + Chofer.Apellido as Chofer,
 Transportista.RazonSocial as 'Empresa Transportista' ,
-(CASE WHEN SUBSTRING(ImpReciboMunicipal.TicketNro,1,1) = 0 THEN 
-CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - MP') 
-ELSE CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - EFECTIVO') END) as 'Garita'
-, ImpReciboMunicipal.Valor   as 'Monto Cobrado'
+(
+    CASE WHEN ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
+    THEN ImpReciboMunicipal.TicketNro
+
+    ELSE
+    (
+        CASE WHEN SUBSTRING(ImpReciboMunicipal.TicketNro,1,1) = '0'
+
+        THEN CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - MP'
+    )
+
+    ELSE
+    CONCAT(SUBSTRING(ImpReciboMunicipal.TicketNro,1,4),' - EFECTIVO')
+    END)
+
+ END
+ ) as 'Garita'
+ 
+,ImpReciboMunicipal.Valor   as 'Monto Cobrado'
 ,Impresion.FechaImpresion 'Fecha Cobro'
 
 
@@ -88,13 +115,17 @@ Where
 	AND Recorrido.Centro_Id = @CentroIdp
 	AND (CAST(Impresion.FechaImpresion AS DATE)  &gt;= CAST(@FechaDesdep AS DATE)) 
 	AND (CAST(Impresion.FechaImpresion AS DATE) &lt;=CAST( @FechaHastap AS DATE))
-	AND SUBSTRING(ImpReciboMunicipal.TicketNro,1,4) IN (@Garitas)
+	AND (ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día' OR SUBSTRING(ImpReciboMunicipal.TicketNro,1,4) IN (@Garitas) )
 	AND (@ReciboDesdep IS NULL
+    OR
+    ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
 	OR
 	(len(ImpReciboMunicipal.TicketNro) &gt; 7 AND convert(int, substring(ImpReciboMunicipal.TicketNro, 6, 7)) &gt;= RIGHT('0000000'+@ReciboDesdep,7))
 	OR (len(ImpReciboMunicipal.TicketNro) &lt;= 7 AND convert(int, ImpReciboMunicipal.TicketNro) &gt;= RIGHT('0000000'+@ReciboDesdep,7)))
 
 	AND (@ReciboHastap IS NULL
+    OR
+    ImpReciboMunicipal.TicketNro = 'Tasa abonada dentro del día'
 	OR
 	(len(ImpReciboMunicipal.TicketNro) &gt; 7 AND convert(int, substring(ImpReciboMunicipal.TicketNro, 6, 7)) &lt;= RIGHT('0000000'+@ReciboHastap,7))
 	OR (len(ImpReciboMunicipal.TicketNro) &lt;= 7 AND convert(int, ImpReciboMunicipal.TicketNro) &lt;= RIGHT('0000000'+@ReciboHastap,7)))
@@ -128,8 +159,7 @@ Where
 	AND TMB.centroId = @CentroIdp
 	AND (CAST(TMB.Fecha AS DATE)  &gt;= CAST(@FechaDesdep AS DATE)) 
 	AND (CAST(TMB.Fecha AS DATE) &lt;=CAST( @FechaHastap AS DATE))
-	AND SUBSTRING(TMB.Recibo,1,4) IN (@Garitas) 
-
+	AND ( TMB.Recibo = 'Tasa abonada dentro del día' OR SUBSTRING(TMB.Recibo,1,4) IN (@Garitas))    
 
 ORDER BY 'Fecha Cobro' desc</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>

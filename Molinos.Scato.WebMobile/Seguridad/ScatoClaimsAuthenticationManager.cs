@@ -61,6 +61,7 @@ namespace Molinos.Scato.WebMobile.Seguridad
                     var centro = ServicioRepositorio.ObtenerCentroPorCodigoSap(ConfiguracionProvider.AppSettings["CodigoSapSanLorenzo"]);
                     incomingPrincipal.AddUpdateUserClaim("CentroDescripcion", centro.Descripcion);
                     incomingPrincipal.AddUpdateUserClaim("CentroId", centro.Id.ToString(CultureInfo.InvariantCulture));
+                    incomingPrincipal.AddUpdateUserClaim("EstacionMeteorologica", centro.CodigoEstacionMeteorologica ?? "noConfigurada");
 
 
                 }

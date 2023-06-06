@@ -58,7 +58,8 @@ namespace Molinos.Scato.Actividades
                 {
                     Constantes.MaterialPagoRealizado.BiodiselAgranel,
                     Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
-                    Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP
+                    Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP,
+                    Constantes.MaterialPagoRealizado.SojaSAP
                 };
 
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);

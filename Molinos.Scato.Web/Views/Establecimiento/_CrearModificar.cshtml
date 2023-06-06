@@ -6,7 +6,10 @@
 }
 <div id="links" data-url-obtener-proveedores-sap="@Url.Action("ObtenerProveedoresSap", "Consultas")"
     data-url-buscar-proveedor="@Url.Action("BuscarProveedor", "Consultas")"
-    data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"></div>
+    data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")">
+</div>
+<input type="hidden" id="rangoMaxEPA" value="@ViewBag.RangoMaxEPA">
+<input type="hidden" id="rangoMinEPA" value="@ViewBag.RangoMinEPA">
 @Html.ValidationSummary(true)
 
 <div class="control-group">

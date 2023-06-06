@@ -138,7 +138,8 @@ namespace Molinos.Scato.Web.Controllers
                     CorredorId = orden.CorredorId,
                     RemitenteId = orden.RemitenteId,
                     ComisionistaId = orden.ComisionistaId,
-                    IntermediarioFleteId = orden.IntermediarioFleteId
+                    IntermediarioFleteId = orden.IntermediarioFleteId,
+                    AplicaDestinatario = true,
 
                 }) as ResultadoCartaPorteElectronicaDummy;
 
@@ -246,16 +247,24 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
             
-            if(esClienteProvisorio &&  (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
+            if (esClienteProvisorio && (!orden.ComisionistaId.HasValue || orden.ComisionistaId == 0) && (!orden.RemitenteId.HasValue || orden.RemitenteId == 0))
             {
                 ModelState.AddModelError("Comisionista", string.Format(Textos.Error_Requerido, Textos.Comisionista));
                 ModelState.AddModelError("Remitente", string.Format(Textos.Error_Requerido, Textos.Comisionista));
             }
-            
+
             if (material.EsDerivadoGranario && !orden.DestinatarioId.HasValue)
             {
                 ModelState.AddModelError("Destinatario", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_Destinatario));
             }
+        }
+
+        [HttpGet]
+        public JsonResult MostrarMensajeRecorridoAnterior(string patente)
+        {
+            var recorridoAnterior = servicio.RecorridoRepetidoEnElDia(patente);
+            var mensajeIngresoRepetido = recorridoAnterior ? String.Format(Textos.IngresoRepetido) : string.Empty;
+            return Json(new { mensaje = mensajeIngresoRepetido},JsonRequestBehavior.AllowGet);
         }
     }
 }

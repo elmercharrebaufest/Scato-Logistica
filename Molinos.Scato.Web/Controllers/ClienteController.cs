@@ -1,19 +1,15 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using Ninject.Infrastructure.Language;
-using NPOI.OpenXml4Net.Util;
-using PdfSharp.Pdf.Filters;
+
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -84,18 +80,18 @@ namespace Molinos.Scato.Web.Controllers
             var paginacion = new Paginacion("Id", DirOrden.Asc, 1, 10);
             if (ModelState.IsValid)
             {
-              
-                 resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
-               
-                
+
+                resultado = servicioComandos.Ejecutar(new CrearClienteProvisorio { Dto = model, Usuario = datosUsuario.NombreUsuario });
+
+
                 if (!resultado.HayErrores)
                 {
                     ViewBag.Items = servicio.ListarClientes(model.Cuit, paginacion);
-                    
-                    return View(model); 
+
+                    return View(model);
 
                 }
-                
+
             }
             ViewBag.Items = servicio.ListarClientes(string.Empty, paginacion);
             dynamic estadoRespuesta = new
@@ -111,14 +107,12 @@ namespace Molinos.Scato.Web.Controllers
         {
             StringBuilder builder = new StringBuilder();
 
-            foreach(string error in resultado.Errores.Values)
+            foreach (string error in resultado.Errores.Values)
             {
                 builder.AppendLine(error);
             }
 
             return builder.ToString();
         }
-
-
     }
 }

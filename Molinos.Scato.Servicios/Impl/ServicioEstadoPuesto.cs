@@ -114,14 +114,14 @@ namespace Molinos.Scato.Servicios.Impl
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
             {
-                log.Error($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
             }
             var estados = StringToByteArray(mensaje.Replace("-", ""));
             if (estados == null)
             {
-                log.Error($"El byte de respuesta {mensaje} no corresponde con el de estado");
+                log.Info($"El byte de respuesta {mensaje} no corresponde con el de estado");
                 return;
             }
             var byteEstado = estados[0];
@@ -169,7 +169,7 @@ namespace Molinos.Scato.Servicios.Impl
             var puesto = puestos.Where(x => x.Sensores.Any(y => y.Codigo == sensor)).FirstOrDefault();
             if (puesto == null)
             {
-                log.Error($"No hay puesto con contrador para el sensor: {sensor}");
+                log.Info($"No hay puesto con contrador para el sensor: {sensor}");
 
                 return;
             }

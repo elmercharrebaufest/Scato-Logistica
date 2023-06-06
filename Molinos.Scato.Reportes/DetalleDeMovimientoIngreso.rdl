@@ -20,8 +20,7 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime = @FechaHoy;
 
 					select COALESCE(IngresoxD, m.Descripcion) as IngresoxD,
 					SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
@@ -34,12 +33,13 @@
 					left join (
 					--camiones
 					SELECT CASE
-					when m.id = 4 and Establecimiento_Id is not null then 'Soja Sustentable'
-					when m.id = 4 and Establecimiento_Id is null then 'Soja'
+                    when m.id = 4 and w.Id = 233 then 'Soja Exportacion/Importacion'
+					when m.id = 4 and estab.Id is not null and estab.EPA = 1 and alm.EPA = 1 then 'Soja EPA'
+					when m.id = 4 and estab.Id is not null then 'Soja Sustentable'
+					when m.id = 4 and estab.Id is null then 'Soja'
 					else m.Descripcion end
 					as 'IngresoxD',
 					sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then 1 else 0 end ) as 'CantidadxD',
-
 					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.PesoTaraFecha  &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxD',
 					sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then 1 else 0 end ) as 'CantidadxM',
 					cast(((sum(case when r.PesoTaraFecha  &gt;= dateadd(month,datediff(month,0,@fecha),0) and r.PesoTaraFecha  &lt;= @fecha + '23:59:59' then cast(r.PesoBruto- PesoTara as numeric(18,2)) else 0 end) )/1000) as numeric(18,2)) AS 'TonsxM',
@@ -48,15 +48,14 @@
 					FROM [Recorrido] as r WITH(NOLOCK)
 					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
 					join Material as m WITH(NOLOCK) on m.Id = r.Material_Id and r.TipoVehiculo &lt;&gt; 1
-
-
-
+					left join Establecimiento as estab WITH(NOLOCK) on estab.Id = r.Establecimiento_Id
+					inner join Almacen as alm WITH(NOLOCK) on alm.Id = r.Almacen_Id
 					where w.TipoDeWorkflow = 0 and r.Centro_Id = @CentroId
 					and r.PesoTaraFecha  is not null and Terminado = 1 and Rechazado = 0
 					and ((MONTH(@fecha) &gt; 3 and r.PesoTaraFecha  &gt; DATEFROMPARTS(YEAR(@fecha),4,1)) OR
 					(MONTH(@fecha) &lt;= 3 and r.PesoTaraFecha  &gt;= DATEFROMPARTS(YEAR(@fecha)-1,4,1)))
 					and r.PesoTaraFecha  &lt;= @fecha+'23:59:59'
-					group by m.Descripcion,m.Id, Establecimiento_Id
+					group by m.Descripcion,m.Id, estab.Id, estab.EPA, alm.EPA,w.Id
 					UNION ALL
 					--vagones
 					SELECT CASE
@@ -82,8 +81,7 @@
 					) as Datos on datos.IngresoxD = m.Material
 					where ingreso = 1 and Descripcion not in ('Aceite Cartamo alto oleico', 'BIODIESEL RENOVA', 'Operativos de Vagones')
 					group by COALESCE(IngresoxD, m.Descripcion), m.Orden
-					order by m.orden
-				</CommandText>
+					order by m.orden</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -523,7 +521,7 @@ left join (
   Workflow AS w WITH (NOLOCK) ON r.Workflow_Id = w.Id JOIN
   Almacen AS a WITH (NOLOCK) ON a.Id = r.Almacen_Id JOIN
   Material AS m WITH (NOLOCK) ON m.Id = r.material_id right join
-  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion
+  AlmacenReporteDeMovimientos as ar with (nolock) on ar.Almacen = a.Descripcion or (ar.Almacen = TRIM('EPA' FROM a.Descripcion) and a.Descripcion like '%EPA')
   WHERE    w.TipoDeWorkflow = 0 AND r.Centro_Id = @CentroId AND r.Material_Id IN (4) AND terminado = 1 AND Rechazado = 0 AND r.PesoTaraFecha IS NOT NULL AND
   r.PesoTaraFecha &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' AND r.PesoTaraFecha &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
   GROUP BY  m.descripcion,ar.Descripcion) as Datos on datos.DescargaSoja = m.Descripcion
@@ -5224,7 +5222,6 @@ order by orden</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -5277,7 +5274,6 @@ order by orden</CommandText>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Top>1.19944cm</Top>
-            <Left>0cm</Left>
             <Height>0.6cm</Height>
             <Width>10cm</Width>
             <ZIndex>7</ZIndex>

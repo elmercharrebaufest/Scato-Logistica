@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -20,11 +19,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(LimpiarHistorialMensajeCartelLed comando)
         {
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
-            Log.Debug("Ejecutando ModificarHistorialMensajeCartelLed");
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
             LimpiarSlotCartel(listaMensajes, comando.CalleId);
             resultadoMensajeCartelLed.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
-            Log.Debug($"Finalizando ModificarHistorialMensajeCartelLed - {resultadoMensajeCartelLed.ToJson()}");
             return resultadoMensajeCartelLed;
         }
 

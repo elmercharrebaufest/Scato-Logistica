@@ -77,7 +77,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 if (comando.TipoCPE == Constantes.TipoCP.CPCamion)
                 {
-                    resultado = AltaCPEAutomotorDG(comando, auth , centro);
+                    resultado = AltaCPEAutomotorDG(comando, auth, centro);
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private ResultadoCartaPorteElectronicaDummy AltaCPEAutomotorDG(AutorizarCpeDGDummy comando, Auth auth , Centro centro)
+        private ResultadoCartaPorteElectronicaDummy AltaCPEAutomotorDG(AutorizarCpeDGDummy comando, Auth auth, Centro centro)
         {
             var resultado = new ResultadoCartaPorteElectronicaDummy();
             var response = new autorizarCPEAutomotorDGResponse();
@@ -119,12 +119,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             try
             {
-
                 var material = Repositorio.Obtener<Material>(x => x.Id == comando.MaterialId);
                 var pesoMax = Repositorio.Obtener<PesoMaximoPorTipoVehiculo>(x => x.Activo == true && x.TipoVehiculo == comando.TipoVehiculo && x.Centro.Id == comando.CentroId);
                 var transportista = Repositorio.Obtener<Transportista>(x => x.Id == comando.TransportistaId);
 
                 var pagadorFlete = Repositorio.Obtener<Cliente>(x => x.Id == comando.PagadorFleteId);
+                var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
 
                 var autorizarCpeRequest = new autorizarCPEAutomotorDGRequest
                 {
@@ -160,6 +160,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         destino = new DestinoAutomotorDGSolicitud
                         {
                             planta = comando.DestinoPlanta,
+                            cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0,
                             domicilioDestino = new DomicilioPUC
                             {
                                 tipo = comando.DestinoDomicilioTipo,
@@ -180,36 +181,31 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     }
                 };
 
-                if(comando.ComisionistaId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.ComisionistaId))
+                if (comando.ComisionistaId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.ComisionistaId))
                 {
                     var comisionista = Repositorio.Obtener<Cliente>(x => x.Id == comando.ComisionistaId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitComisionista = !string.IsNullOrEmpty(comisionista.Cuit) ? long.Parse(comisionista.Cuit.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitComisionistaSpecified = true;
-                } else if(comando.RemitenteId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.RemitenteId))
+                }
+                else if (comando.RemitenteId.HasValue && Repositorio.Existe<Cliente>(x => x.Id == comando.RemitenteId))
                 {
                     var remitente = Repositorio.Obtener<Cliente>(x => x.Id == comando.RemitenteId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercial = !string.IsNullOrEmpty(remitente.Cuit) ? long.Parse(remitente.Cuit.Replace("-", string.Empty)) : 0;
                     autorizarCpeRequest.solicitud.intervinientes.cuitRemitenteComercialSpecified = true;
                 }
 
-                if (!string.IsNullOrEmpty(comando.CuitDestinatario))
+                if (comando.AplicaDestinatario)
                 {
-                    autorizarCpeRequest.solicitud.destino.cuit = long.Parse(comando.CuitDestinatario);
-                    autorizarCpeRequest.solicitud.destinatario.cuit = long.Parse(comando.CuitDestinatario);
-                } else if (comando.DestinatarioId.HasValue) 
-                {
-                    var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
-                    autorizarCpeRequest.solicitud.destino.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
                     var destinatario = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinatarioId);
                     autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destinatario.Cuit) ? long.Parse(destinatario.Cuit.Replace("-", string.Empty)) : 0;
-                } else
+                }
+                else
                 {
-                    var destino = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
-                    autorizarCpeRequest.solicitud.destino.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
-                    autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destino.Cuit) ? long.Parse(destino.Cuit.Replace("-", string.Empty)) : 0;
+                    var destinatario = Repositorio.Obtener<Cliente>(x => x.Id == comando.DestinoId);
+                    autorizarCpeRequest.solicitud.destinatario.cuit = !string.IsNullOrEmpty(destinatario.Cuit) ? long.Parse(destinatario.Cuit.Replace("-", string.Empty)) : 0;
                 }
 
-                if(comando.CorredorId.HasValue && Repositorio.Existe<Proveedor>(x => x.Id == comando.CorredorId))
+                if (comando.CorredorId.HasValue && Repositorio.Existe<Proveedor>(x => x.Id == comando.CorredorId))
                 {
                     var proveedor = Repositorio.Obtener<Proveedor>(x => x.Id == comando.CorredorId);
                     autorizarCpeRequest.solicitud.intervinientes.cuitCorredor = !string.IsNullOrEmpty(proveedor.Cuil) ? long.Parse(proveedor.Cuil.Replace("-", string.Empty)) : 0;
@@ -249,7 +245,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             Respuesta = responseAFIP is null ? string.Empty : responseAFIP.ToXml(),
                             Fecha = DateTime.Now
                         });
-                   
+
                     Log.Debug("La Autorizacion {0} procesada correctamente", comando.NroOrden);
                 }
                 else
@@ -284,13 +280,19 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var destino = Repositorio.Existe<Cliente>(x => x.Id == comando.DestinoId);
             var transpostista = Repositorio.Existe<Transportista>(xd => xd.Id == comando.TransportistaId);
             var pagadorFlete = Repositorio.Existe<Cliente>(x => x.Id == comando.PagadorFleteId);
+            var destinatario = Repositorio.Existe<Cliente>(x => x.Id == comando.DestinatarioId);
+
+            if (comando.AplicaDestinatario && !destinatario)
+            {
+                resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Destinatario));
+            }
 
             if (!centro)
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Centro));
             }
 
-            if (!Enum.IsDefined(typeof(TipoVehiculo) , comando.TipoVehiculo))
+            if (!Enum.IsDefined(typeof(TipoVehiculo), comando.TipoVehiculo))
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.CartaPorte_TipoVehiculo));
             }
@@ -300,7 +302,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Material));
             }
 
-            if (!destino && string.IsNullOrEmpty(comando.CuitDestinatario))
+            if (!destino)
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Destino));
             }
@@ -310,7 +312,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Transportista));
             }
 
-            if (comando.Dominios.Any(a=> string.IsNullOrEmpty(a)))
+            if (comando.Dominios.Any(a => string.IsNullOrEmpty(a)))
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alta.", Textos.Patente));
             }
@@ -320,6 +322,5 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta alata.", Textos.CartaPorte_Transportista_Pagador_Flete));
             }
         }
-
     }
 }

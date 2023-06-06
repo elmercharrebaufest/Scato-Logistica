@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
-using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -97,7 +96,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 return RedirectToAction("Index", "ListaDeCamiones");
             }
-            
+
             if (servicio.ExisteOrdenCargaFas(orden.NumeroOrden))
             {
                 TempData["Alerta"] = string.Format(Textos.OrdenCargaFAS_YaUsada, orden.NumeroOrden);
@@ -155,7 +154,6 @@ namespace Molinos.Scato.Web.Controllers
                     TipoVehiculo = orden.TipoVehiculo,
                     CentroId = datosUsuario.CentroId,
                     MaterialId = orden.MaterialId,
-                    DestinoId = orden.ClienteId,
                     DestinoPlanta = orden.PlantaDGDestino ?? 0,
                     DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
                     DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
@@ -166,9 +164,13 @@ namespace Molinos.Scato.Web.Controllers
                     PagadorFleteId = orden.PagadorFleteId ?? 0,
                     CorredorId = orden.CorredorId,
                     RemitenteId = orden.RemitenteId,
+                    DestinoId = orden.ClienteId,
                     ComisionistaId = orden.ComisionistaId,
-                    CuitDestinatario = orden.CuitDestinatario
 
+                    IntermediarioFleteId = orden.IntermediarioFleteId,
+
+                    DestinatarioId = orden.DestinatarioId,
+                    AplicaDestinatario = true
                 }) as ResultadoCartaPorteElectronicaDummy;
                 if (resultadoAltaDummy.HayErrores)
                 {
@@ -210,7 +212,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             ModelState.AgregarErrores(resultadoActividad);
-            
+
             SetearVista(workflowObj);
             ViewBag.AceptaPendiente = true;
             return View(orden);
@@ -288,10 +290,9 @@ namespace Molinos.Scato.Web.Controllers
                         var transportista = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_TR), new TiposProveedor { PR = true });
                         var proveedor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].KUNDE.TrimStart(new[] { '0' }));
                         var material = servicio.ObtenerMaterialPorCodigoSap(ordenCargaFas[i].MATNR.TrimStart(new[] { '0' }));
-                        var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                         var chofer = servicio.ObtenerChoferPorNumeroDocumento(numeroDocumentoChofer);
                         var tipoComercial = servicio.ObtenerTipoComercialPorCodigoSap(ordenCargaFas[i].TIPO_COMERCIAL);
-                        var pagadorFlete = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_PAGADOR_FLETE));
+                        var pagadorFlete = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].PAGADOR_FLETE);
 
                         if (material == null)
                         {
@@ -301,9 +302,10 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistente, ordenCargaFas[i].KUNDE) }, JsonRequestBehavior.AllowGet);
                         }
-                        if (cliente == null && string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
+
+                        if (!string.IsNullOrEmpty(ordenCargaFas[i].PAGADOR_FLETE) && pagadorFlete == null)
                         {
-                            return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistente, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
+                            return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_PagadorFleteInexistente, ordenCargaFas[i].PAGADOR_FLETE) }, JsonRequestBehavior.AllowGet);
                         }
                         if (workflow.Contains("Venta") && tipoComercial != null && !(tipoComercial.CodigoSap.Equals("998") || tipoComercial.CodigoSap.Equals("CYO")))
                         {
@@ -325,8 +327,6 @@ namespace Molinos.Scato.Web.Controllers
                             TransportistaId = transportista != null ? transportista.Id : proveedor.Id,
                             TransportistaDesc = transportista != null ? transportista.RazonSocial : proveedor.RazonSocial,
                             PatenteAcoplado = ordenCargaFas[i].ACOPL,
-                            ClienteId = cliente?.Id ?? 0,
-                            ClienteDesc = ordenCargaFas[i].SOLIC,
                             NumeroOrden = ordenCargaFas[i].VBELN,
                             ValidaCompliance = (ordenCargaFas[i].FLETEPROPIO != string.Empty),
                             Chofer = chofer,
@@ -341,37 +341,84 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
+                        {
+                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
+                            if (cliente == null)
+                            {
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
+                            }
+                            itemSap.ClienteId = cliente.Id;
+                            itemSap.ClienteDesc = cliente.Descripcion;
+                        }
+                        else
+                        {
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
+                            if (cliente == null)
+                            {
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
+                            }
+                            itemSap.ClienteId = cliente.Id;
+                            itemSap.ClienteDesc = cliente.Descripcion;
+                        }
+
+                        if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == SAP.TipoReventaComisionista && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var comisionista = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
+                            var clienteProvisorio = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT));
                             itemSap.Comisionista = comisionista?.Descripcion;
                             itemSap.ComisionistaId = comisionista?.Id;
-                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
-                            itemSap.ClienteId = 0;
-                            itemSap.ClienteDesc = string.Empty;
                         }
-                        else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == Constantes.SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                        else if (material.EsDerivadoGranario && ordenCargaFas[i].TIPO_REVENTA == SAP.TipoReventaRemitente && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                         {
                             var remitente = servicio.ObtenerClientePorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN));
                             itemSap.Remitente = remitente?.Descripcion;
                             itemSap.RemitenteId = remitente?.Id;
-                            itemSap.CuitDestinatario = ordenCargaFas[i].CUIT;
-                            itemSap.ClienteId = 0;
-                            itemSap.ClienteDesc = string.Empty;
                         }
 
-                        if (material.EsDerivadoGranario 
-                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE) 
-                            && ordenCargaFas[i].CORRE != "NO POSEE")
+                        if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
                         {
-                            if(ordenCargaFas[i].CORRE.Length != 11 && int.TryParse(ordenCargaFas[i].CORRE, out int cuitCorredorInt))
+                            var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
+
+                            if (destinatario == null)
                             {
-                                return Json(new { datosSap = -1, error = "El campo corredor no cumple el formato de 11 caracteres numérico." }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO) }, JsonRequestBehavior.AllowGet);
                             }
 
-                            var corredor = servicio.ObtenerProveedorPorCuit(ConvertirCuil(ordenCargaFas[i].CORRE), new TiposProveedor { CM = true });
+                            itemSap.DestinatarioId = destinatario.Id;
+                            itemSap.DestinatarioDesc = destinatario.Descripcion;
+                        }
+
+                        if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                        {
+                            itemSap.DestinatarioId = itemSap.ClienteId;
+                            itemSap.DestinatarioDesc = itemSap.ClienteDesc;
+                        }
+
+                        if (material.EsDerivadoGranario
+                            && !string.IsNullOrEmpty(ordenCargaFas[i].CORRE)
+                            && ordenCargaFas[i].CORRE != "NO POSEE")
+                        {
+                            var corredor = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].CORRE);
+                            if (corredor == null)
+                            {
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.Corredor, ordenCargaFas[i].CORRE) }, JsonRequestBehavior.AllowGet);
+                            }
+
                             itemSap.Corredor = corredor?.Descripcion;
                             itemSap.CorredorId = corredor?.Id;
+                        }
+
+                        if (material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].PROV_INT_FLETE))
+                        {
+                            var intermediarioFlete = servicio.ObtenerProveedorPorCodigoSap(ordenCargaFas[i].PROV_INT_FLETE.TrimStart(new[] { '0' }));
+                            if (intermediarioFlete == null)
+                            {
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ProveedorInexistenteCodigoSAP, Textos.CartaPorte_IntermediarioFlete, ordenCargaFas[i].PROV_INT_FLETE) }, JsonRequestBehavior.AllowGet);
+                            }
+
+                            itemSap.IntermediarioFleteId = intermediarioFlete.Id;
+                            itemSap.IntermediarioFlete = intermediarioFlete.Descripcion;
                         }
 
                         datosSap.Add(itemSap);
@@ -461,41 +508,44 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         // Utilizar método sólo para pruebas locales
-        private ConsultaOrdenDeCargaResponse1 ObtenerDatosDePruebaDeSAP()
-        {
-            var salida = new ZSDES0300 {
-                NRO_DOC_CHOFER = "20-14692893-6",
-                TIPO_DOC_CHOFER = TipoDocumentoChofer.Cuit,
-                CUIT_TR = "20-20686662-5",
-                KUNDE = "9950085862",
-                MATNR = "99704",
-                KUNAG = "9815870000",
-                TIPO_COMERCIAL = "CYO",
-                PATEN = "MAN622",
-                ACOPL = "MAN623",
-                CUIT = "27000000014",
-                SOLIC = "MUNICIPALIDAD DE AVELLANEDA",
-                VBELN = "0099814054",
-                FLETEPROPIO = string.Empty,
-                CODPLANTA = "1809",
-                TIPODOM = "1",
-                ORDENDOM = "3",
-                CUIT_PAGADOR_FLETE = "27000000014",
-                INHABILITADO = "",
-                CORRE = "123AEA",
-                CUIT_CTA_ORDEN = "27000000014",
-                TIPO_REVENTA = "C",
-            };
-            var consultaOrden = new ConsultaOrdenDeCargaResponse
-            {
-                Salida = new ZSDES0300[] { salida }
-            };
-            var orden = new ConsultaOrdenDeCargaResponse1
-            {
-                ConsultaOrdenDeCargaResponse = consultaOrden
-            };
-            return orden;
-        }
+        //private ConsultaOrdenDeCargaResponse1 ObtenerDatosDePruebaDeSAP()
+        //{
+        //    var salida = new ZSDES0300
+        //    {
+        //        NRO_DOC_CHOFER = "20-14692893-6",
+        //        TIPO_DOC_CHOFER = TipoDocumentoChofer.Cuit,
+        //        CUIT_TR = "20-20686662-5",
+        //        KUNDE = "9950085862",
+        //        MATNR = "99704",
+        //        KUNNR = "7151840000",
+        //        TIPO_COMERCIAL = "CYO",
+        //        PATEN = "AAL001",
+        //        ACOPL = "AAL101",
+        //        CUIT = "27000000014",
+        //        SOLIC = "MUNICIPALIDAD DE AVELLANEDA",
+        //        VBELN = "0099814054",
+        //        FLETEPROPIO = string.Empty,
+        //        CODPLANTA = "1809",
+        //        TIPODOM = "1",
+        //        ORDENDOM = "1",
+        //        PAGADOR_FLETE = "7153750000",
+        //        INHABILITADO = "",
+        //        CORRE = "20007126671",
+        //        CUIT_CTA_ORDEN = "27000000014",
+        //        CUIT_DESTINATARIO = "30500858628",
+        //        PROV_INT_FLETE = "20686662"
+        //        //TIPO_REVENTA = "C",
+        //    };
+        //    var consultaOrden = new ConsultaOrdenDeCargaResponse
+        //    {
+        //        Salida = new ZSDES0300[] { salida }
+        //    };
+        //    var orden = new ConsultaOrdenDeCargaResponse1
+        //    {
+        //        ConsultaOrdenDeCargaResponse = consultaOrden
+        //    };
+        //    return orden;
+        //}
 
         private void Validar(OrdenCargaFasDto orden)
         {
@@ -503,7 +553,7 @@ namespace Molinos.Scato.Web.Controllers
             orden.DerivadoGranarioHabilitado = material.EsDerivadoGranario;
             if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.Inhabilitado)
             {
-                ModelState.AddModelError((!string.IsNullOrEmpty(orden.CuitDestinatario) ? "CuitDestinatario" : "ClienteDesc"), "El cliente está inhabilitado.");
+                ModelState.AddModelError("ClienteDesc", "El cliente está inhabilitado.");
             }
 
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && !orden.PlantaDGDestino.HasValue)
@@ -531,18 +581,19 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.AddModelError("TransportistaDesc", string.Format(Textos.Error_Requerido, Textos.Transportista));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.ClienteId <= 0 && (!orden.ComisionistaId.HasValue && !orden.RemitenteId.HasValue))
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && orden.ClienteId <= 0)
             {
                 ModelState.AddModelError("ClienteDesc", string.Format(Textos.Error_Requerido, Textos.Cliente));
             }
 
-            if (!(orden.Rechazado || orden.VehiculoDemorado) && string.IsNullOrEmpty(orden.CuitDestinatario) && (orden.ComisionistaId.HasValue || orden.RemitenteId.HasValue))
-            {
-                ModelState.AddModelError("CuitDestinatario", string.Format(Textos.Error_Requerido, Textos.Destinatario_Cuit));
-            }
             if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && orden.LocalidadDestinoId <= 0)
             {
                 ModelState.AddModelError("LocalidadDestinoId", string.Format(Textos.Error_Requerido, Textos.Error_Ctg_Localidad));
+            }
+
+            if (!(orden.Rechazado || orden.VehiculoDemorado) && material.EsDerivadoGranario && (!orden.DestinatarioId.HasValue || orden.DestinatarioId <= 0))
+            {
+                ModelState.AddModelError("DestinatarioDesc", string.Format(Textos.Error_Requerido, Textos.Destinatario));
             }
         }
     }

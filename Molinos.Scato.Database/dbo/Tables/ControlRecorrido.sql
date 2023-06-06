@@ -31,7 +31,7 @@ CREATE NONCLUSTERED INDEX [IX_ControlRecorrido_WorkflowInstanceId]
 
 
 GO
-CREATE INDEX [IX_ControlRecorrido_WorkflowInstanceId_ActividadXaml] ON [dbo].[ControlRecorrido] ([WorkflowInstanceId],ActividadXaml, puestodetrabajo_id)
+CREATE INDEX [IX_ControlRecorrido_WorkflowInstanceId_ActividadXaml] ON [dbo].[ControlRecorrido] ([WorkflowInstanceId],ActividadXaml, PuestoDeTrabajo_Id)
 GO
 CREATE NONCLUSTERED INDEX [IX_ActividadXaml_PuestoDeTrabajo_id]
     ON [dbo].[ControlRecorrido]([ActividadXaml] ASC, [PuestoDeTrabajo_Id] ASC)

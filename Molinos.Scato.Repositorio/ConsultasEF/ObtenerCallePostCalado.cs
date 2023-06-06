@@ -49,7 +49,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 }
                 if (calleDisponible == null)
                 {
-                    calleDisponible = contexto.Set<Calle>().Where(calle => calle.TipoCalle == TipoCalle.PostCalado && calle.TipoCalidad == TipoCalidad.PendientesPostCalado && !calle.Deshabilitada).FirstOrDefault();
+                    calleDisponible = contexto.Set<Calle>().Where(calle => calle.TipoCalle == TipoCalle.PostCalado 
+                                                                        && calle.TipoCalidad == TipoCalidad.PendientesPostCalado 
+                                                                        && !calle.Deshabilitada)
+                                                            .FirstOrDefault();
                 }
             }
 
@@ -63,6 +66,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         .Where(c => c.TipoCalle == TipoCalle.PostCalado
                                  && c.Material.Id == material.Id
                                  && c.TipoCalidad != TipoCalidad.Analisis
+                                 && !c.Deshabilitada
+                                 && !c.Bloqueada
                                  && basededatos
                                         .Set<CaladoPorCaracteristica>()
                                         .Where(cpc => caladoId == cpc.Calado.Id)
@@ -103,16 +108,21 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private CallePorRecorrido UltimoCamionAsignado(DbContext contexto, bool esSojaEPA)
         {
-            return contexto.Set<CallePorRecorrido>()
+            var query = contexto.Set<CallePorRecorrido>()
                             .Where(x => x.Calle.TipoCalle == TipoCalle.PostCalado
                                     && x.FechaEgreso == null
                                     && (x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
                                     && x.Recorrido.Material.Id == material.Id
                                     && x.Calle.TipoCalidad != TipoCalidad.Otros
-                                    && x.Calle.TipoCalidad != TipoCalidad.PendientesPostCalado
-                                    && x.Recorrido.Establecimiento.EPA == esSojaEPA)
-                            .OrderByDescending(x => x.Id)
-                            .FirstOrDefault();
+                                    && x.Calle.TipoCalidad != TipoCalidad.PendientesPostCalado);
+            if(esSojaEPA)
+            {
+                query = query.Where(x => x.Recorrido.Establecimiento.EPA);
+            } else
+            {
+                query = query.Where(x => x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA);
+            }
+            return query.OrderByDescending(x => x.Id).FirstOrDefault();
         }
 
         private Calle ObtenerCalleIncompletaDelUltimoCamionAsignado(DbContext contexto, int ultimoCamionAsignadoCalleId)
@@ -120,6 +130,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             return contexto.Set<Calle>()
                             .Where(x => x.TipoCalle == tipoCalle
                                     && !x.Deshabilitada 
+                                    && !x.Bloqueada
                                     && x.Id == ultimoCamionAsignadoCalleId
                                     && contexto.Set<CallePorRecorrido>()
                                             .Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id) < x.CantidadDeCamiones)
@@ -128,13 +139,15 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private Calle ObtenerSiguienteCalleVacia(DbContext contexto, CallePorRecorrido ultimaAsignacion)
         {
-            IQueryable<Calle> calleDisponibleqry = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PostCalado && !x.Deshabilitada);
+            IQueryable<Calle> calleDisponibleqry = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PostCalado && !x.Deshabilitada && !x.Bloqueada);
+            Calle calle = null;
             if (ultimaAsignacion != null)
             {
                 var idCalle = ultimaAsignacion.Calle.Id;
-                calleDisponibleqry = calleDisponibleqry.Where(x => x.Id >= idCalle);
+                calle = FiltrarCalleVacia(contexto, calleDisponibleqry.Where(x => x.Id >= idCalle));
             }
-            return FiltrarCalleVacia(contexto, calleDisponibleqry);
+            
+            return calle ??  FiltrarCalleVacia(contexto, calleDisponibleqry);
         }
 
         private Calle ObtenerSiguienteCalleIncompleta(DbContext contexto, bool esSojaEPA)
@@ -144,11 +157,12 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         && !x.Deshabilitada
                         && x.TipoCalidad != TipoCalidad.Otros
                         && x.TipoCalidad != TipoCalidad.PendientesPostCalado
+                        && !x.Bloqueada
                         && contexto.Set<CallePorRecorrido>()
                                 .Any(y => (y.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
                                         && y.Recorrido.Material.Id == material.Id
                                         && y.FechaEgreso == null && y.Calle.Id == x.Id
-                                        && y.Recorrido.Establecimiento.EPA == esSojaEPA)
+                                        && (esSojaEPA ? y.Recorrido.Establecimiento.EPA : (y.Recorrido.Establecimiento == null || !y.Recorrido.Establecimiento.EPA)))
                         && contexto.Set<CallePorRecorrido>()
                                 .Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id) < x.CantidadDeCamiones)
                 .OrderByDescending(x => x.Id)

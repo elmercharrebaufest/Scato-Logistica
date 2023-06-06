@@ -7,7 +7,7 @@
             public const string CupoGenerico = "MOL1111/11111111";
             public const long CuitMOA = 30715118773;
             public const string NumeroRemitoGenerico = "1111-11111111";
-            public const string ColorFondoSojaEPA = "#1E21EF";
+            public const string ColorFondoSojaEPA = "#FC4D75";
             public const string ColorTextoSojaEPA = "#FFFFFF";
         }
 
@@ -70,6 +70,7 @@
                 public const string EstadoDeCallePreCalado = "EstadoDeCallePreCalado";
                 public const string EstadoPlayaInterna = "EstadoPlayaInterna";
                 public const string EstadoVolcadoras = "EstadoVolcadoras";
+                public const string EstablecimientoPantalla = "Establecimiento";
             }
 
             public struct EficienciaCalado
@@ -172,12 +173,18 @@
             public const string BiodiselAgranel = "99319";
             public const string AceiteGirasolCrudoSAP = "94687";
             public const string AceiteSojaCrudoGranelSAP = "94705";
+            public const string SojaSAP = "19908017";
         }
 
         public struct TipoSoja
         {
             public const string Sustentable = "sust";
             public const string EPA = "epa";
+        }
+
+        public struct Centro
+        {
+            public const string CodigoSAPSanLorenzo = "1029";
         }
     }
 }
