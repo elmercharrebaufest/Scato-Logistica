@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
-using Molinos.Scato.Actividades.Servicios;
+﻿using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -18,6 +10,13 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Threading;
+using System.Web;
+using System.Web.Mvc;
 using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.Web.Controllers
@@ -33,6 +32,7 @@ namespace Molinos.Scato.Web.Controllers
             this.log = log;
             this.workflows = workflows;
         }
+
         [DatosUsuario]
         public ActionResult Index(Guid? id, string profiling, DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaUltimaModificacion", DirOrden dirOrden = DirOrden.Desc, bool venimosDeListaDeTareasAutomatizada = false, bool evitarRedireccion = false)
         {
@@ -44,7 +44,7 @@ namespace Molinos.Scato.Web.Controllers
                 return redirect;
             }
 
-            // Redireccionar a balanza automatizada, si el puesto esta asociado a balanzas automaticas. 
+            // Redireccionar a balanza automatizada, si el puesto esta asociado a balanzas automaticas.
             if (datosUsuario.RedireccionarABalanzaAutomatizada && !venimosDeListaDeTareasAutomatizada)
             {
                 return RedirectToAction("Index", "BalanzaAutomatica");
@@ -64,7 +64,7 @@ namespace Molinos.Scato.Web.Controllers
             }
             /////
 
-            if (filtro.TiempoMaxEntreActividades == null && datosUsuario.CentroId > 0 )
+            if (filtro.TiempoMaxEntreActividades == null && datosUsuario.CentroId > 0)
             {
                 filtro.TiempoMaxEntreActividades = servicio.ObtenerTiempoMaximoCentro(datosUsuario.CentroId);
             }
@@ -72,8 +72,8 @@ namespace Molinos.Scato.Web.Controllers
             filtro = CrearPrimeraCookie(filtro);
             log.Debug("Cookie Usuario: {0}", new CookieUsuario());
 
-            ViewBag.Workflows = servicio.ListarWorkflowsCodigoPorCentro(datosUsuario.CentroId).OrderBy(x => x.Codigo).ToSelectList(x => x.Codigo, x => x.Descripcion);          
-            var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario,datosUsuario.CentroId);
+            ViewBag.Workflows = servicio.ListarWorkflowsCodigoPorCentro(datosUsuario.CentroId).OrderBy(x => x.Codigo).ToSelectList(x => x.Codigo, x => x.Descripcion);
+            var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario, datosUsuario.CentroId);
             if (PermisosHelper.Is(PermisosScato.CamionesPendientesMesa))
             {
                 actividades.Add(PermisosScato.CamionesPendientesMesa.DisplayText());
@@ -89,13 +89,12 @@ namespace Molinos.Scato.Web.Controllers
             return View(filtro);
         }
 
-
         [DatosUsuario]
         [AjaxOnly]
         [ActionName("Index")]
         public ActionResult Listar(string refresco, DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaUltimaModificacion", DirOrden dirOrden = DirOrden.Desc)
         {
-            if(string.IsNullOrEmpty(ordenarPor))
+            if (string.IsNullOrEmpty(ordenarPor))
             {
                 ordenarPor = "FechaUltimaModificacion";
                 dirOrden = DirOrden.Desc;
@@ -138,7 +137,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             return RedirectToAction("Index", proximaAccion, new { id });
         }
-        
+
         private RedirectToRouteResult RedirectProximaActividad(Guid? id, DatosUsuario datosUsuario)
         {
             var retries = Convert.ToInt32(ConfigurationManager.AppSettings["AutomaticActivityRetries"]);
@@ -191,11 +190,13 @@ namespace Molinos.Scato.Web.Controllers
 
             var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
 
-            instancias.InstanciasWorkflowDto.ForEach(i => 
+            instancias.InstanciasWorkflowDto.ForEach(i =>
             {
-                i.SojaIMPO = i.Codigo.Equals(workflowImpoGranos);
+                if (i.Codigo != null)
+                {
+                    i.SojaIMPO = i.Codigo.Equals(workflowImpoGranos);
+                }
             });
-
 
             ViewBag.Items = instancias.InstanciasWorkflowDto;
         }
@@ -222,7 +223,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.NumeroDocumentoDeIngreso = cookie.Valor("NumeroDocumentoDeIngreso");
             filtro.SoloDemorados = Boolean.Parse(cookie.Valor("SoloDemorados") ?? "false");
             filtro.OrdenarPor = cookie.Valor("OrdenarPor");
-            filtro.DirOrden = cookie.Valor("DirOrden") == "1" ?  DirOrden.Desc : DirOrden.Asc;
+            filtro.DirOrden = cookie.Valor("DirOrden") == "1" ? DirOrden.Desc : DirOrden.Asc;
             filtro.ExcluirRechazados = Boolean.Parse(cookie.Valor("ExcluirRechazados") ?? "false");
 
             var valorTipoMaterial = cookie.Valor("TipoMaterial");
@@ -230,7 +231,8 @@ namespace Molinos.Scato.Web.Controllers
             if (!string.IsNullOrEmpty(valorTipoMaterial) && Enum.TryParse<TipoMaterial>(valorTipoMaterial, out tipoMaterialCookie))
             {
                 filtro.TipoMaterial = tipoMaterialCookie;
-            } else
+            }
+            else
             {
                 filtro.TipoMaterial = TipoMaterial.Todos;
             }
@@ -284,7 +286,5 @@ namespace Molinos.Scato.Web.Controllers
             cookie.ActualizarValor("TieneEntregador", filtro.TieneEntregador.ToString());
             return filtro;
         }
-
-        
     }
 }
