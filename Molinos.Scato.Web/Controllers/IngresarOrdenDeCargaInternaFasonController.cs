@@ -120,6 +120,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     dominios.Add(orden.PatenteAcoplado);
                 }
+                ConfirmarCTGVencidos(datosUsuario.CentroId);
                 var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                 {
                     TipoVehiculo = orden.TipoVehiculo,
@@ -265,6 +266,15 @@ namespace Molinos.Scato.Web.Controllers
             var recorridoAnterior = servicio.RecorridoRepetidoEnElDia(patente);
             var mensajeIngresoRepetido = recorridoAnterior ? String.Format(Textos.IngresoRepetido) : string.Empty;
             return Json(new { mensaje = mensajeIngresoRepetido},JsonRequestBehavior.AllowGet);
+        }
+
+        private void ConfirmarCTGVencidos(int centroId)
+        {
+            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            {
+                CentroId = centroId,
+                TipoPerfil = TipoPerfil.Solicitante,
+            });
         }
     }
 }

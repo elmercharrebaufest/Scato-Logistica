@@ -49,5 +49,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string DescripcionAlmacen { get; set; }
         public bool CorrespondeConfirmarCargaDescarga { get; set; }
         public bool EsSojaEPA { get; set; }
+        public bool EsSojaIMPO { get; set; }
     }
 }

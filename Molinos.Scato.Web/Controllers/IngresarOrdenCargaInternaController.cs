@@ -120,6 +120,7 @@ namespace Molinos.Scato.Web.Controllers
                 {
                     dominios.Add(orden.PatenteAcoplado);
                 }
+                ConfirmarCTGVencidos(datosUsuario.CentroId);
                 var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
                 {
                     TipoVehiculo = orden.TipoVehiculo,
@@ -240,6 +241,15 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("PagadorFlete", string.Format(Textos.Error_Requerido, Textos.OrdenCarga_CuitPagadorFlete));
             }
+        }
+
+        private void ConfirmarCTGVencidos(int centroId)
+        {
+            servicioComandos.Ejecutar(new ConfirmarCTGVencidas
+            {
+                CentroId = centroId,
+                TipoPerfil = TipoPerfil.Solicitante,
+            });
         }
     }
 }

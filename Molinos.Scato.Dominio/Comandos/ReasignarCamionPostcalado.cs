@@ -6,5 +6,7 @@ namespace Molinos.Scato.Dominio.Comandos
     {
         public Guid InstanciaWorkflow { get; set; }
         public int CalleId { get; set; }
+
+        public int? CargaDeCupoId { get; set;}
     }
 }

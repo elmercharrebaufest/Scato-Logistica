@@ -19,8 +19,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(InsertarSlotMensajeCartelLed comando)
         {
             var resultado = new ResultadoMensajeCartelLed();
-            if(!Validar(comando))
+            if (!Validar(comando))
+            {
+                resultado.Error("CartelLedLlamado", "La calle ya fue llamada");
                 return resultado;
+            }
             
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
             CrearHistorialMensajeCartelLedSiNoTiene(listaMensajes);
@@ -59,10 +62,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private bool Validar(InsertarSlotMensajeCartelLed comando)
         {
-            if(Repositorio.Existe<HistorialMensajeCartelLed>(x => x.Calle.Id == comando.CalleId))
-                return false;
+            bool valido = true;
 
-            return true;
+            if(Repositorio.Existe<HistorialMensajeCartelLed>(x => x.Calle.Id == comando.CalleId))
+            {
+               valido = false;
+            }
+
+            return valido;
         }
 
         private void CrearHistorialMensajeCartelLedSiNoTiene(List<MensajeCartelLed> listaMensajes)

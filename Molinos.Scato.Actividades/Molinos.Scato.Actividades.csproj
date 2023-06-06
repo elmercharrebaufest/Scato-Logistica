@@ -103,6 +103,7 @@
     <Compile Include="Internas\DarDeBajaCtgDGAutomatica.cs" />
     <Compile Include="Internas\ObtenerTipoDeValidacionCtgDG.cs" />
     <Compile Include="Internas\DarDeBajaCtgDGManual.cs" />
+    <Compile Include="ConfirmarCTGVencidos.cs" />
     <Compile Include="VerificarCartelPreBalanza.cs" />
     <Compile Include="LlamarCallePreBalanza.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />
