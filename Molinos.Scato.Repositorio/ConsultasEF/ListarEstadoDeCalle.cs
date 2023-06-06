@@ -40,13 +40,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   AsignadoEnPuestoComando = x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
-                                  EPA = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
+                                  EPA = x.Recorrido.Establecimiento.EPA,
                                   MaterialColorFondo = x.Recorrido.Material.ColorFondo,
                                   MaterialColorTexto = x.Recorrido.Material.ColorTexto,
                                   CargaCupoColorFondo = x.CargaDeCupo.Material.ColorFondo,
                                   CargaCupoColorTexto = x.CargaDeCupo.Material.ColorTexto,
-                                  RecorridoCodigoSAP = x.Recorrido != null ? x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap : null,
-                                  CargaDeCupoCodigoSAP = x.CargaDeCupo != null ? x.CargaDeCupo.TitularCartaPorteCodigoSap : null
+                                  RecorridoCodigoSAP =  x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap,
+                                  CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
