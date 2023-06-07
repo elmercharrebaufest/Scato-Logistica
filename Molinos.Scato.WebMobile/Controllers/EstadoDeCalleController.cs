@@ -52,7 +52,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 TipoCalle.PostCalado,
                 TipoCalle.RechazadosDemorados,
                 TipoCalle.ReCalado,
-                TipoCalle.Calado
+                TipoCalle.Calado,
+                TipoCalle.NoGranos,
             };
 
             ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
@@ -89,7 +90,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 TipoCalle.PostCalado,
                 TipoCalle.RechazadosDemorados,
                 TipoCalle.ReCalado,
-                TipoCalle.Calado
+                TipoCalle.Calado,
+                TipoCalle.NoGranos,
             };
 
             var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => tiposCalleValidas.Contains(x.TipoCalle));
