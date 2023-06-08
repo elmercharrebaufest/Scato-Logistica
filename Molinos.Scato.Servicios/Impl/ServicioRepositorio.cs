@@ -9536,7 +9536,7 @@ namespace Molinos.Scato.Servicios.Impl
                     Escalable = item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
                     || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
-                    EsSojaEPA = item.EPA,
+                    EsSojaEPA = item.EPA != null ? item.EPA : false,
                     EsSojaIMPO = item.RecorridoCodigoSAP != null ?
                                        item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
                                        item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
