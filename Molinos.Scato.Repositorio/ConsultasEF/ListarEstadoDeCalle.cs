@@ -40,7 +40,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   AsignadoEnPuestoComando = x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
-                                  EPA = x.Recorrido.Establecimiento.EPA,
+                                  EPA = x.Recorrido.Establecimiento != null ? x.Recorrido.Establecimiento.EPA : false,
                                   MaterialColorFondo = x.Recorrido.Material.ColorFondo,
                                   MaterialColorTexto = x.Recorrido.Material.ColorTexto,
                                   CargaCupoColorFondo = x.CargaDeCupo.Material.ColorFondo,
