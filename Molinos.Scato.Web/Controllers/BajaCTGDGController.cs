@@ -20,11 +20,11 @@ namespace Molinos.Scato.Web.Controllers
     [Autorizacion(PermisosScato.ActividadBajaCTGDG)]
     public class BajaCTGDGController : BaseController
     {
-        private readonly IServicioActividadFactory<IBajaCTGService> factory;
+        private readonly IServicioActividadFactory<IBajaCTGDGService> factory;
         private readonly IServicioComandos comandos;
         private readonly ILogger log;
 
-        public BajaCTGDGController(ILogger log, IServicioActividadFactory<IBajaCTGService> factory, IServicioRepositorio servicio, IServicioComandos comandos)
+        public BajaCTGDGController(ILogger log, IServicioActividadFactory<IBajaCTGDGService> factory, IServicioRepositorio servicio, IServicioComandos comandos)
             : base(servicio)
         {
             this.factory = factory;
@@ -57,15 +57,15 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var controlRecorrido = new ControlRecorridoDto
                     {
-                        Actividad = Textos.ActBajaCTG,
-                        ActividadXaml = "BajaCTG",
+                        Actividad = Textos.ActBajaCTGDG,
+                        ActividadXaml = "BajaCTGDG",
                         WorkflowInstanceId = model.WorkflowId,
                         PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                         NombreUsuario = datosUsuario.NombreUsuario
                     };
 
                 var serviciowf = factory.CrearServicio(workflowDefinicionId);
-                var resultado = serviciowf.BajaCTG(model.WorkflowId, DecisionCtg.DarDeBajaManual, model.CodigoDeBaja, controlRecorrido);
+                var resultado = serviciowf.BajaCTGDG(model.WorkflowId, DecisionCtg.DarDeBajaManual, model.CodigoDeBaja, controlRecorrido);
                 if (!resultado.HayErrores)
                 {
                     return RedirectToAction("Index", "ListaDeCamiones");
@@ -91,7 +91,7 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             var serviciowf = factory.CrearServicio(workflowDefinicionId);
-            var resultado = serviciowf.BajaCTG(model.WorkflowId, DecisionCtg.DarDeBajaAutomaticamente, "", controlRecorrido);
+            var resultado = serviciowf.BajaCTGDG(model.WorkflowId, DecisionCtg.DarDeBajaAutomaticamente, "", controlRecorrido);
             if (!resultado.HayErrores)
             {
                 return RedirectToAction("Index", "ListaDeCamiones");
@@ -124,7 +124,7 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             var serviciowf = factory.CrearServicio(workflowDefinicionId);
-            var resultado = serviciowf.BajaCTG(model.WorkflowId, DecisionCtg.Rechazar, model.CodigoDeBaja, controlRecorrido);
+            var resultado = serviciowf.BajaCTGDG(model.WorkflowId, DecisionCtg.Rechazar, model.CodigoDeBaja, controlRecorrido);
             if (!resultado.HayErrores)
             {
                 return RedirectToAction("Index", "ListaDeCamiones");
@@ -149,7 +149,7 @@ namespace Molinos.Scato.Web.Controllers
             };
             comandos.Ejecutar(new ModificarRecorridoDemora { InstanceId = model.WorkflowId, Motivo = MotivoDemora, DemoraVehiculo = true });
             var serviciowf = factory.CrearServicio(workflowDefinicionId);
-            var resultado = serviciowf.BajaCTG(model.WorkflowId, DecisionCtg.Demorar, model.CodigoDeBaja, controlRecorrido);
+            var resultado = serviciowf.BajaCTGDG(model.WorkflowId, DecisionCtg.Demorar, model.CodigoDeBaja, controlRecorrido);
             if (!resultado.HayErrores)
             {
                 return RedirectToAction("Index", "ListaDeCamiones");
