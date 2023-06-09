@@ -176,6 +176,7 @@ function Camion(item, calle) {
     self.ColorFondo = item.ColorFondo;
     self.ColorTexto = item.ColorTexto;
     self.EsSojaEPA = item.EsSojaEPA;
+    self.EsSojaIMPO = item.EsSojaIMPO;
     self.Calle = calle;
     self.TiempoEnCola = null;
     self.TiempoEnColaEnMinutos = 0;
@@ -265,7 +266,7 @@ function EstadoDeCallesViewModel() {
         });
         return count;
     };
-    self.sumarCamionesSoja = function (contarEPA) {
+    self.sumarCamionesSoja = function (contarEPA, contarIMPO) {
         let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
@@ -273,7 +274,7 @@ function EstadoDeCallesViewModel() {
             if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
                 let camionesPorCalle = calle.Posiciones();
                 $.each(camionesPorCalle, function (key, camion) {
-                    if (camion.EsSojaEPA == contarEPA) {
+                    if (camion.EsSojaEPA === contarEPA && camion.EsSojaIMPO === contarIMPO) {
                         count++;
                     }
                 })
@@ -281,17 +282,55 @@ function EstadoDeCallesViewModel() {
         });
         return count;
     };
+
+    self.sumarCamionesSojaEPA = function (contarEPA) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaEPA === contarEPA) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
+
+    self.sumarCamionesSojaIMPO = function (contarIMPO) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            let calleId = calle.TipoCalle == 7 ? 1 : calle.TipoCalle;
+            if ($('.nav-link.active').data().calle == calleId && calle.MaterialId() == 4) {
+                
+                let camionesPorCalle = calle.Posiciones();
+                $.each(camionesPorCalle, function (key, camion) {
+                    if (camion.EsSojaIMPO == contarIMPO) {
+                        count++;
+                    }
+                })
+            }
+        });
+        return count;
+    };
+
     self.Recalcular = function () {
         self.dummy.notifySubscribers();
     };
-    self.CantidadSoja = ko.computed(function () { return self.sumarCamionesSoja(false); });
+    self.CantidadSoja = ko.computed(function () { return self.sumarCamionesSoja(false , false); });
     self.CantidadMaiz = ko.computed(function () { return self.sumarCamiones(386); });
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
     self.CantidadHarina = ko.computed(function () { return self.sumarCamiones(81223); });
     self.CantidadPellet = ko.computed(function () { return self.sumarCamiones(63750); });
     self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
-    self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSoja(true); });
+    self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSojaEPA(true); });
+    self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(true); });
+    
 
     self.ListarCamiones = function () {
         $.ajax({
@@ -314,7 +353,7 @@ function EstadoDeCallesViewModel() {
                     });
                 }
                 var circularLlamado = false;
-                var normalLlamado = false;
+                var precaladoLlamado = false;
                 ko.utils.arrayForEach(self.Calles(), function (calle) {
                     calle.CargarCamiones(allData.estado.filter(function (obj) { return obj.CalleId == calle.Id; }));
                     calle.Actualizar(allData.calles.filter(function (obj) { return obj.Id == calle.Id; }));
@@ -325,7 +364,7 @@ function EstadoDeCallesViewModel() {
                         $.each(filasCalador, function (key, value) {
                             var callePorEvaluar = value.FilasPrecalado.find(x => x.Id == calle.Id);
                             if (callePorEvaluar != null) {
-                                if (callePorEvaluar.CalleCaladoId != 0 || (circularLlamado == true && normalLlamado == true)) {
+                                if (callePorEvaluar.CalleCaladoId != 0 || (circularLlamado == true && precaladoLlamado == true) || (calle.Deshabilitada() === true)) {
                                     return true;
                                 }
                                 filaCalador = value;
@@ -345,8 +384,8 @@ function EstadoDeCallesViewModel() {
                                 if (caladoAutomatico && calle.TipoCalle == 1) {
                                     var limite = (filaCalador.MaterialId == 4) ? limiteCalador - 1 : limiteCalador;
 
-                                    if (filaCalador.FilasPrecaladoLlamadas < limite && !normalLlamado) {
-                                        normalLlamado = true;
+                                    if (filaCalador.FilasPrecaladoLlamadas < limite && !precaladoLlamado) {
+                                        precaladoLlamado = true;
                                         calle.CalleCalado = filaCalador;
                                         filaCalador.FilasPrecaladoLlamadas++;
                                         calle.LlamarPrecalado();
@@ -412,7 +451,8 @@ function ConfirmarReasignacionCalle() {
         url: urlConfirmarReasignacionCalle,
         data: {
             instanciaWorflow: $('#InstanciaWorflow').val(),
-            calleId: $('#calleId').val()
+            calleId: $('#calleId').val(),
+            cargaDeCupoId: $('#CargaDeCupoId').val()
         },
         type: "POST",
         success: function (result) {

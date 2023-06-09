@@ -56,7 +56,16 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,c
         let count = 0;
         self.dummy();
         ko.utils.arrayForEach(self.Calles(), function (calle) {
-            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == 4 && camion.EsSojaEPA == contarEPA ? total + 1 : total, 0);
+            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == 4 && camion.EsSojaEPA == contarEPA && camion.EsSojaIMPO == false ? total + 1 : total, 0);
+        });
+        return count;
+    };
+
+    self.sumarCamionesSojaIMPO = function (contarIMPO) {
+        let count = 0;
+        self.dummy();
+        ko.utils.arrayForEach(self.Calles(), function (calle) {
+            count += calle.Camiones.reduce((total, camion) => camion.MaterialId == 4 && camion.EsSojaIMPO == contarIMPO ? total + 1 : total, 0);
         });
         return count;
     };
@@ -66,6 +75,7 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,c
     self.CantidadTrigo = ko.computed(function () { return self.sumarCamiones(13); });
     self.CantidadGirasol = ko.computed(function () { return self.sumarCamiones(5); });
     self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSoja(true); });
+    self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(true); });
 }
 
 function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {

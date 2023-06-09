@@ -100,11 +100,14 @@ function countChecked() {
     var instanceIds = "InstanceIds=";
     var instanceIdsHidden = "";
     var nSonEPA = [];
+    var nSonIMPO = [];
     //Armo el Actionlink para Asignar
     $.each(n, function (index, value) {
         nMaterialesId.push(value.getAttribute('data-materialid'));
         nSonSustentables.push(value.getAttribute('data-esSustentable'));
         nSonEPA.push(value.getAttribute('data-SojaEPA'));
+        nSonIMPO.push(value.getAttribute('data-SojaIMPO'));
+
         if (instanceIds == "InstanceIds=") {
             instanceIds += $(value).attr('id');
             instanceIdsHidden = $(value).attr('id');
@@ -130,12 +133,12 @@ function countChecked() {
         } else {
             $("#RechazarSeleccionados").addClass("disabled");
         }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1 && jQuery.unique(nSonEPA).length <= 1) {
+        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
         } else {
-            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1);
+            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1, jQuery.unique(nSonIMPO).length <= 1);
             $("#AsignarSeleccionadosValid").html(mensajeError);
             $("#AsignarSeleccionadosValid").addClass('field-validation-error');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
@@ -146,18 +149,23 @@ function countChecked() {
         } else {
             $("#AsignarSeleccionados").attr("disabled", true);
         }
+        if (n.length > 0 && jQuery.unique(nMaterialesId).length == 1 && jQuery.unique(nSonIMPO).length <= 1) {
+            $("#AsignarSeleccionados").attr("disabled", false);
+        } else {
+            $("#AsignarSeleccionados").attr("disabled", true);
+        }
         //Habilita el boton RECHAZAR si hay seleccionados
         if (n.length > 0) {
             $("#RechazarSeleccionados").removeClass("disabled");
         } else {
             $("#RechazarSeleccionados").addClass("disabled");
         }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1) {
+        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1 ) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
         } else {
-            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1);
+            let mensajeError = ArmarMensajeError(jQuery.unique(nSonEPA).length <= 1, jQuery.unique(nMaterialesId).length <= 1, jQuery.unique(nSonIMPO).length <= 1);
             $("#AsignarSeleccionadosValid").html(mensajeError);
             $("#AsignarSeleccionadosValid").addClass('field-validation-error');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-valid');
@@ -166,13 +174,17 @@ function countChecked() {
 };
 
 
-function ArmarMensajeError(sojaEPAFlag, materialFlag)
+function ArmarMensajeError(sojaEPAFlag, materialFlag, sojaIMPOFlag)
 {
     let mensajeError = !materialFlag? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable
 
     if(!sojaEPAFlag && materialFlag){
        mensajeError = $("#gridContainer").data().errorSojaEpa;
     }
+
+    if(!sojaIMPOFlag && materialFlag){
+        mensajeError = $("#gridContainer").data().errorSojaImpo;
+     }
 
     return mensajeError;
 }

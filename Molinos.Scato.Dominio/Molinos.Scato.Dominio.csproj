@@ -92,6 +92,7 @@
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
+    <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\AutorizarCpeDG.cs" />
     <Compile Include="Comandos\ConfirmacionDefinitivaCPEAutomotorDG.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Comandos\ConsultarCPEAutomotorDG.cs" />
     <Compile Include="Comandos\CrearAltaCTGDG.cs" />
     <Compile Include="Comandos\DarDeBajaCTGDG.cs" />
+    <Compile Include="Comandos\EliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\EliminarExcepcionAlControlProveedor.cs" />
@@ -997,6 +999,9 @@
     <Compile Include="Dto\FirmaDto.cs" />
     <Compile Include="Dto\UsuarioMatriculaDto.cs" />
     <Compile Include="Dto\VisualizacionBarreraDto.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoCPEPendienteResolucion.cs" />
+    <Compile Include="Dto\WebAPI\ResultadoConfirmacionDescargadoDestino.cs" />
+    <Compile Include="Dto\WebAPI\ResponseWebAPIDto.cs" />
     <Compile Include="Dto\WorkflowCreadoDto.cs" />
     <Compile Include="Dto\MovimientoDeBinesDto.cs" />
     <Compile Include="Dto\LoteBiotecnologiaListaDto.cs" />
@@ -1176,6 +1181,8 @@
     <Compile Include="Entidades\VisualizacionBarrera.cs" />
     <Compile Include="Entidades\ZE7550TransmisionASap.cs" />
     <Compile Include="Enums\AccionColaImpresion.cs" />
+    <Compile Include="Enums\RecursoWebAPI.cs" />
+    <Compile Include="Enums\TipoPerfil.cs" />
     <Compile Include="Enums\EstadoHidraulica.cs" />
     <Compile Include="Enums\EstadosCPEFromAFIP.cs" />
     <Compile Include="Enums\FiltroEntregador.cs" />

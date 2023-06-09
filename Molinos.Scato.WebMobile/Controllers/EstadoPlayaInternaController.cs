@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Seguridad;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Web.Mvc;
+using WebGrease.Css.Extensions;
 using static Molinos.Scato.Dominio.Constantes;
 
 namespace Molinos.Scato.WebMobile.Controllers
@@ -64,6 +66,16 @@ namespace Molinos.Scato.WebMobile.Controllers
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
+            camiones.ForEach(camion =>
+            {
+
+                if (camion.EsSojaIMPO)
+                {
+                    camion.ColorFondo = ValoresPorDefecto.ColorFondoSojaIMPO;
+                    camion.ColorTexto = ValoresPorDefecto.ColorTextoSojaIMPO;
+                }
+
+            });
             var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle));
             var materiales = camiones.Where(x => listaCalles.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
@@ -204,8 +216,18 @@ namespace Molinos.Scato.WebMobile.Controllers
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
+            
             var centroId = int.Parse(centro.Value);
             var camiones = servicio.ObtenerEstadoDeCalle();
+            camiones.ForEach(camion =>
+            {
+                if (camion.EsSojaIMPO)
+                {
+                    camion.ColorFondo = ValoresPorDefecto.ColorFondoSojaIMPO;
+                    camion.ColorTexto = ValoresPorDefecto.ColorTextoSojaIMPO;
+                }
+
+            });
             var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
             var tipoCallePlantaLista = new List<TipoCallePlantaDto>();
 
@@ -249,7 +271,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                         FechaIngreso = camion.FechaIngeso,
                         MaterialId = camion.MaterialId,
                         Calidad = camion.Calidad,
-                        EsSojaEPA = camion.EsSojaEPA
+                        EsSojaEPA = camion.EsSojaEPA,
+                        EsSojaIMPO = camion.EsSojaIMPO
+                       
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }

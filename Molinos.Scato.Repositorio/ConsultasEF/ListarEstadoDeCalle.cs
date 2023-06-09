@@ -17,6 +17,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private List<CallePorRecorridoDto> ListadoCamiones(DbContext contexto)
         {
+          
+
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
             var listadoCamiones = contexto.Set<CallePorRecorrido>()
                               .Where(x => x.FechaEgreso.Equals(null))
@@ -41,6 +43,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   ColorFondo = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA :  (x.Recorrido.Material.ColorFondo ?? x.CargaDeCupo.Material.ColorFondo),
                                   ColorTexto = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA :  (x.Recorrido.Material.ColorTexto ?? x.CargaDeCupo.Material.ColorTexto),
                                   EsSojaEPA = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
+                                  EsSojaIMPO = x.Recorrido != null && x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap != null ? x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR  : 
+                                               x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap != null ? x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR : false
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
@@ -68,6 +72,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     ColorFondo = item.ColorFondo,
                     ColorTexto = item.ColorTexto,
                     EsSojaEPA = item.EsSojaEPA,
+                    EsSojaIMPO = item.EsSojaIMPO
                 };
 
                 resultado.Add(callePorRecorrido);
