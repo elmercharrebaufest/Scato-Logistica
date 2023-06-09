@@ -9533,15 +9533,15 @@ namespace Molinos.Scato.Servicios.Impl
                     Rechazado = item.Rechazado ?? false,
                     AsignadoEnPuestoComando = item.AsignadoEnPuestoComando,
                     TipoCalle = item.TipoCalle,
-                    Escalable = item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC
-                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
-                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
-                    EsSojaEPA = item.EPA != null ? item.EPA : false,
+                    Escalable = item.TipoVehiculo == TipoVehiculo.CamiónC
+                    || item.TipoVehiculo == TipoVehiculo.CamiónD
+                    || item.TipoVehiculo == TipoVehiculo.CamiónE,
+                    EsSojaEPA = item.EPA ?? false,
                     EsSojaIMPO = item.RecorridoCodigoSAP != null ?
                                        item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
                                        item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
-                    ColorFondo = item.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
-                    ColorTexto = item.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
+                    ColorFondo = item.EPA != null ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
+                    ColorTexto = item.EPA != null? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
                 };
 
                 resultado.Add(callePorRecorrido);

@@ -48,7 +48,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ColorTexto { get; set; }
         public bool EsSojaEPA { get; set; }
         public bool EsSojaIMPO { get; set; }
-        public bool EPA { get; set; }
+        public bool? EPA { get; set; }
         public string MaterialColorFondo { get; set; }
         public string MaterialColorTexto { get; set; }
         public string CargaCupoColorFondo { get; set; }
