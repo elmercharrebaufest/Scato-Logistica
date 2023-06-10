@@ -57,8 +57,8 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var controlRecorrido = new ControlRecorridoDto
                     {
-                        Actividad = Textos.ActBajaCTGDG,
-                        ActividadXaml = "BajaCTGDG",
+                        Actividad = Textos.ActBajaCTG,
+                        ActividadXaml = "BajaCTG",
                         WorkflowInstanceId = model.WorkflowId,
                         PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                         NombreUsuario = datosUsuario.NombreUsuario
