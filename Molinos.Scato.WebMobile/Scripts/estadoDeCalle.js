@@ -407,6 +407,9 @@ function EstadoDeCallesViewModel() {
         });
     };
     self.ListarCamiones();
+    self.MaterialesGranos = function () {
+        return self.Materiales().filter(x => x.MaterialId == 4 || x.MaterialId == 5 || x.MaterialId == 13 || x.MaterialId == 386);
+    }
 }
 
 var recargar = function () {

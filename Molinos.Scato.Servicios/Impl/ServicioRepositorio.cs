@@ -9513,8 +9513,40 @@ namespace Molinos.Scato.Servicios.Impl
         }
 
         public IList<CallePorRecorridoDto> ObtenerEstadoDeCalle()
-        { 
-            return repositorio.ListarConsulta(new ListarEstadoDeCalle());
+        {
+            var estadoDeRecorridos = repositorio.ListarConsulta(new ListarEstadoDeCalle());
+
+            var resultado = new List<CallePorRecorridoDto>();
+
+            foreach (var item in estadoDeRecorridos)
+            {
+                var callePorRecorrido = new CallePorRecorridoDto
+                {
+                    Id = item.Id,
+                    Calidad = (item.Calidad != null) ? (int)item.Calidad : 0,
+                    MaterialId = item.RecorridoMaterialId ?? item.CargaCupoMaterialId ?? 0,
+                    MaterialDesc = item.RecorridoMaterialDescripcion ?? item.CargaCupoMaterialDescripcion ?? string.Empty,
+                    Patente = item.RecorridoPatente ?? item.CargaDeCupoPatente ?? item.CargaDeCupoRecorridoPatente ?? string.Empty,
+                    CalleId = item.CalleId,
+                    FechaIngeso = item.FechaIngreso,
+                    UltimoDeLaFila = item.UltimoDeLaFila,
+                    Rechazado = item.Rechazado ?? false,
+                    AsignadoEnPuestoComando = item.AsignadoEnPuestoComando,
+                    TipoCalle = item.TipoCalle,
+                    Escalable = item.TipoVehiculo == TipoVehiculo.CamiónC
+                    || item.TipoVehiculo == TipoVehiculo.CamiónD
+                    || item.TipoVehiculo == TipoVehiculo.CamiónE,
+                    EsSojaEPA = item.EPA ?? false,
+                    EsSojaIMPO = item.RecorridoCodigoSAP != null ?
+                                       item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
+                                       item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
+                    ColorFondo = item.EPA != null ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
+                    ColorTexto = item.EPA != null? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
+                };
+
+                resultado.Add(callePorRecorrido);
+            }
+            return resultado;
         }
 
         public CalleDto ObtenerSiguienteCalle(int materialId)
