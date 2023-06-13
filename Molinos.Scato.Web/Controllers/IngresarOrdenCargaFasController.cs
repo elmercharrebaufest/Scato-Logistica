@@ -374,42 +374,52 @@ namespace Molinos.Scato.Web.Controllers
                             itemSap.RemitenteId = remitente?.Id;
                         }
 
-
-                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA))
+                        if (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)
+                            && material.EsDerivadoGranario)
                         {
-
-                            if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
+                            if (!string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
                             {
-                                var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
+                                var clienteCodigo = string.Empty;
+
+                                if (!string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                                    clienteCodigo = ordenCargaFas[i].CUIT_DESTINATARIO;
+                                else
+                                    clienteCodigo = ordenCargaFas[i].CUIT_CTA_ORDEN;
+
+                                var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(clienteCodigo)).FirstOrDefault();
 
                                 if (destinatario == null)
                                 {
-                                    return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO) }, JsonRequestBehavior.AllowGet);
+                                    return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, clienteCodigo) }, JsonRequestBehavior.AllowGet);
                                 }
 
                                 itemSap.DestinatarioId = destinatario.Id;
                                 itemSap.DestinatarioDesc = destinatario.Descripcion;
                             }
-
-                            if (material.EsDerivadoGranario
-                                && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO)
-                                && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))
+                            else
                             {
-                                var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_CTA_ORDEN)).FirstOrDefault();
-
-                                if (destinatario == null)
+                                if (!string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
                                 {
-                                    return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_CTA_ORDEN) }, JsonRequestBehavior.AllowGet);
+                                    var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
+
+                                    if (destinatario == null)
+                                    {
+                                        return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destinatario, ordenCargaFas[i].CUIT_DESTINATARIO) }, JsonRequestBehavior.AllowGet);
+                                    }
+
+                                    itemSap.DestinatarioId = destinatario.Id;
+                                    itemSap.DestinatarioDesc = destinatario.Descripcion;
                                 }
-
-                                itemSap.DestinatarioId = destinatario.Id;
-                                itemSap.DestinatarioDesc = destinatario.Descripcion;
+                                else
+                                {
+                                    itemSap.DestinatarioId = itemSap.ClienteId;
+                                    itemSap.DestinatarioDesc = itemSap.ClienteDesc;
+                                }
                             }
-
                         }
-                        else
+                        else if (material.EsDerivadoGranario)
                         {
-                            if (material.EsDerivadoGranario && !string.IsNullOrWhiteSpace(ordenCargaFas[i].CUIT_DESTINATARIO))
+                            if (!string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
                             {
                                 var destinatario = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT_DESTINATARIO)).FirstOrDefault();
 
@@ -421,8 +431,7 @@ namespace Molinos.Scato.Web.Controllers
                                 itemSap.DestinatarioId = destinatario.Id;
                                 itemSap.DestinatarioDesc = destinatario.Descripcion;
                             }
-
-                            if (material.EsDerivadoGranario && string.IsNullOrEmpty(ordenCargaFas[i].CUIT_DESTINATARIO))
+                            else
                             {
                                 itemSap.DestinatarioId = itemSap.ClienteId;
                                 itemSap.DestinatarioDesc = itemSap.ClienteDesc;
