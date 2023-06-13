@@ -7,77 +7,109 @@
 
 @{
     List<CallePlantaDto> calles = new List<CallePlantaDto>();
-    Model.ForEach(i => { calles.AddRange(i.Calles); });
-    string[] configuracion = ViewBag.ConfiguracionSwitch;
+    Model.Where(c=> c.TipoCalle == TipoCalle.PreBalanzaGranos).ToList().ForEach(i => { calles.AddRange(i.Calles); });
+    List<Tuple<int, string, bool>> configuraciones = ViewBag.ConfiguracionSwitch;
     int id = ViewBag.IdConfiguracion;
 }
 
-    
+
 <div class="content">
     <div class="row" style="display:flex; justify-content:left; margin-left:auto;">
         <div class="col-5">
             <h6>Configuracion de materiales con paso directo a balanza</h6>
-            @Html.Hidden("idConfiguracion", id)
+
         </div>
 
     </div>
-    <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
-        <div class="col-5">
-
-            <ul>
-                <li>
-                    <div class="row">
-                        <div class="nav-link nav-material bg-soja col-md-2">Soja</div>
-                        <div class="col-md-6">
-                            <label class="switch">
-                                <input type="checkbox" id="pasoDirectoSoja" value=@Html.AttributeEncode(configuracion[0].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[0].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </div>
+    @using (Ajax.BeginForm("GuardarPasoDirecto", "EstadoPlayaInterna", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess" }, new { @id = "AjaxformId", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.Hidden("idConfiguracion", id)<div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Calle asignada a pase directo:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
 
 
-                </li>
-                <li>
-                    <div class="row">
-                        <div class="nav-link nav-material bg-maiz text-white col-md-2">Maiz</div>
-                        <div class="col-md-6">
-                            <label class="switch">
-                                <input type="checkbox" id="pasoDirectoMaiz" value=@Html.AttributeEncode(configuracion[1].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[1].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
+                        <ul class="custom-list">
+                            <li>
+                                <select name="callePaseDirecto">
+                                    @if (!calles.Any(c => c.EsPasoDirecto)) 
+                                    {
+                                        <option value=0 selected ></option>
+                                    }
+                                    @foreach (var opcion in calles)
+                                    {
+                                        <option value="@opcion.CalleId" @(opcion.EsPasoDirecto ? "selected" : "")>@opcion.CalleDesc</option>
+                                       
+                                    }
+
+                                </select>
+                            </li>
+                        </ul>
+
+
 
                     </div>
-                </li>
-                <li>
-                    <div class="row">
-                        <div class="nav-link nav-material bg-naranja text-white col-md-2">Trigo</div>
-                        <div class="col-md-6">
-                            <label class="switch">
-                                <input type="checkbox" id="pasoDirectoTrigo" value=@Html.AttributeEncode(configuracion[2].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[2].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                                <span class="slider round"></span>
-                            </label>
+                    <div class="span4">
+                        <div class="control-group">
+                            @*@Html.LabelFor(m => m.EsSojaEPA, new { @class = "control-label" })*@
+                            <div class="controls">
+
+                            </div>
                         </div>
                     </div>
-                </li>
-                <li>
-                    <div class="row">
-                        <div class="nav-link nav-material bg-warning text-white col-md-2">Girasol</div>
-                        <div class="col-md-6">
-                            <label class="switch">
-                                <input type="checkbox" id="pasoDirectoGirasol" value=@Html.AttributeEncode(configuracion[3].Equals("0") ? "False" : "True") @Html.AttributeEncode(configuracion[3].Equals("0") ? string.Empty : "Checked") @Html.AttributeEncode(calles.Any(c => c.EsPasoDirecto) ? string.Empty : "Disabled")>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                </div>
+
+            </div>
+            <br />
         </div>
-        <br />
-    </div>
-</div>
-   
+        <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Material seleccionado:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
+                        <form method="post">
+
+                            <ul class="custom-list">
+
+                                @foreach (var configuracion in configuraciones)
+                                {
+                                    <li>
+                                        <label>
+                                            @Html.RadioButton("materialPaseDirecto", configuracion.Item1, configuracion.Item3, new { @class = "radio-button" })
+                                            @configuracion.Item2
+                                        </label>
+                                    </li>
+                                }
+                            </ul>
+
+                            <input value="Actualizar" type="submit" />
+                        </form>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+    <style>
+        .custom-list {
+            list-style-type: none; /* Quita los puntos de la lista */
+            padding-left: 0px;
+        }
+    </style>
+
+
 
 
 

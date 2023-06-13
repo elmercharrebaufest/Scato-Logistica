@@ -231,42 +231,23 @@ function HabilitarBotonVisual(id) {
 
 $(document).ready(function () {
 
-    $("#pasoDirectoSoja").click(function () { EstadoSwitch('pasoDirectoSoja'); GuardarConfiguracion() })
-    $("#pasoDirectoMaiz").click(function () { EstadoSwitch('pasoDirectoMaiz'); GuardarConfiguracion() })
-    $("#pasoDirectoTrigo").click(function () { EstadoSwitch('pasoDirectoTrigo'); GuardarConfiguracion() })
-    $("#pasoDirectoGirasol").click(function () { EstadoSwitch('pasoDirectoGirasol'); GuardarConfiguracion() })
-
+    
 });
 
-function EstadoSwitch(id) { $("#" + id).val($("#" + id).is(":checked") ? 'True' : 'False') }
-
-function GuardarConfiguracion() {
-
-    $.ajax({
-        type: 'POST',
-        url: urlGuardarConfiguracion,
-        dataType: 'json',
-        data: {
-            id: $("#idConfiguracion").val(),
-            configuracionSoja: $("#pasoDirectoSoja").val(),
-            configuracionMaiz: $("#pasoDirectoMaiz").val(),
-            configuracionTrigo: $("#pasoDirectoTrigo").val(),
-            configuracionGirasol: $("#pasoDirectoGirasol").val()
-        },
-        success: function (response) {
-            if (response.EsValido == true) {
-                MostrarAlertaExitosa("Se proceso correctamente.");
-            } else {
-                MostrarRespuestaMensajes(response);
-
-            }
-        },
-        error: function (error) {
-
-        },
-        complete: function () {
-            $.unblockUI();
-        }
-    });
+function OnSuccess(data) {
+    console.log(JSON.stringify(data))
+    if (data.TieneAdvertencias===true) {
+        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
+    }
+    else {
+        MostrarAlertaExitosa("Se configuro correctamente.");
+    }
+    if (data.EsValido !== false) {
+        MostrarAlertaError(data.Mensajes[0].Mensaje);
+    }
+    
 }
+
+
+
 
