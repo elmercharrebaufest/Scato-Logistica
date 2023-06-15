@@ -9844,6 +9844,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No existe la configuración.
+        /// </summary>
+        public static string ConfiguracionGeneral_Inexistente {
+            get {
+                return ResourceManager.GetString("ConfiguracionGeneral_Inexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configurar Tabla.
         /// </summary>
         public static string ConfigurarTabla {

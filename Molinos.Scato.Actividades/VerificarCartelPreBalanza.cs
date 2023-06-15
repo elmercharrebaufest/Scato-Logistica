@@ -1,12 +1,9 @@
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
 using System;
 using System.Activities;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace Molinos.Scato.Actividades
@@ -50,7 +47,7 @@ namespace Molinos.Scato.Actividades
                 resultado.Error("ErrorException", ex.Message);
             }
 
-            if(!resultado.HayErrores && resultado.ListaDeMensajes.Any())
+            if (!resultado.HayErrores && resultado.ListaDeMensajes.Any())
             {
                 var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
                 foreach (var mensajeCartelLed in resultado.ListaDeMensajes)

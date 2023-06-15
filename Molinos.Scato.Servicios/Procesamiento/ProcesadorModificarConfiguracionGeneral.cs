@@ -4,7 +4,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-
+using System;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -18,17 +18,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void ModificarEntidad(ModificarConfiguracionGeneral comando)
         {
             var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(comando.Dto.Id);
-            Conversor.Convertir(comando.Dto, configuracion);
+            configuracion.Valor = comando.Dto.Valor;
+            configuracion.UsuarioUltimaModificacion = comando.Dto.UsuarioUltimaModificacion;
+            configuracion.FechaUltimaModificacion = DateTime.Now;
         }
 
         protected override void Validar(ModificarConfiguracionGeneral comando, Resultado resultado)
         {
-            if (
-                Repositorio.Existe<ConfiguracionGeneral>(
-                    x =>
-                    x.Id != comando.Dto.Id && x.Pantalla == comando.Dto.Pantalla && x.Nombre == comando.Dto.Nombre && x.CentroId == comando.Dto.CentroId))
+            if (!Repositorio.Existe<ConfiguracionGeneral>(x => x.Id == comando.Dto.Id))
             {
-                resultado.Error("ConfiguracionGeneral", Textos.CategoriaCamiones_PatenteExistente);
+                resultado.Error("ConfiguracionGeneral", $"{Textos.ConfiguracionGeneral_Inexistente} a modificar");
             }
         }
     }

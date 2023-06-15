@@ -1499,6 +1499,13 @@ INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,U
 END
 
 
+IF NOT EXISTS (SELECT 1 FROM ConfiguracionGeneral WHERE Pantalla = 'EstadoPlayaInterna' AND  Nombre = 'LlamadoAutomaticoPrebalanza' AND  Centro_Id IS NULL) 
+BEGIN 
+INSERT INTO ConfiguracionGeneral(Pantalla,Nombre,Valor,Centro_Id,FechaCreacion,UsuarioCreacion) VALUES ('EstadoPlayaInterna', 'LlamadoAutomaticoPrebalanza', 'True', NULL, GETDATE(), 'SCATO')
+END
+
+
+--Equivalencias de Característica de Calidad
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPSOJVOL') 
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (4,'MPSOJVOL','MPSOJVOL',0)

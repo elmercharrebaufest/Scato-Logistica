@@ -43,7 +43,6 @@ function CentrarPosicionElemento() {
 }
 
 function MostrarAlertaError(data) {
-
     if (data != null) {
         $("#alertaError span").html(data);
     } else {
@@ -51,6 +50,7 @@ function MostrarAlertaError(data) {
     }
     $("#alertaError").show();
     $("#alertaError").delay(500).addClass("in");
+    $('#alertaError').removeClass('d-none')
 }
 
 function MostrarAlertaAdvertencia(data) {
@@ -61,7 +61,7 @@ function MostrarAlertaAdvertencia(data) {
     }
     $("#alertaAdvertencia").show();
     $("#alertaAdvertencia").delay(500).addClass("in");
-
+    $('#alertaAdvertencia').removeClass('d-none')
 }
 
 function MostrarAlertaExitosa(data, delay) {

@@ -17,20 +17,22 @@ namespace Molinos.Scato.Actividades
             var resultado = new Resultado();
             var servicio = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
+            var configuracionLlamadoAutomatico = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
+            if (configuracionLlamadoAutomatico != null && !bool.TryParse(configuracionLlamadoAutomatico.Valor, out bool llamadoAutomaticoActivo))
+                return resultado;
 
             var callePlayaInternaList = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(q => !q.Deshabilitada);
-            //var callePreBalanzaList = repositorio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(q => !q.Deshabilitada && !q.Bloqueada && q.FechaLLamada.Equals(null));
             var callePreBalanzaList = repositorio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(q => !q.Deshabilitada && q.FechaLLamada.Equals(null));
-
 
             foreach (var callePlayaInterna in callePlayaInternaList)
             {
-                if (ExisteSlotsDisponibles(repositorio, callePlayaInterna)) {
+                if (ExisteSlotsDisponibles(repositorio, callePlayaInterna))
+                {
                     var listaDePrimerosCamiones = new List<CallePorRecorridoDto>();
                     foreach (var callePreBalanza in callePreBalanzaList)
                     {
                         var camionesPorCallePreBalanza = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanza.Id)
-                            .OrderBy(q=>q.Id);
+                            .OrderBy(q => q.Id);
 
                         var camionMasAntiguo = camionesPorCallePreBalanza.FirstOrDefault();
 
@@ -40,10 +42,10 @@ namespace Molinos.Scato.Actividades
                         }
                     }
 
-                    if(listaDePrimerosCamiones.Any())
+                    if (listaDePrimerosCamiones.Any())
                     {
                         var camionLlamado = listaDePrimerosCamiones.OrderBy(x => x.Id).FirstOrDefault();
-                        LlamarCalle(servicio, repositorio, callePlayaInterna.Id , camionLlamado.CalleId);
+                        LlamarCalle(servicio, repositorio, callePlayaInterna.Id, camionLlamado.CalleId);
                         break;
                     }
                 }

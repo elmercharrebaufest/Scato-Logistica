@@ -226,3 +226,59 @@ function HabilitarBotonVisual(id) {
     $("#" + id).removeClass('btn-secondary');
     $("#" + id).addClass('btn-primary');
 }
+
+function LlamarFilaPrebalanza(e) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: '<h5>' + cargandoGif() + ' LLamando a ' + e.dataset.name + '</h5>'
+    });
+    $.ajax({
+        type: 'GET',
+        url: urlLlamarFilaPrebalanza,
+        dataType: 'json',
+        data: {
+            callePrebalanzaId: e.dataset.id,
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("La " + e.dataset.name + " fue llamada correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+            }
+        },
+        error: function (error) {
+            console.error(error);
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+}
+
+function LiberarFilePrebalanza(e) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: '<h5>' + cargandoGif() + ' Liberando a ' + e.dataset.name + '</h5>'
+    });
+    $.ajax({
+        type: 'GET',
+        url: urlLiberarFilaPrebalanza,
+        dataType: 'json',
+        data: {
+            callePrebalanzaId: e.dataset.id,
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("La " + e.dataset.name + " fue liberada correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+            }
+        },
+        error: function (error) {
+            console.error(error);
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+}
