@@ -18,7 +18,7 @@ namespace Molinos.Scato.Actividades
             var servicio = context.GetExtension<IServicioComandos>();
             var repositorio = context.GetExtension<IServicioRepositorio>();
             var configuracionLlamadoAutomatico = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
-            if (configuracionLlamadoAutomatico != null && !bool.TryParse(configuracionLlamadoAutomatico.Valor, out bool llamadoAutomaticoActivo))
+            if (configuracionLlamadoAutomatico == null || !bool.TryParse(configuracionLlamadoAutomatico.Valor, out bool llamadoAutomaticoActivo) || !llamadoAutomaticoActivo)
                 return resultado;
 
             var callePlayaInternaList = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(q => !q.Deshabilitada);
