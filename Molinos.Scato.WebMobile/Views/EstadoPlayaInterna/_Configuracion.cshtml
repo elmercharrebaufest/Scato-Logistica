@@ -1,8 +1,9 @@
 ﻿@using Molinos.Scato.Dominio.Dto
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Dominio.Enums
-@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Helpers;
+@using Molinos.Scato.Dominio.Seguridad;
 @model List<TipoCallePlantaDto>
 
 @{
@@ -36,15 +37,16 @@
 
                         <ul class="custom-list">
                             <li>
-                                <select name="callePaseDirecto">
-                                    @if (!calles.Any(c => c.EsPasoDirecto)) 
+                                
+                                <select name="callePaseDirecto" disabled=@(!PermisosHelper.Is(PermisosScato.AbmCalle))>
+                                    @if (!calles.Any(c => c.EsPasoDirecto))
                                     {
-                                        <option value=0 selected ></option>
+                                        <option value=0 selected></option>
                                     }
                                     @foreach (var opcion in calles)
                                     {
                                         <option value="@opcion.CalleId" @(opcion.EsPasoDirecto ? "selected" : "")>@opcion.CalleDesc</option>
-                                       
+
                                     }
 
                                 </select>
@@ -79,12 +81,20 @@
                         <form method="post">
 
                             <ul class="custom-list">
-
+                                @{
+                                    var htmlAttributes = new Dictionary<string, object>();
+                                    htmlAttributes.Add("class", "radio-button");
+                                    if (!PermisosHelper.Is(PermisosScato.AbmCalle) || !PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza))
+                                    {
+                                        htmlAttributes.Add("disabled", "disabled");
+                                    }
+                                }
                                 @foreach (var configuracion in configuraciones)
                                 {
+
                                     <li>
                                         <label>
-                                            @Html.RadioButton("materialPaseDirecto", configuracion.Item1, configuracion.Item3, new { @class = "radio-button" })
+                                            @Html.RadioButton("materialPaseDirecto", configuracion.Item1, configuracion.Item3, htmlAttributes)
                                             @configuracion.Item2
                                         </label>
                                     </li>

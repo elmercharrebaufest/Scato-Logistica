@@ -751,6 +751,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ContingenciaPesosExcedentes = 613,
         [Display(ResourceType = typeof(Textos), Name = "CrearClienteProvisorio")]
         CrearClienteProvisorio = 614,
+        [Display(ResourceType = typeof(Textos), Name = "EdicionConfiguracionPrebalanza")]
+        EdicionConfiguracionPrebalanza = 615,
 
     }
 }
