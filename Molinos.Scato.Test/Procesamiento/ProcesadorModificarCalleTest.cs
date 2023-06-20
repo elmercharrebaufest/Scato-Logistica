@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
+using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Test.Mock;
@@ -16,6 +17,7 @@ namespace Molinos.Scato.Test.Procesamiento
         private ProcesadorModificarCalle target;
         private Mock<IRepositorio> repositorioMock;
         private IConversor conversor;
+        private Mock<IServicioComandos> comandosMock;
         private CalleDto tipoDto;
         private Calle tipo;
 
@@ -24,7 +26,7 @@ namespace Molinos.Scato.Test.Procesamiento
         {
             repositorioMock = new Mock<IRepositorio>();
             conversor = FactoryConversor.ConversorAutoMapper;
-            target = new ProcesadorModificarCalle(repositorioMock.Object, conversor, new NullLogger());
+            target = new ProcesadorModificarCalle(repositorioMock.Object, conversor, new NullLogger(), comandosMock.Object);
             tipoDto = new CalleDto()
             {
                 Id = 1,
