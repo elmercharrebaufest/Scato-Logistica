@@ -283,14 +283,7 @@ function LiberarFilePrebalanza(e) {
     });
 }
 
-
-$(document).ready(function () {
-
-    
-});
-
 function OnSuccess(data) {
-    console.log(JSON.stringify(data))
     if (data.TieneAdvertencias===true) {
         MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
     }
