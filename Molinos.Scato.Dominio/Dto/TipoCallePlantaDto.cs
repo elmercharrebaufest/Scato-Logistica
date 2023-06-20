@@ -31,6 +31,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsPrimero { get; set; }
         public bool EsUltimo { get; set; }
         public List<CamionPlantaDto> Camiones { get; set; }
+        public bool EsPasoDirecto { get; set; }
     }
 
     public class CamionPlantaDto

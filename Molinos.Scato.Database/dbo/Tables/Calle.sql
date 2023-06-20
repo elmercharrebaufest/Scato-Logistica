@@ -17,6 +17,7 @@
     [RangoCaracteristicaCalidadMinimo] DECIMAL (18, 2) NULL,
     [RangoCaracteristicaCalidadMaximo] DECIMAL (18, 2) NULL,
     [Posicion] INT NULL, 
+    [EsPasoDirecto] BIT NOT NULL DEFAULT ((0)), 
     CONSTRAINT [PK_dbo.Calle] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Calle_dbo.Calle_CalleCalado_Id] FOREIGN KEY ([CalleCalado_Id]) REFERENCES [dbo].[Calle] ([Id]),
     CONSTRAINT [FK_dbo.Calle_dbo.Calle_CaracteristicaDeCalidad_Id] FOREIGN KEY ([CaracteristicaDeCalidad_Id]) REFERENCES [dbo].[CaracteristicaDeCalidad] ([Id]),

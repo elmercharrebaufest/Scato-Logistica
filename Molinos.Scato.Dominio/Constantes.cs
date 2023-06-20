@@ -108,6 +108,7 @@
             {
                 public const string CartelLedPreBalanza = "CartelLedPreBalanza";
                 public const string LlamadoAutomatico = "LlamadoAutomaticoPreBalanza";
+                public const string VariablePredeterminadaPasoPrioritaria = "02";
             }
 
             public struct Volcadoras

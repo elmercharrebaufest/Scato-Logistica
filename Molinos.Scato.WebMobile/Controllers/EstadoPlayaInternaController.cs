@@ -1,5 +1,4 @@
-﻿using Molinos.Scato.Dominio;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Seguridad;
@@ -50,9 +49,14 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         public ActionResult Index()
+
         {
             var tipoCallePlantaLista = ObtenerTiposDeCallesPlanta();
             ViewBag.LlamadoAutomaticoPrebalanza = ObtenerConfiguracionLlamadoAutomaticoPrebalanza();
+            var materialPasoDirecto = servicio.ObtenerConfiguracionGeneral("EstadoPlayaInterna", "PaseDirecto");
+            ViewBag.ConfiguracionSwitch = ObtenerConfiguracionPasoDrecto(materialPasoDirecto.Valor);
+            ViewBag.IdConfiguracion = materialPasoDirecto.Id;
+
             return View(tipoCallePlantaLista);
         }
 
@@ -161,7 +165,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var response = new RespuestaEstandarDto();
             try
             {
-                var configuracionLlamadoAutomatico = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
+                var configuracionLlamadoAutomatico = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
                 if (configuracionLlamadoAutomatico == null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No existe la configuración de Llamado Automatico de Prebalanza", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -293,6 +297,110 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+        
+        [HttpPost]
+        public JsonResult GuardarPasoDirecto(int callePaseDirecto, int materialPaseDirecto, int idConfiguracion)
+        {
+            var response = new RespuestaEstandarDto();
+
+            try
+            {
+                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
+                var calles = ObtenerTiposDeCallesPlanta().Where(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).Select(s => s.Calles).ToList();
+                var sonPaseDirecto = calles[0].Where(c => c.EsPasoDirecto);
+
+                if (sonPaseDirecto.Count() > 0)
+                {
+                    sonPaseDirecto.ForEach(i =>
+                    {
+                        var calleAnterior = ObtenerTiposDeCallesPlantaPorId(callePaseDirecto);
+                        servicioComandos.Ejecutar(new ModificarCalle
+                        {
+                            Dto = new CalleDto
+                            {
+                                Id = calleAnterior.Id,
+                                EsPasoDirecto = calleAnterior.EsPasoDirecto,
+                                MaterialId = calleAnterior.MaterialId,
+                                Nombre = calleAnterior.Nombre,
+                                Codigo = calleAnterior.Codigo,
+                                CentroId = calleAnterior.CentroId,
+                                TipoCalle = calleAnterior.TipoCalle
+                            },
+                            Llamada = false,
+                            Usuario = usuario.Value
+                        });
+                    });
+                }
+
+                ConfiguracionGeneralDto configuracionDto = new ConfiguracionGeneralDto();
+                if (callePaseDirecto != 0)
+                {
+                    var calle = ObtenerTiposDeCallesPlantaPorId(callePaseDirecto);
+
+                    servicioComandos.Ejecutar(new ModificarCalle
+                    {
+                        Dto = new CalleDto
+                        {
+                            Id = callePaseDirecto,
+                            EsPasoDirecto = materialPaseDirecto == 0 ? false : true,
+                            MaterialId = materialPaseDirecto,
+                            Nombre = calle.Nombre,
+                            Codigo = calle.Codigo,
+                            CentroId = calle.CentroId,
+                            TipoCalle = calle.TipoCalle
+                        },
+                        Llamada = false,
+                        Usuario = usuario.Value
+                    });
+
+                    configuracionDto = new ConfiguracionGeneralDto
+                    {
+                        CentroId = calle.CentroId,
+                        UsuarioUltimaModificacion = usuario.Value,
+                        Valor = materialPaseDirecto.ToString(),
+                        Id = idConfiguracion
+                    };
+                }
+                else
+                {
+                    configuracionDto = new ConfiguracionGeneralDto
+                    {
+                        UsuarioUltimaModificacion = usuario.Value,
+                        Valor = "0",
+                        Id = idConfiguracion
+                    };
+
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se puede asignar un material sin seleccionar una fila", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                }
+
+                servicioComandos.Ejecutar(new ModificarConfiguracionGeneral
+                {
+                    Dto = configuracionDto
+                });
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error al guardar la configuracion";
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+
+            return Json(response);
+        }
+
+        private List<Tuple<int, string, bool>> ObtenerConfiguracionPasoDrecto(string materialPaseDirecto)
+        {
+            var idMaterialPasoDirecto = servicio.ObtenerConfiguracionGeneral("EstadoPlayaInterna", "MaterialesPaseDirecto");
+            List<Tuple<int, string, bool>> configuracionPaseDirecto = new List<Tuple<int, string, bool>>();
+            int idMaterialPaseDirecto = Convert.ToInt16(materialPaseDirecto);
+            idMaterialPasoDirecto.Valor.Split(',').ForEach(i =>
+            {
+                int id = Convert.ToInt32(i);
+                var material = servicio.ObtenerMaterial(id);
+                configuracionPaseDirecto.Add(new Tuple<int, string, bool>(id, material.DescripcionCorta != null ? material.DescripcionCorta.ToUpper() : string.Empty, material.Id.Equals(idMaterialPaseDirecto)));
+            });
+            configuracionPaseDirecto.Add(new Tuple<int, string, bool>(0, "NINGUNO", idMaterialPaseDirecto.Equals(0)));
+            return configuracionPaseDirecto;
+        }
 
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()
         {
@@ -331,7 +439,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                     LimiteDeCamiones = calle.CantidadDeCamiones,
                     Bloqueada = calle.Bloqueada,
                     EsPrimero = false,
-                    EsUltimo = false
+                    EsUltimo = false,
+                    EsPasoDirecto = calle.EsPasoDirecto
                 };
                 tipoCallePlanta.Calles.Add(callePlanta);
 
@@ -363,6 +472,17 @@ namespace Molinos.Scato.WebMobile.Controllers
             return tipoCallePlantaLista;
         }
 
+        private CalleDto ObtenerTiposDeCallesPlantaPorId(int idCalle)
+        {
+            var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
+            var centroId = int.Parse(centro.Value);
+            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
+
+            CalleDto callePorId = calles.Where(c => c.Id == idCalle).First();
+
+            return callePorId;
+        }
+
         private void DesbloquearCalle(int calleId)
         {
             try
@@ -380,7 +500,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private bool ObtenerConfiguracionLlamadoAutomaticoPrebalanza()
         {
-            var configuracionLlamadoAutomaticoPrebalanza = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
+            var configuracionLlamadoAutomaticoPrebalanza = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
             if (configuracionLlamadoAutomaticoPrebalanza == null || string.IsNullOrEmpty(configuracionLlamadoAutomaticoPrebalanza.Valor))
                 return false;
 
@@ -399,7 +519,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private void EnviarMensajeLlamadoACartelPrebalanza(ResultadoMensajeCartelLed configuracionCartel)
         {
-            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
+            var cartel = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             servicioComandos.Ejecutar(new EnviarMensajeCartelLed
             {
                 Mensaje = configuracionCartel.Mensaje,
@@ -412,7 +532,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private void LimpiarMensajeLlamadoACartelPrebalanza(ResultadoMensajeCartelLedReordenado resultadoCartelLed)
         {
-            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
+            var cartel = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             foreach (var mensajeCartelLed in resultadoCartelLed.ListaDeMensajes)
             {
                 servicioComandos.Ejecutar(new EnviarMensajeCartelLed

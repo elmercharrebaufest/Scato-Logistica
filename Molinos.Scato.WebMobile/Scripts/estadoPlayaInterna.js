@@ -282,3 +282,20 @@ function LiberarFilePrebalanza(e) {
         }
     });
 }
+
+function OnSuccess(data) {
+    if (data.TieneAdvertencias===true) {
+        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
+    }
+    else {
+        MostrarAlertaExitosa("Se configuro correctamente.");
+    }
+    if (data.EsValido !== false) {
+        MostrarAlertaError(data.Mensajes[0].Mensaje);
+    }
+    
+}
+
+
+
+

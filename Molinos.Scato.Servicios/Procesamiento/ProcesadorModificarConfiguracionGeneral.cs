@@ -18,9 +18,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void ModificarEntidad(ModificarConfiguracionGeneral comando)
         {
             var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(comando.Dto.Id);
+
             configuracion.Valor = comando.Dto.Valor;
+            configuracion.FechaUltimaModificacion = comando.Dto.FechaUltimaModificacion ?? DateTime.Now;
             configuracion.UsuarioUltimaModificacion = comando.Dto.UsuarioUltimaModificacion;
-            configuracion.FechaUltimaModificacion = DateTime.Now;
         }
 
         protected override void Validar(ModificarConfiguracionGeneral comando, Resultado resultado)

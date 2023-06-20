@@ -10165,6 +10165,9 @@
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
   </data>
+  <data name="Calle_EsPasoDirecto" xml:space="preserve">
+    <value>Es paso directo</value>
+  </data>
   <data name="ClienteProvisorio" xml:space="preserve">
     <value>Cliente provisorio</value>
   </data>
