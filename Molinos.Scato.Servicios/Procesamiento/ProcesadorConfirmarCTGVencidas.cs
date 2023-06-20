@@ -38,14 +38,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 var client = GenerarClienteWebAPI();
-                Log.Debug("ProcesadorConfirmarCTGVencidas - Se generó cliente web API");
                 var ctgsVencidos = ObtenerCTGVencidos(comando, client);
-                Log.Debug($"ProcesadorConfirmarCTGVencidas - Se obtuvo CTGs vencidos {ctgsVencidos.ToJson()}");
+                Log.Debug($"CTGDG Vencidos: {ctgsVencidos.ToJson()}");
                 foreach (var ctg in ctgsVencidos)
                 {
                     var resultadoCpe = ObtenerDatosCPEDG(comando.CentroId, ctg);
-                    Log.Debug($"ProcesadorConfirmarCTGVencidas - Se obtuvo CTGs vencidos NroCTG:{resultadoCpe.NroCTG} Sucursal:{resultadoCpe.Sucursal} NroOrden:{resultadoCpe.NroOrden} TipoCPE:{resultadoCpe.TipoCPE} Patente:{resultadoCpe.PatenteCamion}");
-                    if (!resultadoCpe.HayErrores)
+                    if(!resultadoCpe.HayErrores)
                         ConfirmarCPEDescargadoEnDestino(client, resultadoCpe);
                 }
             }

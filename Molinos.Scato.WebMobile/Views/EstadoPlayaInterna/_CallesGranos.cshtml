@@ -5,7 +5,7 @@
 @using Molinos.Scato.Dominio.Helpers;
 @model List<TipoCallePlantaDto>
 
-@{ 
+@{
     var model = Model.Where(c => c.TipoCalle == TipoCalle.PlayaInterna || c.TipoCalle == TipoCalle.EnTransitoGranos || c.TipoCalle == TipoCalle.PreBalanzaGranos || c.TipoCalle == TipoCalle.SalidaGranos).ToList();
 }
 
@@ -26,5 +26,5 @@
 <div class="row" style="display:flex; justify-content:end;">
     @Html.Partial("_CallesHeader")
 </div>
-
+@Html.Partial("_LlamadoAutomaticoPrebalanza")
 @Html.Partial("_CallesBody")

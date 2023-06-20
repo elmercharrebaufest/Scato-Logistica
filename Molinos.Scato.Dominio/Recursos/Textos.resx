@@ -10228,4 +10228,7 @@
   <data name="Error_NoSojaIMPO" xml:space="preserve">
     <value>Seleccione Recorridos con soja IMPO</value>
   </data>
+  <data name="ConfiguracionGeneral_Inexistente" xml:space="preserve">
+    <value>No existe la configuración</value>
+  </data>
 </root>

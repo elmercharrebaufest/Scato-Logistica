@@ -11,6 +11,6 @@ namespace Molinos.Scato.Actividades.Interfaces
     {
         [OperationContract]
         [return: MessageParameter(Name = "resultado")]
-        Resultado BajaCTG(Guid instanceId, DecisionCtg decision, string codigoBaja, ControlRecorridoDto controlRecorrido);
+        Resultado BajaCTGDG(Guid instanceId, DecisionCtg decision, string codigoBaja, ControlRecorridoDto controlRecorrido);
     }
 }

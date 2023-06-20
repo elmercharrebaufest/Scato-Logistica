@@ -167,6 +167,11 @@ function CopiarFiltros() {
         $("#filtroOrdenarPor").val($("#hOrdenarPor").val());
         $("#filtroDirOrden").val($("#hDirOrden").val());
     }
+    else
+    {
+        $("#filtroOrdenarPor").val('');
+        $("#filtroDirOrden").val('');
+    }
 
     var container = $('#gridContainer');
     if (container.attr('data-grid-url')) {

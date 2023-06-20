@@ -47,7 +47,7 @@
                                 <div class="row justify-content-md-center">
                                     @if (PermisosHelper.Is(PermisosScato.CambioDeMaterialEnFilas))
                                     {
-                                        <div class="col-12" data-bind="foreach: $root.Materiales">
+                                        <div class="col-12" data-bind="foreach: $root.MaterialesGranos()">
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" data-bind="attr: { id: $parent.Id + '-' + MaterialId, name: 'rcc'+$parent.Id, value: MaterialId}, checked: $parent.MaterialId,enable: !$parent.Automatica(), click: $parent.CambiarModo">
                                                 <label class="form-check-label" data-bind="text: MaterialDesc, attr: { for: $parent.Id + '-' + MaterialId }"></label>
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="row row-card-no-pd" data-bind="foreach: $root.Materiales">
+        <div class="row row-card-no-pd" data-bind="foreach: $root.MaterialesGranos()">
             <div class="col-md-12">
                 <div class="sinbordetb row">
                     <div class="col sinbordetb">

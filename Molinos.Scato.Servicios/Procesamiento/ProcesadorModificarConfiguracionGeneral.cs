@@ -26,12 +26,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(ModificarConfiguracionGeneral comando, Resultado resultado)
         {
-            if (
-                Repositorio.Existe<ConfiguracionGeneral>(
-                    x =>
-                    x.Id != comando.Dto.Id && x.Pantalla == comando.Dto.Pantalla && x.Nombre == comando.Dto.Nombre && x.CentroId == comando.Dto.CentroId))
+            if (!Repositorio.Existe<ConfiguracionGeneral>(x => x.Id == comando.Dto.Id))
             {
-                resultado.Error("ConfiguracionGeneral", Textos.CategoriaCamiones_PatenteExistente);
+                resultado.Error("ConfiguracionGeneral", $"{Textos.ConfiguracionGeneral_Inexistente} a modificar");
             }
         }
     }

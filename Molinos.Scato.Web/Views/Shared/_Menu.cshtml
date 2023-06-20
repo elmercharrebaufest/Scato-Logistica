@@ -243,15 +243,15 @@
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamaras))
                                         {
-                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamaras, "Index", "VideoCamara", new { nombrePc = "PuestoVC", mostrarNombre = false }, new { @class = "ajax-popup-link" })</li>
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=PuestoVC&mostrarNombre=False")">@Textos.VisualizarVideoCamaras</a></li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasBalanza))
                                         {
-                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasBalanza, "Index", "VideoCamara", new { nombrePc = "PuestoBalanzaVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=PuestoBalanzaVC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasBalanza</a></li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasExportacion))
                                         {
-                                            <li>@Html.ActionLink(Textos.VisualizarVideoCamarasExportacion, "Index", "VideoCamara", new { nombrePc = "PuestoExportacionVC", mostrarNombre = true }, new { @class = "ajax-popup-link" })</li>
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=PuestoExportacionVC&mostrarNombre=True")">@Textos.VisualizarVideoCamarasExportacion</a></li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasCalador1))
                                         {
