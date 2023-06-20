@@ -165,7 +165,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var response = new RespuestaEstandarDto();
             try
             {
-                var configuracionLlamadoAutomatico = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
+                var configuracionLlamadoAutomatico = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
                 if (configuracionLlamadoAutomatico == null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No existe la configuración de Llamado Automatico de Prebalanza", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -500,7 +500,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private bool ObtenerConfiguracionLlamadoAutomaticoPrebalanza()
         {
-            var configuracionLlamadoAutomaticoPrebalanza = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
+            var configuracionLlamadoAutomaticoPrebalanza = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
             if (configuracionLlamadoAutomaticoPrebalanza == null || string.IsNullOrEmpty(configuracionLlamadoAutomaticoPrebalanza.Valor))
                 return false;
 
@@ -519,7 +519,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private void EnviarMensajeLlamadoACartelPrebalanza(ResultadoMensajeCartelLed configuracionCartel)
         {
-            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
+            var cartel = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             servicioComandos.Ejecutar(new EnviarMensajeCartelLed
             {
                 Mensaje = configuracionCartel.Mensaje,
@@ -532,7 +532,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private void LimpiarMensajeLlamadoACartelPrebalanza(ResultadoMensajeCartelLedReordenado resultadoCartelLed)
         {
-            var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
+            var cartel = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             foreach (var mensajeCartelLed in resultadoCartelLed.ListaDeMensajes)
             {
                 servicioComandos.Ejecutar(new EnviarMensajeCartelLed
