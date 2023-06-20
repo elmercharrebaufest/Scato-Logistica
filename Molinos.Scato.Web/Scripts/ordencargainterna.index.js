@@ -12,9 +12,8 @@
                     MostrarAlertaAdvertencia(response.mensaje);
                 }
             })
-        }    
+        }
     });
-
 
     DefinirAutocompletarChofer();
     var formatoFecha = Globalize.culture().calendars.standard.patterns.d.replace(/[a-z]/g, '9');
@@ -129,17 +128,17 @@
         );
     }
 
-    if($('#IntermediarioFlete').length > 0){
-        DefinirAutocompletarConSAP('#IntermediarioFlete', 
-        '#IntermediarioFleteId', 
-        '#autocompleteCorr', 
-        $('#links').data().urlBuscarProveedores,
-        $('#links').data().urlBuscarProveedor,
-        $('#links').data().urlObtenerProveedoresSap,
-        function () {
-        },
-        function () {
-        });
+    if ($('#IntermediarioFlete').length > 0) {
+        DefinirAutocompletarConSAP('#IntermediarioFlete',
+            '#IntermediarioFleteId',
+            '#autocompleteCorr',
+            $('#links').data().urlBuscarProveedores,
+            $('#links').data().urlBuscarProveedor,
+            $('#links').data().urlObtenerProveedoresSap,
+            function () {
+            },
+            function () {
+            });
     }
 
     if ($('#Destinatario').length > 0) {
@@ -196,14 +195,14 @@
             $("#requeridoRechazo").show();
             $("#largoMensajeRechazo").hide();
         }
-        
+
         else if ($("#motivoRechazo").val().length < 10) {
             valido = false
             $("#largoMensajeRechazo").addClass("field-validation-error");
             $("#largoMensajeRechazo").show();
             $("#requeridoRechazo").hide();
         }
-        
+
         if ($("#Demorado").length > 0) {
             $("#Demorado").val("False");
         }
@@ -214,9 +213,7 @@
         if (valido) {
             modalRechazarOrdenCargaInterna.close();
             $("#ordenCargaInterna-form").submit();
-           
         }
-       
     })
 
     $("#btnDemorarOrdenCargaInterna").click(function () {
@@ -270,12 +267,10 @@
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("True");
         }
-        if (valido)
-        {
+        if (valido) {
             modalRechazarOrdenCargaInterna.close();
             $("#ordenCargaInternaFason-form").submit();
         }
-        
     })
 
     $("#btnDemorarOrdenCargaInternaFason").click(function () {
@@ -300,8 +295,7 @@
         if ($("#Rechazado").length > 0) {
             $("#Rechazado").val("False");
         }
-        if (valido)
-        {
+        if (valido) {
             modalDemorarOrdenCargaInterna.close();
             $("#ordenCargaInternaFason-form").submit();
         }
@@ -353,7 +347,6 @@ function onSelectTransportista() {
 }
 
 function deshabilitarKmRecorrerYLocalidad() {
-
     if ($('#ClienteId').length == 0 || $('#ClienteId').val() == null || $('#ClienteId').val() == '0' || $('#localidadDestinoDropdown option').length == 0) {
         $('#KmARecorrer').val("");
         $('#LocalidadDestinoId').val(0);
@@ -372,7 +365,6 @@ function completarKmRecorrerYLocalidad() {
         clienteId = $('#ClienteId').val();
     }
     if (clienteId > 0) {
-
         $.getJSON($('#links').data().urlBuscarKmporproveedor, { clienteId: clienteId },
             function (response) {
                 var options = '';
@@ -401,14 +393,10 @@ function completarKmRecorrerYLocalidad() {
                     deshabilitarKmRecorrerYLocalidad();
                     MostrarAlertaAdvertencia("El cliente no tiene km a recorrer asociados");
                 }
-
             });
-
-
     } else {
         deshabilitarKmRecorrerYLocalidad();
     }
-
 }
 
 function validarClienteNoBloqueado() {
@@ -420,7 +408,6 @@ function validarClienteNoBloqueado() {
         clienteId = $('#ClienteId').val();
     }
     if (clienteId > 0) {
-
         $.getJSON($('#links').data().urlObtenerEstadoCliente, { clienteId: clienteId })
             .done(function (response) {
                 if (response.bloqueado) {
@@ -449,7 +436,7 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
         if (data.CodigoDeError == 0) {
             if (data.Categoria != null) {
                 if ($('#TipoVehiculo option[value=' + data.Categoria + ']').length == 0) {
-                     MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
+                    MostrarAlertaError("La categoría del vehículo " + data.CategoriaDesc + " no esta configurada para el centro actual");
                 } else {
                     $('#TipoVehiculo').val(data.Categoria);
                 }
@@ -467,11 +454,11 @@ function ActualizarTipoVehiculo(patente, acoplado, before, callback) {
 }
 
 function CargarAlamacenesPorMaterial() {
-    var material = $("#MaterialId").val() != ''?  $("#MaterialId").val() : null;
-    if(material == null){
+    var material = $("#MaterialId").val() != '' ? $("#MaterialId").val() : null;
+    if (material == null) {
         return;
     }
-    $.getJSON($('#links').data().urlObtenerAlmacenesPorMaterial, { materialId: material},
+    $.getJSON($('#links').data().urlObtenerAlmacenesPorMaterial, { materialId: material },
         function (allData) {
             var options = '';
             for (var j = 0; j < allData.length; j++) {
@@ -485,14 +472,13 @@ function CargarAlamacenesPorMaterial() {
 
 function CargarPlantas() {
     let plantaSeleccionada = $("#PlantaSeleccionada").val();
-    let cliente = $("#DestinoId").val() != null? $("#DestinoId").val() : $("#ClienteId").val() ;
+    let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val();
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerPlantasPorCliente, { clienteId: cliente },
             function (allData) {
                 let options = '<option value="">(nro. planta)</option>';
                 $('#PlantaDGDestino').html(options);
                 if (!allData.HayErrores) {
-                    
                     for (let i = 0; i < allData.Plantas.length; i++) {
                         options += `<option value="${allData.Plantas[i]}">Planta Nro. ${allData.Plantas[i]}</option>`;
                     }
@@ -509,7 +495,7 @@ function CargarPlantas() {
 function CargarDomicilios() {
     let ordenDomicilioSeleccionado = $("#OrdenDomicilioDestino").val();
     let tipoDomicilioSeleccionado = $("#TipoDomicilioDestino").val();
-    let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val() ;
+    let cliente = $("#DestinoId").val() != null ? $("#DestinoId").val() : $("#ClienteId").val();
     if ($("#DerivadoGranarioHabilitado").val().toLowerCase() === 'true' && cliente.length > 0) {
         $.getJSON($('#links').data().urlObtenerDomiciliosDerivadoGranarioPorCliente, { clienteId: cliente },
             function (allData) {
@@ -528,7 +514,6 @@ function CargarDomicilios() {
                         $('#TipoYOrdenDestino').attr('title', $('#TipoYOrdenDestino :selected').text());
                     }
                 }
-
             }
         );
     }
