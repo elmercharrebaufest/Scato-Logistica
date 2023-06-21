@@ -339,22 +339,24 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (!material.EsDerivadoGranario)
+                        if (material.EsDerivadoGranario
+                            && (!string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)
+                            || (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA) && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))))
                         {
-                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
                             if (cliente == null)
                             {
-                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
                             }
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
                         }
                         else
                         {
-                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
+                            var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                             if (cliente == null)
                             {
-                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino, ordenCargaFas[i].CUIT) }, JsonRequestBehavior.AllowGet);
+                                return Json(new { datosSap = -1, error = string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNAG) }, JsonRequestBehavior.AllowGet);
                             }
                             itemSap.ClienteId = cliente.Id;
                             itemSap.ClienteDesc = cliente.Descripcion;
