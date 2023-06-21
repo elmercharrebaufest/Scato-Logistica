@@ -339,7 +339,7 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
+                        if (!material.EsDerivadoGranario)
                         {
                             var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                             if (cliente == null)
