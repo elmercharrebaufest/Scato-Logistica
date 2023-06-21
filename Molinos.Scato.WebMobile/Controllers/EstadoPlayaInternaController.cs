@@ -5,6 +5,7 @@ using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.Helpers;
+using Molinos.Scato.WebMobile.Seguridad;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -299,9 +300,16 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
         
         [HttpPost]
-        public JsonResult GuardarPasoDirecto(int callePaseDirecto, int materialPaseDirecto, int idConfiguracion)
+        public JsonResult GuardarPasoDirecto(int materialPaseDirecto , int idConfiguracion,int callePaseDirecto=0)
         {
+
             var response = new RespuestaEstandarDto();
+
+            bool bNormal = false;
+            if (!PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza) && PermisosHelper.Is(PermisosScato.AbmCalle))
+            {
+                bNormal = true;
+            }
 
             try
             {
@@ -313,18 +321,20 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     sonPaseDirecto.ForEach(i =>
                     {
-                        var calleAnterior = ObtenerTiposDeCallesPlantaPorId(callePaseDirecto);
+                        var calleAnterior = ObtenerTiposDeCallesPlantaPorId(i.CalleId);
                         servicioComandos.Ejecutar(new ModificarCalle
                         {
                             Dto = new CalleDto
                             {
                                 Id = calleAnterior.Id,
-                                EsPasoDirecto = calleAnterior.EsPasoDirecto,
+                                EsPasoDirecto = bNormal?false:true,
                                 MaterialId = calleAnterior.MaterialId,
                                 Nombre = calleAnterior.Nombre,
                                 Codigo = calleAnterior.Codigo,
                                 CentroId = calleAnterior.CentroId,
-                                TipoCalle = calleAnterior.TipoCalle
+                                TipoCalle = calleAnterior.TipoCalle,
+                                CantidadDeCamiones = calleAnterior.CantidadDeCamiones
+
                             },
                             Llamada = false,
                             Usuario = usuario.Value
@@ -342,12 +352,14 @@ namespace Molinos.Scato.WebMobile.Controllers
                         Dto = new CalleDto
                         {
                             Id = callePaseDirecto,
-                            EsPasoDirecto = materialPaseDirecto == 0 ? false : true,
+                            EsPasoDirecto = materialPaseDirecto != 0,
                             MaterialId = materialPaseDirecto,
                             Nombre = calle.Nombre,
                             Codigo = calle.Codigo,
                             CentroId = calle.CentroId,
-                            TipoCalle = calle.TipoCalle
+                            TipoCalle = calle.TipoCalle,
+                            CantidadDeCamiones = calle.CantidadDeCamiones
+
                         },
                         Llamada = false,
                         Usuario = usuario.Value
@@ -363,15 +375,21 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
                 else
                 {
+                   
+                    if (bNormal)
+                    {
+                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se puede asignar un material sin seleccionar una fila", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                    }
                     configuracionDto = new ConfiguracionGeneralDto
                     {
                         UsuarioUltimaModificacion = usuario.Value,
-                        Valor = "0",
+                        Valor = !bNormal?materialPaseDirecto.ToString():"0",
                         Id = idConfiguracion
                     };
-
-                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se puede asignar un material sin seleccionar una fila", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
+                    
+                    
                 }
+
 
                 servicioComandos.Ejecutar(new ModificarConfiguracionGeneral
                 {
