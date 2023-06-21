@@ -1,0 +1,41 @@
+﻿<div class="llamadoAutomaticoPrebalanza">
+    <p>Llamado automático a balanzas de entrada</p>
+    <div class="switchPlayaInterna">
+        <input type="checkbox" id="switchLlamadoAutomaticoPrebalanza" checked="@(ViewBag.LlamadoAutomaticoPrebalanza)">
+        <label for="switchLlamadoAutomaticoPrebalanza"></label>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const switchLlamadoAutomaticoPrebalanza = document.getElementById('switchLlamadoAutomaticoPrebalanza')
+        switchLlamadoAutomaticoPrebalanza.addEventListener('change', (e) => LlamadoAutomaticoPrebalanza(e.target.checked));
+    });
+
+    function LlamadoAutomaticoPrebalanza(activar) {
+        $.blockUI({
+            blockMsgClass: 'blocuiBox',
+            message: '<h5>' + cargandoGif() + (activar ? "Activando" : "Desactivando") + ' el LLamado Automático de Prebalanza</h5>'
+        });
+        $.ajax({
+            url: urlConfiguracionLlamadoAutomaticoPrebalanza,
+            data: {
+                activar: activar
+            },
+            type: "POST",
+            success: function (response) {
+                if (response.EsValido == true) {
+                    MostrarAlertaExitosa("El LLamado Automatico de Prebalanza fue " + (activar ? "activado" : "desactivado") + " correctamente.");
+                } else {
+                    MostrarRespuestaMensajes(response);
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            },
+            complete: function () {
+                $.unblockUI();
+            }
+        });
+    }
+</script>

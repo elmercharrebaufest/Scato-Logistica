@@ -6343,6 +6343,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Es paso directo.
+        /// </summary>
+        public static string Calle_EsPasoDirecto {
+            get {
+                return ResourceManager.GetString("Calle_EsPasoDirecto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No existe la calle indicada.
         /// </summary>
         public static string Calle_Inexistente {
@@ -9840,6 +9849,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string ConfiguracionEficienciaCalado_Titulo {
             get {
                 return ResourceManager.GetString("ConfiguracionEficienciaCalado_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No existe la configuración.
+        /// </summary>
+        public static string ConfiguracionGeneral_Inexistente {
+            get {
+                return ResourceManager.GetString("ConfiguracionGeneral_Inexistente", resourceCulture);
             }
         }
         

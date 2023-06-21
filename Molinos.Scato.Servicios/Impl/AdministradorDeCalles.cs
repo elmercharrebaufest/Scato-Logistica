@@ -3,7 +3,7 @@ using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Repositorio.ConsultasEF;
 using System;
-using System.Configuration;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Impl
 {
@@ -31,13 +31,13 @@ namespace Molinos.Scato.Servicios.Impl
                 return repositorio.ObtenerProyeccion<Recorrido, Calle>(x => x.InstanciaWorkflow == instanceId, x => x.Calle);
                 //logica de secuencia
             }
-            
+
             //circular
             if (tipoCalle == TipoCalle.PreCalado && llegoEnHorarioCircular)
             {
                 var centroInformaCircular = repositorio.ObtenerProyeccion<Centro, bool>(x => x.Id == centroId, x => x.InformaCircular);
 
-                if(centroInformaCircular)
+                if (centroInformaCircular)
                     return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(TipoCalle.Circular, material, true));
             }
 
@@ -52,10 +52,20 @@ namespace Molinos.Scato.Servicios.Impl
                 return repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipoYMaterial(tipoCalle, material));
             }
 
-            if(tipoCalle == TipoCalle.PreBalanzaGranos)
+            if (tipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                Calle calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
-                if(calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material)){
+                Calle calle = new Calle();
+                if (EsPasoDirecto())
+                {
+                    calle = repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipo(tipoCalle));
+                }
+                else
+                {
+                    calle = repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
+                }
+
+                if (calle != null && LlegoLimiteDeCamiones(calle) && !EsUltimaCalleDisponible(tipoCalle, material))
+                {
                     calle.Bloqueada = true;
                     //calle.FechaLLamada = DateTime.Now;
                     repositorio.GuardarCambios();
@@ -87,6 +97,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             return repositorio.ObtenerConsultaEscalar(new ObtenerDisponibilidadPreCalado(materialId));
         }
+
         public bool ObtenerEspacioDisponibleEnCalle(int calleId)
         {
             var camiones = repositorio.Contar<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == calleId);
@@ -98,7 +109,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var centroInformaCircular = repositorio.ObtenerProyeccion<Centro, bool>(x => x.Id == centroId, x => x.InformaCircular);
 
-            var callesCircular = repositorio.Listar<Calle>(x =>x.TipoCalle == TipoCalle.Circular && x.CentroId == centroId);
+            var callesCircular = repositorio.Listar<Calle>(x => x.TipoCalle == TipoCalle.Circular && x.CentroId == centroId);
 
             if (callesCircular != null)
             {
@@ -121,6 +132,13 @@ namespace Molinos.Scato.Servicios.Impl
             var callesTotales = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Material.Id == material.Id);
             var callesBloqueadas = repositorio.Contar<Calle>(x => x.TipoCalle == tipoCalle && !x.Deshabilitada && x.Bloqueada && x.Material.Id == material.Id);
             return (callesTotales - callesBloqueadas) == 1;
+        }
+
+        private bool EsPasoDirecto()
+        {
+            string configuracion = repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
+           
+            return !configuracion.Equals("0");
         }
     }
 }

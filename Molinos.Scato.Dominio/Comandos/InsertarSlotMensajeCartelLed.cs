@@ -9,5 +9,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int CalleId { get; set; }
         public int? OrdenCircular { get; set; }
         public bool EsCircular { get; set; }
+        public bool EsPrioritarioPrebalanza { get; set; }
     }
 }

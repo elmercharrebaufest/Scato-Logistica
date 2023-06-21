@@ -9540,8 +9540,8 @@ namespace Molinos.Scato.Servicios.Impl
                     EsSojaIMPO = item.RecorridoCodigoSAP != null ?
                                        item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
                                        item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
-                    ColorFondo = item.EPA != null ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
-                    ColorTexto = item.EPA != null? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
+                    ColorFondo = item.EPA == true? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
+                    ColorTexto = item.EPA == true? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
                 };
 
                 resultado.Add(callePorRecorrido);

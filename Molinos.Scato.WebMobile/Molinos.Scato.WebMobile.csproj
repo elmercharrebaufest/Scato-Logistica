@@ -559,6 +559,8 @@
     <Content Include="Views\PesadasOnline\Listar.cshtml" />
     <Content Include="Views\Camara\Index.cshtml" />
     <Content Include="Views\InformacionMeteorologica\Index.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_LlamadoAutomaticoPrebalanza.cshtml" />
+    <Content Include="Views\EstadoPlayaInterna\_Configuracion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

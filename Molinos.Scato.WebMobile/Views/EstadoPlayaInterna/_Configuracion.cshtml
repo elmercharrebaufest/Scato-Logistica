@@ -1,0 +1,107 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Helpers;
+@using Molinos.Scato.Dominio.Seguridad;
+@model List<TipoCallePlantaDto>
+
+@{
+    List<CallePlantaDto> calles = new List<CallePlantaDto>();
+    Model.Where(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).ToList().ForEach(i => { calles.AddRange(i.Calles); });
+    List<Tuple<int, string, bool>> configuraciones = ViewBag.ConfiguracionSwitch;
+    int id = ViewBag.IdConfiguracion;
+}
+
+<div class="content">
+    <div class="row" style="display:flex; justify-content:left; margin-left:auto;">
+        <div class="col-5">
+            <h6>Configuracion de materiales con paso directo a balanza</h6>
+        </div>
+    </div>
+    @using (Ajax.BeginForm("GuardarPasoDirecto", "EstadoPlayaInterna", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessGuardarPaseDirecto" }, new { @id = "AjaxformId", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.Hidden("idConfiguracion", id)<div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Calle asignada a pase directo:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
+
+                        <ul class="custom-list">
+                            <li>
+
+                                <select name="callePaseDirecto" disabled=@(!PermisosHelper.Is(PermisosScato.AbmCalle))>
+                                    @if (!calles.Any(c => c.EsPasoDirecto))
+                                    {
+                                        <option value=0 selected></option>
+                                    }
+                                    @foreach (var opcion in calles)
+                                    {
+                                        <option value="@opcion.CalleId" @(opcion.EsPasoDirecto ? "selected" : "")>@opcion.CalleDesc</option>
+
+                                    }
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span4">
+                        <div class="control-group">
+                            @*@Html.LabelFor(m => m.EsSojaEPA, new { @class = "control-label" })*@
+                            <div class="controls">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Material seleccionado:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
+                        <form method="post">
+
+                            <ul class="custom-list">
+                                @{
+                                    var htmlAttributes = new Dictionary<string, object>();
+                                    htmlAttributes.Add("class", "radio-button");
+                                    if (!PermisosHelper.Is(PermisosScato.AbmCalle) && !PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza))
+                                    {
+                                        htmlAttributes.Add("disabled", "disabled");
+                                    }
+                                }
+                                @foreach (var configuracion in configuraciones)
+                                {
+
+                                    <li>
+                                        <label>
+                                            @Html.RadioButton("materialPaseDirecto", configuracion.Item1, configuracion.Item3, htmlAttributes)
+                                            @configuracion.Item2
+                                        </label>
+                                    </li>
+                                }
+                            </ul>
+
+                            <input value="Actualizar" type="submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <style>
+        .custom-list {
+            list-style-type: none; /* Quita los puntos de la lista */
+            padding-left: 0px;
+        }
+    </style>
