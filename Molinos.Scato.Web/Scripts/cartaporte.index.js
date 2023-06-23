@@ -34,9 +34,6 @@ jQuery(document).ready(function ($) {
         $('#PagadorFlete').prop('required', false);
         $('#PagadorFlete').rules('remove', 'required');
 
-        $('#Transportista').prop('required', false);
-        $('#Transportista').rules('remove', 'required');
-
         $('#TarifaTonelada').prop('required', false);
         $('#TarifaTonelada').rules('remove', 'required');
     }
