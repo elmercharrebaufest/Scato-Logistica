@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Helpers;
+using Molinos.Scato.Dominio.Recursos;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
-using Molinos.Scato.Dominio.Recursos;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public sealed class CartaPorteDto: IValidatableObject
+    public sealed class CartaPorteDto : IValidatableObject
     {
         public int Id { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_NroCartaPorte")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string NroCartaPorte { get; set; }
@@ -26,11 +27,9 @@ namespace Molinos.Scato.Dominio.Dto
         public string CEE { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_FechaCP")]
-        //[Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public DateTime FechaCP { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_FechaVto")]
-        //[Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public DateTime FechaVto { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_FechaIngreso")]
@@ -40,8 +39,10 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoVehiculo")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public TipoVehiculo TipoVehiculo { get; set; }
-        public int TipoVehiculoInt {
-            get { return (int) TipoVehiculo; }
+
+        public int TipoVehiculoInt
+        {
+            get { return (int)TipoVehiculo; }
         }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_OrigenVehiculo")]
@@ -50,7 +51,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_CTG")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
-        [StringLength(8,ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo" )]
+        [StringLength(8, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string CTG { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoComercial")]
@@ -65,7 +66,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string TipoComercialCodigoSap { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoCategoria")]
-        //[Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int TipoCategoriaId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TipoCategoria")]
@@ -81,7 +81,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool MaterialPideContrato { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Procedencia")]
-        //[Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Procedencia { get; set; }
 
         public string ProcedenciaCodigoSap { get; set; }
@@ -120,11 +119,12 @@ namespace Molinos.Scato.Dominio.Dto
         //###################################
         [Display(ResourceType = typeof(Textos), Name = "Rtte_comercial_venta_primaria")]
         public string RtteComercial { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_RtteComercialVentaSecundario")]
-        public string RtteComercialVentaSecundario { get; set; }       
+        public string RtteComercialVentaSecundario { get; set; }
 
         public string RtteComercialCodigoSap { get; set; }
-        
+
         public string RtteComercialCuit { get; set; }
 
         public string RtteComercialMail { get; set; }
@@ -192,6 +192,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string DestinatarioDomicilio { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Transportista { get; set; }
 
         public string TransportistaCUIT { get; set; }
@@ -204,6 +205,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TarifaTonelada")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public decimal? TarifaTonelada { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TarifaReferencia")]
@@ -257,6 +259,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Tecnologia")]
         [StringLength(10, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public string Tecnologia { get; set; }
+
         public int? TecnologiaId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Prestador")]
@@ -268,10 +271,10 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_BocaDestino")]
         public string BocaDestino { get; set; }
 
-
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Destino")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Destino { get; set; }
+
         public string DestinoCodigoSap { get; set; }
         public int DestinoId { get; set; }
         public string DestinoCuit { get; set; }
@@ -322,10 +325,12 @@ namespace Molinos.Scato.Dominio.Dto
 
         //Se utiliza en CoordinacionController y CargarCartaPorteRedespachoDesvioController
         public Guid InstanciaWorkflow { get; set; }
+
         //Se utiliza en la vista cartaporte
 
         //Se utiliza en CargarCartaPorteRedespachoDesvioController
         public string Workflow { get; set; }
+
         //Se utiliza en la vista cartaporte
 
         public string VehiculoJson
@@ -344,10 +349,9 @@ namespace Molinos.Scato.Dominio.Dto
             }
         }
 
-        public string BocaDestinoOncca  { get; set; }
+        public string BocaDestinoOncca { get; set; }
 
         public string DestinoLocalidadCodigoSap { get; set; }
-
 
         public int? MaterialCodigoEspecie { get; set; }
 
@@ -384,9 +388,10 @@ namespace Molinos.Scato.Dominio.Dto
         public bool VehiculoDemorado { get; set; }
         public string MotivoDemora { get; set; }
         public bool Cpe { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!VehiculoDemorado) 
+            if (!VehiculoDemorado)
             {
                 if (FechaCP == null)
                 {
@@ -414,7 +419,7 @@ namespace Molinos.Scato.Dominio.Dto
                     yield return new ValidationResult(string.Format(Textos.Error_FechaCPAntigua, Textos.CartaPorte_FechaCP, String.Format(CultureInfo.CurrentCulture, "{0:d}", FechaEmision.AddDays(-dias)), new[] { "FechaCP" }));
                 }
             }
-           
+
             if (TipoDeWorkflow == TipoDeWorkflow.Ingreso && string.IsNullOrEmpty(CodigoAnexo) && RequiereAnexoInase)
             {
                 yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_CodigoAnexo), new[] { "CodigoAnexo" });
@@ -429,7 +434,7 @@ namespace Molinos.Scato.Dominio.Dto
             //{
             //    yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_RtteComercial), new[] { "RtteComercial" });
             //}
-            
+
             if (FechaCP != null && FechaCP > FechaEmision)
             {
                 yield return new ValidationResult(string.Format(Textos.Error_FechaMenor + Textos.CartaPorte_FechaIngreso, Textos.CartaPorte_FechaCP), new[] { "FechaCP" });
@@ -449,11 +454,14 @@ namespace Molinos.Scato.Dominio.Dto
             {
                 yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_Cosecha), new[] { "Cosecha" });
             }
+
         }
 
         public string Patente { get; set; }
         public bool LeerCPDeFoto { get; set; }
-        public string NroCartaPorteSAP { 
+
+        public string NroCartaPorteSAP
+        {
             get
             {
                 if (this.Cpe)
@@ -491,39 +499,57 @@ namespace Molinos.Scato.Dominio.Dto
         public string CorredorVendedorSecundarioCuil { get; set; }
         public string RtteComercialProductorCuil { get; set; }
         public int CorredorVendedorSecundarioId { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Corredor_secundario")]
         public string CorredorVendedorSecundario { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_RtteComercialProductor")]
         public string RtteComercialProductor { get; set; }
+
         public string RtteComercialVentaSecundarioCodigoSap { get; set; }
         public string RtteComercialProductorCodigoSap { get; set; }
         public string CorredorVendedorSecundarioCodigoSap { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Rtte_comercial_venta_secundaria_2")]
         public string RtteComercialVentaSecundario2 { get; set; }
+
         public int RtteComercialVentaSecundario2Id { get; set; }
         public string RtteComercialVentaSecundario2Cuil { get; set; }
         public string RtteComercialVentaSecundario2CodigoSap { get; set; }
         public string Observacion { get; set; }
         public string EstadoCpe { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Numero_Operativo")]
         public long? NumeroOperativo { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Codigo_Ramal")]
         public string CodigoRamal { get; set; }
+
         public int? CodigoRamalId { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Numero_Precinto")]
         public string NumeroPrecinto { get; set; }
+
         public int? CodigoRamalAfip { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista_Segundo_Tramo")]
         public string TransportistaTramo2 { get; set; }
+
         public int? TransportistaTramo2Id { get; set; }
         public string TransportistaTramo2CUIT { get; set; }
         public bool EsTransportistaTramo2 { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista_Pagador_Flete")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string PagadorFlete { get; set; }
+
+
         public int? PagadorFleteId { get; set; }
         public string PagadorFleteCuil { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Representante_Recibidor")]
         public string RepresentanteRecibidor { get; set; }
+
         public int? RepresentanteRecibidorId { get; set; }
         public string RepresentanteRecibidorCuil { get; set; }
         public string FotoRutaSustentable { get; set; }
