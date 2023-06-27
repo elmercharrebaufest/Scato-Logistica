@@ -90,7 +90,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
             }
 
-            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto && Repositorio.Existe<Calle>(x => x.EsPasoDirecto))
+            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto && Repositorio.Existe<Calle>(x => x.EsPasoDirecto && x.Id != comando.Dto.Id))
                 resultado.Error("EsPasoDirecto", "Ya existe una fila Prebalanza de Paso Directo");
         }
 
