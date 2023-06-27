@@ -97,6 +97,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void LlamarCallePrebalanzaPrioritario(ModificarCalle comando)
         {
             comando.Dto.FechaLLamada = DateTime.Now;
+            comando.Dto.Bloqueada = true;
             var resultadoInsertarCallePrioritarioCartelLed = servicioComandos.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
                 Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
@@ -128,6 +129,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void LiberarCallePrebalanzaPrioritario(ModificarCalle comando)
         {
             comando.Dto.FechaLLamada = null;
+            comando.Dto.Bloqueada = false;
             var resultadoLimpiarCallePrioritarioCartelLed = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
             {
                 Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
