@@ -1,17 +1,20 @@
 ﻿@using Molinos.Scato.Dominio.Dto
-@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.WebMobile.Seguridad
-@using Molinos.Scato.Dominio.Helpers;
 @using Molinos.Scato.Dominio.Seguridad;
 @model List<TipoCallePlantaDto>
 
 @{
-    List<CallePlantaDto> calles = new List<CallePlantaDto>();
-    Model.Where(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).ToList().ForEach(i => { calles.AddRange(i.Calles); });
-    List<Tuple<int, string, bool>> configuraciones = ViewBag.ConfiguracionSwitch;
-    int id = ViewBag.IdConfiguracion;
+    List<CallePlantaDto> callesPrebalanza = Model.FirstOrDefault(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).Calles;
+    List<MaterialPorCentroDto> materialesGranos = ViewBag.MaterialesGranos;
 }
+
+<style>
+    .custom-list {
+        list-style-type: none; /* Quita los puntos de la lista */
+        padding-left: 0px;
+    }
+</style>
 
 <div class="content">
     <div class="row" style="display:flex; justify-content:left; margin-left:auto;">
@@ -21,7 +24,7 @@
     </div>
     @using (Ajax.BeginForm("GuardarPasoDirecto", "EstadoPlayaInterna", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessGuardarPaseDirecto" }, new { @id = "AjaxformId", @class = "form-horizontal", role = "form" }))
     {
-        @Html.Hidden("idConfiguracion", id)<div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+        <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
             <div class="col-2">
                 <label>
                     Calle asignada a pase directo:
@@ -34,26 +37,15 @@
                         <ul class="custom-list">
                             <li>
 
-                                <select name="callePaseDirecto" disabled=@(!PermisosHelper.Is(PermisosScato.AbmCalle))>
-                                    @if (!calles.Any(c => c.EsPasoDirecto))
+                                <select name="calleIdPaseDirecto" @(!PermisosHelper.Is(PermisosScato.AbmCalle) ? "disabled" : "")>
+                                    <option value=0 @(!callesPrebalanza.Any(c => c.EsPasoDirecto) ? "selected" : "")>Ninguno</option>
+                                    @foreach (var callePrebalanza in callesPrebalanza)
                                     {
-                                        <option value=0 selected></option>
-                                    }
-                                    @foreach (var opcion in calles)
-                                    {
-                                        <option value="@opcion.CalleId" @(opcion.EsPasoDirecto ? "selected" : "")>@opcion.CalleDesc</option>
-
+                                        <option value="@callePrebalanza.CalleId" @(callePrebalanza.EsPasoDirecto ? "selected" : "")>@callePrebalanza.CalleDesc</option>
                                     }
                                 </select>
                             </li>
                         </ul>
-                    </div>
-                    <div class="span4">
-                        <div class="control-group">
-                            @*@Html.LabelFor(m => m.EsSojaEPA, new { @class = "control-label" })*@
-                            <div class="controls">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -79,16 +71,22 @@
                                         htmlAttributes.Add("disabled", "disabled");
                                     }
                                 }
-                                @foreach (var configuracion in configuraciones)
+                                @foreach (var materialGrano in materialesGranos)
                                 {
 
                                     <li>
                                         <label>
-                                            @Html.RadioButton("materialPaseDirecto", configuracion.Item1, configuracion.Item3, htmlAttributes)
-                                            @configuracion.Item2
+                                            @Html.RadioButton("materialIdPaseDirecto", materialGrano.MaterialId, callesPrebalanza.Any(c => c.EsPasoDirecto && c.MaterialId == materialGrano.MaterialId), htmlAttributes)
+                                            @materialGrano.DescripcionWebMobile
                                         </label>
                                     </li>
                                 }
+                                <li>
+                                    <label>
+                                        @Html.RadioButton("materialIdPaseDirecto", 0, !callesPrebalanza.Any(c => c.EsPasoDirecto), htmlAttributes)
+                                        Ninguno
+                                    </label>
+                                </li>
                             </ul>
 
                             <input value="Actualizar" type="submit" />
@@ -98,10 +96,4 @@
             </div>
         </div>
     }
-
-    <style>
-        .custom-list {
-            list-style-type: none; /* Quita los puntos de la lista */
-            padding-left: 0px;
-        }
-    </style>
+</div>

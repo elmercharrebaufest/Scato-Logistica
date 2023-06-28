@@ -9440,10 +9440,10 @@ namespace Molinos.Scato.Servicios.Impl
             return detalle;
         }
 
-        public IList<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano)
+        public List<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano)
         {
             var materialesPorCentro = Listar<MaterialPorCentro, MaterialPorCentroDto>(
-                    x => x.Centro.Id == centroId && x.Material.EsGrano == esGrano && x.Material.Activo);
+                    x => x.Centro.Id == centroId && x.Material.EsGrano == esGrano && x.Material.Activo).ToList();
 
             return materialesPorCentro;
         }
@@ -10477,6 +10477,11 @@ namespace Molinos.Scato.Servicios.Impl
             var calleRecorrido = repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == instanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
             return calleRecorrido.Calle.Id;
 
+        }
+
+        public CalleDto ObtenerCallePrioritaria()
+        {
+            return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
         }
     }
 }

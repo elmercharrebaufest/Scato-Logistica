@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
@@ -50,36 +51,11 @@ namespace Molinos.Scato.WebMobile.Controllers
         }
 
         public ActionResult Index()
-
         {
             var tipoCallePlantaLista = ObtenerTiposDeCallesPlanta();
             ViewBag.LlamadoAutomaticoPrebalanza = ObtenerConfiguracionLlamadoAutomaticoPrebalanza();
-            var materialPasoDirecto = servicio.ObtenerConfiguracionGeneral("EstadoPlayaInterna", "PaseDirecto");
-            ViewBag.ConfiguracionSwitch = ObtenerConfiguracionPasoDrecto(materialPasoDirecto.Valor);
-            ViewBag.IdConfiguracion = materialPasoDirecto.Id;
-
+            ViewBag.MaterialesGranos = servicio.ListarMaterialGranoPorCentro(5, true).Where(x => x.MostrarEnWebMobile).ToList();
             return View(tipoCallePlantaLista);
-        }
-
-        public JsonResult EstadoDeCalle()
-        {
-            var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
-            var centroId = int.Parse(centro.Value);
-            var camiones = servicio.ObtenerEstadoDeCalle();
-            camiones.ForEach(camion =>
-            {
-                if (camion.EsSojaIMPO)
-                {
-                    camion.ColorFondo = ValoresPorDefecto.ColorFondoSojaIMPO;
-                    camion.ColorTexto = ValoresPorDefecto.ColorTextoSojaIMPO;
-                }
-            });
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle));
-            var materiales = camiones.Where(x => listaCalles.Contains(x.TipoCalle))
-                .Select(x => new { x.MaterialId, x.MaterialDesc })
-                .GroupBy(x => x).Select(x => x.Key).Where(x => x.MaterialId != 0);
-
-            return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ObtenerCalles(string tiposCalleStr)
@@ -294,130 +270,53 @@ namespace Molinos.Scato.WebMobile.Controllers
             catch (Exception e)
             {
                 log.Error(e, $"No se pudo liberar la fila Prebalanza con Id {callePrebalanzaId}");
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"Ocurrió un error al liberar la fila.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ocurrió un error al liberar la fila.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-        
-        [HttpPost]
-        public JsonResult GuardarPasoDirecto(int materialPaseDirecto , int idConfiguracion,int callePaseDirecto=0)
-        {
 
+        [HttpPost]
+        public JsonResult GuardarPasoDirecto(int materialIdPaseDirecto, int calleIdPaseDirecto = 0)
+        {
             var response = new RespuestaEstandarDto();
 
-            bool bNormal = false;
-            if (!PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza) && PermisosHelper.Is(PermisosScato.AbmCalle))
+            var filaPrioritaria = servicio.ObtenerCallePrioritaria();
+            if (PermisosHelper.Is(PermisosScato.AbmCalle))
             {
-                bNormal = true;
-            }
-
-            try
-            {
-                var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
-                var calles = ObtenerTiposDeCallesPlanta().Where(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).Select(s => s.Calles).ToList();
-                var sonPaseDirecto = calles[0].Where(c => c.EsPasoDirecto);
-
-                if (sonPaseDirecto.Count() > 0)
+                if(filaPrioritaria != null && calleIdPaseDirecto == 0)
                 {
-                    sonPaseDirecto.ForEach(i =>
+                    ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
+                    return Json(response);
+                } else if(filaPrioritaria != null && calleIdPaseDirecto > 0)
+                {
+                    if(filaPrioritaria.Id != calleIdPaseDirecto)
                     {
-                        var calleAnterior = ObtenerTiposDeCallesPlantaPorId(i.CalleId);
-                        servicioComandos.Ejecutar(new ModificarCalle
-                        {
-                            Dto = new CalleDto
-                            {
-                                Id = calleAnterior.Id,
-                                EsPasoDirecto = bNormal?false:true,
-                                MaterialId = calleAnterior.MaterialId,
-                                Nombre = calleAnterior.Nombre,
-                                Codigo = calleAnterior.Codigo,
-                                CentroId = calleAnterior.CentroId,
-                                TipoCalle = calleAnterior.TipoCalle,
-                                CantidadDeCamiones = calleAnterior.CantidadDeCamiones
-
-                            },
-                            Llamada = false,
-                            Usuario = usuario.Value
-                        });
-                    });
+                        ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
+                        var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
+                        ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
+                    } else
+                        ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
+                    return Json(response);
                 }
-
-                ConfiguracionGeneralDto configuracionDto = new ConfiguracionGeneralDto();
-                if (callePaseDirecto != 0)
+                else if(filaPrioritaria == null && calleIdPaseDirecto > 0)
                 {
-                    var calle = ObtenerTiposDeCallesPlantaPorId(callePaseDirecto);
-
-                    servicioComandos.Ejecutar(new ModificarCalle
-                    {
-                        Dto = new CalleDto
-                        {
-                            Id = callePaseDirecto,
-                            EsPasoDirecto = materialPaseDirecto != 0,
-                            MaterialId = materialPaseDirecto,
-                            Nombre = calle.Nombre,
-                            Codigo = calle.Codigo,
-                            CentroId = calle.CentroId,
-                            TipoCalle = calle.TipoCalle,
-                            CantidadDeCamiones = calle.CantidadDeCamiones
-
-                        },
-                        Llamada = false,
-                        Usuario = usuario.Value
-                    });
-
-                    configuracionDto = new ConfiguracionGeneralDto
-                    {
-                        CentroId = calle.CentroId,
-                        UsuarioUltimaModificacion = usuario.Value,
-                        Valor = materialPaseDirecto.ToString(),
-                        Id = idConfiguracion
-                    };
+                    var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
+                    ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
                 }
                 else
-                {
-                   
-                    if (bNormal)
-                    {
-                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se puede asignar un material sin seleccionar una fila", TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning });
-                    }
-                    configuracionDto = new ConfiguracionGeneralDto
-                    {
-                        UsuarioUltimaModificacion = usuario.Value,
-                        Valor = !bNormal?materialPaseDirecto.ToString():"0",
-                        Id = idConfiguracion
-                    };
-                    
-                    
-                }
-
-
-                servicioComandos.Ejecutar(new ModificarConfiguracionGeneral
-                {
-                    Dto = configuracionDto
-                });
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Calle_NoExisteCallePrioritaria, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            catch (Exception ex)
+            else if (PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza))
             {
-                var errorMessage = $"Error al guardar la configuracion";
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = errorMessage, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                if (filaPrioritaria == null)
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Calle_NoExisteCallePrioritaria, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                else
+                    ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
             }
+            else
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Permiso_NoTienePermiso, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             return Json(response);
-        }
-
-        private List<Tuple<int, string, bool>> ObtenerConfiguracionPasoDrecto(string materialPaseDirecto)
-        {
-            var idMaterialPasoDirecto = servicio.ObtenerConfiguracionGeneral("EstadoPlayaInterna", "MaterialesPaseDirecto");
-            List<Tuple<int, string, bool>> configuracionPaseDirecto = new List<Tuple<int, string, bool>>();
-            int idMaterialPaseDirecto = Convert.ToInt16(materialPaseDirecto);
-            idMaterialPasoDirecto.Valor.Split(',').ForEach(i =>
-            {
-                int id = Convert.ToInt32(i);
-                var material = servicio.ObtenerMaterial(id);
-                configuracionPaseDirecto.Add(new Tuple<int, string, bool>(id, material.DescripcionCorta != null ? material.DescripcionCorta.ToUpper() : string.Empty, material.Id.Equals(idMaterialPaseDirecto)));
-            });
-            configuracionPaseDirecto.Add(new Tuple<int, string, bool>(0, "NINGUNO", idMaterialPaseDirecto.Equals(0)));
-            return configuracionPaseDirecto;
         }
 
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()
@@ -458,7 +357,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                     Bloqueada = calle.Bloqueada,
                     EsPrimero = false,
                     EsUltimo = false,
-                    EsPasoDirecto = calle.EsPasoDirecto
+                    EsPasoDirecto = calle.EsPasoDirecto,
+                    MaterialId = calle.MaterialId,
                 };
                 tipoCallePlanta.Calles.Add(callePlanta);
 
@@ -562,6 +462,18 @@ namespace Molinos.Scato.WebMobile.Controllers
                     NumeroVariable = mensajeCartelLed.Variable,
                 });
             }
+        }
+
+        private void ActualizarFilaPrebalanzaPrioritaria(CalleDto calle, bool esPasoDirecto, int? materialId = null)
+        {
+            calle.EsPasoDirecto = esPasoDirecto;
+            if(materialId != null)
+                calle.MaterialId = materialId.Value;
+          
+            servicioComandos.Ejecutar(new ModificarCalle
+            {
+                Dto = calle,
+            });
         }
     }
 }

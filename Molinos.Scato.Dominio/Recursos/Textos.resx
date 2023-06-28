@@ -10231,4 +10231,7 @@
   <data name="ConfiguracionGeneral_Inexistente" xml:space="preserve">
     <value>No existe la configuración</value>
   </data>
+  <data name="Calle_NoExisteCallePrioritaria" xml:space="preserve">
+    <value>No existe calle de paso directo asignada</value>
+  </data>
 </root>

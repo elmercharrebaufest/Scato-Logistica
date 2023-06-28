@@ -6370,6 +6370,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No existe calle de paso directo asignada.
+        /// </summary>
+        public static string Calle_NoExisteCallePrioritaria {
+            get {
+                return ResourceManager.GetString("Calle_NoExisteCallePrioritaria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nueva Calle.
         /// </summary>
         public static string Calle_Nuevo {
