@@ -239,6 +239,12 @@ namespace Molinos.Scato.WebMobile.Controllers
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
+                if (callePreBalanza.EsPasoDirecto)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La {callePreBalanza.Nombre} es de paso directo.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 var camionesEnPrebalanza = servicio.ListarCallePorRecorridoPorCalleId(callePrebalanzaId);
                 if (!camionesEnPrebalanza.Any())
                 {
