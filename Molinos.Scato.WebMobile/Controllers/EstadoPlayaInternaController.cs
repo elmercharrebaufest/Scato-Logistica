@@ -119,14 +119,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                         Dto = controlRecorrido
                     });
                 }
-
-                if (resultado.HayErrores)
-                {
-                    foreach (var item in resultado.Errores)
-                    {
-                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-                    }
-                }
+                AgregarErroresARespuesta(resultado, response);
             }
             catch (Exception ex)
             {
@@ -154,14 +147,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     Dto = configuracionLlamadoAutomatico
                 });
-
-                if (resultado.HayErrores)
-                {
-                    foreach (var item in resultado.Errores)
-                    {
-                        response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-                    }
-                }
+                AgregarErroresARespuesta(resultado, response);
             }
             catch (Exception ex)
             {
@@ -291,23 +277,21 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 if(filaPrioritaria != null && calleIdPaseDirecto == 0)
                 {
-                    ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
-                    return Json(response);
+                    response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
                 } else if(filaPrioritaria != null && calleIdPaseDirecto > 0)
                 {
                     if(filaPrioritaria.Id != calleIdPaseDirecto)
                     {
-                        ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
+                        response =  ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
                         var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
-                        ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
+                        response = ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
                     } else
-                        ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
-                    return Json(response);
+                        response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
                 }
                 else if(filaPrioritaria == null && calleIdPaseDirecto > 0)
                 {
                     var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
-                    ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
+                    response = ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
                 }
                 else
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Calle_NoExisteCallePrioritaria, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -317,7 +301,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 if (filaPrioritaria == null)
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Calle_NoExisteCallePrioritaria, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 else
-                    ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
+                    response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
             }
             else
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = Textos.Permiso_NoTienePermiso, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
@@ -470,16 +454,30 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
         }
 
-        private void ActualizarFilaPrebalanzaPrioritaria(CalleDto calle, bool esPasoDirecto, int? materialId = null)
+        private RespuestaEstandarDto ActualizarFilaPrebalanzaPrioritaria(CalleDto calle, bool esPasoDirecto, int? materialId = null)
         {
+            var response = new RespuestaEstandarDto();
             calle.EsPasoDirecto = esPasoDirecto;
             if(materialId != null)
                 calle.MaterialId = materialId.Value;
           
-            servicioComandos.Ejecutar(new ModificarCalle
+            var resultado = servicioComandos.Ejecutar(new ModificarCalle
             {
                 Dto = calle,
             });
+            AgregarErroresARespuesta(resultado, response);
+            return response;
+        }
+
+        private void AgregarErroresARespuesta(Resultado resultado, RespuestaEstandarDto response)
+        {
+            if (resultado.HayErrores)
+            {
+                foreach (var item in resultado.Errores)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                }
+            }
         }
     }
 }

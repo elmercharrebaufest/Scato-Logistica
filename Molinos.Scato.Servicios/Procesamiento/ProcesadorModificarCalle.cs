@@ -90,8 +90,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
             }
 
-            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto && Repositorio.Existe<Calle>(x => x.EsPasoDirecto && x.Id != comando.Dto.Id))
-                resultado.Error("EsPasoDirecto", "Ya existe una fila Prebalanza de Paso Directo");
+            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto)
+            {
+                if(Repositorio.Existe<Calle>(x => x.EsPasoDirecto && x.Id != comando.Dto.Id))
+                    resultado.Error("EsPasoDirecto", "Ya existe una fila Prebalanza de Paso Directo");
+
+                if(Repositorio.Existe<Calle>(x => x.Id == comando.Dto.Id && x.Bloqueada && x.FechaLLamada != null))
+                    resultado.Error("EsPasoDirecto", $"La {comando.Dto.Nombre} está siendo llamada actualmente. Por favor libérela para poder continuar");
+            }
+
         }
 
         private void LlamarCallePrebalanzaPrioritario(ModificarCalle comando)
