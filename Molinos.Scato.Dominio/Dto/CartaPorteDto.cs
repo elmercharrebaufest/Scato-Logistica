@@ -192,7 +192,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string DestinatarioDomicilio { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string Transportista { get; set; }
 
         public string TransportistaCUIT { get; set; }
@@ -205,7 +204,6 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TarifaTonelada")]
         [RegularExpression(@"^[0-9]*(?:\,[0-9]*)?$", ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_SoloNumerico")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public decimal? TarifaTonelada { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_TarifaReferencia")]
@@ -454,7 +452,6 @@ namespace Molinos.Scato.Dominio.Dto
             {
                 yield return new ValidationResult(string.Format(Textos.Error_Requerido, Textos.CartaPorte_Cosecha), new[] { "Cosecha" });
             }
-
         }
 
         public string Patente { get; set; }
@@ -540,9 +537,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsTransportistaTramo2 { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CartaPorte_Transportista_Pagador_Flete")]
-        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public string PagadorFlete { get; set; }
-
 
         public int? PagadorFleteId { get; set; }
         public string PagadorFleteCuil { get; set; }

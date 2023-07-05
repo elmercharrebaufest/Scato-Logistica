@@ -28,17 +28,6 @@ jQuery(document).ready(function ($) {
     });
 
 
-
-    if (($('#workflow').val() != "1035- SalidaDeMercaderíaConSAP" && $('#workflow').val() != "1035- SalidaDeMercaderíaSinSAP")) {
-
-        $('#PagadorFlete').prop('required', false);
-        $('#PagadorFlete').rules('remove', 'required');
-
-        $('#TarifaTonelada').prop('required', false);
-        $('#TarifaTonelada').rules('remove', 'required');
-    }
-    
-
     //Validaciones
     $.validator.addMethod("cosechaValidacion", function (value, element) {
         if (vehiculoDemorado == true) return true;
