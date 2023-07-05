@@ -877,6 +877,7 @@
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
     <Content Include="Scripts\caladoEnPlanta.js" />
+    <Content Include="Scripts\cartaporte.redespacho.mercaderia.index.js" />
     <Content Include="Scripts\excepcionAlControlProveedor.js" />
     <Content Include="Scripts\notificacionAplicacion.js" />
     <Content Include="Scripts\devolucionDeReciboMunicipal.js" />

@@ -142,12 +142,6 @@ namespace Molinos.Scato.Web.Controllers
                 ModelState.Remove("CTG");
             }
 
-            if (workflow != "1035- SalidaDeMercaderíaConSAP" && workflow != "1035- SalidaDeMercaderíaSinSAP")
-            {
-                ModelState.Remove("PagadorFlete");
-                ModelState.Remove("TarifaTonelada");
-            }
-
             if (datosUsuario.CentroId == 0)
             {
                 log.Debug("El usuario {0} no tiene seleccionado un centro", datosUsuario.NombreUsuario);

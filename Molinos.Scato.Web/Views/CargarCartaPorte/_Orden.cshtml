@@ -395,11 +395,12 @@
                 <div class="control-group control-group-no-bottom">
                     @Html.LabelFor(model => model.PagadorFlete, new { @class = "control-label small" })
                     <div class="controls-small">
-                        @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control input-xlarge" })
+                        @Html.TextBoxFor(model => model.PagadorFlete, new { @class = "control input-xlarge ", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.CartaPorte_FletePagado) })
                         @Html.ValidationMessageFor(model => model.PagadorFlete)
                         @Html.HiddenFor(model => model.PagadorFleteId)
                     </div>
                 </div>
+
                 <div class="control-group control-group-no-bottom">
                     @Html.LabelFor(model => model.Transportista, new { @class = "control-label small" })
                     <div class="controls-small">
