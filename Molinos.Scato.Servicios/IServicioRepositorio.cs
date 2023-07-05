@@ -2520,7 +2520,7 @@ namespace Molinos.Scato.Servicios
         ReporteDetalleMovimientoDto ReporteDetalleDeMovimiento(int centroId, DateTime fecha);
 
         [OperationContract]
-        IList<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano);
+        List<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano);
 
         [OperationContract]
         IList<MaterialDto> ObtenerMaterialNoGranoAsignableCalle();
@@ -2836,5 +2836,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerCalleInicial(Guid instanciaWorkflow);
+
+        [OperationContract]
+        CalleDto ObtenerCallePrioritaria();
     }
 }
