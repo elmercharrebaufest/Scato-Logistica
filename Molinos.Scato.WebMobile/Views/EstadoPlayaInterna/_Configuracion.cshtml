@@ -1,0 +1,99 @@
+﻿@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Enums
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad;
+@model List<TipoCallePlantaDto>
+
+@{
+    List<CallePlantaDto> callesPrebalanza = Model.FirstOrDefault(c => c.TipoCalle == TipoCalle.PreBalanzaGranos).Calles;
+    List<MaterialPorCentroDto> materialesGranos = ViewBag.MaterialesGranos;
+}
+
+<style>
+    .custom-list {
+        list-style-type: none; /* Quita los puntos de la lista */
+        padding-left: 0px;
+    }
+</style>
+
+<div class="content">
+    <div class="row" style="display:flex; justify-content:left; margin-left:auto;">
+        <div class="col-5">
+            <h6>Configuracion de materiales con paso directo a balanza</h6>
+        </div>
+    </div>
+    @using (Ajax.BeginForm("GuardarPasoDirecto", "EstadoPlayaInterna", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccessGuardarPaseDirecto" }, new { @id = "AjaxformId", @class = "form-horizontal", role = "form" }))
+    {
+        <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Calle asignada a pase directo:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
+
+                        <ul class="custom-list">
+                            <li>
+
+                                <select name="calleIdPaseDirecto" @(!PermisosHelper.Is(PermisosScato.AbmCalle) ? "disabled" : "")>
+                                    <option value=0 @(!callesPrebalanza.Any(c => c.EsPasoDirecto) ? "selected" : "")>Ninguno</option>
+                                    @foreach (var callePrebalanza in callesPrebalanza)
+                                    {
+                                        <option value="@callePrebalanza.CalleId" @(callePrebalanza.EsPasoDirecto ? "selected" : "")>@callePrebalanza.CalleDesc</option>
+                                    }
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="row" style="display:flex; justify-content:left; margin-top:2%;">
+            <div class="col-2">
+                <label>
+                    Material seleccionado:
+                </label>
+            </div>
+            <div class="col-5">
+                <div class="row">
+                    <div class="span4">
+                        <form method="post">
+
+                            <ul class="custom-list">
+                                @{
+                                    var htmlAttributes = new Dictionary<string, object>();
+                                    htmlAttributes.Add("class", "radio-button");
+                                    if (!PermisosHelper.Is(PermisosScato.AbmCalle) && !PermisosHelper.Is(PermisosScato.EdicionConfiguracionPrebalanza))
+                                    {
+                                        htmlAttributes.Add("disabled", "disabled");
+                                    }
+                                }
+                                @foreach (var materialGrano in materialesGranos)
+                                {
+
+                                    <li>
+                                        <label>
+                                            @Html.RadioButton("materialIdPaseDirecto", materialGrano.MaterialId, callesPrebalanza.Any(c => c.EsPasoDirecto && c.MaterialId == materialGrano.MaterialId), htmlAttributes)
+                                            @materialGrano.DescripcionWebMobile
+                                        </label>
+                                    </li>
+                                }
+                                <li>
+                                    <label>
+                                        @Html.RadioButton("materialIdPaseDirecto", 0, !callesPrebalanza.Any(c => c.EsPasoDirecto), htmlAttributes)
+                                        Ninguno
+                                    </label>
+                                </li>
+                            </ul>
+
+                            <input value="Actualizar" type="submit" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

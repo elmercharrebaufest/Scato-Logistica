@@ -9,7 +9,7 @@
 
 .bg-ultimo {
     margin-right: 15px !important;
-     background-color: #E8E8E8;
+    background-color: #E8E8E8;
 }
 
 .row-borde {
@@ -23,8 +23,67 @@
 }
 
 .sinbordetb-borde {
-    margin-top:0;
-    margin-bottom:-1px;
-    padding-bottom:0;
-    padding-top:0;
+    margin-top: 0;
+    margin-bottom: -1px;
+    padding-bottom: 0;
+    padding-top: 0;
 }
+
+.llamadoAutomaticoPrebalanza {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 190px;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+    .llamadoAutomaticoPrebalanza p {
+        margin: 0 !important;
+    }
+
+    .switchPlayaInterna {
+        position: relative;
+        display: inline-block;
+        width: 34px;
+        height: 18px;
+    }
+
+    .switchPlayaInterna input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .switchPlayaInterna label {
+        margin: 0 !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        cursor: pointer;
+        transition: background-color 0.4s;
+    }
+
+        .switchPlayaInterna label:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.4s;
+        }
+
+        .switchPlayaInterna input[type="checkbox"]:checked + label {
+            background-color: #00d615;
+        }
+
+        .switchPlayaInterna input[type="checkbox"]:checked + label:before {
+            transform: translateX(15px);
+        }

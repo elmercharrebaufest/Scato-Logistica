@@ -9440,10 +9440,10 @@ namespace Molinos.Scato.Servicios.Impl
             return detalle;
         }
 
-        public IList<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano)
+        public List<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano)
         {
             var materialesPorCentro = Listar<MaterialPorCentro, MaterialPorCentroDto>(
-                    x => x.Centro.Id == centroId && x.Material.EsGrano == esGrano && x.Material.Activo);
+                    x => x.Centro.Id == centroId && x.Material.EsGrano == esGrano && x.Material.Activo).ToList();
 
             return materialesPorCentro;
         }
@@ -9513,8 +9513,40 @@ namespace Molinos.Scato.Servicios.Impl
         }
 
         public IList<CallePorRecorridoDto> ObtenerEstadoDeCalle()
-        { 
-            return repositorio.ListarConsulta(new ListarEstadoDeCalle());
+        {
+            var estadoDeRecorridos = repositorio.ListarConsulta(new ListarEstadoDeCalle());
+
+            var resultado = new List<CallePorRecorridoDto>();
+
+            foreach (var item in estadoDeRecorridos)
+            {
+                var callePorRecorrido = new CallePorRecorridoDto
+                {
+                    Id = item.Id,
+                    Calidad = (item.Calidad != null) ? (int)item.Calidad : 0,
+                    MaterialId = item.RecorridoMaterialId ?? item.CargaCupoMaterialId ?? 0,
+                    MaterialDesc = item.RecorridoMaterialDescripcion ?? item.CargaCupoMaterialDescripcion ?? string.Empty,
+                    Patente = item.RecorridoPatente ?? item.CargaDeCupoPatente ?? item.CargaDeCupoRecorridoPatente ?? string.Empty,
+                    CalleId = item.CalleId,
+                    FechaIngeso = item.FechaIngreso,
+                    UltimoDeLaFila = item.UltimoDeLaFila,
+                    Rechazado = item.Rechazado ?? false,
+                    AsignadoEnPuestoComando = item.AsignadoEnPuestoComando,
+                    TipoCalle = item.TipoCalle,
+                    Escalable = item.TipoVehiculo == TipoVehiculo.CamiónC
+                    || item.TipoVehiculo == TipoVehiculo.CamiónD
+                    || item.TipoVehiculo == TipoVehiculo.CamiónE,
+                    EsSojaEPA = item.EPA ?? false,
+                    EsSojaIMPO = item.RecorridoCodigoSAP != null ?
+                                       item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
+                                       item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
+                    ColorFondo = item.EPA == true? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
+                    ColorTexto = item.EPA == true? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
+                };
+
+                resultado.Add(callePorRecorrido);
+            }
+            return resultado;
         }
 
         public CalleDto ObtenerSiguienteCalle(int materialId)
@@ -10445,6 +10477,11 @@ namespace Molinos.Scato.Servicios.Impl
             var calleRecorrido = repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == instanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
             return calleRecorrido.Calle.Id;
 
+        }
+
+        public CalleDto ObtenerCallePrioritaria()
+        {
+            return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
         }
     }
 }

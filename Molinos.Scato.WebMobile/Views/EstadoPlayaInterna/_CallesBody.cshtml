@@ -8,7 +8,8 @@
                             <div class="card-body sinbordetb-borde">
                                 <div class="row fw-bold mb-0 cart-title sinbordetb">
                                     <div class="col">
-                                        <button disabled style="width: 100%; height: 28.5px;" class="btn btn-success btn-sm calle"><strong data-bind="text: $root.TiempoEnCola($data)"></strong></button>
+                                        <button onclick="LlamarFilaPrebalanza(this)" type="button" style="width: 100%;" class="btn btn-success btn-sm calle" data-bind="visible: !Bloqueada, enable: !Bloqueada && Camiones.length > 0, attr:{'data-id': CalleId, 'data-name': CalleDesc}"><strong>LLamar</strong>(<strong data-bind="text: $root.TiempoEnCola($data)"></strong>)</button>
+                                        <button onclick="LiberarFilePrebalanza(this)" type="button" style="width: 100%;" class="btn btn-danger btn-sm calle" data-bind="visible: Bloqueada && Camiones.length > 0, attr:{'data-id': CalleId, 'data-name': CalleDesc}"><strong>Liberar</strong>(<strong data-bind="text: $root.TiempoEnCola($data)"></strong>)</button>
                                     </div>
                                 </div>
                                 <p class="fw-bold mb-0 cart-title sinbordetb px-1" data-bind="style: { 'background-color': ColorFondo, 'color': ColorTexto }">

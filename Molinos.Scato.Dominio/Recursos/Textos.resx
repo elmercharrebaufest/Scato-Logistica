@@ -10165,6 +10165,9 @@
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
   </data>
+  <data name="Calle_EsPasoDirecto" xml:space="preserve">
+    <value>Es paso directo</value>
+  </data>
   <data name="ClienteProvisorio" xml:space="preserve">
     <value>Cliente provisorio</value>
   </data>
@@ -10224,5 +10227,11 @@
   </data>
   <data name="Error_NoSojaIMPO" xml:space="preserve">
     <value>Seleccione Recorridos con soja IMPO</value>
+  </data>
+  <data name="ConfiguracionGeneral_Inexistente" xml:space="preserve">
+    <value>No existe la configuración</value>
+  </data>
+  <data name="Calle_NoExisteCallePrioritaria" xml:space="preserve">
+    <value>No existe calle de paso directo asignada</value>
   </data>
 </root>

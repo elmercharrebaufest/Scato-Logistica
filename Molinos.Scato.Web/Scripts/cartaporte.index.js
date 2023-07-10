@@ -27,7 +27,6 @@ jQuery(document).ready(function ($) {
        
     });
 
-    
 
     //Validaciones
     $.validator.addMethod("cosechaValidacion", function (value, element) {

@@ -8,15 +8,20 @@
     ViewBag.Title = Textos.EstadoDeCallePlayaInterna;
     Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
 }
+
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoPlayaInterna.css")">
+<script type="text/javascript" src="~/Scripts/estadoPlayaInterna.js"></script>
 
 <script>
     urlEstadoDeCalles = '@Url.Action("ObtenerCalles", "EstadoPlayaInterna")';
     urlMostrarDetalleCamion = '@Url.Action("MostrarDetalleCamion", "EstadoPlayaInterna")';
     urlConfirmarCargaDescarga = '@Url.Action("ConfirmarCargaDescarga", "EstadoPlayaInterna")';
+    urlLlamarFilaPrebalanza = '@Url.Action("LlamarCallePrebalanza", "EstadoPlayaInterna")';
+    urlLiberarFilaPrebalanza = '@Url.Action("LiberarCallePrebalanza", "EstadoPlayaInterna")';
+    urlConfiguracionLlamadoAutomaticoPrebalanza = '@Url.Action("ConfiguracionLlamadoAutomaticoPreBalanza", "EstadoPlayaInterna")';
+    urlGuardarConfiguracion = '@Url.Action("GuardarEstadoSwitch", "EstadoPlayaInterna")';
 </script>
-<script type="text/javascript" src="~/Scripts/estadoPlayaInterna.js"></script>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" id="tabPlayaInternaGranos">
@@ -25,6 +30,9 @@
     <li class="nav-item" id="tabPlayaInternaNoGranos">
         <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
     </li>
+    @*<li class="nav-item" id="tabConfiguracion"> TODO 2023.07 revisar ANS-2223 por modificaciones
+            <a class="nav-link tabPanelEstadoPlayaInterna" id="configuracion-tab" data-toggle="tab" href="#configuracion" role="tab" aria-selected="false">Configuracion</a>
+        </li>*@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playaInterna" role="tabpanel" aria-labelledby="playaInterna-tab">
@@ -33,5 +41,8 @@
     <div class="tab-pane fade show" id="plantaNoGranos" role="tabpanel" aria-labelledby="plantaNoGranos-tab">
         @Html.Partial("_CallesNoGranos", Model)
     </div>
+    @*<div class="tab-pane fade show" id="configuracion" role="tabpanel" aria-labelledby="configuracion-tab"> TODO 2023.07 revisar ANS-2223 por modificaciones
+                @Html.Partial("_Configuracion", Model)
+        </div>*@
 </div>
 <div id="detalleCamion"></div>

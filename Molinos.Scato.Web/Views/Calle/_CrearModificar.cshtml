@@ -1,4 +1,6 @@
 ﻿@using Molinos.Scato.Web.Helpers
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Enums
 @model Molinos.Scato.Dominio.Dto.CalleDto
 @{
     var caracteristicasCalidad = ((IEnumerable<SelectListItem>)ViewBag.CaracteristicasCalidad) ?? new List<SelectListItem>();
@@ -29,6 +31,8 @@
     <div class="controls">
         @Html.EnumDropDownListFor(model => model.TipoCalle, new { @class = "input-large" })
         @Html.ValidationMessageFor(model => model.TipoCalle)
+        @Html.HiddenFor(model => model.TipoCalle)
+    
     </div>
 </div>
 
@@ -59,7 +63,6 @@
     </div>
 </div>
 
-
 <div class="control-group caracteristicas-calidad-group" style="display:none">
     @Html.LabelFor(m => m.RangoCaracteristicaCalidadMinimo, new { @class = "control-label" })
     <div class="controls">
@@ -70,11 +73,10 @@
 <div class="control-group caracteristicas-calidad-group" style="display:none">
     @Html.LabelFor(m => m.RangoCaracteristicaCalidadMaximo, new { @class = "control-label" })
     <div class="controls">
-        @Html.TextBoxFor(model => model.RangoCaracteristicaCalidadMaximo,  new { @class = "control input-medium" })
+        @Html.TextBoxFor(model => model.RangoCaracteristicaCalidadMaximo, new { @class = "control input-medium" })
         @Html.ValidationMessageFor(m => m.RangoCaracteristicaCalidadMaximo)
     </div>
 </div>
-
 
 <div class="control-group">
     @Html.LabelFor(model => model.CantidadDeCamiones, new { @class = "control-label" })
@@ -90,3 +92,12 @@
         @Html.ValidationMessageFor(model => model.Deshabilitada)
     </div>
 </div>
+
+@*<div class="control-group"> TODO 2023.07 revisar ANS-2223 por modificaciones
+    @Html.LabelFor(model => model.EsPasoDirecto, Textos.Calle_EsPasoDirecto, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(model => model.EsPasoDirecto, new { @class = "input-large", data_toggle = "tooltip", disabled = true})
+        @Html.ValidationMessageFor(model => model.EsPasoDirecto)
+        @Html.HiddenFor(model => model.EsPasoDirecto)
+    </div>
+</div>*@

@@ -9,18 +9,18 @@ using System.Transactions;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
-    public class ListarEstadoDeCalle : IConsulta<CallePorRecorridoDto>
+    public class ListarEstadoDeCalle : IConsulta<CallePorRecorridoListadoCamionesDto>
     {
         public ListarEstadoDeCalle()
         {
         }
 
-        private List<CallePorRecorridoDto> ListadoCamiones(DbContext contexto)
+        private List<CallePorRecorridoListadoCamionesDto> ListadoCamiones(DbContext contexto)
         {
-          
-
             ((IObjectContextAdapter)contexto).ObjectContext.CommandTimeout = 180;
-            var listadoCamiones = contexto.Set<CallePorRecorrido>()
+
+            var listadoCamiones = new List<CallePorRecorridoListadoCamionesDto>();
+            listadoCamiones = contexto.Set<CallePorRecorrido>()
                               .Where(x => x.FechaEgreso.Equals(null))
                               .Select(x => new CallePorRecorridoListadoCamionesDto
                               {
@@ -40,48 +40,21 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   AsignadoEnPuestoComando = x.Recorrido.Calle != null,
                                   TipoCalle = x.Calle.TipoCalle,
                                   TipoVehiculo = x.Recorrido.TipoVehiculo,
-                                  ColorFondo = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA :  (x.Recorrido.Material.ColorFondo ?? x.CargaDeCupo.Material.ColorFondo),
-                                  ColorTexto = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA :  (x.Recorrido.Material.ColorTexto ?? x.CargaDeCupo.Material.ColorTexto),
-                                  EsSojaEPA = x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
-                                  EsSojaIMPO = x.Recorrido != null && x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap != null ? x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR  : 
-                                               x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap != null ? x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR : false
+                                  EPA = x.Recorrido.Establecimiento != null ? x.Recorrido.Establecimiento.EPA : false,
+                                  MaterialColorFondo = x.Recorrido.Material.ColorFondo,
+                                  MaterialColorTexto = x.Recorrido.Material.ColorTexto,
+                                  CargaCupoColorFondo = x.CargaDeCupo.Material.ColorFondo,
+                                  CargaCupoColorTexto = x.CargaDeCupo.Material.ColorTexto,
+                                  RecorridoCodigoSAP =  x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap,
+                                  CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();
 
-            var resultado = new List<CallePorRecorridoDto>();
-
-            foreach (var item in listadoCamiones)
-            {
-                var callePorRecorrido = new CallePorRecorridoDto
-                {
-                    Id = item.Id,
-                    Calidad = (item.Calidad != null) ? (int)item.Calidad : 0,
-                    MaterialId = item.RecorridoMaterialId ?? item.CargaCupoMaterialId ?? 0,
-                    MaterialDesc = item.RecorridoMaterialDescripcion ?? item.CargaCupoMaterialDescripcion ?? string.Empty,
-                    Patente = item.RecorridoPatente ?? item.CargaDeCupoPatente ?? item.CargaDeCupoRecorridoPatente ?? string.Empty,
-                    CalleId = item.CalleId,
-                    FechaIngeso = item.FechaIngreso,
-                    UltimoDeLaFila = item.UltimoDeLaFila,
-                    Rechazado = item.Rechazado ?? false,
-                    AsignadoEnPuestoComando = item.AsignadoEnPuestoComando,
-                    TipoCalle = item.TipoCalle,
-                    Escalable = item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónC
-                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónD
-                    || item.TipoVehiculo == Dominio.Enums.TipoVehiculo.CamiónE,
-                    ColorFondo = item.ColorFondo,
-                    ColorTexto = item.ColorTexto,
-                    EsSojaEPA = item.EsSojaEPA,
-                    EsSojaIMPO = item.EsSojaIMPO
-                };
-
-                resultado.Add(callePorRecorrido);
-            }
-
-            return resultado;
+            return listadoCamiones;
         }
 
-        public virtual List<CallePorRecorridoDto> Ejecutar(DbContext contexto)
+        public virtual List<CallePorRecorridoListadoCamionesDto> Ejecutar(DbContext contexto)
         {
             using (new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.ReadUncommitted }))
             {
