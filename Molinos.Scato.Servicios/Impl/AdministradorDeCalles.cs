@@ -134,11 +134,13 @@ namespace Molinos.Scato.Servicios.Impl
             return (callesTotales - callesBloqueadas) == 1;
         }
 
-        private bool EsPasoDirecto()
+        private bool EsPasoDirecto() //TODO 2023.07 Revisar metodo por que el pase directo debe depender de la calle no de una configuracion
         {
-            string configuracion = repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
+            return false;
+
+            //string configuracion = repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
            
-            return !configuracion.Equals("0");
+            //return !configuracion.Equals("0");
         }
     }
 }
