@@ -21,7 +21,7 @@ namespace Molinos.Scato.Actividades.Internas
             var logActividad = LogActividadDto.Get<LogActividadDto>(context);
 
             context.GetExtension<ScatoPersistenceParticipant>().Actividad = logActividad.ActividadXaml;
-            logActividad.ActividadXaml = logActividad.ActividadXaml;
+            
             logActividad.Fecha = DateTime.Now;
             var resultado = new Resultado();
             

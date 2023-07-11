@@ -462,7 +462,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
 
                 log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", cupo);
-                return Json(new { error = respuesta.MENSAJE }, JsonRequestBehavior.AllowGet);
+                return Json(new { error = respuesta?.MENSAJE }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

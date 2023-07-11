@@ -48,7 +48,7 @@ namespace Molinos.Scato.Actividades
             var nombreUsuario = NombreUsuario.Get<string>(context);
             var cantCopias = CantCopias.Get<int?>(context) ?? 1;
             var puestoDeTrabajoId = PuestoDeTrabajoId.Get<int>(context);
-            var tipoVehiculo = TipoVehiculo.Get<TipoVehiculo>(context);
+            
             
             var material = Material.Get<string>(context);
 

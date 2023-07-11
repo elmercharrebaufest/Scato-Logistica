@@ -20,9 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if(ultimoCamion != null)
             {
                 ultimoCamion.UltimoDeLaFila = true;
-                ultimoCamion.Calle = ultimoCamion.Calle;
-                ultimoCamion.Recorrido = ultimoCamion.Recorrido;
-                ultimoCamion.CargaDeCupo = ultimoCamion.CargaDeCupo;
+                
                 Repositorio.GuardarCambios();
             }
             return new Resultado();

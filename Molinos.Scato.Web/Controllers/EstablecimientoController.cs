@@ -132,8 +132,8 @@ namespace Molinos.Scato.Web.Controllers
                             .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion + "(" + x.CodigoAfip + ")");
 
             var configuracionEPA = servicio.ListarConfiguracionesGenerales(Constantes.ConfiguracionGeneral.Pantalla.EstablecimientoPantalla);
-            ViewBag.RangoMaxEPA = configuracionEPA.Where(c => c.Nombre == "RangoMax").FirstOrDefault().Valor;
-            ViewBag.RangoMinEPA = configuracionEPA.Where(c => c.Nombre == "RangoMin").FirstOrDefault().Valor;
+            ViewBag.RangoMaxEPA = configuracionEPA.Where(c => c.Nombre == "RangoMax").FirstOrDefault()?.Valor;
+            ViewBag.RangoMinEPA = configuracionEPA.Where(c => c.Nombre == "RangoMin").FirstOrDefault()?.Valor;
         }
     }
 }

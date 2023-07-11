@@ -269,11 +269,11 @@ namespace Molinos.Scato.Web.Controllers
                 var smtpClient = new SmtpClient();
                 ServicePointManager.ServerCertificateValidationCallback = (s, certificate, chain, sslPolicyErrors) => true;
                 var message = new MailMessage();
-                var mailDestino = datosMail.Where(x => x.Nombre.Contains("MailDestino")).FirstOrDefault().Valor;
-                var destinatarios = datosMail.Where(x => x.Nombre.Contains("MailDestinatarios")).FirstOrDefault().Valor.Split(';');
-                var responsable = datosMail.Where(x => x.Nombre.Contains("Responsable")).FirstOrDefault().Valor;
-                var contacto = datosMail.Where(x => x.Nombre.Contains("Contacto")).FirstOrDefault().Valor;
-                var atencion = datosMail.Where(x => x.Nombre.Contains("Horario")).FirstOrDefault().Valor;
+                var mailDestino = datosMail.Where(x => x.Nombre.Contains("MailDestino")).FirstOrDefault()?.Valor;
+                var destinatarios = datosMail.Where(x => x.Nombre.Contains("MailDestinatarios")).FirstOrDefault()?.Valor.Split(';');
+                var responsable = datosMail.Where(x => x.Nombre.Contains("Responsable")).FirstOrDefault()?.Valor;
+                var contacto = datosMail.Where(x => x.Nombre.Contains("Contacto")).FirstOrDefault()?.Valor;
+                var atencion = datosMail.Where(x => x.Nombre.Contains("Horario")).FirstOrDefault()?.Valor;
                 var centro = servicio.ObtenerCentro(centroId);
                 message.To.Add(mailDestino);
                 foreach (var address in destinatarios)

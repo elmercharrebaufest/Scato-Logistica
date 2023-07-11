@@ -487,9 +487,9 @@ namespace Molinos.Scato.Web.ServicioHub
                     {
                         lecturaPuestoDeTrabajo.MensajeError = "Patente no reconocida";
                         var lecturas = servicio.ObtenerLogLecturasPorTarjeta(lecturaPuestoDeTrabajo.NumeroDeTarjeta);
-                        if (lecturas != null && lecturas.Count >= 1)
+                        if (lecturas != null && lecturas.Count >= 1 && recorrido!=null)
                         {
-                            recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault().PatenteLeida;
+                            recorrido.PatentePrevia = lecturas.Where(x => string.IsNullOrEmpty(x.PatenteLeida)).FirstOrDefault()?.PatenteLeida;
                         }
                         NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, proximaActividad.ProximaAccion);
                         return;

@@ -61,7 +61,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             if (!res.HayErrores)
             {
-                if (resultado.Mensaje.Codigo != 0)
+                if (resultado?.Mensaje.Codigo != 0)
                 {
                     res.Error(resultado.Mensaje.Codigo.ToString(), resultado.Mensaje.Descripcion);
                 }

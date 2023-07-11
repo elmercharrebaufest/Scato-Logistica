@@ -39,7 +39,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             inhabilitacionChofer.FechaDesde = comando.Dto.FechaDesde;
             inhabilitacionChofer.FechaHasta = comando.Dto.FechaHasta;
             inhabilitacionChofer.Motivo = comando.Dto.Motivo;
-            inhabilitacionChofer.Centro = inhabilitacionChofer.Centro;
+            
             inhabilitacionChofer.NombreUsuarioResponsable = comando.Dto.NombreUsuarioResponsable;
 
             foreach (var archivoBorrado in Repositorio.Listar<Adjunto>(x => x.InhabilitacionCamion == null && x.InhabilitacionChofer == null))

@@ -59,7 +59,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             catch (Exception e)
             {
-                Log.Error(e, "Ocurrió un error al intentar dar de baja el item #{0}",comando.Dto.LastOrDefault().ItemNro);
+                Log.Error(e, "Ocurrió un error al intentar dar de baja el item #{0}",comando.Dto.LastOrDefault()?.ItemNro);
                 resultado.Errores.Add("",Textos.Error_ActualizarGenerico + ":" + e.Message);
             }
             return resultado;

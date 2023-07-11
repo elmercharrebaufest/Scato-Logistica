@@ -710,7 +710,7 @@ namespace Molinos.Scato.Web.Controllers
                     return true;
                 }
                 log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", orden.Cupo);
-                ModelState.AddModelError("Cupo", respuesta.MENSAJE);
+                ModelState.AddModelError("Cupo", respuesta?.MENSAJE);
                 return false;
             }
             catch (Exception e)

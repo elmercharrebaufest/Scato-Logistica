@@ -78,7 +78,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     return resultado;
                 }
 
-                if (consulta?.respuesta?.datosCarga?.pesoBruto == null || consulta?.respuesta?.datosCarga?.pesoBruto == null)
+                if (consulta?.respuesta?.datosCarga?.pesoBruto == null)
                 {
                     Log.Error("ProcesadorConfirmacionDGArriboDefinitivo - PESO NO ENCONTRADO");
                     resultado.Errores.Add("CodigoDeBaja", "No se puede ejecutar la confirmacion definitiva de un camión sin peso");

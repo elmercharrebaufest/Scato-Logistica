@@ -178,7 +178,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
 
                 var primerCamionEnPrebalanza = camionesEnPrebalanza.OrderBy(x => x.FechaIngeso).FirstOrDefault();
-                if (primerCamionEnPrebalanza.CalleRecorridoId == null)
+                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza!=null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El camion {primerCamionEnPrebalanza.Patente} no tiene una calle de Playa Interna asignada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -238,8 +238,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
-                var primerCamionEnPrebalanza = camionesEnPrebalanza.OrderBy(x => x.FechaIngeso).FirstOrDefault();
-                if (primerCamionEnPrebalanza.CalleRecorridoId == null)
+                var primerCamionEnPrebalanza = camionesEnPrebalanza?.OrderBy(x => x.FechaIngeso).FirstOrDefault();
+                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza!=null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El camion {primerCamionEnPrebalanza.Patente} no tiene una calle de Playa Interna asignada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);

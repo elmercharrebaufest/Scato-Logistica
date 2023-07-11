@@ -2582,7 +2582,7 @@ namespace Molinos.Scato.Servicios.Impl
             var calado = repositorio.Listar<Calado>(x => x.WorkflowInstanceId == workflowInstanceId).LastOrDefault();
             var analisis = repositorio.Listar<AnalisisDeCalidad>(x => x.Calado.Id == calado.Id).LastOrDefault();
 
-            var caladosSinAnalisis = calado.CaladosPorCaracteristica.Where(x => x != null);
+            var caladosSinAnalisis = calado?.CaladosPorCaracteristica.Where(x => x != null);
             if (analisis != null && calado.CaladosPorCaracteristica.Any(x => x.AnalisisPreliminar))
             {
                 caladosSinAnalisis =
@@ -4871,7 +4871,7 @@ namespace Molinos.Scato.Servicios.Impl
                 //Si alguno es null, significa que hay alguno distinto, retorno 0 para no listar ningun almacen
             }
 
-            return materiales.GroupBy(x => x.Id).Count() == 1 ? materiales.FirstOrDefault().Id : 0;
+            return materiales.GroupBy(x => x.Id).Count() == 1 ? materiales?.FirstOrDefault().Id : 0;
             //Si todos los materiales tienen el mismo id, lo retorno, sino 0
         }
 
@@ -6136,7 +6136,7 @@ namespace Molinos.Scato.Servicios.Impl
                     instanceIds.Count); ;
             foreach (var dato in datos)
             {
-                dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
+                dato.Proteina = caladosPorCaracteristicaConProteina.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault() != null ? caladosPorCaracteristicaConProteina?.Where(x => x.Calado.WorkflowInstanceId == dato.Id).FirstOrDefault().ValorCalado.ToString() : "";
             }
 
             foreach (var datoAnalisis in datosAnalisis)

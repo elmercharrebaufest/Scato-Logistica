@@ -32,7 +32,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 NombreUsuarioResponsable = inhabilitacionCamion.NombreUsuarioResponsable,
                 NombreUsuarioCambio = comando.Dto.NombreUsuarioResponsable
             });
-            inhabilitacionCamion.Centro = inhabilitacionCamion.Centro;
+            
             inhabilitacionCamion.FechaDesde = comando.Dto.FechaDesde;
             inhabilitacionCamion.FechaHasta = comando.Dto.FechaHasta;
             inhabilitacionCamion.Motivo = comando.Dto.Motivo;
@@ -41,7 +41,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             var adjuntosAnteriores =  inhabilitacionCamion.Adjuntos.Where(x => comando.Dto.Adjuntos.Any(t => t.Id == x.Id)).ToList();
 
-            foreach(var archivoBorrado in Repositorio.Listar<Adjunto>(x => x.InhabilitacionCamion == null && x.InhabilitacionCamion == null))
+            foreach(var archivoBorrado in Repositorio.Listar<Adjunto>(x => x.InhabilitacionCamion == null))
             {
                 Repositorio.Remover(archivoBorrado);
             }

@@ -227,7 +227,7 @@ namespace Molinos.Scato.WfEditor.ViewModel
             workflows = servicioWorkflows.ListarWorkflowsPorCentro(WorkflowCentroId.Value);
             if (workflows.FirstOrDefault() != null && !WorkflowId.HasValue)
             {
-                WorkflowId = workflows.FirstOrDefault().Id;
+                WorkflowId = workflows.FirstOrDefault()?.Id;
             }
 
             RaisePropertyChanged(() => Workflows);
@@ -238,7 +238,7 @@ namespace Molinos.Scato.WfEditor.ViewModel
         {
             workflows = servicioWorkflows.ListarWorkflowsPorCentro(centroId);
             RaisePropertyChanged(() => Workflows);
-            WorkflowId = workflows.FirstOrDefault() != null ? workflows.FirstOrDefault().Id : new int?();
+            WorkflowId = workflows.FirstOrDefault() != null ? workflows.FirstOrDefault()?.Id : new int?();
         }
 
         public string this[string columnName]

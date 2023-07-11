@@ -54,7 +54,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.RecorridoId = recorrido.Id;
             }
 
-            if (recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaFas)
+            if (recorrido?.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaFas)
             {
                 var orden = servicio.ObtenerOrdenCargaFasPorInstanceId(recorrido.InstanciaWorkflow);
                 IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);

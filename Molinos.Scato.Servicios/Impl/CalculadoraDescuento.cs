@@ -75,7 +75,7 @@ namespace Molinos.Scato.Servicios.Impl
                 }
                 var descuentosOrdenados = caracteristica.Descuentos.OrderBy(x => x.ValorHasta);
                 var descuento = descuentosOrdenados.FirstOrDefault(x => x.ValorHasta >= valorMedicion);
-                if (descuento.MercadoATermino && TieneAgenteDecompras(instanceId))
+                if ((descuento != null ? descuento.MercadoATermino : false) && TieneAgenteDecompras(instanceId))
                 {
                     return true;
                 }
