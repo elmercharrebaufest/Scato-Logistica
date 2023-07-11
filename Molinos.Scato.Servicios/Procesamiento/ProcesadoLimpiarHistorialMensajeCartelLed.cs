@@ -28,14 +28,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
         private void LimpiarSlotCartel(List<MensajeCartelLed> listaMensajes, int calleId)
         {
             var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed?.Calle?.Id == calleId);
-            var circular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.TipoCalle == Dominio.Enums.TipoCalle.Circular);
+            var mensajeCalleCircular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.TipoCalle == Dominio.Enums.TipoCalle.Circular);
 
             if (mensajeCartelLedEntity != null && mensajeCartelLedEntity.HistorialMensajeCartelLed != null)
             {
+                var calle = mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
-                ReordenarMensajes(listaMensajes, circular?.Orden);
+                if (calle.TipoCalle == Dominio.Enums.TipoCalle.PreBalanzaGranos && !calle.EsPasoDirecto)
+                    ReordenarMensajesPreBalanza(listaMensajes);
+                else
+                    ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
             }
         }
 
@@ -44,7 +48,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var historial = listaMensajes
                 .Where(x => x.HistorialMensajeCartelLed != null)
                 .Where(x => x.HistorialMensajeCartelLed?.FechaUltimaModificacion != null)
-                .Where(x => (slotCircular == null || x.Orden != slotCircular))
+                .Where(x => slotCircular == null || x.Orden != slotCircular)
                 .Select(x => x.HistorialMensajeCartelLed)
                 .OrderBy(x => x.FechaUltimaModificacion).ToList();
 
@@ -60,6 +64,29 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaMensajes[i].HistorialMensajeCartelLed.Calle = (tieneDatos) ? historial[i].Calle : null;
                 listaMensajes[i].HistorialMensajeCartelLed.Mensaje = (tieneDatos) ? historial[i].Mensaje : null;
                 listaMensajes[i].HistorialMensajeCartelLed.FechaUltimaModificacion = (tieneDatos) ? historial[i].FechaUltimaModificacion : null;
+            }
+
+            Repositorio.GuardarCambios();
+        }
+
+        private void ReordenarMensajesPreBalanza(List<MensajeCartelLed> listaMensajes)
+        {
+            var historialCompleto = listaMensajes
+                .Where(x => x.HistorialMensajeCartelLed != null)
+                .OrderBy(x => x.Variable)
+                .Select(x => x.HistorialMensajeCartelLed);
+            var historialCallesPasoDirecto = historialCompleto.Where(x => x.Calle != null && x.Calle.EsPasoDirecto);
+            
+            var historialCompletoSinCallePasoDirecto = historialCompleto.Except(historialCallesPasoDirecto);
+            var historialUtilizadoSinCallePasoDirecto = historialCompletoSinCallePasoDirecto.Where(x => x.Calle != null).ToList();
+
+            var index = 0;
+            foreach (var historial in historialCompletoSinCallePasoDirecto)
+            {
+                historial.Calle = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.Calle;
+                historial.Mensaje = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.Mensaje;
+                historial.FechaUltimaModificacion = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.FechaUltimaModificacion;
+                index++;
             }
 
             Repositorio.GuardarCambios();

@@ -1,4 +1,6 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -29,13 +31,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
             CrearHistorialMensajeCartelLedSiNoTiene(listaMensajes);
             var mensajeCartelLedEntity = new MensajeCartelLed();
 
-            if(!comando.EsCircular && comando.OrdenCircular != null) // PreCalado
+            if (!comando.EsCircular && comando.OrdenCircular != null) // PreCalado
             {
                 mensajeCartelLedEntity = InsertarSlotCartel(listaMensajes, comando.OrdenCircular);
-            } else if(comando.EsCircular && comando.OrdenCircular != null) // Circular
+            } else if (comando.EsCircular && comando.OrdenCircular != null) // Circular
             {
                 mensajeCartelLedEntity = InsertarSlotCartelCircular(listaMensajes, comando.OrdenCircular.Value);
-            } else // PreBalanza, PostCalado
+            } else if (comando.EsPrioritarioPrebalanza)
+            {
+                mensajeCartelLedEntity = InsertarSlotCartelPrebalanzaPrioritario(listaMensajes);
+            }
+            else // PreBalanza, PostCalado
             {
                 mensajeCartelLedEntity = InsertarSlotCartel(listaMensajes);
             }
@@ -56,6 +62,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.SegundosDeEspera = mensajeCartelLedEntity.SegundosDeEspera;
                 Repositorio.GuardarCambios();
             }
+
+            if(comando.EsPrioritarioPrebalanza)
+                resultado.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
 
             return resultado;
         }
@@ -97,5 +106,26 @@ namespace Molinos.Scato.Servicios.Procesamiento
            return listaMensajes.FirstOrDefault(q => q.Orden == slotCircular);
         }
 
+        private MensajeCartelLed InsertarSlotCartelPrebalanzaPrioritario(List<MensajeCartelLed> listaMensajes)
+        {
+            ReordenarFilasPrebalanza(listaMensajes);
+            return listaMensajes.FirstOrDefault(x => x.Variable == Constantes.ConfiguracionGeneral.PreBalanza.VariablePredeterminadaPasoPrioritaria);
+        }
+
+        private void ReordenarFilasPrebalanza(List<MensajeCartelLed> listaMensajes)
+        {
+            listaMensajes = listaMensajes.OrderBy(x => x.Variable).ToList();
+            int indexVariablePasoDirecto = listaMensajes.Select(x => x.Variable).ToList().IndexOf(Constantes.ConfiguracionGeneral.PreBalanza.VariablePredeterminadaPasoPrioritaria);
+            for (int i = listaMensajes.Count - 1; i > indexVariablePasoDirecto; i--)
+            {
+                listaMensajes[i].HistorialMensajeCartelLed.Calle = listaMensajes[i - 1].HistorialMensajeCartelLed.Calle;
+                listaMensajes[i].HistorialMensajeCartelLed.Mensaje = listaMensajes[i - 1].HistorialMensajeCartelLed.Mensaje;
+                listaMensajes[i].HistorialMensajeCartelLed.FechaUltimaModificacion = listaMensajes[i - 1].HistorialMensajeCartelLed.FechaUltimaModificacion;
+            }
+
+            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.Calle = null;
+            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.Mensaje = null;
+            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.FechaUltimaModificacion = null;
+        }
     }
 }

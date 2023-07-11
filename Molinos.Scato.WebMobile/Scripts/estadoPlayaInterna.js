@@ -19,7 +19,7 @@ EstadoPlayaInternaDeCallesVM.prototype = {
     }
 }
 
-function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,containerId) {
+function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso, containerId) {
     var self = this;
     self.PatenteBuscada = ko.observable('');
     self.Calles = ko.observableArray([]);
@@ -78,7 +78,7 @@ function EstadoPlayaInternaDeCallesViewModel(tiposCallesPlanta, tipoCalleEnUso,c
     self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(true); });
 }
 
-function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso,patenteBuscada) {
+function reordernarCalles(tiposCallesPlanta, tipoCalleEnUso, patenteBuscada) {
     let calles = [];
     let callesAgrupadas = [];
     let tipoCalleEnUsoArray = tipoCalleEnUso.split(",");
@@ -115,7 +115,7 @@ function obtenerClaseIcono(rechazado, calidad) {
 function actualizarCalles(tipo) {
     let calles;
     $.ajax({
-        url: urlEstadoDeCalles+"?tiposCalleStr="+tipo,
+        url: urlEstadoDeCalles + "?tiposCalleStr=" + tipo,
         type: 'GET',
         contentType: 'application/json;',
         dataType: 'json',
@@ -225,4 +225,70 @@ function HabilitarBotonVisual(id) {
     $("#" + id).attr('disabled', false);
     $("#" + id).removeClass('btn-secondary');
     $("#" + id).addClass('btn-primary');
+}
+
+function LlamarFilaPrebalanza(e) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: '<h5>' + cargandoGif() + ' LLamando a ' + e.dataset.name + '</h5>'
+    });
+    $.ajax({
+        type: 'GET',
+        url: urlLlamarFilaPrebalanza,
+        dataType: 'json',
+        data: {
+            callePrebalanzaId: e.dataset.id,
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("La " + e.dataset.name + " fue llamada correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+            }
+        },
+        error: function (error) {
+            console.error(error);
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+}
+
+function LiberarFilePrebalanza(e) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: '<h5>' + cargandoGif() + ' Liberando a ' + e.dataset.name + '</h5>'
+    });
+    $.ajax({
+        type: 'GET',
+        url: urlLiberarFilaPrebalanza,
+        dataType: 'json',
+        data: {
+            callePrebalanzaId: e.dataset.id,
+        },
+        success: function (response) {
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa("La " + e.dataset.name + " fue liberada correctamente.");
+            } else {
+                MostrarRespuestaMensajes(response);
+            }
+        },
+        error: function (error) {
+            console.error(error);
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+}
+
+function OnSuccessGuardarPaseDirecto(data) {
+    if (data.TieneAdvertencias === true) {
+        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
+    } else if (data.EsValido === true) {
+        MostrarAlertaExitosa("Se configuro correctamente.");
+    } else {
+        MostrarAlertaError(data.Mensajes[0].Mensaje)
+    }
 }

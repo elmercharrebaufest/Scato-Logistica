@@ -7,11 +7,7 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
-using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using static Molinos.Scato.Dominio.Constantes;
@@ -79,8 +75,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (!resultado.HayErrores)
                 {
                     SubscribirCancelar(calleHidraulicaActual.CodigoSensorCamaraALPR, false, calleHidraulica.CodigoSensorCamaraALPR, CodigosEventos.CambioEstadoSensorCamaraALPR);
-                    SubscribirCancelar(calleHidraulicaActual.CodigoSensorCirculacion, false, calleHidraulica.CodigoSensorCirculacion, CodigosEventos.CambioEstadoSensorCirculacion);
-                    SubscribirCancelar(calleHidraulicaActual.CodigoCamaraALPR, false, calleHidraulica.CodigoCamaraALPR, CodigosEventos.CambioEstadoCamaraALPR);
+                    SubscribirCancelar(calleHidraulicaActual.CodigoSensorCirculacion, false, calleHidraulica.CodigoSensorCirculacion, CodigosEventos.CambioEstadoSensorGeneral);
 
                     return new AjaxEditSuccessResult();
                 }
@@ -97,7 +92,6 @@ namespace Molinos.Scato.Web.Controllers
             var resultado = servicioComandos.Ejecutar(new EliminarConfiguracionCalleHidraulica { Id = id });
             SubscribirCancelar(calleHidraulica.CodigoSensorCamaraALPR, true);
             SubscribirCancelar(calleHidraulica.CodigoSensorCirculacion, true);
-            SubscribirCancelar(calleHidraulica.CodigoCamaraALPR, true);
 
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
         }
@@ -117,8 +111,7 @@ namespace Molinos.Scato.Web.Controllers
                 if (!resultado.HayErrores)
                 {
                     SubscribirCancelar(null, false, calleHidraulica.CodigoSensorCamaraALPR, CodigosEventos.CambioEstadoSensorCamaraALPR);
-                    SubscribirCancelar(null, false, calleHidraulica.CodigoSensorCirculacion, CodigosEventos.CambioEstadoSensorCirculacion);
-                    SubscribirCancelar(null, false, calleHidraulica.CodigoCamaraALPR, CodigosEventos.CambioEstadoCamaraALPR);
+                    SubscribirCancelar(null, false, calleHidraulica.CodigoSensorCirculacion, CodigosEventos.CambioEstadoSensorGeneral);
 
                     return new AjaxEditSuccessResult();
                 }
@@ -128,7 +121,6 @@ namespace Molinos.Scato.Web.Controllers
             SetearVista(calleHidraulica);
             return View(calleHidraulica);
         }
-
 
         private void SubscribirCancelar(string codigoActual, bool cancelarSub, string codigoNuevo = null, string codigoEvento = null)
         {
@@ -155,7 +147,7 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void SetearVista(ConfiguracionCalleHidraulicaDto calleHidraulica = null )
+        private void SetearVista(ConfiguracionCalleHidraulicaDto calleHidraulica = null)
         {
             ViewBag.SensoresBajada = servicioOrquestador.ListarSensores().ToSelectList(x => x.Codigo, x => x.Descripcion);
             ViewBag.Carteles = servicioOrquestador.ListarCartelesLed().ToSelectList(x => x.Codigo, x => x.Descripcion);
