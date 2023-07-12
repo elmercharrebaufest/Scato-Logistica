@@ -570,6 +570,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCamionDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorSetearProgresoCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />

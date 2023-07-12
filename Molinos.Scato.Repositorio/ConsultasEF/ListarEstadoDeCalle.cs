@@ -46,7 +46,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                   CargaCupoColorFondo = x.CargaDeCupo.Material.ColorFondo,
                                   CargaCupoColorTexto = x.CargaDeCupo.Material.ColorTexto,
                                   RecorridoCodigoSAP =  x.Recorrido.Vehiculo.CartaPorte.TitularCartaPorte.CodigoSap,
-                                  CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap
+                                  CargaDeCupoCodigoSAP = x.CargaDeCupo.TitularCartaPorteCodigoSap,
+                                  EsDemorado = x.Recorrido !=null ? x.Recorrido.VehiculoDemorado :false
                               })
                               .OrderBy(q => q.FechaIngreso)
                               .ToList();

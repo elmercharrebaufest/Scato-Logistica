@@ -9538,10 +9538,11 @@ namespace Molinos.Scato.Servicios.Impl
                     || item.TipoVehiculo == TipoVehiculo.CamiónE,
                     EsSojaEPA = item.EPA ?? false,
                     EsSojaIMPO = item.RecorridoCodigoSAP != null ?
-                                       item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : 
+                                       item.RecorridoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR :
                                        item.CargaDeCupoCodigoSAP != null ? item.CargaDeCupoCodigoSAP == Constantes.ValoresPorDefecto.CodigoSapTPR : false,
-                    ColorFondo = item.EPA == true? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
-                    ColorTexto = item.EPA == true? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto)
+                    ColorFondo = item.EPA == true ? Constantes.ValoresPorDefecto.ColorFondoSojaEPA : (item.MaterialColorFondo ?? item.CargaCupoColorFondo),
+                    ColorTexto = item.EPA == true ? Constantes.ValoresPorDefecto.ColorTextoSojaEPA : (item.MaterialColorTexto ?? item.CargaCupoColorTexto),
+                    EsDemorado = item.TipoCalle == TipoCalle.NoGranos && item.EsDemorado
                 };
 
                 resultado.Add(callePorRecorrido);

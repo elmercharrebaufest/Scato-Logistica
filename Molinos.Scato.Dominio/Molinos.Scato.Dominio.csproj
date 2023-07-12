@@ -119,6 +119,7 @@
     <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\ActualizarCamionDemorado.cs" />
     <Compile Include="Comandos\ResultadoCartaPorteElectronicaDummy.cs" />
     <Compile Include="Comandos\ResultadoConsultaDomiciliosDG.cs" />
     <Compile Include="Comandos\ResultadoConsultaPlantasDG.cs" />
