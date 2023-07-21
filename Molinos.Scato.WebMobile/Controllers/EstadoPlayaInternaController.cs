@@ -26,6 +26,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         private readonly IServicioRepositorio servicio;
         private readonly ILogger log;
         private List<TipoCalle> listaCalles;
+        private List<TipoCalle> callesLlamadoManual;
 
         public EstadoPlayaInternaController(
             ILogger log,
@@ -47,6 +48,10 @@ namespace Molinos.Scato.WebMobile.Controllers
                 TipoCalle.EnTransitoGranos,
                 TipoCalle.PreBalanzaGranos,
                 TipoCalle.SalidaGranos
+            };
+
+            this.callesLlamadoManual = new List<TipoCalle> {
+                TipoCalle.PreBalanzaGranos
             };
         }
 
@@ -178,7 +183,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
 
                 var primerCamionEnPrebalanza = camionesEnPrebalanza.OrderBy(x => x.FechaIngeso).FirstOrDefault();
-                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza!=null)
+                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza != null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El camion {primerCamionEnPrebalanza.Patente} no tiene una calle de Playa Interna asignada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -239,7 +244,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
 
                 var primerCamionEnPrebalanza = camionesEnPrebalanza?.OrderBy(x => x.FechaIngeso).FirstOrDefault();
-                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza!=null)
+                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza != null)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El camion {primerCamionEnPrebalanza.Patente} no tiene una calle de Playa Interna asignada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -275,20 +280,22 @@ namespace Molinos.Scato.WebMobile.Controllers
             var filaPrioritaria = servicio.ObtenerCallePrioritaria();
             if (PermisosHelper.Is(PermisosScato.AbmCalle))
             {
-                if(filaPrioritaria != null && calleIdPaseDirecto == 0)
+                if (filaPrioritaria != null && calleIdPaseDirecto == 0)
                 {
                     response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
-                } else if(filaPrioritaria != null && calleIdPaseDirecto > 0)
+                }
+                else if (filaPrioritaria != null && calleIdPaseDirecto > 0)
                 {
-                    if(filaPrioritaria.Id != calleIdPaseDirecto)
+                    if (filaPrioritaria.Id != calleIdPaseDirecto)
                     {
-                        response =  ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
+                        response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, false);
                         var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
                         response = ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
-                    } else
+                    }
+                    else
                         response = ActualizarFilaPrebalanzaPrioritaria(filaPrioritaria, filaPrioritaria.EsPasoDirecto, materialIdPaseDirecto);
                 }
-                else if(filaPrioritaria == null && calleIdPaseDirecto > 0)
+                else if (filaPrioritaria == null && calleIdPaseDirecto > 0)
                 {
                     var filaSeleccionada = servicio.ObtenerCalle(calleIdPaseDirecto);
                     response = ActualizarFilaPrebalanzaPrioritaria(filaSeleccionada, true, materialIdPaseDirecto);
@@ -337,6 +344,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     };
                     tipoCallePlantaLista.Add(tipoCallePlanta);
                 }
+
                 var callePlanta = new CallePlantaDto
                 {
                     CalleId = calle.Id,
@@ -349,6 +357,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     EsUltimo = false,
                     EsPasoDirecto = calle.EsPasoDirecto,
                     MaterialId = calle.MaterialId,
+                    LlamadoManual = callesLlamadoManual.Any(x => x == calle.TipoCalle)
                 };
                 tipoCallePlanta.Calles.Add(callePlanta);
 
@@ -458,9 +467,9 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             var response = new RespuestaEstandarDto();
             calle.EsPasoDirecto = esPasoDirecto;
-            if(materialId != null)
+            if (materialId != null)
                 calle.MaterialId = materialId.Value;
-          
+
             var resultado = servicioComandos.Ejecutar(new ModificarCalle
             {
                 Dto = calle,
