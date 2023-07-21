@@ -37,6 +37,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.DeshabilitarTitular = false;
             ViewBag.DeshabilitarDestinatario = true;
             ViewBag.DeshabilitarEntregador = false;
+            ViewBag.AceptaPendiente = true;
         }
 
         [DatosUsuario]
