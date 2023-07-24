@@ -960,8 +960,8 @@
     <Compile Include="Dto\ImpresoraEstadoDto.cs" />
     <Compile Include="Dto\FotosDto.cs" />
     <Compile Include="Dto\FotoDto.cs" />
-    <Compile Include="Dto\VariedadMaterialDto.cs" />
-    <Compile Include="Dto\VariedadPorMaterialDto.cs" />
+    <Compile Include="Dto\TipoVariedadDto.cs" />
+    <Compile Include="Dto\TipoVariedadPorMaterialDto.cs" />
     <Compile Include="Dto\VideoCamaraDto.cs" />
     <Compile Include="Dto\CosechaDto.cs" />
     <Compile Include="Dto\InfoCaladoDto.cs">
@@ -1154,8 +1154,8 @@
     <Compile Include="Entidades\RangosDeRedondeo.cs" />
     <Compile Include="Entidades\ImpReciboMunicipalImportacion.cs" />
     <Compile Include="Entidades\MotivoHumedadManual.cs" />
-    <Compile Include="Entidades\VariedadMaterial.cs" />
-    <Compile Include="Entidades\VariedadPorMaterial.cs" />
+    <Compile Include="Entidades\TipoVariedad.cs" />
+    <Compile Include="Entidades\TipoVariedadPorMaterial.cs" />
     <Compile Include="Entidades\VideoCamara.cs" />
     <Compile Include="Entidades\Cosecha.cs" />
     <Compile Include="Entidades\ImpEtiquetaRubrosAnalizar.cs" />

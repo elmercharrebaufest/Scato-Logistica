@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
-    public class VariedadPorMaterialMappingProfile : Profile
+    public class TipoVariedadPorMaterialMappingProfile : Profile
     {
         public override string ProfileName
         {
