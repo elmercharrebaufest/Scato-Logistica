@@ -105,6 +105,7 @@
     <Compile Include="Internas\DarDeBajaCtgDGManual.cs" />
     <Compile Include="ConfirmarCTGVencidos.cs" />
     <Compile Include="Internas\ActualizarCamionDemorado.cs" />
+    <Compile Include="Internas\ValidarFilasPrebalanzaDisponibles.cs" />
     <Compile Include="VerificarCartelPreBalanza.cs" />
     <Compile Include="LlamarCallePreBalanza.cs" />
     <Compile Include="Internas\PasoPorBlanazaNoEnCero.cs" />

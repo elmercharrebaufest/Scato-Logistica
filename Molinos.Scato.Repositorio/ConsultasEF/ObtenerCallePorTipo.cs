@@ -17,15 +17,15 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public Calle Ejecutar(DbContext contexto)
         {
-            Calle calle = ObtenerCalle(contexto);
+            Calle calle = ObtenerCallePasoDirecto(contexto);
             return calle;
         }
 
-        private Calle ObtenerCalle(DbContext contexto)
+        private Calle ObtenerCallePasoDirecto(DbContext contexto)
         {
             return contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle 
                                                && !x.Deshabilitada
-                                               && x.EsPasoDirecto == true)
+                                               && x.EsPasoDirecto)
                                               .FirstOrDefault();
         }
     }

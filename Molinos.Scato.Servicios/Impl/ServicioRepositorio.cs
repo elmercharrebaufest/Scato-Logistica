@@ -10484,5 +10484,16 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
         }
+
+        public bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle)
+        {
+            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle);
+            foreach (var calle in calles)
+            {
+                if (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id) < calle.CantidadDeCamiones)
+                    return true;
+            }
+            return false;
+        }
     }
 }

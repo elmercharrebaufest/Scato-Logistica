@@ -146,7 +146,6 @@ namespace Molinos.Scato.Web.ServicioHub
                                 }
                             }
                         }
-                        //
                         else if (lecturaPuestoDeTrabajo.PuestoDeTrabajoPidePantente && lecturaPuestoDeTrabajo.Automatizado)
                         {
                             if (lecturaPuestoDeTrabajo.TarjetaValida && lecturaPuestoDeTrabajo.VideoCamaras.Any())

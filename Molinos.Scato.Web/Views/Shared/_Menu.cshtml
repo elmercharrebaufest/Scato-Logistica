@@ -9,6 +9,7 @@
 @{
     var cookie = new CookieUsuario();
     var centroDescripcion = cookie.Valor("CentroDescripcion");
+    var centroId = cookie.Valor("centroId");
     var workflows = (IList<WorkflowInfoDto>)ViewBag.Workflows;
     var idiomas = (IEnumerable<SelectListItem>)ViewBag.Idiomas;
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
@@ -21,6 +22,7 @@
 @Html.Hidden("cantidadBarreras", totalSensoresBarrera)
 @Html.Hidden("requiereComentarioGestionarBarrera", requiereComentarioGestionarBarrera)
 @Html.Hidden("gestionarBarrera", gestionarBarrera)
+@Html.Hidden("centroId", centroId)
 
 
 @Scripts.Render("~/bundles/blockUI")

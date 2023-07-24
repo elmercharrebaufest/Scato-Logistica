@@ -2839,5 +2839,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CalleDto ObtenerCallePrioritaria();
+
+        [OperationContract]
+        bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle);
     }
 }
