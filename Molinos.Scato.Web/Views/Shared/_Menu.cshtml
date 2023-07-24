@@ -596,10 +596,6 @@
                                         }
                                     </ul>
                                 </li>
-                                @if (PermisosHelper.Is(PermisosScato.ActividadControlDeBalanza))
-                                {
-                                    <li>@Html.ActionLink(Textos.ControlDeBalanza, "Index", "ControlDeBalanza")</li>
-                                }
                                 @if (PermisosHelper.Is(PermisosScato.MotivoQuiebreBarrera))
                                 {
                                     <li>@Html.ActionLink(Textos.MotivoQuiebreBarrera_Titulo, "Index", "MotivoQuiebreBarrera")</li>
