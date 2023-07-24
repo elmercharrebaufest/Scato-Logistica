@@ -1549,19 +1549,19 @@ INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZINV','M
 END
 
 -- Variedades de Material
-IF NOT EXISTS (select 1 from VariedadMaterial where Descripcion = 'Sustentable')
+IF NOT EXISTS (select 1 from VariedadMaterial where Codigo = 'SUS')
 BEGIN
   insert into VariedadMaterial (Descripcion, Codigo, Activo, FechaCreacion, CreadoPor)
   values ('Sustentable', 'SUS', 1, GETDATE(), 'lguedez'); 
 END
 
-IF NOT EXISTS (select 1 from VariedadMaterial where Descripcion = 'Epa')
+IF NOT EXISTS (select 1 from VariedadMaterial where Codigo = 'EPA')
 BEGIN
   insert into VariedadMaterial (Descripcion, Codigo, Activo, FechaCreacion, CreadoPor)
   values ('Epa', 'EPA', 1, GETDATE(), 'lguedez');
 END
 
-IF NOT EXISTS (select 1 from VariedadMaterial where Descripcion = 'Import') 
+IF NOT EXISTS (select 1 from VariedadMaterial where Codigo = 'IMP') 
 BEGIN
   insert into VariedadMaterial (Descripcion, Codigo, Activo, FechaCreacion, CreadoPor)
   values ('Import', 'IMP', 1, GETDATE(), 'lguedez');  
