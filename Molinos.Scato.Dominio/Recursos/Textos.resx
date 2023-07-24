@@ -10234,4 +10234,19 @@
   <data name="Calle_NoExisteCallePrioritaria" xml:space="preserve">
     <value>No existe calle de paso directo asignada</value>
   </data>
+  <data name="Codigo_Interno" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="Fecha_Creacion" xml:space="preserve">
+    <value>Fecha Creación</value>
+  </data>
+  <data name="Fecha_Modificacion" xml:space="preserve">
+    <value>Fecha de Modificación</value>
+  </data>
+  <data name="Creado_Por" xml:space="preserve">
+    <value>Creado Por</value>
+  </data>
+  <data name="Modificado_Por" xml:space="preserve">
+    <value>Modificado Por</value>
+  </data>
 </root>
