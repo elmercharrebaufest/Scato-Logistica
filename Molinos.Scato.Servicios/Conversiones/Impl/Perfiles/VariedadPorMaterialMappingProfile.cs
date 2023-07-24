@@ -1,0 +1,27 @@
+﻿using AutoMapper;
+using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
+{
+    public class VariedadPorMaterialMappingProfile : Profile
+    {
+        public override string ProfileName
+        {
+            get { return "VariedadPorMaterialMappingProfile"; }
+        }
+
+        protected override void Configure()
+        {
+            Mapper.CreateMap<VariedadPorMaterial, VariedadPorMaterialDto>()
+                .ForMember(v => v.VariedadMaterial, en => en.MapFrom(r => r.VariedadMaterial.Descripcion))
+                .ForMember(v => v.VariedadMaterialId, en => en.MapFrom(r => r.VariedadMaterial.Id));
+            Mapper.CreateMap<VariedadPorMaterialDto, VariedadPorMaterial>();
+        }
+    }
+}
