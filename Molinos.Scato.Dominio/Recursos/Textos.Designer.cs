@@ -9646,6 +9646,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código.
+        /// </summary>
+        public static string Codigo_Interno {
+            get {
+                return ResourceManager.GetString("Codigo_Interno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ramal.
         /// </summary>
         public static string Codigo_Ramal {
@@ -10911,6 +10920,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string CPE {
             get {
                 return ResourceManager.GetString("CPE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creado Por.
+        /// </summary>
+        public static string Creado_Por {
+            get {
+                return ResourceManager.GetString("Creado_Por", resourceCulture);
             }
         }
         
@@ -15284,6 +15302,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fecha Creación.
+        /// </summary>
+        public static string Fecha_Creacion {
+            get {
+                return ResourceManager.GetString("Fecha_Creacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha de Inicio.
         /// </summary>
         public static string Fecha_De_Inicio {
@@ -15307,6 +15334,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Fecha_Ingreso_Hasta {
             get {
                 return ResourceManager.GetString("Fecha_Ingreso_Hasta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha de Modificación.
+        /// </summary>
+        public static string Fecha_Modificacion {
+            get {
+                return ResourceManager.GetString("Fecha_Modificacion", resourceCulture);
             }
         }
         
@@ -20701,6 +20737,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Minutos {
             get {
                 return ResourceManager.GetString("Minutos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificado Por.
+        /// </summary>
+        public static string Modificado_Por {
+            get {
+                return ResourceManager.GetString("Modificado_Por", resourceCulture);
             }
         }
         

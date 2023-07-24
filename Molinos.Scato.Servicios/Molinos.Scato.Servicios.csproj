@@ -302,6 +302,8 @@
     <Compile Include="Conversiones\Impl\Perfiles\UbicacionDeBuquePuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VaporMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoEmbalajeMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VariedadMaterialMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\VariedadPorMaterialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VideoCamaraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CosechaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaRubrosAnalizarMappingProfile.cs" />
