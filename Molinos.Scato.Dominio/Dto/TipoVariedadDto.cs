@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public sealed class VariedadMaterialDto
+    public sealed class TipoVariedadDto
     {
         public int Id { get; set; }
 

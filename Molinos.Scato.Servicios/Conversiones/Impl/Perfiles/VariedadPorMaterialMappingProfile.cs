@@ -18,10 +18,10 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 
         protected override void Configure()
         {
-            Mapper.CreateMap<VariedadPorMaterial, VariedadPorMaterialDto>()
+            Mapper.CreateMap<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>()
                 .ForMember(v => v.VariedadMaterial, en => en.MapFrom(r => r.VariedadMaterial.Descripcion))
                 .ForMember(v => v.VariedadMaterialId, en => en.MapFrom(r => r.VariedadMaterial.Id));
-            Mapper.CreateMap<VariedadPorMaterialDto, VariedadPorMaterial>();
+            Mapper.CreateMap<TipoVariedadPorMaterialDto, TipoVariedadPorMaterial>();
         }
     }
 }

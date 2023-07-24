@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[VariedadMaterial] (
+CREATE TABLE [dbo].[TipoVariedad] (
 
   [Id] INT IDENTITY (1, 1),
 
@@ -16,6 +16,6 @@ CREATE TABLE [dbo].[VariedadMaterial] (
 
   [ModificadoPor] VARCHAR(50) NULL,
 
-  CONSTRAINT [PK_VariedadMaterial] PRIMARY KEY CLUSTERED ([Id] ASC)
+  CONSTRAINT [PK_TipoVariedad] PRIMARY KEY CLUSTERED ([Id] ASC)
 
 );

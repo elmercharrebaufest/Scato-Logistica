@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Molinos.Scato.Dominio.Dto
 {
-    public sealed class VariedadPorMaterialDto
+    public sealed class TipoVariedadPorMaterialDto
     {
         [Display(ResourceType = typeof(Textos), Name = "Variedad")]
         public string VariedadMaterial { get; set; }
