@@ -230,7 +230,7 @@ namespace Molinos.Scato.Web.Controllers
                     return View(orden);
                 }
 
-                if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && orden.TransportistaTramo2Id != 0)
+                if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && (orden.TransportistaTramo2Id != 0 && orden.TransportistaTramo2Id != null))
                 {
                     var transportistaTramo2Id = orden.TransportistaTramo2Id ?? 0;
                     var resultadoTransportistaTramo2 = SetearTransportista(ref transportistaTramo2Id, orden.TipoComercialId, orden.EsTransportistaTramo2, true);
