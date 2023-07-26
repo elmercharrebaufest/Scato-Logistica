@@ -6,15 +6,15 @@ CREATE TABLE [dbo].[TipoVariedad] (
   
   [Codigo] VARCHAR(10) NULL,  
 
-  [Activo] BIT NOT NULL DEFAULT 1,
+  [Borrado] BIT NULL DEFAULT 0,
 
-  [FechaCreacion] DATETIME NOT NULL DEFAULT GETDATE(),
-
-  [FechaModificacion] DATETIME NULL,
-
-  [CreadoPor] VARCHAR(50) NOT NULL,
-
+  [CreadoPor] VARCHAR(50) NULL,
+  
+  [FechaCreacion] DATETIME NULL DEFAULT GETDATE(),
+  
   [ModificadoPor] VARCHAR(50) NULL,
+  
+  [FechaModificacion] DATETIME NULL,
 
   CONSTRAINT [PK_TipoVariedad] PRIMARY KEY CLUSTERED ([Id] ASC)
 

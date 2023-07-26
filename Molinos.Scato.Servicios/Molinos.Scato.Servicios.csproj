@@ -1126,13 +1126,13 @@
     <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionChofer.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControl.cs" />
     <Compile Include="Procesamiento\IProcesadorComando.cs" />
-    <Compile Include="Procesamiento\ProcesadorEliminar.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorEliminar.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarTipoDocumentoIdentidad.cs" />
     <Compile Include="Procesamiento\ProcesadorComando.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrear.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorCrear.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAlmacen.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMaterial.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificar.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorModificar.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarUsuario.cs" />
     <Compile Include="Procesamiento\ProcesadorRechazarCamion.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarValorCalado.cs" />

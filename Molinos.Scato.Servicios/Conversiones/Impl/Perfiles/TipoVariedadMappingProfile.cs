@@ -17,7 +17,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(dto => dto.Id, ent => ent.MapFrom(e => e.Id))
                   .ForMember(dto => dto.Descripcion, ent => ent.MapFrom(e => e.Descripcion))
                   .ForMember(dto => dto.Codigo, ent => ent.MapFrom(e => e.Codigo))
-                  .ForMember(dto => dto.Activo, ent => ent.MapFrom(e => e.Activo))
+
+                  .ForMember(dto => dto.Borrado, ent => ent.MapFrom(e => e.Borrado))
                   .ForMember(dto => dto.FechaCreacion, ent => ent.MapFrom(e => e.FechaCreacion))
                   .ForMember(dto => dto.FechaModificacion, ent => ent.MapFrom(e => e.FechaModificacion))
                   .ForMember(dto => dto.CreadoPor, ent => ent.MapFrom(e => e.CreadoPor))
