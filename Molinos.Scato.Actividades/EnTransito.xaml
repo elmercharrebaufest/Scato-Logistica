@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.EnTransito" local1:EnTransito.correspondeValidarDisponibilidadFilasPrebalanza="False"
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.EnTransito"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
