@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Repositorio
@@ -21,7 +22,7 @@ namespace Molinos.Scato.Repositorio
 
             //Se mapean todas las entidades bajo el namespace Molinos.Scato.Dominio.Entidades      
             MapearAssemblyDe<TipoDocumentoIdentidad>(modelBuilder, x => x.Namespace == typeof(TipoDocumentoIdentidad).Namespace, 
-                excluir: null);
+                y => y.Name == "AuditoriaBase");
 
             // mapeo many-to-many unidireccional con pustos de carga descarga
             modelBuilder.Entity<Recorrido>()

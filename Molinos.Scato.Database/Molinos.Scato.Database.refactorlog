@@ -784,4 +784,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="PagadorFlete_Id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="41c158c2-c4ea-4fcb-ba5e-fc7b5d56f259" ChangeDateTime="07/25/2023 16:06:35">
+    <Property Name="ElementName" Value="[dbo].[TipoVariedad].[Activo]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TipoVariedad]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Borrado" />
+  </Operation>
 </Operations>

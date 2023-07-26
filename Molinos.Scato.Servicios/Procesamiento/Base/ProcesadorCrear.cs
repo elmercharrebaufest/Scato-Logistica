@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -11,6 +8,8 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -29,6 +28,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (!resultado.HayErrores)
                 {
                     var entidad = CrearEntidad(comando);
+
                     Repositorio.Agregar(entidad);
                     Repositorio.GuardarCambios();
                     resultado.Id = entidad.Id;
@@ -53,10 +53,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         {
                             Log.Warn(e, "Ocurrio un error al crear el log AMB Crear");
                         }
-                    }                
+                    }
+                }
             }
-            }
-            catch(CrearException e)
+            catch (CrearException e)
             {
                 Log.Error(e, e.Message);
                 resultado.Error("", e.Message);
@@ -73,6 +73,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected abstract void Validar(TComando comando, Resultado resultado);
 
-        protected virtual void Finally(TComando comando, int id) { }
+        protected virtual void Finally(TComando comando, int id)
+        { }
     }
 }
