@@ -60,7 +60,7 @@ namespace Molinos.Scato.Web.Controllers
 
             var service = factory.CrearServicio(workflowDefinicionId);
             var resultado = service.Ejecutar(observacion.WorkflowInstanceId, controlRecorrido);
-            if (resultado.HayErrores)
+            if (resultado != null && resultado.HayErrores)
             {
                 TempData["Alerta"] = resultado.Errores.Values.FirstOrDefault() ?? Textos.Error_Generico;
                 TempData["TipoAlerta"] = TipoAlerta.Error;
