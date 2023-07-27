@@ -73,10 +73,10 @@ namespace Molinos.Scato.Web.Controllers
             if (tipoComercial.TransportistaEsProveedor && (transportistaId == 0))
             {
                 log.Debug("El transportista es obligatorio para el tipo comercial");
-                if (!esTransportistaTramo2)
-                    ModelState.AddModelError("Transportista", string.Format(Textos.Error_Requerido, Textos.Transportista));
-                else
+                if (esTransportistaTramo2)
                     ModelState.AddModelError("TransportistaTramo2", string.Format(Textos.Error_Requerido, Textos.Transportista_Segundo_Tramo));
+                else
+                    ModelState.AddModelError("Transportista", string.Format(Textos.Error_Requerido, Textos.Transportista));
                 return false;
             }
 
