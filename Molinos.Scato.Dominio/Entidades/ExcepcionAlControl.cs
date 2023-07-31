@@ -21,5 +21,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime FechaDeCarga { get; set; }
         public virtual string Usuario { get; set; }
         public virtual MotivoExcepcionAlControl Motivo { get; set; }
+        public virtual Proveedor ProveedorDestino { get; set; }
     }
 }

@@ -5,19 +5,16 @@
     var centros = (IEnumerable<SelectListItem>)ViewBag.Centros;
 }
 
-<div id ="links" 
-     data-url-buscar-proveedores = "@Url.Action("BuscarProveedores", "Consultas")"
-     data-url-buscar-proveedor-unico = "@Url.Action("BuscarProveedor", "Consultas")"
-    
-     data-url-buscar-material ="@Url.Action("BuscarMaterial", "Consultas")"
-     data-url-buscar-materiales = "@Url.Action("BuscarMateriales", "Consultas")"
-    
-     data-url-buscar-cliente ="@Url.Action("BuscarCliente", "Consultas")"
-     data-url-buscar-clientes = "@Url.Action("BuscarClientes", "Consultas")"
-    
-     data-url-buscar-centro ="@Url.Action("BuscarCentroUnico", "Consultas")"
-     data-url-buscar-centros = "@Url.Action("BuscarCentros", "Consultas")"
-    ></div>
+<div id="links"
+     data-url-buscar-proveedores="@Url.Action("BuscarProveedores", "Consultas")"
+     data-url-buscar-proveedor-unico="@Url.Action("BuscarProveedor", "Consultas")"
+     data-url-buscar-material="@Url.Action("BuscarMaterial", "Consultas")"
+     data-url-buscar-materiales="@Url.Action("BuscarMateriales", "Consultas")"
+     data-url-buscar-cliente="@Url.Action("BuscarCliente", "Consultas")"
+     data-url-buscar-clientes="@Url.Action("BuscarClientes", "Consultas")"
+     data-url-buscar-centro="@Url.Action("BuscarCentroUnico", "Consultas")"
+     data-url-buscar-centros="@Url.Action("BuscarCentros", "Consultas")">
+</div>
 
 @Html.ValidationSummary(true)
 <div class="control-group">
@@ -29,9 +26,9 @@
     </div>
 </div>
 <div class="control-group">
-    @Html.LabelFor(m => m.MaterialDesc, new {@class = "control-label"})
+    @Html.LabelFor(m => m.MaterialDesc, new { @class = "control-label" })
     <div class="controls">
-        @Html.TextBoxFor(model => model.MaterialDesc, new {@class = "control input-medium" })
+        @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control input-medium" })
         @Html.ValidationMessageFor(m => m.MaterialDesc)
         @Html.HiddenFor(model => model.MaterialId)
     </div>
@@ -53,7 +50,7 @@
 <div class="control-group">
     @Html.LabelFor(model => model.CentroNombre, new { @class = "control-label" })
     <div class="controls">
-        @Html.DropDownListFor(model => model.CentroId, centros,Textos.Default_Centro)
+        @Html.DropDownListFor(model => model.CentroId, centros, Textos.Default_Centro)
         @Html.ValidationMessageFor(model => model.CentroId)
     </div>
 </div>
@@ -77,5 +74,13 @@
         @Html.TextBoxFor(model => model.DestinoNombre, new { @class = "control input-large", id = "ClienteDescripcion", data_error_requerido = string.Format(Textos.Error_Requerido, new object[] { Textos.Destino }) })
         @Html.ValidationMessageFor(model => model.DestinoNombre)
         @Html.HiddenFor(model => model.ClienteDestinoId)
+    </div>
+</div>
+<div class="control-group" id="Proveedor">
+    @Html.LabelFor(model => model.Destino, new { @class = "control-label" })
+    <div class="controls">
+        @Html.TextBoxFor(model => model.DestinoNombre, new { @class = "control input-large", id = "ProveedorDescripcion", data_error_requerido = string.Format(Textos.Error_Requerido, new object[] { Textos.Destino }) })
+        @Html.ValidationMessageFor(model => model.DestinoNombre)
+        @Html.HiddenFor(model => model.ProveedorDestinoId)
     </div>
 </div>

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Molinos.Scato.Servicios;
+using System;
 using System.Activities;
-using Molinos.Scato.Servicios;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -17,9 +17,11 @@ namespace Molinos.Scato.Actividades.Internas
 
         [RequiredArgument]
         public InArgument<int> MaterialId { get; set; }
+
         public InArgument<int?> CentroDestinoId { get; set; }
         public InArgument<int?> ClienteDestinoId { get; set; }
         public InArgument<int?> IntermediarioId { get; set; }
+        public InArgument<bool?> EsCartaPorte { get; set; }
 
         protected override bool Execute(CodeActivityContext context)
         {
@@ -31,10 +33,25 @@ namespace Molinos.Scato.Actividades.Internas
             var centroDestinoId = CentroDestinoId.Get<int?>(context);
             var clienteDestinoId = ClienteDestinoId.Get<int?>(context);
             var intermediarioId = IntermediarioId.Get<int>(context);
+            var esCartaPorte = EsCartaPorte.Get<bool?>(context);
 
+            return esCartaPorte.HasValue && esCartaPorte.Value
+                ? ExisteExcepcionAlControlParaCartaPorte(repositorio, materialId, transportistaId, intermediarioId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId)
+                : ExisteExcepcionAlControlParaOrdenes(repositorio, materialId, transportistaId, intermediarioId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
+        }
+
+        private bool ExisteExcepcionAlControlParaOrdenes(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
+        {
             return intermediarioId > 0
-                ? repositorio.BuscarExcepcionAlControlProveedor(materialId, intermediarioId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId)
-                : repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, DateTime.Today, centroDestinoId, clienteDestinoId);
+                ? repositorio.BuscarExcepcionAlControlProveedor(materialId, intermediarioId, centroId, date, centroDestinoId, clienteDestinoId)
+                : repositorio.BuscarExcepcionAlControl(materialId, transportistaId, centroId, date, centroDestinoId, clienteDestinoId);
+        }
+
+        private bool ExisteExcepcionAlControlParaCartaPorte(IServicioRepositorio repositorio, int materialId, int transportistaId, int intermediarioId, int centroId, DateTime date, int? centroDestinoId, int? clienteDestinoId)
+        {
+            return intermediarioId > 0
+                ? repositorio.ExisteExcepcionAlControlProveedorParaCartaPorte(materialId, intermediarioId, centroId, date, centroDestinoId, clienteDestinoId)
+                : repositorio.ExisteExcepcionAlControlParaCartaPorte(materialId, transportistaId, centroId, date, centroDestinoId, clienteDestinoId);
         }
     }
 }

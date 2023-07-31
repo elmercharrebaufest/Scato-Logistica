@@ -2842,5 +2842,11 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle);
+        
+        [OperationContract]
+        bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
+
+        [OperationContract]
+        bool ExisteExcepcionAlControlParaCartaPorte(int materialId, int transportistaId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
     }
 }

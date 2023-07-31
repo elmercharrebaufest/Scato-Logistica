@@ -10494,6 +10494,29 @@ namespace Molinos.Scato.Servicios.Impl
                     return true;
             }
             return false;
+		}
+        public bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId)
+        {
+            return repositorio.Existe<ExcepcionAlControlProveedor>(x =>
+                                                          x.Material.Id == materialId &&
+                                                          x.Proveedor.Id == proveedorId &&
+                                                          x.Centro.Id == centroId &&
+                                                          x.FechaDesde <= fecha && x.FechaHasta >= fecha &&
+                                                          x.Motivo != MotivoExcepcionAlControl.B &&
+                                                          ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (proveedorDestinoId.HasValue && x.ProveedorDestino.Id == proveedorDestinoId.Value) || (!centroDestinoId.HasValue && !proveedorDestinoId.HasValue))
+                                                          );
+        }
+
+        public bool ExisteExcepcionAlControlParaCartaPorte(int materialId, int transportistaId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId)
+        {
+            return repositorio.Existe<ExcepcionAlControl>(x =>
+                                                          x.Material.Id == materialId &&
+                                                          x.Transportista.Id == transportistaId &&
+                                                          x.Centro.Id == centroId &&
+                                                          x.FechaDesde <= fecha && x.FechaHasta >= fecha &&
+                                                          x.Motivo != MotivoExcepcionAlControl.B &&
+                                                          ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (proveedorDestinoId.HasValue && x.ProveedorDestino.Id == proveedorDestinoId.Value) || (!centroDestinoId.HasValue && !proveedorDestinoId.HasValue))
+                                                          );
         }
     }
 }
