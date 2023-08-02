@@ -3,7 +3,7 @@
 	setEPARequired();
 
 	$('#CodigoDeEstablecimiento').focusout(function () {
-		setEPARequired();
+		changeEPARequired();
 	});
 
 	$("#form-establecimiento").on("submit", function () {
@@ -12,11 +12,10 @@
 
 })
 
-function setEPARequired() {
+function changeEPARequired() {
 
 	var min = parseInt($('#rangoMinEPA').val());
 	var max = parseInt($('#rangoMaxEPA').val());
-
 
 	if ($('#CodigoDeEstablecimiento').val() >= min
 		&& $('#CodigoDeEstablecimiento').val() <= max) {
@@ -26,4 +25,16 @@ function setEPARequired() {
 		$('#EsSojaEPA').prop("checked", false);
 		$("#EsSojaEPA").removeAttr('disabled');
 	}
+}
+
+function setEPARequired() {
+
+	var min = parseInt($('#rangoMinEPA').val());
+	var max = parseInt($('#rangoMaxEPA').val());
+
+	if ($('#CodigoDeEstablecimiento').val() >= min
+		&& $('#CodigoDeEstablecimiento').val() <= max
+		&& $('#EsSojaEPA').prop("checked")) {
+		$("#EsSojaEPA").attr('disabled', 'disabled');
+	} 
 }
