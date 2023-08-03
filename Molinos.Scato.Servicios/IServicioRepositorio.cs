@@ -934,6 +934,9 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesPorMaterial(int centroId, int materialId);
 
         [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId);
+
+        [OperationContract]
         TransmisionASapDto ObtenerTransmisionASap(int id);
 
         [OperationContract]
@@ -2841,6 +2844,10 @@ namespace Molinos.Scato.Servicios
         CalleDto ObtenerCallePrioritaria();
 
         [OperationContract]
+        bool CalleEstaDisponible(int calleId);
+
+        [OperationContract]
+        IList<PuntoDeCargaDto> ListarPuntoDeCarga();
         bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle);
         
         [OperationContract]

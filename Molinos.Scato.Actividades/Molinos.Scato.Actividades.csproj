@@ -97,6 +97,8 @@
     <Compile Include="Interfaces\IBajaCTGDGService.cs" />
     <Compile Include="Interfaces\IAltaCTGDGService.cs" />
     <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
+    <Compile Include="Interfaces\IPuestoComandoPuertoService.cs" />
+    <Compile Include="Internas\AsignarAutomaticamentePuestoComandoPuerto.cs" />
     <Compile Include="Internas\DarDeAltaCtgDGAutomatica.cs" />
     <Compile Include="Internas\DarDeAltaCtgDGManual.cs" />
     <Compile Include="Internas\DarDeBajaCtgDGDefinitivoAutomatica.cs" />
@@ -104,6 +106,9 @@
     <Compile Include="Internas\ObtenerTipoDeValidacionCtgDG.cs" />
     <Compile Include="Internas\DarDeBajaCtgDGManual.cs" />
     <Compile Include="ConfirmarCTGVencidos.cs" />
+    <Compile Include="Internas\PuestoComandoPuerto.cs" />
+    <Compile Include="Internas\PuestoComandoPuertoRechazo.cs" />
+    <Compile Include="Internas\VerificarPuestoComandoPuerto.cs" />
     <Compile Include="Internas\ActualizarCamionDemorado.cs" />
     <Compile Include="Internas\ValidarFilasPrebalanzaDisponibles.cs" />
     <Compile Include="VerificarCartelPreBalanza.cs" />
@@ -1269,6 +1274,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="EnTransitoV2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+    <ItemGroup>
+    <XamlAppDef Include="PuestoComandoPuerto.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

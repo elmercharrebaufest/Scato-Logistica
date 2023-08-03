@@ -90,6 +90,8 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
+    <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Comandos\CrearLoteInase.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLedReordenado.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLed.cs" />
+    <Compile Include="Comandos\ResultadoPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />
     <Compile Include="Comandos\ActualizarEstadoPuerto.cs" />
     <Compile Include="Comandos\AutomatizacionEtapas.cs" />
@@ -742,6 +745,7 @@
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
+    <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />
     <Compile Include="Dto\ConfiguracionGeneralDto.cs" />
@@ -1076,6 +1080,7 @@
     <Compile Include="Entidades\CartaPorteDerivadoGranario.cs" />
     <Compile Include="Entidades\PesosExc.cs" />
     <Compile Include="Entidades\MuestraDeInase.cs" />
+    <Compile Include="Entidades\PuntoDeCarga.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />

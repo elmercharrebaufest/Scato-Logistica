@@ -25,27 +25,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var recorridos = Repositorio.Listar<Recorrido>(r => comando.Dto.InstanceIdsList.Contains(r.InstanciaWorkflow));
             var almacen = Repositorio.Obtener<Almacen>(comando.Dto.AlmacenId);
             var calle = Repositorio.Obtener<Calle>(comando.Dto.CalleId);
-            var hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(h => comando.Dto.HidraulicasId.Contains(h.Id));
             
-            Balanza balanzaBruto = null;
-            Balanza balanzaTara = null;
-            if (comando.BalanzasObligatorias)
-            {
-                balanzaBruto = Repositorio.Obtener<Balanza>(comando.Dto.BalanzaBrutoId);
-                balanzaTara = Repositorio.Obtener<Balanza>(comando.Dto.BalanzaTaraId);
-
-                if (balanzaBruto == null)
-                {
-                    resultado.Error("BalanzaBrutoId", Textos.Error_Invalido);
-                    Log.Error("Error de validacion puesto comando balanza bruto invalida");
-                }
-                if (balanzaTara == null)
-                {
-                    resultado.Error("BalanzaTaraId", Textos.Error_Invalido);
-                    Log.Error("Error de validacion puesto comando balanza tara invalida");
-                }
-            }
-
             if (almacen == null)
             {
                 resultado.Error("AlmacenId", Textos.Error_Invalido);
@@ -58,12 +38,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Log.Error("Error de validacion puesto comando calle invalida");
             }
 
-            if (hidraulicas.Count != comando.Dto.HidraulicasId.Length)
-            {
-                resultado.Error("HidraulicasId", Textos.Error_Invalido);
-                Log.Error("Error de validacion puesto comando hidraulica invalida");
-            }
-
             if (recorridos.Count != comando.Dto.InstanceIdsList.Count)
             {
                 resultado.Error("Recorrido", Textos.Error_Invalido);
@@ -74,18 +48,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var recorrido in recorridos)
                 {
-                    if (comando.BalanzasObligatorias)
-                    {
-                        recorrido.BalanzaBruto = balanzaBruto;
-                        recorrido.BalanzaTara = balanzaTara;
-                    }
+                   
                     recorrido.Almacen = almacen;
                     recorrido.Calle = calle;
                     recorrido.PuestosDeCargaDescargas.Clear();
-                    foreach (var hidraulica in hidraulicas)
-                    {
-                        recorrido.PuestosDeCargaDescargas.Add(hidraulica);
-                    }
                     recorrido.CorrespondeCaladoEnPlanta = comando.Dto.CorrespondeCaladoEnPlanta;
 
                     resultado.Workflows.Add(new DatosDeWorkflowDto

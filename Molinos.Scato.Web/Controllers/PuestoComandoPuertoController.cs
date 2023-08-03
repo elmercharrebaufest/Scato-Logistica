@@ -4,10 +4,12 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -19,21 +21,24 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
+
 namespace Molinos.Scato.Web.Controllers
 {
-    [Autorizacion(PermisosScato.ActividadPuestoComando, PermisosScato.PuestoDeComando_CaladoEnPlanta)]
-    public class PuestoComandoController : BaseController
+    [Autorizacion(PermisosScato.ActividadPuestoComandoPuerto, PermisosScato.PuestoDeComando_CaladoEnPlanta)]
+    public class PuestoComandoPuertoController : BaseController
     {
         private readonly ILogger log;
         private readonly IListaDeWorkflows workflows;
         private readonly IServicioComandos servicioComandos;
-        private readonly IServicioActividadFactory<IPuestoComandoService> factory;
+        private readonly IServicioActividadFactory<IPuestoComandoPuertoService> factory;
         private readonly IServicioActividadFactory<IEjecutarService> factoryejecutar;
         private readonly IServicioActividadFactory<IPesadaService> factoryPesada;
+        public PuestoComandoPuertoController(IServicioRepositorio servicio) : base(servicio)
+        {
+        }
 
-        public PuestoComandoController(ILogger log, IListaDeWorkflows workflows, IServicioRepositorio servicio, IServicioComandos servicioComandos, IServicioActividadFactory<IPuestoComandoService> factory,
-            IServicioActividadFactory<IEjecutarService> factoryejecutar, IServicioActividadFactory<IPesadaService> factoryPesada)
-            : base(servicio)
+        public PuestoComandoPuertoController(ILogger log, IListaDeWorkflows workflows, IServicioComandos servicioComandos, IServicioRepositorio servicio, IServicioActividadFactory<IPuestoComandoPuertoService> factory, 
+            IServicioActividadFactory<IEjecutarService> factoryejecutar, IServicioActividadFactory<IPesadaService> factoryPesada) : base(servicio)
         {
             this.log = log;
             this.workflows = workflows;
@@ -48,7 +53,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             if (string.IsNullOrEmpty(filtro.ProximaAccion))
             {
-                filtro.ProximaAccion = "PuestoComando";
+                filtro.ProximaAccion = "PuestoComandoPuerto";
                 filtro.CantidadDeResultados = CantidadDeResultados.Veinticinco;
             }
             ListQuery(datosUsuario, filtro, pagina, ordenarPor, dirOrden, true);
@@ -71,11 +76,57 @@ namespace Molinos.Scato.Web.Controllers
             return View("Listar", filtro);
         }
 
+        private void ListQuery(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina, string ordenarPor, DirOrden dirOrden, bool EsPrimeraCarga)
+        {
+            var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, (int)filtro.CantidadDeResultados);
+            filtro.CentroId = datosUsuario.CentroId;
+            filtro.NombreUsuario = datosUsuario.NombreUsuario;
+            filtro.TipoMaterial = TipoMaterial.NoGranos;
+            filtro.ProximaAccion = Constantes.PuestoComandoPuerto.Value;
+            filtro.TipoDeSoja = TipoDeSoja.Todos;
+            filtro.TipoDeProteina = TipoDeProteina.Todos;
+
+            var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
+            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+
+            foreach (var instancia in datosWorkflow.Workflows)
+            {
+                if (instancia.MaterialCodigoSap == ConfigurationManager.AppSettings["CodigoSapSemillaSoja"])
+                {
+                    instancia.EsSemillaSoja = true;
+                }
+                instancia.SojaIMPO = instancia.Codigo.Equals(workflowImpoGranos);
+            }
+           
+            ViewBag.MaterialesFiltrados = datosWorkflow.Workflows
+                                                    .GroupBy(s => new { s.MaterialId, s.Material })
+                                                    .Select(g => g.First())
+                                                    .Select(s => new SelectListItem { Value = s.MaterialId.ToString(), Text = s.Material })
+                                                    .ToList();
+            ViewBag.Caracteristicas = servicio.ListarCaracteristicaConfiguracionDeTabla(datosUsuario.CentroId, filtro.MaterialId ?? 0, datosUsuario.NombreUsuario);
+            ViewBag.Items = datosWorkflow.Workflows;
+
+            if (EsPrimeraCarga)
+            {
+                ViewBag.Workflows = datosWorkflow.WorkflowsCentro.OrderBy(x => x.Descripcion).ToSelectList(x => x.Codigo, x => x.Descripcion);
+
+                var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario, datosUsuario.CentroId);
+                if (actividades.All(x => x != "PuestoComandoPuerto"))
+                {
+                    actividades.Add("PuestoComandoPuerto");
+                }
+                ViewBag.Estados = actividades.ToSelectList(x => x, x => Textos.ResourceManager.GetString("Act" + x));
+                ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
+                ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
+                ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
+            }
+        }
+
         [DatosUsuario]
         public ActionResult ValidarAsignar(string instanceIds)
         {
             var respuesta = new RespuestaEstandarDto<AsignacionDto>();
-            log.Debug("Obteniendo asignacion puesto comando para : {0}", instanceIds);
+            log.Debug("Obteniendo asignacion puesto comando puerto para : {0}", instanceIds);
             var asignacion = servicio.ObtenerAsignacionDePuestoComando(instanceIds);
             asignacion.InstanceIds = instanceIds;
             asignacion.patentesInvalidas = new List<string>();
@@ -98,7 +149,14 @@ namespace Molinos.Scato.Web.Controllers
                 respuesta.Data = asignacion;
             }
 
+            AsignarValoresPorDefecto(respuesta.Data);
             return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        private void AsignarValoresPorDefecto(AsignacionDto modelo)
+        {
+            modelo.CalleId = Constantes.PuestoComandoPuerto.ValorPorDefectoCalle;
+            modelo.AlmacenId = Constantes.PuestoComandoPuerto.ValorPorDefectoAlmacen;
         }
 
         [DatosUsuario]
@@ -111,25 +169,31 @@ namespace Molinos.Scato.Web.Controllers
 
         [DatosUsuario]
         [HttpPost]
-        public ActionResult Asignar(AsignacionDto model, bool balanzasObligatorias, DatosUsuario datosUsuario)
+        public ActionResult Asignar(AsignacionDto model, DatosUsuario datosUsuario)
         {
-            if (!PermisosHelper.Is(PermisosScato.ActividadPuestoComando))
-            {
-                ModelState.Remove("HidraulicasId");
-            }
+            bool calleDisponible = servicio.CalleEstaDisponible(model.CalleId);
+            ModelState.Remove("HidraulicasId");
+            model.HidraulicasId = new int[0];
+
             if (ModelState.IsValid)
             {
-                log.Debug("Iniciando Asignacion Puesto Comando");
-                ResultadoPuestoComando resultado;
-                if (PermisosHelper.Is(PermisosScato.ActividadPuestoComando))
+                log.Debug("Iniciando Asignacion Puesto Comando Puerto");
+                ResultadoPuestoComandoPuerto resultado;
+                if (PermisosHelper.Is(PermisosScato.ActividadPuestoComandoPuerto))
                 {
-                    resultado = servicioComandos.Ejecutar(new ActualizarPuestocomando { Dto = model, BalanzasObligatorias = balanzasObligatorias }) as ResultadoPuestoComando;
+                    resultado = servicioComandos.Ejecutar(new ActualizarPuestoComandoPuerto { Dto = model }) as ResultadoPuestoComandoPuerto;
                 }
                 else
                 {
-                    resultado = servicioComandos.Ejecutar(new ActualizarPuestoComandoCaladoEnPlanta { Dto = model, BalanzasObligatorias = balanzasObligatorias }) as ResultadoPuestoComando;
+                    resultado = servicioComandos.Ejecutar(new ActualizarPuestoComandoPuertoCaladoEnPlanta { Dto = model }) as ResultadoPuestoComandoPuerto;
                 }
-                if (!resultado.HayErrores)
+                if (!calleDisponible)
+                {
+                    resultado.Error("CalleId", Textos.Error_Calle_No_Disponible);
+                    log.Error("Error de validacion puesto comando puerto calle no disponible");
+                }
+
+                if (!resultado.HayErrores && calleDisponible)
                 {
                     servicioComandos.Ejecutar(new ActualizarAsignacionDeCalle { CalleId = model.CalleId, HidraulicasId = model.HidraulicasId });
                     AvanzarWorkflow(resultado, datosUsuario);
@@ -138,24 +202,24 @@ namespace Molinos.Scato.Web.Controllers
                         return new AjaxEditSuccessResult();
                     }
                 }
-                log.Error("Hubo un error al asignar el puesto comando: {0}", resultado.Errores.FirstOrDefault());
+                log.Error("Hubo un error al asignar el puesto comando puerto : {0}", resultado.Errores.FirstOrDefault());
                 ModelState.AgregarErrores(resultado);
             }
             SetearVista(datosUsuario, model.MaterialId, model.SonSustentables, true, model.SonSojaEPA);
             return View("_Asignar", model);
         }
 
-        private void AvanzarWorkflow(ResultadoPuestoComando resultado, DatosUsuario datosUsuario)
+        private void AvanzarWorkflow(ResultadoPuestoComandoPuerto resultado, DatosUsuario datosUsuario)
         {
             var camionesAceptados = new List<DatosDeWorkflowDto>();
             var patentesFallidas = new List<string>();
-            log.Debug("Inicio Asignacion Puesto Comando sin errores");
+            log.Debug("Inicio Asignacion puesto comando puerto sin errores");
             foreach (
                 var workflow in
                     resultado.Workflows.Where(
                         workflow =>
                         workflows.ObtenerWorkflowProximaAccion(workflow.InstanciaWorkflow).ProximaAccion ==
-                        "PuestoComando"))
+                        "PuestoComandoPuerto"))
             {
                 try
                 {
@@ -163,15 +227,15 @@ namespace Molinos.Scato.Web.Controllers
                     var servicioWf = factory.CrearServicio(workflow.WorkflowDefId);
                     var control = new ControlRecorridoDto
                     {
-                        Actividad = Textos.ActPuestoComando,
-                        ActividadXaml = "PuestoComando",
+                        Actividad = Textos.ActPuestoComandoPuerto,
+                        ActividadXaml = "PuestoComandoPuerto",
                         Fecha = DateTime.Now,
                         NombreUsuario = datosUsuario.NombreUsuario,
                         PuestoDeTrabajoId = datosUsuario.PuestoDeTrabajoId,
                         WorkflowInstanceId = workflow.InstanciaWorkflow,
                         Decision = true
                     };
-                    var r = servicioWf.PuestoComando(workflow.InstanciaWorkflow, control);
+                    var r = servicioWf.PuestoComandoPuerto(workflow.InstanciaWorkflow, control);
                     if (!r.HayErrores)
                     {
                         camionesAceptados.Add(workflow);
@@ -195,8 +259,8 @@ namespace Molinos.Scato.Web.Controllers
         private void ImprimirResumenHojaDeRuta(List<DatosDeWorkflowDto> camionesAceptados, DatosUsuario datosUsuario)
         {
             if (!ModelState.IsValid || camionesAceptados.FirstOrDefault() == null ||
-                !camionesAceptados.FirstOrDefault().MaterialEsGrano ||
-                (camionesAceptados.FirstOrDefault().EsSoja && camionesAceptados.All(x => !x.TieneDescuentos)))
+                !(camionesAceptados.FirstOrDefault()?.MaterialEsGrano ?? false) ||
+                (camionesAceptados.FirstOrDefault()?.EsSoja == true && camionesAceptados.TrueForAll(x => !x.TieneDescuentos)))
             {
                 return;
             }
@@ -223,72 +287,16 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
 
-        private void ListQuery(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina, string ordenarPor, DirOrden dirOrden, bool EsPrimeraCarga)
-        {
-            var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, (int)filtro.CantidadDeResultados);
-            filtro.CentroId = datosUsuario.CentroId;
-            filtro.NombreUsuario = datosUsuario.NombreUsuario;
-            filtro.TipoMaterial = TipoMaterial.Granos;
-            filtro.ProximaAccion = Constantes.PuestoComando.Value;
-            var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
-            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
-
-            foreach (var instancia in datosWorkflow.Workflows)
-            {
-                if (instancia.MaterialCodigoSap == ConfigurationManager.AppSettings["CodigoSapSemillaSoja"])
-                {
-                    instancia.EsSemillaSoja = true;
-                }
-                instancia.SojaIMPO = instancia.Codigo.Equals(workflowImpoGranos);
-            }
-
-            ViewBag.Caracteristicas = servicio.ListarCaracteristicaConfiguracionDeTabla(datosUsuario.CentroId, filtro.MaterialId ?? 0, datosUsuario.NombreUsuario);
-            ViewBag.Items = datosWorkflow.Workflows;
-
-            if (EsPrimeraCarga == true)
-            {
-                ViewBag.Workflows = datosWorkflow.WorkflowsCentro.OrderBy(x => x.Descripcion).ToSelectList(x => x.Codigo, x => x.Descripcion);
-
-                var actividades = workflows.ObtenerWorkflowProximasAcciones(datosUsuario.NombreUsuario, datosUsuario.CentroId);
-                if (actividades.All(x => x != "PuestoComando"))
-                {
-                    actividades.Add("PuestoComando");
-                }
-                ViewBag.Estados = actividades.ToSelectList(x => x, x => Textos.ResourceManager.GetString("Act" + x));
-                ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
-                ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-                ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
-            }
-        }
-
         private void SetearVista(DatosUsuario datosUsuario, int? materialId, bool esSustentable, bool sustentableMixto, bool sojaEPA)
         {
             esSustentable = ConfigurationManager.AppSettings["SepararAlmacenSustentable"] == "false" ? false : esSustentable;
             ViewBag.BalanzasObligatorias = servicio.BalanzasObligatoriasEnPuestoComando(datosUsuario.CentroId);
             ViewBag.Calles = servicio.ListarCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             ViewBag.Balanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
-            var almacenes = materialId.HasValue ?
-                                sustentableMixto ? servicio.ListarAlmacenesPorMaterialYCentroSustentableMixto(datosUsuario.CentroId, materialId.Value)
-                                    : servicio.ListarAlmacenesPorMaterialYCentro(datosUsuario.CentroId, materialId.Value, esSustentable)
-                                : servicio.ListarAlmacenesPorCentroYesSustentable(datosUsuario.CentroId, esSustentable);
-
-            almacenes = sojaEPA ? servicio.ListarAlmacenesPorMaterialYCentroEPA(datosUsuario.CentroId, materialId.Value) : almacenes;
-
+            var almacenes = materialId.HasValue ? servicio.ListarAlmacenesPorMaterialFiltrado(materialId.GetValueOrDefault(0)) : null;
+            ViewBag.PuntoDeCarga = servicio.ListarPuntoDeCarga().Where(x => x.Borrado == false).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             ViewBag.Almacenes = almacenes.ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
 
-            var hidraulicas = new List<PuestosDeCargaDescargaDto>();
-            if (!PermisosHelper.Is(PermisosScato.HidraulicasEspeciales))
-                hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto, true).ToList();
-            else
-                hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto).ToList();
-
-
-            if (sojaEPA)
-                hidraulicas = hidraulicas.Where(q => q.EsSojaEPA).ToList();
-            else
-                hidraulicas = hidraulicas.Where(q => !q.EsSojaEPA).ToList();
-
-            ViewBag.Hidraulicas = new MultiSelectList(hidraulicas, "Id", "Nombre");
         }
 
         public ActionResult ConfigurarTabla()
@@ -357,7 +365,7 @@ namespace Molinos.Scato.Web.Controllers
                             var workflow = servicio.ObtenerDatosDeInstanciaPorGuid(camion);
                             var servicioWf = factoryPesada.CrearServicio(workflow.WorkflowDefinicionId);
 
-                            controlRecorrido.Actividad = Textos.ActPuestoComando;
+                            controlRecorrido.Actividad = Textos.ActPuestoComandoPuerto;
                             controlRecorrido.ActividadXaml = accion;
                             controlRecorrido.WorkflowInstanceId = camion;
                             controlRecorrido.Automatizado = false;
@@ -366,16 +374,16 @@ namespace Molinos.Scato.Web.Controllers
                             servicioWf.Pesada(camion,
                                 vehiculo.PesoBrutoOrigen ?? 0, 0, null, null, 0, null, false, DateTime.Now, controlRecorrido);
                         }
-                        else if (accion == "PuestoComando")
+                        else if (accion == "PuestoComandoPuerto")
                         {
                             var workflow = servicio.ObtenerDatosDeInstanciaPorGuid(camion);
                             var servicioWf = factory.CrearServicio(workflow.WorkflowDefinicionId);
 
-                            controlRecorrido.Actividad = Textos.ActPuestoComando;
-                            controlRecorrido.ActividadXaml = "PuestoComando";
+                            controlRecorrido.Actividad = Textos.ActPuestoComandoPuerto;
+                            controlRecorrido.ActividadXaml = "PuestoComandoPuerto";
                             controlRecorrido.WorkflowInstanceId = (camion);
 
-                            servicioWf.PuestoComando(camion, controlRecorrido);
+                            servicioWf.PuestoComandoPuerto(camion, controlRecorrido);
                         }
                         else if (accion == "EnPlayaExterna")
                         {
@@ -392,13 +400,13 @@ namespace Molinos.Scato.Web.Controllers
                         {
                             var patente = servicio.ObtenerPatentePorGuid(camion);
                             patentesInvalidas.Add(patente + " - " + accion);
-                            log.Error("Falló el rechazo del camión ya que no se encuentra en Puesto Comando ni en Playa Externa o vagón en Pesada bruto");
+                            log.Error("Falló el rechazo del camión ya que no se encuentra en puesto comando puerto ni en Playa Externa o vagón en Pesada bruto");
                         }
                     }
                 }
                 if (patentesInvalidas.Any())
                 {
-                    ViewBag.Error = "No es posible rechazar las siguientes patentes porque no se encuentran en Puesto Comando ni en Playa Externa o los vagones en Pesada bruto:";
+                    ViewBag.Error = "No es posible rechazar las siguientes patentes porque no se encuentran en puesto comando puerto ni en Playa Externa o los vagones en Pesada bruto:";
                     ViewBag.PatentesInvalidas = patentesInvalidas;
                 }
                 else if (ModelState.IsValid)

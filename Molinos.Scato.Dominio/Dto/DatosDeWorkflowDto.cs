@@ -17,5 +17,6 @@ namespace Molinos.Scato.Dominio.Dto
         public bool MaterialEsGrano { get; set; }
         public bool TieneDescuentos { get; set; }
         public bool EsSoja { get; set; }
+        public string PuntoDeCarga { get; set; } = String.Empty;
     }
 }

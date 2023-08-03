@@ -10485,6 +10485,38 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
         }
 
+
+        public IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId)
+        {
+
+            return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId));
+
+        }
+
+        public bool CalleEstaDisponible(int calleId)
+        {
+            var calle = ObtenerCalle(calleId);
+
+            if (calle == null)
+                return false;
+
+            if (calle.Deshabilitada)
+                return false;
+
+            if (calle.Bloqueada)
+                return false;
+
+            if (calle.FechaLLamada != null)
+                return false;
+
+            return true;
+        }
+
+        public IList<PuntoDeCargaDto> ListarPuntoDeCarga()
+        {
+            return Listar<PuntoDeCarga, PuntoDeCargaDto>();
+        }
+
         public bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle)
         {
             var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle);

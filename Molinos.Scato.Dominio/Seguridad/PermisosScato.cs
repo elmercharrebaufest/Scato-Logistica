@@ -753,6 +753,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         CrearClienteProvisorio = 614,
         [Display(ResourceType = typeof(Textos), Name = "EdicionConfiguracionPrebalanza")]
         EdicionConfiguracionPrebalanza = 615,
+        [Display(ResourceType = typeof(Textos), Name = "ActPuestoComandoPuerto")]
+        ActividadPuestoComandoPuerto = 616,
 
     }
 }

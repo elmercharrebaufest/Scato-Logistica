@@ -80,6 +80,11 @@
                                 {
                                     <li>@Html.ActionLink(Textos.PuestoComando_Titulo, "Index", "PuestoComando")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.ActividadPuestoComandoPuerto) || PermisosHelper.Is(PermisosScato.PuestoDeComando_CaladoEnPlanta))
+                                {
+                                    <li>@Html.ActionLink(Textos.PuestoComandoPuerto_Titulo, "Index", "PuestoComandoPuerto")</li>
+                                }
+
                             </ul>
                         </li>
                         @if (PermisosHelper.Is(PermisosScato.AjusteYStockBines))

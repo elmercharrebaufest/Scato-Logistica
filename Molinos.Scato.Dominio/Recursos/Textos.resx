@@ -5003,7 +5003,7 @@
     <value>Mostrar solo sin Descuento</value>
   </data>
   <data name="PuestoComando_Titulo" xml:space="preserve">
-    <value>Puesto Comando</value>
+    <value>Puesto Comando Logistica</value>
   </data>
   <data name="Asignar" xml:space="preserve">
     <value>Asignar</value>
@@ -5069,7 +5069,7 @@
     <value>Humedad</value>
   </data>
   <data name="ActPuestoComando" xml:space="preserve">
-    <value>Puesto Comando</value>
+    <value>Puesto Comando Logística</value>
   </data>
   <data name="PuestoDeTrabajo_EntradaSupervisor" xml:space="preserve">
     <value>Barrera / Semáforo Apertura Supervisor</value>
@@ -10234,11 +10234,26 @@
   <data name="Calle_NoExisteCallePrioritaria" xml:space="preserve">
     <value>No existe calle de paso directo asignada</value>
   </data>
-  <data name="Codigo_Interno" xml:space="preserve">
-    <value>Código</value>
+  <data name="ActPuestoComandoPuerto" xml:space="preserve">
+    <value>Puesto Comando Puerto</value>
+  </data>
+  <data name="PuestoComandoPuerto_Titulo" xml:space="preserve">
+    <value>Puesto Comando Puerto</value>
+  </data>
+  <data name="Workflow_TipoMaterialNoGranos" xml:space="preserve">
+    <value>Tipo Material</value>
+  </data>
+  <data name="PuntodeCarga" xml:space="preserve">
+    <value>Punto de Carga</value>
+  </data>
+  <data name="Error_Calle_No_Disponible" xml:space="preserve">
+    <value>La calle seleccionada no se encuentra disponible.</value>
   </data>
   <data name="Fecha_Creacion" xml:space="preserve">
-    <value>Fecha Creación</value>
+    <value>Fecha de Creación</value>
+  </data>
+  <data name="Codigo_Interno" xml:space="preserve">
+    <value>Código</value>
   </data>
   <data name="Fecha_Modificacion" xml:space="preserve">
     <value>Fecha de Modificación</value>
@@ -10248,5 +10263,14 @@
   </data>
   <data name="Modificado_Por" xml:space="preserve">
     <value>Modificado Por</value>
+  </data>
+  <data name="Default_PuntoDeCarga" xml:space="preserve">
+    <value>(punto de carga)</value>
+  </data>
+  <data name="Borrado" xml:space="preserve">
+    <value>Borrado</value>
+  </data>
+  <data name="Error_PuntodeCarga" xml:space="preserve">
+    <value>Debe seleccionar '{0}' para poder continuar.</value>
   </data>
 </root>

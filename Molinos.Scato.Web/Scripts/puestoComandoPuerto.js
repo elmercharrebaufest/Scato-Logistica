@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     $(".patente-internacional").mask("?*******", { placeholder: "" });
     var loading = $('#gridContainer');
     var height = $(window).height();
@@ -43,8 +43,6 @@
             $('#NumeroDocumentoDeIngreso').attr("disabled", "disabled");
         }
     });
-
-    DefinirAutocompletar('#MaterialDesc', '#MaterialId', $('#links').data().urlBuscarMateriales, $('#links').data().urlBuscarMaterial);
 
     countChecked();
 
@@ -127,12 +125,6 @@ function countChecked() {
         } else {
             $("#AsignarSeleccionados").attr("disabled", true);
         }
-        //Habilita el boton RECHAZAR si hay seleccionados
-        if (n.length > 0) {
-            $("#RechazarSeleccionados").removeClass("disabled");
-        } else {
-            $("#RechazarSeleccionados").addClass("disabled");
-        }
         if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonSustentables).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
@@ -154,13 +146,7 @@ function countChecked() {
         } else {
             $("#AsignarSeleccionados").attr("disabled", true);
         }
-        //Habilita el boton RECHAZAR si hay seleccionados
-        if (n.length > 0) {
-            $("#RechazarSeleccionados").removeClass("disabled");
-        } else {
-            $("#RechazarSeleccionados").addClass("disabled");
-        }
-        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1 ) {
+        if (jQuery.unique(nMaterialesId).length <= 1 && jQuery.unique(nSonEPA).length <= 1 && jQuery.unique(nSonIMPO).length <= 1) {
             $("#AsignarSeleccionadosValid").html("");
             $("#AsignarSeleccionadosValid").addClass('field-validation-valid');
             $("#AsignarSeleccionadosValid").removeClass('field-validation-error');
@@ -174,17 +160,16 @@ function countChecked() {
 };
 
 
-function ArmarMensajeError(sojaEPAFlag, materialFlag, sojaIMPOFlag)
-{
-    let mensajeError = !materialFlag? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable
+function ArmarMensajeError(sojaEPAFlag, materialFlag, sojaIMPOFlag) {
+    let mensajeError = !materialFlag ? $("#gridContainer").data().errorMaterial : $("#gridContainer").data().errorSustentable
 
-    if(!sojaEPAFlag && materialFlag){
-       mensajeError = $("#gridContainer").data().errorSojaEpa;
+    if (!sojaEPAFlag && materialFlag) {
+        mensajeError = $("#gridContainer").data().errorSojaEpa;
     }
 
-    if(!sojaIMPOFlag && materialFlag){
+    if (!sojaIMPOFlag && materialFlag) {
         mensajeError = $("#gridContainer").data().errorSojaImpo;
-     }
+    }
 
     return mensajeError;
 }
@@ -206,7 +191,7 @@ function CargarGrilla(callback) {
     var container = $('#gridContainer');
     //Obtengo url de la grilla
     var url = container.data().gridUrl;
-    //Verifico si el atributo refresco no está seteado
+    //Verifico si el atributo refresco no est� seteado
     url = UpdateQueryString("refresco", $("#modoDeRefresco").is(':checked'), url);
 
     var checkTipoVehiculo = $("#checkTipoVehiculo").is(':checked') ? "TipoVehiculo|" : "";
@@ -241,18 +226,22 @@ function CargarGrilla(callback) {
     url = UpdateQueryString("Patente", $("#filtroPatente").val(), url);
 
     url = UpdateQueryString("Workflow", $("#filtroWorkflow").val(), url);
+    url = UpdateQueryString("ProximaAccion", $("#filtroProximaAccion").val(), url);
     url = UpdateQueryString("TipoComercialId", $("#filtroTipoComercialId").val(), url);
     url = UpdateQueryString("MaterialId", $("#filtroMaterialId").val(), url);
 
     url = UpdateQueryString("Calidad", $("#filtroCalidad").val(), url);
+    url = UpdateQueryString("TipoDeSoja", $("#filtroTipoDeSoja").val(), url);
     url = UpdateQueryString("TipoEstado", $("#filtroTipoEstado").val(), url);
     url = UpdateQueryString("CantidadDeResultados", $("#filtroCantidadDeResultados").val(), url);
+    url = UpdateQueryString("TipoDeProteina", $("#filtroEsProteina").val(), url);
 
     url = UpdateQueryString("SoloNoAsignados", $("#filtroSoloNoAsignados").val(), url);
     url = UpdateQueryString("SoloSinDescuentos", $("#filtroSoloSinDescuentos").val(), url);
     url = UpdateQueryString("TipoVehiculo", $("#filtroTipoVehiculo").val(), url);
 
-    url = UpdateQueryString("CalleId", $("#filtroCalleId").val(), url);
+    url = UpdateQueryString("TipoMaterial", $("#filtroTipoMaterial").val(), url);
+    url = UpdateQueryString("jsCalleId", $("#filtroCalleId").val(), url);
 
     $.get(url, function (data) {
         container.html(data);
@@ -299,17 +288,21 @@ function CopiarFiltros() {
     $("#filtroPatente").val($("#Patente").val());
 
     $("#filtroWorkflow").val($("#Workflow").val());
+    $("#filtroProximaAccion").val($("#ProximaAccion").val());
     $("#filtroTipoComercialId").val($("#TipoComercialId").val());
     $("#filtroMaterialId").val($("#MaterialId").val());
 
     $("#filtroCalidad").val($("#Calidad").val());
+    $("#filtroTipoDeSoja").val($("#TipoDeSoja").val());
     $("#filtroTipoEstado").val($("#TipoEstado").val());
     $("#filtroCantidadDeResultados").val($("#CantidadDeResultados").val());
 
+    $("#filtroEsProteina").val($("#TipoDeProteina").val());
     $("#filtroSoloNoAsignados").val($("#SoloNoAsignados").is(':checked'));
     $("#filtroSoloSinDescuentos").val($("#SoloSinDescuentos").is(':checked'));
     $("#filtroTipoVehiculo").val($("#TipoVehiculo").val());
-    $("#filtroCalleId").val($("#CalleId").val());
+    $("#filtroTipoMaterial").val($("#TipoMaterial").val());
+    $("#filtroCalleId").val($("#jsCalleId").val());
 }
 
 function UpdateQueryString(key, value, url) {
@@ -340,9 +333,10 @@ function UpdateQueryString(key, value, url) {
     }
 }
 
+
 function cargarDialogoEditarAsignacion(data) {
     $('#dialogo-editar-body').html(data);
-    $("#dialogo-editar-guardar").attr("disabled", false);
+    $('#dialogo-editar-guardar').attr('disabled', false);
     $('#dialogo-editar-title').html($('#dialogo-editar-body form').data().dialogoTitulo);
     $('#dialogo-editar-body form').attr('data-ajax-success', 'editarRepuestaFormularioPuestoComando');
     if ($('#dialogo-editar-body form').data().dialogoExtraclass) {
@@ -361,13 +355,13 @@ function cargarDialogoEditarAsignacion(data) {
             return -($(this).height() / 3.4);
         }
     });
+
     attachDataPickers();
 }
 
 function editarRepuestaFormularioPuestoComando(respuesta) {
     if (respuesta != window.ajaxEditSuccess) {
         $('#dialogo-editar-body').html(respuesta);
-        $("#dialogo-editar-guardar").attr("disabled", true);
         CargarGrilla();
     } else {
         $('#dialogo-editar').modal('hide');
@@ -401,10 +395,6 @@ function cargarTiposVehiculo(bool) {
             $('#TipoVehiculo').html(options);
             $('#TipoVehiculo').val(null);
             $('#filtroTipoVehiculo').val(null);
-            //console.log(options);
-            //if ($("#tipoVehiculoDropdown").val() != 1) {
-            //    $('#tabFotos li[class="fotoLi2"]').hide();
-            //}
         });
 }
 

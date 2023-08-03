@@ -405,6 +405,7 @@
     <Compile Include="Controllers\EmbarquesPorBuquesController.cs" />
     <Compile Include="Controllers\EtiquetaPuertoController.cs" />
     <Compile Include="Controllers\CamionesPendientesNoGranosController.cs" />
+    <Compile Include="Controllers\PuestoComandoPuertoController.cs" />
     <Compile Include="Controllers\RegistroInactividadController.cs" />
     <Compile Include="Controllers\SalidaDeCentroPlayaController.cs" />
     <Compile Include="Controllers\CamionDemoradoController.cs" />
@@ -871,6 +872,7 @@
     <Content Include="Scripts\area\shared\intercomunicador.js" />
     <Content Include="Scripts\area\visteo\index.js" />
     <Content Include="Scripts\altaCTGDG.js" />
+    <Content Include="Scripts\asignarPuerto.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\barrera.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
@@ -894,6 +896,7 @@
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
     <Content Include="Scripts\popUpMotivoInactividad.js" />
+    <Content Include="Scripts\puestoComandoPuerto.js" />
     <Content Include="Scripts\reglaDeAnalisisObligatorio.js" />
     <Content Include="Scripts\graficoToneladasPorDia.js" />
     <Content Include="Scripts\planillaf515.js" />
@@ -2408,6 +2411,11 @@
     <Content Include="Views\CamionDemorado\OrdenCargaInternaFason.cshtml" />
     <Content Include="Views\Cliente\CrearClienteProvisorio.cshtml" />
     <Content Include="Views\Shared\_LayoutSinMenu.cshtml" />
+    <Content Include="Views\PuestoComandoPuerto\ConfigurarTabla.cshtml" />
+    <Content Include="Views\PuestoComandoPuerto\Index.cshtml" />
+    <Content Include="Views\PuestoComandoPuerto\Listar.cshtml" />
+    <Content Include="Views\PuestoComandoPuerto\TransportistaRechazado.cshtml" />
+    <Content Include="Views\PuestoComandoPuerto\_Asignar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

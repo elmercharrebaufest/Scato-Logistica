@@ -188,6 +188,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\LoteInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MuestraDeInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteDerivadoGranarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PuntoDeCargaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MotivoInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
@@ -540,6 +541,8 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorConfirmarCTGVencidas.cs" />
