@@ -2848,6 +2848,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<PuntoDeCargaDto> ListarPuntoDeCarga();
+
+        [OperationContract]
         bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle);
         
         [OperationContract]
