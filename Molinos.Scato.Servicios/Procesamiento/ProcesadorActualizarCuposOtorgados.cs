@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
-using Molinos.Scato.Repositorio.ConsultasEF;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorActualizarCuposOtorgados : ProcesadorComando<ActualizarCuposOtorgados>
     {
         private readonly ZSDWS_SCATO servicioSap;
-        
+
         private Dictionary<int, string> Especiales = new Dictionary<int, string>
         {
             { 4, " Sust." },
@@ -37,7 +36,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var estados = GenerarEstadoCupos(cuposOtorgados);
 
             var estadoViejo = Repositorio.Listar<CupoMobile>();
-            foreach(var estado in estados)
+            foreach (var estado in estados)
             {
                 Repositorio.Agregar(estado);
             }
@@ -46,7 +45,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado;
         }
 
-        private List<CuposOtorgadosDto> ObtenerCuposOtorgadosSAP(ActualizarCuposOtorgados comando, Resultado result){
+        private List<CuposOtorgadosDto> ObtenerCuposOtorgadosSAP(ActualizarCuposOtorgados comando, Resultado result)
+        {
             var resultado = new List<CuposOtorgadosDto>();
             try
             {
@@ -67,8 +67,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Log.Debug("ActualizarCuposOtorgados Material {0} Centro{1}", cuposPorMaterial.MATERIAL, cuposPorMaterial.CENTRO);
                         var codigoSap = cuposPorMaterial.MATERIAL.TrimStart(new[] { '0' });
                         var material = Repositorio.Listar<Material, int>(x => x.Id, x => x.CodigoSAP == codigoSap).FirstOrDefault();
-                        var centro = Repositorio.Listar<Centro, CentroDto>(x => new CentroDto { Id = x.Id , CodigoSAP = x.CodigoSAP} ,
-                                        x => x.CodigoSAP == cuposPorMaterial.CENTRO || 
+                        var centro = Repositorio.Listar<Centro, CentroDto>(x => new CentroDto { Id = x.Id, CodigoSAP = x.CodigoSAP },
+                                        x => x.CodigoSAP == cuposPorMaterial.CENTRO ||
                                         x.CodigoSAPEspecial.Contains(cuposPorMaterial.CENTRO)).FirstOrDefault();
 
                         if (centro == null)
@@ -86,7 +86,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                             MaterialId = material,
                             Especial = esEspecial
                         });
-
                     }
                 }
             }
@@ -97,7 +96,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
             return resultado;
         }
-        
+
         private List<CupoMobile> GenerarEstadoCupos(List<CuposOtorgadosDto> cuposOtorgados)
         {
             var resultado = new List<CupoMobile>();
@@ -116,7 +115,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             return resultado.OrderBy(x => x.Orden).ThenBy(x => x.Material).ToList();
         }
 
-        private void GenerarEstadoCuposPorCentro(IGrouping<int,CuposOtorgadosDto> cuposOtorgadosPorCentro, List<CupoMobile> resultado, IList<MaterialIdYDescripcionDto> materiales, List<MaterialIdYDescripcionDto> materialesEspeciales, IList<CargaDeCupo> cuposIngresadosEnElDiaOActivos)
+        private void GenerarEstadoCuposPorCentro(IGrouping<int, CuposOtorgadosDto> cuposOtorgadosPorCentro, List<CupoMobile> resultado, IList<MaterialIdYDescripcionDto> materiales, List<MaterialIdYDescripcionDto> materialesEspeciales, IList<CargaDeCupo> cuposIngresadosEnElDiaOActivos)
         {
             var centroId = cuposOtorgadosPorCentro.Key;
             var materialesPorCentro = materiales.Where(x => x.CentroId == centroId);
@@ -168,7 +167,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     sinCupo.Where(x => x.MaterialId == material.MaterialId).Sum(x => x.Cupos),
                     descripcionMaterial,
                     cuposOtorgados.Where(x => x.MaterialId == material.MaterialId).Sum(x => x.Cupos),
-                    cuposOtorgados.Any() ? cuposOtorgados.Max(x => x.Fecha) : DateTime.MinValue,
+                    cuposOtorgados.Any() ? cuposOtorgados.Max(x => x.Fecha) : DateTime.Now,
                     1,
                     centroId
                 );
@@ -186,11 +185,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 sinCupo.Where(x => !materialesQueNoSonOtros.Contains(x.MaterialId)).Sum(x => x.Cupos),
                 "Otros",
                 cuposOtorgados.Where(x => !materialesQueNoSonOtros.Contains(x.MaterialId)).Sum(x => x.Cupos),
-                cuposOtorgados.Any() ? cuposOtorgados.Max(x => x.Fecha) : DateTime.MinValue,
+                cuposOtorgados.Any() ? cuposOtorgados.Max(x => x.Fecha) : DateTime.Now,
                 99,
                 centroId
             );
-
         }
 
         private void InsertarCupoMobile(List<CupoMobile> resultado,
@@ -246,6 +244,5 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 });
             }
         }
-
     }
 }
