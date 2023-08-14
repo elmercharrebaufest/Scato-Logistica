@@ -30,11 +30,12 @@
     }
     else
     {
-        var soloCaladoenPlanta = PermisosHelper.Is(PermisosScato.PuestoDeComando_CaladoEnPlanta) && !PermisosHelper.Is(PermisosScato.ActividadPuestoComandoPuerto);
+        var soloCaladoenPlanta = !PermisosHelper.Is(PermisosScato.ActividadPuestoComandoPuerto);
 
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.InstanceIds)
         @Html.HiddenFor(model => model.MaterialId)
+        @Html.Hidden("CaladoEnPlanta", soloCaladoenPlanta)
 
         <span class="alert-error">@Html.ValidationMessageFor(model => model.Error)</span>
         <div class="control-group">
@@ -42,7 +43,7 @@
             <div class="controls">
                 @if (soloCaladoenPlanta)
                 {
-                    @Html.DropDownListFor(model => model.CalleId, calles, Textos.Default_Calle, new { @disabled = true })
+                    @Html.DropDownList("Calle", new SelectList(calles, "Value", "Text"), Textos.Default_Calle, new { disabled = "disabled" })
                 }
                 else
                 {

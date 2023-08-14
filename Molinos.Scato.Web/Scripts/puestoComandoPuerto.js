@@ -191,7 +191,7 @@ function CargarGrilla(callback) {
     var container = $('#gridContainer');
     //Obtengo url de la grilla
     var url = container.data().gridUrl;
-    //Verifico si el atributo refresco no está seteado
+    //Verifico si el atributo refresco no estï¿½ seteado
     url = UpdateQueryString("refresco", $("#modoDeRefresco").is(':checked'), url);
 
     var checkTipoVehiculo = $("#checkTipoVehiculo").is(':checked') ? "TipoVehiculo|" : "";
@@ -336,7 +336,11 @@ function UpdateQueryString(key, value, url) {
 
 function cargarDialogoEditarAsignacion(data) {
     $('#dialogo-editar-body').html(data);
-    $('#dialogo-editar-guardar').attr('disabled', false);
+    if ($("#CaladoEnPlanta").attr("value") == "True") {
+        $('#dialogo-editar-guardar').attr('disabled', true);
+    } else {
+        $('#dialogo-editar-guardar').attr('disabled', false);
+    }
     $('#dialogo-editar-title').html($('#dialogo-editar-body form').data().dialogoTitulo);
     $('#dialogo-editar-body form').attr('data-ajax-success', 'editarRepuestaFormularioPuestoComando');
     if ($('#dialogo-editar-body form').data().dialogoExtraclass) {
