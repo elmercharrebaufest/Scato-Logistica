@@ -66,7 +66,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         [AjaxOnly]
         [ActionName("Index")]
-        public ActionResult Listar(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaInicio", DirOrden dirOrden = DirOrden.Desc)
+        public ActionResult Listar(DatosUsuario datosUsuario, FiltroListaDeWorkflowsDto filtro, int pagina = 1, string ordenarPor = "FechaInicio", DirOrden dirOrden = DirOrden.Asc)
         {
             if (filtro.Patente != null)
             {
