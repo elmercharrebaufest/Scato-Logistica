@@ -112,9 +112,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="btn-group pull-right topRight">
-                        @Html.ActionLink(Textos.PuestoComando_ConfigTabla, "ConfigurarTabla", "PuestoComandoPuerto", null, new { @class = "ajax-editar-link btn pull-right" })
-                    </div>
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
                         <i class="icon-chevron-down"></i>
                         @Textos.Filtrar
@@ -201,13 +198,6 @@
                             </div>
                         </div>
                         <div class="span4">
-                            <div class="control-group control-group-puesto-comando">
-                                @Html.LabelFor(model => model.Calidad, new { @class = "wsmall" })
-                                <div class="controls">
-                                    @Html.DropDownListFor(model => model.Calidad, calidades, Textos.Default_Calidad, new { @class = "control" })
-                                    @Html.Hidden("filtroCalidad", Model.Calidad)
-                                </div>
-                            </div>
                             <div class="control-group control-group-puesto-comando">
                                 @Html.LabelFor(model => model.TipoEstado, new { @class = "wsmall" })
                                 <div class="controls">
