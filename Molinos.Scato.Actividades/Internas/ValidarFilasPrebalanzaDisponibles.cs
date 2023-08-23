@@ -11,7 +11,8 @@ namespace Molinos.Scato.Actividades.Internas
         {
             var resultado = new Resultado();
             var repositorio = context.GetExtension<IServicioRepositorio>();
-            var tieneFilaDisponible = repositorio.ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle.PreBalanzaGranos);
+            var materialId = repositorio.ObtenerMaterialIdPorInstanceId(context.WorkflowInstanceId);
+            var tieneFilaDisponible = repositorio.ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle.PreBalanzaGranos,materialId);
             if (!tieneFilaDisponible)
                 resultado.Error("", "En este momento no existen filas disponibles");
             return resultado;

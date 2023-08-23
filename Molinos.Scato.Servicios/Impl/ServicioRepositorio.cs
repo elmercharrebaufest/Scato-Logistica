@@ -19,7 +19,6 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Objects;
 using System.Data.Objects.SqlClient;
 using System.Diagnostics;
@@ -2130,7 +2129,7 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<CaladoPorCaracteristica, CaladoPorCaracteristicaDto>(expresionFiltro);
         }
 
-        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA , bool esSojaIMPO)
+        public IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA, bool esSojaIMPO)
         {
             Expression<Func<CallePorRecorrido, bool>> expresionFiltro = x => (esSojaIMPO ? x.CargaDeCupo.Material.Id == materialId : x.Recorrido.Material.Id == materialId)
                 && x.Calle.Id != calleId
@@ -2139,8 +2138,8 @@ namespace Molinos.Scato.Servicios.Impl
                 && x.Calle.TipoCalidad != TipoCalidad.Otros
                 && (esSojaIMPO || x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidadCamion)
                 && x.FechaEgreso == null
-                && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : esSojaIMPO  ? x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
-                
+                && (esSojaEPA ? x.Recorrido.Establecimiento.EPA : esSojaIMPO ? x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR : (x.Recorrido.Establecimiento == null || !x.Recorrido.Establecimiento.EPA));
+
             var calles = repositorio.Listar<CallePorRecorrido, Calle>(cpr => cpr.Calle, expresionFiltro);
             return conversor.ConvertirList<Calle, CalleDto>(calles.ToList());
         }
@@ -2491,7 +2490,7 @@ namespace Molinos.Scato.Servicios.Impl
                 expresionFiltro =
                 (x =>
                  x.Fecha <= filtro.FechaHasta && x.Fecha >= filtro.FechaDesde &&
-                 (x.Camara.Id.Equals(filtro.CamaraId) || filtro.CamaraId == 0) && x.Muestras.Any(q=>q.Centro.Id == filtro.CentroId));
+                 (x.Camara.Id.Equals(filtro.CamaraId) || filtro.CamaraId == 0) && x.Muestras.Any(q => q.Centro.Id == filtro.CentroId));
             }
 
             return Listar<Lote, LoteListaDto>(expresionFiltro, paginacion);
@@ -8983,8 +8982,7 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
                  DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty,
                  EsSojaEPA = x.Recorrido != null && x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
-                 EsSojaIMPO = x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR 
-
+                 EsSojaIMPO = x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR
              });
 
             if (camion == null)
@@ -10477,7 +10475,6 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var calleRecorrido = repositorio.ObtenerProyeccion<Recorrido, CallePorRecorrido>(x => x.InstanciaWorkflow == instanciaWorkflow, x => x.CallePorRecorridos.FirstOrDefault(w => w.Recorrido.Id == x.Id && w.FechaEgreso == null));
             return calleRecorrido.Calle.Id;
-
         }
 
         public CalleDto ObtenerCallePrioritaria()
@@ -10485,12 +10482,9 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
         }
 
-
         public IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId)
         {
-
             return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId));
-
         }
 
         public bool CalleEstaDisponible(int calleId)
@@ -10517,16 +10511,17 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<PuntoDeCarga, PuntoDeCargaDto>();
         }
 
-        public bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle)
+        public bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, int materialId)
         {
-            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle);
+            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId);
             foreach (var calle in calles)
             {
-                if (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id) < calle.CantidadDeCamiones)
+                if (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id && x.FechaEgreso == null) < calle.CantidadDeCamiones)
                     return true;
             }
             return false;
-		}
+        }
+
         public bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId)
         {
             return repositorio.Existe<ExcepcionAlControlProveedor>(x =>
@@ -10549,6 +10544,12 @@ namespace Molinos.Scato.Servicios.Impl
                                                           x.Motivo != MotivoExcepcionAlControl.B &&
                                                           ((centroDestinoId.HasValue && x.CentroDestino.Id == centroDestinoId.Value) || (proveedorDestinoId.HasValue && x.ProveedorDestino.Id == proveedorDestinoId.Value) || (!centroDestinoId.HasValue && !proveedorDestinoId.HasValue))
                                                           );
+        }
+
+        public int ObtenerMaterialIdPorInstanceId(Guid instanceId)
+        {
+            var recorrido = repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == instanceId);
+            return recorrido.Material.Id;
         }
     }
 }

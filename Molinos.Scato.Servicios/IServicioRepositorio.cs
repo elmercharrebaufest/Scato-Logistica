@@ -2850,12 +2850,15 @@ namespace Molinos.Scato.Servicios
         IList<PuntoDeCargaDto> ListarPuntoDeCarga();
 
         [OperationContract]
-        bool ExisteCalleConEspacioParaAsignarSegunTipoCalle(TipoCalle tipoCalle);
+        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle,int materialId);
         
         [OperationContract]
         bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
 
         [OperationContract]
         bool ExisteExcepcionAlControlParaCartaPorte(int materialId, int transportistaId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
+
+        [OperationContract]
+        int ObtenerMaterialIdPorInstanceId(Guid instanceId);
     }
 }
