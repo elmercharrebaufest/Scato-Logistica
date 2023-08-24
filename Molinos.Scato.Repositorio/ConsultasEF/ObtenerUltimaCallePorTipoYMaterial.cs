@@ -57,7 +57,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private Calle ObtenerCalleDisponible(DbContext contexto)
         {
             var calleUltimaCamionAsignado = ObtenerCalleDelUltimoCamionAsignadoConMismoMaterial(contexto);
-            if (EstaDisponible(calleUltimaCamionAsignado) && TieneEspacioDisponible(contexto, calleUltimaCamionAsignado))
+            if (calleUltimaCamionAsignado != null &&  EstaDisponible(calleUltimaCamionAsignado) && TieneEspacioDisponible(contexto, calleUltimaCamionAsignado))
                 return calleUltimaCamionAsignado;
 
             Calle calleAsignada = null;
