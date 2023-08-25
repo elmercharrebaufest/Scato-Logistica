@@ -63,7 +63,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             Calle calleAsignada = null;
             var callesDisponiblesVacias = ObtenerCallesConEspacioDisponibleConMismoMaterial(contexto);
             if (callesDisponiblesVacias.Any())
-                calleAsignada = callesDisponiblesVacias.FirstOrDefault(x => x.Id > calleUltimaCamionAsignado.Id) ?? callesDisponiblesVacias.FirstOrDefault();
+                calleAsignada = callesDisponiblesVacias.FirstOrDefault(x => x.Id > calleUltimaCamionAsignado?.Id) ?? callesDisponiblesVacias.FirstOrDefault();
 
             return calleAsignada;
         }
