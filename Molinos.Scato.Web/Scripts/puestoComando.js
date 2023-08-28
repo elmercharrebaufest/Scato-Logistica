@@ -241,6 +241,7 @@ function CargarGrilla(callback) {
     url = UpdateQueryString("Patente", $("#filtroPatente").val(), url);
 
     url = UpdateQueryString("Workflow", $("#filtroWorkflow").val(), url);
+    url = UpdateQueryString("ProximaAccion", $("#filtroProximaAccion").val(), url);
     url = UpdateQueryString("TipoComercialId", $("#filtroTipoComercialId").val(), url);
     url = UpdateQueryString("MaterialId", $("#filtroMaterialId").val(), url);
 
@@ -299,6 +300,7 @@ function CopiarFiltros() {
     $("#filtroPatente").val($("#Patente").val());
 
     $("#filtroWorkflow").val($("#Workflow").val());
+    $("#filtroProximaAccion").val($("#ProximaAccion").val());
     $("#filtroTipoComercialId").val($("#TipoComercialId").val());
     $("#filtroMaterialId").val($("#MaterialId").val());
 
