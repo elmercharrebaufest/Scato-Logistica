@@ -82,7 +82,6 @@ namespace Molinos.Scato.Web.Controllers
             filtro.CentroId = datosUsuario.CentroId;
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
             filtro.TipoMaterial = TipoMaterial.NoGranos;
-            filtro.ProximaAccion = Constantes.PuestoComandoPuerto.Value;
             filtro.TipoDeSoja = TipoDeSoja.Todos;
             filtro.TipoDeProteina = TipoDeProteina.Todos;
 

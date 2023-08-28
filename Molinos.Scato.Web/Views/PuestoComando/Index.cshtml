@@ -177,6 +177,13 @@
                                 </div>
                             </div>
                             <div class="control-group control-group-puesto-comando">
+                                @Html.Label(Textos.Etapa, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.ProximaAccion, estados, Textos.Default_Estado, new { @class = "control" })
+                                    @Html.Hidden("filtroProximaAccion", Model.ProximaAccion)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
                                 @Html.LabelFor(model => model.TipoComercialId, new { @class = "wsmall" })
                                 <div class="" id="tiposComerciales">
                                     @Html.DropDownListFor(model => model.TipoComercialId, tiposComerciales, Textos.Default_TipoComercial, new { @class = "control" })

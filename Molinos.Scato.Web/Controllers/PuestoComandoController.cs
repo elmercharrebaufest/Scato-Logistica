@@ -229,7 +229,6 @@ namespace Molinos.Scato.Web.Controllers
             filtro.CentroId = datosUsuario.CentroId;
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
             filtro.TipoMaterial = TipoMaterial.Granos;
-            filtro.ProximaAccion = Constantes.PuestoComando.Value;
             var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
             var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
 
