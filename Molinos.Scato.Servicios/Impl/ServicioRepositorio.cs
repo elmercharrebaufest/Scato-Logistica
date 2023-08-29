@@ -10513,7 +10513,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, int materialId)
         {
-            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId);
+            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId && !x.Deshabilitada && !x.Bloqueada);
             foreach (var calle in calles)
             {
                 if (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id && x.FechaEgreso == null) < calle.CantidadDeCamiones)
