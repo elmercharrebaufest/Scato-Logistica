@@ -197,16 +197,7 @@
         {
             public const int ValorPorDefectoCalle = 3;
             public const int ValorPorDefectoAlmacen = 0;
-            public const string Value = "PuestoComandoPuerto";
         }
-
-        public struct PuestoComando
-        {
-            public const string Value = "PuestoComando";
-
-        }
-
-
 
     }
 }

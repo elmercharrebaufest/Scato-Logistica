@@ -9247,9 +9247,6 @@
   <data name="VideoCamaras" xml:space="preserve">
     <value>Video Camaras</value>
   </data>
-  <data name="VisualizarVideoCamaras" xml:space="preserve">
-    <value>Visualizar Video Camaras</value>
-  </data>
   <data name="Centro_ToleranciaPatenteLeida" xml:space="preserve">
     <value>Tolerancia en patente leída</value>
   </data>
@@ -10272,5 +10269,8 @@
   </data>
   <data name="Error_PuntodeCarga" xml:space="preserve">
     <value>Debe seleccionar '{0}' para poder continuar.</value>
+  </data>
+  <data name="VisualizarVideoCamarasVagones" xml:space="preserve">
+    <value>Visualizar Video Camaras Vagones</value>
   </data>
 </root>

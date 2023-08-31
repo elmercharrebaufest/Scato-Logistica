@@ -30117,15 +30117,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visualizar Video Camaras.
-        /// </summary>
-        public static string VisualizarVideoCamaras {
-            get {
-                return ResourceManager.GetString("VisualizarVideoCamaras", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Visualizar Video Camaras Balanza.
         /// </summary>
         public static string VisualizarVideoCamarasBalanza {
@@ -30158,6 +30149,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string VisualizarVideoCamarasExportacion {
             get {
                 return ResourceManager.GetString("VisualizarVideoCamarasExportacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizar Video Camaras Vagones.
+        /// </summary>
+        public static string VisualizarVideoCamarasVagones {
+            get {
+                return ResourceManager.GetString("VisualizarVideoCamarasVagones", resourceCulture);
             }
         }
         

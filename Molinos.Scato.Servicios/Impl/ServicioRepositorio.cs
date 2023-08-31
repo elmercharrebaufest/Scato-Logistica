@@ -10551,5 +10551,6 @@ namespace Molinos.Scato.Servicios.Impl
             var recorrido = repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == instanceId);
             return recorrido.Material.Id;
         }
+
     }
 }
