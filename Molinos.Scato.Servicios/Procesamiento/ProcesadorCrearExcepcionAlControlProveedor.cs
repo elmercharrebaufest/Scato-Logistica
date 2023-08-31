@@ -28,7 +28,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 TipoDestino = comando.Dto.TipoDestino,
                 CentroDestino = Repositorio.Obtener<Centro>(x => x.Id == comando.Dto.CentroDestinoId),
                 ClienteDestino = Repositorio.Obtener<Cliente>(x => x.Id == comando.Dto.ClienteDestinoId),
-                Motivo = MotivoExcepcionAlControl.A
+                Motivo = MotivoExcepcionAlControl.A,
+                ProveedorDestino = Repositorio.Obtener<Proveedor>(x => x.Id == comando.Dto.ProveedorDestinoId),
             };
         }
 

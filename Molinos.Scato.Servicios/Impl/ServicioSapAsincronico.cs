@@ -393,14 +393,14 @@ namespace Molinos.Scato.Servicios.Impl
                     servicioComandos.Ejecutar(new ModificarVehiculoDocumentoInterno
                     {
                         InstanceId = idInstancia,
-                        DocumentoInternoSap = respuesta.PesaNetoResponse.Mensajes.FirstOrDefault().MBLNR,
-                        NumeroDeDocumentoSap = respuesta.PesaNetoResponse.Mensajes.FirstOrDefault().XBLNR
+                        DocumentoInternoSap = respuesta?.PesaNetoResponse.Mensajes.FirstOrDefault()?.MBLNR,
+                        NumeroDeDocumentoSap = respuesta?.PesaNetoResponse.Mensajes.FirstOrDefault()?.XBLNR
                     });
                 }
                 else
                 {
                     log.Warn("Respuesta con errores en la ejecución de la función PesaNeto");
-                    transmision.MensajeError = respuesta.PesaNetoResponse.Mensajes.FirstOrDefault() != null ? respuesta.PesaNetoResponse.Mensajes.FirstOrDefault().TEXT : "Respuesta vacía";
+                    transmision.MensajeError = respuesta.PesaNetoResponse.Mensajes.FirstOrDefault() != null ? respuesta?.PesaNetoResponse.Mensajes.FirstOrDefault().TEXT : "Respuesta vacía";
                     transmision.Estado = EstadoTransmisionASap.Error;
                     log.Warn("Error: {0}", transmision.MensajeError);
 

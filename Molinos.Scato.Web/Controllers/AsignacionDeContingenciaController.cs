@@ -56,8 +56,8 @@ namespace Molinos.Scato.Web.Controllers
             var puestoNoGranos = puestos.Where(x => x.NombrePuesto.Contains("Ingreso Planta No Granos")).FirstOrDefault();
             ViewBag.PuestoGranos = puestoGranos;
             ViewBag.PuestoNoGranos = puestoNoGranos;
-            ViewBag.ContingenciaGranos = servicio.EsPuestoEnContingencia(puestoGranos.Id, true);
-            ViewBag.ContingenciaNoGranos = servicio.EsPuestoEnContingencia(puestoNoGranos.Id, false);
+            ViewBag.ContingenciaGranos = servicio.EsPuestoEnContingencia(puestoGranos!=null?puestoGranos.Id:0, true);
+            ViewBag.ContingenciaNoGranos = servicio.EsPuestoEnContingencia(puestoNoGranos!=null?puestoNoGranos.Id:0, false);
         }
 
         [DatosUsuario]

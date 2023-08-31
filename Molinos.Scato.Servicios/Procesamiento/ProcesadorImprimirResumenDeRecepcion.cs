@@ -41,7 +41,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             catch (Exception e)
             {
                 Log.Error(e, "Error al imprimir en la impresora: " + comando.Dto.Impresora);
-                resultado.Errores.Add("", String.Format(Textos.ImpresoraNoConecta, impresion.Impresora.Descripcion));
+                resultado.Errores.Add("", String.Format(Textos.ImpresoraNoConecta, impresion?.Impresora.Descripcion));
             }
             return resultado;
         }

@@ -524,6 +524,9 @@
     <Build Include="dbo\Tables\Domicilio.sql" />
     <Build Include="dbo\Tables\CartaPorteDerivadoGranario.sql" />
     <Build Include="dbo\Tables\TipoEmbalaje.sql" />
+    <Build Include="dbo\Tables\PuntoDeCarga.sql" />
+    <Build Include="dbo\Tables\TipoVariedad.sql" />
+    <Build Include="dbo\Tables\TipoVariedadPorMaterial.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

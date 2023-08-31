@@ -46,5 +46,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string DestinoNombre { get; set; }
         public TipoDestino TipoDestino { get; set; }
         public MotivoExcepcionAlControl Motivo { get; set; }
+        public int? ProveedorDestinoId { get; set; }
     }
 }

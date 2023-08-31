@@ -1,0 +1,64 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.ControlRecorridoDto
+
+@{
+    ViewBag.Title = Textos.VerificacionCamionRechazado_Titulo;
+    Layout = null;
+}
+
+@using (Ajax.BeginForm("TransportistaRechazado", null, new AjaxOptions() { OnSuccess = "editarRepuestaFormularioRechazado" }, new { data_mensaje_espera = Textos.ActPuestoComando }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.NombreUsuario)
+    @Html.HiddenFor(model => model.PuestoDeTrabajoId)
+    @Html.HiddenFor(model => model.Decision, new { @class = "valorDecision" })
+    @Html.Hidden("instanceIds", (string)ViewBag.InstanceIds)
+
+    <div class="modal fade" id="dialogo-rechazar">
+        <div class="modal-header">
+            <button type="button" class="close dialogo-rechazar-cerrar" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h5>@Textos.VerificacionCamionRechazado_Titulo</h5>
+        </div>
+        @if (ViewBag.PatentesInvalidas != null)
+        {
+            <div class="modal-body" id="dialogo-cerear-body">
+                <span class="alert-error">
+                    @Html.Label((string)ViewBag.Error, new { @class = "alert-label" })
+                    <ul>
+                        @foreach (var patente in (List<string>)ViewBag.PatentesInvalidas)
+                        {
+                            <li>@patente</li>
+                        }
+                    </ul>
+                </span>
+            </div>
+        }
+        else
+        {
+            <div class="modal-body" id="dialogo-cerear-body">
+                <div>
+                    @Textos.VerificacionCamionRechazado_VehiculoRechazado
+
+                    <br />
+                    <br />
+
+                    @Textos.ExcesoDePeso_Motivo : @Html.DropDownListFor(model => model.Mensaje, (IEnumerable<SelectListItem>)ViewBag.Motivos, new { @class = "input-xlarge pull-right" })
+
+                    <br />
+                    <br />
+
+                    @Textos.VerificacionCamionRechazado_Comentario : @Html.TextAreaFor(model => model.Comentario, new { @class = "input-xlarge textarea-large pull-right" })
+
+                    <br />
+                    <br />
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn">@Textos.Rechazar</button>
+                <button data-dismiss="modal" class="btn btn-warning dialogo-rechazar-cerrar">@Textos.Cancelar</button>
+            </div>
+        }
+    </div>
+
+}

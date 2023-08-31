@@ -90,7 +90,7 @@ namespace Molinos.Scato.WfEditorWeb.ViewModel
 
             if (centros.FirstOrDefault() != null)
             {
-                WorkflowCentroId = centros.FirstOrDefault().Id;
+                WorkflowCentroId = centros.FirstOrDefault()?.Id;
                 ObtenerWorkflowsDisponibles(WorkflowCentroId.Value);
             }
             else

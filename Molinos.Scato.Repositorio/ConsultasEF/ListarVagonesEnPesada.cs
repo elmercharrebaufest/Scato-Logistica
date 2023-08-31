@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -39,8 +40,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
             foreach (var item in lista)
             {
-                if (item.OrderBy(x => x.IdActividad).LastOrDefault().ActividadXaml.Contains("Pesada")){
-                    vagones.Add(new VagonDto { NumeroPatente = item.FirstOrDefault().NumeroPatente, Recorrido = item.FirstOrDefault().Recorrido });
+                string aux = item.OrderBy(x => x.IdActividad).LastOrDefault()?.ActividadXaml;
+                if (aux != null && aux.Contains("Pesada"))
+                {
+                    vagones.Add(new VagonDto { NumeroPatente = item.FirstOrDefault()?.NumeroPatente, Recorrido = item.FirstOrDefault()?.Recorrido ?? new Guid() });
                 }
             }
             return vagones;

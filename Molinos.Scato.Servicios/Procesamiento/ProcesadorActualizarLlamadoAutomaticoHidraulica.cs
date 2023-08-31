@@ -101,7 +101,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var tiempoDeIntervalo = Repositorio.Obtener<ConfiguracionGeneral>(q => q.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras && q.Nombre == Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
                 var camionLlamado = primerosCamiones.OrderBy(x => x.FechaLlegadaACalleHidraulica).FirstOrDefault();
-                EnviarMensajeACartelConIntervalo(camionLlamado.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
+                EnviarMensajeACartelConIntervalo(camionLlamado?.CodigoCartel, camionLlamado.Patente, hidraulica.Hidraulica.Nombre, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                 hidraulica.Estado = EstadoHidraulica.Llamando;
                 hidraulica.UltimaPatenteLlamada = camionLlamado.Patente;
                 hidraulica.UltimoCartelLlamado = camionLlamado.CodigoCartel;

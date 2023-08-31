@@ -462,7 +462,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
 
                 log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", cupo);
-                return Json(new { error = respuesta.MENSAJE }, JsonRequestBehavior.AllowGet);
+                return Json(new { error = respuesta?.MENSAJE }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
@@ -1007,7 +1007,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
-            ViewBag.aceptaPendiente = true;
+            ViewBag.AceptaPendiente = true;
 
             if (orden.Cpe && workflowObj.TipoDeWorkflow == TipoDeWorkflow.Egreso)
             {

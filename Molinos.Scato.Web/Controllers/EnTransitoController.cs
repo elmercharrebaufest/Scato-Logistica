@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
@@ -57,7 +59,12 @@ namespace Molinos.Scato.Web.Controllers
             };
 
             var service = factory.CrearServicio(workflowDefinicionId);
-            service.Ejecutar(observacion.WorkflowInstanceId, controlRecorrido);
+            var resultado = service.Ejecutar(observacion.WorkflowInstanceId, controlRecorrido);
+            if (resultado != null && resultado.HayErrores)
+            {
+                TempData["Alerta"] = resultado.Errores.Values.FirstOrDefault() ?? Textos.Error_Generico;
+                TempData["TipoAlerta"] = TipoAlerta.Error;
+            }
             return RedirectToAction("Index", "ListaDeCamiones");
         }
     }

@@ -63,6 +63,7 @@
     <x:Property Name="centroDestinoId" Type="InArgument(s:Nullable(x:Int32))" />
     <x:Property Name="clienteDestinoId" Type="InArgument(s:Nullable(x:Int32))" />
     <x:Property Name="intermediarioId" Type="InArgument(x:Int32)" />
+    <x:Property Name="esCartaPorte" Type="InArgument(s:Nullable(x:Boolean))" />
   </x:Members>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
   <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.VerificacionSalidaFlete_1</sap2010:WorkflowViewState.IdRef>
@@ -80,7 +81,9 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
       <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>Ninject</AssemblyReference>
       <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
@@ -145,6 +148,11 @@
                 <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">clienteDestinoId</mca:CSharpValue>
               </InArgument>
             </local:ExisteExcepcionAlControl.ClienteDestinoId>
+            <local:ExisteExcepcionAlControl.EsCartaPorte>
+              <InArgument x:TypeArguments="s:Nullable(x:Boolean)">
+                <mca:CSharpValue x:TypeArguments="s:Nullable(x:Boolean)">esCartaPorte</mca:CSharpValue>
+              </InArgument>
+            </local:ExisteExcepcionAlControl.EsCartaPorte>
             <local:ExisteExcepcionAlControl.IntermediarioId>
               <InArgument x:TypeArguments="s:Nullable(x:Int32)">
                 <mca:CSharpValue x:TypeArguments="s:Nullable(x:Int32)">intermediarioId</mca:CSharpValue>
@@ -385,7 +393,7 @@
         </OutArgument>
       </local:FinDeActividad.PuestoDeTrabajoId>
     </local:FinDeActividad>
-    <sads:DebugSymbol.Symbol>d1VDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xWZXJpZmljYWNpb25TYWxpZGFGbGV0ZS54YW1sMnADhQMOAgEBdgt20wICAQJ6BYABGgMB8wSBAQXyAhECAUvzAgWDAxwCARR9C33sAQMB9ASEAQuoASwDAfQDrAERrAFgAwHiA7sBE98BMAMB4wLjARnjAWgDAdEC8wEd8wG2AQMBvwKxAh+3AjgDAawCugIjygI8AwH0Ac0CJ9MCPgMB4QH3AR/9ATgDAc4BgAIjmQIvAwGFAZwCJ54CNQMBhAGiAi2iAnYCAXLnARvtATQCAV+wARO2ASwCAUz2Agv2AmkCATn7Agv7Al4CASeAAwuAA2ECARWHARGHAWkDAeEEjAERjAFWAwHPBJYBEZYBaQMBvQSlARGlAV0DAasEkQERkQFqAwGZBKABEaABaAMBhwSbARGbAVgDAfUD1wEZ1wFwAwHQA74BGb4BXgMBvgPDARnDAXEDAawDzQEZzQFeAwGaA9wBGdwBZQMBiAPIARnIAWsDAfYC0gEZ0gFwAwHkArQCJbQCwwIDAa0CwgIpwgJzAwGaAr0CKb0CbgMBiAK6AkG6Ak0DAYcCxwIpxwJ0AwH1AdACLdACcwMB4gH6ASX6AcACAwHPAYsCKYsCfQMBvAGWAimWAo8BAwGqAZACKZACdwMBmAGTAimTAnoDAYYB6gEh6gHCAgIBYLMBGbMBiAMCAU0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1VDOlxNT0FcUmVwb3NHaXRcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xWZXJpZmljYWNpb25TYWxpZGFGbGV0ZS54YW1sM3MDjQMOAgEBeQt50wICAQJ9BYMBGgMBqAWEAQX6AhECAU/7AgWLAxwCARWAAQuAAewBAwGpBYcBC7ABLAMBjwS0ARG0AWADAfwDwwET5wEwAwH2AusBGesBaAMB4wL7AR37AbYBAwHQArkCH78COAMBvALCAiPSAjwDAYEC1QIn2wI+AwHtAf8BH4UCOAMB2QGIAiOhAi8DAYwBpAInpgI1AwGLAaoCLaoCdgIBeO8BG/UBNAIBZLgBE74BLAIBUP4CC/4CaQIBPIMDC4MDXgIBKYgDC4gDYQIBFpkBEZkBaAMBlQWKARGKAWkDAYIFjwERjwFWAwHvBJ4BEZ4BaQMB3AStARGtAV0DAckElAERlAFqAwG2BKgBEagBaAMBowSjARGjAVgDAZAE3wEZ3wFwAwHpA8YBGcYBXgMB1gPLARnLAXEDAcMD1QEZ1QFeAwGwA+QBGeQBZQMBnQPQARnQAWsDAYoD2gEZ2gFwAwH3ArwCJbwCwwIDAb0CygIpygJzAwGpAsUCKcUCbgMBlgLCAkHCAk0DAZUCzwIpzwJ0AwGCAtgCLdgCcwMB7gGCAiWCAsACAwHaAZMCKZMCfQMBxgGeAimeAo8BAwGzAZgCKZgCdwMBoAGbAimbAnoDAY0B8gEh8gHCAgIBZbsBGbsBiAMCAVE=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

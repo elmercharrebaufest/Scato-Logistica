@@ -61,7 +61,7 @@ namespace Molinos.Scato.Actividades.Internas
             var choferNombre = ChoferNombre.Get<string>(context);
             var procedencia = Procedencia.Get<string>(context);
 
-            var recorrido = context.WorkflowInstanceId != null ? servicio.ObtenerRecorridoPorGuid(context.WorkflowInstanceId) : null;
+            var recorrido = servicio.ObtenerRecorridoPorGuid(context.WorkflowInstanceId);
 
             if (patente != null)
             {

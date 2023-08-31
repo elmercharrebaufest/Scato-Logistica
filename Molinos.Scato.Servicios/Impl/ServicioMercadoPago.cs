@@ -279,7 +279,7 @@ namespace Molinos.Scato.Servicios.Impl
             try
             {
                 var contenido = request != null ? new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json") : null;
-                if(idempotencia != null)
+                if(idempotencia != null && contenido !=null)
                 {
                     contenido.Headers.Add("X-Idempotency-Key", idempotencia);
                 }

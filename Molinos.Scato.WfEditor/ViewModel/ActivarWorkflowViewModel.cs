@@ -88,9 +88,9 @@ namespace Molinos.Scato.WfEditor.ViewModel
         {
             centros = servicioWorkflows.ListarCentros(UsuarioEditor.UsuarioActual);
 
-            if (centros.FirstOrDefault() != null)
+            if (centros.FirstOrDefault() != null && centros!=null)
             {
-                WorkflowCentroId = centros.FirstOrDefault().Id;
+                WorkflowCentroId = centros.FirstOrDefault()?.Id;
                 ObtenerWorkflowsDisponibles(WorkflowCentroId.Value);
             }
             else

@@ -98,7 +98,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             else
             {
                 pago.Estado = "Error";
-                pago.DetalleDelEstado = detalleDePago.Error;
+                pago.DetalleDelEstado = detalleDePago?.Error;
                 resultado.Error("", detalleDePago.Error);
             }
             Repositorio.GuardarCambios();

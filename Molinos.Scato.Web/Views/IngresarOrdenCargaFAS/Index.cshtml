@@ -27,7 +27,7 @@
 
 <link href="~/Styles/area/shared/dialogModal.css" rel="stylesheet" />
 <div class="container-fluid">
-    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @Textos.OrdenCargaFAS_Titulo</div>
+    <div class="titSecciones" style="margin-bottom:10px;">@Textos.Workflow_Nombre - @ViewBag.WorkflowDescripcion</div>
 </div>
 
 @using (Html.BeginForm("Index", "IngresarOrdenCargaFas", new { workflow }, FormMethod.Post, new { @class = "form-horizontal content container causaBlock", id = "ordenCargaFas-form", data_mensaje_espera = Textos.ActIngresarOrdenDeCargaFas }))

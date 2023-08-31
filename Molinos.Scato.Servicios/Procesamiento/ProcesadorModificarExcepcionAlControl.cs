@@ -40,6 +40,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 excepcionAlControl.ClienteDestino = Repositorio.Obtener<Cliente>(comando.Dto.ClienteDestinoId);
             }
+            if (excepcionAlControl.ProveedorDestino == null || excepcionAlControl.ProveedorDestino.Id != comando.Dto.ProveedorDestinoId)
+            {
+                excepcionAlControl.ProveedorDestino = Repositorio.Obtener<Proveedor>(comando.Dto.ProveedorDestinoId);
+            }
             excepcionAlControl.Motivo = MotivoExcepcionAlControl.M;
         }
 
