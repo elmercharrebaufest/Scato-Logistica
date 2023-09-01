@@ -10552,5 +10552,56 @@ namespace Molinos.Scato.Servicios.Impl
             return recorrido.Material.Id;
         }
 
+        
+        
+        
+        public ListaPaginada<ComercialDto> ListarPaginadoComerciales(string filtro, Paginacion paginacion)
+        {
+            Expression<Func<Comercial, bool>> expresionFiltro = null;
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                expresionFiltro = x => x.CodigoSap.Contains(filtro)
+                                       || x.Descripcion.Contains(filtro);
+            }
+            return Listar<Comercial, ComercialDto>(expresionFiltro, paginacion);
+        }
+
+        public ComercialDto ObtenerComercial(int id)
+        {
+            return Obtener<Comercial, ComercialDto>(id);
+        }
+
+        public List<ProveedorDto> ListarProveedores()
+        {
+            return Listar<Proveedor, ProveedorDto>().ToList();
+        }
+
+        public ProveedorInfoDto ObtenerProveedorInfoPorId(int id)
+        {
+            return repositorio.Listar<Proveedor, ProveedorInfoDto>(x => new ProveedorInfoDto
+            {
+                Cuil = x.Cuil,
+                Descripcion = x.Descripcion,
+                Id = x.Id,
+                CodigoSap = x.CodigoSap,
+                RazonSocial = x.RazonSocial
+            }, f => f.Activo && f.Id == id, 1).First();
+        }
+
+        public IList<ProveedorDto> ObtenerCorredoresAsociadosPorEstablecimientoId(int id)
+        {
+            var establecimiento = repositorio.Obtener<Establecimiento>(id);
+            var corredoresAsociados = establecimiento.CorredoresAsociados;
+            return conversor.ConvertirList<Proveedor, ProveedorDto>(corredoresAsociados);
+        }
+
+        public List<ComercialDto> ListarComerciales()
+        {
+            return Listar<Comercial, ComercialDto>().ToList();
+        }
+
+
     }
+
+
 }

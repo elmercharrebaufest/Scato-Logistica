@@ -10273,4 +10273,57 @@
   <data name="VisualizarVideoCamarasVagones" xml:space="preserve">
     <value>Visualizar Video Camaras Vagones</value>
   </data>
+
+
+  <data name="Comercial_Administracion" xml:space="preserve">
+    <value>Administracion de Comerciales</value>
+  </data>
+  <data name="Comercial_Crear" xml:space="preserve">
+    <value>Crear Comercial</value>
+  </data>
+  <data name="Comercial_Filtrar" xml:space="preserve">
+    <value>Filtrar Comerciales</value>
+  </data>
+  <data name="Comercial_Nuevo" xml:space="preserve">
+    <value>Nuevo Comercial</value>
+  </data>
+  <data name="Comercial_Titulo" xml:space="preserve">
+    <value>Comerciales</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Comercial_CodigoSapExistente" xml:space="preserve">
+    <value>Ya Existe un Comercial con este Codigo SAP</value>
+  </data>
+  <data name="Comercial_Activo" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Comercial_Borrar" xml:space="preserve">
+    <value>Eliminar Comercial</value>
+  </data>
+  <data name="Comercial_Modificar" xml:space="preserve">
+    <value>Cambios Comercial</value>
+  </data>
+  <data name="Comercial_RelacionExistenteEstablecimiento" xml:space="preserve">
+    <value>No se Puede Eliminar un Comercial Usado Actualmente en un Establecimiento</value>
+  </data>
+  <data name="Establecimiento_Provisorio" xml:space="preserve">
+    <value>Provisorio</value>
+  </data>
+  <data name="Establecimiento_Standard2" xml:space="preserve">
+    <value>Standard 2</value>
+  </data>
+  <data name="RazonSocial" xml:space="preserve">
+    <value>Razon Social</value>
+  </data>
+  <data name="Comercial" xml:space="preserve">
+    <value>Comercial</value>
+  </data>
+  <data name="Default_Comercial" xml:space="preserve">
+    <value>(comercial)</value>
+  </data>
+  <data name="Exportar_Excel" xml:space="preserve">
+    <value>Exportar Excel</value>
+  </data>
 </root>

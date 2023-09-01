@@ -114,8 +114,8 @@ namespace Molinos.Scato.Test.Controllers
                     Id = 1,
                     NombreDeEstablecimiento = "a"
                 };
-
-            var result = target.Crear(EstablecimientoDto, datosUsuario) as ContentResult;
+            string corredores = string.Empty;
+            var result = target.Crear(EstablecimientoDto,corredores, datosUsuario) as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
 
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
@@ -144,8 +144,8 @@ namespace Molinos.Scato.Test.Controllers
                 Id = 1,
                 NombreDeEstablecimiento = "a"
             };
-
-            var result = target.Crear(EstablecimientoDto, datosUsuario) as ViewResult;
+            string corredores = string.Empty;
+            var result = target.Crear(EstablecimientoDto,corredores, datosUsuario) as ViewResult;
 
             List<SelectListItem> provincias = target.ViewBag.Provincias;
             List<SelectListItem> localidades = target.ViewBag.Localidades;
@@ -196,8 +196,8 @@ namespace Molinos.Scato.Test.Controllers
                 Id = 1,
                 NombreDeEstablecimiento = "a"
             };
-
-            var result = target.Modificar(EstablecimientoDto, datosUsuario) as ContentResult;
+            string corredores = string.Empty;
+            var result = target.Modificar(EstablecimientoDto,corredores, datosUsuario) as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
             Assert.NotNull(result);
@@ -225,8 +225,8 @@ namespace Molinos.Scato.Test.Controllers
                 Id = 1,
                 NombreDeEstablecimiento = "a"
             };
-
-            var result = target.Modificar(EstablecimientoDto, datosUsuario) as ViewResult;
+            string corredores = string.Empty;
+            var result = target.Modificar(EstablecimientoDto,corredores, datosUsuario) as ViewResult;
 
             List<SelectListItem> provincias = target.ViewBag.Provincias;
             List<SelectListItem> localidades = target.ViewBag.Localidades;

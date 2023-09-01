@@ -95,6 +95,8 @@
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
+    <Compile Include="Comandos\CrearEstablecimientoProveedor.cs" />
+    <Compile Include="Comandos\CrearComercial.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\AutorizarCpeDG.cs" />
     <Compile Include="Comandos\ConfirmacionDefinitivaCPEAutomotorDG.cs" />
@@ -105,6 +107,8 @@
     <Compile Include="Comandos\ConsultarCPEAutomotorDG.cs" />
     <Compile Include="Comandos\CrearAltaCTGDG.cs" />
     <Compile Include="Comandos\DarDeBajaCTGDG.cs" />
+    <Compile Include="Comandos\EliminarEstablecimientoProveedor.cs" />
+    <Compile Include="Comandos\EliminarComercial.cs" />
     <Compile Include="Comandos\EliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
     <Compile Include="Comandos\CrearClienteProvisorio.cs" />
+    <Compile Include="Comandos\ModificarComercial.cs" />
     <Compile Include="Comandos\ModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
@@ -734,6 +739,8 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Dto\Base\AuditoriaBaseDto.cs" />
+    <Compile Include="Dto\EstablecimientoProveedorDto.cs" />
+    <Compile Include="Dto\ComercialDto.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
     <Compile Include="Dto\DerivadoGranario\DatosDerivadoGranarioDto.cs" />
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
@@ -1020,6 +1027,7 @@
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
     <Compile Include="Entidades\Base\AuditoriaBase.cs" />
+    <Compile Include="Entidades\Comercial.cs" />
     <Compile Include="Entidades\CallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Entidades\ATAPuerto.cs" />
     <Compile Include="Entidades\ConfiguracionCalleHidraulica.cs" />

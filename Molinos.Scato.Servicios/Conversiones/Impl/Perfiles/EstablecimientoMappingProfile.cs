@@ -19,7 +19,9 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(t => t.Provincia, f => f.MapFrom(r => r.Provincia.Descripcion))
                   .ForMember(t => t.Proveedor, f => f.MapFrom(r => r.Proveedor.Descripcion))
                   .ForMember(t => t.ProvinciaId, f => f.MapFrom(r => r.Provincia.Id))
-                  .ForMember(t => t.EsSojaEPA, f => f.MapFrom(r => r.EPA));
+                  .ForMember(t => t.EsSojaEPA, f => f.MapFrom(r => r.EPA))
+                  .ForMember(t => t.ComercialId, f => f.MapFrom(r => r.Comercial.Id))
+                  .ForMember(t => t.Comercial, f => f.MapFrom(r => r.Comercial.Descripcion));
             Mapper.CreateMap<EstablecimientoDto, Establecimiento>()
                   .ForMember(f => f.EPA, t => t.MapFrom(r => r.EsSojaEPA));
         }
