@@ -201,9 +201,9 @@ namespace Molinos.Scato.Servicios.Impl
                 var estadoSensorCruce = false;
                 var estadoSensorCruceAnterior = false;
 
-                if (bool.TryParse(sensorArriba.ValorActual, out estadoSensorArriba)
-                    && bool.TryParse(sensorAbajo.ValorActual, out estadoSensorAbajo)
-                    && bool.TryParse(sensorSegundoCruce.ValorActual, out estadoSensorCruce))
+                if (bool.TryParse(sensorArriba?.ValorActual, out estadoSensorArriba)
+                    && bool.TryParse(sensorAbajo?.ValorActual, out estadoSensorAbajo)
+                    && bool.TryParse(sensorSegundoCruce?.ValorActual, out estadoSensorCruce))
                 {
                     if (bool.TryParse(sensorSegundoCruce.ValorAnterior, out estadoSensorCruceAnterior))
                     {

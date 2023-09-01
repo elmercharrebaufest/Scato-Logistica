@@ -246,16 +246,13 @@ function CargarGrilla(callback) {
     url = UpdateQueryString("MaterialId", $("#filtroMaterialId").val(), url);
 
     url = UpdateQueryString("Calidad", $("#filtroCalidad").val(), url);
-    url = UpdateQueryString("TipoDeSoja", $("#filtroTipoDeSoja").val(), url);
     url = UpdateQueryString("TipoEstado", $("#filtroTipoEstado").val(), url);
     url = UpdateQueryString("CantidadDeResultados", $("#filtroCantidadDeResultados").val(), url);
-    url = UpdateQueryString("TipoDeProteina", $("#filtroEsProteina").val(), url);
 
     url = UpdateQueryString("SoloNoAsignados", $("#filtroSoloNoAsignados").val(), url);
     url = UpdateQueryString("SoloSinDescuentos", $("#filtroSoloSinDescuentos").val(), url);
     url = UpdateQueryString("TipoVehiculo", $("#filtroTipoVehiculo").val(), url);
 
-    url = UpdateQueryString("TipoMaterial", $("#filtroTipoMaterial").val(), url);
     url = UpdateQueryString("CalleId", $("#filtroCalleId").val(), url);
 
     $.get(url, function (data) {
@@ -308,15 +305,12 @@ function CopiarFiltros() {
     $("#filtroMaterialId").val($("#MaterialId").val());
 
     $("#filtroCalidad").val($("#Calidad").val());
-    $("#filtroTipoDeSoja").val($("#TipoDeSoja").val());
     $("#filtroTipoEstado").val($("#TipoEstado").val());
     $("#filtroCantidadDeResultados").val($("#CantidadDeResultados").val());
 
-    $("#filtroEsProteina").val($("#TipoDeProteina").val());
     $("#filtroSoloNoAsignados").val($("#SoloNoAsignados").is(':checked'));
     $("#filtroSoloSinDescuentos").val($("#SoloSinDescuentos").is(':checked'));
     $("#filtroTipoVehiculo").val($("#TipoVehiculo").val());
-    $("#filtroTipoMaterial").val($("#TipoMaterial").val());
     $("#filtroCalleId").val($("#CalleId").val());
 }
 

@@ -71,7 +71,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (entidadNueva.Calle == null)
             {
                 var calidadstr = calidad == Dominio.Enums.TipoCalidad.Desconocida ? string.Empty : calidad.ToString();
-                throw new CrearException($"No hay calles disponibles para {comando.TipoCalle} - {material.Descripcion} - {calidadstr}");
+                throw new CrearException($"No hay calles disponibles para {comando.TipoCalle} - {material?.Descripcion} - {calidadstr}");
             }
             if (entidadNueva.Calle.TipoCalle != TipoCalle.Circular)
             {

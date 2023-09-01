@@ -109,7 +109,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             var paises = servicio.ListarPaises();
 
-            var paisId = paises.FirstOrDefault() != null ? paises.FirstOrDefault().Id : 0;
+            var paisId = paises.FirstOrDefault() != null ? paises.FirstOrDefault()?.Id : 0;
             var provinciaId = 0;
             if (model != null)
             {
@@ -118,7 +118,7 @@ namespace Molinos.Scato.Web.Controllers
             }
 
             ViewBag.Paises = paises.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
-            ViewBag.Provincias = servicio.ListarProvinciasPorPais(paisId).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
+            ViewBag.Provincias = servicio.ListarProvinciasPorPais((int)paisId).ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
             ViewBag.Localidades = servicio.ListarLocalidadesPorProvincia(provinciaId)
                             .ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion);
         }

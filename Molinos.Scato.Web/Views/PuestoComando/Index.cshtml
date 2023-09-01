@@ -192,14 +192,6 @@
                                 </div>
                             </div>
                             <div class="control-group control-group-puesto-comando">
-                                @Html.LabelFor(model => model.TipoMaterial, new { @class = "wsmall" })
-                                <div class="controls">
-                                    @Html.EnumDropDownListFor(model => model.TipoMaterial, new { @class = "control" })
-
-                                    @Html.Hidden("filtroTipoMaterial", Model.TipoMaterial)
-                                </div>
-                            </div>
-                            <div class="control-group control-group-puesto-comando">
                                 @Html.LabelFor(model => model.MaterialDesc, new { @class = "wsmall" })
                                 <div class="controls">
                                     @Html.TextBoxFor(model => model.MaterialDesc, new { @class = "control" })

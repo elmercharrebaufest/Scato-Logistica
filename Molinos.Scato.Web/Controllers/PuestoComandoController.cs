@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
@@ -227,6 +228,7 @@ namespace Molinos.Scato.Web.Controllers
             var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, (int)filtro.CantidadDeResultados);
             filtro.CentroId = datosUsuario.CentroId;
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
+            filtro.TipoMaterial = TipoMaterial.Granos;
             var datosWorkflow = servicio.ListarWorkFlows(paginacion, filtro);
             var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
 

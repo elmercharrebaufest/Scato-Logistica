@@ -76,7 +76,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     var caladoPorCalle = listaEficienciaValores.Where(c => c.Id == eficienciaTeorica.Id).FirstOrDefault();
                     if(caladoPorCalle != null)
                     {
-                        decimal porcentaje = (caladoPorCalle.Cantidad * 100) / eficienciaTeorica.Cantidad;
+                        decimal porcentaje = (decimal)(caladoPorCalle.Cantidad * 100) / eficienciaTeorica.Cantidad;
                         resultado.Porcentajes.Add(decimal.Round(porcentaje, 2));
                         resultado.Calles.Add(eficienciaTeorica.Nombre);
                     } else

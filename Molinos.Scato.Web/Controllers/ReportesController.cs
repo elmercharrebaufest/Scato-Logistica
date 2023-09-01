@@ -183,10 +183,7 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult GenerarReporteDetalleDeMovimiento(DatosUsuario datoUsuario, DateTime fecha)
         {
-            if(fecha == null)
-            {
-                fecha = DateTime.Now.Date;
-            }
+            
             var reporte = servicio.ReporteDetalleDeMovimiento(datoUsuario.CentroId, fecha);
             var resultado = new ResultadoPrevisualizar();
             var generadorExcel = new ExcelDetalleDeMovimientos();

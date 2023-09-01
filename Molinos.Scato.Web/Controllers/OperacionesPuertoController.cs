@@ -163,7 +163,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.dirOrden = dirOrden; filtro.Balanzada = servicio.ListarPaginadoBalanzadas(id, filtro.IdFin, filtro.NumeroBalanza, filtro.EnviadoASap, new Paginacion(ordenarPor, DirOrden.Asc, pagina, 500));
             var BalanzadasFaltantes = servicio.ListarBalanzadasFaltantesPorRango(id, (filtro.IdFin.HasValue) ? filtro.IdFin.Value : 0, filtro.NumeroBalanza).ToSelectList();
             ViewBag.BalanzadasFaltantes = BalanzadasFaltantes;
-            ViewBag.IdSiguiente = (BalanzadasFaltantes.Count != 0) ? BalanzadasFaltantes.FirstOrDefault().Value : "0";
+            ViewBag.IdSiguiente = (BalanzadasFaltantes.Count != 0) ? BalanzadasFaltantes.FirstOrDefault()?.Value : "0";
             ViewBag.Items = filtro.Balanzada;
             ViewBag.PuedeCrearBalanzada = servicio.ObtenerCarga(filtro.Id.Value, filtro.NumeroBalanza).CargaOpuesta_Id != null && BalanzadasFaltantes.Count != 0;
             ViewBag.FechaInicio = servicio.ObtenerCarga(filtro.Id.Value, filtro.NumeroBalanza).Fecha.ToString();

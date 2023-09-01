@@ -81,6 +81,7 @@ namespace Molinos.Scato.Dominio.Dto
                 {
                     yield return new ValidationResult(string.Format(Textos.Error_Imagen_Grande), new[] { "LogoFile" });
                 }
+                imagen.Dispose();
                 LogoFile.InputStream.Position = 0;
             }
 
@@ -92,6 +93,7 @@ namespace Molinos.Scato.Dominio.Dto
                     yield return new ValidationResult(string.Format(Textos.Error_Imagen_Grande), new[] { "FaviconFile" });
                 }
                 FaviconFile.InputStream.Position = 0;
+                imagen.Dispose();
             }
 
             if (Cuit == null)

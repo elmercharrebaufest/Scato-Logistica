@@ -417,7 +417,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 613) BEGIN INSERT INTO [Perm
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 614) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Crear Cliente Provisorio', 1, 614, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 615) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Edicion Configuracion Prebalanza', 0, 615, NULL); END
-
+IF NOT EXISTS (select 1 from Permiso where Codigo = 616) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Puesto Comando Puerto', 1, 616, 'PuestoComandoPuerto'); END
 
 --IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
@@ -1546,4 +1546,54 @@ END
 IF NOT EXISTS (SELECT 1 FROM EquivalenciasCaracteristicasCpOtrosPuertos WHERE CodigoSap = 'MPMAZINV') 
 BEGIN 
 INSERT INTO EquivalenciasCaracteristicasCpOtrosPuertos VALUES (386,'MPMAZINV','MPMAZINV',0)
+END
+
+-- Puntos de Carga
+IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tolva 27')
+BEGIN
+  INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
+  VALUES ('Tolva 27', 0, 'lguedez');
+END
+
+IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tolva 28')  
+BEGIN
+  INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
+  VALUES ('Tolva 28', 0, 'lguedez');
+END
+
+IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Pala')
+BEGIN
+  INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
+  VALUES ('Pala', 0, 'lguedez'); 
+END
+
+IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Descarga BIO DIESEL')
+BEGIN
+  INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
+  VALUES ('Descarga BIO DIESEL', 0, 'lguedez');
+END 
+
+IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tanque')
+BEGIN
+  INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor) 
+  VALUES ('Tanque', 0, 'lguedez');
+END
+
+-- Variedades de Material
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'SUS')
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Sustentable', 'SUS', 0, GETDATE(), 'lguedez'); 
+END
+
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'EPA')
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Epa', 'EPA', 0, GETDATE(), 'lguedez');
+END
+
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'IMP') 
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Import', 'IMP', 0, GETDATE(), 'lguedez');  
 END

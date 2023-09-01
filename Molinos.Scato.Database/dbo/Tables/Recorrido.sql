@@ -60,6 +60,7 @@
     [SacoTurnoConCircular]              BIT              DEFAULT ((0)) NOT NULL,
     [LlegoEnHorario]                    BIT              DEFAULT ((0)) NOT NULL,
     [PasoPorContingenciaPesoExc] BIT DEFAULT ((0)) NOT NULL, 
+    [PuntoDeCarga_Id] INT NULL,
     CONSTRAINT [PK_dbo.Recorrido] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Recorrido_dbo.Almacen_Almacen_Id] FOREIGN KEY ([Almacen_Id]) REFERENCES [dbo].[Almacen] ([Id]),
     CONSTRAINT [FK_dbo.Recorrido_dbo.AnalisisDeCalidad_AnalisisDeCalidad_Id] FOREIGN KEY ([AnalisisDeCalidad_Id]) REFERENCES [dbo].[AnalisisDeCalidad] ([Id]),
@@ -78,7 +79,8 @@
     CONSTRAINT [FK_dbo.Recorrido_dbo.Vehiculo_Vehiculo_Id] FOREIGN KEY ([Vehiculo_Id]) REFERENCES [dbo].[Vehiculo] ([Id]),
     CONSTRAINT [FK_dbo.Recorrido_dbo.Workflow_Workflow_Id] FOREIGN KEY ([Workflow_Id]) REFERENCES [dbo].[Workflow] ([Id]),
     CONSTRAINT [FK_dbo.Recorrido_dbo.WorkflowDefinicion_WorkflowDefinicion_Id] FOREIGN KEY ([WorkflowDefinicion_Id]) REFERENCES [dbo].[WorkflowDefinicion] ([Id]),
-    CONSTRAINT [UK_Recorrido_InstanciaWorkflow] UNIQUE NONCLUSTERED ([InstanciaWorkflow] ASC) WITH (FILLFACTOR = 90, PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON)
+    CONSTRAINT [UK_Recorrido_InstanciaWorkflow] UNIQUE NONCLUSTERED ([InstanciaWorkflow] ASC) WITH (FILLFACTOR = 90, PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON),
+    CONSTRAINT [FK_Recorrido_PuntoDeCarga] FOREIGN KEY ([PuntoDeCarga_Id]) REFERENCES [dbo].[PuntoDeCarga] ([Id])
 );
 
 

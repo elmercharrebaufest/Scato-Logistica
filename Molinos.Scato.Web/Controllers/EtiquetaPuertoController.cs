@@ -198,7 +198,7 @@ namespace Molinos.Scato.Web.Controllers
                     int.TryParse(Kg, out kgNum);
                     if (kgNum <= 0 && !string.IsNullOrEmpty(Kg)) columnasErrores.Add("Kg");
 
-                    var filaStr = Vapor.Trim() + Cargador.Trim() + Mercaderia.Trim() + Destino.Trim() + Kg.Trim() + NumeroLote.Trim() + Bodega.Trim() + Control.Trim() + FechaStr.Trim();
+                    var filaStr = Vapor?.Trim() + Cargador.Trim() + Mercaderia.Trim() + Destino.Trim() + Kg?.Trim() + NumeroLote.Trim() + Bodega.Trim() + Control.Trim() + FechaStr?.Trim();
 
                     if (columnasErrores.Count == 0)
                     {

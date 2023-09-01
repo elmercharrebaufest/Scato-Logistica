@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Enums;
+using NPOI.SS.Formula.Eval;
 using System;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -22,7 +23,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? CalleRecorridoId { get; set; }
         public bool EsSojaEPA { get; set; }
         public bool EsSojaIMPO { get; set; }
-
+        public bool EsDemorado { get; set; }
     }
 
     public class CallePorRecorridoListadoCamionesDto
@@ -54,5 +55,6 @@ namespace Molinos.Scato.Dominio.Dto
         public string CargaCupoColorTexto { get; set; }
         public string RecorridoCodigoSAP { get; set; }
         public string CargaDeCupoCodigoSAP { get; set; }
+        public bool EsDemorado { get; set; }
     }
 }

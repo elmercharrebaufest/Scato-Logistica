@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 
@@ -44,5 +45,8 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoVehiculo TipoVehiculo { get; set; }
 
         public bool SonSojaEPA { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
+        public int? PuntoDeCargaId { get; set; }
     }
 }

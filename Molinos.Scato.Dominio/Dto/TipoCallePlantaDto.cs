@@ -33,6 +33,7 @@ namespace Molinos.Scato.Dominio.Dto
         public List<CamionPlantaDto> Camiones { get; set; }
         public bool EsPasoDirecto { get; set; }
         public int MaterialId { get; set; }
+        public bool LlamadoManual { get; set; }
     }
 
     public class CamionPlantaDto

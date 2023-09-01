@@ -167,7 +167,7 @@ namespace Molinos.Scato.Web.Controllers
                     if (cartaPorte != null && !cartaPorte.HayErrores)
                         return File(cartaPorte.Pdf, "application/octet-stream", $"{ctg}.pdf");
 
-                    return Content(cartaPorte.Errores.Values.FirstOrDefault());
+                    return Content(cartaPorte?.Errores.Values.FirstOrDefault());
                 } else if (id == default(int) && !string.IsNullOrEmpty(ctgdg))
                 {
                     var cartaPorteDerivadoGranario = servicio.ObtenerCartaPorteDerivadoGranarioPorCTG(ctgdg);

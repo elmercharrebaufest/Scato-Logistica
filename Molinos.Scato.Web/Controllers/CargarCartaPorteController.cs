@@ -102,7 +102,6 @@ namespace Molinos.Scato.Web.Controllers
                     carta.Cupo = carga.Cupo;
                 }
             }
-            ViewBag.aceptaPendiente = true;
             return View(carta);
         }
 
@@ -115,7 +114,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
-            ViewBag.aceptaPendiente = true;
+            ViewBag.AceptaPendiente = true;
 
             if (string.IsNullOrEmpty(orden.NroCartaPorte) && orden.TipoVehiculoInt == (int)TipoVehiculo.Tren)
             {
@@ -565,6 +564,7 @@ namespace Molinos.Scato.Web.Controllers
                 controller.ViewBag.Tecnologias = new List<SelectListItem>();
             }
             controller.ViewBag.ListaRamalFerroviario = ramalFerroviario.ToSelectList(f => f.CodigoAfip.ToString(), f => f.Descripcion);
+            controller.ViewBag.AceptaPendiente = true;
         }
 
         protected virtual CartaPorteValidaResponseDto ValidarNumeroCartaPorte(CartaPorteDto orden, int centroId, string workflowCodigo)
@@ -710,7 +710,7 @@ namespace Molinos.Scato.Web.Controllers
                     return true;
                 }
                 log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", orden.Cupo);
-                ModelState.AddModelError("Cupo", respuesta.MENSAJE);
+                ModelState.AddModelError("Cupo", respuesta?.MENSAJE);
                 return false;
             }
             catch (Exception e)

@@ -34,8 +34,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 foreach (var asignacion in asignaciones)
                 {
-                    asignacion.Recorrido = asignacion.Recorrido;
-                    asignacion.Calle = asignacion.Calle;
+                    
                     asignacion.FechaEgreso = DateTime.Now;
                     if (asignacion.Calle.TipoCalle == TipoCalle.PreCalado ||
                         asignacion.Calle.TipoCalle == TipoCalle.Circular ||

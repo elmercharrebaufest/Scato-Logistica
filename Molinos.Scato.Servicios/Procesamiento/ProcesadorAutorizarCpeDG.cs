@@ -329,7 +329,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para esta orden.", Textos.Recorrido));
             }
 
-            if (recorrido.Transportista == null)
+            if (recorrido?.Transportista == null)
             {
                 resultado.Errores.Add("CodigoDeBaja", String.Format("No existe un {0} para este recorrido.", Textos.Transportista));
             }

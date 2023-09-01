@@ -1,0 +1,29 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ConfiguracionDeTablaDto
+@{
+    ViewBag.Title = Textos.ConfigurarTabla;
+    Layout = null;
+}
+
+<script type="text/javascript" src="@Url.Script("~/scripts/configurartabla.js")"></script>
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("ConfigurarTabla", null, new AjaxOptions(), new { @class = "form-horizontal", id = "orden-form", data_dialogo_titulo = Textos.ConfigurarTabla }))
+{   
+    <div class="control-group">
+        @Html.LabelFor(m => m.MaterialDescc, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(model => model.MaterialDescc, new {@class = "control input-medium"})
+            @Html.ValidationMessageFor(m => m.MaterialDescc)
+            @Html.HiddenFor(model => model.MaterialIdd)
+            @Html.ValidationMessageFor(m => m.MaterialIdd)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.CaracteristicasDeCalidadId, new {@class = "control-label"})
+        <div class="controls" id="caracteristicasDeCalidad">
+
+        </div>
+    </div>
+}

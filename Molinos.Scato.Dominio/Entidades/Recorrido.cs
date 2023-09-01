@@ -84,5 +84,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public bool SacoTurnoConCircular { get; set; }
         public bool LlegoEnHorario { get; set; }
         public bool PasoPorContingenciaPesoExc { get; set; }
+        public virtual PuntoDeCarga PuntoDeCarga { get; set; }
     }
 }

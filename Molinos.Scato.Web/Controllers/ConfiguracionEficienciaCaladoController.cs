@@ -63,11 +63,11 @@ namespace Molinos.Scato.Web.Controllers
                 };
                 model.Configuraciones = configuracion;
 
-                var listaEficienciaCalles = configuracionesEficienciaCalles.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
+                var listaEficienciaCalles = configuracionesEficienciaCalles?.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
                 var listaPaginada = new ListaPaginada<EficienciaCaladoValoresDto>(listaEficienciaCalles, 1, 10, listaEficienciaCalles.Count);
                 model.Items = listaPaginada;
 
-                var horarios = configuracionHorario.Valor.FromJson<ConfiguracionHorarioDto>();
+                var horarios = configuracionHorario?.Valor.FromJson<ConfiguracionHorarioDto>();
                 model.Horarios = horarios;
             }
             return model;
@@ -136,7 +136,7 @@ namespace Molinos.Scato.Web.Controllers
                 var configuracion = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EficienciaCalado, Constantes.ConfiguracionGeneral.EficienciaCalado.EficienciaCalles, datosUsuario.CentroId);
                 var configuracionCalles = configuracion.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
                 var configuracionDto = configuracionCalles.Where(c => c.Id == model.Id).FirstOrDefault();
-                configuracionDto.Cantidad = model.Cantidad;
+                if(configuracionDto!=null) configuracionDto.Cantidad = model.Cantidad;
                 configuracion.Valor = configuracionCalles.ToJson<List<EficienciaCaladoValoresDto>>();
                 configuracion.UsuarioUltimaModificacion = datosUsuario.NombreUsuario;
                 configuracion.FechaUltimaModificacion = DateTime.Now;
@@ -181,7 +181,7 @@ namespace Molinos.Scato.Web.Controllers
             {
                 var calles = servicio.ListarCallesCalado(centroId);
                 var configuracionDeCalles = servicio.ListarConfiguracionesGeneralesPorNombres(Constantes.ConfiguracionGeneral.Pantalla.EficienciaCalado, new List<string> { Constantes.ConfiguracionGeneral.EficienciaCalado.EficienciaCalles }, centroId).FirstOrDefault();
-                var listaEficienciaCalles = configuracionDeCalles.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
+                var listaEficienciaCalles = configuracionDeCalles?.Valor.FromJson<List<EficienciaCaladoValoresDto>>();
                 var listaIds = listaEficienciaCalles.Select(x => x.Id).ToList();
                 ViewBag.Calles = calles.Where(c => !listaIds.Contains(c.Id)).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             }

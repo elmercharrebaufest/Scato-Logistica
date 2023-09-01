@@ -167,6 +167,11 @@ function conectarSignalR() {
         notificador.server.unirseAGrupo(grupos);
         notificador.server.unirseAGrupo('NotificacionAplicacion');
         notificador.server.unirseAGrupo('SENSORESBARRERA');
+
+        let centroId = $("#centroId").val();
+        let puestoId = $.cookie("PuestoDeTrabajoId");
+        notificador.server.unirseAGrupo(centroId + "|" + puestoId);
+
         if ($("#barreraHeader")) {
             $.post($("#ActualizarEstadoBarrera").val());
         }
