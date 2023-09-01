@@ -190,7 +190,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
 
                 var callePlayaInterna = servicio.ObtenerCalle(primerCamionEnPrebalanza.CalleRecorridoId.Value);
-                if (!ExisteSlotsDisponibles(callePlayaInterna))
+                if (!ExisteSlotsDisponibles(callePlayaInterna, camionesEnPrebalanza.Count()))
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La {callePlayaInterna.Nombre} no tiene espacios suficientes.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -425,13 +425,12 @@ namespace Molinos.Scato.WebMobile.Controllers
             return llamadoAutomaticoPrebalanza;
         }
 
-        private bool ExisteSlotsDisponibles(CalleDto callePlayaInterna)
+        private bool ExisteSlotsDisponibles(CalleDto callePlayaInterna, int cantidadNuevosCamionesLlamadoEnPrebalanza)
         {
             var camionesEnPlayaInterna = servicio.ListarCallePorRecorridoPorCalleId(callePlayaInterna.Id).Count();
             var camionesLlamadosEnPreBalanza = servicio.ObtenerCantidadCamionesEnCallePreBalanza(callePlayaInterna.Id);
             var slotsLibres = callePlayaInterna.CantidadDeCamiones - (camionesEnPlayaInterna + camionesLlamadosEnPreBalanza);
-            var slotNecesario = int.Parse(ConfigurationManager.AppSettings["SlotNecesariosLlamadaPreBalanza"]);
-            return slotsLibres >= slotNecesario;
+            return slotsLibres >= cantidadNuevosCamionesLlamadoEnPrebalanza;
         }
 
         private void EnviarMensajeLlamadoACartelPrebalanza(ResultadoMensajeCartelLed configuracionCartel)
