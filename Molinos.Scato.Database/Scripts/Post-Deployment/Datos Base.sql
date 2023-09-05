@@ -1597,3 +1597,14 @@ BEGIN
   insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
   values ('Import', 'IMP', 0, GETDATE(), 'lguedez');  
 END
+
+
+IF EXISTS (SELECT 1 FROM Permiso WHERE ActividadWorkflow = 'PuestoComandoPuerto')
+BEGIN 
+	UPDATE Permiso SET NombreActividad = 'Puesto Comando Puerto'  WHERE ActividadWorkflow = 'PuestoComandoPuerto' 
+END
+
+IF EXISTS (SELECT 1 FROM Permiso WHERE ActividadWorkflow = 'PuestoComando')
+BEGIN 
+	UPDATE Permiso SET NombreActividad = 'Puesto Comando Logística'  WHERE ActividadWorkflow = 'PuestoComando' 
+END
