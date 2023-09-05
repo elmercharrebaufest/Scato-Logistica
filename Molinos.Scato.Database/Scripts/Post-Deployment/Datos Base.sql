@@ -1748,3 +1748,14 @@ IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='68' )
 BEGIN 
 INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Fucile, Federico','68');
 END
+
+
+IF EXISTS (SELECT 1 FROM Permiso WHERE ActividadWorkflow = 'PuestoComandoPuerto')
+BEGIN 
+	UPDATE Permiso SET NombreActividad = 'Puesto Comando Puerto'  WHERE ActividadWorkflow = 'PuestoComandoPuerto' 
+END
+
+IF EXISTS (SELECT 1 FROM Permiso WHERE ActividadWorkflow = 'PuestoComando')
+BEGIN 
+	UPDATE Permiso SET NombreActividad = 'Puesto Comando Logística'  WHERE ActividadWorkflow = 'PuestoComando' 
+END
