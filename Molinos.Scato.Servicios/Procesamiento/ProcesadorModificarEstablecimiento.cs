@@ -20,6 +20,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var establecimiento = Repositorio.Obtener<Establecimiento>(comando.Dto.Id);
             Conversor.Convertir(comando.Dto, establecimiento);
+            var comercial = Repositorio.Obtener<Comercial>(x => x.Id == comando.Dto.ComercialId);
+            establecimiento.Comercial =  comercial;
             establecimiento.CorredoresAsociados.Clear();
             IList<Proveedor> proveedoresAsociados = comando.Dto.CorredoresAsociados.Select(proveedorDto => Repositorio.ObtenerUnchanged<Proveedor>(proveedorDto.Id)).ToList();
             establecimiento.CorredoresAsociados = proveedoresAsociados;

@@ -1,32 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Services.Description;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Impl;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.EXCEL;
-using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.SS.Util;
-using PdfSharp.Pdf.Filters;
-using WebGrease.Css.Extensions;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -55,7 +42,7 @@ namespace Molinos.Scato.Web.Controllers
         [ActionName("Index")]
         public ActionResult Listar(string filtro, int pagina = 1, string ordenarPor = "Id", DirOrden dirOrden = DirOrden.Asc)
         {
-            _filtroActual= filtro;
+            _filtroActual = filtro;
             ListQuery(filtro, pagina, ordenarPor, dirOrden);
             return View("Listar", (object)filtro);
         }
@@ -77,7 +64,6 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         public ActionResult Crear(EstablecimientoDto model, string corredores, DatosUsuario datosUsuario)
         {
-
             if (ModelState.IsValid || model.Id == 0)
             {
                 model.Proveedor = null;
@@ -100,7 +86,6 @@ namespace Molinos.Scato.Web.Controllers
             var establecimientoAModificar = servicio.ObtenerEstablecimiento(id);
             CargarVistas(establecimientoAModificar);
             return View(establecimientoAModificar);
-
         }
 
         [HttpPost]
@@ -164,14 +149,12 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.RangoMinEPA = configuracionEPA.Where(c => c.Nombre == "RangoMin").FirstOrDefault()?.Valor;
         }
 
-        
-        
         [DatosUsuario]
         public ActionResult DescargarArchivo(DatosUsuario datosUsuario)
         {
             string ordenarPor = "Id";
             DirOrden dirOrden = DirOrden.Asc;
-           var paginacion = new Paginacion(ordenarPor, dirOrden, 1,0);
+            var paginacion = new Paginacion(ordenarPor, dirOrden, 1, 0);
             var paginado = miservicio.ListarPaginadoEstablecimientos(_filtroActual, paginacion);
             var items = paginado.Items;
 
@@ -182,7 +165,7 @@ namespace Molinos.Scato.Web.Controllers
             if (!resultado.HayErrores)
             {
                 byte[] file = resultado.Archivo;
-                return File(file, "application/octet-stream","EstablecimientosLibro.xls");
+                return File(file, "application/octet-stream", "EstablecimientosLibro.xls");
             }
             return View("Index");
         }
