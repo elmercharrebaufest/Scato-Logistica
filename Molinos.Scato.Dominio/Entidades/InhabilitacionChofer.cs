@@ -17,7 +17,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual DateTime FechaHasta { get; set; }
         [Required]
         public virtual string Motivo { get; set; }
-        [Required]
+  
         public virtual Centro Centro { get; set; }
         [Required]
         public virtual string NombreUsuarioResponsable { get; set; }
