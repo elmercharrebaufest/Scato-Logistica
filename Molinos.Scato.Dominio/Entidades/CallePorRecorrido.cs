@@ -8,7 +8,6 @@ namespace Molinos.Scato.Dominio.Entidades
     {
         [Key]
         public virtual int Id { get; set; }
-        [Required]
         public virtual Calle Calle { get; set; }
         public virtual Recorrido Recorrido { get; set; }
         public virtual CargaDeCupo CargaDeCupo { get; set; }
