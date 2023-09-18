@@ -287,10 +287,10 @@
     <StartArguments />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Molinos.Scato.WfEditorWeb_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Molinos.Scato.WfEditorWeb_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9DF06E83774B57E8A3888B380E845873302EE886</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F53266EED34FAEC2FD6744A29DD288152412BA8B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
