@@ -254,6 +254,7 @@
     </EmbeddedResource>
     <None Include="log4net.config" />
     <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey.pfx" />
+    <None Include="Molinos.Scato.WfEditorWeb_TemporaryKey_old.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -286,10 +287,10 @@
     <StartArguments />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Molinos.Scato.WfEditorWeb_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Molinos.Scato.WfEditorWeb_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>728EEB60B3ADB6CBC6D5A705937433B43BB5176E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9DF06E83774B57E8A3888B380E845873302EE886</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
