@@ -5003,7 +5003,7 @@
     <value>Mostrar solo sin Descuento</value>
   </data>
   <data name="PuestoComando_Titulo" xml:space="preserve">
-    <value>Puesto Comando</value>
+    <value>Puesto Comando Logistica</value>
   </data>
   <data name="Asignar" xml:space="preserve">
     <value>Asignar</value>
@@ -5069,7 +5069,7 @@
     <value>Humedad</value>
   </data>
   <data name="ActPuestoComando" xml:space="preserve">
-    <value>Puesto Comando</value>
+    <value>Puesto Comando Logística</value>
   </data>
   <data name="PuestoDeTrabajo_EntradaSupervisor" xml:space="preserve">
     <value>Barrera / Semáforo Apertura Supervisor</value>
@@ -9247,9 +9247,6 @@
   <data name="VideoCamaras" xml:space="preserve">
     <value>Video Camaras</value>
   </data>
-  <data name="VisualizarVideoCamaras" xml:space="preserve">
-    <value>Visualizar Video Camaras</value>
-  </data>
   <data name="Centro_ToleranciaPatenteLeida" xml:space="preserve">
     <value>Tolerancia en patente leída</value>
   </data>
@@ -10230,5 +10227,103 @@
   </data>
   <data name="ConfiguracionGeneral_Inexistente" xml:space="preserve">
     <value>No existe la configuración</value>
+  </data>
+  <data name="Calle_NoExisteCallePrioritaria" xml:space="preserve">
+    <value>No existe calle de paso directo asignada</value>
+  </data>
+  <data name="ActPuestoComandoPuerto" xml:space="preserve">
+    <value>Puesto Comando Puerto</value>
+  </data>
+  <data name="PuestoComandoPuerto_Titulo" xml:space="preserve">
+    <value>Puesto Comando Puerto</value>
+  </data>
+  <data name="Workflow_TipoMaterialNoGranos" xml:space="preserve">
+    <value>Tipo Material</value>
+  </data>
+  <data name="PuntodeCarga" xml:space="preserve">
+    <value>Punto de Carga</value>
+  </data>
+  <data name="Error_Calle_No_Disponible" xml:space="preserve">
+    <value>La calle seleccionada no se encuentra disponible.</value>
+  </data>
+  <data name="Fecha_Creacion" xml:space="preserve">
+    <value>Fecha de Creación</value>
+  </data>
+  <data name="Codigo_Interno" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="Fecha_Modificacion" xml:space="preserve">
+    <value>Fecha de Modificación</value>
+  </data>
+  <data name="Creado_Por" xml:space="preserve">
+    <value>Creado Por</value>
+  </data>
+  <data name="Modificado_Por" xml:space="preserve">
+    <value>Modificado Por</value>
+  </data>
+  <data name="Default_PuntoDeCarga" xml:space="preserve">
+    <value>(punto de carga)</value>
+  </data>
+  <data name="Borrado" xml:space="preserve">
+    <value>Borrado</value>
+  </data>
+  <data name="Error_PuntodeCarga" xml:space="preserve">
+    <value>Debe seleccionar '{0}' para poder continuar.</value>
+  </data>
+  <data name="VisualizarVideoCamarasVagones" xml:space="preserve">
+    <value>Visualizar Video Camaras Vagones</value>
+  </data>
+
+
+  <data name="Comercial_Administracion" xml:space="preserve">
+    <value>Administracion de Comerciales</value>
+  </data>
+  <data name="Comercial_Crear" xml:space="preserve">
+    <value>Crear Comercial</value>
+  </data>
+  <data name="Comercial_Filtrar" xml:space="preserve">
+    <value>Filtrar Comerciales</value>
+  </data>
+  <data name="Comercial_Nuevo" xml:space="preserve">
+    <value>Nuevo Comercial</value>
+  </data>
+  <data name="Comercial_Titulo" xml:space="preserve">
+    <value>Comerciales</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Comercial_CodigoSapExistente" xml:space="preserve">
+    <value>Ya Existe un Comercial con este Codigo SAP</value>
+  </data>
+  <data name="Comercial_Activo" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="Comercial_Borrar" xml:space="preserve">
+    <value>Eliminar Comercial</value>
+  </data>
+  <data name="Comercial_Modificar" xml:space="preserve">
+    <value>Cambios Comercial</value>
+  </data>
+  <data name="Comercial_RelacionExistenteEstablecimiento" xml:space="preserve">
+    <value>No se Puede Eliminar un Comercial Usado Actualmente en un Establecimiento</value>
+  </data>
+  <data name="Establecimiento_Provisorio" xml:space="preserve">
+    <value>Provisorio</value>
+  </data>
+  <data name="Establecimiento_Standard2" xml:space="preserve">
+    <value>Standard 2</value>
+  </data>
+  <data name="RazonSocial" xml:space="preserve">
+    <value>Razon Social</value>
+  </data>
+  <data name="Comercial" xml:space="preserve">
+    <value>Comercial</value>
+  </data>
+  <data name="Default_Comercial" xml:space="preserve">
+    <value>(comercial)</value>
+  </data>
+  <data name="Exportar_Excel" xml:space="preserve">
+    <value>Exportar Excel</value>
   </data>
 </root>

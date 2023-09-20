@@ -522,7 +522,7 @@ namespace Molinos.Scato.Dominio.Seguridad
         ArmarLoteAuditoria = 245,
         [Display(ResourceType = typeof(Textos), Name = "ModificarDatosExportacion")]
         ModificarDatosExportacion = 246,
-        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamaras")]
+        [Display(ResourceType = typeof(Textos), Name = "VisualizarVideoCamarasVagones")]
         VisualizarVideoCamaras = 247,
         [Display(ResourceType = typeof(Textos), Name = "EmbarquesPorBuques")]
         EmbarquesPorBuques = 248,
@@ -753,6 +753,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         CrearClienteProvisorio = 614,
         [Display(ResourceType = typeof(Textos), Name = "EdicionConfiguracionPrebalanza")]
         EdicionConfiguracionPrebalanza = 615,
+        [Display(ResourceType = typeof(Textos), Name = "ActPuestoComandoPuerto")]
+        ActividadPuestoComandoPuerto = 616,
 
     }
 }

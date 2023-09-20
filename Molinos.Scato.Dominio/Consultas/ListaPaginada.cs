@@ -20,7 +20,7 @@ namespace Molinos.Scato.Dominio.Consultas
         {
             Items = items;
             Pagina = pagina;
-            ItemsPorPagina = itemsPorPagina;
+            ItemsPorPagina = itemsPorPagina == 0 ? items.Count :itemsPorPagina;
             ItemsTotales = itemsPorPagina == 0 ? items.Count : itemsTotales;
         }
 

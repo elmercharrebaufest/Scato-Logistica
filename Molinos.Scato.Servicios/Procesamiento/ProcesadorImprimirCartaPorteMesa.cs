@@ -27,7 +27,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             try
             {
                 Log.Debug("Iniciando impresión de ImprimirCartaPorteMesa en la impresora: " + comando.Dto.Impresora);
-                comando.Dto.Impresora = comando.Dto.Impresora;
+                
                 comando.CantidadCopias = 1;
                 ServicioImpresion.Ejecutar(comando);
             }

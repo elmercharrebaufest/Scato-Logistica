@@ -168,6 +168,7 @@
     <Compile Include="Behavior\AiErrorHandlerBehaviorAttribute.cs" />
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\ComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\DomicilioMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CallePreBalanzaPlayaInternaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AgenciaMaritimaPuertoMappingProfile.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Conversiones\Impl\Perfiles\LoteInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MuestraDeInaseMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CartaPorteDerivadoGranarioMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\PuntoDeCargaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\RegistroInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\MotivoInactividadMapingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\NotificacionAplicacionMappingProfile.cs" />
@@ -302,6 +304,8 @@
     <Compile Include="Conversiones\Impl\Perfiles\UbicacionDeBuquePuertoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VaporMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\TipoEmbalajeMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoVariedadMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\TipoVariedadPorMaterialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\VideoCamaraMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\CosechaMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ImpEtiquetaRubrosAnalizarMappingProfile.cs" />
@@ -538,9 +542,16 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorConfirmarCTGVencidas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearEstablecimientoProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarEstablecimientoProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearComercial.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDG.cs" />
     <Compile Include="Procesamiento\ProcesadorBajaCTGDG.cs" />
@@ -570,6 +581,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionDeCalle.cs" />
     <Compile Include="Procesamiento\ProcesadorConsultarAFIP.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarCamionDemorado.cs" />
     <Compile Include="Procesamiento\ProcesadorSetearProgresoCargaDeCupo.cs" />
     <Compile Include="Procesamiento\ProcesadorAutomatizacionEtapas.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpe.cs" />
@@ -1123,13 +1135,13 @@
     <Compile Include="Procesamiento\ProcesadorEliminarInhabilitacionChofer.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarExcepcionAlControl.cs" />
     <Compile Include="Procesamiento\IProcesadorComando.cs" />
-    <Compile Include="Procesamiento\ProcesadorEliminar.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorEliminar.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarTipoDocumentoIdentidad.cs" />
     <Compile Include="Procesamiento\ProcesadorComando.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrear.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorCrear.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAlmacen.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarMaterial.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificar.cs" />
+    <Compile Include="Procesamiento\Base\ProcesadorModificar.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarUsuario.cs" />
     <Compile Include="Procesamiento\ProcesadorRechazarCamion.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarValorCalado.cs" />

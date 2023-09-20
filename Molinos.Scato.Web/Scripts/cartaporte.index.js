@@ -27,7 +27,6 @@ jQuery(document).ready(function ($) {
        
     });
 
-    
 
     //Validaciones
     $.validator.addMethod("cosechaValidacion", function (value, element) {
@@ -487,12 +486,12 @@ jQuery(document).ready(function ($) {
     DefinirAutocompletar('#Procedencia', '#ProcedenciaId', $('#links').data().urlBuscarProcedencias, $('#links').data().urlBuscarProcedenciaUnica);
     DefinirAutocompletar('#Entregador', '#EntregadorId', $('#links').data().urlBuscarEntregadores, $('#links').data().urlBuscarEntregador, null, null, null, 7);
     DefinirAutocompletarTransportistaCartaPorte('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
-    DefinirAutocompletarTransportistaCartaPorte('#TransportistaTramo2', '#TransportistaTramo2Id', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedorTramo2, onSelectTransportistaTramo2, true, false, false);
+    DefinirAutocompletarTransportistaTramo2CartaPorte('#TransportistaTramo2', '#TransportistaTramo2Id', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedorTramo2, onSelectTransportistaTramo2, true, false, false);
     $('#TipoComercialId').change(function () {
         DefinirAutocompletarTransportistaCartaPorte('#Transportista', '#TransportistaId', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedor, onSelectTransportista, true, false, false);
         if (!$('#Transportista').hasClass('transportistaRequerido')) ValidarObjeto($("#orden-form"), $("#Transportista"));
 
-        DefinirAutocompletarTransportistaCartaPorte('#TransportistaTramo2', '#TransportistaTramo2Id', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedorTramo2, onSelectTransportistaTramo2, true, false, false);
+        DefinirAutocompletarTransportistaTramo2CartaPorte('#TransportistaTramo2', '#TransportistaTramo2Id', '#autocompleteTran', listarProveedores, obtenerProveedor, obtenerProveedorSap, $('#links').data().urlBuscarTransportistas, $('#links').data().urlBuscarTransportistaUnico, false, '#TipoComercialId', $('#tiposComerciales').data().altaRapida, onSelectProveedorTramo2, onSelectTransportistaTramo2, true, false, false);
     });
     DefinirAutocompletarConSAP('#PagadorFlete', '#PagadorFleteId', '#autocompleteCorr', listarProveedores, obtenerProveedor, obtenerProveedorSap, null, null, true, false, false);
     DefinirAutocompletar('#RepresentanteRecibidor', '#RepresentanteRecibidorId', $('#links').data().urlBuscarEntregadores, $('#links').data().urlBuscarEntregador, null, null, null, 7);

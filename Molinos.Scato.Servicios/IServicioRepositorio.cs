@@ -934,6 +934,9 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesPorMaterial(int centroId, int materialId);
 
         [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId);
+
+        [OperationContract]
         TransmisionASapDto ObtenerTransmisionASap(int id);
 
         [OperationContract]
@@ -2520,7 +2523,7 @@ namespace Molinos.Scato.Servicios
         ReporteDetalleMovimientoDto ReporteDetalleDeMovimiento(int centroId, DateTime fecha);
 
         [OperationContract]
-        IList<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano);
+        List<MaterialPorCentroDto> ListarMaterialGranoPorCentro(int centroId, bool esGrano);
 
         [OperationContract]
         IList<MaterialDto> ObtenerMaterialNoGranoAsignableCalle();
@@ -2836,5 +2839,45 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerCalleInicial(Guid instanciaWorkflow);
+
+        [OperationContract]
+        CalleDto ObtenerCallePrioritaria();
+
+        [OperationContract]
+        bool CalleEstaDisponible(int calleId);
+
+        [OperationContract]
+        IList<PuntoDeCargaDto> ListarPuntoDeCarga();
+
+        [OperationContract]
+        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle,int materialId);
+        
+        [OperationContract]
+        bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
+
+        [OperationContract]
+        bool ExisteExcepcionAlControlParaCartaPorte(int materialId, int transportistaId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
+
+        [OperationContract]
+        int ObtenerMaterialIdPorInstanceId(Guid instanceId);
+        
+		[OperationContract]
+        ListaPaginada<ComercialDto> ListarPaginadoComerciales(string filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ComercialDto ObtenerComercial(int id);
+
+        [OperationContract]
+        List<ProveedorDto> ListarProveedores();
+
+        [OperationContract]
+        ProveedorInfoDto ObtenerProveedorInfoPorId(int id);
+
+        [OperationContract]
+        IList<ProveedorDto> ObtenerCorredoresAsociadosPorEstablecimientoId(int id);
+
+        [OperationContract]
+        List<ComercialDto> ListarComerciales();
     }
+    
 }

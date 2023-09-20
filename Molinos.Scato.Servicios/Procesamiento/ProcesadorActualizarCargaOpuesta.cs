@@ -34,13 +34,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ModificarEntidad(ActualizarCargaOpuesta comando, ResultadoActualizarCargaOpuesta resultado)
         {
-            var carga = Repositorio.Obtener<Carga>(x => x.Id == comando.Carga_Id && comando.NumeroBalanza == comando.NumeroBalanza);
+            var carga = Repositorio.Obtener<Carga>(x => x.Id == comando.Carga_Id);
             if (carga == null)
             {
                 resultado.Errores.Add("NoExisteCarga", "No existe la carga.");
                 return;
             }
-            var cargaOpuesta = Repositorio.Obtener<Carga>(x => x.Id == comando.CargaOpuesta_Id && comando.NumeroBalanza == comando.NumeroBalanza);
+            var cargaOpuesta = Repositorio.Obtener<Carga>(x => x.Id == comando.CargaOpuesta_Id);
             if (cargaOpuesta == null)
             {
                 resultado.Errores.Add("NoExisteCarga", "No existe la carga opuesta.");

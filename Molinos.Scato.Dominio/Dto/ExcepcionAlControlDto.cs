@@ -33,22 +33,21 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "MovStockSap_CentroOrigen")]
         public string CentroNombre { get; set; }
+        
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CentroId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Tipo_Destino")]
         public string TipoDestinoNombre { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Destino")]
         public string Destino { get; set; }
-
         public int? CentroDestinoId { get; set; }
         public int? ClienteDestinoId { get; set; }
         public string DestinoNombre { get; set; }
-
         public TipoDestino TipoDestino { get; set; }
-
-        
-
         public MotivoExcepcionAlControl Motivo { get; set; }
+        public int? ProveedorDestinoId { get; set; }
+
     }
 }

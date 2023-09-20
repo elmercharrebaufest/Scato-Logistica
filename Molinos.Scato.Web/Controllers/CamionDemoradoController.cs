@@ -54,7 +54,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.RecorridoId = recorrido.Id;
             }
 
-            if (recorrido.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaFas)
+            if (recorrido?.TipoDocumentoIngreso == TipoDocumentoIngreso.OrdenCargaFas)
             {
                 var orden = servicio.ObtenerOrdenCargaFasPorInstanceId(recorrido.InstanciaWorkflow);
                 IngresarOrdenCargaFasController.SetearVista(recorrido.Workflow, servicio, this);
@@ -562,23 +562,25 @@ namespace Molinos.Scato.Web.Controllers
                             TipoDomicilioDestino = material.EsDerivadoGranario && !string.IsNullOrEmpty(ordenCargaFas[i].TIPODOM) ? int.Parse(ordenCargaFas[i].TIPODOM) : (int?)null,
                         };
 
-                        if (!material.EsDerivadoGranario || string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)) //NO ES REMITENTE NI COMISIONISTA O NO ES DERIVADO GRANARIO
+                        if (material.EsDerivadoGranario
+                           && (!string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA)
+                           || (string.IsNullOrEmpty(ordenCargaFas[i].TIPO_REVENTA) && !string.IsNullOrEmpty(ordenCargaFas[i].CUIT_CTA_ORDEN))))
+                        {
+                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
+                            if (cliente == null)
+                            {
+                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino, ordenCargaFas[i].CUIT));
+                                break;
+                            }
+                            itemSap.ClienteId = cliente.Id;
+                            itemSap.ClienteDesc = cliente.Descripcion;
+                        }
+                        else
                         {
                             var cliente = servicio.ObtenerClientePorCodigoSap(ordenCargaFas[i].KUNAG);
                             if (cliente == null)
                             {
                                 resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteSAP, ordenCargaFas[i].KUNAG));
-                                break;
-                            }
-                            itemSap.ClienteId = cliente.Id;
-                            itemSap.ClienteDesc = cliente.Descripcion;
-                        } 
-                        else
-                        {
-                            var cliente = servicio.ListarClientesPorCuit(ConvertirCuil(ordenCargaFas[i].CUIT)).FirstOrDefault();
-                            if (cliente == null)
-                            {
-                                resultado.Error("", string.Format(Textos.OrdenCargaFAS_ClienteInexistenteCUIT, Textos.Destino,ordenCargaFas[i].CUIT));
                                 break;
                             }
                             itemSap.ClienteId = cliente.Id;

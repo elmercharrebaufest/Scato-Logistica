@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio;
+﻿using Microsoft.Ajax.Utilities;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -229,7 +230,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => model.Rechazado ? x.TipoCalle == TipoCalle.RechazadosDemorados && !x.Deshabilitada : x.TipoCalle == TipoCalle.PostCalado && x.TipoCalidad != TipoCalidad.PendientesPostCalado && !x.Deshabilitada && x.Id != calleId && x.TipoCalidad != TipoCalidad.Otros && !servicio.ListarCallePorRecorridoPorCalleId(x.Id).Any()).ToList();
             }
             var callesDisponibles = calles.FindAll(c => !c.Id.Equals(calleId) && servicio.ListarCallePorRecorridoPorCalleId(c.Id).Count() < c.CantidadDeCamiones);
-            ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() }).Distinct(new SelectListItemComparable());
+            ViewBag.CallesPostCalado = callesDisponibles.Where(x => !x.Bloqueada).Distinct().Select(x => new SelectListItem { Selected = x.Id == calle.Id, Text = x.Nombre, Value = x.Id.ToString() });
             if (model.EsSojaIMPO)
             {
                 model.InstanciaWorflow = new Guid();
@@ -507,15 +508,3 @@ namespace Molinos.Scato.WebMobile.Controllers
     }
 }
 
-internal class SelectListItemComparable : IEqualityComparer<SelectListItem>
-{
-    public bool Equals(SelectListItem x, SelectListItem y)
-    {
-        return x.Value.Equals(y.Value);
-    }
-
-    public int GetHashCode(SelectListItem obj)
-    {
-        return obj.Value.GetHashCode();
-    }
-}

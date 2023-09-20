@@ -48,7 +48,7 @@ namespace Molinos.Scato.Web.Firmware
                 }
                 if (!string.IsNullOrEmpty(proximaActividad.Mensaje))
                 {
-                    log.Warn("Error al obtener la proxima accion: " + recorrido.ProximaAccionMensaje);
+                    log.Warn("Error al obtener la proxima accion: " + recorrido?.ProximaAccionMensaje);
                     lecturaPuestoDeTrabajo.MensajeError = recorrido.ProximaAccionMensaje;
                     NotificarBalanzadaPorSignalR(lecturaPuestoDeTrabajo, recorrido, "");
                     return;

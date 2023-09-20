@@ -206,6 +206,7 @@ function Camion(item, calle) {
     self.Icon = item.Rechazado ? "fas fa-times-circle" : (item.Calidad == 2 ? "fas fa-tint" : item.Calidad == 3 ? "fas fa-vial" : item.Calidad == 1 ? "fas fa-clipboard-check" : "");
     self.Color = item.MaterialId == 63734 ? "bg-AceiteSj" : item.MaterialId == 4 ? "bg-soja" : item.MaterialId == 386 ? "bg-maiz" : item.MaterialId == 13 ? "bg-naranja" : item.MaterialId == 5 ? "bg-warning" : item.MaterialId == 81223 ? "bg-harina" : item.MaterialId == 63750 ? "bg-pellet" : item.MaterialId > 0 ? "bg-dark" : 'bg-vacio';
     self.Escalable = item.Escalable ? "fas fa-truck" : "";
+    self.EsDemorado = item.EsDemorado ? "fas fa-hourglass-half" : "";
 }
 
 function EstadoDeCallesViewModel() {

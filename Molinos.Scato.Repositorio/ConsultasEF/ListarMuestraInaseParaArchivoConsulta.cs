@@ -105,7 +105,9 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                             .ToList();
             foreach (var muestra in muestras)
             {
-                muestra.Id = listasDeMuestras.FirstOrDefault(x => x.IdRelacionado == muestra.RecorridoId).Id;
+                var premuestra = listasDeMuestras.FirstOrDefault(x => x.IdRelacionado == muestra.RecorridoId);
+                muestra.Id = premuestra != null ? premuestra.Id : 0;
+
                 var camaraId = materialesPorCentro
                                             .Where(mpc => mpc.Centro.Id == muestra.CentroId && mpc.Material.Id == muestra.MaterialId)
                                             .Select(mpc => mpc.Camara.Id)

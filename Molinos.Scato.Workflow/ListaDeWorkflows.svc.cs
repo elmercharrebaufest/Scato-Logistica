@@ -726,7 +726,7 @@ namespace Molinos.Scato.Workflow
             try
             {
                 var dictionaryHostInfo =
-                    instanceQuery.EndExecuteQuery(result).FirstOrDefault().HostInfo.HostMetadata;
+                    instanceQuery.EndExecuteQuery(result).FirstOrDefault()?.HostInfo.HostMetadata;
                 foreach (var info in dictionaryHostInfo)
                 {
                     resultadoPrueba.Add(info);

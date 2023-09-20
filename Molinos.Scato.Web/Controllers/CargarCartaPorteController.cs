@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
@@ -24,6 +15,13 @@ using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -104,7 +102,6 @@ namespace Molinos.Scato.Web.Controllers
                     carta.Cupo = carga.Cupo;
                 }
             }
-            ViewBag.aceptaPendiente = true;
             return View(carta);
         }
 
@@ -117,7 +114,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Debug("Iniciando Carga de Carta de Porte número {0}", orden.NroCartaPorte);
             var workflowObj = servicio.ObtenerWorkflowPorCodigo(workflow);
             var vehiculos = orden.Vehiculos;
-            ViewBag.aceptaPendiente = true;
+            ViewBag.AceptaPendiente = true;
 
             if (string.IsNullOrEmpty(orden.NroCartaPorte) && orden.TipoVehiculoInt == (int)TipoVehiculo.Tren)
             {
@@ -232,10 +229,10 @@ namespace Molinos.Scato.Web.Controllers
                     return View(orden);
                 }
 
-                if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && orden.TransportistaTramo2Id != 0)
+                if (orden.TipoVehiculoInt == (int)TipoVehiculo.Tren && orden.Cpe && (orden.TransportistaTramo2Id != 0 && orden.TransportistaTramo2Id != null))
                 {
                     var transportistaTramo2Id = orden.TransportistaTramo2Id ?? 0;
-                    var resultadoTransportistaTramo2 = SetearTransportista(ref transportistaTramo2Id, orden.TipoComercialId, orden.EsTransportistaTramo2,true);
+                    var resultadoTransportistaTramo2 = SetearTransportista(ref transportistaTramo2Id, orden.TipoComercialId, orden.EsTransportistaTramo2, true);
                     orden.TransportistaTramo2Id = transportistaTramo2Id;
 
                     if (!resultadoTransportistaTramo2)
@@ -430,7 +427,7 @@ namespace Molinos.Scato.Web.Controllers
                     var errorCode = cartaPorteResponse.HayErrores ? cartaPorteResponse.Errores.Keys.First() : "3";
                     var errorMsg = cartaPorteResponse.Errores.Values.FirstOrDefault();
                     var estadoCPE = cartaPorteResponse.Cpe?.EstadoCpe?.ToUpper()?.Trim();
-                    
+
                     if (!cartaPorteResponse.HayErrores && !EstadosCPEdeAFIP.Validos.Contains(estadoCPE))
                     {
                         if (EstadosCPEdeAFIP.Bloqueantes.Any(a => a == cartaPorteResponse.Cpe?.EstadoCpe))
@@ -567,6 +564,7 @@ namespace Molinos.Scato.Web.Controllers
                 controller.ViewBag.Tecnologias = new List<SelectListItem>();
             }
             controller.ViewBag.ListaRamalFerroviario = ramalFerroviario.ToSelectList(f => f.CodigoAfip.ToString(), f => f.Descripcion);
+            controller.ViewBag.AceptaPendiente = true;
         }
 
         protected virtual CartaPorteValidaResponseDto ValidarNumeroCartaPorte(CartaPorteDto orden, int centroId, string workflowCodigo)
@@ -645,7 +643,6 @@ namespace Molinos.Scato.Web.Controllers
             return ValidarCupoEnSap(orden, usuario, esIngreso);
         }
 
-
         private bool ValidarCupoEnSap(CartaPorteDto orden, DatosUsuario datosUsuario, bool esIngreso)
         {
             try
@@ -713,7 +710,7 @@ namespace Molinos.Scato.Web.Controllers
                     return true;
                 }
                 log.Debug("ValidarCupoEnSap Respuesta {0} no encontrado", orden.Cupo);
-                ModelState.AddModelError("Cupo", respuesta.MENSAJE);
+                ModelState.AddModelError("Cupo", respuesta?.MENSAJE);
                 return false;
             }
             catch (Exception e)
@@ -748,6 +745,7 @@ namespace Molinos.Scato.Web.Controllers
                 throw;
             }
         }
+
         [DatosUsuario]
         public JsonResult ObtenerTipoVehiculoPorPatenteCPE(long nroCtg, long cuit, DatosUsuario datosUsuario)
         {
@@ -759,10 +757,11 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception e)
             {
-                log.Error(e, $"No se pudo obtener cpe para ctg { nroCtg } y cuit { cuit }");
+                log.Error(e, $"No se pudo obtener cpe para ctg {nroCtg} y cuit {cuit}");
                 throw;
             }
         }
+
         [DatosUsuario]
         public JsonResult ObtenerImagenCpe(long nroCtg, DatosUsuario datosUsuario)
         {
@@ -846,6 +845,5 @@ namespace Molinos.Scato.Web.Controllers
             }
             return null;
         }
-
     }
 }

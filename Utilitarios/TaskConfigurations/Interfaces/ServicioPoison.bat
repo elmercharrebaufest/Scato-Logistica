@@ -1,0 +1,1 @@
+cscript G:\Scato\Interfaces\InterfaceRun.vbs http://scato.molinosagro.com.ar/Scato.serviciosWeb/ServicioSapAsincronicoPoison.svc

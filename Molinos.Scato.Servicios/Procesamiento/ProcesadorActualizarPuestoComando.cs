@@ -20,13 +20,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(ActualizarPuestocomando comando)
         {
             Log.Debug("Iniciando actualizacion de puesto comando");
-            var resultado = new ResultadoPuestoComando {Workflows = new List<DatosDeWorkflowDto>()};
+            var resultado = new ResultadoPuestoComando { Workflows = new List<DatosDeWorkflowDto>() };
 
             var recorridos = Repositorio.Listar<Recorrido>(r => comando.Dto.InstanceIdsList.Contains(r.InstanciaWorkflow));
             var almacen = Repositorio.Obtener<Almacen>(comando.Dto.AlmacenId);
             var calle = Repositorio.Obtener<Calle>(comando.Dto.CalleId);
             var hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(h => comando.Dto.HidraulicasId.Contains(h.Id));
-            
+
             Balanza balanzaBruto = null;
             Balanza balanzaTara = null;
             if (comando.BalanzasObligatorias)

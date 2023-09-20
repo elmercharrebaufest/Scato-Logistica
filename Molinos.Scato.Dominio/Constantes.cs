@@ -2,6 +2,7 @@
 {
     public static class Constantes
     {
+
         public struct ValoresPorDefecto
         {
             public const string CupoGenerico = "MOL1111/11111111";
@@ -191,5 +192,12 @@
         {
             public const string CodigoSAPSanLorenzo = "1029";
         }
+
+        public struct PuestoComandoPuerto
+        {
+            public const int ValorPorDefectoCalle = 3;
+            public const int ValorPorDefectoAlmacen = 0;
+        }
+
     }
 }

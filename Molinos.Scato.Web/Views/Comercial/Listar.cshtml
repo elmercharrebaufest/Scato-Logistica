@@ -1,0 +1,20 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+
+@{
+    Layout = null;
+    var items = (ListaPaginada<ComercialDto>)ViewBag.Items;
+}
+
+
+
+@Html.Grilla(items,
+             grid => grid.Columns(
+                grid.ColumnaEliminarModificar(Html, "Comercial"),
+                
+                grid.Columna("Descripcion", Textos.Descripcion),
+                grid.Columna("CodigoSap", Textos.CodigoSap),
+                grid.Columna("Activo", Textos.Comercial_Activo, m => ((bool)m.Activo).Formatted())
+                ))

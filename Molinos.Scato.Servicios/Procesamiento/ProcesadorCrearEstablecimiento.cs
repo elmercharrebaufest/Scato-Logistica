@@ -4,6 +4,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -27,6 +28,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 CodigoPostal = comando.Dto.CodigoPostal,
                 Anulado = comando.Dto.Anulado,
                 EPA = comando.Dto.EsSojaEPA,
+                EsStandard2 = comando.Dto.EsStandard2,
+                EsProvisorio = comando.Dto.EsProvisorio,
+                Observaciones = comando.Dto.Observaciones,
+                Comercial = Repositorio.Obtener<Comercial>(x=>x.Id == comando.Dto.ComercialId),
+                CorredoresAsociados = comando.Dto.CorredoresAsociados==null?null:comando.Dto.CorredoresAsociados.Select(proveedorDto => Repositorio.ObtenerUnchanged<Proveedor>(proveedorDto.Id)).ToList(),
             };
             return ent;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 
@@ -112,5 +113,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool TipoWorkFlowEgreso { get; set; }
         public bool EnvioMuestraInase { get; set; }
         public bool PasoPorContingenciaPesosExc { get; set; }
+        [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
+        public PuntoDeCargaDto PuntoDeCarga { get; set; }
     }
 }

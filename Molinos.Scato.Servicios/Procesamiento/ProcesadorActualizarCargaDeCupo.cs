@@ -80,7 +80,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         cargaDecupoPorCartaDePorte.Numero = comando.Numero;
                         cargaDecupoPorCartaDePorte.Material = recorrido.Material;
                     }
-                    if (cargaDecupo != null)
+                    if (cargaDecupo != null && cargaDecupoPorCartaDePorte !=null)
                     {
                         //Si existe una carga de cupo pendiente y el camión ya fue asignado, la quitamos
                         cargaDecupoPorCartaDePorte.EstuvoPendiente = true;

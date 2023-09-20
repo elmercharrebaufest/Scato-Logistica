@@ -81,6 +81,7 @@ namespace Molinos.Scato.Servicios.Impl
                         break;
 
                     case CodigosEventos.CambioEstadoSensorCamaraALPR:
+                        log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorCamaraALPR - Inicio");
                         var patente = notificacion.Datos["Patente"];
                         var hidraulicasDisponibles = repositorio.ListarHidraulicasPorEstado(EstadoHidraulica.Disponible);
                         if (!hidraulicasDisponibles.Any())
@@ -98,23 +99,30 @@ namespace Molinos.Scato.Servicios.Impl
                         var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
                         var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
                         var tiempoDeIntervalo = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras, Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
+                        log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorCamaraALPR - Cartel: {configuracionCalle.CodigoCartel} Patente: {patente} Hidraulica: {nombreHidraulicaAsignada}");
                         EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
                         ActualizarEstadoHidraulica(hidraulicaAsignadaId, EstadoHidraulica.Llamando, patente, configuracionCalle.CodigoCartel);
+                        log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorCamaraALPR - Fin");
                         break;
 
                     case CodigosEventos.CambioEstadoSensorGeneral:
+                        log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Inicio");
                         if (Enum.TryParse(notificacion.Datos["Accion"], out TipoAccionSensor tipoAccion))
                         {
                             switch (tipoAccion)
                             {
                                 case TipoAccionSensor.CamionCruzo:
                                     var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(notificacion.CodigoDispositivo);
+                                    log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - CamionCruzo - Cartel: {configuracionCalleHidraulica.CodigoCartel}");
                                     LimpiarMensajeCartel(configuracionCalleHidraulica.CodigoCartel);
+                                    log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Fin");
                                     break;
 
                                 case TipoAccionSensor.HidraulicaBajo:
                                     var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
+                                    log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - HidraulicaBajo - Hidraulica: {hidraulica.Nombre}");
                                     ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty, string.Empty);
+                                    log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Fin");
                                     break;
                             }
                         }
@@ -193,9 +201,9 @@ namespace Molinos.Scato.Servicios.Impl
                 var estadoSensorCruce = false;
                 var estadoSensorCruceAnterior = false;
 
-                if (bool.TryParse(sensorArriba.ValorActual, out estadoSensorArriba)
-                    && bool.TryParse(sensorAbajo.ValorActual, out estadoSensorAbajo)
-                    && bool.TryParse(sensorSegundoCruce.ValorActual, out estadoSensorCruce))
+                if (bool.TryParse(sensorArriba?.ValorActual, out estadoSensorArriba)
+                    && bool.TryParse(sensorAbajo?.ValorActual, out estadoSensorAbajo)
+                    && bool.TryParse(sensorSegundoCruce?.ValorActual, out estadoSensorCruce))
                 {
                     if (bool.TryParse(sensorSegundoCruce.ValorAnterior, out estadoSensorCruceAnterior))
                     {

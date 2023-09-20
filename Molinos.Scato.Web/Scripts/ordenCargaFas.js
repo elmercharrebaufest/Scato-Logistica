@@ -169,18 +169,7 @@ function deshabilitarKmRecorrerYLocalidad() {
 }
 
 function completarKmRecorrerYLocalidad() {
-    var clienteId;
-    if ($('#Destino').length > 0) {
-        clienteId = $('#DestinoId').val();
-    }
-    if ($('#ClienteDesc').length > 0) {
-        clienteId = $('#ClienteId').val();
-    }
-    if ($('#RemitenteId').val() > 0) {
-        clienteId = $('#RemitenteId').val();
-    } else if ($('#ComisionistaId').val() > 0) {
-        clienteId = $('#ComisionistaId').val();
-    }
+    var clienteId = $('#ClienteId').val();
     if (clienteId > 0) {
         $.getJSON($('#links').data().urlBuscarKmporproveedor, { clienteId: clienteId },
             function (response) {

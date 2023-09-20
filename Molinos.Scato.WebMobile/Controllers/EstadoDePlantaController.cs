@@ -114,10 +114,10 @@ namespace Molinos.Scato.WebMobile.Controllers
             log.Debug("Calculando datos por sector, centro: {0}", centroId);
             foreach (var sector in actividadesPorSector)
             {
-                log.Debug($"Calculando datos por sector {sector.FirstOrDefault().Sector.ToString()}, centro: {centroId}");
+                log.Debug($"Calculando datos por sector {sector.FirstOrDefault()?.Sector.ToString()}, centro: {centroId}");
                 var dto = new SectorCantidadCamionesDto
                 {
-                    NombreSector = sector.FirstOrDefault().Sector.ToString()
+                    NombreSector = sector.FirstOrDefault()?.Sector.ToString()
                 };
                 var sumatoriaDemorados = sector.Select(x => x.CantidadCamionesDemorados).Sum();
                 var sumatoriaNoDemorados = sector.Select(x => x.CantidadCamionesNoDemorados).Sum();
@@ -125,7 +125,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 var cantidadActividadesSector = sector.Count();
                 var cantidadCamionesPromedio = (sumatoriaDemorados + sumatoriaNoDemorados) / cantidadActividadesSector;
                 var rangoPromedio = sumatoriaRangos / cantidadActividadesSector;
-                dto.CantidadCamiones = (100 * cantidadCamionesPromedio) / rangoPromedio;
+                dto.CantidadCamiones = (double)(100 * cantidadCamionesPromedio) / rangoPromedio;
 
                 datosGraficoCamionesSector.CantidadEnSector.Add(dto);
             }

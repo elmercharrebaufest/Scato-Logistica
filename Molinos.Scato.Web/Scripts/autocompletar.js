@@ -404,11 +404,31 @@ function DefinirAutocompletarTransportistaCartaPorte(elemento, elementoId, divAu
         DefinirAutocompletarConSAP(elemento, elementoId, divAutocompletar, linkListarProveedor, linkUnicoProveedor, obtenerProveedoresSap, onSelectProveedor, null, pr, cm, am);
         if ($(elementoId).val() == '0' || $(elementoId).val() == '') {
             $('#EsTransportista').val(false);
-            $('#EsTransportistaTramo2').val(false);
         }
     } else {
         $(elemento).removeClass('valorDebeSerValido');
         $(elemento).removeClass('transportistaRequerido');
+        $(elemento).addClass('validaciondummy');
+        ValidarObjeto($("form"), $(elemento));
+        DefinirAutocompletarGenerico(elemento, elementoId, linkListarTransportista, linkUnicoTransportista, BordeColorTransportista, onSelectTransportista);
+    }
+}
+
+function DefinirAutocompletarTransportistaTramo2CartaPorte(elemento, elementoId, divAutocompletar, linkListarProveedor, linkUnicoProveedor, obtenerProveedoresSap, linkListarTransportista, linkUnicoTransportista, inicializar, tipoComercialId, tiposComercialesConTransportista, onSelectProveedor, onSelectTransportista, pr, cm, am) {
+    $(elemento).removeClass('validaciondummy');
+    var resultado = jQuery.inArray($(tipoComercialId).val(), tiposComercialesConTransportista);
+    if (inicializar == true) {
+        $(elementoId).val('0');
+        $(elemento).val('');
+        $(elemento).css('border', 'solid 1px #CCCCCC');
+    }
+    if (resultado == -1) {
+        DefinirAutocompletarConSAP(elemento, elementoId, divAutocompletar, linkListarProveedor, linkUnicoProveedor, obtenerProveedoresSap, onSelectProveedor, null, pr, cm, am);
+        if ($(elementoId).val() == '0' || $(elementoId).val() == '') {
+            $('#EsTransportistaTramo2').val(false);
+        }
+    } else {
+        $(elemento).removeClass('valorDebeSerValido');
         $(elemento).addClass('validaciondummy');
         ValidarObjeto($("form"), $(elemento));
         DefinirAutocompletarGenerico(elemento, elementoId, linkListarTransportista, linkUnicoTransportista, BordeColorTransportista, onSelectTransportista);

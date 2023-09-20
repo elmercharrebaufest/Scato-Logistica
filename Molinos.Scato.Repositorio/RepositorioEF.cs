@@ -222,7 +222,8 @@ namespace Molinos.Scato.Repositorio
                                  : resultados.OrderByDescending(selectorOrden);
             }
 
-            resultados = resultados.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
+            if (paginacion.ItemsPorPagina > 0) 
+                resultados = resultados.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 
             return new ListaPaginada<TEntidad>(resultados.ToList(), paginacion.Pagina, paginacion.ItemsPorPagina, itemsTotales);
         }

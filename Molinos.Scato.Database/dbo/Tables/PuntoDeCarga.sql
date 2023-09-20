@@ -1,0 +1,19 @@
+CREATE TABLE [dbo].[PuntoDeCarga] (
+
+[Id] INT IDENTITY(1,1) NOT NULL,
+
+[Descripcion] VARCHAR(100) NOT NULL,
+
+[Borrado] BIT NOT NULL DEFAULT 0,
+
+[FechaCreacion] DATETIME NOT NULL DEFAULT GETDATE(),
+
+[FechaModificacion] DATETIME NULL,
+
+[CreadoPor] VARCHAR(50) NOT NULL,
+
+[ModificadoPor] VARCHAR(50) NULL,
+
+CONSTRAINT [PK_dbo.PuntoDeCarga] PRIMARY KEY CLUSTERED ([Id] ASC)
+
+);

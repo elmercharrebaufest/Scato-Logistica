@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.6.33723.286</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.6.33723.286</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2023-08-14T13:45:38.0633215Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
@@ -28,40 +39,53 @@
           <QueryParameter Name="@Fecha_Hasta">
             <Value>=Parameters!Fecha_Hasta.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@Standard2">
+            <Value>=Parameters!Standard2.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Provisorio">
+            <Value>=Parameters!Provisorio.Value</Value>
+          </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @Cosechap nvarchar(10), @CodigoEstablecimientop nvarchar(50), @StockDisponiblep decimal(18, 2), @Fecha_Desdep datetime, @Fecha_Hastap datetime
-SET                @Cosechap = @Cosecha
-SET                @CodigoEstablecimientop = @CodigoEstablecimiento
-SET                @StockDisponiblep = @StockDisponible
-SET                @Fecha_Desdep = @Fecha_Desde
-SET                @Fecha_Hastap = @Fecha_Hasta
-                             SELECT DISTINCT 
-                                                       e.CodigoEstablecimiento AS 'Codigo de Establecimiento', e.[NombreDeEstablecimiento] AS 'Establecimiento', e.RazonSocial AS 'Titular de CP', Intermediario.RazonSocial AS 'Intermediario', 
-                                                       Rtte.RazonSocial AS 'RemitenteComercial', Corredor.RazonSocial AS 'Corredor', e.Cosecha AS 'Campaña', e.StockDeclarado AS 'Stock Declarado', e.StockUtilizado AS 'Stock Utilizado', 
-                                                       e.StockDisponible AS ' Stock Disponible'
-                              FROM            (SELECT        stock.CodigoEstablecimiento, E.[NombreDeEstablecimiento], P.RazonSocial, stock.Cosecha, stock.StockDeclarado, COALESCE (Sum(R.PesoNeto), 0) AS 'StockUtilizado', 
-                                                                                  stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0) AS 'StockDisponible'
-                                                        FROM            StockDeEstablecimiento stock WITH (NOLOCK) INNER JOIN
-                                                                                  Establecimiento AS E WITH (NOLOCK) ON E.CodigoDeEstablecimiento = stock.CodigoEstablecimiento INNER JOIN
-                                                                                  Proveedor AS P WITH (NOLOCK) ON P.Id = E.Proveedor_Id LEFT JOIN
-                                                                                  RegistroStockEPA AS R WITH (NOLOCK) ON (R.CodigoEstablecimiento = stock.CodigoEstablecimiento AND R.Cosecha = stock.Cosecha)
-                                                        WHERE        (@CodigoEstablecimientop = '' OR
-                                                                                  @CodigoEstablecimientop = stock.CodigoEstablecimiento) AND (@Cosechap = '' OR
-                                                                                  @Cosechap = stock.Cosecha) AND (@Fecha_Desdep IS NULL OR
-                                                                                  @Fecha_Desdep &lt;= stock.FechaHasta) AND (@Fecha_Hastap IS NULL OR
-                                                                                  @Fecha_Hastap &gt;= stock.FechaHasta) AND
-					(E.Anulado = 0)
-                                                        GROUP BY stock.CodigoEstablecimiento, P.RazonSocial, stock.Cosecha, stock.StockDeclarado, E.NombreDeEstablecimiento
-                                                        HAVING         (@StockDisponiblep IS NULL OR
-                                                                                  @StockDisponiblep &gt;= stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0))) AS e LEFT JOIN
-                                                       RegistroStockEPA AS RR WITH (NOLOCK) ON (RR.CodigoEstablecimiento = e.CodigoEstablecimiento AND RR.Cosecha = e.Cosecha) LEFT JOIN
-                                                       Recorrido WITH (NOLOCK) ON Recorrido.Id = RR.Recorrido_id LEFT JOIN
-                                                       Vehiculo WITH (NOLOCK) ON Vehiculo.Id = Recorrido.Vehiculo_id LEFT JOIN
-                                                       CartaPorte WITH (NOLOCK) ON CartaPorte.Id = Vehiculo.CartaPorte_id LEFT JOIN
-                                                       Proveedor AS Intermediario WITH (NOLOCK) ON Intermediario.Id = CartaPorte.Intermediario_Id LEFT JOIN
-                                                       Proveedor AS Rtte WITH (NOLOCK) ON Rtte.Id = CartaPorte.RtteComercial_Id LEFT JOIN
-                                                       Proveedor AS Corredor WITH (NOLOCK) ON Corredor.Id = CartaPorte.Corredor_Id OR Corredor.Id = CartaPorte.CorredorVendedor_Id
-                              ORDER BY [Codigo de Establecimiento], e.Cosecha</CommandText>
+        <CommandText>DECLARE @Cosechap nvarchar(10), @CodigoEstablecimientop nvarchar(50), @StockDisponiblep decimal(18, 2), @Fecha_Desdep datetime, @Fecha_Hastap datetime,@Provisoriop bit,@Standard2p bit
+SET					@Cosechap = @Cosecha
+SET					@CodigoEstablecimientop = @CodigoEstablecimiento
+SET					@StockDisponiblep = @StockDisponible
+SET					@Fecha_Desdep = @Fecha_Desde
+SET					@Fecha_Hastap = @Fecha_Hasta
+SET					@Standard2p = @Standard2
+SET					@Provisoriop = @Provisorio
+	SELECT DISTINCT 
+		e.CodigoEstablecimiento AS 'Codigo de Establecimiento', e.[NombreDeEstablecimiento] AS 'Establecimiento', e.RazonSocial AS 'Titular de CP', Intermediario.RazonSocial AS 'Intermediario', 
+        Rtte.RazonSocial AS 'RemitenteComercial', Corredor.RazonSocial AS 'Corredor', e.Cosecha AS 'Campaña', e.StockDeclarado AS 'Stock Declarado', e.StockUtilizado AS 'Stock Utilizado', 
+        e.StockDisponible AS ' Stock Disponible', e.Provisorio AS 'Provisorio', e.Standard2 AS 'Standard2'
+	FROM
+		(SELECT
+			stock.CodigoEstablecimiento, E.[NombreDeEstablecimiento], P.RazonSocial, stock.Cosecha, stock.StockDeclarado, COALESCE (Sum(R.PesoNeto), 0) AS 'StockUtilizado', 
+            stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0) AS 'StockDisponible', E.EsProvisorio AS 'Provisorio', E.EsStandard2 AS 'Standard2'
+        FROM
+			StockDeEstablecimiento stock WITH (NOLOCK) INNER JOIN
+				Establecimiento AS E WITH (NOLOCK) ON E.CodigoDeEstablecimiento = stock.CodigoEstablecimiento INNER JOIN
+                Proveedor AS P WITH (NOLOCK) ON P.Id = E.Proveedor_Id LEFT JOIN
+                RegistroStockEPA AS R WITH (NOLOCK) ON (R.CodigoEstablecimiento = stock.CodigoEstablecimiento AND R.Cosecha = stock.Cosecha)
+        WHERE
+			(@CodigoEstablecimientop = '' OR @CodigoEstablecimientop = stock.CodigoEstablecimiento)
+			AND (@Cosechap = '' OR @Cosechap = stock.Cosecha)
+			AND (@Fecha_Desdep IS NULL OR @Fecha_Desdep &lt;= stock.FechaHasta)
+			AND (@Fecha_Hastap IS NULL OR @Fecha_Hastap &gt;= stock.FechaHasta)
+			AND	(E.Anulado = 0)
+			AND (@Standard2p = E.EsStandard2 OR @Standard2p = null)
+			AND (@Provisoriop = E.EsProvisorio OR @Provisoriop = null)
+            GROUP BY stock.CodigoEstablecimiento, P.RazonSocial, stock.Cosecha, stock.StockDeclarado, E.NombreDeEstablecimiento, E.EsProvisorio, E.EsStandard2
+            HAVING (@StockDisponiblep IS NULL OR
+                    @StockDisponiblep &gt;= stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0))) AS e LEFT JOIN
+                    RegistroStockEPA AS RR WITH (NOLOCK) ON (RR.CodigoEstablecimiento = e.CodigoEstablecimiento AND RR.Cosecha = e.Cosecha) LEFT JOIN
+                    Recorrido WITH (NOLOCK) ON Recorrido.Id = RR.Recorrido_id LEFT JOIN
+                    Vehiculo WITH (NOLOCK) ON Vehiculo.Id = Recorrido.Vehiculo_id LEFT JOIN
+                    CartaPorte WITH (NOLOCK) ON CartaPorte.Id = Vehiculo.CartaPorte_id LEFT JOIN
+                    Proveedor AS Intermediario WITH (NOLOCK) ON Intermediario.Id = CartaPorte.Intermediario_Id LEFT JOIN
+                    Proveedor AS Rtte WITH (NOLOCK) ON Rtte.Id = CartaPorte.RtteComercial_Id LEFT JOIN
+                    Proveedor AS Corredor WITH (NOLOCK) ON Corredor.Id = CartaPorte.Corredor_Id OR Corredor.Id = CartaPorte.CorredorVendedor_Id
+                    ORDER BY [Codigo de Establecimiento], e.Cosecha</CommandText>
       </Query>
       <Fields>
         <Field Name="Codigo_de_Establecimiento">
@@ -103,6 +127,14 @@ SET                @Fecha_Hastap = @Fecha_Hasta
         <Field Name="Stock_Disponible">
           <DataField> Stock Disponible</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Provisorio">
+          <DataField>Provisorio</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Standard2">
+          <DataField>Standard2</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -1418,11 +1450,19 @@ SET                @Fecha_Hastap = @Fecha_Hasta
       <Prompt>CentroId</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="Provisorio">
+      <DataType>Boolean</DataType>
+      <Prompt>Provisorio</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Standard2">
+      <DataType>Boolean</DataType>
+      <Prompt>Standard2</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>4</NumberOfRows>
+      <NumberOfRows>5</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1458,6 +1498,16 @@ SET                @Fecha_Hastap = @Fecha_Hasta
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>CentroId</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>Provisorio</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>Standard2</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

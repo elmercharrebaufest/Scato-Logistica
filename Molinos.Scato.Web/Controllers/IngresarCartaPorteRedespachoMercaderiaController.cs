@@ -42,6 +42,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.HabilitarSiemprePeso = false;
             ViewBag.HabilitarSiempreProcedencia = true;
             ViewBag.HabilitarSiempreCTG = false;
+            ViewBag.AceptaPendiente = false;
         }
 
         [DatosUsuario]

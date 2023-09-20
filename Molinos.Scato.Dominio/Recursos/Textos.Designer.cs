@@ -2284,11 +2284,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Puesto Comando.
+        ///   Looks up a localized string similar to Puesto Comando Logística.
         /// </summary>
         public static string ActPuestoComando {
             get {
                 return ResourceManager.GetString("ActPuestoComando", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto Comando Puerto.
+        /// </summary>
+        public static string ActPuestoComandoPuerto {
+            get {
+                return ResourceManager.GetString("ActPuestoComandoPuerto", resourceCulture);
             }
         }
         
@@ -5542,6 +5551,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Borrado.
+        /// </summary>
+        public static string Borrado {
+            get {
+                return ResourceManager.GetString("Borrado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Borrar Documentos.
         /// </summary>
         public static string BorradoDeDocumento_Titulo {
@@ -6366,6 +6384,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Calle_Modificar {
             get {
                 return ResourceManager.GetString("Calle_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No existe calle de paso directo asignada.
+        /// </summary>
+        public static string Calle_NoExisteCallePrioritaria {
+            get {
+                return ResourceManager.GetString("Calle_NoExisteCallePrioritaria", resourceCulture);
             }
         }
         
@@ -9637,6 +9664,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Código.
+        /// </summary>
+        public static string Codigo_Interno {
+            get {
+                return ResourceManager.GetString("Codigo_Interno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ramal.
         /// </summary>
         public static string Codigo_Ramal {
@@ -9705,6 +9741,105 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Comentario_LargoMinimo_5 {
             get {
                 return ResourceManager.GetString("Comentario_LargoMinimo_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comercial.
+        /// </summary>
+        public static string Comercial {
+            get {
+                return ResourceManager.GetString("Comercial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activo.
+        /// </summary>
+        public static string Comercial_Activo {
+            get {
+                return ResourceManager.GetString("Comercial_Activo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Administracion de Comerciales.
+        /// </summary>
+        public static string Comercial_Administracion {
+            get {
+                return ResourceManager.GetString("Comercial_Administracion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eliminar Comercial.
+        /// </summary>
+        public static string Comercial_Borrar {
+            get {
+                return ResourceManager.GetString("Comercial_Borrar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ya Existe un Comercial con este Codigo SAP.
+        /// </summary>
+        public static string Comercial_CodigoSapExistente {
+            get {
+                return ResourceManager.GetString("Comercial_CodigoSapExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crear Comercial.
+        /// </summary>
+        public static string Comercial_Crear {
+            get {
+                return ResourceManager.GetString("Comercial_Crear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filtrar Comerciales.
+        /// </summary>
+        public static string Comercial_Filtrar {
+            get {
+                return ResourceManager.GetString("Comercial_Filtrar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cambios Comercial.
+        /// </summary>
+        public static string Comercial_Modificar {
+            get {
+                return ResourceManager.GetString("Comercial_Modificar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nuevo Comercial.
+        /// </summary>
+        public static string Comercial_Nuevo {
+            get {
+                return ResourceManager.GetString("Comercial_Nuevo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se Puede Eliminar un Comercial Usado Actualmente en un Establecimiento.
+        /// </summary>
+        public static string Comercial_RelacionExistenteEstablecimiento {
+            get {
+                return ResourceManager.GetString("Comercial_RelacionExistenteEstablecimiento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comerciales.
+        /// </summary>
+        public static string Comercial_Titulo {
+            get {
+                return ResourceManager.GetString("Comercial_Titulo", resourceCulture);
             }
         }
         
@@ -10906,6 +11041,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creado Por.
+        /// </summary>
+        public static string Creado_Por {
+            get {
+                return ResourceManager.GetString("Creado_Por", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crear.
         /// </summary>
         public static string Crear {
@@ -11320,6 +11464,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (comercial).
+        /// </summary>
+        public static string Default_Comercial {
+            get {
+                return ResourceManager.GetString("Default_Comercial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (condición).
         /// </summary>
         public static string Default_Condicion {
@@ -11496,6 +11649,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Default_PuestoDeTrabajo {
             get {
                 return ResourceManager.GetString("Default_PuestoDeTrabajo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (punto de carga).
+        /// </summary>
+        public static string Default_PuntoDeCarga {
+            get {
+                return ResourceManager.GetString("Default_PuntoDeCarga", resourceCulture);
             }
         }
         
@@ -13052,6 +13214,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La calle seleccionada no se encuentra disponible..
+        /// </summary>
+        public static string Error_Calle_No_Disponible {
+            get {
+                return ResourceManager.GetString("Error_Calle_No_Disponible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No puede enviar a análisis una característica sin valor.
         /// </summary>
         public static string Error_CaracteristicaNoNuleable {
@@ -14069,6 +14240,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debe seleccionar &apos;{0}&apos; para poder continuar..
+        /// </summary>
+        public static string Error_PuntodeCarga {
+            get {
+                return ResourceManager.GetString("Error_PuntodeCarga", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to El rango debe estar entre {0} y {1}.
         /// </summary>
         public static string Error_RangoCaracteristicasCalidad {
@@ -14636,11 +14816,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Provisorio.
+        /// </summary>
+        public static string Establecimiento_Provisorio {
+            get {
+                return ResourceManager.GetString("Establecimiento_Provisorio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Soja EPA.
         /// </summary>
         public static string Establecimiento_SojaEPA {
             get {
                 return ResourceManager.GetString("Establecimiento_SojaEPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard 2.
+        /// </summary>
+        public static string Establecimiento_Standard2 {
+            get {
+                return ResourceManager.GetString("Establecimiento_Standard2", resourceCulture);
             }
         }
         
@@ -15266,11 +15464,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exportar Excel.
+        /// </summary>
+        public static string Exportar_Excel {
+            get {
+                return ResourceManager.GetString("Exportar_Excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fecha.
         /// </summary>
         public static string Fecha {
             get {
                 return ResourceManager.GetString("Fecha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha de Creación.
+        /// </summary>
+        public static string Fecha_Creacion {
+            get {
+                return ResourceManager.GetString("Fecha_Creacion", resourceCulture);
             }
         }
         
@@ -15298,6 +15514,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Fecha_Ingreso_Hasta {
             get {
                 return ResourceManager.GetString("Fecha_Ingreso_Hasta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fecha de Modificación.
+        /// </summary>
+        public static string Fecha_Modificacion {
+            get {
+                return ResourceManager.GetString("Fecha_Modificacion", resourceCulture);
             }
         }
         
@@ -16963,6 +17188,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Icono_Requerido {
             get {
                 return ResourceManager.GetString("Icono_Requerido", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
             }
         }
         
@@ -20692,6 +20926,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Minutos {
             get {
                 return ResourceManager.GetString("Minutos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modificado Por.
+        /// </summary>
+        public static string Modificado_Por {
+            get {
+                return ResourceManager.GetString("Modificado_Por", resourceCulture);
             }
         }
         
@@ -24584,11 +24827,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Puesto Comando.
+        ///   Looks up a localized string similar to Puesto Comando Logistica.
         /// </summary>
         public static string PuestoComando_Titulo {
             get {
                 return ResourceManager.GetString("PuestoComando_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Puesto Comando Puerto.
+        /// </summary>
+        public static string PuestoComandoPuerto_Titulo {
+            get {
+                return ResourceManager.GetString("PuestoComandoPuerto_Titulo", resourceCulture);
             }
         }
         
@@ -24962,6 +25214,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Punto de Carga.
+        /// </summary>
+        public static string PuntodeCarga {
+            get {
+                return ResourceManager.GetString("PuntodeCarga", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quintuplicado.
         /// </summary>
         public static string Quintuplicado {
@@ -25075,6 +25336,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string RangosDeRedondeo_ValorRedondeado {
             get {
                 return ResourceManager.GetString("RangosDeRedondeo_ValorRedondeado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Razon Social.
+        /// </summary>
+        public static string RazonSocial {
+            get {
+                return ResourceManager.GetString("RazonSocial", resourceCulture);
             }
         }
         
@@ -30000,15 +30270,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Visualizar Video Camaras.
-        /// </summary>
-        public static string VisualizarVideoCamaras {
-            get {
-                return ResourceManager.GetString("VisualizarVideoCamaras", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Visualizar Video Camaras Balanza.
         /// </summary>
         public static string VisualizarVideoCamarasBalanza {
@@ -30041,6 +30302,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string VisualizarVideoCamarasExportacion {
             get {
                 return ResourceManager.GetString("VisualizarVideoCamarasExportacion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visualizar Video Camaras Vagones.
+        /// </summary>
+        public static string VisualizarVideoCamarasVagones {
+            get {
+                return ResourceManager.GetString("VisualizarVideoCamarasVagones", resourceCulture);
             }
         }
         
@@ -30446,6 +30716,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Workflow_TipoMaterial {
             get {
                 return ResourceManager.GetString("Workflow_TipoMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo Material.
+        /// </summary>
+        public static string Workflow_TipoMaterialNoGranos {
+            get {
+                return ResourceManager.GetString("Workflow_TipoMaterialNoGranos", resourceCulture);
             }
         }
         

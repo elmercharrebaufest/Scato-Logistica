@@ -466,6 +466,11 @@ function CargarAlamacenesPorMaterial() {
                     + allData[j].Descripcion + "</option>";
             }
             $('#Almacen_Id').html(options);
+            let almacenSeleccionado = parseInt($("#AlmacenSeleccionado").val());
+            let almacenIds = allData.map(almacen => almacen.Id);
+            if (almacenSeleccionado > 0 && almacenIds.includes(almacenSeleccionado)) {
+                $('#Almacen_Id').val(almacenSeleccionado);
+            }
         }
     );
 }

@@ -1,5 +1,7 @@
 ﻿using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -18,59 +20,52 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public Calle Ejecutar(DbContext contexto)
         {
-            Calle calleDisponible = ObtenerCalleDisponible(contexto);
-            if (calleDisponible == null)
-            {
-                calleDisponible = ObtenerCalleDeUltimoCamion(contexto);
-            }
-            return calleDisponible;
+            return ObtenerCalleDisponible(contexto);
         }
 
-        private Calle ObtenerCalleDeUltimoCamion(DbContext contexto)
+        private Predicate<Calle> EstaDisponible = x => !x.Deshabilitada && !x.Bloqueada && x.FechaLLamada == null; 
+        private bool TieneEspacioDisponible(DbContext contexto, Calle calle)
+        {
+            return contexto.Set<CallePorRecorrido>().Count(x => x.Calle.Id == calle.Id && x.FechaEgreso == null) < calle.CantidadDeCamiones;
+        }
+
+        private Calle ObtenerCalleDelUltimoCamionAsignadoConMismoMaterial(DbContext contexto)
         {
             return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == tipoCalle 
-                                                                && !x.Calle.Bloqueada
-                                                                && x.Calle.FechaLLamada == null
-                                                                && !x.Calle.Deshabilitada
-                                                                && x.FechaEgreso == null 
-                                                                && (x.CargaDeCupo.Material.Id == materialId || x.Recorrido.Material.Id == materialId))
+                                                                && x.Recorrido.Material.Id == materialId
+                                                                && x.FechaEgreso == null)
                                                     .OrderByDescending(x => x.FechaIngeso)
                                                     .Select(x => x.Calle)
                                                     .FirstOrDefault();
         }
 
+        private List<Calle> ObtenerCallesConEspacioDisponibleConMismoMaterial(DbContext contexto)
+        {
+            var callesDisponibles = new List<Calle>();
+            var calles = contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId)
+                                             .OrderBy(x => x.Id)
+                                             .ToList();
+            foreach (var calle in calles)
+            {
+                if (EstaDisponible(calle) && TieneEspacioDisponible(contexto, calle))
+                    callesDisponibles.Add(calle);
+            }
+            return callesDisponibles;
+        }
+
+
         private Calle ObtenerCalleDisponible(DbContext contexto)
         {
-            Calle calleDisponible = null;
+            var calleUltimaCamionAsignado = ObtenerCalleDelUltimoCamionAsignadoConMismoMaterial(contexto);
+            if (calleUltimaCamionAsignado != null &&  EstaDisponible(calleUltimaCamionAsignado) && TieneEspacioDisponible(contexto, calleUltimaCamionAsignado))
+                return calleUltimaCamionAsignado;
 
-            var ultimaAsignacion = contexto.Set<CallePorRecorrido>()
-                .Where(x => x.Calle.TipoCalle == TipoCalle.PreBalanzaGranos && x.FechaEgreso == null)
-                .OrderByDescending(x => x.Id)
-                .FirstOrDefault();
+            Calle calleAsignada = null;
+            var callesDisponiblesVacias = ObtenerCallesConEspacioDisponibleConMismoMaterial(contexto);
+            if (callesDisponiblesVacias.Any())
+                calleAsignada = callesDisponiblesVacias.FirstOrDefault(x => x.Id > calleUltimaCamionAsignado?.Id) ?? callesDisponiblesVacias.FirstOrDefault();
 
-            var callesDisponibles = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PreBalanzaGranos 
-                                            && x.Material.Id == materialId
-                                            && !x.Bloqueada
-                                            && !x.Deshabilitada
-                                            && (contexto.Set<CallePorRecorrido>()
-                                              .Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id)) < x.CantidadDeCamiones).
-                                              OrderBy(x => x.Id)
-                                              .ToList();
-
-            //busca en calle actual
-            if (ultimaAsignacion != null)
-            {
-                var idCalle = ultimaAsignacion.Calle.Id;
-                calleDisponible = callesDisponibles.FirstOrDefault(x => x.Id == idCalle) ?? callesDisponibles.FirstOrDefault(x => x.Id > idCalle);
-            }
-
-            //busca en todas las calles 
-            if(calleDisponible == null)
-            {
-                calleDisponible = callesDisponibles.FirstOrDefault();
-            }
-
-            return calleDisponible;
+            return calleAsignada;
         }
     }
 }

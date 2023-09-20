@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoPlayaInterna.css")">
 <script type="text/javascript" src="~/Scripts/estadoPlayaInterna.js"></script>
 
-
 <script>
     urlEstadoDeCalles = '@Url.Action("ObtenerCalles", "EstadoPlayaInterna")';
     urlMostrarDetalleCamion = '@Url.Action("MostrarDetalleCamion", "EstadoPlayaInterna")';
@@ -24,7 +23,6 @@
     urlGuardarConfiguracion = '@Url.Action("GuardarEstadoSwitch", "EstadoPlayaInterna")';
 </script>
 
-
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" id="tabPlayaInternaGranos">
         <a class="nav-link tabPanelEstadoPlayaInterna active" id="playaInterna-tab" data-calle="playaInterna" data-toggle="tab" href="#playaInterna" role="tab" aria-controls="playaInterna" aria-selected="false">Granos</a>
@@ -32,9 +30,9 @@
     <li class="nav-item" id="tabPlayaInternaNoGranos">
         <a class="nav-link tabPanelEstadoPlayaInterna" id="plantaNoGranos-tab" data-calle="plantaNoGranos" data-toggle="tab" href="#plantaNoGranos" role="tab" aria-controls="plantaNoGranos" aria-selected="false">No Granos</a>
     </li>
-    <li class="nav-item" id="tabConfiguracion">
-        <a class="nav-link tabPanelEstadoPlayaInterna" id="configuracion-tab" data-toggle="tab" href="#configuracion" role="tab" aria-selected="false">Configuracion</a>
-    </li>
+    @*<li class="nav-item" id="tabConfiguracion"> TODO 2023.07 revisar ANS-2223 por modificaciones
+            <a class="nav-link tabPanelEstadoPlayaInterna" id="configuracion-tab" data-toggle="tab" href="#configuracion" role="tab" aria-selected="false">Configuracion</a>
+        </li>*@
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playaInterna" role="tabpanel" aria-labelledby="playaInterna-tab">
@@ -46,5 +44,8 @@
     <div class="tab-pane fade show" id="configuracion" role="tabpanel" aria-labelledby="configuracion-tab">
         @Html.Partial("_Configuracion", Model)
     </div>
+    @*<div class="tab-pane fade show" id="configuracion" role="tabpanel" aria-labelledby="configuracion-tab"> TODO 2023.07 revisar ANS-2223 por modificaciones
+                @Html.Partial("_Configuracion", Model)
+        </div>*@
 </div>
 <div id="detalleCamion"></div>

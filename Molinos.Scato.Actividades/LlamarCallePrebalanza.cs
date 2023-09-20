@@ -34,12 +34,13 @@ namespace Molinos.Scato.Actividades
                         var camionesPorCallePreBalanza = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanza.Id)
                             .OrderBy(q => q.Id);
 
+                        if (camionesPorCallePreBalanza.Count() < callePreBalanza.CantidadDeCamiones)
+                            continue;
+
                         var camionMasAntiguo = camionesPorCallePreBalanza.FirstOrDefault();
 
                         if (camionMasAntiguo?.CalleRecorridoId == callePlayaInterna.Id)
-                        {
                             listaDePrimerosCamiones.Add(camionMasAntiguo);
-                        }
                     }
 
                     if (listaDePrimerosCamiones.Any())

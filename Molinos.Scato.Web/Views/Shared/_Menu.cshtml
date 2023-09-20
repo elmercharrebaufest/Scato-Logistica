@@ -9,6 +9,7 @@
 @{
     var cookie = new CookieUsuario();
     var centroDescripcion = cookie.Valor("CentroDescripcion");
+    var centroId = cookie.Valor("centroId");
     var workflows = (IList<WorkflowInfoDto>)ViewBag.Workflows;
     var idiomas = (IEnumerable<SelectListItem>)ViewBag.Idiomas;
     var nombrePC = ViewBag.NombrePc == "NoTienePuesto" ? Textos.NoDisponible : (String)ViewBag.NombrePc;
@@ -21,6 +22,7 @@
 @Html.Hidden("cantidadBarreras", totalSensoresBarrera)
 @Html.Hidden("requiereComentarioGestionarBarrera", requiereComentarioGestionarBarrera)
 @Html.Hidden("gestionarBarrera", gestionarBarrera)
+@Html.Hidden("centroId", centroId)
 
 
 @Scripts.Render("~/bundles/blockUI")
@@ -78,6 +80,11 @@
                                 {
                                     <li>@Html.ActionLink(Textos.PuestoComando_Titulo, "Index", "PuestoComando")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.ActividadPuestoComandoPuerto) || PermisosHelper.Is(PermisosScato.PuestoDeComando_CaladoEnPlanta))
+                                {
+                                    <li>@Html.ActionLink(Textos.PuestoComandoPuerto_Titulo, "Index", "PuestoComandoPuerto")</li>
+                                }
+
                             </ul>
                         </li>
                         @if (PermisosHelper.Is(PermisosScato.AjusteYStockBines))
@@ -243,7 +250,7 @@
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamaras))
                                         {
-                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=PuestoVC&mostrarNombre=False")">@Textos.VisualizarVideoCamaras</a></li>
+                                            <li><a class="ajax-popup-link" href="@Url.RelativeToAbsoluteHttp("~/VideoCamara", "nombrePc=PuestoVC&mostrarNombre=False")">@Textos.VisualizarVideoCamarasVagones</a></li>
                                         }
                                         @if (PermisosHelper.Is(PermisosScato.VisualizarVideoCamarasBalanza))
                                         {
@@ -400,6 +407,7 @@
                                 {
                                     <li>@Html.ActionLink(Textos.Establecimiento_Titulo, "Index", "Establecimiento")</li>
                                 }
+                                    <li>@Html.ActionLink(Textos.Comercial_Titulo, "Index", "Comercial")</li>
                                 @if (PermisosHelper.Is(PermisosScato.AbmMotivo))
                                 {
                                     <li>@Html.ActionLink(Textos.Motivo_Titulo, "Index", "Motivo")</li>
@@ -594,10 +602,6 @@
                                         }
                                     </ul>
                                 </li>
-                                @if (PermisosHelper.Is(PermisosScato.ActividadControlDeBalanza))
-                                {
-                                    <li>@Html.ActionLink(Textos.ControlDeBalanza, "Index", "ControlDeBalanza")</li>
-                                }
                                 @if (PermisosHelper.Is(PermisosScato.MotivoQuiebreBarrera))
                                 {
                                     <li>@Html.ActionLink(Textos.MotivoQuiebreBarrera_Titulo, "Index", "MotivoQuiebreBarrera")</li>

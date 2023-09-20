@@ -395,7 +395,7 @@ namespace Molinos.Scato.Servicios.Impl
             foreach (var grupo in gruposEnUso)
             {
                 var grupoBarreraASuscribir = grupoBarreraActivas.FirstOrDefault(q => q.AgrupadorCodigo == grupo);
-                if (!sensoresSuscritos.Contains(grupoBarreraASuscribir.SensorArribaCodigo))
+                if (!sensoresSuscritos.Contains(grupoBarreraASuscribir?.SensorArribaCodigo))
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorArribaCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });
                 if (!sensoresSuscritos.Contains(grupoBarreraASuscribir.SensorAbajoCodigo))
                     comandos.Ejecutar(new SuscribirDispositivos { Codigo = grupoBarreraASuscribir.SensorAbajoCodigo, Evento = "CambioEstadoSensor", RutaWeb = false });

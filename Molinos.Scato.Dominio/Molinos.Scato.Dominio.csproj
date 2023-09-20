@@ -90,9 +90,13 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
+    <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
+    <Compile Include="Comandos\CrearEstablecimientoProveedor.cs" />
+    <Compile Include="Comandos\CrearComercial.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\AutorizarCpeDG.cs" />
     <Compile Include="Comandos\ConfirmacionDefinitivaCPEAutomotorDG.cs" />
@@ -103,6 +107,8 @@
     <Compile Include="Comandos\ConsultarCPEAutomotorDG.cs" />
     <Compile Include="Comandos\CrearAltaCTGDG.cs" />
     <Compile Include="Comandos\DarDeBajaCTGDG.cs" />
+    <Compile Include="Comandos\EliminarEstablecimientoProveedor.cs" />
+    <Compile Include="Comandos\EliminarComercial.cs" />
     <Compile Include="Comandos\EliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
@@ -111,6 +117,7 @@
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
     <Compile Include="Comandos\CrearClienteProvisorio.cs" />
+    <Compile Include="Comandos\ModificarComercial.cs" />
     <Compile Include="Comandos\ModificarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ActualizarLlamadoAutomaticoHidraulica.cs" />
     <Compile Include="Comandos\ConsultarAFIP.cs" />
@@ -119,6 +126,7 @@
     <Compile Include="Comandos\EliminarConfiguracionCalleHidraulica.cs" />
     <Compile Include="Comandos\ModificarCargaDeCupo.cs" />
     <Compile Include="Comandos\ModificarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\ActualizarCamionDemorado.cs" />
     <Compile Include="Comandos\ResultadoCartaPorteElectronicaDummy.cs" />
     <Compile Include="Comandos\ResultadoConsultaDomiciliosDG.cs" />
     <Compile Include="Comandos\ResultadoConsultaPlantasDG.cs" />
@@ -127,6 +135,7 @@
     <Compile Include="Comandos\CrearLoteInase.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLedReordenado.cs" />
     <Compile Include="Comandos\ResultadoMensajeCartelLed.cs" />
+    <Compile Include="Comandos\ResultadoPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\SetearProgresoCargaDeCupo.cs" />
     <Compile Include="Comandos\ActualizarEstadoPuerto.cs" />
     <Compile Include="Comandos\AutomatizacionEtapas.cs" />
@@ -729,6 +738,9 @@
     <Compile Include="Comandos\Resultado.cs" />
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
+    <Compile Include="Dto\Base\AuditoriaBaseDto.cs" />
+    <Compile Include="Dto\EstablecimientoProveedorDto.cs" />
+    <Compile Include="Dto\ComercialDto.cs" />
     <Compile Include="Dto\CallePreBalanzaPlayaInternaDto.cs" />
     <Compile Include="Dto\DerivadoGranario\DatosDerivadoGranarioDto.cs" />
     <Compile Include="Dto\ExcepcionAlControlProveedorDto.cs" />
@@ -740,6 +752,7 @@
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
+    <Compile Include="Dto\PuntoDeCargaDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
     <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
@@ -961,6 +974,8 @@
     <Compile Include="Dto\ImpresoraEstadoDto.cs" />
     <Compile Include="Dto\FotosDto.cs" />
     <Compile Include="Dto\FotoDto.cs" />
+    <Compile Include="Dto\TipoVariedadDto.cs" />
+    <Compile Include="Dto\TipoVariedadPorMaterialDto.cs" />
     <Compile Include="Dto\VideoCamaraDto.cs" />
     <Compile Include="Dto\CosechaDto.cs" />
     <Compile Include="Dto\InfoCaladoDto.cs">
@@ -1013,6 +1028,8 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\Base\AuditoriaBase.cs" />
+    <Compile Include="Entidades\Comercial.cs" />
     <Compile Include="Entidades\CallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Entidades\ATAPuerto.cs" />
     <Compile Include="Entidades\ConfiguracionCalleHidraulica.cs" />
@@ -1073,6 +1090,7 @@
     <Compile Include="Entidades\CartaPorteDerivadoGranario.cs" />
     <Compile Include="Entidades\PesosExc.cs" />
     <Compile Include="Entidades\MuestraDeInase.cs" />
+    <Compile Include="Entidades\PuntoDeCarga.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />
@@ -1153,6 +1171,8 @@
     <Compile Include="Entidades\RangosDeRedondeo.cs" />
     <Compile Include="Entidades\ImpReciboMunicipalImportacion.cs" />
     <Compile Include="Entidades\MotivoHumedadManual.cs" />
+    <Compile Include="Entidades\TipoVariedad.cs" />
+    <Compile Include="Entidades\TipoVariedadPorMaterial.cs" />
     <Compile Include="Entidades\VideoCamara.cs" />
     <Compile Include="Entidades\Cosecha.cs" />
     <Compile Include="Entidades\ImpEtiquetaRubrosAnalizar.cs" />
