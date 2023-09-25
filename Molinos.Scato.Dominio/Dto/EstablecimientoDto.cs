@@ -80,6 +80,7 @@ namespace Molinos.Scato.Dominio.Dto
             }
         }
 
+        [Display(ResourceType = typeof(Textos), Name = "Corredor_Acopio")]
         public string Corredor { get; set; }
         public string CorredorId { get; set; }
 

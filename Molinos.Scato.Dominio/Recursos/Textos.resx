@@ -8671,6 +8671,9 @@
   <data name="Corredor" xml:space="preserve">
     <value>Corredor</value>
   </data>
+	<data name="Corredor_Acopio" xml:space="preserve">
+    <value>Corredor/Acopio</value>
+  </data>
   <data name="Fecha_Ingreso_Desde" xml:space="preserve">
     <value>Fecha Ingreso Desde </value>
   </data>
@@ -10288,7 +10291,7 @@
     <value>Nuevo Comercial</value>
   </data>
   <data name="Comercial_Titulo" xml:space="preserve">
-    <value>Comerciales</value>
+    <value>Comerciales MOA</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>

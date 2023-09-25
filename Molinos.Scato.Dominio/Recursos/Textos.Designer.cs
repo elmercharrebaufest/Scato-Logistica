@@ -9835,7 +9835,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Comerciales.
+        ///   Looks up a localized string similar to Comerciales MOA.
         /// </summary>
         public static string Comercial_Titulo {
             get {
@@ -10956,6 +10956,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Corredor {
             get {
                 return ResourceManager.GetString("Corredor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corredor/Acopio.
+        /// </summary>
+        public static string Corredor_Acopio {
+            get {
+                return ResourceManager.GetString("Corredor_Acopio", resourceCulture);
             }
         }
         
