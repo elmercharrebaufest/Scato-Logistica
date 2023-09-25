@@ -419,6 +419,8 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 614) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 615) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Edicion Configuracion Prebalanza', 0, 615, NULL); END
 IF NOT EXISTS (select 1 from Permiso where Codigo = 616) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Puesto Comando Puerto', 1, 616, 'PuestoComandoPuerto'); END
 
+IF NOT EXISTS (select 1 from Permiso where Codigo = 705) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Comercial', 0, 705, NULL); END
+
 --IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
@@ -1595,7 +1597,158 @@ END
 IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'IMP') 
 BEGIN
   insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
-  values ('Import', 'IMP', 0, GETDATE(), 'lguedez');  
+  values ('Import', 'IMP', 0, GETDATE(), 'lguedez');
+END
+
+
+--Precarga de Comerciales Moa
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap = '3')
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Bentivoglio, Haydee','3');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='7')
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Capello, Juan Carlos','7');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='9')
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Chaulet, Rodolfo','9');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='11' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Erbojo, David','11');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='13' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Ferguson, Jaime','13');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='14' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Figueredo, Diego','14');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='15' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Fiore, Leandro','15');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='17' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Gonzalez del Cerro, Alvaro','17');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='19' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Ladogana, Claudio','19');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='22' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Lerini, Diego','22');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='23' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('López, Andrea','23');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='24' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Manfredi, Santiago','24');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='25' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Manoni, Martín','25');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='27' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Mazettelle, Diego','27');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='28' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Melo, Agustín','28');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='29' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Montorfano, Raúl','29');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='33' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Scasso, Carina','33');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='34' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Talano, Gastón','34');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='35' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Valoni, Marcelo','35');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='36' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Vargas, Federico','36');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='37' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Vicente, Pablo','37');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='39' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Batchilleria, Gustavo','39');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='42' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Lisouski Fabian','42');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='43' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Fratini Adalberto','43');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='47' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Matías Robiolo','47');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='48' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Rafael Simal','48');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='49' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Dianda Fernando','49');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='50' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Medina Sergio','50');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='55' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Gullini, Nicolas','55');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='56' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('López, Andrea','56');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='57' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('López, Andrea','57');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='62' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Valdez, Agustin Pab','62');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='63' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Duhalde, Agustín','63');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='65' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Scally, Thomas','65');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='66' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Zalazar, David','66');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='67' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Ranzatto, Margarita','67');
+END
+IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap ='68' )
+BEGIN 
+INSERT INTO Comercial ("Descripcion", "CodigoSap") VALUES ('Fucile, Federico','68');
 END
 
 

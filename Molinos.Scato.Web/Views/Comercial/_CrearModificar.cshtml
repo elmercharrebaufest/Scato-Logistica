@@ -1,0 +1,32 @@
+﻿@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.Dominio.Dto
+@model Molinos.Scato.Dominio.Dto.ComercialDto
+
+@{ 
+    bool editable = true;
+    if(Model.Id>0)
+    {
+        editable = false;
+    }
+}
+
+<div class="control-group">
+    @Html.LabelFor(m => m.Descripcion, new {@class = "control-label"})
+    <div class="controls">
+        @Html.TextBoxFor(m => m.Descripcion, new {@class = "input-xlarge"})
+        @Html.ValidationMessageFor(m => m.Descripcion)
+    </div>
+</div>
+
+<div class="control-group">
+    @Html.LabelFor(m => m.CodigoSap, new {@class = "control-label"})
+    <div class="controls">
+        @if (editable)
+        {
+            @Html.TextBoxFor(m => m.CodigoSap, new { @class = "control input-small " })
+        }else{
+            @Html.TextBoxFor(m => m.CodigoSap, new { @class = "control input-small ", @readonly = true })
+        }
+        @Html.ValidationMessageFor(m => m.CodigoSap)
+    </div>
+</div>

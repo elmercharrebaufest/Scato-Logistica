@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Seguridad;
@@ -561,6 +562,18 @@ namespace Molinos.Scato.Web.Controllers
         {
             var domicilio = servicio.ObtenerDomicilioDG(plantaDG);
             return domicilio != null ? Json(new { label = domicilio.Descripcion, domicilio.Id, domicilio.Descripcion }, JsonRequestBehavior.AllowGet) : Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ObtenerProveedorPorId(int id)
+        {
+            var proveedor = servicio.ObtenerProveedorInfoPorId(id);
+            return Json(proveedor, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ObtenerCorredoresPorEstablecimiento(int id)
+        {
+            var proveedores = servicio.ObtenerCorredoresAsociadosPorEstablecimientoId(id);
+            return Json(proveedores, JsonRequestBehavior.AllowGet);
         }
 
     }

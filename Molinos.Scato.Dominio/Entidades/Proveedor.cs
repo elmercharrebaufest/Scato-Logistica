@@ -40,5 +40,7 @@ namespace Molinos.Scato.Dominio.Entidades
         
         [InverseProperty("Proveedor")]
         public virtual ICollection<BocaDestino> BocasDestino { get; set; }
+        
+        public virtual IList<Establecimiento> EstablecimientosAsociados { get; set; }
     }
 }

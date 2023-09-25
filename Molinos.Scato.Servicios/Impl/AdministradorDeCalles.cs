@@ -95,6 +95,5 @@ namespace Molinos.Scato.Servicios.Impl
 
             //return !configuracion.Equals("0");
         }
-
     }
 }

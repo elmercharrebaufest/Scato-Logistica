@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -24,5 +26,12 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Provincia Provincia { get; set; }
 
         public virtual bool EPA { get; set; }
+        public virtual bool? EsProvisorio { get; set; }
+        public virtual bool? EsStandard2 { get; set; }
+        public virtual string Observaciones { get; set; }
+
+        public virtual Comercial Comercial { get; set; }
+        [InverseProperty("EstablecimientosAsociados")]
+        public virtual IList<Proveedor> CorredoresAsociados { get; set; }
     }
 }
