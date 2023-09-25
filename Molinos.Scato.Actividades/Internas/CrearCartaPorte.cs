@@ -1,5 +1,6 @@
 using System;
 using System.Activities;
+using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -53,7 +54,7 @@ namespace Molinos.Scato.Actividades.Internas
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-
+                var tipoMaterialPorVariedad = context.GetExtension<IServicioRepositorio>().ObtenerTipoVariedadMaterial(instanciaWorkflow);
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,
@@ -62,7 +63,8 @@ namespace Molinos.Scato.Actividades.Internas
                     CentroId = centroId,
                     Usuario = usuario,
                     Vehiculo = vehiculo,
-                    WorkflowDefinicionId = workflowDefinicionId
+                    WorkflowDefinicionId = workflowDefinicionId,
+                    TipoVariedadId = tipoMaterialPorVariedad.First().Key
                 }) as ResultadoCrear;
                 resultado.Id = resultadoCartaPorte.Id;
 

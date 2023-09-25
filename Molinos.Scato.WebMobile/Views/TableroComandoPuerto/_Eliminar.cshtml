@@ -1,0 +1,17 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Dominio.Dto
+@model AutomatismoNoGranoDto
+    <!--IncluirMIJS-->
+@using (Ajax.BeginForm("Eliminar", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="card">
+        <div class="card-body">
+            <h4>@Textos.ConfirmacionBorrado</h4>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger float-right mr-2">@Textos.Aceptar</button>
+            <a href="@Url.Action("index","TableroComandoPuerto")" class="btn btn-secondary  float-right mr-2">@Textos.Cancelar</a>
+        </div>
+    </div>
+}

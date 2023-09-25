@@ -1,0 +1,93 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad
+
+@model Molinos.Scato.Dominio.Dto.InfoCalleDto
+
+<div id="detalleCalleModal" class="modal fade detalleCalleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Información de Calle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="dialogo-confirmar-body">
+                <fieldset class="reset-this redo-fieldset" style="margin-left: 10px;">
+                    <legend class="reset-this redo-legend">Información</legend>
+                    <div class="row">
+                        <div class="control-group col-8">
+
+                            @Html.LabelFor(model => model.Descripcion, new { @class = "control-label" })
+                            <div id="div-descripcion" class="controls">
+                                @Html.DisplayFor(model => model.Descripcion, new { @class = "input-medium" })
+                            </div>
+                        </div>
+                        <div id="div-estado" class="control-group col-4">
+                            @Html.LabelFor(model => model.Estado, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Estado, new { @class = "input-large" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div id="div-tipoCalle" class="control-group col-6">
+                            @Html.Label("Tipo de calle", new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.TipoCalle, new { @class = "input-large" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr />
+                    <div class="row">
+                        <div id="div-descripcionAlmacen" class="control-group col-8">
+                            @Html.Label("Incluída en automatismo", new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.EsIncluidoAutomatizmo, new { @class = "input-large" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div id="div-material" class="control-group col-3">
+                            @Html.LabelFor(model => model.Material, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Material, new { @class = "input-large" })
+                            </div>
+                        </div>
+                        <div class="control-group col-3">
+                            @Html.LabelFor(model => model.Variedad, new { @class = "control-label" })
+                            <div id="div-variedad" class="controls">
+                                @Html.DisplayFor(model => model.Variedad, new { @class = "input-medium" })
+                            </div>
+                        </div>
+                        <div id="div-hidraulica" class="control-group col-3">
+                            @Html.LabelFor(model => model.Hidraulica, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.Hidraulica, new { @class = "input-large" })
+                            </div>
+                        </div>
+                        <div id="div-paseDirecto" class="control-group col-3">
+                            @Html.Label("Paso Directo", new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.EsPaseDirecto, new { @class = "input-large" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

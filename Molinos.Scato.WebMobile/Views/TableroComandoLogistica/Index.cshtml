@@ -1,0 +1,154 @@
+﻿﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+@using System.Web.Optimization
+@model AutomatismoGranosViewModel
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad;
+
+@{
+    ViewBag.Title = Textos.TableroComandoLogistica_Titulo;
+    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/bootstrap-multiselect.css")" />
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-multiselect.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/scripts/tableroComandoLogistica.js")"></script>
+
+<script>
+    urlCrearAutomatismo = '@Url.Action("Crear", "TableroComandoLogistica")';
+    urlGuadarAutomatismo = '@Url.Action("Crear", "TableroComandoLogistica")';
+    urlModificarAutomatismo = '@Url.Action("Modificar", "TableroComandoLogistica")';
+    urlListarAutomatismo = '@Url.Action("ActualizarListaAutomatismo", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
+    urlCrearJavaScript = '@Url.Content("~/scripts/crearAutomatismo.js")';
+    urlActualizarEstadoPaseDirecto = '@Url.Action("ActualizarEstadoPaseDirecto", "TableroComandoLogistica")';
+    urlActualizarEstadoLlamadoVolcable = '@Url.Action("ActualizarEstadoLlamadoVolcable", "TableroComandoLogistica")';
+    urlListarAutomatismoGrano = '@Url.Action("ListarAutomatismoGrano", "TableroComandoLogistica")';
+    urlFileJavaScript = '@Url.Content("~/scripts/crearAutomatismo.js")';
+    urlEliminarAutomatismo = '@Url.Action("Eliminar", "TableroComandoLogistica")';
+    urlVerificarLlamadoUnoAUno = '@Url.Action("VerificarLlamadoUnoAUno", "TableroComandoLogistica")';
+    urlActualizarEstadoPaseDirectoUnoAUno = '@Url.Action("ActualizarEstadoPaseDirectoUnoAUno", "TableroComandoLogistica")';
+    urlObtenerHidraulicasEscalables = '@Url.Action("ObtenerHidraulicasEscalables", "TableroComandoLogistica")';
+    urlObtenerCalidad = '@Url.Action("ObtenerCalidad", "TableroComandoLogistica")';
+</script>
+
+<div style="text-align:center">
+    <h2 class="titulo-center">@Textos.Tablero_ComandoLogistica</h2>
+</div>
+<div class="mx-1" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoLogistica", null, new { @class = "nav-link active" })
+                </li>
+                <li class="nav-item">
+                    @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                    {
+                        @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link" })
+                    }
+                </li>
+
+                <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                    <div class="d-flex flex-column align-items-start flex-md-row">
+                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                            <label class="switch">
+                                <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "") @if (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))) { @Html.Raw("disabled") ; }>
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                        </div>
+                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                            <label class="switch">
+                                <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")>
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="ml-2 mr-md-2 mt-1">Automatismo General</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="tab-content overflow-auto">
+                @{
+                    string clasesNuevo = "btn m-2 float-right rounded-bottom";
+                    if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                    {
+                        clasesNuevo += " btn-success";
+                    }
+                    else
+                    {
+                        clasesNuevo += " btn-secondary disabled";
+                    }
+                }
+                <div class="col-12">
+                    <button type="button" class="@clasesNuevo" id="nuevoAutomatismo">Nuevo Automatismo</button>
+                </div>
+                <div id="panel" class="tab-pane fade show active">
+                    <div id="listarAutomatismo" data-grid-url="@Url.Action("Index")">
+                        @Html.Partial("_ListarPanel")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DetalleAutomatismo"></div>
+
+<dialog id="modalConfirmarPaseDirectoHabilitado" class="dialogScatoMobile">
+    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
+    <p class="dialogScatoMobile__descripcion">
+        Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. ¿Desea continuar?
+    </p>
+    <div class="dialogScatoMobile__botones">
+        <button id="btnConfirmarPorFila" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoUnoAUnoHabilitado()">Aceptar</button>
+        <button class="btn btn-dark" onclick="modalConfirmarPaseDirectoHabilitado.close()" autofocus>Cancelar</button>
+    </div>
+</dialog>
+
+<dialog id="modalConfirmarPaseDirecto" class="dialogScatoMobile">
+    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
+    <div id="PasoDirecto" hidden>
+    </div>
+    <p class="dialogScatoMobile__descripcion">
+        Al deshabilitar el Pase Directo, debe definir como continuará el llamado a los vehículos
+    </p>
+    <div class="dialogScatoMobile__botones">
+        <button id="btnConfirmarPorFila" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoPorFila()">Por Fila</button>
+        <button id="btnConfirmar1a1" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoUnoAUno()">1 a 1</button>
+        <button class="btn btn-dark" onclick="modalConfirmarPaseDirecto.close()" autofocus>Cancelar</button>
+    </div>
+</dialog>
+
+<dialog id="modalConfirmarBorrar" class="dialogScatoMobile">
+    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
+    <div id="automatismo" hidden>
+    </div>
+    <p class="dialogScatoMobile__descripcion">
+        ¿Seguro que desea eliminar este automatismo?
+    </p>
+    <div class="dialogScatoMobile__botones">
+        <button id="btnConfirmarBorrar" class="btn btn-success" onclick="funcionEliminarAutomatismo()">Aceptar</button>
+        <button class="btn btn-dark" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
+    </div>
+</dialog>
+
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+</style>

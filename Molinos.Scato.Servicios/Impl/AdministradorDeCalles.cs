@@ -50,9 +50,7 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (tipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                return EsPasoDirecto()
-                    ? repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipo(tipoCalle))
-                    : repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
+                repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));    
             }
 
             return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(tipoCalle, material));
@@ -85,15 +83,6 @@ namespace Molinos.Scato.Servicios.Impl
             var camiones = repositorio.Contar<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == calleId);
             var disponibilidad = repositorio.ObtenerProyeccion<Calle, int>(x => x.Id == calleId, x => x.CantidadDeCamiones);
             return disponibilidad - camiones > 0;
-        }
-
-        private bool EsPasoDirecto() //TODO 2023.07 Revisar metodo por que el pase directo debe depender de la calle no de una configuracion
-        {
-            return false;
-
-            //string configuracion = repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
-
-            //return !configuracion.Equals("0");
         }
     }
 }

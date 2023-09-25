@@ -81,9 +81,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected Material CrearEntidadMaterial(CrearMaterial comando)
         {
             var materialEditado = Conversor.Convertir<MaterialDto, Material>(comando.Dto);
-            if (comando.Dto.VariedadId.HasValue)
+            if (comando.Dto.TipoVariedadId.HasValue)
             {
-                materialEditado.Variedad = Repositorio.Obtener<Variedad>(comando.Dto.VariedadId.Value);
+                materialEditado.Variedad = Repositorio.Obtener<Variedad>(comando.Dto.TipoVariedadId.Value);
             }
             materialEditado.AlmacenOrigen = Repositorio.Obtener<Almacen>(comando.Dto.AlmacenOrigenId);
             materialEditado.Activo = true;
@@ -101,7 +101,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("CodigoSAP", Textos.Material_CodigoSAPExistente);
             }
-            if (comando.Dto.EsUva && !comando.Dto.VariedadId.HasValue)
+            if (comando.Dto.EsUva && !comando.Dto.TipoVariedadId.HasValue)
             {
                 resultado.Error("VariedadId", Textos.Error_Requerido);
             }

@@ -1,0 +1,82 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+
+@{
+    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+}
+<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+<script>
+    urlModificarCallePlanta = '@Url.Action("ModificarCallePlanta", "TableroComandoPuerto")';
+    urlModificarPuntoDeCarga = '@Url.Action("ModificarPuntoDeCarga", "TableroComandoPuerto")';
+    urlActualizarEstadoCallePlanta = '@Url.Action("ActualizarEstadoCallePlanta", "TableroComandoPuerto")';
+    urlActualizarEstadoAlmacen = '@Url.Action("ActualizarEstadoAlmacen", "TableroComandoPuerto")';
+    urlActualizarEstadoPuntoDeCarga = '@Url.Action("ActualizarEstadoPuntoDeCarga", "TableroComandoPuerto")';
+</script>
+<div style="text-align:center">
+    <h2 class="titulo-center">@Textos.TableroComandoPuerto</h2>
+</div>
+<div class="mx-1" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link active" })
+                </li>
+            </ul>
+            <div class="tab-content overflow-auto">
+                <div id="panel" class="tab-pane fade show active">
+                    <div class="container">
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-4">
+                                <h4>Calle Planta</h4>
+                                <div id="gridCallePlanta" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarCallePlanta")
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <h4>Puntos de Carga</h4>
+                                <div id="gridPuntoDeCarga" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarPuntoDeCarga")
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <h4>Almacén</h4>
+                                <div id="gridAlmacen" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarAlmacen")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Comienzo ModalVacio-->
+    <div id="partialModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Titulo Modal</h5>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Fin ModalVacio-->
+    <script src="~/Scripts/AutomatismoNoGrano.js"></script>
+    <style>
+        .nav-item a,
+        td a,
+        th a {
+            color: #244232 !important;
+        }
+
+        td, th {
+            text-align: center;
+        }
+    </style>

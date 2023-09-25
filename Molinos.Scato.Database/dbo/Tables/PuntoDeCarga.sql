@@ -14,6 +14,8 @@ CREATE TABLE [dbo].[PuntoDeCarga] (
 
 [ModificadoPor] VARCHAR(50) NULL,
 
-CONSTRAINT [PK_dbo.PuntoDeCarga] PRIMARY KEY CLUSTERED ([Id] ASC)
+[EstadoAutomatismo] BIT NULL DEFAULT 0, 
+    [CantidadMaximaDeCamiones] INT NULL, 
+    CONSTRAINT [PK_dbo.PuntoDeCarga] PRIMARY KEY CLUSTERED ([Id] ASC)
 
 );

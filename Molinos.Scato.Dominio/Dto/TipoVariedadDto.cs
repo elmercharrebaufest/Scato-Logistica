@@ -15,5 +15,11 @@ namespace Molinos.Scato.Dominio.Dto
         [StringLength(100)]
         [Display(ResourceType = typeof(Textos), Name = "Descripcion")]
         public string Descripcion { get; set; }
+
+        public string ColorTexto { get; set; }
+
+        public string ColorFondo { get; set; }
+
+        public bool EstaEnAutomatismo { get; set; }
     }
 }

@@ -1,0 +1,10 @@
+﻿﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+@model AutomatismoGranosViewModel
+
+@Html.Grilla(Model.ConfiguracionCallesPreBalanza, grilla => grilla.Columns(
+                                            grilla.ColumnaModificarModal(Html, "funcionModalModificarCallePreBalanza"),
+                                            grilla.ColumnaSwitch("ActivoAutomatico", "Estado", "PB"),
+                                            grilla.Columna("Nombre", "Calle", null, null, false),
+                                            grilla.Columna("CantidadDeCamiones", "Camiones", null, null, false)
+                                     ))

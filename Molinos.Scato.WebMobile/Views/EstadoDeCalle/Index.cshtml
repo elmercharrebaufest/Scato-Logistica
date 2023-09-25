@@ -30,6 +30,7 @@
     urlLEstadoDeCallesBloqueada = '@Url.Action("EstadoDeCallesBloqueada", "EstadoDeCalle")';
     urlCambioCalleCalado = '@Url.Action("CambioCalleCalado", "EstadoDeCalle")';
     cantFilasPorCalador = @Html.Raw(ViewBag.CantFilasPorCalador);
+    camionesLlamadosJson = @Html.Raw(ViewBag.Llamados);
 
 </script>
 <script type="text/javascript" src="@Url.Script("~/scripts/estadoDeCalle.js")"></script>

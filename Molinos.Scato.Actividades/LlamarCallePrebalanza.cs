@@ -71,7 +71,7 @@ namespace Molinos.Scato.Actividades
             var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             var resultadoInsertarCartelLed = servicio.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
-                Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
+                Codigo = CodigoMensajeCartelLed.LlamadoCallePreBalanza,
                 CalleId = callePreBalanzaId
             }) as ResultadoMensajeCartelLed;
             servicio.Ejecutar(new EnviarMensajeCartelLed

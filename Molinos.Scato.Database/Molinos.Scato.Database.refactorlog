@@ -791,8 +791,6 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Borrado" />
   </Operation>
-
-
   <Operation Name="Rename Refactor" Key="c32ef888-eaa8-4614-b7ba-e2d3a2491e56" ChangeDateTime="07/13/2023 20:25:54">
     <Property Name="ElementName" Value="[dbo].[Comerciales].[Cod_sap]" />
     <Property Name="ElementType" Value="SqlSimpleColumn" />
@@ -856,5 +854,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Proveedor_Id" />
   </Operation>
- 
+  <Operation Name="Rename Refactor" Key="5433517a-2cb9-4345-861c-3e63d8b75c79" ChangeDateTime="08/22/2023 20:55:54">
+    <Property Name="ElementName" Value="[dbo].[Recorrido].[Variedad]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Recorrido]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Variedad_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5c89f30f-e032-494f-bf00-8e2596a7ba9b" ChangeDateTime="08/22/2023 21:04:02">
+    <Property Name="ElementName" Value="[dbo].[Recorrido].[Variedad_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Recorrido]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TipoVariedad_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4d8eb5c4-6b22-49cc-a424-71d6d84da28f" ChangeDateTime="08/29/2023 06:19:52">
+    <Property Name="ElementName" Value="[dbo].[AutomatismoGrano].[VariedadPorMaterial_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AutomatismoGrano]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TipoVariedadPorMaterial_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9e0dbdcc-e62f-42cd-bdb7-4fb0d2d92c82" ChangeDateTime="08/28/2023 16:53:43">
+    <Property Name="ElementName" Value="[dbo].[FK_AutomatismoNoGrano_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[AutomatismoNoGrano]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_dbo.AutomatismoNoGrano_ToTable]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dbca7c67-5a6f-44f3-8ada-5c3945938cb6" ChangeDateTime="08/28/2023 16:54:17">
+    <Property Name="ElementName" Value="[dbo].[FK_dbo.AutomatismoNoGrano_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[AutomatismoNoGrano]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_dbo.CallePlanta_Id]" />
+  </Operation>
 </Operations>

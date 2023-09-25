@@ -1,0 +1,55 @@
+﻿@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
+@model AutomatismoNoGranoViewModel
+    
+@using (Ajax.BeginForm("Crear", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { enctype = "multipart/form-data" }))
+
+{
+    <div class="row">
+        <!--Primera Fila-->
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlanta)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInterna)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
+                </div>
+            </div>
+        </div>
+    </div><!--fin Primera Fila-->
+    <div class="row">
+        <!--Segunda Fila-->
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntosDeCargaAsociados)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntosDeCargaId, Model.PuntosDeCarga, new { @class = "form-control multiselect", @required = "required", multiple = "multiple" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntosDeCargaId)
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenesAsociados)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenesId, Model.Almacenes, new { @class = "form-control multiselect", @required = "required", @multiple = "multiple" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenesId)
+                </div>
+            </div>
+        </div>
+    </div><!--Fin Segunda Fila-->
+    <div class="form-group p-2">
+        <button type="submit" class="btn btn-success float-right">@Textos.Guardar</button>
+        <a href="@Url.Action("index","TableroComandoPuerto")" class="btn btn-secondary float-right mr-2">@Textos.Cancelar</a>
+    </div>
+}
+<script src="~/Scripts/AutomatismoNoGrano.js"></script>

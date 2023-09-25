@@ -1,5 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using Molinos.Scato.Dominio;
+﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -8,6 +7,7 @@ using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.Helpers;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -57,6 +57,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                 TipoCalle.NoGranos,
             };
 
+            var ultimasPatentesLlamadas = servicio.ListarCamionesLlamados();
+
+            ViewBag.Llamados = JsonConvert.SerializeObject(ultimasPatentesLlamadas);
             ViewBag.MinutosEsperaCircular = centroDto?.MinutosEsperaCircular ?? 20;
             ViewBag.MinutosEsperaPrecalado = centroDto?.MinutosEsperaPrecalado ?? 30;
             ViewBag.CallesCalado = servicio.ListarCallesPorTipo(TipoCalle.Calado);
@@ -97,6 +100,8 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => tiposCalleValidas.Contains(x.TipoCalle));
 
+            var ultimasPatentesLlamadas = servicio.ListarCamionesLlamados();
+
             var materiales = camiones.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
                 .Select(x => new { x.MaterialId, x.MaterialDesc })
                 .Union(calles.Where(x => tiposCalleValidas.Contains(x.TipoCalle))
@@ -106,7 +111,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             ViewBag.CantFilasPorCalador = EstadoCaladoresActivos();
 
-            return Json(new { estado = camiones, materiales, calles }, JsonRequestBehavior.AllowGet);
+            return Json(new { estado = camiones, materiales, calles, ultimasPatentesLlamadas }, JsonRequestBehavior.AllowGet);
         }
 
         [Autorizacion(PermisosScato.EstadoDeCalleLlamar)]
@@ -328,8 +333,6 @@ namespace Molinos.Scato.WebMobile.Controllers
                 var cartel = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePreCalado, Constantes.ConfiguracionGeneral.PreCalado.CartelLedCalador);
 
                 var esCircular = callePrecalado.TipoCalle == TipoCalle.Circular;
-
-                var historialMensajeCartel = new HistorialMensajeCartelLedDto();
 
                 var codigo = servicio.ObtenerCodigoMensaje(callePrecalado.CalleCaladoId);
 

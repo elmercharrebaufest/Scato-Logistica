@@ -19,6 +19,7 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Objects;
 using System.Data.Objects.SqlClient;
 using System.Diagnostics;
@@ -9218,7 +9219,7 @@ namespace Molinos.Scato.Servicios.Impl
                 x => new BalanzaDto { Id = x.Balanza.Id, CodigoCabezal = x.Balanza.CodigoCabezal });
         }
 
-        public IList<MensajeCartelLedDto> ObtenerMensajesCartelLed(string codigo)
+        public IList<MensajeCartelLedDto> ListarMensajesCartelLed(string codigo)
         {
             return Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo && x.Habilitado).OrderBy(x => x.Orden).ToList();
         }
@@ -10477,11 +10478,6 @@ namespace Molinos.Scato.Servicios.Impl
             return calleRecorrido.Calle.Id;
         }
 
-        public CalleDto ObtenerCallePrioritaria()
-        {
-            return Obtener<Calle, CalleDto>(x => x.EsPasoDirecto);
-        }
-
         public IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId)
         {
             return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId));
@@ -10552,9 +10548,6 @@ namespace Molinos.Scato.Servicios.Impl
             return recorrido.Material.Id;
         }
 
-        
-        
-        
         public ListaPaginada<ComercialDto> ListarPaginadoComerciales(string filtro, Paginacion paginacion)
         {
             Expression<Func<Comercial, bool>> expresionFiltro = null;
@@ -10600,8 +10593,233 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Comercial, ComercialDto>().ToList();
         }
 
+        public IList<TipoVariedadPorMaterialDto> ListarTipoVariedadPorMaterial(int materialId)
+        {
+            return Listar<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>(x => x.MaterialId == materialId);
+        }
 
+        public IList<TipoVariedadDto> ListarTipoVariedad()
+        {
+            return Listar<TipoVariedad, TipoVariedadDto>();
+        }
+
+        public TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial)
+        {
+            return ObtenerRelacionVariedadPorMaterial(idMaterial).ToArray();
+        }
+
+        public List<int> ListarIdCallesNoEditables()
+        {
+            var callesNoEditablesId = new List<int>();
+            var configuracionGeneralGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+            if (bool.TryParse(configuracionGeneralGrano?.Valor, out bool automatismoGeneralGrano) && automatismoGeneralGrano)
+            {
+                var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.CallePreBalanza, x => x.CallePreHidraulica};
+                var automatismosGrano = repositorio.Listar(includesGrano, x => x.Activo).Select(s => new { idCalleFirst = s.CallePreBalanza.Id, idCalleSecond = s.CallePreHidraulica.Id });
+                callesNoEditablesId.AddRange(automatismosGrano.Select(q => q.idCalleFirst));
+                callesNoEditablesId.AddRange(automatismosGrano.Select(q => q.idCalleSecond));
+            }
+
+            var configuracionGeneralNoGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
+            if (bool.TryParse(configuracionGeneralNoGrano?.Valor, out bool automatismoGeneralNoGrano) && automatismoGeneralNoGrano)
+            {
+                var automatismosNoGrano = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(x => x.Activo).Select(s => new { idCalleFirst = s.CallePlanta.Id, idCalleSecond = s.CallePlayaInterna.Id });
+                callesNoEditablesId.AddRange(automatismosNoGrano.Select(q => q.idCalleFirst));
+                callesNoEditablesId.AddRange(automatismosNoGrano.Select(q => q.idCalleSecond));
+            }
+
+            return callesNoEditablesId.Distinct().ToList();
+        }
+
+        public InfoCalleDto ObtenerInfoCalle(int idCalle)
+        {
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var lista = repositorio.Listar<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
+            var automatismo = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista).FirstOrDefault();
+
+            return new InfoCalleDto
+            {
+                Descripcion = automatismo.CallePBDescripcion,
+                EsIncluidoAutomatizmo = automatismo.IncluidoAutomatismo,
+                EsPaseDirecto = automatismo.PasoDirecto,
+                Estado = automatismo.EstadoCallePB,
+                Hidraulica = automatismo.HidraulicaDescripcion,
+                Material = automatismo.MaterialDescripcion,
+                Variedad = automatismo.VariedadDescripcion,
+                TipoCalle = automatismo.TipoCallePreHidraulica.Text()
+            };
+        }
+
+        public Dictionary<int, string> ObtenerTipoVariedadMaterial(Guid instanceId)
+        {
+            Dictionary<int, string> tipoVariedadPorMaterial = new Dictionary<int, string>();
+            var recorrido = Obtener<Recorrido, RecorridoDto>(x => x.InstanciaWorkflow == instanceId);
+            var variedadPorMaterial = ObtenerRelacionVariedadPorMaterial(recorrido.Material.Id);
+            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
+            string codigoVariedad = string.Empty;
+            int idVariedad = 0;
+
+            if (recorrido.Establecimiento != null)
+            {
+                if (recorrido.Establecimiento.EsSojaEPA && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.EPA)))
+                {
+                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.EPA;
+                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
+                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
+                }
+                else if (!recorrido.Establecimiento.EsSojaEPA && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Sustentable)))
+                {
+                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Sustentable;
+                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
+                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
+                }
+            }
+            else if (recorrido.Workflow.Codigo.Equals(workflowImpoGranos) && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Importacion)))
+            {
+                var cp = repositorio.Obtener<CargaDeCupo>(x => x.Recorrido.Id == recorrido.Id);
+                if (cp.TitularCartaPorteCodigoSap.Equals(Molinos.Scato.Dominio.Constantes.ValoresPorDefecto.CodigoSapTPR))
+                {
+                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Importacion;
+                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
+                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
+                }
+            }
+            else
+            {
+                tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
+            }
+
+            return tipoVariedadPorMaterial;
+        }
+
+        private List<TipoVariedadDto> ObtenerRelacionVariedadPorMaterial(int idMaterial)
+        {
+            var tipoVariedades = Listar<TipoVariedad, TipoVariedadDto>();
+            var variedadesPorMaterial = Listar<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>(x => x.MaterialId == idMaterial);
+            var automatismos = Listar<AutomatismoGrano, AutomatismoGranoDto>(x => x.MaterialId == idMaterial);
+
+            var variedadesActivas =
+                   tipoVariedades.Join(variedadesPorMaterial,
+                   variedades => variedades.Id,
+                   variedadMaterial => variedadMaterial.TipoVariedadId,
+                   (variedades, variedadMaterial) =>
+                       new TipoVariedadDto { Descripcion = variedades.Descripcion, Id = variedades.Id, Codigo = variedades.Codigo, ColorTexto = variedadMaterial.ColorTexto, ColorFondo = variedadMaterial.ColorFondo, EstaEnAutomatismo = automatismos.Any(c => c.MaterialId == variedadMaterial.MaterialId && c.TipoVariedadId == variedadMaterial.TipoVariedadId) })
+
+                   .ToList();
+
+            return variedadesActivas;
+        }
+
+        public IList<AutomatismoGranoDto> ListarAutomatismoGrano()
+        {
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var lista = repositorio.Listar<AutomatismoGrano>(includes);
+            var automatismos = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista);
+
+            return automatismos;
+        }
+
+        public IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, bool esNoGranos, int idCalleActual)
+        {
+            List<int> listaId = new List<int>();
+
+            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includesNoGrano = new List<Expression<Func<AutomatismoNoGrano, object>>> { x => x.AlmacenesAsociados, x => x.CallePlayaInterna, x => x.PuntosDeCargaAsociados, x => x.CallePlanta };
+
+            if (tipoCalle == TipoCalle.PreBalanzaGranos)
+            {
+                var lista = repositorio.Listar<AutomatismoGrano>(includesGrano);
+                listaId.AddRange(lista.Select(s => s.CallePreBalanzaId).ToList());
+            }
+            if (tipoCalle == TipoCalle.PlayaInterna)
+            {
+                var lista = repositorio.Listar<AutomatismoNoGrano>(includesNoGrano);
+                listaId.AddRange(lista.Select(s => s.CallePlayaInterna.Id).ToList());
+                if (esNoGranos)
+                {
+                    var listaGranos = repositorio.Listar<AutomatismoGrano>(includesGrano);
+                    listaId.AddRange(listaGranos.Select(s => s.CallePreHidraulicaId).ToList());
+                }
+                listaId = listaId.Distinct().ToList();
+            }
+
+            var listaCalles = repositorio.Listar<Calle>(c => c.TipoCalle == tipoCalle).ToList();
+
+            var calleDisponibles = listaCalles.Where(c => !listaId.Contains(c.Id)).ToList();
+
+            if (idCalleActual != 0)
+            {
+                calleDisponibles.Add(repositorio.Obtener<Calle>(c => c.Id == idCalleActual));
+            }
+
+            var calles = conversor.ConvertirList<Calle, CalleDto>(calleDisponibles.Distinct().ToList());
+
+            return calles;
+        }
+
+        public bool ExisteCamionesEnCalle(int calleId)
+        {
+            return repositorio.Existe<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == calleId);
+        }
+
+        public CallePorRecorridoDto ObtenerCallePorRecorridoPorRecorridoIdYCalleId(int recorridoId, int calleId)
+        {
+            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.Calle.Id == calleId);
+        }
+
+        public AutomatismoGranoDto ObtenerAutomatismoGranos(int id)
+        {
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == id);
+
+            return conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
+        }
+
+        public List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano()
+        {
+            var automatismos = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>().ToList();
+            return automatismos;
+        }
+
+        public PuntoDeCargaDto ObtenerPuntoDeCarga(int id)
+        {
+            return Obtener<PuntoDeCarga, PuntoDeCargaDto>(id);
+        }
+
+        public IList<AlmacenDto> ListarAlmacenesActivosAutomatismoNoGrano()
+        {
+            return Listar<Almacen, AlmacenDto>(x => (bool)x.EstadoAutomatismo);
+        }
+
+        public IList<PuntoDeCargaDto> ListarPuntosDeCargaActivosAutomatismoNoGrano()
+        {
+            return Listar<PuntoDeCarga, PuntoDeCargaDto>(x => (bool)x.EstadoAutomatismo);
+        }
+
+        public IList<CalleDto> ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle tipo)
+        {
+            return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo && x.ActivoAutomatico);
+        }
+
+        public AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id)
+        {
+            return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Id == id);
+        }
+
+        public IList<CalleDto> ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle tipoCalle)
+        {
+            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var listaActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == tipoCalle);
+            var automatismosGrano = repositorio.Listar<AutomatismoGrano>(includesGrano);
+            var automatismosNoGrano = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>();
+            var noIncludeGrano = listaActivas.Where(x => !automatismosGrano.Any(g => g.CallePreBalanzaId == x.Id || g.CallePreHidraulicaId == x.Id));
+            var noIncludeNoGrano = noIncludeGrano.Where(x => !automatismosNoGrano.Any(n => n.CallePlayaInterna.Id == x.Id || n.CallePlanta.Id == x.Id));
+            return noIncludeNoGrano.ToList();
+        }
+
+        public IList<HistorialMensajeCartelLedDto> ListarCamionesLlamados()
+        {
+            return Listar<HistorialMensajeCartelLed, HistorialMensajeCartelLedDto>(x => x.MensajeCartelLed.Codigo == CodigoMensajeCartelLed.LlamadoCamionNoGrano && x.Recorrido != null);
+        }
     }
-
-
 }

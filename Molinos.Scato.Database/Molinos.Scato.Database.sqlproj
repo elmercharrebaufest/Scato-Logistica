@@ -529,6 +529,11 @@
     <Build Include="dbo\Tables\TipoVariedadPorMaterial.sql" />
     <Build Include="dbo\Tables\Comercial.sql" />
     <Build Include="dbo\Tables\EstablecimientoProveedor.sql" />
+    <Build Include="dbo\Tables\AutomatismoGrano.sql" />
+    <Build Include="dbo\Tables\AutomatismoGranoPuestosDeCargaDescarga.sql" />
+    <Build Include="dbo\Tables\AutomatismoNoGrano.sql" />
+    <Build Include="dbo\Tables\AutomatismoNoGranoAlmacen.sql" />
+    <Build Include="dbo\Tables\AutomatismoNoGranoPuntoDeCarga.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

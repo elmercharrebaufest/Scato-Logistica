@@ -5,7 +5,7 @@ using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
-    internal class PuntoDeCargaMappingProfile : Profile
+    public class PuntoDeCargaMappingProfile : Profile
     {
         public override string ProfileName
         {

@@ -1,0 +1,76 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+
+@{
+    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+}
+<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+<script>
+    urlCrearAutomatismo = '@Url.Action("Crear", "TableroComandoPuerto")';
+    urlModificarAutomatismo = '@Url.Action("Modificar", "TableroComandoPuerto")';
+    urlEliminarAutomatismo = '@Url.Action("Eliminar", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoNoGrano = '@Url.Action("ActualizarEstadoAutomatismoNoGrano", "TableroComandoPuerto")';
+</script>
+<div style="text-align:center">
+    <h2 class="titulo-center">@Textos.TableroComandoPuerto</h2>
+</div>
+<div class="mx-1" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link active" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item ml-auto">
+                    <label class="switch">
+                        <input id="automatismoGeneral" type="checkbox" class="cambio-tipo">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="mr-2">Automatismo General</span>
+                </li>
+            </ul>
+
+            <div class="tab-content overflow-auto">
+                <div class="col-12">
+                    @*@Html.ActionLink(Textos.Automatismo_Crear, "Crear", "TableroComandoPuerto", new { }, new { @class = "btn m-2 float-right rounded-bottom btn-success" })*@
+                    <button class="btn m-2 float-right rounded-bottom btn-success" onclick="funcionModalCrear()">Nuevo Automatismo</button>
+                </div>
+                <div id="gridContainer" class="tab-pane fade show active">
+                    @Html.Partial("_Listar")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Comienzo ModalVacio-->
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Titulo Modal</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fin ModalVacio-->
+<div id="detalle">
+</div>
+<script src="~/Scripts/AutomatismoNoGrano.js"></script>
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+</style>

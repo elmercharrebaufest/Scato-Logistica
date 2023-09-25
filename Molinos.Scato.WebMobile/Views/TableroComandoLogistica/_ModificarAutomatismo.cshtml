@@ -1,0 +1,103 @@
+﻿@using Molinos.Scato.WebMobile.ViewModel
+@using System.Web.Optimization
+@model AutomatismoGranosViewModel
+
+<div class="modal fade" id="modalModificarAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalModificarAutomatismoLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        @using (Ajax.BeginForm("Modificar", null, new AjaxOptions { OnSuccess = "modificarSuccess" }, new { @class = "container" }))
+        {
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalModificarAutomatismoLabel">Modificar Automatismo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    @Html.HiddenFor(m => m.AutomatismoGrano.Id)
+
+                    <div class="form-group row mt-4">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.AutomatismoGrano.MaterialId)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.MaterialId, Model.Materiales, new { @class = "form-control", disabled = true, id = "cboxMateriales", data_url = @Url.Action("ListarVariedades", "TableroComandoLogistica") })
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedadId)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedadId, Model.Variedades, new { @class = "form-control", disabled = true, id = "cboxVariedades" })
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedadId)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.AutomatismoGrano.CamionEscalable, new { @class = "esEscalableCheck" })
+                        @Html.LabelFor(m => m.AutomatismoGrano.CamionEscalable)
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CamionEscalable)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CallePreBalanzaId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreBalanzaId, Model.CallesPreBalanza, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreBalanzaId)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                        @Html.LabelFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                    </div>
+
+                    <div id="divCalidad" style="display:none" class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CalidadId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CalidadId)
+
+                        <div class="form-group row mt-4">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", Type = "Number" })
+                                @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", Type = "Number" })
+                                @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreHidraulicaId, Model.CallesHidraulica, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.AutomatismoGrano.Llamado1a1)
+                        @Html.LabelFor(m => m.AutomatismoGrano.Llamado1a1)
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.Llamado1a1)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.Hidraulicas)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.Hidraulicas, Model.Hidraulicas, new { @class = "form-control multiselect", multiple = "multiple" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.Hidraulicas)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.AlmacenId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.AlmacenId)
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #f5f5f5;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")

@@ -1,0 +1,11 @@
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+
+@model AutomatismoNoGranoConfiguracionViewModel
+
+@Html.Grilla(Model.ListaCallePlanta, grilla => grilla.Columns(
+        grilla.ColumnaModificarModalEntidad(Html, "CallePlanta"),
+        grilla.ColumnaSwitchIdentity("ActivoAutomatico", "Estado", "calleplanta"),
+        grilla.Columna("Nombre", "Calle Planta", null, null, false),
+        grilla.Columna("CantidadDeCamiones", "Camiones", null, null, false)
+    ))

@@ -96,7 +96,6 @@
     <Compile Include="ConsultasEF\ListarCpeAfipCacheadas.cs" />
     <Compile Include="ConsultasEF\ListarVagonesEnPesada.cs" />
     <Compile Include="ConsultasEF\MonitorCPEsCacheadasConsulta.cs" />
-    <Compile Include="ConsultasEF\ObtenerCallePorTipo.cs" />
     <Compile Include="ConsultasEF\ObtenerUltimaCallePorTipoYMaterial.cs" />
     <Compile Include="ConsultasEF\ObtenerCallePorTipoYMaterial.cs" />
     <Compile Include="ConsultasEF\ObtenerVehiculo.cs" />

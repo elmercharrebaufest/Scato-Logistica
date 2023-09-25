@@ -123,6 +123,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      : query.OrderByDescending(selectorOrden);
                 }
             }
+
             var itemsTotales = query.Count();
             query = query.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 

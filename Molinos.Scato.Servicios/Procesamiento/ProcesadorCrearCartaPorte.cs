@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Management.Instrumentation;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -168,6 +169,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         cartaPorte = Repositorio.Obtener<CartaPorte>(comando.Orden.Id);
                     }
                     var recorrido = Repositorio.Obtener<Recorrido>(f => f.InstanciaWorkflow == comando.InstanciaWorkflowId);
+                 
                     if (recorrido == null)
                     {
                         recorrido = new Recorrido
@@ -190,7 +192,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                                 WorkflowDefinicion = workflowDefinicion,
                                 TipoVehiculo = comando.Orden.TipoVehiculo,
                                 VehiculoDemorado = comando.Orden.VehiculoDemorado, 
-                                MotivoDemora = comando.Orden.MotivoDemora
+                                MotivoDemora = comando.Orden.MotivoDemora,
+                                TipoVariedadId = comando.TipoVariedadId
                             };
                         Repositorio.Agregar(recorrido);
                     }
@@ -213,6 +216,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         recorrido.WorkflowDefinicion = workflowDefinicion;
                         recorrido.VehiculoDemorado = comando.Orden.VehiculoDemorado;
                         recorrido.MotivoDemora = comando.Orden.MotivoDemora;
+                        recorrido.TipoVariedadId = comando.TipoVariedadId;
                     }
 
                     var vehiculoEntity = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente);

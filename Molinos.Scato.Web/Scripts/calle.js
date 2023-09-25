@@ -23,10 +23,6 @@
         $("#CaracteristicaDeCalidadId").val(seleccionado.val())
         setearRangosCaracteristicasDeCalidad();
     });
-    if ($('#TipoCalle').val() == 'PreBalanzaGranos') {
-        $('#EsPasoDirecto').prop('disabled', false)
-    }
-
 });
 
 function manejarSeleccionDeMaterial() {

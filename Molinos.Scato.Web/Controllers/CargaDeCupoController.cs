@@ -742,7 +742,7 @@ namespace Molinos.Scato.Web.Controllers
         private void MostrarPorCartel(string nombrePc, string mensaje, int centroId, string patente)
         {
             var puestoDeTrabajo = servicio.ObtenerPuestoDeTrabajoPorNombrePc(nombrePc, centroId);
-            var mensajesCartel = servicio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.GaritaIngresoAsignarCalle);
+            var mensajesCartel = servicio.ListarMensajesCartelLed(CodigoMensajeCartelLed.GaritaIngresoAsignarCalle);
 
             try
             {

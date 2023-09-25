@@ -1,17 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
+using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Web.Controllers
@@ -62,6 +66,7 @@ namespace Molinos.Scato.Web.Controllers
             CargarAlmacenes(datosUsuario.CentroId, 0);
             CargarCamaras(null);
             CargarEmbalajes();
+            CargarVariedadesMaterial();
 
             ViewBag.AnalisisInterno = 0;
             ViewBag.MuestraAuditoria = null;
@@ -83,7 +88,7 @@ namespace Molinos.Scato.Web.Controllers
 
         [DatosUsuario]
         [HttpPost]
-        public ActionResult Crear(DatosUsuario datosUsuario, MaterialDto model, int? almacenPredId, int? analisisInterno, int? camaraId, bool correspondeDescarga, bool requiereTecnologia, bool materialDeTerceros, string almacenes, string almacenesEliminados, decimal? muestraAuditoria, bool mostrarEnWebMobile, string descripcionWebMobile, int? orden, bool imprimeReciboMunicipal, bool noValidaCg, bool ignoraContingencia)
+        public ActionResult Crear(DatosUsuario datosUsuario, MaterialDto model, int? almacenPredId, int? analisisInterno, int? camaraId, bool correspondeDescarga, bool requiereTecnologia, bool materialDeTerceros, string almacenes, string almacenesEliminados, decimal? muestraAuditoria, bool mostrarEnWebMobile, string descripcionWebMobile, int? orden, bool imprimeReciboMunicipal, bool noValidaCg, bool ignoraContingencia ,string variedades)
         {
             if (model.EsDerivadoGranario)
             {
@@ -113,6 +118,10 @@ namespace Molinos.Scato.Web.Controllers
                 };
 
                 var resultado = (ResultadoCrear)servicioComandos.Ejecutar(new CrearMaterial { Dto = model, MaterialPorCentroDto = matPorCentro, Usuario = datosUsuario.NombreUsuario});
+                
+                var variedadesDto = variedades.FromJson<TipoVariedadDto[]>();
+                var resultadoVariedades = servicioComandos.Ejecutar(new ModificarVariedadPorMaterial{ IdMaterial = resultado.Id, Dto = variedadesDto, Usuario = datosUsuario.NombreUsuario });
+
                 if (!resultado.HayErrores)
                 {
                     CargarAlmacenesPorMaterial(almacenes, almacenesEliminados, resultado.Id);
@@ -152,6 +161,7 @@ namespace Molinos.Scato.Web.Controllers
             CargarAlmacenes(datosUsuario.CentroId, id);
             CargarCamaras(materialPorCentro != null ? materialPorCentro.CamaraId : null);
             CargarEmbalajes();
+            CargarVariedadesMaterial(material.Id);
 
             ViewBag.AnalisisInterno = materialPorCentro != null ? materialPorCentro.AnalisisInterno : 0;
             ViewBag.MuestraAuditoria = materialPorCentro != null ? materialPorCentro.PorcentajeMuestraAuditoria : null;
@@ -168,13 +178,14 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.EpaStockPorCorte = materialPorCentro != null ? materialPorCentro.EpaStockPorCorte : 0;
             ViewBag.Orden = materialPorCentro != null ? materialPorCentro.Orden : 0;
             ViewBag.IgnoraContingencia = materialPorCentro != null && materialPorCentro.IgnoraContingencia;
-            
+            ViewBag.VariedadMaterial =  new MultiSelectList(servicio.ListarVariedades().ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Descripcion), "Value", "Text");
+
             return View(material);
         }
 
         [DatosUsuario]
         [HttpPost]
-        public ActionResult Modificar(DatosUsuario datosUsuario, MaterialDto material, int? almacenPredId, int? analisisInterno, int? camaraId, bool correspondeDescarga, bool requiereTecnologia, bool materialDeTerceros, string almacenes, string almacenesEliminados, decimal? muestraAuditoria, bool imprimeReciboMunicipal, bool mostrarEnWebMobile, string descripcionWebMobile, int? orden, bool noValidaCg, int? epaStockPorCorte, bool ignoraContingencia)
+        public ActionResult Modificar(DatosUsuario datosUsuario, MaterialDto material, int? almacenPredId, int? analisisInterno, int? camaraId, bool correspondeDescarga, bool requiereTecnologia, bool materialDeTerceros, string almacenes, string almacenesEliminados, decimal? muestraAuditoria, bool imprimeReciboMunicipal, bool mostrarEnWebMobile, string descripcionWebMobile, int? orden, bool noValidaCg, int? epaStockPorCorte, bool ignoraContingencia , string variedades)
         {
             if (material.EsDerivadoGranario)
             {
@@ -227,8 +238,13 @@ namespace Molinos.Scato.Web.Controllers
                         IgnoraContingencia = ignoraContingencia
                     };
                 }
+                
+             
                 var resultado = servicioComandos.Ejecutar(new ModificarMaterial { Dto = material, MaterialPorCentroDto = matPorCentro, Usuario = datosUsuario.NombreUsuario});
-                if (!resultado.HayErrores)
+                
+                var variedadesDto = variedades.FromJson<TipoVariedadDto[]>();
+                var resultadoVariedades = servicioComandos.Ejecutar(new ModificarVariedadPorMaterial { IdMaterial = material.Id, Dto = variedadesDto, Usuario = datosUsuario.NombreUsuario });
+                if (!resultado.HayErrores && !resultadoVariedades.HayErrores)
                 {
                     CargarAlmacenesPorMaterial(almacenes, almacenesEliminados, material.Id);
                     return new AjaxEditSuccessResult();
@@ -253,6 +269,9 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Orden = orden;
             ViewBag.NoValidaCG = noValidaCg;
             ViewBag.IgnoraContingencia = ignoraContingencia;
+
+            //CargarVariedadesMaterial(material.Id);
+
             return View(material);
         }
 
@@ -320,6 +339,22 @@ namespace Molinos.Scato.Web.Controllers
             {
                 ModelState.AddModelError("TipoEmbalajeId", string.Format(Textos.Error_Requerido, Textos.Material_TipoEmbalaje));
             }
+        }
+
+        private void CargarVariedadesMaterial(int materialId = 0)
+        {
+            var tipoVariedades = servicio.ListarTipoVariedad().ToList();
+            var variedadesActivas = servicio.ObtenerVariedadPorTipoMaterial(materialId);
+
+
+            if (variedadesActivas.Any())
+            {
+                tipoVariedades.RemoveAll(r => variedadesActivas.Any(b => b.Id.Equals(r.Id)));
+            }
+
+            ViewBag.VariedadesList = variedadesActivas;
+            ViewBag.TodasVariedades = tipoVariedades.ToArray();
+
         }
     }
 }

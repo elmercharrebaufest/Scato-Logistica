@@ -281,7 +281,6 @@ namespace Molinos.Scato.Web.Controllers
             else
                 hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto).ToList();
 
-
             if (sojaEPA)
                 hidraulicas = hidraulicas.Where(q => q.EsSojaEPA).ToList();
             else

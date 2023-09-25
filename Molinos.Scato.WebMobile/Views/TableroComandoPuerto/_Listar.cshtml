@@ -1,0 +1,21 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.WebMobile.ViewModel
+
+@{
+    Layout = null;
+}
+
+@model AutomatismoNoGranoViewModel
+
+@Html.Grilla(Model.ListaAutomatismoNoGrano, grilla => grilla.Columns(
+        grilla.ColumnaEliminarModificarModal(Html),
+        grilla.ColumnaSwitchIdentity("Activo", "Automatismo", "automatismo"),
+        grilla.Columna("CallePlanta.Nombre", "Calle Planta", null, null, false),
+        grilla.Columna("CallePlayaInterna.Nombre", "Calle Playa Interna", null, null, false),
+        grilla.Columna("ListaPuntosDeCarga", "Punto de Carga", null, null, false),
+        grilla.Columna("ListaAlmacenes", "Almacen", null, null, false)
+
+    ))

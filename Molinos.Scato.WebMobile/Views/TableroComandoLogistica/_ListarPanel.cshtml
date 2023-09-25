@@ -1,0 +1,41 @@
+﻿﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.Dominio.Dto
+@using Molinos.Scato.Dominio.Consultas
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad;
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+@model AutomatismoGranosViewModel
+
+@Html.Grilla(Model.ListaAutomatismoGrano, grilla => grilla.Columns(
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica)) ?
+            grilla.ColumnaEliminarModificarModal(Html, "TableroComandoLogistica") :
+            (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))) ?
+                grilla.Column("", "", c => @Html.Raw("")) :
+                grilla.ColumnaModificar(Html, "TableroComandoLogistica"),
+        grilla.Column("CallePBDescripcion", "Calle PB"),
+        grilla.Column("CallePHDescripcion", "Calle PH"),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.ColumnaSwitch("EsPasoDirecto", "Pase Directo") :
+            grilla.Columna("EsPasoDirecto", "Pase Directo", c => FormattingHtmlHelper.Formatted(c.EsPasoDirecto)),
+        PermisosHelper.Is(PermisosScato.SupervisorLogistica) ?
+            grilla.ColumnaSwitch("Activo", "Llamado a Volcable") :
+            (PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+                grilla.Columna("Activo", "Automatismo", c => FormattingHtmlHelper.Formatted(c.Automatico)) :
+                grilla.Column("", "", c => @Html.Raw("")),
+        grilla.Column("MaterialDescripcion", "Material"),
+        grilla.Column("VariedadDescripcion", "Variedad"),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("HidraulicaDescripcion", "Hidraulica") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("AlmacenDescripcion", "Almacén") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta)) ?
+            grilla.Column("FiltraCalidad", "Filtra Calidad") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("EsCamionEscalable", "Camión Escalable") :
+            grilla.Column("", "", c => @Html.Raw(""))
+    ))

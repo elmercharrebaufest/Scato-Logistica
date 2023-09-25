@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -6,8 +7,13 @@ namespace Molinos.Scato.Dominio.Entidades
     {
         [Key]
         public virtual int Id { get; set; }
-
+        [Column("TipoVariedad_Id")]
+        public virtual int TipoVariedadId { get; set; }
+        [Column("Material_Id")]
+        public virtual int MaterialId { get; set; }
         public virtual TipoVariedad TipoVariedad { get; set; }
-        public virtual Material Material { get; set; }
+        //public virtual Material Material { get; set; }
+        public virtual string ColorFondo { get; set; }
+        public virtual string ColorTexto { get; set; }
     }
 }

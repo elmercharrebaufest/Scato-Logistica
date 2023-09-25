@@ -21,6 +21,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var recorridoAEditar = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanceId);
                 recorridoAEditar.Establecimiento = Repositorio.Obtener<Establecimiento>(comando.EstablecimientoId);
+                recorridoAEditar.TipoVariedadId = comando.TipoVariedadId;
                 Repositorio.GuardarCambios();
             }
             catch (Exception e)

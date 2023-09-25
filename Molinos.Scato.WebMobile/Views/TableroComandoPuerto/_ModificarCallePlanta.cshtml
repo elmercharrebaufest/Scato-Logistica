@@ -1,0 +1,41 @@
+﻿@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
+@model AutomatismoNoGranoConfiguracionViewModel
+
+@using (Ajax.BeginForm("ModificarCallePlanta", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridCallePlanta" }, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.CallePlanta.Id)
+    <div class="row">
+        <!--Primera Fila-->
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CallePlanta.Nombre)
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.CallePlanta.Nombre, new { @class = "form-control", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.CallePlanta.Nombre)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--fin Primera Fila-->
+    <div class="row">
+        <!--Segunda Fila-->
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CallePlanta.CantidadDeCamiones)
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.CallePlanta.CantidadDeCamiones, new { @class = "form-control", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.CallePlanta.CantidadDeCamiones)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--fin Segunda Fila-->
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success float-right">@Textos.Guardar</button>
+        <a href="@Url.Action("Configuraciones","TableroComandoPuerto")" class="btn btn-secondary float-right mr-2">@Textos.Cancelar</a>
+    </div>
+}

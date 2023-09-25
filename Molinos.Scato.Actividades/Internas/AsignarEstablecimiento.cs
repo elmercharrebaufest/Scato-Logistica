@@ -1,10 +1,12 @@
 using System;
 using System.Activities;
+using System.Linq;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Impl;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -33,11 +35,14 @@ namespace Molinos.Scato.Actividades.Internas
                     }
                     if (!resultado.HayErrores)
                     {
+                        var tipoMaterialPorVariedad = context.GetExtension<IServicioRepositorio>().ObtenerTipoVariedadMaterial(instanceId);
                         var servicioComandos = context.GetExtension<IServicioComandos>();
+                        
                         resultado = servicioComandos.Ejecutar(new ModificarRecorridoEstablecimiento
                         {
                             InstanceId = instanceId,
-                            EstablecimientoId = establecimientoId.Value
+                            EstablecimientoId = establecimientoId.Value,
+                            TipoVariedadId = tipoMaterialPorVariedad.First().Key
                         });
 
                         var cartaPorte = context.GetExtension<IServicioRepositorio>().ObtenerCartaPortePorInstanceId(instanceId);

@@ -4,12 +4,10 @@ using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
-using Molinos.Scato.Servicios.Procesamiento;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -20,7 +18,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -33,11 +30,12 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<IPuestoComandoPuertoService> factory;
         private readonly IServicioActividadFactory<IEjecutarService> factoryejecutar;
         private readonly IServicioActividadFactory<IPesadaService> factoryPesada;
+
         public PuestoComandoPuertoController(IServicioRepositorio servicio) : base(servicio)
         {
         }
 
-        public PuestoComandoPuertoController(ILogger log, IListaDeWorkflows workflows, IServicioComandos servicioComandos, IServicioRepositorio servicio, IServicioActividadFactory<IPuestoComandoPuertoService> factory, 
+        public PuestoComandoPuertoController(ILogger log, IListaDeWorkflows workflows, IServicioComandos servicioComandos, IServicioRepositorio servicio, IServicioActividadFactory<IPuestoComandoPuertoService> factory,
             IServicioActividadFactory<IEjecutarService> factoryejecutar, IServicioActividadFactory<IPesadaService> factoryPesada) : base(servicio)
         {
             this.log = log;
@@ -96,7 +94,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 instancia.SojaIMPO = instancia.Codigo.Equals(workflowImpoGranos);
             }
-           
+
             ViewBag.MaterialesFiltrados = datosWorkflow.Workflows
                                                     .GroupBy(s => new { s.MaterialId, s.Material })
                                                     .Select(g => g.First())
@@ -295,7 +293,6 @@ namespace Molinos.Scato.Web.Controllers
             var almacenes = materialId.HasValue ? servicio.ListarAlmacenesPorMaterialFiltrado(materialId.GetValueOrDefault(0)) : null;
             ViewBag.PuntoDeCarga = servicio.ListarPuntoDeCarga().Where(x => x.Borrado == false).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             ViewBag.Almacenes = almacenes.ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
-
         }
 
         public ActionResult ConfigurarTabla()

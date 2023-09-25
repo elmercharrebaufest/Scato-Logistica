@@ -1,5 +1,6 @@
 using System;
 using System.Activities;
+using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
@@ -24,8 +25,8 @@ namespace Molinos.Scato.Actividades.Internas
             var resultado = new Resultado();
             try
             {
-                
-                servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte { Orden = cartaPorte, NombreWorkflow = "", InstanciaWorkflowId = context.WorkflowInstanceId});
+                var tipoMaterialPorVariedad = context.GetExtension<IServicioRepositorio>().ObtenerTipoVariedadMaterial(context.WorkflowInstanceId);
+                servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte { Orden = cartaPorte, NombreWorkflow = "", InstanciaWorkflowId = context.WorkflowInstanceId , TipoVariedadId = tipoMaterialPorVariedad.First().Key});
 
             }
             catch (Exception)

@@ -59,6 +59,9 @@ namespace Molinos.Scato.Dominio.Dto
         public int? Posicion { get; set; }
         public string ColorFondo { get; set; }
         public string ColorTexto { get; set; }
-        public bool EsPasoDirecto { get; set; }
+        public bool ActivoAutomatico { get; set; }
+
+        public bool EsNoEditableGrilla { get; set; }
+
     }
 }

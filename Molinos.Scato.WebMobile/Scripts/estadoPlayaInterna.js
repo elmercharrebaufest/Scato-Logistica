@@ -283,12 +283,22 @@ function LiberarFilePrebalanza(e) {
     });
 }
 
-function OnSuccessGuardarPaseDirecto(data) {
-    if (data.TieneAdvertencias === true) {
-        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
-    } else if (data.EsValido === true) {
-        MostrarAlertaExitosa("Se configuro correctamente.");
-    } else {
-        MostrarAlertaError(data.Mensajes[0].Mensaje)
-    }
+function abrirModalCalle() {
+    self = this;
+    $.ajax({
+        url: urlMostrarDetalleCalle,
+        data: {
+            calleId: self.CalleId
+        },
+        type: "POST",
+        success: function (result) {
+            $(".modal-backdrop").remove()
+            $(".detalleCallenModal").remove()
+            $("#detalleCalle").html(result);
+            $("#detalleCalleModal").modal("show");
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 }
