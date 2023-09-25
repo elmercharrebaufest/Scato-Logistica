@@ -286,6 +286,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ABM Comercial.
+        /// </summary>
+        public static string AbmComercial {
+            get {
+                return ResourceManager.GetString("AbmComercial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ABM Configuración Eficiencia Calado.
         /// </summary>
         public static string AbmConfiguracionEficienciaCalado {

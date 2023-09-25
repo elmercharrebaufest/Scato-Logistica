@@ -10276,8 +10276,6 @@
   <data name="VisualizarVideoCamarasVagones" xml:space="preserve">
     <value>Visualizar Video Camaras Vagones</value>
   </data>
-
-
   <data name="Comercial_Administracion" xml:space="preserve">
     <value>Administracion de Comerciales</value>
   </data>
@@ -10328,5 +10326,8 @@
   </data>
   <data name="Exportar_Excel" xml:space="preserve">
     <value>Exportar Excel</value>
+  </data>
+  <data name="AbmComercial" xml:space="preserve">
+    <value>ABM Comercial</value>
   </data>
 </root>

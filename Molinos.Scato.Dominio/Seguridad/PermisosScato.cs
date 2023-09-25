@@ -421,7 +421,9 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "ActAltaCTGDG")]
         ActividadAltaCTGDG = 703,
         [Display(ResourceType = typeof(Textos), Name = "ActBajaCTGDG")]
-        ActividadBajaCTGDG = 704, 
+        ActividadBajaCTGDG = 704,
+        [Display(ResourceType = typeof(Textos), Name = "AbmComercial")]
+        AbmComercial = 705,
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]
@@ -755,6 +757,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         EdicionConfiguracionPrebalanza = 615,
         [Display(ResourceType = typeof(Textos), Name = "ActPuestoComandoPuerto")]
         ActividadPuestoComandoPuerto = 616,
+
+        
 
     }
 }

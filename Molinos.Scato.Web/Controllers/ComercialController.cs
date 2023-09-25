@@ -15,7 +15,8 @@ using NPOI.OpenXmlFormats.Wordprocessing;
 
 namespace Molinos.Scato.Web.Controllers
 {
-    
+
+    [Autorizacion(PermisosScato.AbmComercial)]
     public class ComercialController : BaseController
     {
         private readonly IServicioComandos servicioComandos;
