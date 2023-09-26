@@ -527,6 +527,8 @@
     <Build Include="dbo\Tables\PuntoDeCarga.sql" />
     <Build Include="dbo\Tables\TipoVariedad.sql" />
     <Build Include="dbo\Tables\TipoVariedadPorMaterial.sql" />
+    <Build Include="dbo\Tables\Comercial.sql" />
+    <Build Include="dbo\Tables\EstablecimientoProveedor.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

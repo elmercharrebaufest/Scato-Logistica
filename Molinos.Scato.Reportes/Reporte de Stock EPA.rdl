@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.6.33723.286</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.7.34031.279</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2023-09-22T18:04:58.3057702Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Scato_Reportes_Datasource">
@@ -28,40 +39,54 @@
           <QueryParameter Name="@Fecha_Hasta">
             <Value>=Parameters!Fecha_Hasta.Value</Value>
           </QueryParameter>
+          <QueryParameter Name="@Standard2">
+            <Value>=Parameters!Standard2.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@Provisorio">
+            <Value>=Parameters!Provisorio.Value</Value>
+          </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @Cosechap nvarchar(10), @CodigoEstablecimientop nvarchar(50), @StockDisponiblep decimal(18, 2), @Fecha_Desdep datetime, @Fecha_Hastap datetime
-SET                @Cosechap = @Cosecha
-SET                @CodigoEstablecimientop = @CodigoEstablecimiento
-SET                @StockDisponiblep = @StockDisponible
-SET                @Fecha_Desdep = @Fecha_Desde
-SET                @Fecha_Hastap = @Fecha_Hasta
-                             SELECT DISTINCT 
-                                                       e.CodigoEstablecimiento AS 'Codigo de Establecimiento', e.[NombreDeEstablecimiento] AS 'Establecimiento', e.RazonSocial AS 'Titular de CP', Intermediario.RazonSocial AS 'Intermediario', 
-                                                       Rtte.RazonSocial AS 'RemitenteComercial', Corredor.RazonSocial AS 'Corredor', e.Cosecha AS 'Campaña', e.StockDeclarado AS 'Stock Declarado', e.StockUtilizado AS 'Stock Utilizado', 
-                                                       e.StockDisponible AS ' Stock Disponible'
-                              FROM            (SELECT        stock.CodigoEstablecimiento, E.[NombreDeEstablecimiento], P.RazonSocial, stock.Cosecha, stock.StockDeclarado, COALESCE (Sum(R.PesoNeto), 0) AS 'StockUtilizado', 
-                                                                                  stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0) AS 'StockDisponible'
-                                                        FROM            StockDeEstablecimiento stock WITH (NOLOCK) INNER JOIN
-                                                                                  Establecimiento AS E WITH (NOLOCK) ON E.CodigoDeEstablecimiento = stock.CodigoEstablecimiento INNER JOIN
-                                                                                  Proveedor AS P WITH (NOLOCK) ON P.Id = E.Proveedor_Id LEFT JOIN
-                                                                                  RegistroStockEPA AS R WITH (NOLOCK) ON (R.CodigoEstablecimiento = stock.CodigoEstablecimiento AND R.Cosecha = stock.Cosecha)
-                                                        WHERE        (@CodigoEstablecimientop = '' OR
-                                                                                  @CodigoEstablecimientop = stock.CodigoEstablecimiento) AND (@Cosechap = '' OR
-                                                                                  @Cosechap = stock.Cosecha) AND (@Fecha_Desdep IS NULL OR
-                                                                                  @Fecha_Desdep &lt;= stock.FechaHasta) AND (@Fecha_Hastap IS NULL OR
-                                                                                  @Fecha_Hastap &gt;= stock.FechaHasta) AND
-					(E.Anulado = 0)
-                                                        GROUP BY stock.CodigoEstablecimiento, P.RazonSocial, stock.Cosecha, stock.StockDeclarado, E.NombreDeEstablecimiento
-                                                        HAVING         (@StockDisponiblep IS NULL OR
-                                                                                  @StockDisponiblep &gt;= stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0))) AS e LEFT JOIN
-                                                       RegistroStockEPA AS RR WITH (NOLOCK) ON (RR.CodigoEstablecimiento = e.CodigoEstablecimiento AND RR.Cosecha = e.Cosecha) LEFT JOIN
-                                                       Recorrido WITH (NOLOCK) ON Recorrido.Id = RR.Recorrido_id LEFT JOIN
-                                                       Vehiculo WITH (NOLOCK) ON Vehiculo.Id = Recorrido.Vehiculo_id LEFT JOIN
-                                                       CartaPorte WITH (NOLOCK) ON CartaPorte.Id = Vehiculo.CartaPorte_id LEFT JOIN
-                                                       Proveedor AS Intermediario WITH (NOLOCK) ON Intermediario.Id = CartaPorte.Intermediario_Id LEFT JOIN
-                                                       Proveedor AS Rtte WITH (NOLOCK) ON Rtte.Id = CartaPorte.RtteComercial_Id LEFT JOIN
-                                                       Proveedor AS Corredor WITH (NOLOCK) ON Corredor.Id = CartaPorte.Corredor_Id OR Corredor.Id = CartaPorte.CorredorVendedor_Id
-                              ORDER BY [Codigo de Establecimiento], e.Cosecha</CommandText>
+        <CommandText>DECLARE @Cosechap nvarchar(10), @CodigoEstablecimientop nvarchar(50), @StockDisponiblep decimal(18, 2), @Fecha_Desdep datetime, @Fecha_Hastap datetime,@Provisoriop bit,@Standard2p bit
+SET					@Cosechap = @Cosecha
+SET					@CodigoEstablecimientop = @CodigoEstablecimiento
+SET					@StockDisponiblep = @StockDisponible
+SET					@Fecha_Desdep = @Fecha_Desde
+SET					@Fecha_Hastap = @Fecha_Hasta
+SET					@Standard2p = @Standard2
+SET					@Provisoriop = @Provisorio
+	SELECT DISTINCT 
+		e.CodigoEstablecimiento AS 'Codigo de Establecimiento', e.[NombreDeEstablecimiento] AS 'Establecimiento', e.RazonSocial AS 'Titular de CP', Intermediario.RazonSocial AS 'Intermediario', 
+        e.ComercialMoa AS 'ComercialMoa', Corredor.RazonSocial AS 'Corredor/Acopio', e.Cosecha AS 'Campaña', e.StockDeclarado AS 'Stock Declarado', e.StockUtilizado AS 'Stock Utilizado', 
+        e.StockDisponible AS ' Stock Disponible', e.Provisorio AS 'Provisorio', e.Standard2 AS 'Standard2'
+	FROM
+		(SELECT
+			stock.CodigoEstablecimiento, E.[NombreDeEstablecimiento], P.RazonSocial, stock.Cosecha, stock.StockDeclarado, COALESCE (Sum(R.PesoNeto), 0) AS 'StockUtilizado', 
+            stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0) AS 'StockDisponible', E.EsProvisorio AS 'Provisorio', E.EsStandard2 AS 'Standard2', Cr.Descripcion AS 'ComercialMoa'
+        FROM
+			StockDeEstablecimiento stock WITH (NOLOCK) 
+				INNER JOIN Establecimiento AS E WITH (NOLOCK) ON E.CodigoDeEstablecimiento = stock.CodigoEstablecimiento 
+				LEFT JOIN Comercial as Cr WITH (NOLOCK) ON Cr.Id = E.Comercial_Id 
+                INNER JOIN Proveedor AS P WITH (NOLOCK) ON P.Id = E.Proveedor_Id 
+                LEFT JOIN RegistroStockEPA AS R WITH (NOLOCK) ON (R.CodigoEstablecimiento = stock.CodigoEstablecimiento AND R.Cosecha = stock.Cosecha)
+        WHERE
+			(@CodigoEstablecimientop = '' OR @CodigoEstablecimientop = stock.CodigoEstablecimiento)
+			AND (@Cosechap = '' OR @Cosechap = stock.Cosecha)
+			AND (@Fecha_Desdep IS NULL OR @Fecha_Desdep &lt;= stock.FechaHasta)
+			AND (@Fecha_Hastap IS NULL OR @Fecha_Hastap &gt;= stock.FechaHasta)
+			AND	(E.Anulado = 0)
+			AND (@Standard2p = E.EsStandard2 OR @Standard2p = null)
+			AND (@Provisoriop = E.EsProvisorio OR @Provisoriop = null)
+            GROUP BY stock.CodigoEstablecimiento, P.RazonSocial, stock.Cosecha, stock.StockDeclarado, E.NombreDeEstablecimiento, E.EsProvisorio, E.EsStandard2, Cr.Descripcion
+            HAVING (@StockDisponiblep IS NULL OR
+                    @StockDisponiblep &gt;= stock.StockDeclarado - COALESCE (Sum(R.PesoNeto), 0))) AS e LEFT JOIN
+                    RegistroStockEPA AS RR WITH (NOLOCK) ON (RR.CodigoEstablecimiento = e.CodigoEstablecimiento AND RR.Cosecha = e.Cosecha) LEFT JOIN
+                    Recorrido WITH (NOLOCK) ON Recorrido.Id = RR.Recorrido_id LEFT JOIN
+                    Vehiculo WITH (NOLOCK) ON Vehiculo.Id = Recorrido.Vehiculo_id LEFT JOIN
+                    CartaPorte WITH (NOLOCK) ON CartaPorte.Id = Vehiculo.CartaPorte_id LEFT JOIN
+                    Proveedor AS Intermediario WITH (NOLOCK) ON Intermediario.Id = CartaPorte.Intermediario_Id LEFT JOIN
+                    Proveedor AS Rtte WITH (NOLOCK) ON Rtte.Id = CartaPorte.RtteComercial_Id LEFT JOIN
+                    Proveedor AS Corredor WITH (NOLOCK) ON Corredor.Id = CartaPorte.Corredor_Id OR Corredor.Id = CartaPorte.CorredorVendedor_Id
+                    ORDER BY [Codigo de Establecimiento], e.Cosecha</CommandText>
       </Query>
       <Fields>
         <Field Name="Codigo_de_Establecimiento">
@@ -80,12 +105,12 @@ SET                @Fecha_Hastap = @Fecha_Hasta
           <DataField>Intermediario</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Campaña">
-          <DataField>Campaña</DataField>
+        <Field Name="ComercialMoa">
+          <DataField>ComercialMoa</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="RemitenteComercial">
-          <DataField>RemitenteComercial</DataField>
+        <Field Name="Campaña">
+          <DataField>Campaña</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Stock_Declarado">
@@ -93,7 +118,7 @@ SET                @Fecha_Hastap = @Fecha_Hasta
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="Corredor">
-          <DataField>Corredor</DataField>
+          <DataField>Corredor/Acopio</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Stock_Utilizado">
@@ -103,6 +128,14 @@ SET                @Fecha_Hastap = @Fecha_Hasta
         <Field Name="Stock_Disponible">
           <DataField> Stock Disponible</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Provisorio">
+          <DataField>Provisorio</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Standard2">
+          <DataField>Standard2</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -505,7 +538,7 @@ SET                @Fecha_Hastap = @Fecha_Hasta
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>Corredor</Value>
+                                                            <Value>Corredor/Acopio</Value>
                                                             <Style>
                                                               <FontSize>8pt</FontSize>
                                                               <FontWeight>Bold</FontWeight>
@@ -572,16 +605,16 @@ SET                @Fecha_Hastap = @Fecha_Hasta
                                                   <TablixMembers>
                                                     <TablixMember>
                                                       <TablixHeader>
-                                                        <Size>2.078in</Size>
+                                                        <Size>1.20647in</Size>
                                                         <CellContents>
-                                                          <Textbox Name="Textbox30">
+                                                          <Textbox Name="Textbox3">
                                                             <CanGrow>true</CanGrow>
                                                             <KeepTogether>true</KeepTogether>
                                                             <Paragraphs>
                                                               <Paragraph>
                                                                 <TextRuns>
                                                                   <TextRun>
-                                                                    <Value>Rtte Comercial</Value>
+                                                                    <Value>Comerciales  Moa</Value>
                                                                     <Style>
                                                                       <FontSize>8pt</FontSize>
                                                                       <FontWeight>Bold</FontWeight>
@@ -593,7 +626,7 @@ SET                @Fecha_Hastap = @Fecha_Hasta
                                                                 </Style>
                                                               </Paragraph>
                                                             </Paragraphs>
-                                                            <rd:DefaultName>Textbox30</rd:DefaultName>
+                                                            <rd:DefaultName>Textbox3</rd:DefaultName>
                                                             <Style>
                                                               <Border>
                                                                 <Style>Solid</Style>
@@ -1085,75 +1118,33 @@ SET                @Fecha_Hastap = @Fecha_Hasta
                                                   <TablixMembers>
                                                     <TablixMember>
                                                       <TablixHeader>
-                                                        <Size>2.078in</Size>
+                                                        <Size>1.20647in</Size>
                                                         <CellContents>
-                                                          <Tablix Name="Tablix4">
-                                                            <TablixBody>
-                                                              <TablixColumns>
-                                                                <TablixColumn>
-                                                                  <Width>2.078in</Width>
-                                                                </TablixColumn>
-                                                              </TablixColumns>
-                                                              <TablixRows>
-                                                                <TablixRow>
-                                                                  <Height>0.17875in</Height>
-                                                                  <TablixCells>
-                                                                    <TablixCell>
-                                                                      <CellContents>
-                                                                        <Textbox Name="RemitenteComercial">
-                                                                          <CanGrow>true</CanGrow>
-                                                                          <HideDuplicates>Details3</HideDuplicates>
-                                                                          <KeepTogether>true</KeepTogether>
-                                                                          <Paragraphs>
-                                                                            <Paragraph>
-                                                                              <TextRuns>
-                                                                                <TextRun>
-                                                                                  <Value>=Fields!RemitenteComercial.Value</Value>
-                                                                                  <Style>
-                                                                                    <FontSize>8pt</FontSize>
-                                                                                  </Style>
-                                                                                </TextRun>
-                                                                              </TextRuns>
-                                                                              <Style />
-                                                                            </Paragraph>
-                                                                          </Paragraphs>
-                                                                          <rd:DefaultName>RemitenteComercial</rd:DefaultName>
-                                                                          <Style>
-                                                                            <Border>
-                                                                              <Color>LightGrey</Color>
-                                                                              <Style>None</Style>
-                                                                            </Border>
-                                                                            <PaddingLeft>2pt</PaddingLeft>
-                                                                            <PaddingRight>2pt</PaddingRight>
-                                                                            <PaddingTop>2pt</PaddingTop>
-                                                                            <PaddingBottom>2pt</PaddingBottom>
-                                                                          </Style>
-                                                                        </Textbox>
-                                                                      </CellContents>
-                                                                    </TablixCell>
-                                                                  </TablixCells>
-                                                                </TablixRow>
-                                                              </TablixRows>
-                                                            </TablixBody>
-                                                            <TablixColumnHierarchy>
-                                                              <TablixMembers>
-                                                                <TablixMember />
-                                                              </TablixMembers>
-                                                            </TablixColumnHierarchy>
-                                                            <TablixRowHierarchy>
-                                                              <TablixMembers>
-                                                                <TablixMember>
-                                                                  <Group Name="Details3" />
-                                                                </TablixMember>
-                                                              </TablixMembers>
-                                                            </TablixRowHierarchy>
-                                                            <DataSetName>DataSet1</DataSetName>
+                                                          <Textbox Name="ComercialMoa">
+                                                            <CanGrow>true</CanGrow>
+                                                            <KeepTogether>true</KeepTogether>
+                                                            <Paragraphs>
+                                                              <Paragraph>
+                                                                <TextRuns>
+                                                                  <TextRun>
+                                                                    <Value>=Fields!ComercialMoa.Value</Value>
+                                                                    <Style />
+                                                                  </TextRun>
+                                                                </TextRuns>
+                                                                <Style />
+                                                              </Paragraph>
+                                                            </Paragraphs>
+                                                            <rd:DefaultName>ComercialMoa</rd:DefaultName>
                                                             <Style>
                                                               <Border>
                                                                 <Style>Solid</Style>
                                                               </Border>
+                                                              <PaddingLeft>2pt</PaddingLeft>
+                                                              <PaddingRight>2pt</PaddingRight>
+                                                              <PaddingTop>2pt</PaddingTop>
+                                                              <PaddingBottom>2pt</PaddingBottom>
                                                             </Style>
-                                                          </Tablix>
+                                                          </Textbox>
                                                         </CellContents>
                                                       </TablixHeader>
                                                       <TablixMembers>
@@ -1184,14 +1175,14 @@ SET                @Fecha_Hastap = @Fecha_Hasta
             <DataSetName>DataSet1</DataSetName>
             <Top>0.05556in</Top>
             <Height>0.3675in</Height>
-            <Width>14.10342in</Width>
+            <Width>13.23189in</Width>
             <Style />
           </Tablix>
         </ReportItems>
         <Height>2.95311cm</Height>
         <Style />
       </Body>
-      <Width>37.92581cm</Width>
+      <Width>38.88713cm</Width>
       <Page>
         <PageHeader>
           <Height>2.8575cm</Height>
@@ -1418,11 +1409,19 @@ SET                @Fecha_Hastap = @Fecha_Hasta
       <Prompt>CentroId</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="Provisorio">
+      <DataType>Boolean</DataType>
+      <Prompt>Provisorio</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Standard2">
+      <DataType>Boolean</DataType>
+      <Prompt>Standard2</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>4</NumberOfRows>
+      <NumberOfRows>5</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1458,6 +1457,16 @@ SET                @Fecha_Hastap = @Fecha_Hasta
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>CentroId</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>Provisorio</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>Standard2</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

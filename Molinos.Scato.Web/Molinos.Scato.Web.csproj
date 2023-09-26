@@ -387,6 +387,7 @@
     <Compile Include="Atributos\AutorizacionReportesAttribute.cs" />
     <Compile Include="Atributos\DatosUsuarioAttribute.cs" />
     <Compile Include="Atributos\AutorizacionAttribute.cs" />
+    <Compile Include="Controllers\ComercialController.cs" />
     <Compile Include="Controllers\BajaCTGDGController.cs" />
     <Compile Include="Controllers\AltaCTGDGController.cs" />
     <Compile Include="Controllers\ConfiguracionCalleHidraulicaController.cs" />
@@ -656,6 +657,7 @@
     <Compile Include="CultureAwareQueryStringValueProviderFactory.cs" />
     <Compile Include="Atributos\AiHandleErrorAttribute.cs" />
     <Compile Include="EXCEL\ExcelDetalleDeMovimientos.cs" />
+    <Compile Include="EXCEL\ExcelEstablecimientos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosPendientes.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosIngresos.cs" />
     <Compile Include="EXCEL\ExcelMovimientosDeTercerosEgresos.cs" />
@@ -875,6 +877,7 @@
     <Content Include="Scripts\asignarPuerto.js" />
     <Content Include="Scripts\balanzaAutomatica.js" />
     <Content Include="Scripts\barrera.js" />
+    <Content Include="Scripts\cargaCorredores.js" />
     <Content Include="Scripts\bootstrap-toggle.min.js" />
     <Content Include="Scripts\camionDemorado.js" />
     <Content Include="Scripts\caladoRechazar.js" />
@@ -1032,6 +1035,7 @@
     <Content Include="Scripts\url.js" />
     <Content Include="Scripts\analisisObligatorio.CrearModificar.js" />
     <Content Include="Scripts\validarFechasConRango.js" />
+    <Content Include="Scripts\establecimiento.CrearModificar.js" />
     <Content Include="Scripts\workflowMovBines.index.js" />
     <Content Include="Scripts\mostrarSubZonas.js" />
     <Content Include="Scripts\mostrarZonas.js" />
@@ -2416,6 +2420,11 @@
     <Content Include="Views\PuestoComandoPuerto\Listar.cshtml" />
     <Content Include="Views\PuestoComandoPuerto\TransportistaRechazado.cshtml" />
     <Content Include="Views\PuestoComandoPuerto\_Asignar.cshtml" />
+    <Content Include="Views\Comercial\Index.cshtml" />
+    <Content Include="Views\Comercial\Listar.cshtml" />
+    <Content Include="Views\Comercial\Crear.cshtml" />
+    <Content Include="Views\Comercial\_CrearModificar.cshtml" />
+    <Content Include="Views\Comercial\Modificar.cshtml" />
     <None Include="Web.Jenkins.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

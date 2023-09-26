@@ -20,6 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(EliminarAlmacen comando, Resultado resultado)
         {
+
         }
     }
 }

@@ -407,6 +407,10 @@
                                 {
                                     <li>@Html.ActionLink(Textos.Establecimiento_Titulo, "Index", "Establecimiento")</li>
                                 }
+                                @if (PermisosHelper.Is(PermisosScato.AbmComercial))
+                                {
+                                    <li>@Html.ActionLink(Textos.Comercial_Titulo, "Index", "Comercial")</li>
+                                }                                
                                 @if (PermisosHelper.Is(PermisosScato.AbmMotivo))
                                 {
                                     <li>@Html.ActionLink(Textos.Motivo_Titulo, "Index", "Motivo")</li>

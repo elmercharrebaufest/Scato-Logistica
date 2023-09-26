@@ -1,0 +1,23 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.Web.Helpers
+@model Molinos.Scato.Dominio.Dto.ComercialDto
+@{
+    ViewBag.Title = Textos.Comercial_Modificar;
+    Layout = null;
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Comercial_Modificar }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    @Html.Partial("_CrearModificar", Model)
+    <div class="control-group">
+        @Html.LabelFor(m => m.Activo, new { @class = "control-label" })
+        <div class="controls">
+            @Html.CheckBoxFor(m => m.Activo, new { @class = "control" })
+            @Html.ValidationMessageFor(m => m.Activo)
+        </div>
+    </div>
+}

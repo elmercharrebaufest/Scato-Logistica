@@ -2860,5 +2860,24 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerMaterialIdPorInstanceId(Guid instanceId);
+        
+		[OperationContract]
+        ListaPaginada<ComercialDto> ListarPaginadoComerciales(string filtro, Paginacion paginacion);
+
+        [OperationContract]
+        ComercialDto ObtenerComercial(int id);
+
+        [OperationContract]
+        List<ProveedorDto> ListarProveedores();
+
+        [OperationContract]
+        ProveedorInfoDto ObtenerProveedorInfoPorId(int id);
+
+        [OperationContract]
+        IList<ProveedorDto> ObtenerCorredoresAsociadosPorEstablecimientoId(int id);
+
+        [OperationContract]
+        List<ComercialDto> ListarComerciales();
     }
+    
 }
