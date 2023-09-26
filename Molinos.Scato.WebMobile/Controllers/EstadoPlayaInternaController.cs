@@ -75,8 +75,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 tiposCalle.Add((TipoCalle)tipoCalleInt);
             }
             var tipoCallePlantaLista = ObtenerTiposDeCallesPlanta();
-            var noeditables = ObtenerCallesNoEditables();
-            foreach(var item in tipoCallePlantaLista)
+            var noeditables = servicio.ListarIdCallesNoEditables();
+            foreach (var item in tipoCallePlantaLista)
             {
                 foreach(var calle in item.Calles)
                 {
@@ -436,19 +436,6 @@ namespace Molinos.Scato.WebMobile.Controllers
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
             }
-        }
-
-        private List<int> ObtenerCallesNoEditables()
-        {
-            var configuracionGeneral = servicio.ObtenerConfiguracionGeneral("TableroComandoLogistica", "LlamadoAutomaticoGeneralGranos");
-
-            if (configuracionGeneral == null
-                    || string.IsNullOrEmpty(configuracionGeneral.Valor)
-                    || !bool.TryParse(configuracionGeneral.Valor, out bool automatismoGranoGeneral)
-                    || !automatismoGranoGeneral)
-                return new List<int>();
-
-            return servicio.ListarIdCallesNoEditables();
         }
     }
 }

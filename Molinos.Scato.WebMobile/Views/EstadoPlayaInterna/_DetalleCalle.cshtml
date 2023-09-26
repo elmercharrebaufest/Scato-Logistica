@@ -61,24 +61,52 @@
                                 @Html.DisplayFor(model => model.Material, new { @class = "input-large" })
                             </div>
                         </div>
-                        <div class="control-group col-3">
-                            @Html.LabelFor(model => model.Variedad, new { @class = "control-label" })
-                            <div id="div-variedad" class="controls">
-                                @Html.DisplayFor(model => model.Variedad, new { @class = "input-medium" })
+                        @if (!Model.Variedad.IsEmpty())
+                        {
+                            <div class="control-group col-3">
+                                @Html.LabelFor(model => model.Variedad, new { @class = "control-label" })
+                                <div id="div-variedad" class="controls">
+                                    @Html.DisplayFor(model => model.Variedad, new { @class = "input-medium" })
+                                </div>
                             </div>
-                        </div>
-                        <div id="div-hidraulica" class="control-group col-3">
-                            @Html.LabelFor(model => model.Hidraulica, new { @class = "control-label" })
-                            <div class="controls">
-                                @Html.DisplayFor(model => model.Hidraulica, new { @class = "input-large" })
+                        }
+                        @if (!Model.PuntoDeCarga.IsEmpty())
+                        {
+                            <div class="control-group col-3">
+                                @Html.LabelFor(model => model.PuntoDeCarga, new { @class = "control-label" })
+                                <div id="div-variedad" class="controls">
+                                    @Html.DisplayFor(model => model.PuntoDeCarga, new { @class = "input-medium" })
+                                </div>
                             </div>
-                        </div>
-                        <div id="div-paseDirecto" class="control-group col-3">
-                            @Html.Label("Paso Directo", new { @class = "control-label" })
-                            <div class="controls">
-                                @Html.DisplayFor(model => model.EsPaseDirecto, new { @class = "input-large" })
+                        }
+                        @if (!Model.Almacen.IsEmpty())
+                        {
+                            <div class="control-group col-3">
+                                @Html.LabelFor(model => model.Almacen, new { @class = "control-label" })
+                                <div id="div-variedad" class="controls">
+                                    @Html.DisplayFor(model => model.Almacen, new { @class = "input-medium" })
+                                </div>
                             </div>
-                        </div>
+                        }
+                        @if (!Model.Hidraulica.IsEmpty())
+                        {
+
+                            <div id="div-hidraulica" class="control-group col-3">
+                                @Html.LabelFor(model => model.Hidraulica, new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.Hidraulica, new { @class = "input-large" })
+                                </div>
+                            </div>
+                        }
+                        @if (!Model.EsPaseDirecto.IsEmpty())
+                        {
+                            <div id="div-paseDirecto" class="control-group col-3">
+                                @Html.Label("Paso Directo", new { @class = "control-label" })
+                                <div class="controls">
+                                    @Html.DisplayFor(model => model.EsPaseDirecto, new { @class = "input-large" })
+                                </div>
+                            </div>
+                        }
                     </div>
                     <hr />
 

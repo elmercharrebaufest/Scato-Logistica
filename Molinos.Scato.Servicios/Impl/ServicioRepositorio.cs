@@ -10633,21 +10633,47 @@ namespace Molinos.Scato.Servicios.Impl
 
         public InfoCalleDto ObtenerInfoCalle(int idCalle)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
-            var lista = repositorio.Listar<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
-            var automatismo = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista).FirstOrDefault();
-
-            return new InfoCalleDto
+            var calle = repositorio.Obtener<Calle>(c => c.Id == idCalle);
+            if (calle.TipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                Descripcion = automatismo.CallePBDescripcion,
-                EsIncluidoAutomatizmo = automatismo.IncluidoAutomatismo,
-                EsPaseDirecto = automatismo.PasoDirecto,
-                Estado = automatismo.EstadoCallePB,
-                Hidraulica = automatismo.HidraulicaDescripcion,
-                Material = automatismo.MaterialDescripcion,
-                Variedad = automatismo.VariedadDescripcion,
-                TipoCalle = automatismo.TipoCallePreHidraulica.Text()
-            };
+                var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+                var lista = repositorio.Listar<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
+                var automatismo = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista).FirstOrDefault();
+
+                return new InfoCalleDto
+                {
+                    Descripcion = automatismo.CallePBDescripcion,
+                    EsIncluidoAutomatizmo = automatismo.IncluidoAutomatismo,
+                    EsPaseDirecto = automatismo.PasoDirecto,
+                    Estado = automatismo.EstadoCallePB,
+                    Hidraulica = automatismo.HidraulicaDescripcion,
+                    Material = automatismo.MaterialDescripcion,
+                    Variedad = automatismo.VariedadDescripcion,
+                    TipoCalle = automatismo.TipoCallePreHidraulica.Text(),
+                    Almacen = string.Empty,
+                    PuntoDeCarga = string.Empty
+                };
+            }
+            else
+            {
+                var automatismoNoGrano = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(x => x.CallePlanta.Id == idCalle).FirstOrDefault();
+
+
+                return new InfoCalleDto
+                {
+                    Descripcion = calle.Nombre,
+                    EsIncluidoAutomatizmo = automatismoNoGrano!=null?"Si":"No",
+                    EsPaseDirecto = string.Empty,
+                    Estado = calle.ActivoAutomatico?"Activo":"Inactivo",
+                    Hidraulica = string.Empty,
+                    Material = calle.Material != null ? calle.Material.Descripcion??string.Empty : " - ",
+                    Variedad = calle.Material!=null?(calle.Material.Variedad!=null?calle.Material.Variedad.Descripcion:Textos.Variedad_Estandar): " - ",
+                    TipoCalle = calle.TipoCalle.Text(),
+                    Almacen = automatismoNoGrano!=null?automatismoNoGrano.ListaAlmacenes:" - ",
+                    PuntoDeCarga = automatismoNoGrano!=null?automatismoNoGrano.ListaPuntosDeCarga:" - "
+                };
+            }
+            
         }
 
         public Dictionary<int, string> ObtenerTipoVariedadMaterial(Guid instanceId)

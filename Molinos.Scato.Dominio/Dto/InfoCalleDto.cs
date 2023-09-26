@@ -23,5 +23,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string Hidraulica { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "EsPaseDirecto")]
         public string EsPaseDirecto { get; set; }
+        public string Almacen { get; set; }
+        public string PuntoDeCarga { get; set; }
     }
 }
