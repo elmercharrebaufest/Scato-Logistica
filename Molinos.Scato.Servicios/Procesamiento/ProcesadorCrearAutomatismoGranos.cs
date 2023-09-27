@@ -16,6 +16,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override AutomatismoGrano CrearEntidad(CrearAutomatismoGranos comando)
 
         {
+            var callePrebalanza = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreBalanzaId);
+            callePrebalanza.Material = Repositorio.Obtener<Material>(c => c.Id == comando.Dto.MaterialId);
             var automatismo = new AutomatismoGrano
             {
                 Activo = comando.Dto.Activo,
@@ -32,7 +34,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 TipoVariedadId = comando.Dto.TipoVariedadId,
                 Almacen = Repositorio.Obtener<Almacen>(c => c.Id == comando.Dto.AlmacenId),
                 Calidad = Repositorio.Obtener<CaracteristicaDeCalidad>(c => c.Id == 1),
-                CallePreBalanza = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreBalanzaId),
+                CallePreBalanza = callePrebalanza,
                 CallePreHidraulica = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreHidraulicaId),
                 TipoVariedad = Repositorio.Obtener<TipoVariedad>(c => c.Id == comando.Dto.TipoVariedadId)
             };

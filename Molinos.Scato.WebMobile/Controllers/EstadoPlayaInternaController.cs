@@ -1,16 +1,13 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.Helpers;
-using Molinos.Scato.WebMobile.Seguridad;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
@@ -78,7 +75,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var noeditables = servicio.ListarIdCallesNoEditables();
             foreach (var item in tipoCallePlantaLista)
             {
-                foreach(var calle in item.Calles)
+                foreach (var calle in item.Calles)
                 {
                     if (noeditables.Contains(calle.CalleId))
                         calle.AutomatismoActivo = true;
@@ -274,14 +271,13 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult MostrarDetalleCalle( int calleId)
+        public ActionResult MostrarDetalleCalle(int calleId)
         {
             var model = servicio.ObtenerInfoCalle(calleId);
-           
-           
+
             return PartialView("_DetalleCalle", model);
         }
-        
+
         private List<TipoCallePlantaDto> ObtenerTiposDeCallesPlanta()
         {
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");

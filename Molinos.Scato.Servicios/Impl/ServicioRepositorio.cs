@@ -19,7 +19,6 @@ using Molinos.Scato.Servicios.ServiciosSap;
 using Ninject.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Objects;
 using System.Data.Objects.SqlClient;
 using System.Diagnostics;
@@ -10613,7 +10612,7 @@ namespace Molinos.Scato.Servicios.Impl
             var configuracionGeneralGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
             if (bool.TryParse(configuracionGeneralGrano?.Valor, out bool automatismoGeneralGrano) && automatismoGeneralGrano)
             {
-                var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.CallePreBalanza, x => x.CallePreHidraulica};
+                var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.CallePreBalanza, x => x.CallePreHidraulica };
                 var automatismosGrano = repositorio.Listar(includesGrano, x => x.Activo).Select(s => new { idCalleFirst = s.CallePreBalanza.Id, idCalleSecond = s.CallePreHidraulica.Id });
                 callesNoEditablesId.AddRange(automatismosGrano.Select(q => q.idCalleFirst));
                 callesNoEditablesId.AddRange(automatismosGrano.Select(q => q.idCalleSecond));
@@ -10633,61 +10632,55 @@ namespace Molinos.Scato.Servicios.Impl
         public InfoCalleDto ObtenerInfoCalle(int idCalle)
         {
             var calle = repositorio.Obtener<Calle>(c => c.Id == idCalle);
+            var infoCalle = new InfoCalleDto(calle);
             if (calle.TipoCalle == TipoCalle.PreBalanzaGranos)
             {
                 var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
-                var lista = repositorio.Listar<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
-                var automatismo = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista).FirstOrDefault();
+                var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
 
-                return new InfoCalleDto
+                if (automatismo != null)
                 {
-                    Descripcion = automatismo.CallePBDescripcion,
-                    EsIncluidoAutomatizmo = automatismo.IncluidoAutomatismo,
-                    EsPaseDirecto = automatismo.PasoDirecto,
-                    Estado = automatismo.EstadoCallePB,
-                    Hidraulica = automatismo.HidraulicaDescripcion,
-                    Material = automatismo.MaterialDescripcion,
-                    Variedad = automatismo.VariedadDescripcion,
-                    TipoCalle = automatismo.TipoCallePreHidraulica.Text(),
-                    Almacen = string.Empty,
-                    PuntoDeCarga = string.Empty
-                };
+                    var automatismoConvertido = conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
+
+                    infoCalle.EsIncluidoAutomatismo = "Si";
+                    infoCalle.EsPaseDirecto = automatismoConvertido.PasoDirecto;
+                    infoCalle.Hidraulica = automatismoConvertido.HidraulicaDescripcion;
+                    infoCalle.Variedad = string.IsNullOrEmpty(automatismoConvertido.VariedadDescripcion) ? Textos.Variedad_Estandar : automatismoConvertido.VariedadDescripcion;
+                    infoCalle.Almacen = string.Empty;
+                    infoCalle.PuntoDeCarga = string.Empty;
+                    infoCalle.EstadoAutomatismo = automatismoConvertido.Activo ? "Activo" : "Inactivo";
+                }
             }
-            else
+            if (calle.TipoCalle == TipoCalle.PlantaNoGranos)
             {
-                var automatismoNoGrano = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(x => x.CallePlanta.Id == idCalle).FirstOrDefault();
+                var automatismoNoGrano = Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(x => x.CallePlanta.Id == idCalle);
 
-
-                return new InfoCalleDto
+                if (automatismoNoGrano != null)
                 {
-                    Descripcion = calle.Nombre,
-                    EsIncluidoAutomatizmo = automatismoNoGrano!=null?"Si":"No",
-                    EsPaseDirecto = string.Empty,
-                    Estado = calle.ActivoAutomatico?"Activo":"Inactivo",
-                    Hidraulica = string.Empty,
-                    Material = calle.Material != null ? calle.Material.Descripcion??string.Empty : " - ",
-                    Variedad = calle.Material!=null?(calle.Material.Variedad!=null?calle.Material.Variedad.Descripcion:Textos.Variedad_Estandar): " - ",
-                    TipoCalle = calle.TipoCalle.Text(),
-                    Almacen = automatismoNoGrano!=null?automatismoNoGrano.ListaAlmacenes:" - ",
-                    PuntoDeCarga = automatismoNoGrano!=null?automatismoNoGrano.ListaPuntosDeCarga:" - "
-                };
+                    infoCalle.EsIncluidoAutomatismo = "Si";
+                    infoCalle.EsPaseDirecto = string.Empty;
+                    infoCalle.Almacen = automatismoNoGrano.ListaAlmacenes;
+                    infoCalle.PuntoDeCarga = automatismoNoGrano.ListaPuntosDeCarga;
+                    infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo ? "Activo" : "Inactivo";
+                }
             }
-            
+
+            return infoCalle;
         }
 
         public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, bool esEpa = false, bool esSustentable = false)
         {
             var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
-            
+
             if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP.Equals(Constantes.ValoresPorDefecto.CodigoSapTPR))
                 return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Importacion)).Select(x => x.Id).FirstOrDefault();
-            
+
             if (esEpa)
                 return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.EPA)).Select(x => x.Id).FirstOrDefault();
-            
+
             if (esSustentable)
                 return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Sustentable)).Select(x => x.Id).FirstOrDefault();
-            
+
             return null;
         }
 
@@ -10778,7 +10771,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return repositorio.ObtenerConsultaEscalar(new ConsultarAutomatismoGranoActivoDisponible(workflowInstanceId));
         }
-        
+
         public List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano()
         {
             var automatismos = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>().ToList();
@@ -10807,7 +10800,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id)
         {
-        	return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Id == id);
+            return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Id == id);
         }
 
         public AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId)

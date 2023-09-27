@@ -10384,7 +10384,7 @@
   <data name="ConfirmarLlamado1a1" xml:space="preserve">
     <value>Al deshabilitar el Pase Directo, debe definir como continuará el llamado a los vehículos</value>
   </data>
-  <data name="EsIncluidoAutomatizmo" xml:space="preserve">
+  <data name="EsIncluidoAutomatismo" xml:space="preserve">
     <value>Incluída en automatismo</value>
   </data>
   <data name="EsPaseDirecto" xml:space="preserve">
@@ -10434,5 +10434,8 @@
   </data>
   <data name="ActAsignacionAutomatismoGranos" xml:space="preserve">
     <value>Asignación Automatismo Granos</value>
+  </data>
+  <data name="EstadoAutomatismo" xml:space="preserve">
+    <value>Estado del automatismo</value>
   </data>
 </root>

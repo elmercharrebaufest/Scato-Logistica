@@ -45,10 +45,17 @@
 
                     <hr />
                     <div class="row">
-                        <div id="div-descripcionAlmacen" class="control-group col-8">
+                        <div id="div-incluidoAutomatismo" class="control-group col-6">
                             @Html.Label("Incluída en automatismo", new { @class = "control-label" })
                             <div class="controls">
-                                @Html.DisplayFor(model => model.EsIncluidoAutomatizmo, new { @class = "input-large" })
+                                @Html.DisplayFor(model => model.EsIncluidoAutomatismo, new { @class = "input-large" })
+                            </div>
+                        </div>
+
+                        <div id="div-estadoAutomatismo" class="control-group col-6">
+                            @Html.Label("Estado del automatismo", new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DisplayFor(model => model.EstadoAutomatismo, new { @class = "input-large" })
                             </div>
                         </div>
 
@@ -61,15 +68,14 @@
                                 @Html.DisplayFor(model => model.Material, new { @class = "input-large" })
                             </div>
                         </div>
-                        @if (!Model.Variedad.IsEmpty())
-                        {
+                        
                             <div class="control-group col-3">
                                 @Html.LabelFor(model => model.Variedad, new { @class = "control-label" })
                                 <div id="div-variedad" class="controls">
                                     @Html.DisplayFor(model => model.Variedad, new { @class = "input-medium" })
                                 </div>
                             </div>
-                        }
+                        
                         @if (!Model.PuntoDeCarga.IsEmpty())
                         {
                             <div class="control-group col-3">

@@ -1554,50 +1554,50 @@ END
 IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tolva 27')
 BEGIN
   INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
-  VALUES ('Tolva 27', 0, 'lguedez');
+  VALUES ('Tolva 27', 0, 'SCATO');
 END
 
 IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tolva 28')  
 BEGIN
   INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
-  VALUES ('Tolva 28', 0, 'lguedez');
+  VALUES ('Tolva 28', 0, 'SCATO');
 END
 
 IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Pala')
 BEGIN
   INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
-  VALUES ('Pala', 0, 'lguedez'); 
+  VALUES ('Pala', 0, 'SCATO'); 
 END
 
 IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Descarga BIO DIESEL')
 BEGIN
   INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor)
-  VALUES ('Descarga BIO DIESEL', 0, 'lguedez');
+  VALUES ('Descarga BIO DIESEL', 0, 'SCATO');
 END 
 
 IF NOT EXISTS (SELECT 1 FROM PuntoDeCarga WHERE Descripcion = 'Tanque')
 BEGIN
   INSERT INTO PuntoDeCarga (Descripcion, Borrado, CreadoPor) 
-  VALUES ('Tanque', 0, 'lguedez');
+  VALUES ('Tanque', 0, 'SCATO');
 END
 
 -- Variedades de Material
 IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'SUS')
 BEGIN
   insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
-  values ('Sustentable', 'SUS', 0, GETDATE(), 'lguedez'); 
+  values ('Sustentable', 'SUS', 0, GETDATE(), 'SCATO'); 
 END
 
 IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'EPA')
 BEGIN
   insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
-  values ('Epa', 'EPA', 0, GETDATE(), 'lguedez');
+  values ('Epa', 'EPA', 0, GETDATE(), 'SCATO');
 END
 
 IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'IMP') 
 BEGIN
   insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
-  values ('Import', 'IMP', 0, GETDATE(), 'lguedez');
+  values ('Impo', 'IMP', 0, GETDATE(), 'SCATO');
 END
 
 
