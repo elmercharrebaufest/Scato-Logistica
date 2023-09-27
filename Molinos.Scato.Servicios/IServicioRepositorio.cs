@@ -76,7 +76,7 @@ namespace Molinos.Scato.Servicios
         int? ObtenerTiempoMaximoCentro(int id);
 
         [OperationContract]
-        string ObtenerCentroCodigoSap(int id);
+        string ObteneCodigoSapPorCentroId(int id);
 
         [OperationContract]
         CaracteristicasAnalizadasDto ObtenerCaracteristicasAnalizadasPorRecorridoId(int recorridoId);
@@ -2892,7 +2892,7 @@ namespace Molinos.Scato.Servicios
         TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
 
         [OperationContract]
-        Dictionary<int, string> ObtenerTipoVariedadMaterial(Guid instanceId);
+        int? ObtenerVariedadIdPorMaterial(int materialId, string titularCP = null, bool esEpa = false, bool esSustentable = false);
 
         [OperationContract]
         IList<AutomatismoGranoDto> ListarAutomatismoGrano();
@@ -2906,6 +2906,9 @@ namespace Molinos.Scato.Servicios
         [OperationContract]
         AutomatismoGranoDto ObtenerAutomatismoGranos(int id);
 
+        [OperationContract]
+        AutomatismoGranoDto ObtenerAutomatismoGranoPorRecorridoGuid(Guid workflowInstanceId);
+        
         [OperationContract]
         List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano();
 
@@ -2932,5 +2935,15 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<CalleDto> ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle tipoCalle);
+    
+		[OperationContract]    
+        AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);
+
+        [OperationContract]
+        bool ValidarEspacioDisponibleEnCalle(int calleId);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG);
     }
+
 }

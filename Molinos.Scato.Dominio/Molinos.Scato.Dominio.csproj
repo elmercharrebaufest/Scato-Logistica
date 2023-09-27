@@ -99,6 +99,7 @@
     <Compile Include="Comandos\CrearAutomatismoHidraulicas.cs" />
     <Compile Include="Comandos\EliminarAutomatismoGranos.cs" />
     <Compile Include="Comandos\EliminarAutomatismoHidraulicas.cs" />
+    <Compile Include="Comandos\CrearAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\CrearEstablecimientoProveedor.cs" />
     <Compile Include="Comandos\CrearComercial.cs" />
     <Compile Include="Comandos\CrearAutomatismoGranos.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\EliminarExcepcionAlControlProveedor.cs" />
+    <Compile Include="Comandos\EliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\InsertarSlotMensajeCartelLed.cs" />
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
@@ -764,6 +766,7 @@
     <Compile Include="Consultas\InfoCalle.cs" />
     <Compile Include="Dto\CalleAutomatismoDto.cs" />
     <Compile Include="Dto\AutomatismoGranoDto.cs" />
+    <Compile Include="Dto\AsignacionAutomatismoGranoEnRecorridoDto.cs" />
     <Compile Include="Dto\AutomatismoNoGranoPuntoDeCargaDto.cs" />
     <Compile Include="Dto\AutomatismoNoGranoAlmacenDto.cs" />
     <Compile Include="Dto\AutomatismoNoGranoDto.cs" />
@@ -1057,6 +1060,7 @@
     <Compile Include="Dto\LogExceptuadosTicketMunicipalDto.cs" />
     <Compile Include="Dto\PanelServerAppPoolDto.cs" />
     <Compile Include="Dto\MuestraEnvioACamaraYRecorridoDto.cs" />
+    <Compile Include="Entidades\AsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Entidades\AutomatismoGrano.cs" />
     <Compile Include="Entidades\AutomatismoNoGrano.cs" />
     <Compile Include="Entidades\Base\AuditoriaBase.cs" />
@@ -1762,8 +1766,6 @@
     <EmbeddedResource Include="Recursos\Textos.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <SubType>Designer</SubType>
-      <LastGenOutput>Textos.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

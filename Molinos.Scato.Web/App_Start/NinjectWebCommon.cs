@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using Molinos.Scato.Dependencias;
 using Molinos.Scato.Servicios;
@@ -34,7 +35,7 @@ namespace Molinos.Scato.Web.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -44,8 +45,9 @@ namespace Molinos.Scato.Web.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-            
+
             RegisterServices(kernel);
+            GlobalConfiguration.Configuration.UseNinjectActivator(kernel);
             return kernel;
         }
 

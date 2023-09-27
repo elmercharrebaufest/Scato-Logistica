@@ -11,6 +11,6 @@ namespace Molinos.Scato.Dominio.Comandos
         public int WorkflowDefinicionId { get; set; }
         public Guid InstanciaWorkflowId { get; set; }
         public int CentroId { get; set; }
-        public int TipoVariedadId { get; set; }
+        public int? TipoVariedadId { get; set; }
     }
 }

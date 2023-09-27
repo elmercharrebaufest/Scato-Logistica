@@ -95,5 +95,6 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [Column("TipoVariedad_Id")]
         public virtual int? TipoVariedadId { get; set; }
+        public TipoVariedad TipoVariedad { get; set; }
     }
 }

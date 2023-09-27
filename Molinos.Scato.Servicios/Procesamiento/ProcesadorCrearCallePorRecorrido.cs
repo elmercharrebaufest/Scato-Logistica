@@ -67,7 +67,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var calidad = entidadNueva.Recorrido != null && entidadNueva.Recorrido.CaracteristicasAnalizadas != null ? entidadNueva.Recorrido.CaracteristicasAnalizadas.Calidad : Dominio.Enums.TipoCalidad.Desconocida;
 
 
-            entidadNueva.Calle = comando.FlagReasignacionCalle ? comando.CalleReasignacion : administradorDeCalles.AsignarCalle(comando.TipoCalle, material, calidad, comando.CentroId, comando.TurnoActivo, comando.InstanciaWorkflow);
+            entidadNueva.Calle = comando.FlagReasignacionCalle ? comando.CalleReasignacion : administradorDeCalles.AsignarCalle(comando.TipoCalle, material?.Id, calidad, comando.CentroId, comando.TurnoActivo, comando.InstanciaWorkflow);
             if (entidadNueva.Calle == null)
             {
                 var calidadstr = calidad == Dominio.Enums.TipoCalidad.Desconocida ? string.Empty : calidad.ToString();

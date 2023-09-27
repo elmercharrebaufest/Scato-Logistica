@@ -9,9 +9,7 @@ namespace Molinos.Scato.Servicios
     public interface IAdministradorDeCalles
     {
         [OperationContract]
-        Calle AsignarCalle(TipoCalle tipoCalle, Material material, TipoCalidad calidad, int centroId, bool llegoEnHorarioCircular = false, Guid? instanceId = null);
-        [OperationContract]
-        Calle ObtenerSiguienteCalle(int materialId);
+        Calle AsignarCalle(TipoCalle tipoCalle, int? materialId, TipoCalidad calidad, int centroId, bool llegoEnHorarioCircular = false, Guid? instanceId = null);
         [OperationContract]
         int ObtenerEspacioDisponible(TipoCalle tipoCalle, int materialId, TipoCalidad calidad, int? calleId = null);
         [OperationContract]

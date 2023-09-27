@@ -534,6 +534,7 @@
     <Build Include="dbo\Tables\AutomatismoNoGrano.sql" />
     <Build Include="dbo\Tables\AutomatismoNoGranoAlmacen.sql" />
     <Build Include="dbo\Tables\AutomatismoNoGranoPuntoDeCarga.sql" />
+    <Build Include="dbo\Tables\AsignacionAutomatismoGranoEnRecorrido.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployment\Datos Base.sql" />

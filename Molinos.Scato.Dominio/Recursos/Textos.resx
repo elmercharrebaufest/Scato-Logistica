@@ -8671,7 +8671,7 @@
   <data name="Corredor" xml:space="preserve">
     <value>Corredor</value>
   </data>
-	<data name="Corredor_Acopio" xml:space="preserve">
+  <data name="Corredor_Acopio" xml:space="preserve">
     <value>Corredor/Acopio</value>
   </data>
   <data name="Fecha_Ingreso_Desde" xml:space="preserve">
@@ -10431,5 +10431,8 @@
   </data>
   <data name="Variedad_Estandar" xml:space="preserve">
     <value>Estándar</value>
+  </data>
+  <data name="ActAsignacionAutomatismoGranos" xml:space="preserve">
+    <value>Asignación Automatismo Granos</value>
   </data>
 </root>

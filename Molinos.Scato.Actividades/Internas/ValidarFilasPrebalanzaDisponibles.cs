@@ -22,6 +22,16 @@ namespace Molinos.Scato.Actividades.Internas
                 return resultado;
             }
             var materialId = repositorio.ObtenerMaterialIdPorInstanceId(context.WorkflowInstanceId);
+
+            var asignacionAutomatismo = repositorio.ObtenerAsignacionAutomatismoGranoEnRecorrido(context.WorkflowInstanceId);
+            if(asignacionAutomatismo != null)
+            {
+                if (!repositorio.ValidarEspacioDisponibleEnCalle(asignacionAutomatismo.CallePreBalanzaId))
+                    resultado.Error("", "En este momento la fila asignada por automatismo está llena");
+
+                return resultado;
+            }
+
             var tieneFilaDisponible = repositorio.ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle.PreBalanzaGranos, materialId);
             if (!tieneFilaDisponible)
                 resultado.Error("", "En este momento no existen filas disponibles");

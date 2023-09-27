@@ -81,7 +81,8 @@
     CONSTRAINT [FK_dbo.Recorrido_dbo.Workflow_Workflow_Id] FOREIGN KEY ([Workflow_Id]) REFERENCES [dbo].[Workflow] ([Id]),
     CONSTRAINT [FK_dbo.Recorrido_dbo.WorkflowDefinicion_WorkflowDefinicion_Id] FOREIGN KEY ([WorkflowDefinicion_Id]) REFERENCES [dbo].[WorkflowDefinicion] ([Id]),
     CONSTRAINT [UK_Recorrido_InstanciaWorkflow] UNIQUE NONCLUSTERED ([InstanciaWorkflow] ASC) WITH (FILLFACTOR = 90, PAD_INDEX = ON, STATISTICS_NORECOMPUTE = ON),
-    CONSTRAINT [FK_Recorrido_PuntoDeCarga] FOREIGN KEY ([PuntoDeCarga_Id]) REFERENCES [dbo].[PuntoDeCarga] ([Id])
+    CONSTRAINT [FK_dbo.Recorrido_dbo.PuntoDeCarga_PuntoDeCarga_Id] FOREIGN KEY ([PuntoDeCarga_Id]) REFERENCES [dbo].[PuntoDeCarga] ([Id]),
+    CONSTRAINT [FK_dbo.Recorrido_dbo.TipoVariedad_TipoVariedad_Id] FOREIGN KEY ([TipoVariedad_Id]) REFERENCES [dbo].[TipoVariedad] ([Id])
 );
 
 

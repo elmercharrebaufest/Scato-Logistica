@@ -168,6 +168,7 @@
     <Compile Include="Behavior\AiErrorHandlerBehaviorAttribute.cs" />
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AsignacionAutomatismoGranoEnRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoNoGranoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoGranoMappingProfile.cs" />
@@ -568,6 +569,8 @@
     <Compile Include="Procesamiento\ProcesadorModificarEstadoCallePrebalanza.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarPasoDirectoUnoAUnoAutomatismoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarPasoDirectoAutomatismoGrano.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarComercial.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearComercial.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAutomatismoGranos.cs" />

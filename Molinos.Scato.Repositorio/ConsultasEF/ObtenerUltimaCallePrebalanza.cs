@@ -7,19 +7,23 @@ using System.Linq;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
-    public class ObtenerUltimaCallePorTipoYMaterial : IConsultaEscalar<Calle>
+    public class ObtenerUltimaCallePrebalanza : IConsultaEscalar<Calle>
     {
-        private TipoCalle tipoCalle;
         private int materialId;
+        private Guid? instanceId;
 
-        public ObtenerUltimaCallePorTipoYMaterial(TipoCalle tipoCalle, Material material)
+        public ObtenerUltimaCallePrebalanza(int? materialId, Guid? instanceId)
         {
-            this.tipoCalle = tipoCalle;
-            this.materialId = material != null ? material.Id : 0;
+            this.materialId = materialId.GetValueOrDefault();
+            this.instanceId = instanceId;
         }
 
         public Calle Ejecutar(DbContext contexto)
         {
+            var calle = ObtenerCalleAsignadaPorAutomatismo(contexto);
+            if (calle != null)
+                return calle;
+            
             return ObtenerCalleDisponible(contexto);
         }
 
@@ -31,7 +35,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private Calle ObtenerCalleDelUltimoCamionAsignadoConMismoMaterial(DbContext contexto)
         {
-            return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == tipoCalle 
+            return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == TipoCalle.PreBalanzaGranos 
                                                                 && x.Recorrido.Material.Id == materialId
                                                                 && x.FechaEgreso == null)
                                                     .OrderByDescending(x => x.FechaIngeso)
@@ -42,7 +46,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private List<Calle> ObtenerCallesConEspacioDisponibleConMismoMaterial(DbContext contexto)
         {
             var callesDisponibles = new List<Calle>();
-            var calles = contexto.Set<Calle>().Where(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId)
+            var calles = contexto.Set<Calle>().Where(x => x.TipoCalle == TipoCalle.PreBalanzaGranos && x.Material.Id == materialId)
                                              .OrderBy(x => x.Id)
                                              .ToList();
             foreach (var calle in calles)
@@ -52,7 +56,6 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             }
             return callesDisponibles;
         }
-
 
         private Calle ObtenerCalleDisponible(DbContext contexto)
         {
@@ -66,6 +69,17 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 calleAsignada = callesDisponiblesVacias.FirstOrDefault(x => x.Id > calleUltimaCamionAsignado?.Id) ?? callesDisponiblesVacias.FirstOrDefault();
 
             return calleAsignada;
+        }
+
+        private Calle ObtenerCalleAsignadaPorAutomatismo(DbContext contexto)
+        {
+            if (!instanceId.HasValue)
+                return null;
+
+            return contexto.Set<AsignacionAutomatismoGranoEnRecorrido>()
+                            .Where(x => x.Recorrido.InstanciaWorkflow == instanceId)
+                            .Select(x => x.CallePreBalanza)
+                            .FirstOrDefault();
         }
     }
 }

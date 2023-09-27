@@ -183,7 +183,7 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.ObtenerProyeccion<Centro, int?>(y => y.Id == id, x => x.TiempoMaxEntreActividades);
         }
 
-        public string ObtenerCentroCodigoSap(int id)
+        public string ObteneCodigoSapPorCentroId(int id)
         {
             return repositorio.ObtenerProyeccion<Centro, string>(x => x.Id == id, x => x.CodigoSAP);
         }
@@ -871,21 +871,21 @@ namespace Molinos.Scato.Servicios.Impl
 
         public string ObtenerNumeroOrdenDeDescargaGenerado(int centroId)
         {
-            var codigoCentro = ObtenerCentroCodigoSap(centroId) ?? "";
+            var codigoCentro = ObteneCodigoSapPorCentroId(centroId) ?? "";
             var numero = repositorio.ObtenerNumeroOrdenDeDescargaGenerado();
             return codigoCentro + "-" + numero.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
         }
 
         public string ObtenerNumeroOrdenEntrePlantasGenerado(int centroId)
         {
-            var codigoCentro = ObtenerCentroCodigoSap(centroId) ?? "";
+            var codigoCentro = ObteneCodigoSapPorCentroId(centroId) ?? "";
             var numero = repositorio.ObtenerNumeroOrdenEntrePlantasGenerado();
             return codigoCentro + "-" + numero.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
         }
 
         public string ObtenerNumeroOrdenDeDescargaFasonGenerado(int centroId)
         {
-            var codigoCentro = ObtenerCentroCodigoSap(centroId) ?? "";
+            var codigoCentro = ObteneCodigoSapPorCentroId(centroId) ?? "";
             var numero = repositorio.ObtenerNumeroOrdenDeDescargaFasonGenerado();
             return codigoCentro + "-" + numero.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
         }
@@ -4013,7 +4013,7 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Romaneo, RomaneoDto>(id);
         }
 
-        public Guid ObtenerInstanceIdPorPatente(string patente)
+        public Guid ObtenerInstanceIdPorPatente(string patente) // TODO: Revisar si se usa, ya que el método fallará por el SingleOrDefault
         {
             return Obtener<Recorrido, RecorridoDto>(x => x.Patente == patente).InstanciaWorkflow;
         }
@@ -4405,7 +4405,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public string ObtenerNumeroOrdenDeCargaContenedorGenerado(int centroId)
         {
-            var codigoCentro = ObtenerCentroCodigoSap(centroId) ?? "";
+            var codigoCentro = ObteneCodigoSapPorCentroId(centroId) ?? "";
             var numero = repositorio.ObtenerNumeroOrdenDeCargaContenedorGenerado();
             return codigoCentro + "-" + numero.ToString(CultureInfo.InvariantCulture).PadLeft(8, '0');
         }
@@ -9551,14 +9551,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         public CalleDto ObtenerSiguienteCalle(int materialId)
         {
-            var calle = administradorDeCalles.ObtenerSiguienteCalle(materialId);
+            var calle = repositorio.ObtenerConsultaEscalar(new ObtenerSiguienteCalle(TipoCalle.PreCalado, materialId));
             return calle != null ? conversor.Convertir<Calle, CalleDto>(calle) : null;
         }
 
         public CalleDto CalcularCalle(TipoCalle tipoCalle, TipoCalidad tipoCalidad, int materialId, int centroId)
         {
-            var material = repositorio.Obtener<Material>(materialId);
-            var calle = administradorDeCalles.AsignarCalle(tipoCalle, material, tipoCalidad, centroId);
+            var calle = administradorDeCalles.AsignarCalle(tipoCalle, materialId, tipoCalidad, centroId);
             return calle != null ? conversor.Convertir<Calle, CalleDto>(calle) : null;
         }
 
@@ -10676,46 +10675,20 @@ namespace Molinos.Scato.Servicios.Impl
             
         }
 
-        public Dictionary<int, string> ObtenerTipoVariedadMaterial(Guid instanceId)
+        public int? ObtenerVariedadIdPorMaterial(int materialId, string codigoSAPtitularCP = null, bool esEpa = false, bool esSustentable = false)
         {
-            Dictionary<int, string> tipoVariedadPorMaterial = new Dictionary<int, string>();
-            var recorrido = Obtener<Recorrido, RecorridoDto>(x => x.InstanciaWorkflow == instanceId);
-            var variedadPorMaterial = ObtenerRelacionVariedadPorMaterial(recorrido.Material.Id);
-            var workflowImpoGranos = ConfigurationManager.AppSettings["workflowIngresoPorImpoGranos"];
-            string codigoVariedad = string.Empty;
-            int idVariedad = 0;
-
-            if (recorrido.Establecimiento != null)
-            {
-                if (recorrido.Establecimiento.EsSojaEPA && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.EPA)))
-                {
-                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.EPA;
-                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
-                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
-                }
-                else if (!recorrido.Establecimiento.EsSojaEPA && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Sustentable)))
-                {
-                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Sustentable;
-                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
-                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
-                }
-            }
-            else if (recorrido.Workflow.Codigo.Equals(workflowImpoGranos) && variedadPorMaterial.Any(c => c.Codigo.Equals(Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Importacion)))
-            {
-                var cp = repositorio.Obtener<CargaDeCupo>(x => x.Recorrido.Id == recorrido.Id);
-                if (cp.TitularCartaPorteCodigoSap.Equals(Molinos.Scato.Dominio.Constantes.ValoresPorDefecto.CodigoSapTPR))
-                {
-                    codigoVariedad = Molinos.Scato.Dominio.Constantes.TipoVariedadMaterial.Importacion;
-                    idVariedad = variedadPorMaterial.Where(c => c.Codigo.Equals(codigoVariedad)).First().Id;
-                    tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
-                }
-            }
-            else
-            {
-                tipoVariedadPorMaterial.Add(idVariedad, codigoVariedad);
-            }
-
-            return tipoVariedadPorMaterial;
+            var variedadesPorMaterial = repositorio.Listar<TipoVariedadPorMaterial>(x => x.MaterialId == materialId).Select(x => x.TipoVariedad);
+            
+            if (!string.IsNullOrEmpty(codigoSAPtitularCP) && codigoSAPtitularCP.Equals(Constantes.ValoresPorDefecto.CodigoSapTPR))
+                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Importacion)).Select(x => x.Id).FirstOrDefault();
+            
+            if (esEpa)
+                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.EPA)).Select(x => x.Id).FirstOrDefault();
+            
+            if (esSustentable)
+                return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Sustentable)).Select(x => x.Id).FirstOrDefault();
+            
+            return null;
         }
 
         private List<TipoVariedadDto> ObtenerRelacionVariedadPorMaterial(int idMaterial)
@@ -10801,6 +10774,11 @@ namespace Molinos.Scato.Servicios.Impl
             return conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
         }
 
+        public AutomatismoGranoDto ObtenerAutomatismoGranoPorRecorridoGuid(Guid workflowInstanceId)
+        {
+            return repositorio.ObtenerConsultaEscalar(new ConsultarAutomatismoGranoActivoDisponible(workflowInstanceId));
+        }
+        
         public List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano()
         {
             var automatismos = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>().ToList();
@@ -10829,7 +10807,23 @@ namespace Molinos.Scato.Servicios.Impl
 
         public AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id)
         {
-            return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Id == id);
+        	return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Id == id);
+        }
+
+        public AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId)
+        {
+            return Obtener<AsignacionAutomatismoGranoEnRecorrido, AsignacionAutomatismoGranoEnRecorridoDto>(x => x.Recorrido.InstanciaWorkflow == workflowInstanceId);
+        }
+
+        public bool ValidarEspacioDisponibleEnCalle(int calleId)
+        {
+            var calle = repositorio.Obtener<Calle>(x => x.Id == calleId);
+            return repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calleId && x.FechaEgreso == null) < calle.CantidadDeCamiones;
+        }
+
+        public CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG)
+        {
+            return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.CTG == nroCTG, y => y.Id);
         }
 
         public IList<CalleDto> ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle tipoCalle)

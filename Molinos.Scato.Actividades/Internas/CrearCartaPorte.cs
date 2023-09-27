@@ -1,11 +1,10 @@
-using System;
-using System.Activities;
-using System.Linq;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
+using System;
+using System.Activities;
 
 namespace Molinos.Scato.Actividades.Internas
 {
@@ -50,11 +49,14 @@ namespace Molinos.Scato.Actividades.Internas
             var workflowDefinicionId = WorkflowDefinicionId.Get<int>(context);
             var resultado = new ResultadoCrearWorkflow();
             resultado.InstanciaWorkflowId = InstanciaWorkflowId.Get(context);
+
             try
             {
                 var servicioComandos = context.GetExtension<IServicioComandos>();
                 var srvRepositorio = context.GetExtension<IServicioRepositorio>();
-                var tipoMaterialPorVariedad = context.GetExtension<IServicioRepositorio>().ObtenerTipoVariedadMaterial(instanciaWorkflow);
+
+                var cupo = srvRepositorio.ObtenerCargaDeCupoPorCTG(orden.NroCartaPorte);
+                var tipoMaterialPorVariedad = cupo != null ? srvRepositorio.ObtenerVariedadIdPorMaterial(orden.MaterialId, esSustentable: cupo.Especial) : null;
                 var resultadoCartaPorte = servicioComandos.Ejecutar(new Dominio.Comandos.CrearCartaPorte
                 {
                     Orden = orden,
@@ -64,7 +66,7 @@ namespace Molinos.Scato.Actividades.Internas
                     Usuario = usuario,
                     Vehiculo = vehiculo,
                     WorkflowDefinicionId = workflowDefinicionId,
-                    TipoVariedadId = tipoMaterialPorVariedad.First().Key
+                    TipoVariedadId = tipoMaterialPorVariedad,
                 }) as ResultadoCrear;
                 resultado.Id = resultadoCartaPorte.Id;
 
@@ -72,7 +74,7 @@ namespace Molinos.Scato.Actividades.Internas
                 if (ordenDto != null)
                 {
                     ordenDto.VehiculoDemorado = orden.VehiculoDemorado;
-                    CartaPorte.Set(context,ordenDto);
+                    CartaPorte.Set(context, ordenDto);
                     FechaInicio.Set(context, DateTime.Now);
                     NumeroCartaPorte.Set(context, ordenDto.NroCartaPorte);
                     TipoDocumentoIngreso.Set(context, Dominio.Enums.TipoDocumentoIngreso.CartaPorte);

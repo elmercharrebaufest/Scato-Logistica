@@ -131,7 +131,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 if (!resultado.HayErrores)
                 {
-                    servicioComandos.Ejecutar(new ActualizarAsignacionDeCalle { CalleId = model.CalleId, HidraulicasId = model.HidraulicasId });
+                    servicioComandos.Ejecutar(new ActualizarAsignacionDeCalle { CalleId = model.CalleId, HidraulicasId = model.HidraulicasId }); // TODO: SCT310-3814 Código deprecado
                     AvanzarWorkflow(resultado, datosUsuario);
                     if (ModelState.IsValid)
                     {

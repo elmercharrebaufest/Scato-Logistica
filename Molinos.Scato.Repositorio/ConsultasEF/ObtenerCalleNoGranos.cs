@@ -10,10 +10,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private TipoCalle tipoCalle;
         private int materialId;
 
-        public ObtenerCalleNoGranos(TipoCalle tipoCalle, Material material)
+        public ObtenerCalleNoGranos(TipoCalle tipoCalle, int? materialId)
         {
             this.tipoCalle = tipoCalle;
-            this.materialId = material != null ? material.Id : 0;
+            this.materialId = materialId.GetValueOrDefault();
         }
 
         public Calle Ejecutar(DbContext contexto)

@@ -220,5 +220,11 @@ namespace Molinos.Scato.Dominio
             public const string Sustentable = "SUS";
             public const string Importacion = "IMP";
         }
+
+        public struct Job
+        {
+            public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
+            public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
+        }
     }
 }

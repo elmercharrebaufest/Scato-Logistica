@@ -9,14 +9,14 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
     public class ObtenerCallePostCalado : IConsultaEscalar<Calle>
     {
         private TipoCalle tipoCalle;
-        private Material material;
+        private int materialId;
         private TipoCalidad calidad;
         private readonly Guid instanceId;
 
-        public ObtenerCallePostCalado(TipoCalle tipoCalle, Material material, TipoCalidad calidad, Guid instanceId)
+        public ObtenerCallePostCalado(TipoCalle tipoCalle, int? materialId, TipoCalidad calidad, Guid instanceId)
         {
             this.tipoCalle = tipoCalle;
-            this.material = material;
+            this.materialId = materialId.GetValueOrDefault();
             this.calidad = calidad;
             this.instanceId = instanceId;
         }
@@ -64,7 +64,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             Calle calleConMismasCaracteristicasDeCalidadQueNuevoCamion = basededatos
                         .Set<Calle>()
                         .Where(c => c.TipoCalle == TipoCalle.PostCalado
-                                 && c.Material.Id == material.Id
+                                 && c.Material.Id == materialId
                                  && c.TipoCalidad != TipoCalidad.Analisis
                                  && !c.Deshabilitada
                                  && !c.Bloqueada
@@ -79,7 +79,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
             Calle calleDisponibleConMismasCaracteristicasQueNuevoCamion = basededatos
                         .Set<Calle>()
                         .Where(c => c.TipoCalle == TipoCalle.PostCalado
-                            && c.Material.Id == material.Id
+                            && c.Material.Id == materialId
                             && c.TipoCalidad != TipoCalidad.Analisis
                             && !c.Deshabilitada
                             && basededatos
@@ -112,7 +112,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             .Where(x => x.Calle.TipoCalle == TipoCalle.PostCalado
                                     && x.FechaEgreso == null
                                     && (x.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
-                                    && x.Recorrido.Material.Id == material.Id
+                                    && x.Recorrido.Material.Id == materialId
                                     && x.Calle.TipoCalidad != TipoCalidad.Otros
                                     && x.Calle.TipoCalidad != TipoCalidad.PendientesPostCalado);
             if(esSojaEPA)
@@ -160,7 +160,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         && !x.Bloqueada
                         && contexto.Set<CallePorRecorrido>()
                                 .Any(y => (y.Recorrido.CaracteristicasAnalizadasList.FirstOrDefault().Calidad == calidad)
-                                        && y.Recorrido.Material.Id == material.Id
+                                        && y.Recorrido.Material.Id == materialId
                                         && y.FechaEgreso == null && y.Calle.Id == x.Id
                                         && (esSojaEPA ? y.Recorrido.Establecimiento.EPA : (y.Recorrido.Establecimiento == null || !y.Recorrido.Establecimiento.EPA)))
                         && contexto.Set<CallePorRecorrido>()
