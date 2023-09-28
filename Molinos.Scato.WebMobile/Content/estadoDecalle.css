@@ -152,7 +152,7 @@
 }
 
 .centrarCalles {
-    justify-content: center !important;
+    margin: 0 auto;
 }
 
 .calle {
