@@ -4678,6 +4678,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo.
+        /// </summary>
+        public static string Automatismo_CombinacionExistente {
+            get {
+                return ResourceManager.GetString("Automatismo_CombinacionExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nuevo Automatismo.
         /// </summary>
         public static string Automatismo_Crear {
@@ -28182,11 +28191,20 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Panel de Control - Comando Puerto.
+        ///   Looks up a localized string similar to Tablero Comando Puerto.
         /// </summary>
         public static string TableroComandoPuerto {
             get {
                 return ResourceManager.GetString("TableroComandoPuerto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panel de Control - Comando Puerto.
+        /// </summary>
+        public static string TableroComandoPuerto_Panel {
+            get {
+                return ResourceManager.GetString("TableroComandoPuerto_Panel", resourceCulture);
             }
         }
         

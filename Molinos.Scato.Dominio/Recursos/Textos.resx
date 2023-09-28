@@ -10393,7 +10393,7 @@
   <data name="Automatismo_Crear" xml:space="preserve">
     <value>Nuevo Automatismo</value>
 	</data>
-  <data name="TableroComandoPuerto" xml:space="preserve">
+  <data name="TableroComandoPuerto_Panel" xml:space="preserve">
     <value>Panel de Control - Comando Puerto</value>
   </data>
   <data name="TableroComandoPuerto_Titulo" xml:space="preserve">
@@ -10437,5 +10437,11 @@
   </data>
   <data name="EstadoAutomatismo" xml:space="preserve">
     <value>Estado del automatismo</value>
+  </data>
+  <data name="TableroComandoPuerto" xml:space="preserve">
+    <value>Tablero Comando Puerto</value>
+  </data>
+  <data name="Automatismo_CombinacionExistente" xml:space="preserve">
+    <value>La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo</value>
   </data>
 </root>

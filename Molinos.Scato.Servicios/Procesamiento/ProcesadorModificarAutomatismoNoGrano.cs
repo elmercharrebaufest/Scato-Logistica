@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -44,7 +45,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     )
                 )
             {
-                resultado.Error("Error", "Automatismo Ya Existe");
+                resultado.Error("AutomatismoCombinacionExistente", Textos.Automatismo_CombinacionExistente);
             }
         }
     }

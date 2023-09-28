@@ -1,6 +1,11 @@
 ﻿//FUNCIONES PRINCIPALES ABM
 //Automatismo
 
+const TipoMensaje = {
+    Success: 0,
+    Warning: 1,
+    Error: 2
+}
 function funcionModalCrear() {
     $.ajax({
         type: "GET",
@@ -112,7 +117,7 @@ function cambiarEstadoSwitch(url, elemento) {
         url: url,
         data: { nuevoEstado: !valor, id: id },
         success: function (response) {
-            if (response.Success) {
+            if (response.TipoDeMensaje == TipoMensaje.Success) {
                 elemento.checked = !valor;
             } else {
                 MostrarAlertaError(response.Mensaje);
@@ -139,7 +144,7 @@ $('#automatismoGeneral').change(function (e) {
         url: urlActualizarEstadoAutomatismoGeneral,
         data: { nuevoEstado: !element.checked },
         success: function (response) {
-            if (response.Success) {
+            if (response.TipoDeMensaje == TipoMensaje.Success) {
                 element.checked = !element.checked;
             } else {
                 MostrarAlertaError(response.Mensaje);
@@ -180,7 +185,7 @@ $('.cambia-estado').on("click", function (e) {
 
 //FUNCIONES DE RESPUESTA
 var fnResponse = function (response) {
-    if (response.Success != undefined && !response.Success) {
+    if (response.Key != undefined && response.TipoDeMensaje != TipoMensaje.Success) {
         MostrarAlertaError(response.Mensaje);
     } else {
         $('#partialModal').modal('hide');

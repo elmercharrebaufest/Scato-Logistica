@@ -4,6 +4,8 @@ using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
+using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.ViewModel;
@@ -14,6 +16,7 @@ using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
+    [Autorizacion(PermisosScato.TableroComandoPuerto)]
     public class TableroComandoPuertoController : Controller
     {
         private readonly IServicioComandos servicioComandos;
@@ -60,7 +63,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", model);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarAutomatismoDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), Success = false };
+            result.Data = new MensajeEstandarDto { Key="Error",Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())),TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -123,8 +126,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarAutomatismoDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), Success = false };
-
+            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             return result;
         }
 
@@ -147,7 +149,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", model);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarAutomatismoDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), Success = false };
+            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -189,7 +191,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (configuracionAutomatismoNoGrano == null)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "No existe la configuración de Llamado Automatico de No Granos", Success = false };
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = Textos.ConfiguracionGeneral_Inexistente, TipoDeMensaje = TipoDeMensajeDeRespuesta.Warning };
                 return result;
             }
 
@@ -201,7 +203,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (!resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "Configuracion de Llamado Automatico de No Granos Exitosa", Success = true };
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Configuracion de Llamado Automatico de No Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
 
             return result;
@@ -245,8 +247,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_ListarCallePlanta", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarAutomatismoDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), Success = false };
-
+            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             return result;
         }
 
@@ -273,7 +274,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_ListarPuntoDeCarga", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarAutomatismoDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), Success = false };
+            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -287,11 +288,11 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (!resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "Actualizacion de Llamado Automatico de No Granos Exitosa", Success = true };
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Llamado Automatico de No Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
             else
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = resultado.Errores.Values.ToJson(), Success = false };
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
             return result;
         }
@@ -322,11 +323,11 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (!resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "Actualizacion de Almacen Exitosa", Success = true };
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Almacen Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
             else
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = resultado.Errores.Values.ToJson(), Success = false };
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             }
             return result;
         }
@@ -357,11 +358,11 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (!resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "Actualizacion de PuntoD De Carga Exitosa", Success = true };
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de PuntoD De Carga Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
             else
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = resultado.Errores.Values.ToJson(), Success = false };
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             }
             return result;
         }
@@ -391,11 +392,11 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (!resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = "Actualizacion de Calle Exitosa", Success = true };
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Calle Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
             }
             else
             {
-                result.Data = new MensajeEstandarAutomatismoDto { Mensaje = resultado.Errores.Values.ToJson(), Success = false };
+                result.Data = new MensajeEstandarDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             }
             return result;
         }

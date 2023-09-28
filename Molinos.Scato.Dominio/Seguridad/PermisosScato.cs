@@ -767,5 +767,7 @@ namespace Molinos.Scato.Dominio.Seguridad
         PlayeroPlanta = 619,
         [Display(ResourceType = typeof(Textos), Name = "PuestoComandoLogistica")]
         PuestoComandoLogistica = 620,
+        [Display(ResourceType = typeof(Textos), Name = "TableroComandoPuerto")]
+        TableroComandoPuerto = 621,
     }
 }
