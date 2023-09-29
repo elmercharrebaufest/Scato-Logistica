@@ -844,6 +844,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accesos Ùtiles.
+        /// </summary>
+        public static string AccesosUtiles {
+            get {
+                return ResourceManager.GetString("AccesosUtiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aceptar.
         /// </summary>
         public static string Aceptar {
@@ -16850,6 +16859,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gestion de Playa Externa.
+        /// </summary>
+        public static string GestionDePlayaExterna_Titulo {
+            get {
+                return ResourceManager.GetString("GestionDePlayaExterna_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gestiòn de Playa Interna.
+        /// </summary>
+        public static string GestionDePlayaInterna_Titulo {
+            get {
+                return ResourceManager.GetString("GestionDePlayaInterna_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actividad.
         /// </summary>
         public static string GraficoDePlanta_Actividad {
@@ -28214,6 +28241,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string TableroComandoPuerto_Titulo {
             get {
                 return ResourceManager.GetString("TableroComandoPuerto_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tablero Logística Automatismo.
+        /// </summary>
+        public static string TableroLogisticaAutomatismo_Titulo {
+            get {
+                return ResourceManager.GetString("TableroLogisticaAutomatismo_Titulo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tablero Puerto Automatismo.
+        /// </summary>
+        public static string TableroPuertoAutomatismo_Titulo {
+            get {
+                return ResourceManager.GetString("TableroPuertoAutomatismo_Titulo", resourceCulture);
             }
         }
         

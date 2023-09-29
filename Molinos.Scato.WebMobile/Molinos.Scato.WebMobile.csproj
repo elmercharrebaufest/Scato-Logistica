@@ -207,6 +207,7 @@
     <Compile Include="Controllers\EstadoDeCalleController.cs" />
     <Compile Include="Controllers\EstadoDePlantaController.cs" />
     <Compile Include="Controllers\HealthTestController.cs" />
+    <Compile Include="Controllers\GraficoDePlantaController.cs" />
     <Compile Include="Controllers\InformacionMeteorologicaController.cs" />
     <Compile Include="Controllers\PesadasHistoricaController.cs" />
     <Compile Include="Controllers\PesadasOnlineController.cs" />
@@ -501,12 +502,6 @@
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Scripts\scatoWebcommon.validate.js" />
     <Content Include="Views\Shared\_Menu.cshtml" />
-    <Content Include="Views\Index\_CamionesPorDia.cshtml" />
-    <Content Include="Views\Index\_GraficoCamionesPorDia.cshtml" />
-    <Content Include="Views\Index\_CamionesPorHora.cshtml" />
-    <Content Include="Views\Index\_GraficoCamionesPorHora.cshtml" />
-    <Content Include="Views\Index\_EficienciaHidraulicas.cshtml" />
-    <Content Include="Views\Index\_GraficoEficienciaHidraulicas.cshtml" />
     <Content Include="Views\CamionesRechazados\Index.cshtml" />
     <Content Include="Views\CamionesRechazados\FotosCamiones.cshtml" />
     <Content Include="Views\Cupo\Index.cshtml" />
@@ -526,12 +521,7 @@
     <Content Include="webfonts\fa-brands-400.woff" />
     <Content Include="webfonts\fa-brands-400.ttf" />
     <Content Include="webfonts\fa-brands-400.eot" />
-    <Content Include="Views\Index\_ToneladasPorRangoDeDia.cshtml" />
-    <Content Include="Views\Index\_GraficoToneladasPorRangoDeDias.cshtml" />
-    <Content Include="Views\Index\_GraficoToneladasPorDia.cshtml" />
-    <Content Include="Views\Index\_ToneladasPorDia.cshtml" />
     <Content Include="Views\TiempoEnTransito\Index.cshtml" />
-    <Content Include="Views\Index\_GraficoDePlanta.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -594,6 +584,19 @@
     <Content Include="Views\TableroComandoLogistica\_ListarCallePreBalanza.cshtml" />
     <Content Include="Views\TableroComandoLogistica\_ListarCallePreHidraulica.cshtml" />
     <Content Include="Views\TableroComandoLogistica\_ListarHidraulica.cshtml" />
+    <Content Include="Views\GraficoDePlanta\Index.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_CamionesPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_CamionesPorHora.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_EficienciaHidraulicas.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoCamionesPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoCamionesPorHora.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoDePlanta.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoEficienciaHidraulicas.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoToneladasPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoToneladasPorRangoDeDias.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_ToneladasPorDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_ToneladasPorRangoDeDia.cshtml" />
+    <Content Include="Views\GraficoDePlanta\_GraficoDePlantaHead.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

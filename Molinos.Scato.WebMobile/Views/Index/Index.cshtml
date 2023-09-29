@@ -1,50 +1,69 @@
 ﻿@using Molinos.Scato.Dominio.Dto
 @using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.WebMobile.Helpers
-@model List<EstadoMaterialDto>
 @{
-    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
-    var materialId = (int)ViewBag.MaterialId;
-    var materialDesc = ViewBag.MaterialDescripcion;
+    ViewBag.Title = Textos.Inicio;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section scripts {
-    <script src="~/Scripts/Chart.js" type="text/javascript"></script>
-    <script src="~/Scripts/Chart.bundle.js"></script>
-    <script src="~/Scripts/chartjs-plugin-annotation.min.js"></script>
-    <script type="text/javascript" src="@Url.Script("~/scripts/autocompletar.js")"></script>
+
 }
 
+<div class="container">
+    <div class="d-lg-none">
+        <div class="row mb-3 mt-3">
+            <div class="col-12">
+                @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success d-flex" })
+            </div>
+        </div>
+        <div class="row mb-3 mt-3">
+            <div class="col-12">
+                @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success d-flex" })
+            </div>
+        </div>
+        <div class="row mb-3 mt-3">
+            <div class="col-12">
+                @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success d-flex" })
+            </div>
+        </div>
+        <div class="container mb-3 mt-3">
+            <div class="row">
+                <div class="col-6 pl-0">
+                    @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success h-100" })
+                </div>
+                <div class="col-6 pr-0">
+                    @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success h-100" })
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<div class="row">
-    <div class="col">
-        @Html.Partial("_CamionesPorHora", new GraficoCamionesHoraDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaVieja = DateTime.Today.AddYears(-1) })
+    <div class="d-none d-lg-block">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success" })
+            </div>
+            <div class="col-md-6 mb-3">
+                @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success" })
+            </div>
+        </div>
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6 mb-3">
+                @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success" })
+            </div>
+            <div class="col-md-6 mb-3">
+                @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success" })
+            </div>
+        </div>
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6">
+                @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success" })
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col">
-        @Html.Partial("_CamionesPorDia", new GraficoCamionesDiaDto { MaterialId = materialId, MaterialDescripcion = materialDesc })
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @Html.Partial("_GraficoDePlanta")
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @Html.Partial("_EficienciaHidraulicas", new GraficoEficienciaHidraulicasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaHoraDesde = DateTime.Today, FechaHoraHasta = DateTime.Now })
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @Html.Partial("_ToneladasPorDia", new GraficoEficienciaHidraulicasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaHoraDesde = DateTime.Today, FechaHoraHasta = DateTime.Now })
-    </div>
+
 </div>
 
-<div class="row">
-    <div class="col">
-        @Html.Partial("_ToneladasPorRangoDeDia", new GraficoToneladasRangoDeDiasDto { MaterialId = materialId, MaterialDescripcion = materialDesc, FechaDesde = DateTime.Today.AddDays(-1), FechaHasta = DateTime.Today })
-    </div>
-</div>
+

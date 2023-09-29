@@ -10,6 +10,30 @@
     height: 40px;
 }
 
+.dropdown-menu-scato-mobile {
+    height: 50%;
+    width: 13%;
+    position: fixed;
+    z-index: 1;
+    top: 50px;
+    left: 0;
+    background-color: #ffff;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+@media (max-width: 2000px) {
+    .dropdown-menu-scato-mobile {
+        width: auto;
+    }
+}
+@media (max-width: 650px){
+    .scato-logo-mobile {
+        position: relative;
+        top: -30px;
+    }
+}
+
 @media only screen and (max-width: 650px) {
     .navbar-menu {
         display: block;       

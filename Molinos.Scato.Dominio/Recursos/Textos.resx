@@ -9325,6 +9325,9 @@
   <data name="BalanzaAutomatica" xml:space="preserve">
     <value>Balanzas Automáticas</value>
   </data>
+  <data name="GestionDePlayaExterna_Titulo" xml:space="preserve">
+    <value>Gestion de Playa Externa</value>
+  </data>
   <data name="EstadoDeCalle" xml:space="preserve">
     <value>Estado De Calle</value>
   </data>
@@ -9426,6 +9429,9 @@
   </data>
   <data name="EstadoDeCallePlayaInterna" xml:space="preserve">
     <value>Estado De Calle - Playa Interna</value>
+  </data>
+  <data name="GestionDePlayaInterna_Titulo" xml:space="preserve">
+    <value>Gestiòn de Playa Interna</value>
   </data>
   <data name="ModificarCallesInternas" xml:space="preserve">
     <value>Modificar Calles Internas</value>
@@ -10333,6 +10339,9 @@
   <data name="Menu_ConfiguracionAutomatizacion" xml:space="preserve">
     <value>Config. Automatización</value>
   </data>
+  <data name="TableroLogisticaAutomatismo_Titulo" xml:space="preserve">
+    <value>Tablero Logística Automatismo</value>
+  </data>
   <data name="TableroComandoLogistica_Titulo" xml:space="preserve">
     <value>Tablero - Comando Logística</value>
   </data>
@@ -10396,6 +10405,9 @@
   <data name="TableroComandoPuerto_Panel" xml:space="preserve">
     <value>Panel de Control - Comando Puerto</value>
   </data>
+  <data name="TableroPuertoAutomatismo_Titulo" xml:space="preserve">
+    <value>Tablero Puerto Automatismo</value>
+  </data>
   <data name="TableroComandoPuerto_Titulo" xml:space="preserve">
     <value>Tablero - Comando Puerto</value>
   </data>
@@ -10443,5 +10455,8 @@
   </data>
   <data name="Automatismo_CombinacionExistente" xml:space="preserve">
     <value>La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo</value>
+  </data>
+  <data name="AccesosUtiles" xml:space="preserve">
+    <value>Accesos Ùtiles</value>
   </data>
 </root>

@@ -10,8 +10,6 @@
     var mensaje = (string)TempData["Alerta"];
     var tipoMensaje = TempData["TipoAlerta"] as TipoAlerta?;
     var clase = string.IsNullOrEmpty(mensaje) ? "hide" : string.Empty;
-    @* var mensajeAplicacion = (string)TempData["MensajeAplicacion"]; *@
-
     if (tipoMensaje != null)
     {
         switch (tipoMensaje)
