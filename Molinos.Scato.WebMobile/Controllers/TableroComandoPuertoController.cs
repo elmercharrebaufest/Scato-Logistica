@@ -400,5 +400,30 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             return result;
         }
+
+        public ActionResult ObtenerEstadoAutomatismoGeneral()
+        {
+            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var configuracionAutomatismoNoGrano = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
+
+            if (configuracionAutomatismoNoGrano == null)
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = Textos.ConfiguracionGeneral_Inexistente, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+                return result;
+            }
+
+            bool valor = false;
+            var resultado = bool.TryParse(configuracionAutomatismoNoGrano.Valor,out valor);
+            if (resultado)
+            {
+                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = valor.ToString(), TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
+            }
+            else
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No se pudo Interpretar el valor del campo almacenado", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            }
+            
+            return result;
+        }
     }
 }
