@@ -63,7 +63,7 @@
     }
 </ul>
 <div class="content">
-    <div class="container-fluid">
+    <div class="container-fluid" style="display: flex;">
         <div class="row callesfiltradas" data-bind="foreach: CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)'),css: { 'centrarCalles': CallesFiltradas('@((int)Model)', '@((int)calle2)', '@((int)calle3)').length <= 5 }">
             <div class="col" data-bind="css: { 'bg-success': Bloqueada() && TipoCalle != @((int)TipoCalle.Circular), 'bg-primary': Bloqueada() && TipoCalle == @((int)TipoCalle.Circular) }" style="min-width:14ch!important; max-width:14ch!important">
                 <div class="sinbordetb row row-card-no-pd">
