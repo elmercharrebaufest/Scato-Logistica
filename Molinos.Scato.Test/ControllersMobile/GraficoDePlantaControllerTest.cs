@@ -16,9 +16,9 @@ using NUnit.Framework;
 namespace Molinos.Scato.Test.ControllersMobile
 {
     [TestFixture]
-    public class IndexControllerTest
+    public class GraficoDePlantaControllerTest
     {
-        private IndexController target;
+        private GraficoDePlantaController target;
         private Mock<IConfiguracionProvider> configuracionProvider;
         private Mock<IFirmaProvider> firmaProvider;
         private Mock<IServicioRepositorio> servicio;
@@ -37,7 +37,7 @@ namespace Molinos.Scato.Test.ControllersMobile
             firmaProvider = new Mock<IFirmaProvider>();
             listaDeWorkflows = new Mock<IListaDeWorkflows>();
             log = new NullLogger();
-            target = new IndexController(log, servicio.Object, firmaProvider.Object, configuracionProvider.Object, comandos.Object, listaDeWorkflows.Object);
+            target = new GraficoDePlantaController(log, servicio.Object, firmaProvider.Object, configuracionProvider.Object, comandos.Object, listaDeWorkflows.Object);
         }
 
         [Test]
