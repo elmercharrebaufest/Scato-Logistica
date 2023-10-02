@@ -1,8 +1,10 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.ViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model AutomatismoNoGranoViewModel
 <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap-multiselect.js"></script>
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
@@ -12,7 +14,6 @@
     urlEliminarAutomatismo = '@Url.Action("Eliminar", "TableroComandoPuerto")';
     urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoPuerto")';
     urlActualizarEstadoAutomatismoNoGrano = '@Url.Action("ActualizarEstadoAutomatismoNoGrano", "TableroComandoPuerto")';
-    urlObtenerEstadoAutomatismoGeneral = '@Url.Action("ObtenerEstadoAutomatismoGeneral", "TableroComandoPuerto")';
 </script>
 <div style="text-align:center">
     <h2 class="titulo-center">@Textos.TableroComandoPuerto_Panel</h2>
@@ -29,7 +30,7 @@
                 </li>
                 <li class="nav-item ml-auto">
                     <label class="switch">
-                        <input id="automatismoGeneral" type="checkbox">
+                        <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
                         <span class="slider round"></span>
                     </label>
                     <span class="mr-2">Automatismo General</span>

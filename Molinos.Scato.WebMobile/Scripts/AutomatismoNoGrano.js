@@ -193,34 +193,6 @@ var fnResponse = function (response) {
     }
 }
 
-//Funcion Setea Estado Inicial del Automatismo General
-var setearEstadoAutomatismoGeneral = function () {
-    let element = $('#automatismoGeneral');
-    if (element.length > 0) {
-        $.blockUI({
-            blockMsgClass: 'blocuiBox',
-            message: 'Cargando...'
-        });
-        $.ajax({
-            url: urlObtenerEstadoAutomatismoGeneral,
-            success: function (response) {
-                if (response.TipoDeMensaje == TipoMensaje.Success) {
-                    let valorActual = response.Mensaje == "True" ? true : false;
-                    $("#automatismoGeneral").prop("checked", valorActual);
-                } else {
-                    MostrarAlertaError(response.Mensaje);
-                }
-            },
-            error: function () {
-                MostrarAlertaError('Error al realizar la petición');
-            },
-            complete: function () {
-                $.unblockUI();
-            }
-        });
-    }
-}
-
 //FUNCION ACTIVA MULTISELECT
 $(document).ready(function () {
     $('.multiselect').multiselect({
@@ -229,6 +201,4 @@ $(document).ready(function () {
         enableFiltering: true,
         maxHeight: 450
     });
-
-    setearEstadoAutomatismoGeneral();
 });

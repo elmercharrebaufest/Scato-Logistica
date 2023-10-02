@@ -11,7 +11,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
         {
             AutomatismoNoGrano = new AutomatismoNoGranoDto();
         }
-
+        public bool EstadoGeneralAutomatismoNoGrano { get; set; }
         public AutomatismoNoGranoDto AutomatismoNoGrano { get; set; }
         public ListaPaginada<AutomatismoNoGranoDto> ListaAutomatismoNoGrano { get; set; }
         public List<SelectListItem> CallesPlanta { get; set; }
