@@ -153,6 +153,13 @@ $(document).ready(function () {
         $('#dialogo-variedad').modal('hide');
     });
 
+    $(document).keyup(function (e) {
+        if (e.key === "Escape") {
+            $('#dialogo-variedad').modal('hide');
+        }
+    });
+
+
     $("#mostrarVariedad").click(function () {
         $('#dialogo-variedad').modal({
             backdrop: 'static', keyboard: false
