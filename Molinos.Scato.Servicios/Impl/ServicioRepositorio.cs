@@ -10688,7 +10688,8 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var tipoVariedades = Listar<TipoVariedad, TipoVariedadDto>();
             var variedadesPorMaterial = Listar<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>(x => x.MaterialId == idMaterial);
-            var automatismos = Listar<AutomatismoGrano, AutomatismoGranoDto>(x => x.MaterialId == idMaterial);
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var automatismos = repositorio.Listar<AutomatismoGrano>(includes , x=> x.MaterialId == idMaterial);
 
             var variedadesActivas =
                    tipoVariedades.Join(variedadesPorMaterial,
