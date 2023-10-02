@@ -514,10 +514,10 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(respuesta);
         }
 
-        public ActionResult ObtenerHidraulicasEscalables(int id, bool valor)
+        public ActionResult ObtenerHidraulicasEscalables(int? id, bool valor)
         {
             var respuesta = new RespuestaEstandarDto();
-            var automatismo = servicio.ObtenerAutomatismoGranos(id);
+            var automatismo = servicio.ObtenerAutomatismoGranos(id.GetValueOrDefault());
             var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.Estado != EstadoHidraulica.Inhabilitado && c.CentroId == ObteneerIdCentro());
 
             if (valor)
@@ -527,7 +527,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             hidraulicas = hidraulicas.ToList();
 
-            var hidraulicasEscalables = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), automatismo.Hidraulicas).Select(s => new { label = s.Text, value = s.Value, selected = s.Selected });
+            var hidraulicasEscalables = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), automatismo!=null?automatismo.Hidraulicas:new List<int>()).Select(s => new { label = s.Text, value = s.Value, selected = s.Selected });
 
             return Json(hidraulicasEscalables, JsonRequestBehavior.AllowGet);
         }
