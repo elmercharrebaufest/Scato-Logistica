@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+
+    if ($("#AutomatismoGrano_AplicaFiltroCalidad").is(":checked")) {
+        $("#divCalidad").show();
+    }
     $("#AutomatismoGrano_AplicaFiltroCalidad").change(function () {
         if (this.checked) {
             $("#divCalidad").show();

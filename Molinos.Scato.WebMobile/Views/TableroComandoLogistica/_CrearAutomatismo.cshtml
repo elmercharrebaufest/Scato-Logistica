@@ -49,7 +49,7 @@
 
                     <div id="divCalidad" style="display:none" class="form-group">
                         @Html.LabelFor(m => m.AutomatismoGrano.CalidadId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control", data_val_required = "El campo 'Calidad' es requerido." })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CalidadId)
 
                         <div class="form-group row mt-4">

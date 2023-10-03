@@ -31,6 +31,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "CamionesEscalables")]
         public bool CamionEscalable { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "Calidad")]
         public int? CalidadId { get; set; }
 
         public decimal? Minimo { get; set; }

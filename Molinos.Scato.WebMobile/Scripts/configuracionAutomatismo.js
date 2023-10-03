@@ -2,9 +2,11 @@
     $("#AutomatismoGrano_AplicaFiltroCalidad").change(function () {
         if (this.checked) {
             $("#divCalidad").show();
+            $("#AutomatismoGrano_CalidadId").prop('required', true);
         }
         else {
             $("#divCalidad").hide();
+            $("#AutomatismoGrano_CalidadId").prop('required', false);
         }
     });
 

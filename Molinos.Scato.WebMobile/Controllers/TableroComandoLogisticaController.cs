@@ -147,6 +147,11 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public ActionResult Modificar(AutomatismoGranosViewModel model)
         {
+            if (model.AutomatismoGrano.AplicaFiltroCalidad && model.AutomatismoGrano.CalidadId == null)
+            {
+                ModelState.AddModelError("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
+            }
+
             var respuesta = new RespuestaEstandarDto();
             if (ModelState.IsValid)
             {
@@ -168,6 +173,10 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al modificar el automatismo de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
+
+            } else
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Debe completar todos los campos requeridos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
             return Json(respuesta);
