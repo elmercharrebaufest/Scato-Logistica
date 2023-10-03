@@ -48,6 +48,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("Id Automatismo", Textos.Automatismo_IdExistente);
             }
+            if (Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable))
+            {
+                resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_ConfiguracionExistente);
+            }
+            if (Repositorio.Existe<AutomatismoGrano>( a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
+            {
+                resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
+            }
         }
     }
 }

@@ -4694,7 +4694,28 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("Automatismo_CombinacionExistente", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to La combinación de Material/Variedad/Filtra calidad/Camión escalable se encuentra configurada en otra automatización.
+        /// </summary>
+        public static string Automatismo_ConfiguracionExistente
+        {
+            get
+            {
+                return ResourceManager.GetString("Automatismo_ConfiguracionExistente", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to La calle prebalanza ya existe en un automatismo.
+        /// </summary>
+        public static string Automatismo_CallePrebalanzaExistente
+        {
+            get
+            {
+                return ResourceManager.GetString("Automatismo_CallePrebalanzaExistente", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to Nuevo Automatismo.
         /// </summary>

@@ -124,7 +124,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
                 else
                 {
-                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al crear el automatismo de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultadoAutomatismo.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
             }
 
