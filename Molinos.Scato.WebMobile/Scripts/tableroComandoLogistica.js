@@ -66,7 +66,7 @@
         });
     });
 
-    $('.cambio-tipo').on("click", function (e) {
+    $('#listarAutomatismo').on("click", ".cambio-tipo",function (e) {
         var nombreCampo = $(this).data('field');
         let element = e.currentTarget;
         element.checked = !element.checked;
