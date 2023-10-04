@@ -7,6 +7,7 @@
     var tiposDocumentos = (IEnumerable<SelectListItem>)ViewBag.TiposDocumentos;
     var kmdropdown = new List<SelectListItem>();
     var tiposVehiculo = (IEnumerable<SelectListItem>)ViewBag.TiposVehiculo;
+    var emptySelectListItem = new List<SelectListItem>();
     var plantasDG = new List<SelectListItem>();
     var domiciliosDG = new List<SelectListItem>();
     var listaMaterialesDerivadoGranario = (List<int>)ViewBag.MaterialesDerivadoGranario;
@@ -30,7 +31,9 @@
      data-url-obtener-plantas-por-cliente="@Url.Action("ObtenerPlantasDGPorClienteId", "Consultas")"
      data-url-obtener-domicilios-derivado-granario-por-cliente="@Url.Action("ObtenerDomiciliosDG", "Consultas")"
      data-url-obtener-almacenes-por-material="@Url.Action("ObtenerAlmacenesPorMaterial", "IngresarOrdenCargaInterna")"
-     data-url-obtener-mensaje="@Url.Action("MostrarMensajeRecorridoAnterior", "IngresarOrdenCargaInternaFason")">
+     data-url-obtener-mensaje="@Url.Action("MostrarMensajeRecorridoAnterior", "IngresarOrdenCargaInternaFason")"
+     data-url-obtener-orden-de-carga-operaciones-por-patente="@Url.Action("ObtenerOrdenDeCargaOperacionesPorPatente","IngresarOrdenCargaInternaFason")"
+     data-url-obtener-orden-de-carga-operaciones-seleccionada="@Url.Action("ObtenerOrdenDeCargaOperacionesSeleccionada","IngresarOrdenCargaInternaFason")">
 </div>
 
 <script type="text/javascript">
@@ -52,9 +55,9 @@
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 @Html.Hidden("MaterialSeleccionado", Model.MaterialId)
 
-<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino"/>
+<input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
 
-<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino"/>
+<input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
 
 <div id="mensajeInvalido" data-invalido="@Textos.Error_Invalido" />
 <div class="row-fluid row-fluid-ie7">
@@ -63,7 +66,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.NumeroOrden, new { @class = "control ", autocomplete = "off", @readonly = "readonly" })
+                    @Html.DropDownListFor(model => model.NumeroOrden, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()"})
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
                 </div>
             </div>
@@ -136,7 +139,7 @@
             <div class="control">
                 @Html.LabelFor(model => model.PatenteCamion, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right" })
+                    @Html.TextBoxFor(model => model.PatenteCamion, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right", @onfocusout = "obtenerOrdenDeCargaOperacionesPorPatente()" })
                     @Html.ValidationMessageFor(model => model.PatenteCamion)
                 </div>
             </div>
@@ -163,14 +166,14 @@
                     @Html.HiddenFor(model => model.EsTransportista)
                 </div>
             </div>
-             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
-                    @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
-                    <div class="controls-small">
-                        @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
-                        @Html.ValidationMessageFor(model => model.IntermediarioFlete)
-                        @Html.HiddenFor(model => model.IntermediarioFleteId)
-                    </div>
+            <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
+                @Html.LabelFor(model => model.IntermediarioFlete, new { @class = "control-label small margin10" })
+                <div class="controls-small">
+                    @Html.TextBoxFor(model => model.IntermediarioFlete, new { @class = "control" })
+                    @Html.ValidationMessageFor(model => model.IntermediarioFlete)
+                    @Html.HiddenFor(model => model.IntermediarioFleteId)
                 </div>
+            </div>
             <div class="control">
                 @Html.LabelFor(model => model.MaterialId, new { @class = "control-label small margin10" })
                 <div class="">
@@ -293,6 +296,3 @@
 <div id="autocompleteRemitente"></div>
 <div id="autocompleteIntermFlete"></div>
 <div id="autocompleteDestinatario"></div>
-
-
-
