@@ -103,8 +103,6 @@
     <Compile Include="Comandos\CrearEstablecimientoProveedor.cs" />
     <Compile Include="Comandos\CrearComercial.cs" />
     <Compile Include="Comandos\CrearAutomatismoGranos.cs" />
-    <Compile Include="Comandos\CrearAutomatismoNoGranoPuntoDeCarga.cs" />
-    <Compile Include="Comandos\CrearAutomatismoNoGranoAlmacen.cs" />
     <Compile Include="Comandos\CrearAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\CrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Comandos\AutorizarCpeDG.cs" />
@@ -119,8 +117,6 @@
     <Compile Include="Comandos\EliminarEstablecimientoProveedor.cs" />
     <Compile Include="Comandos\EliminarComercial.cs" />
     <Compile Include="Comandos\EliminarAutomatismoNoGrano.cs" />
-    <Compile Include="Comandos\EliminarAutomatismoNoGranoAlmacen.cs" />
-    <Compile Include="Comandos\EliminarAutomatismoNoGranoPuntoDeCarga.cs" />
     <Compile Include="Comandos\EliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Comandos\EliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Comandos\CrearCallePreBalanzaPlayaInterna.cs" />
@@ -767,8 +763,6 @@
     <Compile Include="Dto\CalleAutomatismoDto.cs" />
     <Compile Include="Dto\AutomatismoGranoDto.cs" />
     <Compile Include="Dto\AsignacionAutomatismoGranoEnRecorridoDto.cs" />
-    <Compile Include="Dto\AutomatismoNoGranoPuntoDeCargaDto.cs" />
-    <Compile Include="Dto\AutomatismoNoGranoAlmacenDto.cs" />
     <Compile Include="Dto\AutomatismoNoGranoDto.cs" />
     <Compile Include="Dto\Base\AuditoriaBaseDto.cs" />
     <Compile Include="Dto\EstablecimientoProveedorDto.cs" />

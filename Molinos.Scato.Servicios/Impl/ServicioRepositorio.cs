@@ -10659,12 +10659,12 @@ namespace Molinos.Scato.Servicios.Impl
                 {
                     infoCalle.EsIncluidoAutomatismo = "Si";
                     infoCalle.EsPaseDirecto = string.Empty;
-                    infoCalle.Almacen = automatismoNoGrano.ListaAlmacenes;
-                    infoCalle.PuntoDeCarga = automatismoNoGrano.ListaPuntosDeCarga;
+                    infoCalle.Almacen = automatismoNoGrano.Almacen.Descripcion;
+                    infoCalle.PuntoDeCarga = automatismoNoGrano.PuntoDeCarga.Descripcion;
                     infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo ? "Activo" : "Inactivo";
                 }
             }
-
+            
             return infoCalle;
         }
 
@@ -10717,7 +10717,7 @@ namespace Molinos.Scato.Servicios.Impl
             List<int> listaId = new List<int>();
 
             var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
-            var includesNoGrano = new List<Expression<Func<AutomatismoNoGrano, object>>> { x => x.AlmacenesAsociados, x => x.CallePlayaInterna, x => x.PuntosDeCargaAsociados, x => x.CallePlanta };
+            var includesNoGrano = new List<Expression<Func<AutomatismoNoGrano, object>>> { x => x.Almacen, x => x.CallePlayaInterna, x => x.PuntoDeCarga, x => x.CallePlanta };
 
             if (tipoCalle == TipoCalle.PreBalanzaGranos)
             {

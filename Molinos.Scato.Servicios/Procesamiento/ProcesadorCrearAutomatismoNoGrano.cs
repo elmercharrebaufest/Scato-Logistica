@@ -21,23 +21,18 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 CallePlanta = Repositorio.Obtener<Calle>(x => x.Id == comando.Dto.CallePlantaId),
                 CallePlayaInterna = Repositorio.Obtener<Calle>(x => x.Id == comando.Dto.CallePlayaInternaId),
-                PuntosDeCargaAsociados = comando.Dto.PuntosDeCargaId.Select(puntoId => Repositorio.ObtenerUnchanged<PuntoDeCarga>(puntoId)).ToList(),
-                AlmacenesAsociados = comando.Dto.AlmacenesId.Select(almacenId => Repositorio.ObtenerUnchanged<Almacen>(almacenId)).ToList(),
+                PuntoDeCarga = Repositorio.Obtener<PuntoDeCarga>(x => x.Id == comando.Dto.PuntoDeCargaId),
+                Almacen = Repositorio.Obtener<Almacen>(x => x.Id == comando.Dto.AlmacenId)
             };
             return AutomatismoNoGranoNuevo;
         }
 
         protected override void Validar(CrearAutomatismoNoGrano comando, Resultado resultado)
-        {
-            var puntosDeCargaIds = comando.Dto.PuntosDeCargaId;
-            var almacenesIds = comando.Dto.AlmacenesId;
-            if (
-                Repositorio.Existe<AutomatismoNoGrano>(x =>
+        { 
+            if (Repositorio.Existe<AutomatismoNoGrano>(x =>
                x.CallePlanta.Id == comando.Dto.CallePlantaId
-            && x.PuntosDeCargaAsociados.Any(puntoDeCarga => puntosDeCargaIds.Contains(puntoDeCarga.Id))
-            && x.AlmacenesAsociados.Any(almacen => almacenesIds.Contains(almacen.Id))
-                    )
-                )
+            && x.PuntoDeCarga.Id == comando.Dto.CallePlantaId
+            && x.Almacen.Id == comando.Dto.AlmacenId))
             {
                 resultado.Error("AutomatismoCombinacionExistente", Textos.Automatismo_CombinacionExistente);
             }

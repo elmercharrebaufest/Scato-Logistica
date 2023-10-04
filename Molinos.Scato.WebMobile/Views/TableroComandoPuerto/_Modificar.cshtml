@@ -31,18 +31,18 @@
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntosDeCargaAsociados)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntosDeCargaId, Model.PuntosDeCarga, new { @class = "form-control multiselect", @required = "required", multiple = "multiple" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntosDeCargaId)
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenesAsociados)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenesId, Model.Almacenes, new { @class = "form-control multiselect", @required = "required", @multiple = "multiple" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenesId)
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.Almacen)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
                 </div>
             </div>
         </div>
@@ -53,4 +53,3 @@
         <a href="@Url.Action("index","TableroComandoPuerto")" class="btn btn-secondary float-right mr-2">@Textos.Cancelar</a>
     </div>
 }
-<script src="~/Scripts/AutomatismoNoGrano.js"></script>

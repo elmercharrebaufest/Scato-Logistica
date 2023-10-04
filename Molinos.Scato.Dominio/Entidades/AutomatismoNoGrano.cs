@@ -15,10 +15,8 @@ namespace Molinos.Scato.Dominio.Entidades
 
         public virtual bool Activo { get; set; }
 
-        [InverseProperty("AutomatismoNoGranoAsociados")]
-        public virtual IList<Almacen> AlmacenesAsociados { get; set; }
+        public virtual Almacen Almacen { get; set; }
 
-        [InverseProperty("AutomatismoNoGranoAsociados")]
-        public virtual IList<PuntoDeCarga> PuntosDeCargaAsociados { get; set; }
+        public virtual PuntoDeCarga PuntoDeCarga { get; set; }
     }
 }

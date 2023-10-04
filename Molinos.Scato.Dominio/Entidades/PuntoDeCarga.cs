@@ -26,8 +26,5 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [StringLength(50)]
         public virtual string ModificadoPor { get; set; }
-
-        [InverseProperty("PuntosDeCargaAsociados")]
-        public virtual IList<AutomatismoNoGrano> AutomatismoNoGranoAsociados { get; set; }
     }
 }

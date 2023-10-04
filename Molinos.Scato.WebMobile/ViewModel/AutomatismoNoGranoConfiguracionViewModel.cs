@@ -10,7 +10,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
             PuntoDeCarga = new PuntoDeCargaDto();
             CallePlanta = new CalleDto();
         }
-
+        public bool EstadoGeneralAutomatismoNoGrano { get; set; }
         public PuntoDeCargaDto PuntoDeCarga { get; set; }
         public CalleDto CallePlanta { get; set; }
         public ListaPaginada<CalleDto> ListaCallePlanta { get; set; }

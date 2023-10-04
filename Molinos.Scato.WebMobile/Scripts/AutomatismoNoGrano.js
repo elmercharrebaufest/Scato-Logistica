@@ -108,7 +108,7 @@ function funcionModalModificarPuntoDeCarga(item) {
 //Funcion Consulta Ajax Generica para Reutilizar
 function cambiarEstadoSwitch(url, elemento) {
     let id = $(elemento).data('id');
-    let valor = $(elemento).prop('checked');
+    let valor = elemento.checked;
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -162,7 +162,7 @@ $('#automatismoGeneral').change(function (e) {
 //FUNCIONES SLIDERS
 //Funcion Detecta y Redirecciona las Consultas
 
-$('.cambia-estado').on("click", function (e) {
+$('#body').on("click", ".cambia-estado", function (e) {
     let element = e.currentTarget;
     element.checked = !element.checked;
     let identidad = $(this).data('identity');
@@ -192,13 +192,3 @@ var fnResponse = function (response) {
         MostrarAlertaExitosa("Se proceso correctamente.");
     }
 }
-
-//FUNCION ACTIVA MULTISELECT
-$(document).ready(function () {
-    $('.multiselect').multiselect({
-        includeSelectAllOption: true,
-        buttonWidth: '100%',
-        enableFiltering: true,
-        maxHeight: 450
-    });
-});
