@@ -1,10 +1,8 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 
 @{
-    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" />
-<script src="~/Scripts/bootstrap-multiselect.js"></script>
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
 <script>
     urlModificarCallePlanta = '@Url.Action("ModificarCallePlanta", "TableroComandoPuerto")';
@@ -12,6 +10,7 @@
     urlActualizarEstadoCallePlanta = '@Url.Action("ActualizarEstadoCallePlanta", "TableroComandoPuerto")';
     urlActualizarEstadoAlmacen = '@Url.Action("ActualizarEstadoAlmacen", "TableroComandoPuerto")';
     urlActualizarEstadoPuntoDeCarga = '@Url.Action("ActualizarEstadoPuntoDeCarga", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoPuerto")';
 </script>
 <div style="text-align:center">
     <h2 class="titulo-center">@Textos.TableroComandoPuerto_Panel</h2>
@@ -25,6 +24,13 @@
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link active" })
+                </li>
+                <li class="nav-item ml-auto">
+                    <label class="switch">
+                        <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="mr-2">Automatismo General</span>
                 </li>
             </ul>
             <div class="tab-content overflow-auto">

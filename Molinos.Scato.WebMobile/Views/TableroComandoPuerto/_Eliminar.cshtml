@@ -1,7 +1,7 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.Dominio.Dto
 @model AutomatismoNoGranoDto
-    <!--IncluirMIJS-->
+
 @using (Ajax.BeginForm("Eliminar", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => model.Id)

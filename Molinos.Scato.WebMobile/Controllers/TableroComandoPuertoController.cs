@@ -8,8 +8,10 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
+using Molinos.Scato.WebMobile.Helpers.Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.WebMobile.ViewModel;
 using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -79,36 +81,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             model.CallesPlayaInterna = new List<SelectListItem> { new SelectListItem { Text = automatismo.CallePlayaInterna.Nombre, Value = automatismo.CallePlayaInterna.Id.ToString(), Selected = true } };
             automatismo.CallePlantaId = automatismo.CallePlanta.Id;
             automatismo.CallePlayaInternaId = automatismo.CallePlayaInterna.Id;
-            var AlmacenesIds = automatismo.AlmacenesAsociados
-                 .Select(x => x.Id)
-                 .ToList();
-            var PuntosDeCargaIds = automatismo.PuntosDeCargaAsociados
-                 .Select(x => x.Id)
-                 .ToList();
-            var almacenes = servicio.ListarAlmacenes();
-            var puntos = servicio.ListarPuntoDeCarga();
-            var almacenesSeleccionados = new List<SelectListItem>();
-            var puntosSeleccionados = new List<SelectListItem>();
-            foreach (var almacen in almacenes)
-            {
-                var opcion = new SelectListItem { Text = almacen.Descripcion, Value = almacen.Id.ToString() };
-                if (AlmacenesIds.Contains(almacen.Id))
-                {
-                    opcion = new SelectListItem { Text = almacen.Descripcion, Value = almacen.Id.ToString(), Selected = true };
-                }
-                almacenesSeleccionados.Add(opcion);
-            }
-            model.Almacenes = almacenesSeleccionados;
-            foreach (var punto in puntos)
-            {
-                var opcion = new SelectListItem { Text = punto.Descripcion, Value = punto.Id.ToString() };
-                if (PuntosDeCargaIds.Contains(punto.Id))
-                {
-                    opcion = new SelectListItem { Text = punto.Descripcion, Value = punto.Id.ToString(), Selected = true };
-                }
-                puntosSeleccionados.Add(opcion);
-            }
-            model.PuntosDeCarga = puntosSeleccionados;
+            automatismo.AlmacenId = automatismo.Almacen.Id;
+            automatismo.PuntoDeCargaId = automatismo.PuntoDeCarga.Id;
             model.AutomatismoNoGrano = automatismo;
             return PartialView("_Modificar", model);
         }
@@ -178,8 +152,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                  .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
                  .ToList();
             var almacenes = servicio.ListarAlmacenesActivosAutomatismoNoGrano();
-            var prehidraulicas = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
-            model.PuntosDeCarga = prehidraulicas
+            var puntos = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
+            model.PuntosDeCarga = puntos
                  .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList();
             model.Almacenes = almacenes
@@ -225,6 +199,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             model.ListaCallePlanta = listaPaginadaCallePlanta;
             model.ListaPuntoDeCarga = listaPaginadaPuntoDeCarga;
             model.ListaAlmacen = listaPaginadaAlmacen;
+            model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
             return model;
         }
 
@@ -309,7 +284,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             almacen.EstadoAutomatismo = nuevoEstado;
             if (!nuevoEstado)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.AlmacenesAsociados.Select(c => c.Id).ToList().Contains(almacen.Id) && x.Activo);
+                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.Almacen.Id==almacen.Id && x.Activo);
                 var incluidoEnAutomatismoGrano = servicio.ListarAutomatismoGrano().Any(x => x.AlmacenId == almacen.Id && x.Activo);
                 if (!incluidoEnAutomatismoGrano && !incluidoEnAutomatismoNoGrano)
                 {
@@ -344,7 +319,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             punto.EstadoAutomatismo = nuevoEstado;
             if (!nuevoEstado)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.PuntosDeCargaAsociados.Select(c => c.Id).ToList().Contains(punto.Id) && x.Activo);
+                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.PuntoDeCarga.Id==punto.Id && x.Activo);
 
                 if (!incluidoEnAutomatismoNoGrano)
                 {

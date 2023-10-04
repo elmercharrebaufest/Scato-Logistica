@@ -21,10 +21,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsSojaSustentable { get; set; }
         public virtual ICollection<Material> Materiales { get; set; }
         public virtual bool EPA { get; set; }
-
-        [InverseProperty("AlmacenesAsociados")]
-        public virtual IList<AutomatismoNoGrano> AutomatismoNoGranoAsociados { get; set; }
-
         public virtual bool? EstadoAutomatismo { get; set; }
     }
 }

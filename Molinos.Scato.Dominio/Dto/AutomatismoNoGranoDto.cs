@@ -25,31 +25,15 @@ namespace Molinos.Scato.Dominio.Dto
         public bool Activo { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
-        public List<PuntoDeCargaDto> PuntosDeCargaAsociados { get; set; }
-
-        public string ListaPuntosDeCarga
-        {
-            get
-            {
-                return String.Join(",", this.PuntosDeCargaAsociados.ToList().Select(x => x.Descripcion));
-            }
-        }
+        public PuntoDeCargaDto PuntoDeCarga { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
-        public List<int> PuntosDeCargaId { get; set; }
+        public int PuntoDeCargaId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
-        public List<AlmacenDto> AlmacenesAsociados { get; set; }
-
-        public string ListaAlmacenes
-        {
-            get
-            {
-                return String.Join(",", this.AlmacenesAsociados.ToList().Select(x => x.Descripcion));
-            }
-        }
+        public AlmacenDto Almacen { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
-        public List<int> AlmacenesId { get; set; }
+        public int AlmacenId { get; set; }
     }
 }

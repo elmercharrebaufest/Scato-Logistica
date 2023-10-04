@@ -574,8 +574,6 @@
     <Compile Include="Procesamiento\ProcesadorModificarComercial.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearComercial.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAutomatismoGranos.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearAutomatismoNoGranoPuntoDeCarga.cs" />
-    <Compile Include="Procesamiento\ProcesadorCrearAutomatismoNoGranoAlmacen.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAutomatismoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearExcepcionAlControlProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDG.cs" />
@@ -589,8 +587,6 @@
     <Compile Include="Procesamiento\ProcesadorCrearAltaCTGDG.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearClienteProvisorio.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoNoGrano.cs" />
-    <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoNoGranoAlmacen.cs" />
-    <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoNoGranoPuntoDeCarga.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarMuestrasFueraDeFecha.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarCallePreBalanzaPlayaInterna.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearCallePreBalanzaPlayaInterna.cs" />
