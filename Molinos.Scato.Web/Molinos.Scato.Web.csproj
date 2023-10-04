@@ -922,7 +922,6 @@
     <Content Include="ApplicationInsights.QA.config" />
     <Content Include="ApplicationInsights.PRD.config" />
     <Content Include="ApplicationInsights.config" />
-    <Content Include="ApplicationInsights.UAT.config" />
     <None Include="Scripts\jquery-1.11.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.0.js" />
     <Content Include="Scripts\jquery-1.11.0.min.js" />
@@ -1182,10 +1181,6 @@
     <Content Include="Scripts\conversionMaterial.js" />
     <Content Include="Scripts\usuario.CrearModificar.js" />
     <Content Include="Scripts\vagon.js" />
-    <Content Include="ASVWUSCATO00.DeployParameters.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="VICSCATOQA.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
