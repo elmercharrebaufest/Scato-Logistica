@@ -1,7 +1,9 @@
 ﻿using Hangfire;
+using Hangfire.Dashboard;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Molinos.Scato.Web.App_Start;
+using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Jobs;
 using Owin;
 using System.Configuration;
@@ -19,7 +21,12 @@ namespace Molinos.Scato.Web.App_Start
             app.MapSignalR();
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
-            app.UseHangfireDashboard();
+
+            var dashboarOptions = new DashboardOptions
+            {
+                Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
+            };
+            app.UseHangfireDashboard("/hangfire", dashboarOptions);
             app.UseHangfireServer();
 
             new HangfireJobs().InicializarJobs();
