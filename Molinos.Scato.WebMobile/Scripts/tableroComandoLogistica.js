@@ -66,27 +66,7 @@
         });
     });
 
-    $('#listarAutomatismo').on("click", ".cambio-tipo",function (e) {
-        var nombreCampo = $(this).data('field');
-        let element = e.currentTarget;
-        element.checked = !element.checked;
-        if (nombreCampo == 'EsPasoDirecto') {
-            ModificarPasoDirecto(element);
-        } else if (nombreCampo == 'Activo') {
-            ModificarLlamadoVolcable(element);
-        } else if (nombreCampo == 'ActivoAutomaticoPB') {
-            ModificarEstadoPreBalanza(element);
-        } else if (nombreCampo == 'ActivoAutomaticoPH') {
-            ModificarEstadoPreHidraulica(element);
-        } else if (nombreCampo == 'ActivoAutomaticoH') {
-            if (!element.checked === false) {
-                ValidarEstadoHidraulica(element);
-            }
-            else {
-                ModificarEstadoHidraulica(element);
-            }
-        }
-    });
+    bindearChecksAutomatismo();
 
     $('.columna-checkbox').on("click", function (e) {
         var nombreCampo = $(this).prop('name');
@@ -151,6 +131,7 @@ function recargarListaAutomatismos() {
         url: urlListarAutomatismoGrano,
         success: function (listaActualizada) {
             $("#listarAutomatismo").html(listaActualizada);
+            bindearChecksAutomatismo();
         }
     });
 }
@@ -542,6 +523,30 @@ function cambiarEstadoSwitch(url, elemento) {
         },
         complete: function () {
             $.unblockUI();
+        }
+    });
+}
+
+function bindearChecksAutomatismo() {
+    $(".cambio-tipo").on("click", function (e) {
+        var nombreCampo = $(this).data('field');
+        let element = e.currentTarget;
+        element.checked = !element.checked;
+        if (nombreCampo == 'EsPasoDirecto') {
+            ModificarPasoDirecto(element);
+        } else if (nombreCampo == 'Activo') {
+            ModificarLlamadoVolcable(element);
+        } else if (nombreCampo == 'ActivoAutomaticoPB') {
+            ModificarEstadoPreBalanza(element);
+        } else if (nombreCampo == 'ActivoAutomaticoPH') {
+            ModificarEstadoPreHidraulica(element);
+        } else if (nombreCampo == 'ActivoAutomaticoH') {
+            if (!element.checked === false) {
+                ValidarEstadoHidraulica(element);
+            }
+            else {
+                ModificarEstadoHidraulica(element);
+            }
         }
     });
 }
