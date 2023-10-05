@@ -85,7 +85,7 @@
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.AutomatismoGrano.AlmacenId)
-                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-control" })
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-control", id = "cboxAlmacenes" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.AlmacenId)
                     </div>
                 </div>

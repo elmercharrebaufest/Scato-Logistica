@@ -268,6 +268,22 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(resultado, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [AjaxOnly]
+        public JsonResult ListarAlmacenesPorMaterial(int materialId)
+        {
+            var almacenes = servicio.ListarAlmacenesPorMaterial(ObteneerIdCentro(), materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
+
+            var resultado = almacenes.Select(m => new SelectListItem
+            {
+                Value = m.Id.ToString(),
+                Text = m.Descripcion
+            }).ToList();
+            resultado.Insert(0, new SelectListItem { Value = "", Text = Textos.Default_Almacen });
+
+            return Json(resultado, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ActualizarEstadoAutomatismoGeneral(bool nuevoEstado)
         {
             var jsonResult = new JsonResult { Data = new MensajeEstandarDto(), JsonRequestBehavior = JsonRequestBehavior.AllowGet };

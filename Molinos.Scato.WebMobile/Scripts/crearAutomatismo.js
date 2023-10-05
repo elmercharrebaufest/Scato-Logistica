@@ -39,6 +39,8 @@
         if ($('#AutomatismoGrano_AplicaFiltroCalidad').val()) {
             obtenerCalidadPorMaterial(materialId)
         }
+
+        obtenerAlmacenesPorMaterial(materialId);
     });
 
     $('.esEscalableCheck').change(function () {
@@ -124,6 +126,19 @@ function obtenerCalidadPorMaterial(materialId) {
             $("#AutomatismoGrano_CalidadId").empty();
             $.each(calidades, function (indice, calidad) {
                 $("#AutomatismoGrano_CalidadId").append("<option value='" + calidad.Value + "'>" + calidad.Text + "</option>");
+            });
+        }
+    });
+}
+
+function obtenerAlmacenesPorMaterial(materialId) {
+    $.ajax({
+        url: urlObtenerAlmacenes,
+        data: { materialId: materialId },
+        success: function (almacenes) {
+            $("#cboxAlmacenes").empty();
+            $.each(almacenes, function (indice, almacen) {
+                $("#cboxAlmacenes").append("<option value='" + almacen.Value + "'>" + almacen.Text + "</option>");
             });
         }
     });
