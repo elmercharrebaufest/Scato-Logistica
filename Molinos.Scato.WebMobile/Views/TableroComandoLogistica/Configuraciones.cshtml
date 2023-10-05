@@ -10,7 +10,7 @@
 @model AutomatismoGranosViewModel
 @{
     ViewBag.Title = Textos.TableroComandoLogistica_Titulo;
-    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var model = Model.ListaAutomatismoGrano;
 }
 
@@ -34,6 +34,8 @@
     urlCambiarEstadoCamionEscalable = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
     urlActualizarEstadoHidraulica = '@Url.Action("ActualizarEstadoHidraulica", "TableroComandoLogistica")';
     urlActualizarEsEscalableHidraulica = '@Url.Action("ActualizarEsEscalableHidraulicas", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
 </script>
 
 <div style="text-align:center">
@@ -48,6 +50,25 @@
                 </li>
                 <li class="nav-item active">
                     @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link active" })
+                </li>
+
+                <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                    <div class="d-flex flex-column align-items-start flex-md-row">
+                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                            <label class="switch">
+                                <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "") @if (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))) { @Html.Raw("disabled") ; }>
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                        </div>
+                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                            <label class="switch">
+                                <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")>
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="ml-2 mr-md-2 mt-1">Automatismo General</span>
+                        </div>
+                    </div>
                 </li>
             </ul>
 

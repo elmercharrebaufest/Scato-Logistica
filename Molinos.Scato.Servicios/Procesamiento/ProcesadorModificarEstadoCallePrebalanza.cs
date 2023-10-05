@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -22,7 +23,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(ModificarEstadoCallePrebalanza comando, Resultado resultado)
         {
-            if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Id && a.Activo == true))
+            var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos && x.CentroId == null);
+            if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Id && a.Activo == true) || configuracion.Valor.Equals("True"))
             {
                 resultado.Error("IdPreBalanza", Textos.Automatismo_IdCalle);
             }
