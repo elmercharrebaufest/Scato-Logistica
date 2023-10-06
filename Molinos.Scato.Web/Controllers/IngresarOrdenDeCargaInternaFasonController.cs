@@ -392,13 +392,17 @@ namespace Molinos.Scato.Web.Controllers
 
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var client = new RestClient(url);
-            var request = new RestRequest(resource, Method.GET);
+            client.Timeout = 30000;
+            client.UserAgent = "ScatoLogistica RestSharp v106";
+            var request = new RestRequest("/externalApi/external/api/" + resource, Method.GET);
             request.AddHeader("X-Api-Key", token);
 
             if (!string.IsNullOrWhiteSpace(patente))
                 request.AddParameter("patenteChasis", patente);
 
-            var restResponse = client.Get(request);
+
+            var restResponse = client.Execute(request);
+
 
             if (restResponse.StatusCode == HttpStatusCode.OK)
             {
