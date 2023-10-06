@@ -27,7 +27,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
                     MostrarAlertaError(data.Mensajes[0].Mensaje);
                 } else {
                     cachedOrdenDeCargaOperaciones = data.Data;
-/*                    $("#NumeroOrden").append($("<option></option>").attr("value", null).text("Seleccionar"));*/
+                    $("#NumeroOrden").append($("<option></option>").attr("value", "0").text("(Seleccionar)"));
                     $.each(data.Data, function (key, value) {
                         $("#NumeroOrden").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
                     });
@@ -52,56 +52,57 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 function seleccionarOrdenDeCargaOperaciones() {
     var ddlNumeroOrden = $("#NumeroOrden");
     var selectedElement = cachedOrdenDeCargaOperaciones.filter(x => x.Id == ddlNumeroOrden.val())[0]
-    BlockUI();
-    $.ajax({
-        url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
-        dataType: 'json',
-        data: {
-            clienteCUIT: selectedElement.CUITCliente,
-            transportistaCUIT: selectedElement.CUITTransporte,
-            patente: selectedElement.PatenteChasis,
-            acoplado: selectedElement.PatenteAcoplado,
-            materialSAP: selectedElement.CodigoProducto
-        },
-        type: "GET",
-        success: function (data) {
 
-            if (data.TieneAdvertencias) {
-                MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
-            }
-
-            if (!data.EsValido) {
-                MostrarAlertaError(data.Mensajes[0].Mensaje);
-            } else {
-               
-
-                $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
-
-                $("#ClienteId").val(data.Data.ClienteId);
-                $("#Cliente").val(data.Data.ClienteDescripcion);
-
-                $("#TransportistaId").val(data.Data.TransportistaId);
-                $("#Transportista").val(data.Data.TransportistaDescripcion);
-       
+    if (ddlNumeroOrden[0].value !== '0') {
+        BlockUI();
+        $.ajax({
+            url: $('#links').data().urlObtenerOrdenDeCargaOperacionesSeleccionada,
+            dataType: 'json',
+            data: {
+                clienteCUIT: selectedElement.CUITCliente,
+                transportistaCUIT: selectedElement.CUITTransporte,
+                patente: selectedElement.PatenteChasis,
+                acoplado: selectedElement.PatenteAcoplado,
+                materialSAP: selectedElement.CodigoProducto
                 
-                $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
-                $("#MaterialId").val(data.Data.MaterialId);
+            },
+            type: "GET",
+            success: function (data) {
 
-                $("#TipoVehiculo").val(data.Data.TipoDeVehiculo);
+                if (data.TieneAdvertencias) {
+                    MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+                }
 
-                $("#KmARecorrer").val(selectedElement.KmARecorrer);
+                if (!data.EsValido) {
+                    MostrarAlertaError(data.Mensajes[0].Mensaje);
+                } else {
 
-                let $element = $("#Chofer_Cuil");
-                $element.trigger('focusout');
-                
+
+                    $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
+
+                    $("#ClienteId").val(data.Data.ClienteId);
+                    $("#Cliente").val(data.Data.ClienteDescripcion);
+
+                    $("#TransportistaId").val(data.Data.TransportistaId);
+                    $("#Transportista").val(data.Data.TransportistaDescripcion);
+
+
+                    $("#Chofer_Cuil").val(convertirCuil(selectedElement.CUILChofer));
+                    $("#MaterialId").val(data.Data.MaterialId);
+
+                    $("#TipoVehiculo").val(data.Data.TipoDeVehiculo);
+
+                    $("#KmARecorrer").val(selectedElement.KmARecorrer);
+
+                    let $element = $("#Chofer_Cuil");
+                    $element.trigger('focusout');
+
+                }
+            }, complete: function () {
+                $.unblockUI();
             }
-        }, complete: function () {
-            $.unblockUI();
-        }
-    });
-
-
- 
+        });
+    }
 };
 
 function limpiarCamposOrdenDeCargaOperaciones() {
