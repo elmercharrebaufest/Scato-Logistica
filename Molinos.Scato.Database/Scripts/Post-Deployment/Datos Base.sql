@@ -461,12 +461,12 @@ IF NOT EXISTS (select 1 from TipoComprobanteOncca where Descripcion = 'Comproban
 IF NOT EXISTS (select 1 from TipoComprobanteOncca where Descripcion = 'Otros') BEGIN insert into TipoComprobanteOncca(Descripcion, CodigoOncca) values ('Otros', '04'); END
 
 --Tipo Vehículo
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Camión') BEGIN insert into TipoVehiculo(Id, Descripcion) values (0, 'Camión'); END
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Tren') BEGIN insert into TipoVehiculo(Id, Descripcion) values (1, 'Tren'); END
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Bitren B') BEGIN insert into TipoVehiculo(Id, Descripcion) values (2, 'Bitren B'); END
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Camión C(55,5)') BEGIN insert into TipoVehiculo(Id, Descripcion) values (3, 'Camión C(55,5)'); END
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Camión D(52,5)') BEGIN insert into TipoVehiculo(Id, Descripcion) values (4, 'Camión D(52,5)'); END
-IF NOT EXISTS (select 1 from TipoVehiculo where Descripcion = 'Camión E(49,5)') BEGIN insert into TipoVehiculo(Id, Descripcion) values (5, 'Camión E(49,5)'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 0) BEGIN insert into TipoVehiculo(Id, Descripcion) values (0, 'Camión'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 1) BEGIN insert into TipoVehiculo(Id, Descripcion) values (1, 'Tren'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 2) BEGIN insert into TipoVehiculo(Id, Descripcion) values (2, 'Bitren B'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 3) BEGIN insert into TipoVehiculo(Id, Descripcion) values (3, 'Camión C(55,5)'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 4) BEGIN insert into TipoVehiculo(Id, Descripcion) values (4, 'Camión D(52,5)'); END
+IF NOT EXISTS (select 1 from TipoVehiculo where Id = 5) BEGIN insert into TipoVehiculo(Id, Descripcion) values (5, 'Camión E(49,5)'); END
 
 
 --Tipo Pesada
