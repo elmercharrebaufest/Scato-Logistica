@@ -4,7 +4,7 @@
 @using Molinos.Scato.Dominio.Consultas
 @using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Seguridad;
-﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.Helpers
 @using Molinos.Scato.WebMobile.ViewModel
 @model AutomatismoGranosViewModel
 
@@ -13,7 +13,7 @@
             grilla.ColumnaEliminarModificarModal(Html, "TableroComandoLogistica") :
             (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))) ?
                 grilla.Column("", "", c => @Html.Raw("")) :
-                grilla.ColumnaModificar(Html, "TableroComandoLogistica"),
+                grilla.ColumnaModificarModalEntidad(Html, "TableroComandoLogistica"),
         grilla.Column("CallePBDescripcion", "Calle PB"),
         grilla.Column("CallePHDescripcion", "Calle PH"),
         (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
@@ -22,7 +22,7 @@
         PermisosHelper.Is(PermisosScato.SupervisorLogistica) ?
             grilla.ColumnaSwitch("Activo", "Llamado a Volcable") :
             (PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
-                grilla.Columna("Activo", "Automatismo", c => FormattingHtmlHelper.Formatted(c.Automatico)) :
+                grilla.Columna("Activo", "Llamado a Volcable", c => FormattingHtmlHelper.Formatted(c.Activo)) :
                 grilla.Column("", "", c => @Html.Raw("")),
         grilla.Column("MaterialDescripcion", "Material"),
         grilla.Column("VariedadDescripcion", "Variedad"),

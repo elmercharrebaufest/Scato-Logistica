@@ -85,7 +85,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -128,7 +128,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -145,6 +145,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_ModificarAutomatismo", model);
         }
 
+        [HttpPost]
         public ActionResult Modificar(AutomatismoGranosViewModel model)
         {
             if (model.AutomatismoGrano.AplicaFiltroCalidad && model.AutomatismoGrano.CalidadId == null)
@@ -179,7 +180,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Debe completar todos los campos requeridos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
-            return Json(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -214,7 +215,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -249,7 +250,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta);
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

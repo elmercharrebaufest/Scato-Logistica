@@ -51,48 +51,47 @@
                     @Html.ActionLink(Textos.Panel, "Index", "TableroComandoLogistica", null, new { @class = "nav-link active" })
                 </li>
                 <li class="nav-item">
-                    @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                    @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
                     {
                         @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link" })
                     }
                 </li>
-
-                <li class="nav-item ml-md-auto ml-3 mt-md-1">
-                    <div class="d-flex flex-column align-items-start flex-md-row">
-                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
-                            <label class="switch">
-                                <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "") @if (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))) { @Html.Raw("disabled") ; }>
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                
+                    <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                        <div class="d-flex flex-column align-items-start flex-md-row">
+                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))
+                            {
+                                <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                    <label class="switch">
+                                        <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "") @if (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))) { @Html.Raw("disabled") ; }>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                                </div>
+                            }
+                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                            {
+                                <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                    <label class="switch">
+                                        <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "") @(PermisosHelper.Is(PermisosScato.GaritaIngreso) ? " disabled" : "")>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="ml-2 mr-md-2 mt-1">Automatismo General</span>
+                                </div>
+                            }
                         </div>
-                        <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
-                            <label class="switch">
-                                <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")>
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="ml-2 mr-md-2 mt-1">Automatismo General</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                
+                </ul>
 
             <div class="tab-content overflow-auto">
-                @{
-                    string clasesNuevo = "btn m-2 float-right rounded-bottom";
-                    if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
-                    {
-                        clasesNuevo += " btn-success";
-                    }
-                    else
-                    {
-                        clasesNuevo += " btn-secondary disabled";
-                    }
-                }
                 <div class="col-12">
-                    <button type="button" class="@clasesNuevo" id="nuevoAutomatismo">Nuevo Automatismo</button>
+                    <button type="button" class="@(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)?"btn m-2 float-right rounded-bottom btn-success":"btn m-2 float-right rounded-bottom btn-secondary")" 
+                            @(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)?"":" disabled ")
+                            id="nuevoAutomatismo">Nuevo Automatismo
+                    </button>
                 </div>
-                <div id="panel" class="tab-pane fade show active">
+                <div id="panel" class="tab-pane fade show active mt-2">
                     <div id="listarAutomatismo" data-grid-url="@Url.Action("Index")">
                         @Html.Partial("_ListarPanel")
                     </div>
