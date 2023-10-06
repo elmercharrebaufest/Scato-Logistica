@@ -55,6 +55,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsPasoDirecto { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Hidraulica")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public List<int> Hidraulicas { get; set; }
 
         public string MaterialDescripcion { get; set; }
