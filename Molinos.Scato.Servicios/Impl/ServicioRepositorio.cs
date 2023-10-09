@@ -10709,6 +10709,8 @@ namespace Molinos.Scato.Servicios.Impl
             var lista = repositorio.Listar<AutomatismoGrano>(includes);
             var automatismos = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista);
 
+            automatismos.Where(atomatismo => String.IsNullOrEmpty(atomatismo.VariedadDescripcion)).ToList().ForEach(atomatismoVariedad => atomatismoVariedad.VariedadDescripcion = Textos.Variedad_Estandar);
+
             return automatismos;
         }
 
