@@ -137,6 +137,10 @@ function recargarListaAutomatismos() {
 }
 
 function funcionModalModificarCallePreBalanza(idCalle) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         url: urlModificarCallePB,
         data: { id: idCalle },
@@ -148,11 +152,18 @@ function funcionModalModificarCallePreBalanza(idCalle) {
             $("#modalModificarPreBalanza").modal("show");
         },
         error: function (error) {
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
 
 function funcionModalModificarCallePreHidraulica(idCalle) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         url: urlModificarCallePH,
         data: { id: idCalle },
@@ -164,6 +175,9 @@ function funcionModalModificarCallePreHidraulica(idCalle) {
             $("#modalModificarPreHidraulica").modal("show");
         },
         error: function (error) {
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
