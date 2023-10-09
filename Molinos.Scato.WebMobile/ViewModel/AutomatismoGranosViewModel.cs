@@ -44,7 +44,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
             Materiales = MapearMateriales(servicio.ListarMaterialGranoPorCentro(idCentro, true).Where(m => m.MostrarEnWebMobile).ToList(), dto.MaterialId);
             Variedades = MapearVariedades(servicio.ListarTipoVariedadPorMaterial(dto.MaterialId).Where(c => !c.Borrado).ToList(), dto.TipoVariedadId ?? 0);
             CallesPreBalanza = MapearCallesPreBalanzas(callesPrebalanza.Where(c => c.ActivoAutomatico == true).ToList(), dto.CallePreBalanzaId);
-            Almacenes = MapearAlmacenes(servicio.ListarAlmacenesPorCentro(idCentro), dto.AlmacenId);
+            Almacenes = dto.MaterialId > 0 ? MapearAlmacenes(servicio.ListarAlmacenesPorMaterial(idCentro, dto.MaterialId), dto.AlmacenId) : MapearAlmacenes(servicio.ListarAlmacenesPorCentro(idCentro), dto.AlmacenId);
             Hidraulicas = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), AutomatismoGrano.Hidraulicas);
             Calidades = MapearCalidades(servicio.ListarCaracteristicasDeCalidadPorMaterial(dto.MaterialId, idCentro), dto.CalidadId ?? 0);
             CallesHidraulica = MapearCallesPreHidraulicas(callesHidraulica.Where(c => c.ActivoAutomatico == true).ToList(), dto.CallePreHidraulicaId);
