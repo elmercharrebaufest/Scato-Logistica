@@ -45,6 +45,9 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int? MaterialId { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "Variedad")]
+        public int? TipoVariedadId { get; set; }
+
         [Display(ResourceType = typeof(Textos), Name = "Workflow_SoloNoAsignados")]
         public bool SoloNoAsignados { get; set; }
 

@@ -116,6 +116,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
                 ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
                 ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
+                ViewBag.Variedades = servicio.ListarTipoVariedad().ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             }
         }
 

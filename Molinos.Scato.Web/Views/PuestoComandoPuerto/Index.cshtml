@@ -10,7 +10,8 @@
     var tiposComerciales = (IEnumerable<SelectListItem>)ViewBag.TiposComerciales;
     var calidades = (IEnumerable<SelectListItem>)ViewBag.Calidades;
     var tipoVehiculo = new List<SelectListItem>();
-    var materialesSelectList = (IEnumerable<SelectListItem>)ViewBag.MaterialesFiltrados;    
+    var materialesSelectList = (IEnumerable<SelectListItem>)ViewBag.MaterialesFiltrados;
+    var variedades = (IEnumerable<SelectListItem>)ViewBag.Variedades;
 }
 
 @Scripts.Render("~/bundles/jqueryval")
@@ -193,6 +194,14 @@
                                 <div class="controls">
                                     @Html.DropDownListFor(model => model.MaterialId, materialesSelectList, Textos.Default_Material, new { @class = "control", autocomplete = "off" })
                                     @Html.Hidden("filtroMaterialId", Model.MaterialId)
+                                </div>
+                            </div>
+                            <div class="control-group control-group-puesto-comando">
+                                @Html.LabelFor(model => model.TipoVariedadId, new { @class = "wsmall" })
+                                <div class="controls">
+                                    @Html.DropDownListFor(model => model.TipoVariedadId, variedades, "(ninguna)", new { @class = "control", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(model => model.TipoVariedadId)
+                                    @Html.Hidden("filtroVariedadId", Model.TipoVariedadId)
                                 </div>
                             </div>
                             <div class="control-group control-group-puesto-comando">
