@@ -11,9 +11,9 @@
 @Html.Grilla(Model.ListaAutomatismoGrano, grilla => grilla.Columns(
         (PermisosHelper.Is(PermisosScato.SupervisorLogistica)) ?
             grilla.ColumnaEliminarModificarModal(Html, "TableroComandoLogistica") :
-            (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))) ?
-                grilla.Column("", "", c => @Html.Raw("")) :
-                grilla.ColumnaModificarModalEntidad(Html, "TableroComandoLogistica"),
+            (PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+                grilla.ColumnaModificarModalEntidad(Html, "TableroComandoLogistica"):
+                grilla.Column("", "", c => @Html.Raw("")),
         grilla.Column("CallePBDescripcion", "Calle PB"),
         grilla.Column("CallePHDescripcion", "Calle PH"),
         (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?

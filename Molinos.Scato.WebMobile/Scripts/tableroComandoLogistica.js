@@ -1,5 +1,10 @@
 ﻿$(document).ready(function () {
     $("#nuevoAutomatismo").click(function () {
+        $.blockUI({
+            blockMsgClass: 'blocuiBox',
+            message: 'Cargando...'
+        });
+
         $.ajax({
             url: urlCrearAutomatismo,
             success: function (result) {
@@ -10,8 +15,15 @@
                 $("#modalAutomatismo").modal("show");
             },
             error: function (error) {
+            },
+            complete: function () {
+                $.unblockUI();
             }
         });
+    });
+
+    $("#deshabilitado").click(function () {
+        MostrarAlertaError('No Posee los Permisos para realizar la Acción');
     });
 
     $('#automatismoGeneral').on("click", function (e) {
@@ -87,6 +99,11 @@
 var popupComandoLogistica;
 
 function funcionModalModificarTableroComandoLogistica(idAutomatismo) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
+
     $.ajax({
         url: urlModificarAutomatismo,
         data: { id: idAutomatismo },
@@ -98,6 +115,9 @@ function funcionModalModificarTableroComandoLogistica(idAutomatismo) {
             $("#modalModificarAutomatismo").modal("show");
         },
         error: function (error) {
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }

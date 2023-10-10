@@ -63,8 +63,11 @@
                             {
                                 <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
                                     <label class="switch">
-                                        <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "") @if (PermisosHelper.Is(PermisosScato.PlayeroPlanta) && !(PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) || PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))) { @Html.Raw("disabled") ; }>
+                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                        <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "")
+                                               @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso)) ? @Html.Raw("") : @Html.Raw("disabled"))>
                                         <span class="slider round"></span>
+                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("</div>"))
                                     </label>
                                     <span class="ml-2 mr-md-4 mt-1">@Textos.AutomatismoLLamadoPreBalanza</span>
                                 </div>
@@ -73,8 +76,11 @@
                             {
                                 <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
                                     <label class="switch">
-                                        <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "") @(PermisosHelper.Is(PermisosScato.GaritaIngreso) ? " disabled" : "")>
+                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                        <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")
+                                               @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ? @Html.Raw("") : @Html.Raw("disabled"))>
                                         <span class="slider round"></span>
+                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div>"))
                                     </label>
                                     <span class="ml-2 mr-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
                                 </div>
@@ -86,10 +92,13 @@
 
             <div class="tab-content overflow-auto">
                 <div class="col-12">
-                    <button type="button" class="@(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)?"btn m-2 float-right rounded-bottom btn-success":"btn m-2 float-right rounded-bottom btn-secondary")" 
-                            @(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)?"":" disabled ")
-                            id="nuevoAutomatismo">Nuevo Automatismo
+                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div><div id='deshabilitado' class='float-right'>"))
+                    <button type="button" class="@(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)?"btn m-2 float-right rounded-bottom btn-success":"btn m-2 float-right rounded-bottom btn-secondary deshabilitado")"
+                            @(PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica) ? "" : " disabled ")
+                            id="nuevoAutomatismo">
+                        Nuevo Automatismo
                     </button>
+                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div></div>"))
                 </div>
                 <div id="panel" class="tab-pane fade show active mt-2">
                     <div id="listarAutomatismo" data-grid-url="@Url.Action("Index")">
@@ -150,5 +159,9 @@
 
     td, th {
         text-align: center;
+    }
+
+    .deshabilitado{
+        pointer-events:none !important;
     }
 </style>
