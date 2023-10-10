@@ -248,6 +248,7 @@
     <Content Include="Content\eficienciaCalado.css" />
     <Content Include="Content\estadoPlayaInterna.css" />
     <Content Include="Content\Images\logo-nuevo.png" />
+    <Content Include="Content\Images\Logo.png" />
     <Content Include="Content\switches.css" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\bloquearPantalla.js" />

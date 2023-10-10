@@ -81,12 +81,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_Menu");
         }
 
-        [OutputCache(Duration = 3600, Location = OutputCacheLocation.Client)]
-        public FileContentResult Logo()
-        {
-            return File(firmaProvider.ObtenerLogo(), "image/png");
-        }
-
         [AllowAnonymous]
         public string Favicon()
         {
