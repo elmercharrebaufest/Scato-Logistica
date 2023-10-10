@@ -4687,6 +4687,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La calle prebalanza ya existe en un automatismo.
+        /// </summary>
+        public static string Automatismo_CallePrebalanzaExistente {
+            get {
+                return ResourceManager.GetString("Automatismo_CallePrebalanzaExistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo.
         /// </summary>
         public static string Automatismo_CombinacionExistente {
@@ -4694,28 +4703,16 @@ namespace Molinos.Scato.Dominio.Recursos {
                 return ResourceManager.GetString("Automatismo_CombinacionExistente", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to La combinación de Material/Variedad/Filtra calidad/Camión escalable se encuentra configurada en otra automatización.
         /// </summary>
-        public static string Automatismo_ConfiguracionExistente
-        {
-            get
-            {
+        public static string Automatismo_ConfiguracionExistente {
+            get {
                 return ResourceManager.GetString("Automatismo_ConfiguracionExistente", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to La calle prebalanza ya existe en un automatismo.
-        /// </summary>
-        public static string Automatismo_CallePrebalanzaExistente
-        {
-            get
-            {
-                return ResourceManager.GetString("Automatismo_CallePrebalanzaExistente", resourceCulture);
-            }
-        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Nuevo Automatismo.
         /// </summary>
@@ -4749,6 +4746,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AutomatismoGrano_EsPasoDirecto {
             get {
                 return ResourceManager.GetString("AutomatismoGrano_EsPasoDirecto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatismo LLamado Pre Balanza.
+        /// </summary>
+        public static string AutomatismoLLamadoPreBalanza {
+            get {
+                return ResourceManager.GetString("AutomatismoLLamadoPreBalanza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatismo LLamado a Volcable.
+        /// </summary>
+        public static string AutomatismoLLamadoVolcable {
+            get {
+                return ResourceManager.GetString("AutomatismoLLamadoVolcable", resourceCulture);
             }
         }
         
@@ -14920,9 +14935,9 @@ namespace Molinos.Scato.Dominio.Recursos {
         /// <summary>
         ///   Looks up a localized string similar to Incluída en automatismo.
         /// </summary>
-        public static string EsIncluidoAutomatizmo {
+        public static string EsIncluidoAutomatismo {
             get {
-                return ResourceManager.GetString("EsIncluidoAutomatizmo", resourceCulture);
+                return ResourceManager.GetString("EsIncluidoAutomatismo", resourceCulture);
             }
         }
         
@@ -15094,6 +15109,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Estado {
             get {
                 return ResourceManager.GetString("Estado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado del automatismo.
+        /// </summary>
+        public static string EstadoAutomatismo {
+            get {
+                return ResourceManager.GetString("EstadoAutomatismo", resourceCulture);
             }
         }
         

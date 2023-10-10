@@ -10465,4 +10465,10 @@
   <data name="Automatismo_CallePrebalanzaExistente" xml:space="preserve">
     <value>La calle prebalanza ya existe en un automatismo</value>
   </data>
+  <data name="AutomatismoLLamadoPreBalanza" xml:space="preserve">
+    <value>Automatismo LLamado Pre Balanza</value>
+  </data>
+  <data name="AutomatismoLLamadoVolcable" xml:space="preserve">
+    <value>Automatismo LLamado a Volcable</value>
+  </data>
 </root>

@@ -1760,7 +1760,7 @@
     <EmbeddedResource Include="Recursos\Textos.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Textos1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Textos.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
