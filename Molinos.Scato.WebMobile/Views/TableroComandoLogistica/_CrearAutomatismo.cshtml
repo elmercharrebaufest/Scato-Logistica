@@ -55,12 +55,12 @@
                         <div class="form-group row mt-4">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", Type = "Number" })
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Minimo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", Type = "Number" })
+                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Maximo' es requerido." })
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
                             </div>
                         </div>

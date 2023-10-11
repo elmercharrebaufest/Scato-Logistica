@@ -3,10 +3,14 @@
         if (this.checked) {
             $("#divCalidad").show();
             $("#AutomatismoGrano_CalidadId").prop('required', true);
+            $("#AutomatismoGrano_Minimo").prop('required', true);
+            $("#AutomatismoGrano_Maximo").prop('required', true);
         }
         else {
             $("#divCalidad").hide();
             $("#AutomatismoGrano_CalidadId").prop('required', false);
+            $("#AutomatismoGrano_Minimo").prop('required', false);
+            $("#AutomatismoGrano_Maximo").prop('required', false);
         }
     });
 

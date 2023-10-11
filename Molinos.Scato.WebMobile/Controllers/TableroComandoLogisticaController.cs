@@ -148,10 +148,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         [HttpPost]
         public ActionResult Modificar(AutomatismoGranosViewModel model)
         {
-            if (model.AutomatismoGrano.AplicaFiltroCalidad && model.AutomatismoGrano.CalidadId == null)
-            {
-                ModelState.AddModelError("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
-            }
+            ValidarModeloCalidad(model);
 
             var respuesta = new RespuestaEstandarDto();
             if (ModelState.IsValid)
@@ -181,6 +178,15 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
 
             return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        private void ValidarModeloCalidad(AutomatismoGranosViewModel model)
+        {
+            if (model.AutomatismoGrano.AplicaFiltroCalidad)
+            {
+                if (model.AutomatismoGrano.CalidadId == 0)
+                    ModelState.AddModelError("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
+            }
         }
 
         [HttpGet]
