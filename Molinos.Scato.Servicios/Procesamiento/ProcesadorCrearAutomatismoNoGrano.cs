@@ -31,7 +31,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         { 
             if (Repositorio.Existe<AutomatismoNoGrano>(x =>
                x.CallePlanta.Id == comando.Dto.CallePlantaId
-            && x.PuntoDeCarga.Id == comando.Dto.CallePlantaId
+            && x.PuntoDeCarga.Id == comando.Dto.PuntoDeCargaId
             && x.Almacen.Id == comando.Dto.AlmacenId))
             {
                 resultado.Error("AutomatismoCombinacionExistente", Textos.Automatismo_CombinacionExistente);
