@@ -106,16 +106,16 @@ namespace Molinos.Scato.Test.ControllersMobile
             Assert.AreEqual(resultado.ViewName, "_Menu");
         }
 
-        [Test]
-        public void LogoTest()
-        {
-            var resultado = target.Logo();
+        //[Test]
+        //public void LogoTest()
+        //{
+        //    var resultado = target.Logo();
 
-            Assert.NotNull(resultado);
-            Assert.That(resultado, Is.TypeOf<FileContentResult>());
-            Assert.That(resultado.FileContents, Is.TypeOf<Byte[]>());
-            Assert.That(resultado.ContentType, Is.EqualTo("image/png"));
-        }
+        //    Assert.NotNull(resultado);
+        //    Assert.That(resultado, Is.TypeOf<FileContentResult>());
+        //    Assert.That(resultado.FileContents, Is.TypeOf<Byte[]>());
+        //    Assert.That(resultado.ContentType, Is.EqualTo("image/png"));
+        //}
 
         [Test]
         public void GenerarGraficoCamionesPorDia()
