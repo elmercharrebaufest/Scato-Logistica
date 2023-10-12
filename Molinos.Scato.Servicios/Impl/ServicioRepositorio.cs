@@ -6106,7 +6106,7 @@ namespace Molinos.Scato.Servicios.Impl
                     new DatosInstanciaWorkflowDto
                     {
                         RecorridoId = x.Id,
-                        Cuit = x.Chofer.Cuil,
+                        Cuit = x.Transportista.Cuit,
                         Id = x.InstanciaWorkflow,
                         Material = x.Material.Descripcion,
                         MaterialCodigoSap = x.Material.CodigoSAP,
