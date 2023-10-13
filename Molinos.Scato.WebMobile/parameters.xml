@@ -58,4 +58,12 @@
     <parameterEntry kind="XmlFile" scope="Web.config"
                     match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/keys/add/@thumbprint" />
   </parameter>
+
+
+  <parameter name="ServiciosScatoBinding Security Configuration">
+    <parameterEntry kind="XmlFile" scope="Web.config"
+			    match="/configuration/system.serviceModel/bindings/basicHttpBinding/binding[@name='ServiciosScatoBinding']
+                    /security/@mode" />
+  </parameter>
+	
 </parameters>
