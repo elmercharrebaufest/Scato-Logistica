@@ -7,6 +7,10 @@ var TipoMensaje = {
     Error: 2
 }
 function funcionModalCrear() {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         type: "GET",
         url: urlCrearAutomatismo,
@@ -21,11 +25,18 @@ function funcionModalCrear() {
         },
         error: function (response) {
             alert(response.responseText);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
 
 function funcionModalModificar(item) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         type: "GET",
         url: urlModificarAutomatismo,
@@ -41,11 +52,18 @@ function funcionModalModificar(item) {
         },
         error: function (response) {
             alert(response.responseText);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
 
 function funcionModalEliminar(item) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         type: "GET",
         url: urlEliminarAutomatismo,
@@ -61,11 +79,18 @@ function funcionModalEliminar(item) {
         },
         error: function (response) {
             alert(response.responseText);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
 //Configuraciones
 function funcionModalModificarCallePlanta(item) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         type: "GET",
         url: urlModificarCallePlanta,
@@ -81,11 +106,18 @@ function funcionModalModificarCallePlanta(item) {
         },
         error: function (response) {
             alert(response.responseText);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
 
 function funcionModalModificarPuntoDeCarga(item) {
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         type: "GET",
         url: urlModificarPuntoDeCarga,
@@ -101,6 +133,9 @@ function funcionModalModificarPuntoDeCarga(item) {
         },
         error: function (response) {
             alert(response.responseText);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
@@ -187,8 +222,46 @@ $('#body').on("click", ".cambia-estado", function (e) {
 var fnResponse = function (response) {
     if (response.Key != undefined && response.TipoDeMensaje != TipoMensaje.Success) {
         MostrarAlertaError(response.Mensaje);
+        switch (response.Key) {
+            case 'Automatismo':
+                recargarListaAutomatismos();
+                break;
+            case 'CallePlanta':
+                recargarListaCallePlanta();
+                break;
+            case 'PuntoDeCarga':
+                recargarListaPuntoDeCarga();
+                break;
+        }
     } else {
         $('#partialModal').modal('hide');
         MostrarAlertaExitosa("Se proceso correctamente.");
     }
+}
+
+function recargarListaAutomatismos() {
+    $.ajax({
+        url: urlListarAutomatismoNoGrano,
+        success: function (listaActualizada) {
+            $("#gridContainer").html(listaActualizada);
+        }
+    });
+}
+
+function recargarListaCallePlanta() {
+    $.ajax({
+        url: urlListarCallePlanta,
+        success: function (listaActualizada) {
+            $("#gridCallePlanta").html(listaActualizada);
+        }
+    });
+}
+
+function recargarListaPuntoDeCarga() {
+    $.ajax({
+        url: urlListarPuntoDeCarga,
+        success: function (listaActualizada) {
+            $("#gridPuntoDeCarga").html(listaActualizada);
+        }
+    });
 }

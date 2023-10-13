@@ -67,7 +67,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", model);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key="Error",Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())),TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            result.Data = new MensajeEstandarDto { Key="Automatismo",Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())),TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -103,7 +103,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            result.Data = new MensajeEstandarDto { Key = "Automatismo", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             return result;
         }
 
@@ -127,7 +127,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_Listar", model);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            result.Data = new MensajeEstandarDto { Key = "Automatismo", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -226,7 +226,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_ListarCallePlanta", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            result.Data = new MensajeEstandarDto { Key = "CallePlanta", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             return result;
         }
 
@@ -253,7 +253,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return PartialView("_ListarPuntoDeCarga", modelo);
             }
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            result.Data = new MensajeEstandarDto { Key = "PuntoDeCarga", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
             return result;
         }
@@ -394,6 +394,34 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
             return result;
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult ListarAutomatismoNoGrano()
+        {
+            AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
+            model.ListaAutomatismoNoGrano = ListarAutomatismo();
+            model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
+            return PartialView("_Listar", model);
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult ListarCallePlanta()
+        {
+            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
+            var modelo = CargarListasDeConfiguracion();
+            return PartialView("_ListarCallePlanta", modelo);
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public ActionResult ListarPuntoDeCarga()
+        {
+            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
+            var modelo = CargarListasDeConfiguracion();
+            return PartialView("_ListarPuntoDeCarga", modelo);
         }
     }
 }
