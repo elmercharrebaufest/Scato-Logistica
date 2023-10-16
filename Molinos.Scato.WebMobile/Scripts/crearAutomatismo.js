@@ -105,7 +105,7 @@ function AutomatismoVM() {
 }
 
 function guardarSuccess(response) {
-    if (response.Mensajes[0].TipoDeMensaje === 0) {
+    if (response.Mensajes[0].TipoDeMensaje === 0 || response.Mensajes[0].TipoDeMensaje === 2) {
         recargarListaAutomatismos();
     }
     ProcesarRespuestaToAlert(response, "#modalAutomatismo");
