@@ -56,7 +56,7 @@ namespace Molinos.Scato.Web.Controllers
             foreach (BalanzaPuertoDto balanza in balanzas.Where(x => !x.Administrativa))
             {
                 var ultimoRegistroBalanzaPuerto = servicio.ObtenerMayorRegistro(balanza.CodigoBalanza);
-                if (ultimoRegistroBalanzaPuerto != null && DateTime.Now.Subtract(ultimoRegistroBalanzaPuerto.Fecha) > new TimeSpan(0, 30, 0))
+                if (ultimoRegistroBalanzaPuerto != null)
                 {
                     servicioComandos.Ejecutar(new ValidarBalanzadasOrquestador { CodigoBalanza = balanza.CodigoBalanza });
                     servicioComandos.Ejecutar(new ValidarConsistenciaBalanzadas { Balanza = balanza.CodigoDispositivo, CodigoDispositivo = balanza.CodigoDispositivo, Hasta = ultimoRegistroBalanzaPuerto.Id });
