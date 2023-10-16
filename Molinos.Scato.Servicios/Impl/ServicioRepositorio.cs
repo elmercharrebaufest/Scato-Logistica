@@ -10837,5 +10837,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<HistorialMensajeCartelLed, HistorialMensajeCartelLedDto>(x => x.MensajeCartelLed.Codigo == CodigoMensajeCartelLed.LlamadoCamionNoGrano && x.Recorrido != null);
         }
+
+        public AutomatismoNoGranoDto ObtenerAutomatismoNoGranoActivoPorMaterialId(int materialId)
+        {
+            return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.CallePlanta.Material.Id == materialId && a.Activo == true);
+        }
     }
 }

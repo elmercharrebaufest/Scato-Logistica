@@ -1,8 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Recursos;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Molinos.Scato.Dominio.Dto
 {

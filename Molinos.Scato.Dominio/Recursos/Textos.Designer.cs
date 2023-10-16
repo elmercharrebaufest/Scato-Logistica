@@ -916,6 +916,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asignación Automatismo No Granos.
+        /// </summary>
+        public static string ActAsignacionAutomatismoNoGranos {
+            get {
+                return ResourceManager.GetString("ActAsignacionAutomatismoNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Asignación de Establecimiento.
         /// </summary>
         public static string ActAsignacionDeEstablecimiento {

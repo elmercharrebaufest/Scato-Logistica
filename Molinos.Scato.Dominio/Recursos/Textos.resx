@@ -10385,8 +10385,8 @@
     <value>Supervisor de Logistica</value>
   </data>
   <data name="PlayeroPlanta" xml:space="preserve">
-    	<value>Playero de Planta</value>
-  	</data>
+    <value>Playero de Planta</value>
+  </data>
   <data name="ConfirmarPaseDirecto" xml:space="preserve">
     <value>Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. Desea continuar?</value>
   </data>
@@ -10401,7 +10401,7 @@
   </data>
   <data name="Automatismo_Crear" xml:space="preserve">
     <value>Nuevo Automatismo</value>
-	</data>
+  </data>
   <data name="TableroComandoPuerto_Panel" xml:space="preserve">
     <value>Panel de Control - Comando Puerto</value>
   </data>
@@ -10470,5 +10470,8 @@
   </data>
   <data name="AutomatismoLLamadoVolcable" xml:space="preserve">
     <value>Automatismo LLamado a Volcable</value>
+  </data>
+  <data name="ActAsignacionAutomatismoNoGranos" xml:space="preserve">
+    <value>Asignación Automatismo No Granos</value>
   </data>
 </root>

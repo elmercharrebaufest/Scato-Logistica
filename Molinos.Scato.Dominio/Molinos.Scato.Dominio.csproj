@@ -90,11 +90,13 @@
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
+    <Compile Include="Comandos\CrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
     <Compile Include="Comandos\AnularCPEDGDummy.cs" />
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
+    <Compile Include="Comandos\EliminarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ModificarAutomatismoGranos.cs" />
     <Compile Include="Comandos\CrearAutomatismoHidraulicas.cs" />
     <Compile Include="Comandos\EliminarAutomatismoGranos.cs" />
@@ -964,6 +966,7 @@
     <Compile Include="Dto\ReportePesadaSeisHorasDto.cs" />
     <Compile Include="Dto\ToneladasPorDiasDto.cs" />
     <Compile Include="Dto\TurnoPuertoDto.cs" />
+    <Compile Include="Dto\AsignacionAutomatismoNoGranoEnRecorridoDto.cs" />
     <Compile Include="Dto\VagonDto.cs" />
     <Compile Include="Dto\UbicacionDeBuquePuertoDto.cs" />
     <Compile Include="Dto\ValoresPagarConMercadoPagoDto.cs" />
@@ -1120,6 +1123,7 @@
     <Compile Include="Entidades\PesosExc.cs" />
     <Compile Include="Entidades\MuestraDeInase.cs" />
     <Compile Include="Entidades\PuntoDeCarga.cs" />
+    <Compile Include="Entidades\AsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Entidades\RegistroInactividad.cs" />
     <Compile Include="Entidades\MotivoInactividad.cs" />
     <Compile Include="Entidades\MotivosDeCorte.cs" />

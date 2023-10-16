@@ -2944,6 +2944,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG);
+
+        [OperationContract]
+        AutomatismoNoGranoDto ObtenerAutomatismoNoGranoActivoPorMaterialId(int materialId);
     }
 
 }
