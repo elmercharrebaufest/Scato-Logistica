@@ -9326,7 +9326,7 @@
     <value>Balanzas Automáticas</value>
   </data>
   <data name="GestionDePlayaExterna_Titulo" xml:space="preserve">
-    <value>Gestion de Playa Externa</value>
+    <value>Gestión de Playa Externa</value>
   </data>
   <data name="EstadoDeCalle" xml:space="preserve">
     <value>Estado De Calle</value>
@@ -9431,7 +9431,7 @@
     <value>Estado De Calle - Playa Interna</value>
   </data>
   <data name="GestionDePlayaInterna_Titulo" xml:space="preserve">
-    <value>Gestiòn de Playa Interna</value>
+    <value>Gestión de Playa Interna</value>
   </data>
   <data name="ModificarCallesInternas" xml:space="preserve">
     <value>Modificar Calles Internas</value>

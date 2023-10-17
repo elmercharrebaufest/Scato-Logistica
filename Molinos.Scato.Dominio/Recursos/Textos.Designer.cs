@@ -16913,7 +16913,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gestion de Playa Externa.
+        ///   Looks up a localized string similar to Gestión de Playa Externa.
         /// </summary>
         public static string GestionDePlayaExterna_Titulo {
             get {
@@ -16922,7 +16922,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gestiòn de Playa Interna.
+        ///   Looks up a localized string similar to Gestión de Playa Interna.
         /// </summary>
         public static string GestionDePlayaInterna_Titulo {
             get {
