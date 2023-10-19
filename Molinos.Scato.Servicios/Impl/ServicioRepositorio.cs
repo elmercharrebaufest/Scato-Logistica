@@ -10653,7 +10653,7 @@ namespace Molinos.Scato.Servicios.Impl
             }
             if (calle.TipoCalle == TipoCalle.PlantaNoGranos)
             {
-                var automatismoNoGrano = Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(x => x.CallePlanta.Id == idCalle);
+                var automatismoNoGrano = repositorio.Listar<AutomatismoNoGrano>(x => x.CallePlanta.Id == idCalle).FirstOrDefault();
 
                 if (automatismoNoGrano != null)
                 {

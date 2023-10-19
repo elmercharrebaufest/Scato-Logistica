@@ -283,12 +283,17 @@ function LiberarFilePrebalanza(e) {
     });
 }
 
-function abrirModalCalle() {
-    self = this;
+$("#body").on("click",".abrirModal", function (e) {
+    self = e.currentTarget;
+    debugger
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         url: urlMostrarDetalleCalle,
         data: {
-            calleId: self.CalleId
+            calleId: self.dataset.id
         },
         type: "POST",
         success: function (result) {
@@ -299,6 +304,9 @@ function abrirModalCalle() {
         },
         error: function (error) {
             console.log(error);
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
-}
+});
