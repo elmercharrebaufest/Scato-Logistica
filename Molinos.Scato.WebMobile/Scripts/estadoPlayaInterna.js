@@ -285,7 +285,6 @@ function LiberarFilePrebalanza(e) {
 
 $("#body").on("click",".abrirModal", function (e) {
     self = e.currentTarget;
-    debugger
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
