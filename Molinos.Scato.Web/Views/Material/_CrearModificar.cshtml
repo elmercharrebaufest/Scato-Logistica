@@ -33,6 +33,12 @@
 
 }
 
+<script>
+    urlValidarVariedad = '@Url.Action("EsVariedadEnAutomatismo", "Material")';
+    infoAlertaVariedadEnAutomatismo = '@Textos.Alerta_VariedadEnAutomatismo';
+    errorAlertaVariedadEnAutomatismo = '@Textos.Error_VariedadEnAutomatismo';
+</script>
+
 <link href="~/Content/bootstrap-duallistbox.css" rel="stylesheet">
 <script type="text/javascript" src="@Url.Content("~/scripts/jquery.bootstrap-duallistbox.js")"></script>
 
@@ -570,8 +576,8 @@
                             <input type="text" data-bind="style: {'background': ColorTexto}" disabled style="border-color:black; height: 5px; width: 15px;" />
                         </td>
                         <td>
-                            <a href="#" data-bind="click: $root.removerVariedad, if:!EstaEnAutomatismo"><i class="icon-trash"></i></a>
-                            <span class="label label-important" data-toggle="tooltip" data-bind="if:EstaEnAutomatismo" title="@Textos.No_EditableLargo">@Textos.Error_NoModificable</span>
+                            <a href="#" data-bind="click: $root.removerVariedad, if:!EstaEnAutomatismo()"><i class="icon-trash"></i></a>
+                            <span class="label label-important" data-toggle="tooltip" data-bind="if:EstaEnAutomatismo()" title="@Textos.No_EditableLargo">@Textos.Error_NoModificable</span>
                         </td>
                     </tr>
                 </tbody>

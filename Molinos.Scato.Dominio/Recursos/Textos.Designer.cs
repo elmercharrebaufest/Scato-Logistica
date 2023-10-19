@@ -4030,6 +4030,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to La variedad no puede ser eliminada ya que está en automatismo..
+        /// </summary>
+        public static string Alerta_VariedadEnAutomatismo {
+            get {
+                return ResourceManager.GetString("Alerta_VariedadEnAutomatismo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Almacén.
         /// </summary>
         public static string Almacen {
@@ -14794,6 +14803,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Error_ValidarCupoYaAsignado {
             get {
                 return ResourceManager.GetString("Error_ValidarCupoYaAsignado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ocurrió un error al verificar el estado de automatismo de la variedad..
+        /// </summary>
+        public static string Error_VariedadEnAutomatismo {
+            get {
+                return ResourceManager.GetString("Error_VariedadEnAutomatismo", resourceCulture);
             }
         }
         

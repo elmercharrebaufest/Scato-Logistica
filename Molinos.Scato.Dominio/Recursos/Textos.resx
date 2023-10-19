@@ -10470,6 +10470,12 @@
   </data>
   <data name="AutomatismoLLamadoVolcable" xml:space="preserve">
     <value>Automatismo LLamado a Volcable</value>
+  </data>  
+  <data name="Alerta_VariedadEnAutomatismo" xml:space="preserve">
+    <value>La variedad no puede ser eliminada ya que está en automatismo.</value>
+  </data>
+  <data name="Error_VariedadEnAutomatismo" xml:space="preserve">
+    <value>Ocurrió un error al verificar el estado de automatismo de la variedad.</value>
   </data>
   <data name="ActAsignacionAutomatismoNoGranos" xml:space="preserve">
     <value>Asignación Automatismo No Granos</value>

@@ -356,5 +356,14 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.TodasVariedades = tipoVariedades.ToArray();
 
         }
+
+        [HttpGet]
+        [AjaxOnly]
+        public JsonResult EsVariedadEnAutomatismo(int materialId, int variedadId)
+        {
+            var variedades = servicio.ObtenerVariedadPorTipoMaterial(materialId);
+
+            return Json(variedades.Any(v => v.Id == variedadId && v.EstaEnAutomatismo), JsonRequestBehavior.AllowGet);
+        }
     }
 }

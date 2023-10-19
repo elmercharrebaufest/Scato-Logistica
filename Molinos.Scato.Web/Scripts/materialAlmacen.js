@@ -14,7 +14,7 @@ function Variedad(id) {
     this.ColorTexto = id.ColorTexto;
     this.Borrado = id.Borrado;
     this.CreadoPor = id.CreadoPor;
-    this.EstaEnAutomatismo = id.EstaEnAutomatismo;
+    this.EstaEnAutomatismo = ko.observable(id.EstaEnAutomatismo); 
    
 }
 
@@ -88,17 +88,36 @@ function CaladoPorCaracteristicaListViewModel() {
             self.variedadesSinAsignar.remove(self.selectedItemVariedad());
         }
     };
-
+    
     self.removerVariedad = function (variedad) {
-       
-        if (variedad.EsNuevo == false) {
-            variedad.FueEliminado = true;
-            self.variedadesEliminados.push(variedad);
-        }
-        self.variedadesSinAsignar.push(variedad);
-        self.variedades.remove(variedad);
+        const materialId = $("#Id").val();
+        const variedadId = variedad.Id;
+
+        $.ajax({
+            url: urlValidarVariedad,
+            type: "GET",
+            data: { materialId, variedadId },
+            success: function (esEnAutomatismo) {
+                if (!esEnAutomatismo) {
+                    if (variedad.EsNuevo == false) {
+                        variedad.FueEliminado = true;
+                        self.variedadesEliminados.push(variedad);
+                    }
+                    self.variedadesSinAsignar.push(variedad);
+                    self.variedades.remove(variedad);
+                } else {
+                    MostrarAlertaInfo(infoAlertaVariedadEnAutomatismo);
+                    variedad.EstaEnAutomatismo(true);
+                }
+            },
+            error: function () {
+                MostrarAlertaError(errorAlertaVariedadEnAutomatismo);
+            }
+        });
     };
+
 }
+
 
 
 
