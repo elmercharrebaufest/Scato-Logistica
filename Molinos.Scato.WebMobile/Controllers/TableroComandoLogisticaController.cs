@@ -174,7 +174,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             } else
             {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Debe completar todos los campos requeridos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "ERROR: Debe completar todos los campos requeridos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
             return Json(respuesta, JsonRequestBehavior.AllowGet);

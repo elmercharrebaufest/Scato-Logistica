@@ -57,12 +57,12 @@
                         <div class="form-group row mt-4">
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Minimo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Minimo' es requerido." })
+                                <input type="Number" class="control input-medium" data-val="true" data-val-number="The field Minimo must be a number." data-val-range="El campo 'Minimo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Minimo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:\,[0-9]*)?$" data-val-required="El campo 'Minimo' es requerido." id="AutomatismoGrano_Minimo" name="AutomatismoGrano.Minimo" value="@Model.AutomatismoGrano.Minimo.GetValueOrDefault().ToString("0")" novalidate="novalidate"><br />
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
-                                @Html.TextBoxFor(m => m.AutomatismoGrano.Maximo, new { @class = "form-control", Type = "Number", data_val_required = "El campo 'Maximo' es requerido." })
+                                <input type="Number" class="control input-medium" data-val="true" data-val-number="The field Maximo must be a number." data-val-range="El campo 'Maximo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Maximo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:\,[0-9]*)?$" data-val-required="El campo 'Maximo' es requerido." id="AutomatismoGrano_Maximo" name="AutomatismoGrano.Maximo" value="@Model.AutomatismoGrano.Maximo.GetValueOrDefault().ToString("0")" novalidate="novalidate"> <br />
                                 @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
                             </div>
                         </div>
