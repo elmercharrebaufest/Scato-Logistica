@@ -44,15 +44,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearAutomatismoGranos comando, Resultado resultado)
         {
+            bool validacionConfigExistente = false;
+
+            if (comando.Dto.TipoVariedadId == null)
+                validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId.Equals(comando.Dto.TipoVariedadId) && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable);
+            else if (comando.Dto.TipoVariedadId.HasValue)
+                validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable);
+
             if (Repositorio.Existe<AutomatismoGrano>(a => a.Id == comando.Dto.Id))
             {
                 resultado.Error("Id Automatismo", Textos.Automatismo_IdExistente);
             }
-            if (Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable))
+
+            if (validacionConfigExistente)
             {
                 resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_ConfiguracionExistente);
             }
-            if (Repositorio.Existe<AutomatismoGrano>( a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
+            if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
