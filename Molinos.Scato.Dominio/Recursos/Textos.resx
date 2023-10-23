@@ -10457,7 +10457,7 @@
     <value>La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo</value>
   </data>
   <data name="AccesosUtiles" xml:space="preserve">
-    <value>Accesos Ùtiles</value>
+    <value>Accesos Útiles</value>
   </data>
   <data name="Automatismo_ConfiguracionExistente" xml:space="preserve">
     <value>La combinación de Material/Variedad/Filtra calidad/Camión escalable se encuentra configurada en otra automatización</value>
