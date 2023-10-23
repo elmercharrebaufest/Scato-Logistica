@@ -1,5 +1,6 @@
 ﻿using Molinos.Scato.Dominio.Recursos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
@@ -31,5 +32,7 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Modificado_Por")]
         [StringLength(50, ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_ExcedeLargoMaximo")]
         public virtual string ModificadoPor { get; set; }
+
+        public IList<int> MaterialesId { get; set; }
     }
 }

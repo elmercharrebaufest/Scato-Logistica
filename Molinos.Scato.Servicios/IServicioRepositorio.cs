@@ -2947,6 +2947,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         AutomatismoNoGranoDto ObtenerAutomatismoNoGranoActivoPorMaterialId(int materialId);
+
+        [OperationContract]
+        int ObtenerMaterialIdPorCalleId(int calleId);
     }
 
 }

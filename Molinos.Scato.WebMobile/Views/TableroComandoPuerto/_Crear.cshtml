@@ -11,7 +11,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlanta)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, Textos.SeleccioneOpcion, new { @class = "form-control", @required = "required", @id = "ddlCallePlanta", @onchange = "dlCallePlantaOnChange(this.value)" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
                 </div>
             </div>
@@ -20,7 +20,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInterna)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, Textos.SeleccioneOpcion, new { @class = "form-control", @required = "required" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "Seleccione Opcion", new { @class = "form-control", @required = "required"})
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, Textos.SeleccioneOpcion, new { @class = "form-control multiselect", @required = "required", @id = "ddlPuntosDeCarga" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.Almacen)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "Seleccione Opcion", new { @class = "form-control", @required = "required"})
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, Textos.SeleccioneOpcion, new { @class = "form-control", @required = "required"})
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
                 </div>
             </div>

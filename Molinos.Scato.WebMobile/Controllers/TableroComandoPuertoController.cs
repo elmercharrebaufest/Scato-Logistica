@@ -423,5 +423,17 @@ namespace Molinos.Scato.WebMobile.Controllers
             var modelo = CargarListasDeConfiguracion();
             return PartialView("_ListarPuntoDeCarga", modelo);
         }
+
+        public ActionResult ObtenerPuntosDeCargaPorMaterialId(int calleId)
+        {
+
+            var materialId = servicio.ObtenerMaterialIdPorCalleId(calleId);
+
+            var prehidraulicas = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano()
+                .Where(y => y.MaterialesId.Contains(materialId));
+
+            return Json(prehidraulicas.Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
+                 .ToList(), JsonRequestBehavior.AllowGet);
+        }
     }
 }

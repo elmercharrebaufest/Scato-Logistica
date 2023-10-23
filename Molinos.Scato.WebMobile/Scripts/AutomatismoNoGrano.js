@@ -218,6 +218,28 @@ $('#body').on("click", ".cambia-estado", function (e) {
     }
 });
 
+function dlCallePlantaOnChange(e) {
+    var selectedCalleId = e;
+
+    $.ajax({
+        url: urlObtenerPuntosDeCargaPorMaterialId,
+        data: { calleId: selectedCalleId },
+        success: function (puntosDeCarga) {
+
+            $('#ddlPuntosDeCarga')
+                .find('option')
+                .remove();
+            var ddlPuntosDeCarga = $("#ddlPuntosDeCarga");
+
+            $.each(puntosDeCarga, function (indice, puntoDeCarga) {
+                ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
+            });
+
+        }
+    });
+
+}
+
 //FUNCIONES DE RESPUESTA
 var fnResponse = function (response) {
     if (response.Key != undefined && response.TipoDeMensaje != TipoMensaje.Success) {

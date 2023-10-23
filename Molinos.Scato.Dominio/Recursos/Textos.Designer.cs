@@ -27655,6 +27655,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seleccione Opción.
+        /// </summary>
+        public static string SeleccioneOpcion {
+            get {
+                return ResourceManager.GetString("SeleccioneOpcion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (seleccione un Servidor).
         /// </summary>
         public static string SeleccioneUnServidor {

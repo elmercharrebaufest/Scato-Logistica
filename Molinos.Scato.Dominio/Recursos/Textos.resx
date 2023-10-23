@@ -10480,4 +10480,7 @@
   <data name="ActAsignacionAutomatismoNoGranos" xml:space="preserve">
     <value>Asignación Automatismo No Granos</value>
   </data>
+  <data name="SeleccioneOpcion" xml:space="preserve">
+    <value>Seleccione Opción</value>
+  </data>
 </root>

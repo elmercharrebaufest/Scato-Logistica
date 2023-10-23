@@ -292,7 +292,7 @@ namespace Molinos.Scato.Web.Controllers
             ViewBag.Calles = servicio.ListarCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             ViewBag.Balanzas = servicio.ListarBalanzasActivas(datosUsuario.CentroId, TipoVehiculo.Camión).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
             var almacenes = materialId.HasValue ? servicio.ListarAlmacenesPorMaterialFiltrado(materialId.GetValueOrDefault(0)) : null;
-            ViewBag.PuntoDeCarga = servicio.ListarPuntoDeCarga().Where(x => x.Borrado == false).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
+            ViewBag.PuntoDeCarga = servicio.ListarPuntoDeCarga().Where(x => x.Borrado == false && x.MaterialesId.Contains(materialId.GetValueOrDefault(0))).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             ViewBag.Almacenes = almacenes.ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
         }
 
