@@ -61,6 +61,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
+
+            if (comando.Dto.TipoVariedadId != null && !Repositorio.Existe<TipoVariedadPorMaterial>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId))
+            {
+                resultado.Error("Material Variedad No Existe", Textos.Automatismo_MaterialVariedad_NoExiste);
+            }
         }
     }
 }

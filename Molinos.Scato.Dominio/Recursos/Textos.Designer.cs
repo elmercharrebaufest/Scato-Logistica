@@ -4759,6 +4759,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error al guardar automatismo ya que el material y variedad seleccionado no existe o fue eliminado recientemente.
+        /// </summary>
+        public static string Automatismo_MaterialVariedad_NoExiste {
+            get {
+                return ResourceManager.GetString("Automatismo_MaterialVariedad_NoExiste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Es paso directo.
         /// </summary>
         public static string AutomatismoGrano_EsPasoDirecto {
