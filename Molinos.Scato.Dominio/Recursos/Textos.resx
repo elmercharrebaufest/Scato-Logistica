@@ -10466,10 +10466,10 @@
     <value>La calle prebalanza ya existe en un automatismo</value>
   </data>
   <data name="AutomatismoLLamadoPreBalanza" xml:space="preserve">
-    <value>Automatismo LLamado Pre Balanza</value>
+    <value>Automatismo Llamado Pre Balanza</value>
   </data>
   <data name="AutomatismoLLamadoVolcable" xml:space="preserve">
-    <value>Automatismo LLamado a Volcable</value>
+    <value>Automatismo Llamado a Volcable</value>
   </data>
   <data name="Alerta_VariedadEnAutomatismo" xml:space="preserve">
     <value>La variedad no puede ser eliminada ya que está en automatismo.</value>
@@ -10486,5 +10486,4 @@
   <data name="Automatismo_MaterialVariedad_NoExiste" xml:space="preserve">
     <value>Error al guardar automatismo ya que el material y variedad seleccionado no existe o fue eliminado recientemente</value>
   </data>
-  
 </root>

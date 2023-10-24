@@ -4777,7 +4777,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatismo LLamado Pre Balanza.
+        ///   Looks up a localized string similar to Automatismo Llamado Pre Balanza.
         /// </summary>
         public static string AutomatismoLLamadoPreBalanza {
             get {
@@ -4786,7 +4786,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatismo LLamado a Volcable.
+        ///   Looks up a localized string similar to Automatismo Llamado a Volcable.
         /// </summary>
         public static string AutomatismoLLamadoVolcable {
             get {
