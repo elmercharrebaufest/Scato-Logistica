@@ -10641,6 +10641,7 @@ namespace Molinos.Scato.Servicios.Impl
                 if (automatismo != null)
                 {
                     var automatismoConvertido = conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
+                    var configuracionGeneralGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
 
                     infoCalle.EsIncluidoAutomatismo = "Si";
                     infoCalle.EsPaseDirecto = automatismoConvertido.PasoDirecto;
@@ -10648,7 +10649,7 @@ namespace Molinos.Scato.Servicios.Impl
                     infoCalle.Variedad = string.IsNullOrEmpty(automatismoConvertido.VariedadDescripcion) ? Textos.Variedad_Estandar : automatismoConvertido.VariedadDescripcion;
                     infoCalle.Almacen = string.Empty;
                     infoCalle.PuntoDeCarga = string.Empty;
-                    infoCalle.EstadoAutomatismo = automatismoConvertido.Activo ? "Activo" : "Inactivo";
+                    infoCalle.EstadoAutomatismo = automatismoConvertido.Activo && bool.TryParse(configuracionGeneralGrano?.Valor, out bool automatismoGeneralGrano) && automatismoGeneralGrano ? "Activo" : "Inactivo";
                 }
             }
             if (calle.TipoCalle == TipoCalle.PlantaNoGranos)

@@ -35,15 +35,23 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(ModificarAutomatismoGranos comando, Resultado resultado)
         {
+            bool validacionConfigExistente = false;
+            var automatismo = Repositorio.Obtener<AutomatismoGrano>(c => c.Id == comando.Dto.Id);
+
+            validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a => a.Id != comando.Dto.Id && a.MaterialId == automatismo.MaterialId && (a.TipoVariedadId == automatismo.TipoVariedadId || a.TipoVariedadId == null ) && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable);
+
+
             if (!Repositorio.Existe<AutomatismoGrano>(a => a.Id == comando.Dto.Id))
             {
                 resultado.Error("Id Automatismo", Textos.Automatismo_IdExistente);
             }
 
-            if (Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable))
+            if (validacionConfigExistente)
             {
-                resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_IdExistente);
+                resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_ConfiguracionExistente);
             }
+            
+
         }
     }
 }
