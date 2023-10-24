@@ -2934,7 +2934,7 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesActivosAutomatismoNoGrano();
 
         [OperationContract]
-        IList<CalleDto> ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle tipoCalle);
+        IList<CalleDto> ListarCallesPlayaInternaAutomatismoDisponibles();
     
 		[OperationContract]    
         AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);
@@ -2950,6 +2950,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int? ObtenerCallePlantaIdPorMaterialId(int materialId);
+
+        [OperationContract]
+        int ObtenerMaterialIdPorCalleId(int calleId);
     }
 
 }

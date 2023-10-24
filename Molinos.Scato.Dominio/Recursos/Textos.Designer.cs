@@ -4714,6 +4714,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calle utilizada en un automatismo activo.
+        /// </summary>
+        public static string Automatismo_CalleUtilizadaEnAutomatismoActivo {
+            get {
+                return ResourceManager.GetString("Automatismo_CalleUtilizadaEnAutomatismoActivo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo.
         /// </summary>
         public static string Automatismo_CombinacionExistente {
@@ -4737,15 +4746,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Automatismo_Crear {
             get {
                 return ResourceManager.GetString("Automatismo_Crear", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Calle utilizada en un automatismo activo.
-        /// </summary>
-        public static string Automatismo_IdCalle {
-            get {
-                return ResourceManager.GetString("Automatismo_IdCalle", resourceCulture);
             }
         }
         
@@ -4791,6 +4791,24 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AutomatismoLLamadoVolcable {
             get {
                 return ResourceManager.GetString("AutomatismoLLamadoVolcable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad de Camiones.
+        /// </summary>
+        public static string AutomatismoNoGranos_CantidadDeCamiones {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGranos_CantidadDeCamiones", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cantidad Máxima de Camiones.
+        /// </summary>
+        public static string AutomatismoNoGranos_CantidadMaximaDeCamiones {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGranos_CantidadMaximaDeCamiones", resourceCulture);
             }
         }
         

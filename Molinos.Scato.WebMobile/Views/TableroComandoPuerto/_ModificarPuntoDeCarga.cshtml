@@ -1,19 +1,20 @@
 ﻿@using Molinos.Scato.WebMobile.ViewModel
 @using Molinos.Scato.Dominio.Recursos
-@model AutomatismoNoGranoConfiguracionViewModel
+@using System.Web.Optimization
+@model PundoDeCargaVM
 
-@using (Ajax.BeginForm("ModificarPuntoDeCarga", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridPuntoDeCarga" }, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("ModificarPuntoDeCarga", null, new AjaxOptions { OnSuccess = "refreshPuntoDeCarga" }, new { @class = "container" }))
 {
-    @Html.HiddenFor(model => model.PuntoDeCarga.Id)
+    @Html.HiddenFor(model => model.Id)
     <div class="row">
         <!--Primera Fila-->
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.PuntoDeCarga.Descripcion)
+                    @Html.LabelFor(model => model.Descripcion)
                     <div class="controls">
-                        @Html.TextBoxFor(model => model.PuntoDeCarga.Descripcion, new { @class = "form-control", @required = "required" })
-                        @Html.ValidationMessageFor(model => model.PuntoDeCarga.Descripcion)
+                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Descripcion)
                     </div>
                 </div>
             </div>
@@ -24,10 +25,10 @@
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.PuntoDeCarga.CantidadMaximaDeCamiones)
+                    @Html.LabelFor(model => model.Camiones)
                     <div class="controls">
-                        @Html.TextBoxFor(model => model.PuntoDeCarga.CantidadMaximaDeCamiones, new { @class = "form-control", @required = "required" })
-                        @Html.ValidationMessageFor(model => model.PuntoDeCarga.CantidadMaximaDeCamiones)
+                        @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                        @Html.ValidationMessageFor(model => model.Camiones)
                     </div>
                 </div>
             </div>
@@ -39,3 +40,5 @@
         <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">@Textos.Cancelar</button>
     </div>
 }
+
+@Scripts.Render("~/bundles/jqueryval")

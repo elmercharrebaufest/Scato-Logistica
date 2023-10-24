@@ -1,7 +1,7 @@
-﻿@using Molinos.Scato.WebMobile.ViewModel
+﻿@model AutomatismoGranosViewModel
+@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
 @using System.Web.Optimization
-
-@model AutomatismoGranosViewModel
 
 <div class="modal fade" id="modalAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalAutomatismoLabel">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -89,9 +89,10 @@
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.AlmacenId)
                     </div>
                 </div>
-                <div class="modal-footer" style="background: #f5f5f5;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
                 </div>
             </div>
         }

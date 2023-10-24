@@ -240,6 +240,7 @@
     <Compile Include="ViewModel\AutomatismoNoGranoConfiguracionViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoGranosViewModel.cs" />
+    <Compile Include="ViewModel\PundoDeCargaVM.cs" />
     <Compile Include="ViewModel\CalleViewModel.cs" />
     <Compile Include="ViewModel\PesadaHistoricaViewModel.cs" />
     <Compile Include="ViewModel\PesadaOnlineViewModel.cs" />
@@ -249,6 +250,8 @@
     <Content Include="Content\estadoPlayaInterna.css" />
     <Content Include="Content\Images\logo-nuevo.png" />
     <Content Include="Content\Images\Logo.png" />
+    <Content Include="Content\dialogModal.css" />
+    <Content Include="Content\mensajeria.css" />
     <Content Include="Content\switches.css" />
     <Content Include="Scripts\area\eficienciaCalado\index.js" />
     <Content Include="Scripts\bloquearPantalla.js" />
@@ -423,7 +426,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-3.5.1.debug.js" />
     <Content Include="Scripts\knockout-3.5.1.js" />
-    <Content Include="Scripts\AutomatismoNoGrano.js" />
+    <Content Include="Scripts\automatismoNoGrano.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -576,7 +579,6 @@
     <Content Include="Views\TableroComandoPuerto\_Crear.cshtml" />
     <Content Include="Views\TableroComandoPuerto\_Listar.cshtml" />
     <Content Include="Views\TableroComandoPuerto\_Modificar.cshtml" />
-    <Content Include="Views\TableroComandoPuerto\_Eliminar.cshtml" />
     <Content Include="Views\TableroComandoPuerto\_ListarCallePlanta.cshtml" />
     <Content Include="Views\TableroComandoPuerto\_ListarAlmacen.cshtml" />
     <Content Include="Views\TableroComandoPuerto\_ListarPuntoDeCarga.cshtml" />

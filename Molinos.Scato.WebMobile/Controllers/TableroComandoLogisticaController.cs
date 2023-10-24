@@ -99,21 +99,21 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_CrearAutomatismo", model);
         }
 
+        [HttpPost]
         public ActionResult Crear(AutomatismoGranosViewModel model)
         {
             var respuesta = new RespuestaEstandarDto();
             if (ModelState.IsValid)
             {
                 var resultadoAutomatismo = (ResultadoCrear)servicioComandos.Ejecutar(new CrearAutomatismoGranos { Dto = model.AutomatismoGrano });
+                ModelState.AgregarErrores(resultadoAutomatismo);
                 if (!resultadoAutomatismo.HayErrores)
                 {
                     var idCreacion = resultadoAutomatismo.Id;
 
                     var resultadoHidraulicas = servicioComandos.Ejecutar(new CrearAutomatismoHidraulicas { Hidraulicas = model.AutomatismoGrano.Hidraulicas, IdAutomatismo = idCreacion });
 
-                    ModelState.AgregarErrores(resultadoAutomatismo);
-
-                    if (!resultadoAutomatismo.HayErrores && !resultadoHidraulicas.HayErrores)
+                    if (!resultadoHidraulicas.HayErrores)
                     {
                         respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Creacion de automatismo de Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
                     }
@@ -128,7 +128,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta, JsonRequestBehavior.AllowGet);
+            return Json(respuesta);
         }
 
         [HttpGet]
@@ -171,8 +171,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                 {
                     respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultadoAutomatismo.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
-
-            } else
+            }
+            else
             {
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "ERROR: Debe completar todos los campos requeridos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
@@ -202,6 +202,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_ModificarCallePB", model);
         }
 
+        [HttpPost]
         public ActionResult ModificarConfiguracionCallePB(CalleViewModel model)
         {
             var respuesta = new RespuestaEstandarDto();
@@ -221,7 +222,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            return Json(respuesta, JsonRequestBehavior.AllowGet);
+            return Json(respuesta);
         }
 
         [HttpGet]
@@ -559,7 +560,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             hidraulicas = hidraulicas.ToList();
 
-            var hidraulicasEscalables = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), automatismo!=null?automatismo.Hidraulicas:new List<int>()).Select(s => new { label = s.Text, value = s.Value, selected = s.Selected });
+            var hidraulicasEscalables = MapearHidraulicas(hidraulicas.Where(c => c.ActivoAutomatico == true).ToList(), automatismo != null ? automatismo.Hidraulicas : new List<int>()).Select(s => new { label = s.Text, value = s.Value, selected = s.Selected });
 
             return Json(hidraulicasEscalables, JsonRequestBehavior.AllowGet);
         }

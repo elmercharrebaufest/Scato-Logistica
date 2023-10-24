@@ -11,12 +11,14 @@ namespace Molinos.Scato.Dominio.Dto
         public CalleDto CallePlanta { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CallePlanta")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePlantaId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CallePlayaInterna")]
         public CalleDto CallePlayaInterna { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "CallePlayaInterna")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePlayaInternaId { get; set; }
 
         public bool Activo { get; set; }
@@ -25,12 +27,14 @@ namespace Molinos.Scato.Dominio.Dto
         public PuntoDeCargaDto PuntoDeCarga { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "PuntodeCarga")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int PuntoDeCargaId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
         public AlmacenDto Almacen { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int AlmacenId { get; set; }
     }
 }

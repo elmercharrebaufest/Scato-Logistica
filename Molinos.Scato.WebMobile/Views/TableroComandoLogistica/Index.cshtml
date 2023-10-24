@@ -1,10 +1,6 @@
-﻿﻿@using Molinos.Scato.Dominio.Recursos
-@using Molinos.Scato.WebMobile.Helpers
+﻿@model AutomatismoGranosViewModel
+@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.WebMobile.ViewModel
-@using System.Web.Optimization
-@model AutomatismoGranosViewModel
-@using Molinos.Scato.Dominio.Dto
-@using Molinos.Scato.Dominio.Consultas
 @using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Seguridad;
 
@@ -14,11 +10,13 @@
 
 }
 
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/dialogModal.css")">
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/bootstrap-multiselect.css")" />
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
 
 <script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-multiselect.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/scripts/tableroComandoLogistica.js")"></script>
+
 
 <script>
     urlCrearAutomatismo = '@Url.Action("Crear", "TableroComandoLogistica")';
@@ -27,7 +25,6 @@
     urlListarAutomatismo = '@Url.Action("ActualizarListaAutomatismo", "TableroComandoLogistica")';
     urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoLogistica")';
     urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
-    urlCrearJavaScript = '@Url.Content("~/scripts/crearAutomatismo.js")';
     urlActualizarEstadoPaseDirecto = '@Url.Action("ActualizarEstadoPaseDirecto", "TableroComandoLogistica")';
     urlActualizarEstadoLlamadoVolcable = '@Url.Action("ActualizarEstadoLlamadoVolcable", "TableroComandoLogistica")';
     urlListarAutomatismoGrano = '@Url.Action("ListarAutomatismoGrano", "TableroComandoLogistica")';
@@ -40,9 +37,10 @@
     urlObtenerAlmacenes = '@Url.Action("ListarAlmacenesPorMaterial", "TableroComandoLogistica")';
 </script>
 
-<div style="text-align:center">
-    <h2 class="titulo-center">@Textos.Tablero_ComandoLogistica</h2>
+<div class="m-2">
+    <h1 class="text-center">@Textos.Tablero_ComandoLogistica</h1>
 </div>
+
 <div class="mx-1" style="border: 1px solid #ccc;">
     <div class="row">
         <div class="col-12">
@@ -56,39 +54,38 @@
                         @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link" })
                     }
                 </li>
-                
-                    <li class="nav-item ml-md-auto ml-3 mt-md-1">
-                        <div class="d-flex flex-column align-items-start flex-md-row">
-                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))
-                            {
-                                <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
-                                    <label class="switch">
-                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
-                                        <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "")
-                                               @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso)) ? @Html.Raw("") : @Html.Raw("disabled"))>
-                                        <span class="slider round"></span>
-                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("</div>"))
-                                    </label>
-                                    <span class="ml-2 mr-md-4 mt-1">@Textos.AutomatismoLLamadoPreBalanza</span>
-                                </div>
-                            }
-                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
-                            {
-                                <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
-                                    <label class="switch">
-                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
-                                        <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")
-                                               @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ? @Html.Raw("") : @Html.Raw("disabled"))>
-                                        <span class="slider round"></span>
-                                        @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div>"))
-                                    </label>
-                                    <span class="ml-2 mr-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
-                                </div>
-                            }
-                        </div>
-                    </li>
-                
-                </ul>
+
+                <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                    <div class="d-flex flex-column align-items-start flex-md-row">
+                        @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
+                        {
+                            <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                <label class="switch">
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "")
+                                           @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso)) ? @Html.Raw("") : @Html.Raw("disabled"))>
+                                    <span class="slider round"></span>
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                </label>
+                                <span class="ml-2 mr-md-4 mt-1">@Textos.AutomatismoLLamadoPreBalanza</span>
+                            </div>
+                        }
+                        @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                        {
+                            <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                <label class="switch">
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")
+                                           @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ? @Html.Raw("") : @Html.Raw("disabled"))>
+                                    <span class="slider round"></span>
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                </label>
+                                <span class="ml-2 mr-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
+                            </div>
+                        }
+                    </div>
+                </li>
+            </ul>
 
             <div class="tab-content overflow-auto">
                 <div class="col-12">
@@ -137,16 +134,16 @@
     </div>
 </dialog>
 
-<dialog id="modalConfirmarBorrar" class="dialogScatoMobile">
-    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
+<dialog id="modalConfirmarBorrar" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
     <div id="automatismo" hidden>
     </div>
-    <p class="dialogScatoMobile__descripcion">
-        ¿Seguro que desea eliminar este automatismo?
-    </p>
-    <div class="dialogScatoMobile__botones">
+    <div class="dialogModal__descripcion">
+        <p>¿Seguro que desea eliminar este automatismo?</p>
+    </div>
+    <div class="dialogModal__botones">
+        <button class="btn btn-secondary" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
         <button id="btnConfirmarBorrar" class="btn btn-success" onclick="funcionEliminarAutomatismo()">Aceptar</button>
-        <button class="btn btn-dark" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
     </div>
 </dialog>
 
@@ -161,7 +158,7 @@
         text-align: center;
     }
 
-    .deshabilitado{
-        pointer-events:none !important;
+    .deshabilitado {
+        pointer-events: none !important;
     }
 </style>

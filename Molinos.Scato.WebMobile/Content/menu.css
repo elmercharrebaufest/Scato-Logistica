@@ -22,11 +22,36 @@
     transition: 0.5s;
 }
 
+.menu__contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 2rem auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu__boton {
+    width: 100%;
+    max-width: 360px;
+}
+
 @media (max-width: 2000px) {
     .dropdown-menu-scato-mobile {
         width: auto;
     }
 }
+
+@media (max-width: 990px) {
+    .menu__boton--tableroComandoLogistica {
+        order: 2;
+    }
+
+    .menu__boton--tableroComandoPuerto {
+        order: 3;
+    }
+}
+
 @media (max-width: 650px){
     .scato-logo-mobile {
         position: relative;

@@ -27,7 +27,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreHidraulicaId == comando.Id && a.Activo == true) && configuracion.Valor.Equals("True"))
             {
-                resultado.Error("IdPreHidraulica", Textos.Automatismo_IdCalle);
+                resultado.Error("IdPreHidraulica", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
             }
         }
     }

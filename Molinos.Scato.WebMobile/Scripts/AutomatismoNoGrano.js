@@ -6,6 +6,60 @@ var TipoMensaje = {
     Warning: 1,
     Error: 2
 }
+
+$(document).ready(function () {
+    //Funcion Actualiza estadoGeneral de AutomatismoNoGrano
+    $('#automatismoGeneral').change(function (e) {
+        let element = e.currentTarget;
+        element.checked = !element.checked;
+        $.blockUI({
+            blockMsgClass: 'blocuiBox',
+            message: 'Cargando...'
+        });
+        $.ajax({
+            url: urlActualizarEstadoAutomatismoGeneral,
+            data: { nuevoEstado: !element.checked },
+            success: function (response) {
+                if (response.TipoDeMensaje == TipoMensaje.Success) {
+                    element.checked = !element.checked;
+                } else {
+                    MostrarAlertaError(response.Mensaje);
+                }
+            },
+            error: function () {
+                MostrarAlertaError('Error al realizar la petición');
+            },
+            complete: function () {
+                $.unblockUI();
+            }
+        });
+    });
+
+    //FUNCIONES SLIDERS
+    //Funcion Detecta y Redirecciona las Consultas
+
+    $('.cambia-estado').click(function (e) {
+        let element = e.currentTarget;
+        element.checked = !element.checked;
+        let identidad = $(this).data('identity');
+
+        switch (identidad) {
+            case 'calleplanta':
+                cambiarEstadoSwitch(urlActualizarEstadoCallePlanta, element);
+                break;
+            case 'puntodecarga':
+                cambiarEstadoSwitch(urlActualizarEstadoPuntoDeCarga, element);
+                break;
+            case 'almacen':
+                cambiarEstadoSwitch(urlActualizarEstadoAlmacen, element);
+                break;
+            case 'automatismo':
+                cambiarEstadoSwitch(urlActualizarEstadoAutomatismoNoGrano, element);
+                break;
+        }
+    });
+})
+
 function funcionModalCrear() {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
@@ -18,7 +72,7 @@ function funcionModalCrear() {
         success: function (response) {
             $("#partialModal").find(".modal-body").html(response);
             $("#partialModal").modal('show');
-            $(".modal-title").text("Modal Crear");
+            $(".modal-title").text("Crear Automatismo");
         },
         failure: function (response) {
             alert(response.responseText);
@@ -32,7 +86,7 @@ function funcionModalCrear() {
     });
 }
 
-function funcionModalModificar(item) {
+function funcionModalModificarAutomatismoNoGrano(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -59,32 +113,35 @@ function funcionModalModificar(item) {
     });
 }
 
-function funcionModalEliminar(item) {
+function funcionModalEliminarAutomatismoNoGrano(idAutomatismo) {
+    $("#automatismoIdABorrar").val(idAutomatismo);
+    modalConfirmarBorrar.showModal();
+}
+
+function funcionEliminarAutomatismoNoGrano() {
+    modalConfirmarBorrar.close();
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
     });
     $.ajax({
-        type: "GET",
         url: urlEliminarAutomatismo,
-        contentType: "application/json; charset=utf-8",
-        data: { id: item },
+        method: "POST",
+        data: { id: $("#automatismoIdABorrar").val() },
         success: function (response) {
-            $("#partialModal").find(".modal-body").html(response);
-            $("#partialModal").modal('show');
-            $(".modal-title").text("Modal Eliminar");
-        },
-        failure: function (response) {
-            alert(response.responseText);
-        },
-        error: function (response) {
-            alert(response.responseText);
+            if (response.EsValido == true) {
+                MostrarAlertaExitosa();
+            } else {
+                MostrarAlertaAdvertencia();
+            }
+            recargarListaAutomatismos();
         },
         complete: function () {
             $.unblockUI();
         }
     });
 }
+
 //Configuraciones
 function funcionModalModificarCallePlanta(item) {
     $.blockUI({
@@ -99,7 +156,7 @@ function funcionModalModificarCallePlanta(item) {
         success: function (response) {
             $("#partialModal").find(".modal-body").html(response);
             $("#partialModal").modal('show');
-            $(".modal-title").text("Modal Modificar Calle Planta");
+            $(".modal-title").text("Modificar Calle Planta");
         },
         failure: function (response) {
             alert(response.responseText);
@@ -167,94 +224,28 @@ function cambiarEstadoSwitch(url, elemento) {
     });
 }
 
-//Funcion Actualiza estadoGeneral de AutomatismoNoGrano
-$('#automatismoGeneral').change(function (e) {
-    let element = e.currentTarget;
-    element.checked = !element.checked;
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlActualizarEstadoAutomatismoGeneral,
-        data: { nuevoEstado: !element.checked },
-        success: function (response) {
-            if (response.TipoDeMensaje == TipoMensaje.Success) {
-                element.checked = !element.checked;
-            } else {
-                MostrarAlertaError(response.Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición');
-        },
-        complete: function () {
-            $.unblockUI();
-        }
-    });
-});
-
-//FUNCIONES SLIDERS
-//Funcion Detecta y Redirecciona las Consultas
-
-$('#body').on("click", ".cambia-estado", function (e) {
-    let element = e.currentTarget;
-    element.checked = !element.checked;
-    let identidad = $(this).data('identity');
-
-    switch (identidad) {
-        case 'calleplanta':
-            cambiarEstadoSwitch(urlActualizarEstadoCallePlanta, element);
-            break;
-        case 'puntodecarga':
-            cambiarEstadoSwitch(urlActualizarEstadoPuntoDeCarga, element);
-            break;
-        case 'almacen':
-            cambiarEstadoSwitch(urlActualizarEstadoAlmacen, element);
-            break;
-        case 'automatismo':
-            cambiarEstadoSwitch(urlActualizarEstadoAutomatismoNoGrano, element);
-            break;
-    }
-});
-
-function dlCallePlantaOnChange(e) {
-    var selectedCalleId = e;
-
-    $.ajax({
-        url: urlObtenerPuntosDeCargaPorMaterialId,
-        data: { calleId: selectedCalleId },
-        success: function (puntosDeCarga) {
-
-            $('#ddlPuntosDeCarga')
-                .find('option')
-                .remove();
-            var ddlPuntosDeCarga = $("#ddlPuntosDeCarga");
-
-            $.each(puntosDeCarga, function (indice, puntoDeCarga) {
-                ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
-            });
-
-        }
-    });
-
+var refreshAutomatismo = function (response) {
+    mostrarMensajeDeRespuesta(response)
+    recargarListaAutomatismos();
 }
 
-//FUNCIONES DE RESPUESTA
-var fnResponse = function (response) {
-    if (response.Key != undefined && response.TipoDeMensaje != TipoMensaje.Success) {
-        MostrarAlertaError(response.Mensaje);
-        switch (response.Key) {
-            case 'Automatismo':
-                recargarListaAutomatismos();
-                break;
-            case 'CallePlanta':
-                recargarListaCallePlanta();
-                break;
-            case 'PuntoDeCarga':
-                recargarListaPuntoDeCarga();
-                break;
-        }
+var refreshCallePlanta = function (response) {
+    mostrarMensajeDeRespuesta(response)
+    recargarListaCallePlanta();
+}
+
+var refreshPuntoDeCarga = function (response) {
+    mostrarMensajeDeRespuesta(response)
+    recargarListaPuntoDeCarga();
+}
+
+function mostrarMensajeDeRespuesta(response) {
+    if (!response.EsValido) {
+        var mensajes = [];
+        response.Mensajes.forEach(function (item, index, array) {
+            mensajes.push(item.Mensaje);
+        })
+        MostrarAlertaError(mensajes.join("<br>"))
     } else {
         $('#partialModal').modal('hide');
         MostrarAlertaExitosa("Se proceso correctamente.");
@@ -284,6 +275,33 @@ function recargarListaPuntoDeCarga() {
         url: urlListarPuntoDeCarga,
         success: function (listaActualizada) {
             $("#gridPuntoDeCarga").html(listaActualizada);
+        }
+    });
+}
+
+function MostrarRespuestaMensajes(response) {
+    response.Mensajes.forEach(function (item, index, array) {
+        if (item.TipoDeMensaje === 2) {
+            MostrarAlertaError(item.Mensaje);
+        } else if (item.TipoDeMensaje === 1) {
+            MostrarAlertaAdvertencia(item.Mensaje);
+        }
+    })
+}
+
+function dllCallePlantaOnChange(e) {
+    var selectedCalleId = e;
+
+    $.ajax({
+        url: urlObtenerPuntosDeCargaPorMaterialId,
+        data: { calleId: selectedCalleId },
+        success: function (puntosDeCarga) {
+            $('#ddlPuntosDeCarga').find('option').not(':first').remove();
+            var ddlPuntosDeCarga = $("#ddlPuntosDeCarga");
+
+            $.each(puntosDeCarga, function (indice, puntoDeCarga) {
+                ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
+            });
         }
     });
 }

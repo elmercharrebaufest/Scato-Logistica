@@ -26,7 +26,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos && x.CentroId == null);
             if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Id && a.Activo == true) && configuracion.Valor.Equals("True"))
             {
-                resultado.Error("IdPreBalanza", Textos.Automatismo_IdCalle);
+                resultado.Error("IdPreBalanza", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
             }
         }
     }

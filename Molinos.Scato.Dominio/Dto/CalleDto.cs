@@ -22,6 +22,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         public int CentroId { get; set; }
 
+        [Display(ResourceType = typeof(Textos), Name = "AutomatismoNoGranos_CantidadDeCamiones")]
         public int CantidadDeCamiones { get; set; }
 
         public TipoCalle TipoCalle { get; set; }

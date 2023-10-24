@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.WebMobile.ViewModel
 {
-    public class CalleViewModel
+    public class PundoDeCargaVM
     {
         public int Id { get; set; }
 

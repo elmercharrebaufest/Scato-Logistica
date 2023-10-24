@@ -10665,7 +10665,7 @@ namespace Molinos.Scato.Servicios.Impl
                     infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo ? "Activo" : "Inactivo";
                 }
             }
-            
+
             return infoCalle;
         }
 
@@ -10690,7 +10690,7 @@ namespace Molinos.Scato.Servicios.Impl
             var tipoVariedades = Listar<TipoVariedad, TipoVariedadDto>();
             var variedadesPorMaterial = Listar<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>(x => x.MaterialId == idMaterial);
             var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
-            var automatismos = repositorio.Listar<AutomatismoGrano>(includes , x=> x.MaterialId == idMaterial);
+            var automatismos = repositorio.Listar<AutomatismoGrano>(includes, x => x.MaterialId == idMaterial);
 
             var variedadesActivas =
                    tipoVariedades.Join(variedadesPorMaterial,
@@ -10823,15 +10823,14 @@ namespace Molinos.Scato.Servicios.Impl
             return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.CTG == nroCTG, y => y.Id);
         }
 
-        public IList<CalleDto> ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle tipoCalle)
+        public IList<CalleDto> ListarCallesPlayaInternaAutomatismoDisponibles()
         {
-            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
-            var listaActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == tipoCalle);
-            var automatismosGrano = repositorio.Listar<AutomatismoGrano>(includesGrano);
-            var automatismosNoGrano = Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>();
-            var noIncludeGrano = listaActivas.Where(x => !automatismosGrano.Any(g => g.CallePreBalanzaId == x.Id || g.CallePreHidraulicaId == x.Id));
-            var noIncludeNoGrano = noIncludeGrano.Where(x => !automatismosNoGrano.Any(n => n.CallePlayaInterna.Id == x.Id || n.CallePlanta.Id == x.Id));
-            return noIncludeNoGrano.ToList();
+            var callesAutomatismoActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == TipoCalle.PlayaInterna && x.ActivoAutomatico);
+            var callesGranosUsadas = repositorio.Listar<AutomatismoGrano>().Select(q => q.CallePreHidraulicaId);
+            var callesNoGranosUsadas = repositorio.Listar<AutomatismoNoGrano>().Select(q => q.CallePlayaInterna.Id);
+
+            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesNoGranosUsadas.Contains(q.Id) && !callesGranosUsadas.Contains(q.Id)).ToList();
+            return callesUtilizables;
         }
 
         public IList<HistorialMensajeCartelLedDto> ListarCamionesLlamados()
@@ -10846,14 +10845,18 @@ namespace Molinos.Scato.Servicios.Impl
 
         public int? ObtenerCallePlantaIdPorMaterialId(int materialId)
         {
-            var calle =  repositorio.Obtener<Calle>(x => x.Material.Id == materialId && x.Deshabilitada == false && x.TipoCalle == TipoCalle.PlantaNoGranos);
+            var calle = repositorio.Obtener<Calle>(x => x.Material.Id == materialId && x.Deshabilitada == false && x.TipoCalle == TipoCalle.PlantaNoGranos);
 
             if (calle == null)
                 return null;
 
             return calle.Id;
         }
+
+        public int ObtenerMaterialIdPorCalleId(int calleId)
+
+        {
+            return repositorio.ObtenerProyeccion<Calle, int>(x => x.Id == calleId, x => x.Material != null ? x.Material.Id : 0);
+        }
     }
-
-
 }

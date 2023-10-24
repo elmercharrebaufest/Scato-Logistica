@@ -10438,9 +10438,6 @@
   <data name="CamionLlamadoTitulo" xml:space="preserve">
     <value>Camión Llamado</value>
   </data>
-  <data name="Automatismo_IdCalle" xml:space="preserve">
-    <value>Calle utilizada en un automatismo activo</value>
-  </data>
   <data name="Variedad_Estandar" xml:space="preserve">
     <value>Estándar</value>
   </data>
@@ -10485,5 +10482,14 @@
    </data>
   <data name="Automatismo_MaterialVariedad_NoExiste" xml:space="preserve">
     <value>Error al guardar automatismo ya que el material y variedad seleccionado no existe o fue eliminado recientemente</value>
+  </data>
+  <data name="AutomatismoNoGranos_CantidadMaximaDeCamiones" xml:space="preserve">
+    <value>Cantidad Máxima de Camiones</value>
+  </data>
+  <data name="AutomatismoNoGranos_CantidadDeCamiones" xml:space="preserve">
+    <value>Cantidad de Camiones</value>
+  </data>
+  <data name="Automatismo_CalleUtilizadaEnAutomatismoActivo" xml:space="preserve">
+    <value>Calle utilizada en un automatismo activo</value>
   </data>
 </root>

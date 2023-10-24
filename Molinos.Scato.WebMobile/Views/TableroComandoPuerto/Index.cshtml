@@ -1,11 +1,17 @@
-﻿@using Molinos.Scato.Dominio.Recursos
+﻿@model AutomatismoNoGranoViewModel
+@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.WebMobile.ViewModel
 
 @{
+    ViewBag.Title = Textos.TableroComandoPuerto_Titulo;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model AutomatismoNoGranoViewModel
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/dialogModal.css")">
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/scripts/automatismoNoGrano.js")"></script>
+
 <script>
     urlCrearAutomatismo = '@Url.Action("Crear", "TableroComandoPuerto")';
     urlModificarAutomatismo = '@Url.Action("Modificar", "TableroComandoPuerto")';
@@ -15,9 +21,11 @@
     urlListarAutomatismoNoGrano = '@Url.Action("ListarAutomatismoNoGrano", "TableroComandoPuerto")';
     urlObtenerPuntosDeCargaPorMaterialId = '@Url.Action("ObtenerPuntosDeCargaPorMaterialId", "TableroComandoPuerto")';
 </script>
-<div style="text-align:center">
-    <h2 class="titulo-center">@Textos.TableroComandoPuerto_Panel</h2>
+
+<div class="m-2">
+    <h1 class="text-center">@Textos.TableroComandoPuerto_Panel</h1>
 </div>
+
 <div class="mx-1" style="border: 1px solid #ccc;">
     <div class="row">
         <div class="col-12">
@@ -39,7 +47,6 @@
 
             <div class="tab-content overflow-auto">
                 <div class="col-12">
-                    @*@Html.ActionLink(Textos.Automatismo_Crear, "Crear", "TableroComandoPuerto", new { }, new { @class = "btn m-2 float-right rounded-bottom btn-success" })*@
                     <button class="btn m-2 float-right rounded-bottom btn-success" onclick="funcionModalCrear()">Nuevo Automatismo</button>
                 </div>
                 <div id="gridContainer" class="tab-pane fade show active">
@@ -49,7 +56,9 @@
         </div>
     </div>
 </div>
-<!--Comienzo ModalVacio-->
+
+<div id="detalle" />
+
 <div id="partialModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -59,15 +68,23 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-            </div>
+            <div class="modal-body"></div>
         </div>
     </div>
 </div>
-<!--Fin ModalVacio-->
-<div id="detalle">
-</div>
-<script src="~/Scripts/AutomatismoNoGrano.js"></script>
+
+<dialog id="modalConfirmarBorrar" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
+    <input type="hidden" id="automatismoIdABorrar" />
+    <div class="dialogModal__descripcion">
+        <p>¿Seguro que desea eliminar este automatismo?</p>
+    </div>
+    <div class="dialogModal__botones">
+        <button type="button" class="btn btn-secondary" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
+        <button type="button" id="btnConfirmarBorrar" class="btn btn-success" onclick="funcionEliminarAutomatismoNoGrano()">Aceptar</button>
+    </div>
+</dialog>
+
 <style>
     .nav-item a,
     td a,

@@ -1,17 +1,19 @@
-﻿@using Molinos.Scato.WebMobile.ViewModel
+﻿@model AutomatismoNoGranoViewModel
+@using Molinos.Scato.WebMobile.ViewModel
 @using Molinos.Scato.Dominio.Recursos
-@model AutomatismoNoGranoViewModel
+@using System.Web.Optimization
 
-@using (Ajax.BeginForm("Modificar", "TableroComandoPuerto", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "fnResponse", InsertionMode = InsertionMode.Replace, UpdateTargetId = "gridContainer" }, new { enctype = "multipart/form-data" }))
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modificar", null, new AjaxOptions { OnSuccess = "refreshAutomatismo" }, new { @class = "container" }))
 {
     @Html.HiddenFor(model => model.AutomatismoNoGrano.Id)
     <div class="row">
-        <!--Primera Fila-->
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlanta)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, new { @class = "form-control", @style = "pointer-events:none; background-color:#e9ecef" })
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlantaId)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, new { @class = "form-control", @disabled = true })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
                 </div>
             </div>
@@ -19,37 +21,37 @@
         <div class="col">
             <div class="span4">
                 <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInterna)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, new { @class = "form-control", @style = "pointer-events:none; background-color:#e9ecef" })
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlayaInternaId, Model.CallesPlayaInterna, new { @class = "form-control", @disabled = true })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlayaInternaId)
                 </div>
             </div>
         </div>
-    </div><!--fin Primera Fila-->
-    <div class="row">
-        <!--Segunda Fila-->
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(m => m.AutomatismoNoGrano.Almacen)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "Seleccione Opcion", new { @class = "form-control", @required = "required" })
-                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCarga)
-                </div>
-            </div>
-        </div>
-    </div><!--fin Segunda Fila-->
+    </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-success float-right">@Textos.Guardar</button>
-        <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">@Textos.Cancelar</button>
+    <div class="row">
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "(Punto de Carga)", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenId)
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "(Almacen)", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenId)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+        <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }

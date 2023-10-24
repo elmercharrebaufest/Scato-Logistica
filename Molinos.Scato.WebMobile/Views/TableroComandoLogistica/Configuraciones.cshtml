@@ -1,22 +1,17 @@
-﻿﻿@using Molinos.Scato.Dominio.Recursos
-@using System.Web.Helpers
-@using Molinos.Scato.WebMobile.Helpers
-@using Molinos.Scato.Dominio.Dto
-@using Molinos.Scato.Dominio.Consultas
+﻿@model AutomatismoGranosViewModel
+@using Molinos.Scato.Dominio.Recursos
 @using Molinos.Scato.WebMobile.ViewModel
 @using Molinos.Scato.WebMobile.Seguridad
 @using Molinos.Scato.Dominio.Seguridad;
 
-@model AutomatismoGranosViewModel
 @{
     ViewBag.Title = Textos.TableroComandoLogistica_Titulo;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var model = Model.ListaAutomatismoGrano;
 }
 
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
-<script type="text/javascript" src="@Url.Content("~/scripts/tableroComandoLogistica.js")"></script>
 
+<script type="text/javascript" src="@Url.Content("~/scripts/tableroComandoLogistica.js")"></script>
 <script>
     urlModificarEstadoCallePB = '@Url.Action("ModificarEstadoCallePB", "TableroComandoLogistica")';
     urlModificarEstadoCallePH = '@Url.Action("ModificarEstadoCallePH", "TableroComandoLogistica")';
@@ -38,9 +33,10 @@
     urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
 </script>
 
-<div style="text-align:center">
-    <h2 class="titulo-center">@Textos.Tablero_ComandoLogistica</h2>
+<div class="m-2">
+    <h1 class="text-center">@Textos.Tablero_ComandoLogistica</h1>
 </div>
+
 <div class="mx-1" style="border: 1px solid #ccc;">
     <div class="row">
         <div class="col-12">
@@ -92,7 +88,7 @@
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill">
 
-                                    <h4 style="text-align:center">Calles Pre Balanza</h4>
+                                    <h4 class="text-center">Calles Pre Balanza</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarCallePreBalanza")
                                     </div>
@@ -102,7 +98,7 @@
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill">
 
-                                    <h4 style="text-align:center">Calles Pre Hidráulica</h4>
+                                    <h4 class="text-center">Calles Pre Hidráulica</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarCallePreHidraulica")
                                     </div>
@@ -111,7 +107,7 @@
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                             {
                                 <div class="col-sm-12 col-md-4 flex-fill">
-                                    <h4 style="text-align:center">Hidráulica</h4>
+                                    <h4 class="text-center">Hidráulica</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarHidraulica")
                                     </div>
@@ -123,33 +119,35 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div id="DetalleAutomatismo"></div>
+<div id="DetalleAutomatismo"></div>
 
-    <style>
-        .nav-item a,
-        td a,
-        th a {
-            color: #244232 !important;
-        }
+<dialog id="modalConfirmarEstadoHidraulica" class="dialogScatoMobile">
+    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
 
-        td, th {
-            text-align: center;
-        }
+    <p class="dialogScatoMobile__descripcion">
+        Si deshabilita la hidráulica, el automatismo dejará de llamar vehículos. ¿Desea confirmar?
+    </p>
+    <div class="dialogScatoMobile__botones">
+        <button id="btnConfirmarBorrar" class="btn btn-success" onclick="ModificarEstadoHidraulicaConfirmacion()">Aceptar</button>
+        <button class="btn btn-dark" onclick=" modalConfirmarEstadoHidraulica.close()" autofocus>Cancelar</button>
+    </div>
+</dialog>
 
-        .contenedor {
-            border: 1px solid;
-            margin-bottom: 20px;
-        }
-    </style>
-    <dialog id="modalConfirmarEstadoHidraulica" class="dialogScatoMobile">
-        <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
 
-        <p class="dialogScatoMobile__descripcion">
-            Si deshabilita la hidráulica, el automatismo dejará de llamar vehículos. ¿Desea confirmar?
-        </p>
-        <div class="dialogScatoMobile__botones">
-            <button id="btnConfirmarBorrar" class="btn btn-success" onclick="ModificarEstadoHidraulicaConfirmacion()">Aceptar</button>
-            <button class="btn btn-dark" onclick=" modalConfirmarEstadoHidraulica.close()" autofocus>Cancelar</button>
-        </div>
-    </dialog>
+    td, th {
+        text-align: center;
+    }
+
+    .contenedor {
+        border: 1px solid;
+        margin-bottom: 20px;
+    }
+</style>

@@ -1,69 +1,26 @@
-﻿@using Molinos.Scato.Dominio.Dto
-@using Molinos.Scato.Dominio.Recursos
-@using Molinos.Scato.WebMobile.Helpers
+﻿@using Molinos.Scato.Dominio.Recursos
 @{
     ViewBag.Title = Textos.Inicio;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section scripts {
-
-}
-
 <div class="container">
-    <div class="d-lg-none">
-        <div class="row mb-3 mt-3">
-            <div class="col-12">
-                @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success d-flex" })
-            </div>
+    <div class="menu__contenedor">
+        <div class="menu__boton menu__boton--tableroComandoLogistica">
+            @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
         </div>
-        <div class="row mb-3 mt-3">
-            <div class="col-12">
-                @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success d-flex" })
-            </div>
+        <div class="menu__boton menu__boton--tableroComandoPuerto">
+            @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
         </div>
-        <div class="row mb-3 mt-3">
-            <div class="col-12">
-                @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success d-flex" })
-            </div>
+        <div class="menu__boton">
+            @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
         </div>
-        <div class="container mb-3 mt-3">
-            <div class="row">
-                <div class="col-6 pl-0">
-                    @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success h-100" })
-                </div>
-                <div class="col-6 pr-0">
-                    @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success h-100" })
-                </div>
-            </div>
+        <div class="menu__boton">
+            @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
         </div>
-    </div>
-
-
-    <div class="d-none d-lg-block">
-        <div class="row mb-3 mt-3">
-            <div class="col-md-6">
-                @Html.ActionLink(Textos.TableroLogisticaAutomatismo_Titulo, "Index", "TableroComandoLogistica", null, new { @class = "card btn btn-success" })
-            </div>
-            <div class="col-md-6 mb-3">
-                @Html.ActionLink(Textos.TableroPuertoAutomatismo_Titulo, "Index", "TableroComandoPuerto", null, new { @class = "card btn btn-success" })
-            </div>
-        </div>
-        <div class="row mb-3 mt-3">
-            <div class="col-md-6 mb-3">
-                @Html.ActionLink(Textos.GraficoDePlanta_Titulo, "Index", "GraficoDePlanta", null, new { @class = "card btn btn-success" })
-            </div>
-            <div class="col-md-6 mb-3">
-                @Html.ActionLink(Textos.GestionDePlayaInterna_Titulo, "Index", "EstadoPlayaInterna", null, new { @class = "card btn btn-success" })
-            </div>
-        </div>
-        <div class="row mb-3 mt-3">
-            <div class="col-md-6">
-                @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success" })
-            </div>
+        <div class="menu__boton">
+            @Html.ActionLink(Textos.GestionDePlayaExterna_Titulo, "Index", "EstadoDeCalle", null, new { @class = "card btn btn-success", @style = "padding: 1rem;" })
         </div>
     </div>
 
 </div>
-
-

@@ -3,15 +3,11 @@ using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
-using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.WebMobile.Atributos;
-using Molinos.Scato.WebMobile.Helpers.Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.WebMobile.ViewModel;
-using Ninject.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -23,13 +19,11 @@ namespace Molinos.Scato.WebMobile.Controllers
     {
         private readonly IServicioComandos servicioComandos;
         private readonly IServicioRepositorio servicio;
-        private readonly ILogger log;
 
-        public TableroComandoPuertoController(IServicioComandos servicioComandos, IServicioRepositorio servicio, ILogger log)
+        public TableroComandoPuertoController(IServicioComandos servicioComandos, IServicioRepositorio servicio)
         {
             this.servicioComandos = servicioComandos;
             this.servicio = servicio;
-            this.log = log;
         }
 
         public ActionResult Index()
@@ -49,33 +43,33 @@ namespace Molinos.Scato.WebMobile.Controllers
         [HttpGet]
         public ActionResult Crear()
         {
-            var model = cargarModeloAutomatismo();
+            var model = CargarModeloAutomatismo();
             return PartialView("_Crear", model);
         }
 
-        [AjaxOnly]
         [HttpPost]
         public ActionResult Crear(AutomatismoNoGranoViewModel model)
         {
-            var automatismo = model.AutomatismoNoGrano;
-            var resultado = servicioComandos.Ejecutar(new CrearAutomatismoNoGrano { Dto = automatismo });
-
-            if (!resultado.HayErrores)
+            var respuesta = new RespuestaEstandarDto();
+            if (ModelState.IsValid)
             {
-                model.ListaAutomatismoNoGrano = ListarAutomatismo();
-                model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
-                return PartialView("_Listar", model);
+                var resultadoAutomatismo = (ResultadoCrear)servicioComandos.Ejecutar(new CrearAutomatismoNoGrano { Dto = model.AutomatismoNoGrano });
+                if (resultadoAutomatismo.HayErrores)
+                {
+                    foreach (var item in resultadoAutomatismo.Errores.Values)
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = item, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
             }
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key="Automatismo",Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())),TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
 
-            return result;
+            return Json(respuesta);
         }
 
         [HttpGet]
         public ActionResult Modificar(int id)
         {
-            AutomatismoNoGranoViewModel model = cargarModeloAutomatismo();
+            AutomatismoNoGranoViewModel model = CargarModeloAutomatismo();
             var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
             model.CallesPlanta = new List<SelectListItem> { new SelectListItem { Text = automatismo.CallePlanta.Nombre, Value = automatismo.CallePlanta.Id.ToString(), Selected = true } };
             model.CallesPlayaInterna = new List<SelectListItem> { new SelectListItem { Text = automatismo.CallePlayaInterna.Nombre, Value = automatismo.CallePlayaInterna.Id.ToString(), Selected = true } };
@@ -87,49 +81,112 @@ namespace Molinos.Scato.WebMobile.Controllers
             return PartialView("_Modificar", model);
         }
 
+        [HttpPost]
         public ActionResult Modificar(AutomatismoNoGranoViewModel modelo)
         {
-            var automatismoActual = servicio.ObtenerAutomatismoNoGrano(modelo.AutomatismoNoGrano.Id);
-            var automatismo = modelo.AutomatismoNoGrano;
-            automatismo.Activo = automatismoActual.Activo;
-            automatismo.CallePlanta = automatismoActual.CallePlanta;
-            automatismo.CallePlayaInterna = automatismoActual.CallePlayaInterna;
+            var respuesta = new RespuestaEstandarDto();
+            var automatismo = servicio.ObtenerAutomatismoNoGrano(modelo.AutomatismoNoGrano.Id);
 
-            var resultado = servicioComandos.Ejecutar(new ModificarAutomatismoNoGrano { Dto = automatismo });
-            if (!resultado.HayErrores)
+            automatismo.PuntoDeCargaId = modelo.AutomatismoNoGrano.PuntoDeCargaId;
+            automatismo.AlmacenId = modelo.AutomatismoNoGrano.AlmacenId;
+
+            if (ModelState.IsValid)
             {
-                modelo.ListaAutomatismoNoGrano = ListarAutomatismo();
-                modelo.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
-                return PartialView("_Listar", modelo);
+                var resultadoAutomatismo = servicioComandos.Ejecutar(new ModificarAutomatismoNoGrano { Dto = automatismo });
+                if (resultadoAutomatismo.HayErrores)
+                {
+                    foreach (var item in resultadoAutomatismo.Errores.Values)
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = item, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
             }
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Automatismo", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            return result;
-        }
 
-        [HttpGet]
-        public ActionResult Eliminar(int id)
-        {
-            AutomatismoNoGranoDto automatismo = new AutomatismoNoGranoDto();
-            automatismo.Id = id;
-            return PartialView("_Eliminar", automatismo);
+            return Json(respuesta);
         }
 
         [HttpPost]
-        public ActionResult Eliminar(AutomatismoNoGranoDto automatismo)
+        public ActionResult Eliminar(int id)
         {
-            var resultado = servicioComandos.Ejecutar(new EliminarAutomatismoNoGrano { Id = automatismo.Id });
-            if (!resultado.HayErrores)
-            {
-                AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
-                model.ListaAutomatismoNoGrano = ListarAutomatismo();
-                model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
-                return PartialView("_Listar", model);
-            }
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "Automatismo", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+            var response = new RespuestaEstandarDto();
+            var resultado = servicioComandos.Ejecutar(new EliminarAutomatismoNoGrano { Id = id });
+            AgregarErroresARespuesta(resultado, response);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
 
-            return result;
+        [HttpGet]
+        public ActionResult ModificarCallePlanta(int id)
+        {
+            var calle = servicio.ObtenerCalle(id);
+
+            var model = new CalleViewModel
+            {
+                Id = calle.Id,
+                Descripcion = calle.Nombre,
+                Camiones = calle.CantidadDeCamiones
+            };
+
+            return PartialView("_ModificarCallePlanta", model);
+        }
+
+        [HttpPost]
+        public ActionResult ModificarCallePlanta(CalleViewModel model)
+        {
+            var respuesta = new RespuestaEstandarDto();
+            var calle = servicio.ObtenerCalle(model.Id);
+            calle.Nombre = model.Descripcion;
+            calle.CantidadDeCamiones = model.Camiones;
+
+            if (ModelState.IsValid)
+            {
+                var resultado = servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                if (resultado.HayErrores)
+                {
+                    foreach (var item in resultado.Errores.Values)
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = item, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
+            }
+
+            return Json(respuesta);
+        }
+
+        [HttpGet]
+        public ActionResult ModificarPuntoDeCarga(int id)
+        {
+            var calle = servicio.ObtenerPuntoDeCarga(id);
+
+            var model = new PundoDeCargaVM
+            {
+                Id = calle.Id,
+                Descripcion = calle.Descripcion,
+                Camiones = calle.CantidadMaximaDeCamiones ?? 0
+            };
+            return PartialView("_ModificarPuntoDeCarga", model);
+        }
+
+        [HttpPost]
+        public ActionResult ModificarPuntoDeCarga(PundoDeCargaVM model)
+        {
+            var respuesta = new RespuestaEstandarDto();
+            var puntoDeCarga = servicio.ObtenerPuntoDeCarga(model.Id);
+            puntoDeCarga.Descripcion = model.Descripcion;
+            puntoDeCarga.CantidadMaximaDeCamiones = model.Camiones;
+
+            if (ModelState.IsValid)
+            {
+                var resultado = servicioComandos.Ejecutar(new ModificarPuntoDeCarga { Dto = puntoDeCarga });
+                if (resultado.HayErrores)
+                {
+                    foreach (var item in resultado.Errores.Values)
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = item, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
+                }
+            }
+
+            return Json(respuesta);
         }
 
         private ListaPaginada<AutomatismoNoGranoDto> ListarAutomatismo()
@@ -138,28 +195,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             var listaAutomatismos = servicio.ListarAutomatismoNoGrano();
             var listaPaginada = new ListaPaginada<AutomatismoNoGranoDto>(listaAutomatismos, 1, 15, listaAutomatismos.Count);
             return listaPaginada;
-        }
-
-        private AutomatismoNoGranoViewModel cargarModeloAutomatismo()
-        {
-            AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
-            var callesPlanta = servicio.ListarCallesActivasAutomatismoNoGranoPorTipo(Dominio.Enums.TipoCalle.PlantaNoGranos);
-            var callesPlayaInterna = servicio.ListarCallesDisponiblesPorTipoAutomatismoNoGrano(TipoCalle.PlayaInterna);
-            model.CallesPlanta = callesPlanta
-                 .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
-                 .ToList();
-            model.CallesPlayaInterna = callesPlayaInterna
-                 .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
-                 .ToList();
-            var almacenes = servicio.ListarAlmacenesActivosAutomatismoNoGrano();
-            var puntos = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
-            model.PuntosDeCarga = puntos
-                 .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
-                 .ToList();
-            model.Almacenes = almacenes
-                 .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
-                 .ToList();
-            return model;
         }
 
         public ActionResult ActualizarEstadoAutomatismoGeneral(bool nuevoEstado)
@@ -203,61 +238,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             return model;
         }
 
-        [HttpGet]
-        public ActionResult ModificarCallePlanta(int id)
-        {
-            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
-            model.CallePlanta = servicio.ObtenerCalle(id);
-            return PartialView("_ModificarCallePlanta", model);
-        }
-
-        [HttpPost]
-        public ActionResult ModificarCallePlanta(AutomatismoNoGranoConfiguracionViewModel model)
-        {
-            var calleEditada = model.CallePlanta;
-            var calle = servicio.ObtenerCalle(calleEditada.Id);
-            calle.Nombre = calleEditada.Nombre;
-            calle.CantidadDeCamiones = calleEditada.CantidadDeCamiones;
-
-            var resultado = servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
-            if (!resultado.HayErrores)
-            {
-                var modelo = CargarListasDeConfiguracion();
-                return PartialView("_ListarCallePlanta", modelo);
-            }
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "CallePlanta", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            return result;
-        }
-
-        [HttpGet]
-        public ActionResult ModificarPuntoDeCarga(int id)
-        {
-            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
-            model.PuntoDeCarga = servicio.ObtenerPuntoDeCarga(id);
-            return PartialView("_ModificarPuntoDeCarga", model);
-        }
-
-        [HttpPost]
-        public ActionResult ModificarPuntoDeCarga(AutomatismoNoGranoConfiguracionViewModel model)
-        {
-            var puntoDeCargaEditado = model.PuntoDeCarga;
-            var puntoDeCarga = servicio.ObtenerPuntoDeCarga(puntoDeCargaEditado.Id);
-            puntoDeCarga.Descripcion = puntoDeCargaEditado.Descripcion;
-            puntoDeCarga.CantidadMaximaDeCamiones = puntoDeCargaEditado.CantidadMaximaDeCamiones;
-
-            var resultado = servicioComandos.Ejecutar(new ModificarPuntoDeCarga { Dto = puntoDeCarga });
-            if (!resultado.HayErrores)
-            {
-                var modelo = CargarListasDeConfiguracion();
-                return PartialView("_ListarPuntoDeCarga", modelo);
-            }
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            result.Data = new MensajeEstandarDto { Key = "PuntoDeCarga", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-
-            return result;
-        }
-
         public ActionResult ActualizarEstadoAutomatismoNoGrano(bool nuevoEstado, string id)
         {
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -282,17 +262,23 @@ namespace Molinos.Scato.WebMobile.Controllers
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             var almacen = servicio.ObtenerAlmacen(int.Parse(id));
             almacen.EstadoAutomatismo = nuevoEstado;
+
+
+            var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
+            var automatismoGranoActivo = ObtenerEstadoGeneralAutomatismoGrano();
+
+
             if (!nuevoEstado)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.Almacen.Id==almacen.Id && x.Activo);
-                var incluidoEnAutomatismoGrano = servicio.ListarAutomatismoGrano().Any(x => x.AlmacenId == almacen.Id && x.Activo);
+                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.Almacen.Id == almacen.Id && x.Activo && automatismoNoGranoActivo);
+                var incluidoEnAutomatismoGrano = servicio.ListarAutomatismoGrano().Any(x => x.AlmacenId == almacen.Id && x.Activo && automatismoGranoActivo);
                 if (!incluidoEnAutomatismoGrano && !incluidoEnAutomatismoNoGrano)
                 {
                     resultado = servicioComandos.Ejecutar(new ModificarAlmacen { Dto = almacen });
                 }
                 else
                 {
-                    resultado.Error("Error", "No se Puede Actualizar el Estado, Hay Automatismos Activos Asociados");
+                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
                 }
             }
             else
@@ -319,7 +305,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             punto.EstadoAutomatismo = nuevoEstado;
             if (!nuevoEstado)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.PuntoDeCarga.Id==punto.Id && x.Activo);
+                var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
+                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.PuntoDeCarga.Id == punto.Id && x.Activo && automatismoNoGranoActivo);
 
                 if (!incluidoEnAutomatismoNoGrano)
                 {
@@ -327,7 +314,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
                 else
                 {
-                    resultado.Error("Error", "No se Puede Actualizar el Estado, Hay Automatismos Activos Asociados");
+                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
                 }
             }
             else
@@ -354,14 +341,15 @@ namespace Molinos.Scato.WebMobile.Controllers
             calle.ActivoAutomatico = nuevoEstado;
             if (!nuevoEstado)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.CallePlayaInternaId == calle.Id && x.Activo);
+                var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
+                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.CallePlantaId == calle.Id && x.Activo && automatismoNoGranoActivo);
                 if (!incluidoEnAutomatismoNoGrano)
                 {
                     resultado = servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
                 }
                 else
                 {
-                    resultado.Error("Error", "No se puede modificar mientras tenga asociado un automatismo activo");
+                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
                 }
             }
             else
@@ -380,29 +368,15 @@ namespace Molinos.Scato.WebMobile.Controllers
             return result;
         }
 
-        private bool ObtenerEstadoGeneralAutomatismoNoGrano()
-        {
-            var configuracionAutomatismoNoGrano = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
-            var result = false;
-            if (configuracionAutomatismoNoGrano != null)
-            {
-                bool valor = false;
-                var conversion = bool.TryParse(configuracionAutomatismoNoGrano.Valor, out valor);
-                if (conversion)
-                {
-                    result = valor;
-                }
-            }
-            return result;
-        }
-
         [HttpGet]
         [AjaxOnly]
         public ActionResult ListarAutomatismoNoGrano()
         {
-            AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
-            model.ListaAutomatismoNoGrano = ListarAutomatismo();
-            model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
+            AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel
+            {
+                ListaAutomatismoNoGrano = ListarAutomatismo(),
+                EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano()
+            };
             return PartialView("_Listar", model);
         }
 
@@ -410,7 +384,6 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AjaxOnly]
         public ActionResult ListarCallePlanta()
         {
-            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
             var modelo = CargarListasDeConfiguracion();
             return PartialView("_ListarCallePlanta", modelo);
         }
@@ -419,7 +392,6 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AjaxOnly]
         public ActionResult ListarPuntoDeCarga()
         {
-            AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
             var modelo = CargarListasDeConfiguracion();
             return PartialView("_ListarPuntoDeCarga", modelo);
         }
@@ -434,6 +406,69 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             return Json(prehidraulicas.Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList(), JsonRequestBehavior.AllowGet);
+        }
+        
+        private AutomatismoNoGranoViewModel CargarModeloAutomatismo()
+        {
+            AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
+            var callesPlanta = servicio.ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle.PlantaNoGranos);
+            var callesPlayaInterna = servicio.ListarCallesPlayaInternaAutomatismoDisponibles();
+            model.CallesPlanta = callesPlanta
+                 .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
+                 .ToList();
+            model.CallesPlayaInterna = callesPlayaInterna
+                 .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
+                 .ToList();
+            var almacenes = servicio.ListarAlmacenesActivosAutomatismoNoGrano();
+            var puntos = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
+            model.PuntosDeCarga = puntos
+                 .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
+                 .ToList();
+            model.Almacenes = almacenes
+                 .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
+                 .ToList();
+            return model;
+        }
+
+        private bool ObtenerEstadoGeneralAutomatismoNoGrano()
+        {
+            var configuracionAutomatismo = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
+            var result = false;
+            if (configuracionAutomatismo != null)
+            {
+                bool valor = false;
+                if (bool.TryParse(configuracionAutomatismo.Valor, out valor))
+                {
+                    result = valor;
+                }
+            }
+            return result;
+        }
+
+        private bool ObtenerEstadoGeneralAutomatismoGrano()
+        {
+            var configuracionAutomatismo = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+            var result = false;
+            if (configuracionAutomatismo != null)
+            {
+                bool valor = false;
+                if (bool.TryParse(configuracionAutomatismo.Valor, out valor))
+                {
+                    result = valor;
+                }
+            }
+            return result;
+        }
+
+        private void AgregarErroresARespuesta(Resultado resultado, RespuestaEstandarDto response)
+        {
+            if (resultado.HayErrores)
+            {
+                foreach (var item in resultado.Errores)
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = item.Value, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                }
+            }
         }
     }
 }

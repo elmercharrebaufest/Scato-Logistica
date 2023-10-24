@@ -1,11 +1,6 @@
-﻿@using Molinos.Scato.WebMobile.ViewModel
-
-@model CalleViewModel
-
-@{
-    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
-    ViewBag.Title = "Modificar Calle Hidráulica";
-}
+﻿@model CalleViewModel
+@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
 
 <div class="modal fade" id="modalModificarPreHidraulica" tabindex="-1" role="dialog" aria-labelledby="modalModificarPreHidraulicaLabel">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -30,15 +25,15 @@
                             </div>
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.Camiones)
-                                @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control" })
+                                @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
                                 @Html.ValidationMessageFor(model => model.Camiones)
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
                 </div>
             </div>
         }

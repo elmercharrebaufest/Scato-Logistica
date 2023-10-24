@@ -1,9 +1,12 @@
 ﻿@using Molinos.Scato.Dominio.Recursos
 
 @{
+    ViewBag.Title = Textos.TableroComandoPuerto_Titulo;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/scripts/automatismoNoGrano.js")"></script>
 <script>
     urlModificarCallePlanta = '@Url.Action("ModificarCallePlanta", "TableroComandoPuerto")';
     urlModificarPuntoDeCarga = '@Url.Action("ModificarPuntoDeCarga", "TableroComandoPuerto")';
@@ -14,9 +17,11 @@
     urlListarCallePlanta = '@Url.Action("ListarCallePlanta", "TableroComandoPuerto")';
     urlListarPuntoDeCarga = '@Url.Action("ListarPuntoDeCarga", "TableroComandoPuerto")';
 </script>
-<div style="text-align:center">
-    <h2 class="titulo-center">@Textos.TableroComandoPuerto_Panel</h2>
+
+<div class="m-2">
+    <h1 class="text-center">@Textos.TableroComandoPuerto_Panel</h1>
 </div>
+
 <div class="mx-1" style="border: 1px solid #ccc;">
     <div class="row">
         <div class="col-12">
@@ -35,24 +40,25 @@
                     <span class="mr-2">Automatismo General</span>
                 </li>
             </ul>
+
             <div class="tab-content overflow-auto">
                 <div id="panel" class="tab-pane fade show active">
                     <div class="container">
                         <div class="row mt-2">
                             <div class="col-sm-12 col-md-4">
-                                <h4>Calle Planta</h4>
+                                <h4 class="text-center">Calle Planta</h4>
                                 <div id="gridCallePlanta" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarCallePlanta")
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <h4>Puntos de Carga</h4>
+                                <h4 class="text-center">Puntos de Carga</h4>
                                 <div id="gridPuntoDeCarga" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarPuntoDeCarga")
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <h4>Almacén</h4>
+                                <h4 class="text-center">Almacén</h4>
                                 <div id="gridAlmacen" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarAlmacen")
                                 </div>
@@ -63,31 +69,38 @@
             </div>
         </div>
     </div>
-    <!--Comienzo ModalVacio-->
-    <div id="partialModal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Titulo Modal</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                </div>
+</div>
+
+<!--Comienzo ModalVacio-->
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Titulo Modal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
             </div>
         </div>
     </div>
-    <!--Fin ModalVacio-->
-    <script src="~/Scripts/AutomatismoNoGrano.js"></script>
-    <style>
-        .nav-item a,
-        td a,
-        th a {
-            color: #244232 !important;
-        }
+</div>
+<!--Fin ModalVacio-->
 
-        td, th {
-            text-align: center;
-        }
-    </style>
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+
+    .contenedor {
+        border: 1px solid;
+        margin-bottom: 20px;
+    }
+</style>
