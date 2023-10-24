@@ -23,7 +23,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         public Calle ObtenerCallePlanta(DbContext contexto)
         {
-            return contexto.Set<AsignacionAutomatismoNoGranoEnRecorrido>()
+            return contexto.Set<AsignacionNoGranoEnRecorrido>()
                 .Where(x => x.Recorrido.InstanciaWorkflow == this.instanceId).Select(s => s.CallePlanta).FirstOrDefault();
         }
     }

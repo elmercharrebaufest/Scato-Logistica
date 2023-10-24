@@ -1,6 +1,6 @@
 ﻿namespace Molinos.Scato.Dominio.Comandos
 {
-    public class EliminarAsignacionAutomatismoNoGranoEnRecorrido : Comando
+    public class EliminarAsignacionNoGranoEnRecorrido : Comando
     {
         public int RecorridoId { get; set; }
     }

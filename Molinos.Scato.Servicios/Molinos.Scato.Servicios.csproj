@@ -169,7 +169,7 @@
     <Compile Include="Behavior\BehaviorMonsanto.cs" />
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AsignacionAutomatismoGranoEnRecorridoMappingProfile.cs" />
-    <Compile Include="Conversiones\Impl\Perfiles\AsignacionAutomatismoNoGranoEnRecorridoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AsignacionNoGranoEnRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoNoGranoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoGranoMappingProfile.cs" />
@@ -554,7 +554,7 @@
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorConfirmarCTGVencidas.cs" />
-    <Compile Include="Procesamiento\ProcesadorEliminarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAutomatismoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoGranos.cs" />

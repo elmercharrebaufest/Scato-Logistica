@@ -4,7 +4,7 @@ using Molinos.Scato.Dominio.Entidades;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
-    public class AsignacionAutomatismoNoGranoEnRecorridoMappingProfile : Profile
+    public class AsignacionNoGranoEnRecorridoMappingProfile : Profile
     {
         public override string ProfileName
         {
@@ -13,7 +13,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 
         protected override void Configure()
         {
-            Mapper.CreateMap<AsignacionAutomatismoNoGranoEnRecorrido, AsignacionAutomatismoNoGranoEnRecorridoDto>()
+            Mapper.CreateMap<AsignacionNoGranoEnRecorrido, AsignacionNoGranoEnRecorridoDto>()
                 .ReverseMap();
         }
     }

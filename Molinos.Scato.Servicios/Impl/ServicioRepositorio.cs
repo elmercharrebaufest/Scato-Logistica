@@ -10843,9 +10843,14 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.CallePlanta.Material.Id == materialId && a.Activo == true);
         }
 
-        public int ObtenerMaterialIdPorCalleId(int calleId)
+        public int? ObtenerCallePlantaIdPorMaterialId(int materialId)
         {
-            return repositorio.ObtenerProyeccion<Calle, int>(x => x.Id == calleId, x => x.Material != null ? x.Material.Id : 0);
+            var calle =  repositorio.Obtener<Calle>(x => x.Material.Id == materialId && x.Deshabilitada == false && x.TipoCalle == TipoCalle.PlantaNoGranos);
+
+            if (calle == null)
+                return null;
+
+            return calle.Id;
         }
     }
 

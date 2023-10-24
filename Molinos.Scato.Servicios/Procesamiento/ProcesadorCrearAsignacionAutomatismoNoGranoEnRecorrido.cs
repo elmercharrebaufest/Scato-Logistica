@@ -7,18 +7,18 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido : ProcesadorCrear<CrearAsignacionAutomatismoNoGranoEnRecorrido, AsignacionAutomatismoNoGranoEnRecorrido>
+    public class ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido : ProcesadorCrear<CrearAsignacionNoGranoEnRecorrido, AsignacionNoGranoEnRecorrido>
     {
         public ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido(IRepositorio repositorio, IConversor conversor, ILogger log) : base(repositorio, conversor, log)
         {
         }
 
-        protected override AsignacionAutomatismoNoGranoEnRecorrido CrearEntidad(CrearAsignacionAutomatismoNoGranoEnRecorrido comando)
+        protected override AsignacionNoGranoEnRecorrido CrearEntidad(CrearAsignacionNoGranoEnRecorrido comando)
         {
-            return this.Conversor.Convertir<AsignacionAutomatismoNoGranoEnRecorridoDto, AsignacionAutomatismoNoGranoEnRecorrido>(comando.Dto);
+            return this.Conversor.Convertir<AsignacionNoGranoEnRecorridoDto, AsignacionNoGranoEnRecorrido>(comando.Dto);
         }
 
-        protected override void Validar(CrearAsignacionAutomatismoNoGranoEnRecorrido comando, Resultado resultado)
+        protected override void Validar(CrearAsignacionNoGranoEnRecorrido comando, Resultado resultado)
         {
             if (Repositorio.Existe<AsignacionAutomatismoGranoEnRecorrido>(x => x.RecorridoId == comando.Dto.RecorridoId))
             {
