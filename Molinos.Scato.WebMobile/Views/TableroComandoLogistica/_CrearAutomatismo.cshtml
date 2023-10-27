@@ -3,6 +3,12 @@
 @using Molinos.Scato.Dominio.Recursos
 @using System.Web.Optimization
 
+
+
+<div id="links"
+     data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") "></div>
+
+
 <div class="modal fade" id="modalAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalAutomatismoLabel">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         @using (Ajax.BeginForm("Crear", null, new AjaxOptions { OnSuccess = "guardarSuccess" }, new { @class = "container" }))
@@ -50,6 +56,7 @@
                     <div id="divCalidad" style="display:none" class="form-group">
                         @Html.LabelFor(m => m.AutomatismoGrano.CalidadId)
                         @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control", data_val_required = "El campo 'Calidad' es requerido." })
+                        @Html.HiddenFor(model => model.CaracteristicaDeCalidadId)
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.CalidadId)
 
                         <div class="form-group row mt-4">

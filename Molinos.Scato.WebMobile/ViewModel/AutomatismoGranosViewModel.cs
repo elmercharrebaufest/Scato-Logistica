@@ -32,6 +32,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
         public ListaPaginada<LlamadoAutomaticoHidraulicaDto> ConfiguracionHidraulicas { get; set; }
         public bool AutomatismoLLamadoPrebalanza { get; set; }
         public bool AutomatismoGeneral { get; set; }
+        public int? CaracteristicaDeCalidadId { get; set; }
 
         public void CargarDatos(IServicioRepositorio servicio, int idCentro, AutomatismoGranoDto dto)
         {

@@ -94,6 +94,12 @@
         $("#modalModificarPreBalanza").modal("hide");
         $("#modalModificarPreHidraulica").modal("hide");
     });
+
+    $('body').on('change', '#AutomatismoGrano_CalidadId', function () {
+        var seleccionado = $('#AutomatismoGrano_CalidadId').find(":selected")
+        $("#CaracteristicaDeCalidadId").val(seleccionado.val())
+        setearRangosCaracteristicasDeCalidad();
+    })
 });
 
 var popupComandoLogistica;
@@ -583,4 +589,21 @@ function bindearChecksAutomatismo() {
             }
         }
     });
+}
+
+function setearRangosCaracteristicasDeCalidad() {
+    var caracteristicaDeCalidadId = $('#AutomatismoGrano_CalidadId').find(":selected").val();
+    if (!caracteristicaDeCalidadId) return;
+
+    getCaracteristicaDeCalidad()
+        .done(function (resultado) {
+            $('#AutomatismoGrano_Minimo').val(resultado.caladoMinimo)
+            $('#AutomatismoGrano_Maximo').val(resultado.caladoMaximo)
+        });
+}
+
+function getCaracteristicaDeCalidad() {
+    var caracteristicaDeCalidadId = $('#AutomatismoGrano_CalidadId').find(":selected").val();
+    const url = $('#links').data().urlBuscarCaracteristicadecalidadporid.trim();
+    return $.getJSON(url, { id: caracteristicaDeCalidadId });
 }
