@@ -217,7 +217,15 @@ namespace Molinos.Scato.WebMobile.Controllers
             if (!resultado.HayErrores)
             {
                 result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Configuracion de Llamado Automatico de No Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
+                if (ObtenerEstadoGeneralAutomatismoNoGrano() == false)
+                {
+                    servicioComandos.Ejecutar(new ActualizarAutomatismoNoGranosEstado
+                    {
+                        Estado = false
+                    });
+                }
             }
+
 
             return result;
         }
@@ -263,10 +271,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             var almacen = servicio.ObtenerAlmacen(int.Parse(id));
             almacen.EstadoAutomatismo = nuevoEstado;
 
-
             var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
             var automatismoGranoActivo = ObtenerEstadoGeneralAutomatismoGrano();
-
 
             if (!nuevoEstado)
             {
@@ -398,7 +404,6 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public ActionResult ObtenerPuntosDeCargaPorMaterialId(int calleId)
         {
-
             var materialId = servicio.ObtenerMaterialIdPorCalleId(calleId);
 
             var prehidraulicas = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano()
@@ -407,7 +412,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(prehidraulicas.Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList(), JsonRequestBehavior.AllowGet);
         }
-        
+
         private AutomatismoNoGranoViewModel CargarModeloAutomatismo()
         {
             AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();

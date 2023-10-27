@@ -548,6 +548,7 @@
     <Compile Include="Impl\ServicioComandos.cs" />
     <Compile Include="IServicioNotificarUsuario.cs" />
     <Compile Include="IServicioRepositorio.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoNoGranosEstado.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />

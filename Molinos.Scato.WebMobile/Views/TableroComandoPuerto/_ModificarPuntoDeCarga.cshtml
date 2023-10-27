@@ -7,7 +7,6 @@
 {
     @Html.HiddenFor(model => model.Id)
     <div class="row">
-        <!--Primera Fila-->
         <div class="col">
             <div class="span4">
                 <div class="form-group">
@@ -19,9 +18,9 @@
                 </div>
             </div>
         </div>
-    </div><!--fin Primera Fila-->
+    </div>
+
     <div class="row">
-        <!--Segunda Fila-->
         <div class="col">
             <div class="span4">
                 <div class="form-group">
@@ -33,11 +32,11 @@
                 </div>
             </div>
         </div>
-    </div><!--fin Segunda Fila-->
+    </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-success float-right">@Textos.Guardar</button>
-        <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">@Textos.Cancelar</button>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+        <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }
 

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Molinos.Scato.Servicios.Orquestador;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -19,6 +15,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
     {
         private readonly IServicioComandos servicioComandos;
         private readonly IServicioOrquestador orquestador;
+
         public ProcesadorValidarBalanzadasOrquestador(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos, IServicioOrquestador orquestador) : base(repositorio, conversor, log)
         {
             this.servicioComandos = servicioComandos;
@@ -51,27 +48,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void ValidarRecursivo(BalanzaPuerto balanza, int ultimoRegistroBalanzaPuertoId)
         {
-            
-            
-                int iterCantValidaciones = 0;
-                int siguienteId = ultimoRegistroBalanzaPuertoId + 1;
+            int iterCantValidaciones = 0;
+            int siguienteId = ultimoRegistroBalanzaPuertoId + 1;
 
-                bool validado = this.ValidarBalanzada(siguienteId, balanza.OffSetPlc, balanza.CodigoDispositivo, balanza.CodigoBalanza);
-                while (iterCantValidaciones < balanza.IntentosValidacion && !validado)
-                {
-                    validado = this.ValidarBalanzada(siguienteId, balanza.OffSetPlc, balanza.CodigoDispositivo, balanza.CodigoBalanza);
-                    System.Threading.Thread.Sleep(2000);
-                    iterCantValidaciones++;
-                }
-                if (!validado)
-                {
-                    Log.Info("No hubo novedades de la balanza {0};", balanza.CodigoBalanza);
-                }
-                else
-                {
-                    this.ValidarRecursivo(balanza, ultimoRegistroBalanzaPuertoId + 1);
-                }
-            
+            bool validado = this.ValidarBalanzada(siguienteId, balanza.OffSetPlc, balanza.CodigoDispositivo, balanza.CodigoBalanza);
+            while (iterCantValidaciones < balanza.IntentosValidacion && !validado)
+            {
+                validado = this.ValidarBalanzada(siguienteId, balanza.OffSetPlc, balanza.CodigoDispositivo, balanza.CodigoBalanza);
+                System.Threading.Thread.Sleep(2000);
+                iterCantValidaciones++;
+            }
+            if (!validado)
+            {
+                Log.Info("No hubo novedades de la balanza {0};", balanza.CodigoBalanza);
+            }
+            else
+            {
+                this.ValidarRecursivo(balanza, ultimoRegistroBalanzaPuertoId + 1);
+            }
         }
 
         private bool ValidarBalanzada(int idBalanzada, int offSetPlc, string codigoDispositivo, string balanza)
@@ -87,7 +81,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             else
             if (balanzada.Mensaje.Codigo == 0)
             {
-
                 Type type = balanzada.GetType();
                 IEnumerable props = type.GetRuntimeProperties();
 

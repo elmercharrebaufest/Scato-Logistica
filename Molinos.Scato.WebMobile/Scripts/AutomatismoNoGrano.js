@@ -22,6 +22,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.TipoDeMensaje == TipoMensaje.Success) {
                     element.checked = !element.checked;
+                    recargarListaAutomatismos();
                 } else {
                     MostrarAlertaError(response.Mensaje);
                 }
@@ -34,10 +35,15 @@ $(document).ready(function () {
             }
         });
     });
-
+    bindearEventos();
     //FUNCIONES SLIDERS
     //Funcion Detecta y Redirecciona las Consultas
 
+
+})
+
+
+function bindearEventos() {
     $('.cambia-estado').click(function (e) {
         let element = e.currentTarget;
         element.checked = !element.checked;
@@ -58,7 +64,7 @@ $(document).ready(function () {
                 break;
         }
     });
-})
+}
 
 function funcionModalCrear() {
     $.blockUI({
@@ -99,7 +105,7 @@ function funcionModalModificarAutomatismoNoGrano(item) {
         success: function (response) {
             $("#partialModal").find(".modal-body").html(response);
             $("#partialModal").modal('show');
-            $(".modal-title").text("Modal Modificar");
+            $(".modal-title").text("Modificar Automatismo");
         },
         failure: function (response) {
             alert(response.responseText);
@@ -183,7 +189,7 @@ function funcionModalModificarPuntoDeCarga(item) {
         success: function (response) {
             $("#partialModal").find(".modal-body").html(response);
             $("#partialModal").modal('show');
-            $(".modal-title").text("Modal Modificar Punto de Carga");
+            $(".modal-title").text("Modificar Punto de Carga");
         },
         failure: function (response) {
             alert(response.responseText);
@@ -257,6 +263,7 @@ function recargarListaAutomatismos() {
         url: urlListarAutomatismoNoGrano,
         success: function (listaActualizada) {
             $("#gridContainer").html(listaActualizada);
+            bindearEventos();
         }
     });
 }
@@ -266,6 +273,7 @@ function recargarListaCallePlanta() {
         url: urlListarCallePlanta,
         success: function (listaActualizada) {
             $("#gridCallePlanta").html(listaActualizada);
+            bindearEventos();
         }
     });
 }
@@ -275,6 +283,7 @@ function recargarListaPuntoDeCarga() {
         url: urlListarPuntoDeCarga,
         success: function (listaActualizada) {
             $("#gridPuntoDeCarga").html(listaActualizada);
+            bindearEventos();
         }
     });
 }
@@ -289,19 +298,28 @@ function MostrarRespuestaMensajes(response) {
     })
 }
 
-function dllCallePlantaOnChange(e) {
-    var selectedCalleId = e;
+function dllCallePlantaOnChange() {
+    var selectedCalleId = $("#ddlCallePlanta").val();
+    if (selectedCalleId == "") {
+        $('#ddlPuntosDeCarga').find('option').not(':first').remove();
+    }
+    else {
+        $.ajax({
+            url: urlObtenerPuntosDeCargaPorMaterialId,
+            data: { calleId: selectedCalleId },
+            success: function (puntosDeCarga) {
+                let valorActual = $('#ddlPuntosDeCarga').val();
+                $('#ddlPuntosDeCarga').find('option').not(':first').remove();
+                var ddlPuntosDeCarga = $("#ddlPuntosDeCarga");
 
-    $.ajax({
-        url: urlObtenerPuntosDeCargaPorMaterialId,
-        data: { calleId: selectedCalleId },
-        success: function (puntosDeCarga) {
-            $('#ddlPuntosDeCarga').find('option').not(':first').remove();
-            var ddlPuntosDeCarga = $("#ddlPuntosDeCarga");
-
-            $.each(puntosDeCarga, function (indice, puntoDeCarga) {
-                ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
-            });
-        }
-    });
+                $.each(puntosDeCarga, function (indice, puntoDeCarga) {
+                    if (puntoDeCarga.Value == valorActual) {
+                        ddlPuntosDeCarga.append("<option selected value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
+                    } else {
+                        ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
+                    }
+                });
+            }
+        });
+    }
 }

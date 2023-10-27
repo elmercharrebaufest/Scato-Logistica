@@ -3,12 +3,8 @@
 @using Molinos.Scato.Dominio.Recursos
 @using System.Web.Optimization
 
-
-
 <div id="links"
      data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") "></div>
-
-
 <div class="modal fade" id="modalAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalAutomatismoLabel">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         @using (Ajax.BeginForm("Crear", null, new AjaxOptions { OnSuccess = "guardarSuccess" }, new { @class = "container" }))

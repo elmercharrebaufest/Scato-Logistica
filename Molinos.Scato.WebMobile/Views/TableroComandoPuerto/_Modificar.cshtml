@@ -13,7 +13,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlantaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, new { @class = "form-control", @disabled = true })
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, new { @class = "form-control", @id = "ddlCallePlanta", @disabled = true })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
                 </div>
             </div>
@@ -34,7 +34,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "(Punto de Carga)", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.PuntoDeCargaId, Model.PuntosDeCarga, "(Punto de Carga)", new { @class = "form-control",@id = "ddlPuntosDeCarga" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.PuntoDeCargaId)
                 </div>
             </div>
@@ -55,3 +55,9 @@
         <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }
+
+<script>
+    $(document).ready(function () {
+        dllCallePlantaOnChange()
+    })
+</script>

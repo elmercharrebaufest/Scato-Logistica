@@ -12,7 +12,7 @@
             <div class="span4">
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.CallePlantaId)
-                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "(Calle Planta)", new { @class = "form-control", @onchange = "dllCallePlantaOnChange(this.value)" })
+                    @Html.DropDownListFor(m => m.AutomatismoNoGrano.CallePlantaId, Model.CallesPlanta, "(Calle Planta)", new { @class = "form-control", @id = "ddlCallePlanta", @onchange = "dllCallePlantaOnChange()" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.CallePlantaId)
                 </div>
             </div>
@@ -54,3 +54,8 @@
         <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }
+<script>
+    $(document).ready(function () {
+        dllCallePlantaOnChange()
+    })
+</script>

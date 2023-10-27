@@ -6,38 +6,22 @@
 @using (Ajax.BeginForm("ModificarCallePlanta", null, new AjaxOptions { OnSuccess = "refreshCallePlanta" }, new { @class = "container" }))
 {
     @Html.HiddenFor(model => model.Id)
-    <div class="row">
-        <!--Primera Fila-->
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Descripcion)
-                    <div class="controls">
-                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Descripcion)
-                    </div>
-                </div>
-            </div>
+    <div class="form-group row">
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Descripcion)
+            @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Descripcion)
         </div>
-    </div><!--fin Primera Fila-->
-    <div class="row">
-        <!--Segunda Fila-->
-        <div class="col">
-            <div class="span4">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Camiones)
-                    <div class="controls">
-                        @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
-                        @Html.ValidationMessageFor(model => model.Camiones)
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-6">
+            @Html.LabelFor(model => model.Camiones)
+            @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
+            @Html.ValidationMessageFor(model => model.Camiones)
         </div>
-    </div><!--fin Segunda Fila-->
+    </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-success float-right">@Textos.Guardar</button>
-        <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">@Textos.Cancelar</button>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+        <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
     </div>
 }
 
