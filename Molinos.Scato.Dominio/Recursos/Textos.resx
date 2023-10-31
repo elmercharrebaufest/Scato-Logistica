@@ -10492,4 +10492,7 @@
   <data name="Automatismo_CalleUtilizadaEnAutomatismoActivo" xml:space="preserve">
     <value>Calle utilizada en un automatismo activo</value>
   </data>
+  <data name="Automatismo_CallesDesactivadas" xml:space="preserve">
+    <value>El automatismo tiene asociadas calles desactivadas</value>
+  </data>
 </root>

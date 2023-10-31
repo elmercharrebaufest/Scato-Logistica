@@ -389,7 +389,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             else
             {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la actualizacion del estado de Llamado Volcable", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultado.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 jsonResult.Data = respuesta;
             }
 

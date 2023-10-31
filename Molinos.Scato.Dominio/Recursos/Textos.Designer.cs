@@ -4714,6 +4714,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociadas calles desactivadas.
+        /// </summary>
+        public static string Automatismo_CallesDesactivadas {
+            get {
+                return ResourceManager.GetString("Automatismo_CallesDesactivadas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calle utilizada en un automatismo activo.
         /// </summary>
         public static string Automatismo_CalleUtilizadaEnAutomatismoActivo {
