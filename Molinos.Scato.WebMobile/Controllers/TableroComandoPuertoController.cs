@@ -249,7 +249,15 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public ActionResult ActualizarEstadoAutomatismoNoGrano(bool nuevoEstado, string id)
         {
+
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+            if (!ObtenerEstadoGeneralAutomatismoNoGrano())
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+                return result;
+            }
+
             var automatismo = servicio.ObtenerAutomatismoNoGrano(int.Parse(id));
             automatismo.Activo = nuevoEstado;
             var resultado = servicioComandos.Ejecutar(new ModificarAutomatismoNoGrano { Dto = automatismo });

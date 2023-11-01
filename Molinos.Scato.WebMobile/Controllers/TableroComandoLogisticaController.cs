@@ -315,6 +315,13 @@ namespace Molinos.Scato.WebMobile.Controllers
             if (!resultado.HayErrores)
             {
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Configuracion de Llamado Automatico de Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
+                if (!nuevoEstado)
+                {
+                    servicioComandos.Ejecutar(new ActualizarAutomatismoGranosEstado
+                    {
+                        Estado = false
+                    });
+                }
                 jsonResult.Data = respuesta;
             }
 
@@ -376,6 +383,15 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             var jsonResult = new JsonResult { Data = new MensajeEstandarDto(), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             var respuesta = new RespuestaEstandarDto();
+            var configuracionAutomatismoGrano = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+           
+            if (configuracionAutomatismoGrano.Valor.ToString() == "False")
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se Puede Procesar. - Debe habilitar primero el llamado Volcable", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                jsonResult.Data = respuesta;
+                return jsonResult;
+            }
+            
             var resultado = servicioComandos.Ejecutar(new ModificarLlamadoVolcableAutomatismoGrano
             {
                 Id = id,

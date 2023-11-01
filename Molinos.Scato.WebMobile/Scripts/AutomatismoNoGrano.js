@@ -66,7 +66,7 @@ function bindearEventos() {
     });
 }
 
-function funcionModalCrear() {
+function ModalCrear() {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -92,7 +92,7 @@ function funcionModalCrear() {
     });
 }
 
-function funcionModalModificarAutomatismoNoGrano(item) {
+function ModalModificarAutomatismoNoGrano(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -119,12 +119,12 @@ function funcionModalModificarAutomatismoNoGrano(item) {
     });
 }
 
-function funcionModalEliminarAutomatismoNoGrano(idAutomatismo) {
+function ModalEliminarAutomatismoNoGrano(idAutomatismo) {
     $("#automatismoIdABorrar").val(idAutomatismo);
     modalConfirmarBorrar.showModal();
 }
 
-function funcionEliminarAutomatismoNoGrano() {
+function EliminarAutomatismoNoGrano() {
     modalConfirmarBorrar.close();
     $.blockUI({
         blockMsgClass: 'blocuiBox',
@@ -149,7 +149,7 @@ function funcionEliminarAutomatismoNoGrano() {
 }
 
 //Configuraciones
-function funcionModalModificarCallePlanta(item) {
+function ModalModificarCallePlanta(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -176,7 +176,7 @@ function funcionModalModificarCallePlanta(item) {
     });
 }
 
-function funcionModalModificarPuntoDeCarga(item) {
+function ModalModificarPuntoDeCarga(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'

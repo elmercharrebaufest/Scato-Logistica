@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comandos\ActualizarAsignacionDeCalle.cs" />
+    <Compile Include="Comandos\ActualizarAutomatismoGranosEstado.cs" />
     <Compile Include="Comandos\ActualizarAutomatismoNoGranosEstado.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\CrearAsignacionNoGranoEnRecorrido.cs" />

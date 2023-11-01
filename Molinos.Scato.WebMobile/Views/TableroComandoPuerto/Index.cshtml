@@ -48,7 +48,7 @@
 
             <div class="tab-content overflow-auto">
                 <div class="col-12">
-                    <button class="btn m-2 float-right rounded-bottom btn-success" onclick="funcionModalCrear()">Nuevo Automatismo</button>
+                    <button class="btn m-2 float-right rounded-bottom btn-success" onclick="ModalCrear()">Nuevo Automatismo</button>
                 </div>
                 <div id="gridContainer" class="tab-pane fade show active">
                     @Html.Partial("_Listar")
@@ -82,7 +82,7 @@
     </div>
     <div class="dialogModal__botones">
         <button type="button" class="btn btn-secondary" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
-        <button type="button" id="btnConfirmarBorrar" class="btn btn-success" onclick="funcionEliminarAutomatismoNoGrano()">Aceptar</button>
+        <button type="button" id="btnConfirmarBorrar" class="btn btn-success" onclick="EliminarAutomatismoNoGrano()">Aceptar</button>
     </div>
 </dialog>
 

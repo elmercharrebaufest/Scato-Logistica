@@ -39,6 +39,9 @@
             success: function (response) {
                 if (response.Mensajes[0].TipoDeMensaje === 0) {
                     element.checked = valor;
+                    if (!valor) {
+                        recargarListaAutomatismos();
+                    }
                 } else {
                     MostrarAlertaError(response.Mensajes[0].Mensaje);
                 }
