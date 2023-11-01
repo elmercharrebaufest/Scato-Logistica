@@ -44,6 +44,7 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.AutomatismoNoGrano.AlmacenId)
                     @Html.DropDownListFor(m => m.AutomatismoNoGrano.AlmacenId, Model.Almacenes, "(Almacen)", new { @class = "form-control" })
+                    @Html.HiddenFor(m => m.AutomatismoNoGrano.AlmacenId, new {@Id = "AutomatismoNoGrano_AlmacenId_hdn" })
                     @Html.ValidationMessageFor(m => m.AutomatismoNoGrano.AlmacenId)
                 </div>
             </div>

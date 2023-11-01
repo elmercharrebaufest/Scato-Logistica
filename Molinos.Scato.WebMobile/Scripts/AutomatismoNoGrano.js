@@ -319,7 +319,31 @@ function dllCallePlantaOnChange() {
                         ddlPuntosDeCarga.append("<option value='" + puntoDeCarga.Value + "'>" + puntoDeCarga.Text + "</option>");
                     }
                 });
+
+                obtenerAlmacenesPorCalleMaterial(selectedCalleId)
             }
         });
     }
+}
+
+function obtenerAlmacenesPorCalleMaterial(calleId) {
+    $.ajax({
+        url: urlObtenerAlmacenesCalleMaterialId,
+        data: { calleId: calleId },
+        success: function (almacenes) {
+            let valorActual = $('#AutomatismoNoGrano_AlmacenId').val();
+            let valorActualHidden = $('#AutomatismoNoGrano_AlmacenId_hdn').val();
+
+            $('#AutomatismoNoGrano_AlmacenId').find('option').not(':first').remove();
+            var cmbAlmacen = $("#AutomatismoNoGrano_AlmacenId");
+
+            $.each(almacenes, function (indice, almacen) {
+                if (almacen.Value == valorActual || almacen.Value == valorActualHidden) {
+                    cmbAlmacen.append("<option selected value='" + almacen.Value + "'>" + almacen.Text + "</option>");
+                } else {
+                    cmbAlmacen.append("<option value='" + almacen.Value + "'>" + almacen.Text + "</option>");
+                }
+            });
+        }
+    });
 }

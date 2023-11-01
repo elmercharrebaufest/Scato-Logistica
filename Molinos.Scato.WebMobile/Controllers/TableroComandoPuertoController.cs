@@ -44,6 +44,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult Crear()
         {
             var model = CargarModeloAutomatismo();
+            model.Almacenes = new List<SelectListItem>();
             return PartialView("_Crear", model);
         }
 
@@ -413,6 +414,16 @@ namespace Molinos.Scato.WebMobile.Controllers
                  .ToList(), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ObteneAlamacenesCalleMaterialId(int calleId)
+        {
+            var materialId = servicio.ObtenerMaterialIdPorCalleId(calleId);
+
+            var almacenes = servicio.ListarAlmacenesPorMaterialFiltrado(materialId);
+
+            return Json(almacenes.Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
+                 .ToList(), JsonRequestBehavior.AllowGet);
+        }
+
         private AutomatismoNoGranoViewModel CargarModeloAutomatismo()
         {
             AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
@@ -426,12 +437,14 @@ namespace Molinos.Scato.WebMobile.Controllers
                  .ToList();
             var almacenes = servicio.ListarAlmacenesActivosAutomatismoNoGrano();
             var puntos = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
-            model.PuntosDeCarga = puntos
+            model.PuntosDeCarga = 
+                puntos
                  .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList();
             model.Almacenes = almacenes
                  .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList();
+
             return model;
         }
 
