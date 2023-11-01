@@ -10658,11 +10658,13 @@ namespace Molinos.Scato.Servicios.Impl
 
                 if (automatismoNoGrano != null)
                 {
+                    var configuracionGeneralNoGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
                     infoCalle.EsIncluidoAutomatismo = "Si";
                     infoCalle.EsPaseDirecto = string.Empty;
                     infoCalle.Almacen = automatismoNoGrano.Almacen.Descripcion;
                     infoCalle.PuntoDeCarga = automatismoNoGrano.PuntoDeCarga.Descripcion;
-                    infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo ? "Activo" : "Inactivo";
+                    infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo && bool.TryParse(configuracionGeneralNoGrano?.Valor, out bool automatismoGeneralNoGrano) && automatismoGeneralNoGrano ? "Activo" : "Inactivo";
+
                 }
             }
 
@@ -10799,7 +10801,10 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<CalleDto> ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle tipo)
         {
-            return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo && x.ActivoAutomatico);
+            var callesAutomatismoActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == tipo && x.ActivoAutomatico);
+            var callesNoGranosUsadas = repositorio.Listar<AutomatismoNoGrano>().Select(q => q.CallePlanta.Id);
+            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesNoGranosUsadas.Contains(q.Id)).ToList();
+            return callesUtilizables;
         }
 
         public AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id)
