@@ -10863,5 +10863,61 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return repositorio.ObtenerProyeccion<Calle, int>(x => x.Id == calleId, x => x.Material != null ? x.Material.Id : 0);
         }
+
+        public MensajeCartelLedDto ObtenerCartelDisponible(string codigo)
+        {
+            var result =  repositorio.ObtenerPrimero<MensajeCartelLed>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido == null);
+
+            return conversor.Convertir<MensajeCartelLed, MensajeCartelLedDto>(result);
+        }
+
+        public RecorridoDto ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos()
+        {
+            var recorridosEnCartel = this.RecorridosEnCartel(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
+
+            var primerosCamionesPorCalle = Listar<CallePorRecorrido, CallePorRecorridoDto>(x => x.Calle.TipoCalle == TipoCalle.NoGranos
+                                                && x.FechaEgreso == null && x.Recorrido.Calle != null && !recorridosEnCartel.Any(id => id == x.Recorrido.Id))
+                 .GroupBy(c => c.CalleId)
+                    .Select(g => new
+                    {
+                        Calle_Id = g.Key,
+                        Recorrido_Id = g.OrderBy(c => c.FechaIngeso).FirstOrDefault().RecorridoId,
+                        FechaIngresoMasAntigua = g.Min(c => c.FechaIngeso)
+                    });
+
+
+            var recorridoId = primerosCamionesPorCalle?.OrderBy(x => x?.FechaIngresoMasAntigua)?.FirstOrDefault()?.Recorrido_Id;
+
+            return Obtener<Recorrido, RecorridoDto>(x => x.Id == recorridoId);
+
+
+        }
+
+        private IEnumerable<int> RecorridosEnCartel(string codigo)
+        {
+           var res = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido!= null);
+
+            if (res == null)
+                return Enumerable.Empty<int>();
+
+           var r = res.Select(x => x.HistorialMensajeCartelLed.RecorridoId.Value);
+
+            return r;
+            
+        }
+
+        public int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId)
+        {
+            var cantidadDeCamionesAsignados = repositorio.Contar<AsignacionNoGranoEnRecorrido>(x => x.Recorrido.Calle.Id == callePlayaInternaId);
+
+            var cantidadDeEspaciosPorCalle = repositorio.Obtener<Calle>(x => x.Id == callePlayaInternaId).CantidadDeCamiones;
+
+            return (cantidadDeEspaciosPorCalle - cantidadDeCamionesAsignados);
+        }
+
+        public CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId)
+        {
+            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == TipoCalle.NoGranos); 
+        }
     }
 }

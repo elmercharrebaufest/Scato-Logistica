@@ -89,6 +89,7 @@
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
     <Compile Include="EliminarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="EliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="DeshabilitarConfirmacionCargaDescarga.cs" />

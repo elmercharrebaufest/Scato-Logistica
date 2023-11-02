@@ -99,6 +99,7 @@
     <Compile Include="Comandos\AutorizarCpeDGDummy.cs" />
     <Compile Include="Comandos\ConfirmarCTGVencidas.cs" />
     <Compile Include="Comandos\EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\LimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\ModificarAutomatismoGranos.cs" />
     <Compile Include="Comandos\CrearAutomatismoHidraulicas.cs" />
     <Compile Include="Comandos\EliminarAutomatismoGranos.cs" />

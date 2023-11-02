@@ -550,6 +550,7 @@
     <Compile Include="IServicioRepositorio.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoGranosEstado.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoNoGranosEstado.cs" />
+    <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />

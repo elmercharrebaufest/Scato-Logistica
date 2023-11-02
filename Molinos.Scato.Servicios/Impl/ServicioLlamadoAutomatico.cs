@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
@@ -47,10 +48,6 @@ namespace Molinos.Scato.Servicios.Impl
             {
                 case LlamadoAutomatico.Granos:
                     DetenerLlamadoAutomaticoGranos();
-                    break;
-
-                case LlamadoAutomatico.NoGranos:
-                    DetenerLlamadoAutomaticoNoGranos();
                     break;
             }
         }
@@ -291,10 +288,56 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarAutomaticoNoGranos()
         {
+            var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
+
+            if(cartelLed != null)
+            {
+                var recorrido = repositorio.ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
+
+                if (recorrido == null) 
+                    return;
+
+                //validar que la patente de ese recorrido no este en el cartel?
+
+                var lugaresDisponibles = repositorio.ObtenerDisponibilidadEnPlayaInternaNoGranos(recorrido.CalleId.Value);
+
+                if (lugaresDisponibles > 0)
+                {
+
+                    var callePorRecorridoNoGranos = repositorio.ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(recorrido.Id);
+
+
+                    var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
+                    {
+                        Codigo = CodigoMensajeCartelLed.LlamadoCamionNoGrano,
+                        CalleId = callePorRecorridoNoGranos.CalleId,
+                        EsLlamadoPorCamion = true,
+                        Patente = recorrido.Patente,
+                        RecorridoId = recorrido.Id,
+                        EsCamionEnEspera = false
+
+                    }) as ResultadoMensajeCartelLed;
+
+                    if (!resultadoInsertarCalleCartelLed.HayErrores)
+                    {
+                        var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoDeCallePostCalado, Constantes.ConfiguracionGeneral.PostCalado.CartelLedPostCalado);
+
+                        comandos.Ejecutar(new EnviarMensajeCartelLed
+                        {
+                            Mensaje = recorrido.Patente,
+                            Codigo = cartel?.Valor,
+                            NumeroTrama = resultadoInsertarCalleCartelLed.NumeroTrama,
+                            NumeroPrograma = resultadoInsertarCalleCartelLed.NumeroPrograma,
+                            NumeroVariable = resultadoInsertarCalleCartelLed.NumeroVariable,
+                            SegundosDeEspera = resultadoInsertarCalleCartelLed.SegundosDeEspera,
+                        });
+                    }                  
+
+                }
+
+            }
+
         }
 
-        private void DetenerLlamadoAutomaticoNoGranos()
-        {
-        }
     }
 }

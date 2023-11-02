@@ -2952,6 +2952,16 @@ namespace Molinos.Scato.Servicios
         int? ObtenerCallePlantaIdPorMaterialId(int materialId);
 
         [OperationContract]
+        MensajeCartelLedDto ObtenerCartelDisponible(string codigo);
+
+        [OperationContract]
+        RecorridoDto ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
+
+        [OperationContract]
+        int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
+        CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId);
+
+        [OperationContract]
         int ObtenerMaterialIdPorCalleId(int calleId);
     }
 

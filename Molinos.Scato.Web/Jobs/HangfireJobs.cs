@@ -10,12 +10,17 @@ namespace Molinos.Scato.Web.Jobs
         public void InicializarJobs()
         {
             JobLlamadoAutomaticoGranos();
+            JobLlamadoAutomaticoNoGranos();
         }
 
         public void JobLlamadoAutomaticoGranos()
         {
             RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.DetenerAutomatismoGrano, x => x.Detener(LlamadoAutomatico.Granos), Cron.MinuteInterval(4));
             RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LlamarAutomatismoGrano, x => x.Llamar(LlamadoAutomatico.Granos), Cron.MinuteInterval(4));
+        }
+        public void JobLlamadoAutomaticoNoGranos()
+        {
+           RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LlamarAutomatismoGrano, x => x.Llamar(LlamadoAutomatico.NoGranos), Cron.MinuteInterval(4));
         }
     }
 }
