@@ -2,6 +2,7 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -11,6 +12,7 @@ using Molinos.Scato.WebMobile.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -234,16 +236,21 @@ namespace Molinos.Scato.WebMobile.Controllers
         private AutomatismoNoGranoConfiguracionViewModel CargarListasDeConfiguracion()
         {
             AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
-            var listaCallePlanta = servicio.ListarCallesPorTipo(TipoCalle.PlantaNoGranos);
+           
+            var listaCallePlanta = ListarCallesPorTipo();
             var listaPaginadaCallePlanta = new ListaPaginada<CalleDto>(listaCallePlanta, 1, listaCallePlanta.Count, listaCallePlanta.Count);
-            var listaPuntoDeCarga = servicio.ListarPuntoDeCarga();
+           
+            var listaPuntoDeCarga = ListarPuntosDeCarga();
             var listaPaginadaPuntoDeCarga = new ListaPaginada<PuntoDeCargaDto>(listaPuntoDeCarga, 1, listaPuntoDeCarga.Count, listaPuntoDeCarga.Count);
-            var listaAlmacen = servicio.ListarAlmacenes();
+            
+            var listaAlmacen = ListarAlmacenesMaterialNoGrano();
             var listaPaginadaAlmacen = new ListaPaginada<AlmacenDto>(listaAlmacen, 1, listaAlmacen.Count, listaAlmacen.Count);
+            
             model.ListaCallePlanta = listaPaginadaCallePlanta;
             model.ListaPuntoDeCarga = listaPaginadaPuntoDeCarga;
             model.ListaAlmacen = listaPaginadaAlmacen;
             model.EstadoGeneralAutomatismoNoGrano = ObtenerEstadoGeneralAutomatismoNoGrano();
+
             return model;
         }
 
@@ -454,6 +461,31 @@ namespace Molinos.Scato.WebMobile.Controllers
                  .ToList();
 
             return model;
+        }
+
+        private List<AlmacenDto> ListarAlmacenesMaterialNoGrano()
+        {
+            var callesPlanta = servicio.ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle.PlantaNoGranos);
+            List<AlmacenDto> almecenes = new List<AlmacenDto>();
+            callesPlanta.ForEach(x => {
+                almecenes.AddRange(servicio.ListarAlmacenesPorMaterialFiltrado(x.MaterialId));
+            });
+
+            return almecenes.OrderBy(a => a.Descripcion).ToList();
+        }
+
+        private List<CalleDto> ListarCallesPorTipo()
+        {
+            var callesPlanta = servicio.ListarCallesPorTipo(TipoCalle.PlantaNoGranos);
+
+            return callesPlanta.OrderBy(a => a.Nombre).ToList();
+        }
+
+        private List<PuntoDeCargaDto> ListarPuntosDeCarga()
+        {
+            var listaPuntoDeCarga = servicio.ListarPuntoDeCarga();
+
+            return listaPuntoDeCarga.OrderBy(a => a.Descripcion).ToList();
         }
 
         private bool ObtenerEstadoGeneralAutomatismoNoGrano()
