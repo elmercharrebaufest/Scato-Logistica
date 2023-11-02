@@ -4759,6 +4759,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Característica es escalable de las hidráulicas asociadas no coincide.
+        /// </summary>
+        public static string Automatismo_EsEscalableIncoincidente {
+            get {
+                return ResourceManager.GetString("Automatismo_EsEscalableIncoincidente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ya existe un automatismo con este id.
         /// </summary>
         public static string Automatismo_IdExistente {

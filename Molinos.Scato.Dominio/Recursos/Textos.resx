@@ -10495,4 +10495,7 @@
   <data name="Automatismo_CallesDesactivadas" xml:space="preserve">
     <value>El automatismo tiene asociadas calles desactivadas</value>
   </data>
+  <data name="Automatismo_EsEscalableIncoincidente" xml:space="preserve">
+    <value>Característica es escalable de las hidráulicas asociadas no coincide</value>
+  </data>
 </root>

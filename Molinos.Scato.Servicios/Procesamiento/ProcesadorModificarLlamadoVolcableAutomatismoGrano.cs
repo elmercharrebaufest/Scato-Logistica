@@ -30,9 +30,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
                 var automatismo = Repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == comando.Id);
-                if(!automatismo.CallePreBalanza.ActivoAutomatico || !automatismo.CallePreHidraulica.ActivoAutomatico || !automatismo.Hidraulicas.Any(x => x.ActivoAutomatico))
+                if (!automatismo.CallePreBalanza.ActivoAutomatico || !automatismo.CallePreHidraulica.ActivoAutomatico || automatismo.Hidraulicas.Any(x => !x.ActivoAutomatico))
                 {
                     resultado.Error("Automatismo_CallesDesactivadas", Textos.Automatismo_CallesDesactivadas);
+                }
+                if (automatismo.CamionEscalable && automatismo.Hidraulicas.Any(x => !x.EsEscalable))
+                {
+                    resultado.Error("Automatismo_EsEscalableIncoincidente", Textos.Automatismo_EsEscalableIncoincidente);
                 }
             }
         }
