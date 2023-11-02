@@ -478,30 +478,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ValidarEstadoHidraulica(int id)
-        {
-            var respuesta = new RespuestaEstandarDto();
-            var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.ActivoAutomatico == false && c.CentroId == ObteneerIdCentro()).Select(s => s.HidraulicaId);
-
-            var automatismo = servicio.ListarAutomatismoGrano();
-            foreach (var item in hidraulicas)
-            {
-                foreach (var item2 in automatismo)
-                {
-                    item2.Hidraulicas.Remove(item);
-                }
-            }
-            if (automatismo.Any(c => c.Hidraulicas.Count == 1 && c.Hidraulicas.Contains(id)))
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Validacion del estado de Hidraulica fue exitoso", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
-            }
-            else
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la validacion del estado de Hidraulica", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-            }
-            return Json(respuesta);
-        }
-
         public ActionResult ModificarEstadoEsEscalableHidraulica(int id, bool valor)
         {
             var respuesta = new RespuestaEstandarDto();
@@ -518,7 +494,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             else
             {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la actualizacion del estado escalable en hidraulica", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
             return Json(respuesta);
         }

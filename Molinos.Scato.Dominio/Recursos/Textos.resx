@@ -10457,7 +10457,7 @@
     <value>Accesos Útiles</value>
   </data>
   <data name="Automatismo_ConfiguracionExistente" xml:space="preserve">
-    <value>La combinación de Material/Variedad/Filtra calidad/Camión escalable se encuentra configurada en otra automatización</value>
+    <value>La combinación de Material/Variedad/Filtra calidad/Camión escalable/Calle PreHidraulica se encuentra configurada en otra automatización</value>
   </data>
   <data name="Automatismo_CallePrebalanzaExistente" xml:space="preserve">
     <value>La calle prebalanza ya existe en un automatismo</value>
@@ -10498,4 +10498,8 @@
   <data name="Automatismo_EsEscalableIncoincidente" xml:space="preserve">
     <value>Característica es escalable de las hidráulicas asociadas no coincide</value>
   </data>
+  <data name="Automatismo_HidraulicaUtilizadaEnAutomatismoActivo" xml:space="preserve">
+    <value>Hidráulica utilizada en un Automatismo Activo</value>
+  </data>
+  
 </root>

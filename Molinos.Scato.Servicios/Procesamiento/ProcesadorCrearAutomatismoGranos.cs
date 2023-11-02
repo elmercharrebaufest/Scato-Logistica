@@ -46,12 +46,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             bool validacionConfigExistente = false;
 
-            validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a => a.MaterialId == comando.Dto.MaterialId && (a.TipoVariedadId == comando.Dto.TipoVariedadId || (a.TipoVariedadId == null && comando.Dto.TipoVariedadId == null)) && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable);
-
-            if (Repositorio.Existe<AutomatismoGrano>(a => a.Id == comando.Dto.Id))
-            {
-                resultado.Error("Id Automatismo", Textos.Automatismo_IdExistente);
-            }
+            validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a =>
+                a.MaterialId == comando.Dto.MaterialId 
+                && (a.TipoVariedadId == comando.Dto.TipoVariedadId || (comando.Dto.TipoVariedadId==null && a.TipoVariedadId == null))
+                && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad
+                && a.CamionEscalable == comando.Dto.CamionEscalable
+                && a.CallePreHidraulicaId == comando.Dto.CallePreHidraulicaId);
 
             if (validacionConfigExistente)
             {

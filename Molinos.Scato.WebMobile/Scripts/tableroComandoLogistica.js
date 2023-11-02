@@ -305,69 +305,6 @@ function ModificarEstadoHidraulica(element) {
     cambiarEstadoSwitch(urlModificarEstadoHidraulica, element)
 }
 
-function ModificarEstadoHidraulicaConfirmacion() {
-    var idRegistro = $('#modalConfirmarEstadoHidraulica').data('id');
-    var valorActual = $('#modalConfirmarEstadoHidraulica').data('value');
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlModificarEstadoHidraulica,
-        type: 'POST',
-        data: {
-            id: idRegistro,
-            valor: valorActual
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                modalConfirmarEstadoHidraulica.close();
-                popupComandoLogistica.checked = !popupComandoLogistica.checked;
-            } else {
-                MostrarAlertaError(response.Mensajes[0].Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición');
-        },
-        complete: function () {
-            $.unblockUI();
-        }
-    });
-}
-
-function ValidarEstadoHidraulica(element) {
-    let id = $(element).data('id');
-    let valor = $(element).prop('checked');
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlValidarEstadoHidraulica,
-        type: 'POST',
-        data: {
-            id: id
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                $('#modalConfirmarEstadoHidraulica').attr("data-id", id);
-                $('#modalConfirmarEstadoHidraulica').attr("data-value", !valor);
-                popupComandoLogistica = element;
-                modalConfirmarEstadoHidraulica.showModal();
-            } else {
-                ModificarEstadoHidraulica(element)
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición');
-        },
-        complete: function () {
-            $.unblockUI();
-        }
-    });
-}
-
 function ModificarEsEscalableHidraulica(element) {
     let id = $(element).data('id');
     let valor = $(element).prop('checked');
@@ -584,12 +521,7 @@ function bindearChecksAutomatismo() {
         } else if (nombreCampo == 'ActivoAutomaticoPH') {
             ModificarEstadoPreHidraulica(element);
         } else if (nombreCampo == 'ActivoAutomaticoH') {
-            if (!element.checked === false) {
-                ValidarEstadoHidraulica(element);
-            }
-            else {
                 ModificarEstadoHidraulica(element);
-            }
         }
     });
 }

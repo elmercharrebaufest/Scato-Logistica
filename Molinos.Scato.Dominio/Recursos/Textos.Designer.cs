@@ -4741,7 +4741,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La combinación de Material/Variedad/Filtra calidad/Camión escalable se encuentra configurada en otra automatización.
+        ///   Looks up a localized string similar to La combinación de Material/Variedad/Filtra calidad/Camión escalable/Calle PreHidraulica se encuentra configurada en otra automatización.
         /// </summary>
         public static string Automatismo_ConfiguracionExistente {
             get {
@@ -4764,6 +4764,14 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Automatismo_EsEscalableIncoincidente {
             get {
                 return ResourceManager.GetString("Automatismo_EsEscalableIncoincidente", resourceCulture);
+            }
+        }
+        
+        ///   Looks up a localized string similar to Hidráulica utilizada en un Automatismo Activo.
+        /// </summary>
+        public static string Automatismo_HidraulicaUtilizadaEnAutomatismoActivo {
+            get {
+                return ResourceManager.GetString("Automatismo_HidraulicaUtilizadaEnAutomatismoActivo", resourceCulture);
             }
         }
         

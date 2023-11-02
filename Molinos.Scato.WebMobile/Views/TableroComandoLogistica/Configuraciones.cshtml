@@ -21,7 +21,6 @@
     urlFileJavaScript = '@Url.Content("~/scripts/configuracionAutomatismo.js")';
     urlListarCallesPreHidraulicas = '@Url.Action("ListarCallesPreHidraulicas", "TableroComandoLogistica")';
     urlModificarEstadoEsEscalableHidraulica = '@Url.Action("ModificarEstadoEsEscalableHidraulica", "TableroComandoLogistica")';
-    urlValidarEstadoHidraulica = '@Url.Action("ValidarEstadoHidraulica", "TableroComandoLogistica")';
     urlEditarCallePH = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
     urlCambiarEstadoCallePB = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
     urlCambiarEstadoCallePH = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
@@ -122,18 +121,6 @@
 </div>
 
 <div id="DetalleAutomatismo"></div>
-
-<dialog id="modalConfirmarEstadoHidraulica" class="dialogScatoMobile">
-    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
-
-    <p class="dialogScatoMobile__descripcion">
-        Si deshabilita la hidráulica, el automatismo dejará de llamar vehículos. ¿Desea confirmar?
-    </p>
-    <div class="dialogScatoMobile__botones">
-        <button id="btnConfirmarBorrar" class="btn btn-success" onclick="ModificarEstadoHidraulicaConfirmacion()">Aceptar</button>
-        <button class="btn btn-dark" onclick=" modalConfirmarEstadoHidraulica.close()" autofocus>Cancelar</button>
-    </div>
-</dialog>
 
 <style>
     .nav-item a,
