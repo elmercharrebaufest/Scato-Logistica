@@ -17,7 +17,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         {
             var callePrebalanza = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreBalanzaId);
-            callePrebalanza.Material = Repositorio.Obtener<Material>(c => c.Id == comando.Dto.MaterialId);
+
+            if (comando.Dto.Activo)
+            {
+                callePrebalanza.Material = Repositorio.Obtener<Material>(c => c.Id == comando.Dto.MaterialId);
+            }
+
             var automatismo = new AutomatismoGrano
             {
                 Activo = comando.Dto.Activo,

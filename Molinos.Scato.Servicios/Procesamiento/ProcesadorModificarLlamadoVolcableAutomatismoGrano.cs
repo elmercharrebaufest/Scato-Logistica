@@ -22,6 +22,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var automatismo = Repositorio.Obtener<AutomatismoGrano>(comando.Id);
             automatismo.Activo = comando.EsLLamadoVolcable;
+
+
+            if (automatismo.Activo)
+            {
+                var callePrebalanza = Repositorio.Obtener<Calle>(c => c.Id == automatismo.CallePreBalanzaId);
+                callePrebalanza.Material = Repositorio.Obtener<Material>(c => c.Id == automatismo.MaterialId);
+            }
         }
 
         protected override void Validar(ModificarLlamadoVolcableAutomatismoGrano comando, Resultado resultado)
