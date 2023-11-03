@@ -1210,6 +1210,12 @@ IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'BalanzaRet
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCallePostcalado') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCallePostcalado', 1, 'Avance a garita de salida - ', '01', '01', '00', 0, '', 1) END
 IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoAutomaticoVolcadoras') BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoAutomaticoVolcadoras', 1, '', '01', '01', '00', 0, '', 1) END
 
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCamionNoGrano' AND mcl.Orden = 1) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCamionNoGrano', 1, '', '01', '01', '03', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCamionNoGrano' AND mcl.Orden = 2) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCamionNoGrano', 2, '', '01', '01', '04', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCamionNoGrano' AND mcl.Orden = 3) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCamionNoGrano', 3, '', '01', '01', '07', 0, '', 1) END
+IF NOT EXISTS (SELECT 1 FROM MensajeCartelLed mcl WHERE mcl.Codigo = 'LlamadoCamionNoGrano' AND mcl.Orden = 4) BEGIN INSERT INTO MensajeCartelLed (Codigo, Orden, Mensaje, Programa, Trama, Variable, SegundosDeEspera, DescripcionFormatoMensaje, Habilitado) VALUES('LlamadoCamionNoGrano', 4, '', '01', '01', '08', 0, '', 1) END
+
+
 GO
 
 --Celdas de Mano de Embarque
