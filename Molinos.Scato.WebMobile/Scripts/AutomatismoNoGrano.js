@@ -92,7 +92,7 @@ function ModalCrear() {
     });
 }
 
-function ModalModificarAutomatismoNoGrano(item) {
+function funcionModalModificarAutomatismoNoGrano(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -119,7 +119,7 @@ function ModalModificarAutomatismoNoGrano(item) {
     });
 }
 
-function ModalEliminarAutomatismoNoGrano(idAutomatismo) {
+function funcionModalEliminarAutomatismoNoGrano(idAutomatismo) {
     $("#automatismoIdABorrar").val(idAutomatismo);
     modalConfirmarBorrar.showModal();
 }
