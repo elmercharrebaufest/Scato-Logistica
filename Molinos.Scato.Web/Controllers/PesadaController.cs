@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Hosting;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -196,7 +197,20 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
-            if(PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
+            var automatismoAsignado = servicio.ExisteAsigacionGranoEnRecorrido(recorrido.Id);
+            var automatismoDto = servicio.ObtenerAutomatismoGranoPorRecorridoGuid(recorrido.InstanciaWorkflow)??new AutomatismoGranoDto();
+            ViewBag.EsAutomatismo = automatismoAsignado;
+            if (automatismoAsignado)
+            {
+                ViewBag.Automatismo_Almacen= new List<AlmacenDto> { servicio.ObtenerAlmacen(automatismoDto.AlmacenId) }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.DescripcionCorta);
+                ViewBag.Automatismo_Calle = new List<CalleDto> { servicio.ObtenerCalle(automatismoDto.CallePreHidraulicaId) }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
+                ViewBag.Automatismo_Hidraulicas = automatismoDto.Hidraulicas.Select(m => servicio.ObtenerPuestoDeCargaDescarga(m)).Select(x => new SelectListItem
+                {
+                    Text = x.Nombre,
+                    Value = x.Id.ToString()
+                });
+            }
+            if (PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
             {
                 ViewBag.Balanzas = automatizadoFull ?
                     (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :

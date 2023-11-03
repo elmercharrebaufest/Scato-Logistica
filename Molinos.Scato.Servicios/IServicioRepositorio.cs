@@ -2963,6 +2963,12 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerMaterialIdPorCalleId(int calleId);
+
+        [OperationContract]
+        bool ExisteAsigacionGranoEnRecorrido(int recorridoId);
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescarga(int puestoId);
     }
 
 }

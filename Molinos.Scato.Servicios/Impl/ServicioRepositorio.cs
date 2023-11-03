@@ -10919,5 +10919,15 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == TipoCalle.NoGranos); 
         }
+
+        public bool ExisteAsigacionGranoEnRecorrido(int recorridoId)
+        {
+            return repositorio.Existe<AsignacionAutomatismoGranoEnRecorrido>(x => x.RecorridoId==recorridoId);
+        }
+
+        public PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescarga(int puestoId)
+        {
+            return Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(f =>f.Id==puestoId).FirstOrDefault();
+        }
     }
 }
