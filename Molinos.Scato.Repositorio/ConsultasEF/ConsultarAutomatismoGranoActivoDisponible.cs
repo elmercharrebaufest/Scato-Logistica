@@ -49,6 +49,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 CallePHDescripcion = automatismoGrano.CallePreHidraulica.Nombre,
                 AlmacenId = automatismoGrano.Almacen.Id,
                 AlmacenDescripcion = automatismoGrano.Almacen.Descripcion,
+                Activo = automatismoGrano.Activo,
                 Hidraulicas = automatismoGrano.Hidraulicas.Select(x => x.Id).ToList(),
                 HidraulicaDescripcion = string.Join(",", automatismoGrano.Hidraulicas.Select(x => x.Nombre))
             };

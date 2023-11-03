@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using BrockAllen.CookieTempData;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
@@ -197,11 +198,16 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
+            var automatimoGeneralGranoActivo = ObtenerEstadoGeneralAutomatismoGrano();
             var automatismoAsignado = servicio.ExisteAsigacionGranoEnRecorrido(recorrido.Id);
-            var automatismoDto = servicio.ObtenerAutomatismoGranoPorRecorridoGuid(recorrido.InstanciaWorkflow)??new AutomatismoGranoDto();
-            ViewBag.EsAutomatismo = automatismoAsignado;
-            if (automatismoAsignado)
+            var esAutimatismo = automatismoAsignado && automatimoGeneralGranoActivo;
+
+            ViewBag.EsAutomatismo = false;
+
+            var automatismoDto = servicio.ObtenerAutomatismoGranoPorRecorridoGuid(recorrido.InstanciaWorkflow) ?? new AutomatismoGranoDto();
+            if (esAutimatismo && automatismoDto.Activo)
             {
+                ViewBag.EsAutomatismo = true;
                 ViewBag.Automatismo_Almacen= new List<AlmacenDto> { servicio.ObtenerAlmacen(automatismoDto.AlmacenId) }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.DescripcionCorta);
                 ViewBag.Automatismo_Calle = new List<CalleDto> { servicio.ObtenerCalle(automatismoDto.CallePreHidraulicaId) }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
                 ViewBag.Automatismo_Hidraulicas = automatismoDto.Hidraulicas.Select(m => servicio.ObtenerPuestoDeCargaDescarga(m)).Select(x => new SelectListItem
@@ -441,6 +447,21 @@ namespace Molinos.Scato.Web.Controllers
                     MensajeError = Textos.Pesada_AutomaticaError
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private bool ObtenerEstadoGeneralAutomatismoGrano()
+        {
+            var configuracionAutomatismo = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+            var result = false;
+            if (configuracionAutomatismo != null)
+            {
+                bool valor = false;
+                if (bool.TryParse(configuracionAutomatismo.Valor, out valor))
+                {
+                    result = valor;
+                }
+            }
+            return result;
         }
     }
 }
