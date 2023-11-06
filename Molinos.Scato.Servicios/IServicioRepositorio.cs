@@ -2959,6 +2959,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
+
+        [OperationContract]
         CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId);
 
         [OperationContract]
