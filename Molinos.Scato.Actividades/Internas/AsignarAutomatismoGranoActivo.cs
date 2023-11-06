@@ -26,6 +26,7 @@ namespace Molinos.Scato.Actividades.Internas
                     AlmacenId = automatismoGrano.AlmacenId,
                     CalleId = automatismoGrano.CallePreHidraulicaId,
                     HidraulicasId = automatismoGrano.Hidraulicas.ToArray(),
+                    InstanceIds = context.WorkflowInstanceId.ToString()
                 };
 
                 resultado = comandos.Ejecutar(new ActualizarPuestocomando { Dto = asignacion });
