@@ -175,7 +175,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             calle.FechaLLamada = DateTime.Now;
             calle.Bloqueada = true;
-            return comandos.Ejecutar(new ModificarCalle { Dto = calle });
+            return comandos.Ejecutar(new ModificarCalleLlamada { Dto = calle });
         }
 
         private void DetenerLlamadoAutomaticoGranos()
@@ -199,7 +199,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             calle.FechaLLamada = null;
             calle.Bloqueada = false;
-            return comandos.Ejecutar(new ModificarCalle { Dto = calle });
+            return comandos.Ejecutar(new ModificarCalleLlamada { Dto = calle });
         }
 
         private void ValidarLiberarLlamado1a1(AutomatismoGranoDto configuracion)
