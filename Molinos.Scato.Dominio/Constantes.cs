@@ -225,6 +225,7 @@ namespace Molinos.Scato.Dominio
         {
             public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
             public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
+            public const string LlamarAutomatismoNoGrano = "JobDetenerLlamadoAutomaticoNoGranos";
         }
     }
 }
