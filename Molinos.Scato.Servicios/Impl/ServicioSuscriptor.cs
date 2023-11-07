@@ -97,7 +97,7 @@ namespace Molinos.Scato.Servicios.Impl
                             break;
 
                         var configuracionCalle = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCamaraALPR(notificacion.CodigoDispositivo);
-                        var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.Id == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
+                        var nombreHidraulicaAsignada = hidraulicasDisponibles.Where(x => x.HidraulicaId == hidraulicaAsignadaId).Select(x => x.HidraulicaNombre).FirstOrDefault();
                         var tiempoDeIntervalo = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoVolcadoras, Constantes.ConfiguracionGeneral.Volcadoras.CartelLedIntervalo);
                         log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorCamaraALPR - Cartel: {configuracionCalle.CodigoCartel} Patente: {patente} Hidraulica: {nombreHidraulicaAsignada}");
                         EnviarMensajeACartelConIntervalo(configuracionCalle.CodigoCartel, patente, nombreHidraulicaAsignada, (tiempoDeIntervalo != null) ? int.Parse(tiempoDeIntervalo.Valor) : 3000);
@@ -114,14 +114,15 @@ namespace Molinos.Scato.Servicios.Impl
                                 case TipoAccionSensor.CamionCruzo:
                                     var configuracionCalleHidraulica = repositorio.ObtenerConfiguracionCalleHidraulicaPorSensorCirculacion(notificacion.CodigoDispositivo);
                                     log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - CamionCruzo - Cartel: {configuracionCalleHidraulica.CodigoCartel}");
-                                    LimpiarMensajeCartel(configuracionCalleHidraulica.CodigoCartel);
+                                    LimpiarMensajeCartel(configuracionCalleHidraulica?.CodigoCartel);
                                     log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Fin");
                                     break;
 
                                 case TipoAccionSensor.HidraulicaBajo:
                                     var hidraulica = repositorio.ObtenerHidraulicaPorSensorBajada(notificacion.CodigoDispositivo);
                                     log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - HidraulicaBajo - Hidraulica: {hidraulica.Nombre}");
-                                    ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty, string.Empty);
+                                    if(hidraulica != null && repositorio.EstaDisponibleParaLlamadoAutomaticoHidraulica(hidraulica.Id)) 
+                                        ActualizarEstadoHidraulica(hidraulica.Id, EstadoHidraulica.Disponible, string.Empty, string.Empty);
                                     log.Debug($"LlamadoAutomaticoVolcables - Evento CambioEstadoSensorGeneral - Fin");
                                     break;
                             }

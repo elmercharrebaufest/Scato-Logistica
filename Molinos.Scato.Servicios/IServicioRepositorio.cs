@@ -2971,6 +2971,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescarga(int puestoId);
+
+        [OperationContract]
+        bool EstaDisponibleParaLlamadoAutomaticoHidraulica(int hidraulicaId);
     }
 
 }

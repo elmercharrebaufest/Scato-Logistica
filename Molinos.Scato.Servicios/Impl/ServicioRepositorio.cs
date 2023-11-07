@@ -10929,5 +10929,10 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(f =>f.Id==puestoId).FirstOrDefault();
         }
+
+        public bool EstaDisponibleParaLlamadoAutomaticoHidraulica(int hidraulicaId)
+        {
+            return repositorio.Existe<LlamadoAutomaticoHidraulica>(x => x.Hidraulica.Id == hidraulicaId && x.Estado != EstadoHidraulica.Inhabilitado);
+        }
     }
 }
