@@ -15,23 +15,20 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         public override Resultado Ejecutar(EliminarCallePreBalanzaPlayaInterna comando)
         {
-            var resultado = new Resultado();
             Log.Debug("Ejecutando EliminarCallePreBalanzaPlayaInterna");
-            var existeCallePreBalanzaPlayaInterna = Repositorio.Existe<CallePreBalanzaPlayaInterna>(q => q.CallePlayaInternaId == comando.CallePlayaInternaId && q.CallePreBalanzaId == comando.CallePreBalanzaId);
-
-            if (existeCallePreBalanzaPlayaInterna)
+            var callePreBalanza = Repositorio.Obtener<Calle>(x => x.Id == comando.CallePreBalanzaId);
+            if (callePreBalanza != null)
             {
-                var callePreBalanzaPlayaInterna = Repositorio.Obtener<CallePreBalanzaPlayaInterna>(q => q.CallePlayaInternaId == comando.CallePlayaInternaId && q.CallePreBalanzaId == comando.CallePreBalanzaId);
-                var callePreBalanza = Repositorio.Obtener<Calle>(x => x.Id == callePreBalanzaPlayaInterna.CallePreBalanza.Id);
                 callePreBalanza.Bloqueada = false;
                 callePreBalanza.FechaLLamada = null;
-
-                Repositorio.Remover(callePreBalanzaPlayaInterna);
-                Repositorio.GuardarCambios();
-                Log.Debug($"Finalizando EliminarCallePreBalanzaPlayaInterna");
             }
 
-            return resultado;
+            var callePreBalanzaPlayaInterna = Repositorio.Obtener<CallePreBalanzaPlayaInterna>(q => q.CallePlayaInternaId == comando.CallePlayaInternaId && q.CallePreBalanzaId == comando.CallePreBalanzaId);
+            if (callePreBalanzaPlayaInterna != null)
+                Repositorio.Remover(callePreBalanzaPlayaInterna);
+
+            Repositorio.GuardarCambios();
+            return new Resultado();
         }
     }
 }
