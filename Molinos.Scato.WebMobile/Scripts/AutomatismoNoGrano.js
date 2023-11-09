@@ -149,7 +149,7 @@ function EliminarAutomatismoNoGrano() {
 }
 
 //Configuraciones
-function ModalModificarCallePlanta(item) {
+function funcionModalModificarCallePlanta(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -176,7 +176,7 @@ function ModalModificarCallePlanta(item) {
     });
 }
 
-function ModalModificarPuntoDeCarga(item) {
+function funcionModalModificarPuntoDeCarga(item) {
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'

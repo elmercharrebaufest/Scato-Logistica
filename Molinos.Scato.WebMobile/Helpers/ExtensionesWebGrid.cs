@@ -21,7 +21,7 @@ namespace Molinos.Scato.WebMobile.Helpers
             ListaPaginada<TEntidad> items,
             Func<WebGrid, WebGridColumn[]> columnas)
         {
-            var grid = new WebGrid(rowsPerPage: items.ItemsPorPagina,
+            var grid = new WebGrid(rowsPerPage: items.ItemsPorPagina > 0 ? items.ItemsPorPagina : 1,
                  sortDirectionFieldName: "dirOrden",
                  pageFieldName: "pagina",
                  sortFieldName: "ordenarPor");
