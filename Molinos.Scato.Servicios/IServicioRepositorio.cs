@@ -937,6 +937,9 @@ namespace Molinos.Scato.Servicios
         IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId);
 
         [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialSinFiltro(int materialId);
+
+        [OperationContract]
         TransmisionASapDto ObtenerTransmisionASap(int id);
 
         [OperationContract]

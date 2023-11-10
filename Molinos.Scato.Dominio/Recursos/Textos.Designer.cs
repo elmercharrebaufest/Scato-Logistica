@@ -4767,6 +4767,7 @@ namespace Molinos.Scato.Dominio.Recursos {
             }
         }
         
+        /// <summary>
         ///   Looks up a localized string similar to Hidráulica utilizada en un Automatismo Activo.
         /// </summary>
         public static string Automatismo_HidraulicaUtilizadaEnAutomatismoActivo {
@@ -29500,6 +29501,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string TitularCP {
             get {
                 return ResourceManager.GetString("TitularCP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volcadoras.
+        /// </summary>
+        public static string TituloVolcadoras {
+            get {
+                return ResourceManager.GetString("TituloVolcadoras", resourceCulture);
             }
         }
         

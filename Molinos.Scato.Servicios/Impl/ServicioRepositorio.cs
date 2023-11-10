@@ -10478,6 +10478,11 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId)
         {
+            return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId) && al.EstadoAutomatismo == true);
+        }
+
+        public IList<AlmacenDto> ListarAlmacenesPorMaterialSinFiltro(int materialId)
+        {
             return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId));
         }
 

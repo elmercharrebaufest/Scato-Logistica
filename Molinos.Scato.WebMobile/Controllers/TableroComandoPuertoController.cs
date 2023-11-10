@@ -468,7 +468,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var callesPlanta = servicio.ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle.PlantaNoGranos);
             List<AlmacenDto> almecenes = new List<AlmacenDto>();
             callesPlanta.ForEach(x => {
-                almecenes.AddRange(servicio.ListarAlmacenesPorMaterialFiltrado(x.MaterialId));
+                almecenes.AddRange(servicio.ListarAlmacenesPorMaterialSinFiltro(x.MaterialId));
             });
 
             return almecenes.OrderBy(a => a.Descripcion).ToList();

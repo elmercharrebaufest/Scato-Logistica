@@ -10479,7 +10479,7 @@
   </data>
   <data name="SeleccioneOpcion" xml:space="preserve">
     <value>Seleccione Opción</value>
-   </data>
+  </data>
   <data name="Automatismo_MaterialVariedad_NoExiste" xml:space="preserve">
     <value>Error al guardar automatismo ya que el material y variedad seleccionado no existe o fue eliminado recientemente</value>
   </data>
@@ -10501,5 +10501,7 @@
   <data name="Automatismo_HidraulicaUtilizadaEnAutomatismoActivo" xml:space="preserve">
     <value>Hidráulica utilizada en un Automatismo Activo</value>
   </data>
-  
+  <data name="TituloVolcadoras" xml:space="preserve">
+    <value>Volcadoras</value>
+  </data>
 </root>
