@@ -254,7 +254,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             return model;
         }
 
-        public ActionResult ActualizarEstadoAutomatismoNoGrano(bool nuevoEstado, string id)
+        public ActionResult ActualizarEstadoAutomatismoNoGrano(bool nuevoEstado, int id)
         {
 
             var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
@@ -265,9 +265,11 @@ namespace Molinos.Scato.WebMobile.Controllers
                 return result;
             }
 
-            var automatismo = servicio.ObtenerAutomatismoNoGrano(int.Parse(id));
-            automatismo.Activo = nuevoEstado;
-            var resultado = servicioComandos.Ejecutar(new ModificarAutomatismoNoGrano { Dto = automatismo });
+            var resultado = servicioComandos.Ejecutar(new ModificarEstadoAutomatismoNoGrano
+            {
+                Id = id,
+                Estado = nuevoEstado
+            });
 
             if (!resultado.HayErrores)
             {
@@ -275,7 +277,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             else
             {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
             }
             return result;
         }
