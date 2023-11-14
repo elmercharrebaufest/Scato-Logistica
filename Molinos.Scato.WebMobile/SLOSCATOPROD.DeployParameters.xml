@@ -13,6 +13,7 @@
   <setParameter name="IssuerTrust Identity Configuration" value="http://pase.molinosagro.com.ar/adfs/services/trust" />
   <setParameter name="RealmUrl Identity Configuration" value="http://scatomobile.molinosagro.com.ar/" />
   <setParameter name="Thumbprint Identity Configuration" value="97E9185D47464277B783E73CA7AC59E2A98589AB"/>
+  <setParameter name="AudienceUrl Identity Configuration" value="http://scatomobile.molinosagro.com.ar/" />
 
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
 </parameters>
