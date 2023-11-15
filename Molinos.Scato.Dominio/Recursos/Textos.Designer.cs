@@ -6613,11 +6613,29 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calle No Granos.
+        /// </summary>
+        public static string CallePlantaNoGranos {
+            get {
+                return ResourceManager.GetString("CallePlantaNoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calle Playa Interna.
         /// </summary>
         public static string CallePlayaInterna {
             get {
                 return ResourceManager.GetString("CallePlayaInterna", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calle PH.
+        /// </summary>
+        public static string CallePlayaInternaPH {
+            get {
+                return ResourceManager.GetString("CallePlayaInternaPH", resourceCulture);
             }
         }
         

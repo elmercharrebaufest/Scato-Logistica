@@ -10504,4 +10504,10 @@
   <data name="TituloVolcadoras" xml:space="preserve">
     <value>Volcadoras</value>
   </data>
+  <data name="CallePlantaNoGranos" xml:space="preserve">
+    <value>Calle No Granos</value>
+  </data>
+  <data name="CallePlayaInternaPH" xml:space="preserve">
+    <value>Calle PH</value>
+  </data>
 </root>
