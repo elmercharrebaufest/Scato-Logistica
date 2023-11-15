@@ -787,6 +787,8 @@
     <Compile Include="Dto\ConfirmacionCargaDescargaDto.cs" />
     <Compile Include="Dto\CartaPorteDerivadoGranarioDto.cs" />
     <Compile Include="Dto\PuntoDeCargaDto.cs" />
+    <Compile Include="Dto\OperacionesAPI\OrdenDeCargaComplementarioDto.cs" />
+    <Compile Include="Dto\OperacionesAPI\OrdenDeCargaDto.cs" />
     <Compile Include="Dto\RespuestaEstandar\MensajeEstandarAutomatismoDto.cs" />
     <Compile Include="Dto\TipoCallePlantaDto.cs" />
     <Compile Include="Dto\ConfigSensoresDto.cs" />

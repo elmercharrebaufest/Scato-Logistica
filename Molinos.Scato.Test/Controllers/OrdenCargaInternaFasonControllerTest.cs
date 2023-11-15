@@ -9,6 +9,7 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Filtros;
 using Molinos.Scato.Dominio.Recursos;
+using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
 using Molinos.Scato.Test.Mock;
 using Molinos.Scato.Web.Controllers;
@@ -27,6 +28,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IServicioComandos> servComandosMock;
         private Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>> actFactoryMock;
         private Mock<IIngresarOrdenCargaInternaFasonService> contractMock;
+        private Mock<ICache> cacheMock;
 
         private Mock<IListaDeWorkflows> listaMock;
 
@@ -51,8 +53,10 @@ namespace Molinos.Scato.Test.Controllers
             actFactoryMock = new Mock<IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService>>();
             contractMock = new Mock<IIngresarOrdenCargaInternaFasonService>();
             listaMock = new Mock<IListaDeWorkflows>();
+            cacheMock = new Mock<ICache>();
+
             logger = new NullLogger();
-            target = new IngresarOrdenCargaInternaFasonController(logger, servRepositorioMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object);
+            target = new IngresarOrdenCargaInternaFasonController(logger, servRepositorioMock.Object, actFactoryMock.Object, servComandosMock.Object, listaMock.Object, cacheMock.Object);
 
             dto = new OrdenCargaInternaFasonDto
             {
