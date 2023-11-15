@@ -42,7 +42,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (!comando.ActivoAutomatico && configuracion.Valor.Equals("True") && Repositorio.Existe<AutomatismoGrano>(a => a.Hidraulicas.Any(aH => aH.Id == comando.Id) && a.Activo))
             {
-                resultado.Error("Hidraulica", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
+                resultado.Error("Hidraulica", Textos.Automatismo_HidraulicaUtilizadaEnAutomatismoActivo);
             }
         }
     }

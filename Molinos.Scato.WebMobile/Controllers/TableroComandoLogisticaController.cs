@@ -473,7 +473,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
             else
             {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la actualizacion del estado de Hidraulica", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
             return Json(respuesta, JsonRequestBehavior.AllowGet);
         }

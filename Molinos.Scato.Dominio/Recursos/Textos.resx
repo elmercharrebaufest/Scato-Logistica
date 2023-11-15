@@ -10499,7 +10499,7 @@
     <value>Característica es escalable de las hidráulicas asociadas no coincide</value>
   </data>
   <data name="Automatismo_HidraulicaUtilizadaEnAutomatismoActivo" xml:space="preserve">
-    <value>Hidráulica utilizada en un Automatismo Activo</value>
+    <value>La Hidráulica está siendo utilizada en un automatismo activo</value>
   </data>
   <data name="TituloVolcadoras" xml:space="preserve">
     <value>Volcadoras</value>

@@ -4768,7 +4768,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hidráulica utilizada en un Automatismo Activo.
+        ///   Looks up a localized string similar to La Hidráulica está siendo utilizada en un automatismo activo.
         /// </summary>
         public static string Automatismo_HidraulicaUtilizadaEnAutomatismoActivo {
             get {
