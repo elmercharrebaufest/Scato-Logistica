@@ -37,29 +37,10 @@ namespace QaTools.Controllers
             {
 
                 var recorridos = administracionDao.GetRecorridos(centroId, workflowId);
-                
-                var errores = new List<string>();
 
-                var totalEliminados = 0;
+                var resultJson = this.administracionDao.EliminarRecorridos(recorridos);
 
-                foreach (var recorridoId in recorridos)
-                {
-
-                    try
-                    {
-                        administracionDao.EliminarRecorrido(recorridoId);
-
-                        totalEliminados++;
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        errores.Add("no se elimino recorrido: " + recorridoId + " - error:" + ex.Message);
-                    }
-                }
-
-                return new JsonResult(new { mensaje = "se realizo la eliminacion de "+ totalEliminados + " recorridos", errores = errores });
+                return resultJson;
 
             }
             catch (Exception ex)

@@ -1,8 +1,10 @@
-﻿namespace QaTools.Dao
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace QaTools.Dao
 {
     public interface IAdministracionDao
     {
         IEnumerable<int> GetRecorridos(int centroId, int workflowId);
-        void EliminarRecorrido(int recorridoId);
+        JsonResult EliminarRecorridos(IEnumerable<int> recorridos);
     }
 }

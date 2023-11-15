@@ -1,10 +1,4 @@
 
-using Microsoft.EntityFrameworkCore;
-using QaTools;
-using QaTools.Controllers;
-using System.ServiceModel;
-using System;
-using System.Web.Services.Description;
 using QaTools.Dao;
 
 var builder = WebApplication.CreateBuilder(args);
