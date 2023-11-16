@@ -10837,9 +10837,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var callesAutomatismoActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == TipoCalle.PlayaInterna && x.ActivoAutomatico);
             var callesGranosUsadas = repositorio.Listar<AutomatismoGrano>().Select(q => q.CallePreHidraulicaId);
-            var callesNoGranosUsadas = repositorio.Listar<AutomatismoNoGrano>().Select(q => q.CallePlayaInterna.Id);
-
-            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesNoGranosUsadas.Contains(q.Id) && !callesGranosUsadas.Contains(q.Id)).ToList();
+            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesGranosUsadas.Contains(q.Id)).ToList();
             return callesUtilizables;
         }
 
