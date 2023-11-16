@@ -10486,6 +10486,11 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.Id == materialId));
         }
 
+        public IList<AlmacenDto> ListarAlmacenesNoGranos()
+        {
+            return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.EsGrano == false));
+        }
+
         public bool CalleEstaDisponible(int calleId)
         {
             var calle = ObtenerCalle(calleId);
