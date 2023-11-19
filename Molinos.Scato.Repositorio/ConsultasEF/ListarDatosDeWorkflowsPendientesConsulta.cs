@@ -35,7 +35,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                              select new InstanciaWorkflowDto
                              {
                                  Patente = x.Patente,
-                                 ProximaAccion = x.Material != null && x.Material.EsGrano? accion: accionNoGranos,
+                                 ProximaAccion = x.Material != null && x.Material.EsGrano ? accion : accionNoGranos,
                                  //Workflow = ,
                                  MaterialCodigoSap = x.Material != null ? x.Material.CodigoSAP : string.Empty,
                                  Material = x.Material != null ? x.Material.Descripcion : string.Empty,
@@ -57,7 +57,8 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                  Calle = contexto.Set<CallePorRecorrido>().Where(y => y.CargaDeCupo.Id == x.Id).FirstOrDefault().Calle.Nombre,
                                  NoGranos = x.Material== null || !x.Material.EsGrano,
                                  CPE = x.CPE,
-                                 CTG = x.CTG
+                                 CTG = x.CTG,
+                                 FleteMOA = x.FleteMOA
                              }).OrderByDescending(x => x.FechaCreacion);
     
             if(cantidad > 0)
