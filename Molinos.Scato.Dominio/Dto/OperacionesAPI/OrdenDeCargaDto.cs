@@ -24,6 +24,7 @@
         public int? LocalidadId { get; set; }
         public string LocalidadDescripcion { get; set; }
         public string CodigoProducto { get; set; }
-        public int? KmARecorrer { get; set; }
+        public string KmARecorrer { get; set; }
+        public bool FleteMOA { get; set; }
     }
 }
