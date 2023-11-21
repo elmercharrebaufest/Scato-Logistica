@@ -11194,6 +11194,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convive en almacén.
+        /// </summary>
+        public static string ConviveEnAlmacen {
+            get {
+                return ResourceManager.GetString("ConviveEnAlmacen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enviar a Cámara.
         /// </summary>
         public static string Coordinacion_EnviarACamara {

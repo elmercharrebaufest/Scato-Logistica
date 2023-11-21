@@ -36,5 +36,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string ModificadoPor { get; set; }
 
         public IList<int> MaterialesId { get; set; }
+
+        public bool ConviveEnAlmacen { get; set; }
     }
 }

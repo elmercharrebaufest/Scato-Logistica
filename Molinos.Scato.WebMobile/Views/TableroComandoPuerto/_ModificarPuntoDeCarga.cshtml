@@ -12,7 +12,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Descripcion)
                     <div class="controls">
-                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control"})
+                        @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Descripcion)
                     </div>
                 </div>
@@ -34,6 +34,17 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col">
+            <div class="span4">
+                <div class="form-group">
+                    @Html.CheckBoxFor(model => model.ConviveEnAlmacen)
+                    @Html.LabelFor(model => model.ConviveEnAlmacen)
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
         <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
@@ -41,3 +52,4 @@
 }
 
 @Scripts.Render("~/bundles/jqueryval")
+

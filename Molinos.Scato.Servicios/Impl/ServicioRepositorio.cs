@@ -10940,5 +10940,21 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<AutomatismoTipoLlamado, AutomatismoTipoLlamadoDto>(f => f.Activo);
         }
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(int almacenId, int puntoDeCarga)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.PuntoDeCarga.Id == puntoDeCarga && a.Activo == true);
+        }
+
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacen(int almacenId)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.Activo == true);
+        }
+
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(int puntoDeCargaId)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.PuntoDeCarga.Id == puntoDeCargaId && a.Activo == true);
+        }
+
+
     }
 }

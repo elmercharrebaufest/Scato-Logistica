@@ -10507,4 +10507,7 @@
   <data name="Automatismo_MsgPaseDirectoConMasDeUnaFila" xml:space="preserve">
     <value>No es posible utilizar Pase Directo con más de una fila. Para poder hacerlo elimine o desactive los automatismos sobrantes e inténtelo nuevamente</value>
   </data>
+  <data name="ConviveEnAlmacen" xml:space="preserve">
+    <value>Convive en almacén</value>
+  </data>
 </root>

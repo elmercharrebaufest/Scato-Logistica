@@ -13,5 +13,8 @@ namespace Molinos.Scato.WebMobile.ViewModel
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         [Range(1, int.MaxValue)]
         public int Camiones { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "ConviveEnAlmacen")]
+        public bool ConviveEnAlmacen { get; set; }
     }
 }
