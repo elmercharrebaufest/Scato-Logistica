@@ -1,6 +1,8 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -18,8 +20,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override Calle CrearEntidad(CrearCalle comando)
         {
             var calle = Conversor.Convertir<CalleDto, Calle>(comando.Dto);
-            if(comando.Dto.MaterialId > 0)
+            if (comando.Dto.MaterialId > 0)
                 calle.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
+
+            if (comando.Dto.TipoCalle == TipoCalle.PlayaInterna)
+            {
+                var automatismoTipoLlamado = Repositorio.Obtener<AutomatismoTipoLlamado>(q => q.Codigo == Constantes.AutomatismoTipoLlamado.PorFila);
+                calle.AutomatismoTipoLlamadoId = automatismoTipoLlamado.Id;
+            }
 
             return calle;
         }

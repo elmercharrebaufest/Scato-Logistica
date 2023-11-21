@@ -77,12 +77,12 @@ namespace Molinos.Scato.Servicios.Impl
                 return;
 
             log.Debug("Llamando Automatismo Por Configuracion Id: " + configuracion.Id);
-            if (configuracion.EsPasoDirecto)
-                ValidarLlamadoPorPasoDirecto(configuracion);
-            else if (configuracion.Llamado1a1)
-                ValidarLlamadoPor1A1(configuracion);
-            else
-                ValidarLlamadoPorFila(configuracion);
+            //if (configuracion.EsPasoDirecto)
+            //    ValidarLlamadoPorPasoDirecto(configuracion);
+            //else if (configuracion.Llamado1a1)
+            //    ValidarLlamadoPor1A1(configuracion);
+            //else
+            //    ValidarLlamadoPorFila(configuracion);
         }
 
         private void ValidarLlamadoPorPasoDirecto(AutomatismoGranoDto configuracion)
@@ -186,12 +186,12 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarTipoLiberarAutomaticoGrano(AutomatismoGranoDto configuracion)
         {
-            if (configuracion.EsPasoDirecto)
-                ValidarLiberarPorPaseDirecto(configuracion);
-            else if (configuracion.Llamado1a1)
-                ValidarLiberarPor1A1(configuracion);
-            else
-                ValidarLiberarPorFila(configuracion);
+            //if (configuracion.EsPasoDirecto)
+            //    ValidarLiberarPorPaseDirecto(configuracion);
+            //else if (configuracion.Llamado1a1)
+            //    ValidarLiberarPor1A1(configuracion);
+            //else
+            //    ValidarLiberarPorFila(configuracion);
         }
 
         private Resultado ActualizarCalleLiberada(CalleDto calle)

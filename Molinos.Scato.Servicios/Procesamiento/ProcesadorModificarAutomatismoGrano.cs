@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
@@ -29,29 +30,31 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 automatismo.MaterialId = automatismoEditado.Material.Id;
                 automatismo.TipoVariedadId = comando.Dto.TipoVariedadId;
             }
-            automatismo.EsPasoDirecto = comando.Dto.Llamado1a1 ? false : true;
+
             automatismo.Hidraulicas = hidraulicas;
         }
 
         protected override void Validar(ModificarAutomatismoGranos comando, Resultado resultado)
         {
-            bool validacionConfigExistente = false;
             var automatismo = Repositorio.Obtener<AutomatismoGrano>(c => c.Id == comando.Dto.Id);
 
-            validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a => a.Id != comando.Dto.Id && a.MaterialId == automatismo.MaterialId && (a.TipoVariedadId == automatismo.TipoVariedadId || a.TipoVariedadId == null ) && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad && a.CamionEscalable == comando.Dto.CamionEscalable);
-
-
-            if (!Repositorio.Existe<AutomatismoGrano>(a => a.Id == comando.Dto.Id))
+            if (comando.Dto.Activo)
             {
-                resultado.Error("Id Automatismo", Textos.Automatismo_IdExistente);
+                var validarCallePHTipoLlamadoDirectoEnUso = Repositorio.Existe<AutomatismoGrano>(a => a.Id != comando.Dto.Id 
+                && a.CallePreHidraulicaId == comando.Dto.CallePreHidraulicaId 
+                && a.CallePreHidraulica.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto 
+                && a.Activo);
+
+                if (validarCallePHTipoLlamadoDirectoEnUso)
+                {
+                    resultado.Error("", Textos.Automatismo_MsgPaseDirectoConMasDeUnaFila);
+                }
             }
 
-            if (validacionConfigExistente)
+            if (Repositorio.Existe<AutomatismoGrano>(a => a.Id != comando.Dto.Id && a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
-                resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_ConfiguracionExistente);
+                resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
-            
-
         }
     }
 }

@@ -46,18 +46,12 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePreHidraulicaId { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "Llamado1a1")]
-        public bool Llamado1a1 { get; set; }
-
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int AlmacenId { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Activo")]
         public bool Activo { get; set; }
-
-        [Display(ResourceType = typeof(Textos), Name = "AutomatismoGrano_EsPasoDirecto")]
-        public bool EsPasoDirecto { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Hidraulica")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
@@ -67,6 +61,7 @@ namespace Molinos.Scato.Dominio.Dto
         public string VariedadDescripcion { get; set; }
         public string CallePBDescripcion { get; set; }
         public string CallePHDescripcion { get; set; }
+        public string CallePHTipoLlamadoDescripcion { get; set; }
         public string HidraulicaDescripcion { get; set; }
         public string AlmacenDescripcion { get; set; }
 
@@ -91,14 +86,6 @@ namespace Molinos.Scato.Dominio.Dto
             get
             {
                 return CamionEscalable ? "SI" : "NO";
-            }
-        }
-
-        public string PasoDirecto
-        {
-            get
-            {
-                return EsPasoDirecto ? "SI" : "NO";
             }
         }
 

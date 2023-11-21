@@ -35,7 +35,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             AutomatismoGranosViewModel model = new AutomatismoGranosViewModel();
             model.ListaAutomatismoGrano = ListarAutomatismo();
-            model.CargarDatos(servicio, ObteneerIdCentro(), new AutomatismoGranoDto());
+            model.CargarDatos(servicio, ObtenerIdCentro(), new AutomatismoGranoDto());
 
             return View(model);
         }
@@ -44,7 +44,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             AutomatismoGranosViewModel model = new AutomatismoGranosViewModel();
             model.ListaAutomatismoGrano = ListarAutomatismo();
-            model.CargarDatos(servicio, ObteneerIdCentro(), new AutomatismoGranoDto());
+            model.CargarDatos(servicio, ObtenerIdCentro(), new AutomatismoGranoDto());
             return View(model);
         }
 
@@ -93,8 +93,8 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult Crear()
         {
             var model = new AutomatismoGranosViewModel();
-            model.ListaAutomatismoGrano = ListarAutomatismo();
-            model.CargarDatos(servicio, ObteneerIdCentro(), model.AutomatismoGrano);
+            //model.ListaAutomatismoGrano = ListarAutomatismo();
+            model.CargarDatos(servicio, ObtenerIdCentro(), model.AutomatismoGrano);
 
             return PartialView("_CrearAutomatismo", model);
         }
@@ -140,7 +140,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var model = new AutomatismoGranosViewModel();
             model.AutomatismoGrano = dto;
 
-            model.CargarDatos(servicio, ObteneerIdCentro(), dto);
+            model.CargarDatos(servicio, ObtenerIdCentro(), dto);
             model.AutomatismoGrano.Hidraulicas = null;
             return PartialView("_ModificarAutomatismo", model);
         }
@@ -198,7 +198,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             model.Id = calle.Id;
             model.Descripcion = calle.Nombre;
             model.Camiones = calle.CantidadDeCamiones;
-
             return PartialView("_ModificarCallePB", model);
         }
 
@@ -229,21 +228,38 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AjaxOnly]
         public ActionResult ModificarConfiguracionCallePH(int id)
         {
-            var model = new CalleViewModel();
+            var model = new AutomatismoGranoCallePHViewModel();
+
+            var listaAutomatismoTipoLlamado = servicio.ListarAutomatismoTipoLlamado();
+            var selectListAutomatismoTipoLlamado = listaAutomatismoTipoLlamado.Select(m => new SelectListItem
+            {
+                Value = m.Id.ToString(),
+                Text = m.Descripcion
+            }).ToList();
+
             var calle = servicio.ObtenerCalle(id);
             model.Id = calle.Id;
             model.Descripcion = calle.Nombre;
             model.Camiones = calle.CantidadDeCamiones;
-
+            model.AutomatismoTipoLlamadoId = calle.AutomatismoTipoLlamadoId;
+            model.ListaAutomatismoTipoLlamado = selectListAutomatismoTipoLlamado;
             return PartialView("_ModificarCallePH", model);
         }
 
-        public ActionResult ModificarConfiguracionCallePH(CalleViewModel model)
+        public ActionResult ModificarConfiguracionCallePH(AutomatismoGranoCallePHViewModel model)
         {
             var respuesta = new RespuestaEstandarDto();
             if (ModelState.IsValid)
             {
-                var resultadoCallePH = servicioComandos.Ejecutar(new ModificarCallePreHidraulica { Dto = new CalleAutomatismoDto { Id = model.Id, Descripcion = model.Descripcion, Camiones = model.Camiones } });
+                var calleAutomatismo = new CalleAutomatismoDto
+                {
+                    Id = model.Id,
+                    Descripcion = model.Descripcion,
+                    Camiones = model.Camiones,
+                    AutomatismoTipoLlamadoId = model.AutomatismoTipoLlamadoId
+                };
+
+                var resultadoCallePH = servicioComandos.Ejecutar(new ModificarCallePreHidraulica { Dto = calleAutomatismo });
 
                 ModelState.AgregarErrores(resultadoCallePH);
 
@@ -280,7 +296,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         [AjaxOnly]
         public JsonResult ListarAlmacenesPorMaterial(int materialId)
         {
-            var almacenes = servicio.ListarAlmacenesPorMaterial(ObteneerIdCentro(), materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
+            var almacenes = servicio.ListarAlmacenesPorMaterial(ObtenerIdCentro(), materialId).OrderBy(c => c.Descripcion).Select(x => new AlmacenDto { Id = x.Id, Descripcion = x.Descripcion });
 
             var resultado = almacenes.Select(m => new SelectListItem
             {
@@ -357,55 +373,33 @@ namespace Molinos.Scato.WebMobile.Controllers
             return jsonResult;
         }
 
-        public ActionResult ActualizarEstadoPaseDirecto(int id, bool valor)
-        {
-            var respuesta = new RespuestaEstandarDto();
-
-            var resultado = servicioComandos.Ejecutar(new ModificarPasoDirectoAutomatismoGrano
-            {
-                Id = id,
-                EsPasoDirecto = valor
-            });
-
-            if (!resultado.HayErrores)
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Actualizacion del estado de Pase Directo fue exitoso", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
-            }
-            else
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la actualizacion del estado de Pase Directo", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-            }
-
-            return Json(respuesta);
-        }
-
         public ActionResult ActualizarEstadoLlamadoVolcable(int id, bool valor)
         {
             var jsonResult = new JsonResult { Data = new MensajeEstandarDto(), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
             var respuesta = new RespuestaEstandarDto();
             var configuracionAutomatismoGrano = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
-           
+
             if (configuracionAutomatismoGrano.Valor.ToString() == "False")
             {
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se Puede Procesar. - Debe habilitar primero el llamado Volcable", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 jsonResult.Data = respuesta;
                 return jsonResult;
             }
-            
-            var resultado = servicioComandos.Ejecutar(new ModificarLlamadoVolcableAutomatismoGrano
+
+            var resultadoModificarLlamadoVolcableAutomatismo = servicioComandos.Ejecutar(new ModificarLlamadoVolcableAutomatismoGrano
             {
                 Id = id,
                 EsLLamadoVolcable = valor
             });
 
-            if (!resultado.HayErrores)
+            if (!resultadoModificarLlamadoVolcableAutomatismo.HayErrores)
             {
                 respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Actualizacion del estado de Llamado Volcable fue exitoso", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
                 jsonResult.Data = respuesta;
             }
-            else
+            else if (resultadoModificarLlamadoVolcableAutomatismo.HayErrores)
             {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultado.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = string.Join(",", resultadoModificarLlamadoVolcableAutomatismo.Errores.Values), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 jsonResult.Data = respuesta;
             }
 
@@ -499,51 +493,11 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(respuesta);
         }
 
-        public ActionResult VerificarLlamadoUnoAUno(int id)
-        {
-            var respuesta = new JsonResult();
-            try
-            {
-                var resultado = servicio.ObtenerAutomatismoGranos(id);
-
-                respuesta.Data = new { Mensaje = resultado.Llamado1a1, TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            }
-            catch (System.Exception)
-            {
-                respuesta.Data = new { TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            }
-
-            return Json(respuesta, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult ActualizarEstadoPaseDirectoUnoAUno(int id, bool valor)
-        {
-            var respuesta = new RespuestaEstandarDto();
-
-            var resultado = servicioComandos.Ejecutar(new ModificarPasoDirectoUnoAUnoAutomatismoGrano
-            {
-                Id = id,
-                EsPasoDirecto = valor ? true : false,
-                LlamadoUnoAUno = valor ? false : true
-            });
-
-            if (!resultado.HayErrores)
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Actualizacion del estado de Pase Directo 1 a 1 fue exitoso", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
-            }
-            else
-            {
-                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la actualizacion del estado de Pase Directo 1 a 1", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
-            }
-
-            return Json(respuesta);
-        }
-
         public ActionResult ObtenerHidraulicasEscalables(int? id, bool valor)
         {
             var respuesta = new RespuestaEstandarDto();
             var automatismo = servicio.ObtenerAutomatismoGranos(id.GetValueOrDefault());
-            var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.Estado != EstadoHidraulica.Inhabilitado && c.CentroId == ObteneerIdCentro());
+            var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.Estado != EstadoHidraulica.Inhabilitado && c.CentroId == ObtenerIdCentro());
 
             if (valor)
             {
@@ -560,7 +514,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult ObtenerCalidad(int id)
         {
             var respuesta = new RespuestaEstandarDto();
-            var listaCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(id, ObteneerIdCentro());
+            var listaCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(id, ObtenerIdCentro());
             var calidadPorMaterial = listaCalidad.Select(s => new SelectListItem { Text = s.Descripcion, Value = s.Id.ToString() }).ToList();
 
             calidadPorMaterial.Insert(0, new SelectListItem { Value = "", Text = Textos.Default_Calidad });
@@ -574,12 +528,12 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             var model = new AutomatismoGranosViewModel();
 
-            model.CargarDatos(servicio, ObteneerIdCentro(), model.AutomatismoGrano);
+            model.CargarDatos(servicio, ObtenerIdCentro(), model.AutomatismoGrano);
             model.ListaAutomatismoGrano = ListarAutomatismo();
             return PartialView("_ListarPanel", model);
         }
 
-        private int ObteneerIdCentro()
+        private int ObtenerIdCentro()
         {
             var usuario = ClaimsPrincipal.Current.GetUserClaim(ClaimTypes.NameIdentifier);
             var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId").ToString();

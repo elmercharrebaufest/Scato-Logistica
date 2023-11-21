@@ -889,4 +889,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_dbo.CallePlanta_Id]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="517d459b-27de-4f2f-a21d-58a6e9cbc169" ChangeDateTime="11/20/2023 15:12:53">
+    <Property Name="ElementName" Value="[dbo].[Calle].[AutomatismoTipoCalle_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Calle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[AutomatismoTipoLlamado_Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="823bb384-e437-4127-b7a8-9ddb22c9eb9e" ChangeDateTime="11/20/2023 15:12:57">
+    <Property Name="ElementName" Value="[dbo].[Calle].[[AutomatismoTipoLlamado_Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Calle]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AutomatismoTipoLlamado_Id" />
+  </Operation>
 </Operations>

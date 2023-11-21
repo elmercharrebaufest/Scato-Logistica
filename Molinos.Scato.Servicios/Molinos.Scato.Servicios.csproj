@@ -170,6 +170,7 @@
     <Compile Include="Behavior\SimpleMessageInspector.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AsignacionAutomatismoGranoEnRecorridoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AsignacionNoGranoEnRecorridoMappingProfile.cs" />
+    <Compile Include="Conversiones\Impl\Perfiles\AutomatismoTipoLlamadoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\ComercialMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoNoGranoMappingProfile.cs" />
     <Compile Include="Conversiones\Impl\Perfiles\AutomatismoGranoMappingProfile.cs" />
@@ -575,8 +576,6 @@
     <Compile Include="Procesamiento\ProcesadorModificarEstadoCallePreHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarLlamadoVolcableAutomatismoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEstadoCallePrebalanza.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificarPasoDirectoUnoAUnoAutomatismoGrano.cs" />
-    <Compile Include="Procesamiento\ProcesadorModificarPasoDirectoAutomatismoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarComercial.cs" />

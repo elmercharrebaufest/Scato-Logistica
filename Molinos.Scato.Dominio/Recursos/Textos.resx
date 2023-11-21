@@ -10171,9 +10171,6 @@
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
   </data>
-  <data name="AutomatismoGrano_EsPasoDirecto" xml:space="preserve">
-    <value>Es paso directo</value>
-  </data>
   <data name="ClienteProvisorio" xml:space="preserve">
     <value>Cliente provisorio</value>
   </data>
@@ -10390,14 +10387,8 @@
   <data name="ConfirmarPaseDirecto" xml:space="preserve">
     <value>Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. Desea continuar?</value>
   </data>
-  <data name="ConfirmarLlamado1a1" xml:space="preserve">
-    <value>Al deshabilitar el Pase Directo, debe definir como continuará el llamado a los vehículos</value>
-  </data>
   <data name="EsIncluidoAutomatismo" xml:space="preserve">
     <value>Incluída en automatismo</value>
-  </data>
-  <data name="EsPaseDirecto" xml:space="preserve">
-    <value>Pase Directo</value>
   </data>
   <data name="Automatismo_Crear" xml:space="preserve">
     <value>Nuevo Automatismo</value>
@@ -10509,5 +10500,11 @@
   </data>
   <data name="CallePlayaInternaPH" xml:space="preserve">
     <value>Calle PH</value>
+  </data>
+  <data name="TipoLlamado" xml:space="preserve">
+    <value>Tipo de Llamado</value>
+  </data>
+  <data name="Automatismo_MsgPaseDirectoConMasDeUnaFila" xml:space="preserve">
+    <value>No es posible utilizar Pase Directo con más de una fila. Para poder hacerlo elimine o desactive los automatismos sobrantes e inténtelo nuevamente</value>
   </data>
 </root>

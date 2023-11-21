@@ -188,6 +188,12 @@ function funcionModalModificarCallePreBalanza(idCalle) {
 }
 
 function funcionModalModificarCallePreHidraulica(idCalle) {
+
+    if ($("#listado-calle-pre-hidraulica").find(`[data-id='${idCalle}']`).prop('checked')) {
+        MostrarAlertaAdvertencia("Se debe desactivar la calle antes de poder editarla.");
+        return;
+    }
+
     $.blockUI({
         blockMsgClass: 'blocuiBox',
         message: 'Cargando...'
@@ -206,27 +212,6 @@ function funcionModalModificarCallePreHidraulica(idCalle) {
         },
         complete: function () {
             $.unblockUI();
-        }
-    });
-}
-
-function guardarModificarPasoDirecto(idRegistro, valorActual) {
-    $.ajax({
-        url: urlActualizarEstadoPaseDirecto,
-        type: 'POST',
-        data: {
-            id: idRegistro,
-            valor: valorActual
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                MostrarAlertaExitosa(response.Mensaje);
-            } else {
-                MostrarAlertaError(response.Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición');
         }
     });
 }
@@ -250,42 +235,6 @@ function guardarModificarLlamadoVolcable(idRegistro, valorActual) {
             MostrarAlertaError('Error al realizar la petición');
         }
     });
-}
-
-function ModificarPasoDirecto(element) {
-    let id = $(element).data('id');
-    let valor = $(element).prop('checked');
-    popupComandoLogistica = element;
-    if (!valor) {
-        $.blockUI({
-            blockMsgClass: 'blocuiBox',
-            message: 'Cargando...'
-        });
-        $.ajax({
-            url: urlVerificarLlamadoUnoAUno,
-            type: 'POST',
-            data: {
-                id: id,
-            },
-            success: function (response) {
-                if (response.Data.TipoDeMensaje === 0) {
-                    ActualizarEstadoPaseDirecto(id, !valor, response.Data.Mensaje)
-                }
-            },
-            error: function () {
-                MostrarAlertaError('Error al realizar la petición.');
-            },
-            complete: function () {
-                $.unblockUI();
-            }
-        });
-    }
-    else {
-        $('#PasoDirecto').attr("data-id", id);
-        $('#PasoDirecto').attr("data-value", !valor);
-
-        modalConfirmarPaseDirecto.showModal();
-    }
 }
 
 function ModificarLlamadoVolcable(element) {
@@ -344,141 +293,6 @@ function ProcesarRespuestaToAlert(response, selector) {
     }
 }
 
-function ActualizarEstadoPaseDirecto(idRegistro, valorActual, validacion) {
-    if (validacion) {
-        $('#modalConfirmarPaseDirectoHabilitado').attr("data-id", idRegistro);
-        $('#modalConfirmarPaseDirectoHabilitado').attr("data-value", valorActual);
-        modalConfirmarPaseDirectoHabilitado.showModal();
-    } else {
-        ActualizarEstadoPaseDirectoHabilitado(idRegistro, valorActual)
-    }
-}
-
-function ActualizarEstadoPaseDirectoHabilitado(idRegistro, valorActual) {
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlActualizarEstadoPaseDirecto,
-        type: 'POST',
-        data: {
-            id: idRegistro,
-            valor: valorActual
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                popupComandoLogistica.checked = !popupComandoLogistica.checked;
-            } else {
-                MostrarAlertaError(response.Mensajes[0].Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición.');
-        },
-        complete: function () {
-            $.unblockUI();
-            popupComandoLogistica = null;
-        }
-    });
-}
-
-function ActualizarEstadoPaseDirectoPorFila() {
-    let id = $(popupComandoLogistica).data('id');
-    let valor = $(popupComandoLogistica).prop('checked');
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlActualizarEstadoPaseDirecto,
-        type: 'POST',
-        data: {
-            id: id,
-            valor: !valor
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                modalConfirmarPaseDirecto.close()
-                popupComandoLogistica.checked = !popupComandoLogistica.checked;
-            } else {
-                MostrarAlertaError(response.Mensajes[0].Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición.');
-        },
-        complete: function () {
-            $.unblockUI();
-            popupComandoLogistica = null;
-        }
-    });
-}
-
-function ActualizarEstadoPaseDirectoUnoAUno() {
-    let id = $(popupComandoLogistica).data('id');
-    let valor = $(popupComandoLogistica).prop('checked');
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlActualizarEstadoPaseDirectoUnoAUno,
-        type: 'POST',
-        data: {
-            id: id,
-            valor: !valor
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                modalConfirmarPaseDirecto.close()
-                popupComandoLogistica.checked = !popupComandoLogistica.checked;
-            } else {
-                MostrarAlertaError(response.Mensajes[0].Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición.');
-        },
-        complete: function () {
-            $.unblockUI();
-            popupComandoLogistica = null;
-        }
-    });
-}
-
-function ActualizarEstadoPaseDirectoUnoAUnoHabilitado() {
-    let id = $(popupComandoLogistica).data('id');
-
-    $.blockUI({
-        blockMsgClass: 'blocuiBox',
-        message: 'Cargando...'
-    });
-    $.ajax({
-        url: urlActualizarEstadoPaseDirectoUnoAUno,
-        type: 'POST',
-        data: {
-            id: id,
-            valor: true
-        },
-        success: function (response) {
-            if (response.Mensajes[0].TipoDeMensaje === 0) {
-                modalConfirmarPaseDirectoHabilitado.close()
-                popupComandoLogistica.checked = !popupComandoLogistica.checked;
-            } else {
-                MostrarAlertaError(response.Mensajes[0].Mensaje);
-            }
-        },
-        error: function () {
-            MostrarAlertaError('Error al realizar la petición.');
-        },
-        complete: function () {
-            $.unblockUI();
-            popupComandoLogistica = null;
-        }
-    });
-}
-
 function cambiarEstadoSwitch(url, elemento) {
     let id = $(elemento).data('id');
     let valor = $(elemento).prop('checked');
@@ -511,16 +325,14 @@ function bindearChecksAutomatismo() {
         var nombreCampo = $(this).data('field');
         let element = e.currentTarget;
         element.checked = !element.checked;
-        if (nombreCampo == 'EsPasoDirecto') {
-            ModificarPasoDirecto(element);
-        } else if (nombreCampo == 'Activo') {
+        if (nombreCampo == 'Activo') {
             ModificarLlamadoVolcable(element);
         } else if (nombreCampo == 'ActivoAutomaticoPB') {
             ModificarEstadoPreBalanza(element);
         } else if (nombreCampo == 'ActivoAutomaticoPH') {
             ModificarEstadoPreHidraulica(element);
         } else if (nombreCampo == 'ActivoAutomaticoH') {
-                ModificarEstadoHidraulica(element);
+            ModificarEstadoHidraulica(element);
         }
     });
 }

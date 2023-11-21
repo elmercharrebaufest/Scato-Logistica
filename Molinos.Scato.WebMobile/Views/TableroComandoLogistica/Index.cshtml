@@ -25,13 +25,10 @@
     urlListarAutomatismo = '@Url.Action("ActualizarListaAutomatismo", "TableroComandoLogistica")';
     urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoLogistica")';
     urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
-    urlActualizarEstadoPaseDirecto = '@Url.Action("ActualizarEstadoPaseDirecto", "TableroComandoLogistica")';
     urlActualizarEstadoLlamadoVolcable = '@Url.Action("ActualizarEstadoLlamadoVolcable", "TableroComandoLogistica")';
     urlListarAutomatismoGrano = '@Url.Action("ListarAutomatismoGrano", "TableroComandoLogistica")';
     urlFileJavaScript = '@Url.Content("~/scripts/crearAutomatismo.js")';
     urlEliminarAutomatismo = '@Url.Action("Eliminar", "TableroComandoLogistica")';
-    urlVerificarLlamadoUnoAUno = '@Url.Action("VerificarLlamadoUnoAUno", "TableroComandoLogistica")';
-    urlActualizarEstadoPaseDirectoUnoAUno = '@Url.Action("ActualizarEstadoPaseDirectoUnoAUno", "TableroComandoLogistica")';
     urlObtenerHidraulicasEscalables = '@Url.Action("ObtenerHidraulicasEscalables", "TableroComandoLogistica")';
     urlObtenerCalidad = '@Url.Action("ObtenerCalidad", "TableroComandoLogistica")';
     urlObtenerAlmacenes = '@Url.Action("ListarAlmacenesPorMaterial", "TableroComandoLogistica")';
@@ -108,31 +105,6 @@
 </div>
 
 <div id="DetalleAutomatismo"></div>
-
-<dialog id="modalConfirmarPaseDirectoHabilitado" class="dialogScatoMobile">
-    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
-    <p class="dialogScatoMobile__descripcion">
-        Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. ¿Desea continuar?
-    </p>
-    <div class="dialogScatoMobile__botones">
-        <button id="btnConfirmarPorFila" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoUnoAUnoHabilitado()">Aceptar</button>
-        <button class="btn btn-dark" onclick="modalConfirmarPaseDirectoHabilitado.close()" autofocus>Cancelar</button>
-    </div>
-</dialog>
-
-<dialog id="modalConfirmarPaseDirecto" class="dialogScatoMobile">
-    <h4 class="dialogScatoMobile__titulo">@Textos.Confirmacion</h4>
-    <div id="PasoDirecto" hidden>
-    </div>
-    <p class="dialogScatoMobile__descripcion">
-        Al deshabilitar el Pase Directo, debe definir como continuará el llamado a los vehículos
-    </p>
-    <div class="dialogScatoMobile__botones float-right">
-        <button class="btn btn-dark" onclick="modalConfirmarPaseDirecto.close()" autofocus>Cancelar</button>
-        <button id="btnConfirmarPorFila" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoPorFila()">Por Fila</button>
-        <button id="btnConfirmar1a1" class="btn btn-success" onclick="ActualizarEstadoPaseDirectoUnoAUno()">1 a 1</button>
-    </div>
-</dialog>
 
 <dialog id="modalConfirmarBorrar" class="dialogModal">
     <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>

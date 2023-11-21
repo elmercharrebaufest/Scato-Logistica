@@ -32,12 +32,12 @@ namespace Molinos.Scato.Dominio.Entidades
         [Column("CallePreHidraulica_Id")]
         public int CallePreHidraulicaId { get; set; }
 
-        public bool Llamado1a1 { get; set; }
+
 
         [Column("Almacen_Id")]
         public int AlmacenId { get; set; }
 
-        public bool EsPasoDirecto { get; set; }
+
 
         [InverseProperty("AutomatismoGranos")]
         public IList<PuestosDeCargaDescarga> Hidraulicas { get; set; }

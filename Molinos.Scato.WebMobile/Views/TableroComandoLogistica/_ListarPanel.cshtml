@@ -13,9 +13,7 @@
                 grilla.Column("", "", c => @Html.Raw("")),
         grilla.Column("CallePBDescripcion", "Calle PB"),
         grilla.Column("CallePHDescripcion", "Calle PH"),
-        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
-            grilla.ColumnaSwitch("EsPasoDirecto", "Pase Directo") :
-            grilla.Columna("EsPasoDirecto", "Pase Directo", c => FormattingHtmlHelper.Formatted(c.EsPasoDirecto)),
+        grilla.Column("CallePHTipoLlamadoDescripcion", "Tipo de Llamado"),
         PermisosHelper.Is(PermisosScato.SupervisorLogistica) ?
             grilla.ColumnaSwitch("Activo", "Llamado a Volcable") :
             (PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?

@@ -16,7 +16,6 @@ namespace Molinos.Scato.Dominio.Dto
             this.Descripcion = calle.Nombre;
             this.EsIncluidoAutomatismo = "No";
             this.EstadoAutomatismo = "-";
-            this.EsPaseDirecto = calle.TipoCalle == Enums.TipoCalle.PlantaNoGranos ? string.Empty : " - ";
             this.Estado = calle.ActivoAutomatico ? "Activa" : "Inactiva";
             this.Material = calle.Material != null ? calle.Material.Descripcion ?? string.Empty : " - ";
             this.Variedad = Textos.Variedad_Estandar;
@@ -41,13 +40,11 @@ namespace Molinos.Scato.Dominio.Dto
 
         public string Hidraulica { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "EsPaseDirecto")]
-        public string EsPaseDirecto { get; set; }
-
         public string Almacen { get; set; }
         public string PuntoDeCarga { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "EstadoAutomatismo")]
         public string EstadoAutomatismo { get; set; }
+
     }
 }

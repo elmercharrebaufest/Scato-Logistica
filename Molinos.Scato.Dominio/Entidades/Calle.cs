@@ -1,6 +1,5 @@
 ﻿using Molinos.Scato.Dominio.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,10 +9,13 @@ namespace Molinos.Scato.Dominio.Entidades
     {
         [Key]
         public virtual int Id { get; set; }
+
         [Required]
         public virtual string Nombre { get; set; }
+
         [Required]
         public virtual string Codigo { get; set; }
+
         [Required]
         public virtual int CentroId { get; set; }
 
@@ -37,5 +39,10 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Calle CalleCalado { get; set; }
         public virtual int? Posicion { get; set; }
         public virtual bool ActivoAutomatico { get; set; }
+
+        [Column("AutomatismoTipoLlamado_Id")]
+        public virtual int? AutomatismoTipoLlamadoId { get; set; }
+
+        public virtual AutomatismoTipoLlamado AutomatismoTipoLlamado { get; set; }
     }
 }
