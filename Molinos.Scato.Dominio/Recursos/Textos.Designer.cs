@@ -4795,11 +4795,11 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Es paso directo.
+        ///   Looks up a localized string similar to No es posible utilizar Pase Directo con más de una fila. Para poder hacerlo elimine o desactive los automatismos sobrantes e inténtelo nuevamente.
         /// </summary>
-        public static string AutomatismoGrano_EsPasoDirecto {
+        public static string Automatismo_MsgPaseDirectoConMasDeUnaFila {
             get {
-                return ResourceManager.GetString("AutomatismoGrano_EsPasoDirecto", resourceCulture);
+                return ResourceManager.GetString("Automatismo_MsgPaseDirectoConMasDeUnaFila", resourceCulture);
             }
         }
         
@@ -10456,15 +10456,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Al deshabilitar el Pase Directo, debe definir como continuará el llamado a los vehículos.
-        /// </summary>
-        public static string ConfirmarLlamado1a1 {
-            get {
-                return ResourceManager.GetString("ConfirmarLlamado1a1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. Desea continuar?.
         /// </summary>
         public static string ConfirmarPaseDirecto {
@@ -11199,6 +11190,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Conversion {
             get {
                 return ResourceManager.GetString("Conversion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Convive en almacén.
+        /// </summary>
+        public static string ConviveEnAlmacen {
+            get {
+                return ResourceManager.GetString("ConviveEnAlmacen", resourceCulture);
             }
         }
         
@@ -15037,15 +15037,6 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string EsIncluidoAutomatismo {
             get {
                 return ResourceManager.GetString("EsIncluidoAutomatismo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pase Directo.
-        /// </summary>
-        public static string EsPaseDirecto {
-            get {
-                return ResourceManager.GetString("EsPaseDirecto", resourceCulture);
             }
         }
         
@@ -29492,6 +29483,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string TipoImpresion {
             get {
                 return ResourceManager.GetString("TipoImpresion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo de Llamado.
+        /// </summary>
+        public static string TipoLlamado {
+            get {
+                return ResourceManager.GetString("TipoLlamado", resourceCulture);
             }
         }
         

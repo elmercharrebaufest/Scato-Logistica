@@ -18,6 +18,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var calle = Repositorio.Obtener<Calle>(comando.Dto.Id);
             calle.Nombre = comando.Dto.Descripcion;
             calle.CantidadDeCamiones = comando.Dto.Camiones;
+            calle.AutomatismoTipoLlamadoId = comando.Dto.AutomatismoTipoLlamadoId;
         }
 
         protected override void Validar(ModificarCallePreHidraulica comando, Resultado resultado)

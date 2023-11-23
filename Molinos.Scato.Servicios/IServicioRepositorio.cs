@@ -2980,6 +2980,18 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool EstaDisponibleParaLlamadoAutomaticoHidraulica(int hidraulicaId);
+
+        [OperationContract]
+        IList<AutomatismoTipoLlamadoDto> ListarAutomatismoTipoLlamado();
+        
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(int materialId, int puntoDeCarga);
+
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacen(int almacenId);
+
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(int puntoDeCargaId);
     }
 
 }

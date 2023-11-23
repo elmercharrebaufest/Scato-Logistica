@@ -74,12 +74,6 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.CheckBoxFor(m => m.AutomatismoGrano.Llamado1a1)
-                        @Html.LabelFor(m => m.AutomatismoGrano.Llamado1a1)
-                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.Llamado1a1)
-                    </div>
-
-                    <div class="form-group">
                         @Html.LabelFor(m => m.AutomatismoGrano.Hidraulicas)
                         @Html.DropDownListFor(m => m.AutomatismoGrano.Hidraulicas, Model.Hidraulicas, new { @class = "form-control multiselect", multiple = "multiple" })
                         @Html.ValidationMessageFor(m => m.AutomatismoGrano.Hidraulicas)

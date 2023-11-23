@@ -1,4 +1,4 @@
-﻿@model CalleViewModel
+﻿@model AutomatismoGranoCallePHViewModel
 @using Molinos.Scato.WebMobile.ViewModel
 @using Molinos.Scato.Dominio.Recursos
 
@@ -23,6 +23,12 @@
                                 @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.Descripcion)
                             </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.AutomatismoTipoLlamadoId)
+                                @Html.DropDownListFor(model => model.AutomatismoTipoLlamadoId, Model.ListaAutomatismoTipoLlamado, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AutomatismoTipoLlamadoId)
+                            </div>
+
                             <div class="col-md-6">
                                 @Html.LabelFor(model => model.Camiones)
                                 @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })

@@ -31,8 +31,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 CalidadId = comando.Dto.CalidadId,
                 CallePreHidraulicaId = comando.Dto.CallePreHidraulicaId,
                 CamionEscalable = comando.Dto.CamionEscalable,
-                EsPasoDirecto = comando.Dto.Llamado1a1 ? false : comando.Dto.EsPasoDirecto,
-                Llamado1a1 = comando.Dto.Llamado1a1,
                 MaterialId = comando.Dto.MaterialId,
                 Maximo = comando.Dto.Maximo,
                 Minimo = comando.Dto.Minimo,
@@ -49,19 +47,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearAutomatismoGranos comando, Resultado resultado)
         {
-            bool validacionConfigExistente = false;
-
-            validacionConfigExistente = Repositorio.Existe<AutomatismoGrano>(a =>
-                a.MaterialId == comando.Dto.MaterialId 
-                && (a.TipoVariedadId == comando.Dto.TipoVariedadId || (comando.Dto.TipoVariedadId==null && a.TipoVariedadId == null))
-                && a.AplicaFiltroCalidad == comando.Dto.AplicaFiltroCalidad
-                && a.CamionEscalable == comando.Dto.CamionEscalable
-                && a.CallePreHidraulicaId == comando.Dto.CallePreHidraulicaId);
-
-            if (validacionConfigExistente)
-            {
-                resultado.Error("Id Variedad , Id Material, AplicaFiltroCalidad, CamionEscalable", Textos.Automatismo_ConfiguracionExistente);
-            }
             if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);

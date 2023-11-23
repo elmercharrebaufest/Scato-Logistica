@@ -240,6 +240,7 @@
     <Compile Include="ViewModel\AutomatismoNoGranoConfiguracionViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoNoGranoViewModel.cs" />
     <Compile Include="ViewModel\AutomatismoGranosViewModel.cs" />
+    <Compile Include="ViewModel\AutomatismoGranoCallePHViewModel.cs" />
     <Compile Include="ViewModel\PundoDeCargaVM.cs" />
     <Compile Include="ViewModel\CalleViewModel.cs" />
     <Compile Include="ViewModel\PesadaHistoricaViewModel.cs" />

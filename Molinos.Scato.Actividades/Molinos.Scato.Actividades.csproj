@@ -1299,6 +1299,18 @@
       <SubType>Designer</SubType>
     </XamlAppDef>
   </ItemGroup>
+   <ItemGroup>
+    <XamlAppDef Include="VerificacionCamionRechazadoV2.xaml">
+
+
+
+
+
+
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="AsignacionAutomatismoNoGranos.xaml">
       <Generator>MSBuild:Compile</Generator>

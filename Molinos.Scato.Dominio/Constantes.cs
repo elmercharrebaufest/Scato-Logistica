@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace Molinos.Scato.Dominio
+﻿namespace Molinos.Scato.Dominio
 {
     public static class Constantes
     {
@@ -214,7 +212,7 @@ namespace Molinos.Scato.Dominio
             public const string Value = "PuestoComando";
         }
 
-        public struct TipoVariedadMaterial 
+        public struct TipoVariedadMaterial
         {
             public const string EPA = "EPA";
             public const string Sustentable = "SUS";
@@ -226,6 +224,13 @@ namespace Molinos.Scato.Dominio
             public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
             public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
             public const string LlamarAutomatismoNoGrano = "JobDetenerLlamadoAutomaticoNoGranos";
+        }
+
+        public struct AutomatismoTipoLlamado
+        {
+            public const string PorFila = "PFL";
+            public const string UnoAUno = "1A1";
+            public const string PaseDirecto = "PDR";
         }
     }
 }

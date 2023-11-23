@@ -1,11 +1,12 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -22,7 +23,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var automatismo = Repositorio.Obtener<AutomatismoGrano>(comando.Id);
             automatismo.Activo = comando.EsLLamadoVolcable;
-
 
             if (automatismo.Activo)
             {
@@ -44,6 +44,16 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 if (automatismo.CamionEscalable && automatismo.Hidraulicas.Any(x => !x.EsEscalable))
                 {
                     resultado.Error("Automatismo_EsEscalableIncoincidente", Textos.Automatismo_EsEscalableIncoincidente);
+                }
+
+                var validarCallePHTipoLlamadoDirectoEnUso = Repositorio.Existe<AutomatismoGrano>(a => a.Id != automatismo.Id 
+                && a.CallePreHidraulicaId == automatismo.CallePreHidraulicaId 
+                && a.CallePreHidraulica.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto 
+                && a.Activo);
+
+                if (validarCallePHTipoLlamadoDirectoEnUso)
+                {
+                    resultado.Error("validarCallePHTipoLlamadoDirectoEnUso", Textos.Automatismo_MsgPaseDirectoConMasDeUnaFila);
                 }
             }
         }

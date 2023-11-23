@@ -164,7 +164,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 Id = calle.Id,
                 Descripcion = calle.Descripcion,
-                Camiones = calle.CantidadMaximaDeCamiones ?? 0
+                Camiones = calle.CantidadMaximaDeCamiones ?? 0,
+                ConviveEnAlmacen = calle.ConviveEnAlmacen,
             };
             return PartialView("_ModificarPuntoDeCarga", model);
         }
@@ -176,6 +177,15 @@ namespace Molinos.Scato.WebMobile.Controllers
             var puntoDeCarga = servicio.ObtenerPuntoDeCarga(model.Id);
             puntoDeCarga.Descripcion = model.Descripcion;
             puntoDeCarga.CantidadMaximaDeCamiones = model.Camiones;
+            puntoDeCarga.ConviveEnAlmacen = model.ConviveEnAlmacen;
+
+            var automatismos = servicio.ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(model.Id);
+
+            if (ValidarConviveEnAlmacenPuntoDeCarga(automatismos))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "El Punto de Carga se encuentra involucrado en mas de un automatismo activo con la misma Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta);
+            }
 
             if (ModelState.IsValid)
             {
@@ -188,6 +198,8 @@ namespace Molinos.Scato.WebMobile.Controllers
                     }
                 }
             }
+
+            
 
             return Json(respuesta);
         }
@@ -264,6 +276,21 @@ namespace Molinos.Scato.WebMobile.Controllers
                 result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
                 return result;
             }
+
+            var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
+
+            if (nuevoEstado && this.ValidarMismoPuntoCargaAlmacen(automatismo))
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "Ya existe un automatismo con el mismo Punto de Carga y Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+                return result;
+            }
+
+            if(nuevoEstado && this.ValidarConviveEnAlmacen(automatismo))
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No es posible asignar el Punto de Carga en esta Almacén por su configuración", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+                return result;
+            }
+
 
             var resultado = servicioComandos.Ejecutar(new ModificarEstadoAutomatismoNoGrano
             {
@@ -439,6 +466,43 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             return Json(almacenes.Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList(), JsonRequestBehavior.AllowGet);
+        }
+
+        private bool ValidarMismoPuntoCargaAlmacen(AutomatismoNoGranoDto automatismoNoGrano)
+        {
+            var result = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(automatismoNoGrano.AlmacenId, automatismoNoGrano.PuntoDeCargaId);
+
+            return result.Any();
+
+        }
+
+        private bool ValidarConviveEnAlmacen(AutomatismoNoGranoDto automatismoNoGrano)
+        {
+            var automatismosActivos = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacen(automatismoNoGrano.AlmacenId);
+
+            if (!automatismoNoGrano.PuntoDeCarga.ConviveEnAlmacen)
+            {
+                return automatismosActivos.Any();
+            }
+
+            return automatismosActivos.Any(x => !x.PuntoDeCarga.ConviveEnAlmacen);
+
+        }
+
+        private bool ValidarConviveEnAlmacenPuntoDeCarga(IList<AutomatismoNoGranoDto> automatismosNoGrano)
+        {
+
+            foreach (var aut in automatismosNoGrano)
+            {
+                var r = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacen(aut.AlmacenId).Where(x => x.PuntoDeCargaId != aut.PuntoDeCargaId);
+
+                if(r.Any())
+                    return true;
+            }
+
+            return false;
+           
+
         }
 
         private AutomatismoNoGranoViewModel CargarModeloAutomatismo()

@@ -20,11 +20,7 @@
 
   [CallePreHidraulica_Id] INT NOT NULL,
 
-  [Llamado1a1] BIT NOT NULL,
-
   [Almacen_Id] INT NOT NULL,
-
-  [EsPasoDirecto] BIT NOT NULL DEFAULT 0,
 
   [Activo] BIT NOT NULL
 

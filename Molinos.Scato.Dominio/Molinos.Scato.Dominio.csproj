@@ -141,8 +141,6 @@
     <Compile Include="Comandos\ModificarEstadoCallePrebalanza.cs" />
     <Compile Include="Comandos\ModificarLlamadoVolcableAutomatismoGrano.cs" />
     <Compile Include="Comandos\ModificarEstadoCallePreHidraulica.cs" />
-    <Compile Include="Comandos\ModificarPasoDirectoUnoAUnoAutomatismoGrano.cs" />
-    <Compile Include="Comandos\ModificarPasoDirectoAutomatismoGrano.cs" />
     <Compile Include="Comandos\ModificarComercial.cs" />
     <Compile Include="Comandos\ModificarAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarConfiguracionCalleHidraulica.cs" />
@@ -767,6 +765,7 @@
     <Compile Include="Comandos\ResultadoCrear.cs" />
     <Compile Include="Comandos\SuscribirEventos.cs" />
     <Compile Include="Consultas\InfoCalle.cs" />
+    <Compile Include="Dto\AutomatismoTipoLlamadoDto.cs" />
     <Compile Include="Dto\CalleAutomatismoDto.cs" />
     <Compile Include="Dto\AutomatismoGranoDto.cs" />
     <Compile Include="Dto\AsignacionAutomatismoGranoEnRecorridoDto.cs" />
@@ -1065,6 +1064,7 @@
     <Compile Include="Entidades\AsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Entidades\AutomatismoGrano.cs" />
     <Compile Include="Entidades\AutomatismoNoGrano.cs" />
+    <Compile Include="Entidades\AutomatismoTipoLlamado.cs" />
     <Compile Include="Entidades\Base\AuditoriaBase.cs" />
     <Compile Include="Entidades\Comercial.cs" />
     <Compile Include="Entidades\CallePreBalanzaPlayaInterna.cs" />

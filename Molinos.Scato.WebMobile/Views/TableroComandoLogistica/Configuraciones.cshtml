@@ -36,7 +36,7 @@
     <h1 class="text-center">@Textos.Tablero_ComandoLogistica</h1>
 </div>
 
-<div class="mx-1" style="border: 1px solid #ccc;">
+<div class="mx-0" style="border: 1px solid #ccc;">
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-tabs flex-column flex-sm-row">
@@ -81,11 +81,11 @@
 
             <div class="tab-content overflow-auto">
                 <div id="panel" class="tab-pane fade show active">
-                    <div class="container">
+                    <div class="container" style="max-width:1400px">
                         <div class="row mt-2">
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
                             {
-                                <div class="col-sm-12 col-md-4 flex-fill">
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-balanza">
 
                                     <h4 class="text-center">Calles Pre Balanza</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
@@ -95,7 +95,7 @@
                             }
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                             {
-                                <div class="col-sm-12 col-md-4 flex-fill">
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-hidraulica">
 
                                     <h4 class="text-center">Calles Pre Hidráulica</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
@@ -105,7 +105,7 @@
                             }
                             @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
                             {
-                                <div class="col-sm-12 col-md-4 flex-fill">
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-hidraulicas">
                                     <h4 class="text-center">Hidráulica</h4>
                                     <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                         @Html.Partial("_ListarHidraulica")

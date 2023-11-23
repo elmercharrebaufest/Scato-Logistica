@@ -29,5 +29,7 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [InverseProperty("PuntosDeCarga")]
         public virtual IList<Material> Materiales { get; set; }
+
+        public bool ConviveEnAlmacen { get; set; }
     }
 }

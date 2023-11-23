@@ -1768,3 +1768,23 @@ IF EXISTS (SELECT 1 FROM Permiso WHERE ActividadWorkflow = 'PuestoComando')
 BEGIN 
 	UPDATE Permiso SET NombreActividad = 'Puesto Comando Logística'  WHERE ActividadWorkflow = 'PuestoComando' 
 END
+
+
+--AutomatismoTipoLlamado
+IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = 'PFL') 
+BEGIN 
+INSERT INTO AutomatismoTipoLlamado VALUES ('PFL','Por Fila',1)
+END
+
+IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = '1T1') 
+BEGIN 
+INSERT INTO AutomatismoTipoLlamado VALUES ('1A1','1 a 1',1)
+END
+
+IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = 'PDR') 
+BEGIN 
+INSERT INTO AutomatismoTipoLlamado VALUES ('PDR','Pase Directo',1)
+END
+
+
+UPDATE Calle SET AutomatismoTipoLlamado_id = (SELECT Id from AutomatismoTipoLlamado WHERE Codigo = 'PFL') WHERE  TipoCalle = 0  AND  AutomatismoTipoLlamado_id IS NULL 

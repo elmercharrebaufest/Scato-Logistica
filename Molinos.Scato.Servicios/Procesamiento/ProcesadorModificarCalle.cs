@@ -1,11 +1,11 @@
-﻿using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio;
+using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using Molinos.Scato.Dominio.Recursos;
-using Molinos.Scato.Dominio;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -19,12 +19,30 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void ModificarEntidad(ModificarCalle comando)
         {
             var calle = Repositorio.Obtener<Calle>(comando.Dto.Id);
+            var automatismoTipoLlamadoId = calle.AutomatismoTipoLlamadoId;
 
             Conversor.Convertir(comando.Dto, calle);
             calle.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             calle.CaracteristicaDeCalidad = Repositorio.Obtener<CaracteristicaDeCalidad>(comando.Dto.CaracteristicaDeCalidadId);
             if (comando.Dto.CalleCaladoId > 0)
                 calle.CalleCalado = Repositorio.Obtener<Calle>(comando.Dto.CalleCaladoId);
+
+            if (comando.Dto.TipoCalle == TipoCalle.PlayaInterna)
+            {
+                if (automatismoTipoLlamadoId == null)
+                {
+                    var automatismoTipoLlamado = Repositorio.Obtener<AutomatismoTipoLlamado>(q => q.Codigo == Constantes.AutomatismoTipoLlamado.PorFila);
+                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamado.Id;
+                }
+                else
+                {
+                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamadoId;
+                }
+            }
+            else
+            {
+                calle.AutomatismoTipoLlamadoId = null;
+            }
 
             //cancelar llamado de calle
             if (!comando.Llamada)
@@ -83,7 +101,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var ConfiguracionGranoActivo = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
             var ConfiguracionNoGranoActivo = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
             if ((ConfiguracionGranoActivo.Valor.Equals("True")
-                && Repositorio.Existe<AutomatismoGrano>(a => a.Activo == true && (a.CallePreBalanzaId == comando.Dto.Id || a.CallePreHidraulicaId==comando.Dto.Id))) 
+                && Repositorio.Existe<AutomatismoGrano>(a => a.Activo == true && (a.CallePreBalanzaId == comando.Dto.Id || a.CallePreHidraulicaId == comando.Dto.Id)))
                 || (ConfiguracionNoGranoActivo.Valor.Equals("True")
                 && Repositorio.Existe<AutomatismoNoGrano>(a => a.Activo == true && (a.CallePlanta.Id == comando.Dto.Id || a.CallePlayaInterna.Id == comando.Dto.Id))))
             {

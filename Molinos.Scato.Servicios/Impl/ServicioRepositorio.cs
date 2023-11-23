@@ -10654,7 +10654,6 @@ namespace Molinos.Scato.Servicios.Impl
                     var configuracionGeneralGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
 
                     infoCalle.EsIncluidoAutomatismo = "Si";
-                    infoCalle.EsPaseDirecto = automatismoConvertido.PasoDirecto;
                     infoCalle.Hidraulica = automatismoConvertido.HidraulicaDescripcion;
                     infoCalle.Variedad = string.IsNullOrEmpty(automatismoConvertido.VariedadDescripcion) ? Textos.Variedad_Estandar : automatismoConvertido.VariedadDescripcion;
                     infoCalle.Almacen = string.Empty;
@@ -10670,11 +10669,9 @@ namespace Molinos.Scato.Servicios.Impl
                 {
                     var configuracionGeneralNoGrano = this.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto, Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
                     infoCalle.EsIncluidoAutomatismo = "Si";
-                    infoCalle.EsPaseDirecto = string.Empty;
                     infoCalle.Almacen = automatismoNoGrano.Almacen.Descripcion;
                     infoCalle.PuntoDeCarga = automatismoNoGrano.PuntoDeCarga.Descripcion;
                     infoCalle.EstadoAutomatismo = automatismoNoGrano.Activo && bool.TryParse(configuracionGeneralNoGrano?.Valor, out bool automatismoGeneralNoGrano) && automatismoGeneralNoGrano ? "Activo" : "Inactivo";
-
                 }
             }
 
@@ -10874,7 +10871,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public MensajeCartelLedDto ObtenerCartelDisponible(string codigo)
         {
-            var result =  repositorio.ObtenerPrimero<MensajeCartelLed>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido == null);
+            var result = repositorio.ObtenerPrimero<MensajeCartelLed>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido == null);
 
             return conversor.Convertir<MensajeCartelLed, MensajeCartelLedDto>(result);
         }
@@ -10893,25 +10890,21 @@ namespace Molinos.Scato.Servicios.Impl
                         FechaIngresoMasAntigua = g.Min(c => c.FechaIngeso)
                     });
 
-
             var recorridoId = primerosCamionesPorCalle?.OrderBy(x => x?.FechaIngresoMasAntigua)?.FirstOrDefault()?.Recorrido_Id;
 
             return Obtener<Recorrido, RecorridoDto>(x => x.Id == recorridoId);
-
-
         }
 
         private IEnumerable<int> RecorridosEnCartel(string codigo)
         {
-           var res = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido!= null);
+            var res = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido != null);
 
             if (res == null)
                 return Enumerable.Empty<int>();
 
-           var r = res.Select(x => x.HistorialMensajeCartelLed.RecorridoId.Value);
+            var r = res.Select(x => x.HistorialMensajeCartelLed.RecorridoId.Value);
 
             return r;
-            
         }
 
         public int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId)
@@ -10925,22 +10918,45 @@ namespace Molinos.Scato.Servicios.Impl
 
         public CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId)
         {
-            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == TipoCalle.NoGranos); 
+            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.FechaEgreso == null && x.Calle.TipoCalle == TipoCalle.NoGranos);
         }
 
         public bool ExisteAsigacionGranoEnRecorrido(int recorridoId)
         {
-            return repositorio.Existe<AsignacionAutomatismoGranoEnRecorrido>(x => x.RecorridoId==recorridoId);
+            return repositorio.Existe<AsignacionAutomatismoGranoEnRecorrido>(x => x.RecorridoId == recorridoId);
         }
 
         public PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescarga(int puestoId)
         {
-            return Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(f =>f.Id==puestoId).FirstOrDefault();
+            return Listar<PuestosDeCargaDescarga, PuestosDeCargaDescargaDto>(f => f.Id == puestoId).FirstOrDefault();
         }
 
         public bool EstaDisponibleParaLlamadoAutomaticoHidraulica(int hidraulicaId)
         {
             return repositorio.Existe<LlamadoAutomaticoHidraulica>(x => x.Hidraulica.Id == hidraulicaId && x.Estado != EstadoHidraulica.Inhabilitado);
         }
+
+        public IList<AutomatismoTipoLlamadoDto> ListarAutomatismoTipoLlamado()
+        {
+            return Listar<AutomatismoTipoLlamado, AutomatismoTipoLlamadoDto>(f => f.Activo);
+        }
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(int almacenId, int puntoDeCarga)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.PuntoDeCarga.Id == puntoDeCarga && a.Activo == true);
+        }
+
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacen(int almacenId)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.Activo == true);
+        }
+
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(int puntoDeCargaId)
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.PuntoDeCarga.Id == puntoDeCargaId && a.Activo == true);
+        }
+
+
     }
+
+
 }

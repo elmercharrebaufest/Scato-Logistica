@@ -26,8 +26,5 @@ namespace Molinos.Scato.Dominio.Consultas
 
         [DataMember]
         public string Hidraulica { get; set; }
-        [DataMember]
-        public bool EsPaseDirecto { get; set; }
-       
     }
 }
