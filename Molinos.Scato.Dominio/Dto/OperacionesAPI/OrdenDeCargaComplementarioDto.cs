@@ -8,6 +8,8 @@
         public string TransportistaDescripcion { get; set; }
         public int TipoDeVehiculo { get; set; }
         public int? MaterialId { get; set; }
-        public bool? EsDerivadoGranario { get; set; }
+        public bool? EsDerivadoGranario { get; set; } 
+        public object Orden { get; set; }
+
     }
 }

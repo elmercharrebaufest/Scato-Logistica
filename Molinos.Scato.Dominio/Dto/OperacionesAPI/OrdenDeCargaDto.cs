@@ -15,16 +15,29 @@
         public string CUITTransporte { get; set; }
         public string Observacion { get; set; }
         public string RazonSocialCorredor { get; set; }
+        public string CUITCorredor { get; set; }
         public string Contrato { get; set; }
         public string Pedido { get; set; }
         public string CUITCliente { get; set; }
         public string TipoOrden { get; set; }
         public string DescripcionProducto { get; set; }
         public string Cliente { get; set; }
-        public int? LocalidadId { get; set; }
+        public int LocalidadId { get; set; }
         public string LocalidadDescripcion { get; set; }
         public string CodigoProducto { get; set; }
         public string KmARecorrer { get; set; }
         public bool FleteMOA { get; set; }
+        public bool Reventa { get; set; }
+        public string PlantaCodigo { get; set; }
+        public string DomicilioTipo { get; set; }
+        public int DomicilioOrden { get; set; }
+        public string DomicilioDescr { get; set; }
+        public bool Escalable { get; set; }
+        public string CUITDestinatario { get; set; }
+        public string RazonSocialDestinatario { get; set; }
+        public string CUITDestino { get; set; }
+        public string RazonSocialDestino { get; set; }
+        public string CUITIntermediarioFlete { get; set; }
+        public string RazonSocialIntermediarioFlete { get; set; }
     }
 }
