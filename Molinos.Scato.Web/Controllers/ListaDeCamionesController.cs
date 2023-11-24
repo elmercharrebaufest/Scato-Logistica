@@ -1,4 +1,5 @@
 ﻿using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
@@ -15,7 +16,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 using WebGrease.Css.Extensions;
 
@@ -60,7 +60,7 @@ namespace Molinos.Scato.Web.Controllers
             ////////
             if (profiling != null)
             {
-                Response.AppendCookie(new HttpCookie("profiling"));
+                Response.AppendCookie(new System.Web.HttpCookie("profiling"));
             }
             /////
 
@@ -133,8 +133,17 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo)
+        public ActionResult EjecutarPendiente(DatosUsuario datosUsuario, int id, string proximaAccion, string codigo, string fleteMoa = "")
         {
+            if (string.Equals(fleteMoa, "true", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = Constantes.WorkFlow.workflowFason, cargaDeCupoId = id });
+            }
+            else if (string.Equals(fleteMoa, "false", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction("Index", Constantes.EtapaWorkflow.OrdenCargaInterna, new { workflow = Constantes.WorkFlow.workflowFasonSinFlete, cargaDeCupoId = id });
+            }
+
             return RedirectToAction("Index", proximaAccion, new { id });
         }
 
@@ -185,6 +194,7 @@ namespace Molinos.Scato.Web.Controllers
             filtro.NombreUsuario = datosUsuario.NombreUsuario;
             filtro.MostrarCamionesPendientes = PermisosHelper.Is(PermisosScato.CamionesPendientesMesa);
             filtro.MostrarCamionesPendientesNoGranos = PermisosHelper.Is(PermisosScato.CamionesPendientesNoGranos);
+            
 
             var instancias = workflows.ListarWorkFlows(paginacion, filtro);
 
