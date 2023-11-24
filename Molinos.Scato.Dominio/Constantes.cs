@@ -134,6 +134,7 @@ namespace Molinos.Scato.Dominio
             public const string ConfirmacionCargaDescarga = "ConfirmacionCargaDescarga";
             public const string PesadaBruto = "PesadaBruto";
             public const string PesadaTara = "PesadaTara";
+            public const string OrdenCargaInterna = "IngresarOrdenCargaInternaFason";
         }
 
         public struct CartelTramaPare
@@ -226,6 +227,12 @@ namespace Molinos.Scato.Dominio
             public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
             public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
             public const string LlamarAutomatismoNoGrano = "JobDetenerLlamadoAutomaticoNoGranos";
+        }
+
+        public struct WorkFlow
+        {
+            public const string workflowFason = "SLO.EgresoClienteFason";
+            public const string workflowFasonSinFlete = "SLO.EgresoClienteFasonSinFlete";
         }
     }
 }

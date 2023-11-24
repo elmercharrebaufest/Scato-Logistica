@@ -10504,4 +10504,10 @@
   <data name="TituloVolcadoras" xml:space="preserve">
     <value>Volcadoras</value>
   </data>
+  <data name="OrdenesFasonOperApiVarias" xml:space="preserve">
+    <value>Se encontró más de una orden de carga asociada a la patente, por favor seleccione una en Nº de Orden de Carga.</value>
+  </data>
+  <data name="PatenteNoEncontradaApiOpera" xml:space="preserve">
+    <value>No se encontró ninguna Orden asociada a esta patente</value>
+  </data>
 </root>
