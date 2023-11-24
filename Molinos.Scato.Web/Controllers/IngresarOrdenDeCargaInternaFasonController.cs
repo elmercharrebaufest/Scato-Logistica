@@ -310,15 +310,17 @@ namespace Molinos.Scato.Web.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, DatosUsuario usuario)
+        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, DatosUsuario usuario)
         {
-            //clienteCUIT = ConvertirCuil(clienteCUIT);
-            //transportistaCUIT = ConvertirCuil(transportistaCUIT);
+            clienteCUIT = ConvertirCuil(clienteCUIT);
+            transportistaCUIT = ConvertirCuil(transportistaCUIT);
 
-            clienteCUIT = "30-71066455-9"; //TODO REMOVER LUEGO DE LAS PRUEBAS
-            transportistaCUIT = "20-20686662-5"; //TODO REMOVER LUEGO DE LAS PRUEBAS
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
+            var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
+            var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
+            var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
+            var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
 
             var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
@@ -346,7 +348,10 @@ namespace Molinos.Scato.Web.Controllers
                     TransportistaDescripcion = transportista?.Descripcion,
                     TipoDeVehiculo = (int)resultadoEscalables.Categoria,
                     MaterialId = material.Id,
+                    EsDerivadoGranario = material.EsDerivadoGranario,
+                    Orden = orden
                 };
+
                 response.Data = ordenDeCargaComplementario;
             }
             return Json(response, JsonRequestBehavior.AllowGet);
@@ -384,34 +389,66 @@ namespace Molinos.Scato.Web.Controllers
             return validador1 + "-" + documento + "-" + validador2;
         }
 
-        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null)
+        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null, string recurso = "ObtenerOrdenesDeCarga")
         {
+            log.Info("Empieza el método ORDEN FASON");
+            log.Info("Se crean variables de url, token y resource");
             string url = ConfigurationManager.AppSettings["URLOperacionesAPI"];
             string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
-            string resource = "ObtenerOrdenesDeCarga";
+            string resource = recurso;
 
+            log.Info("Se inicializa RestClien y parametros de configuracion");
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var client = new RestClient(url);
             client.Timeout = 30000;
             client.UserAgent = "ScatoLogistica RestSharp v106";
+
+            log.Info("Se inicializa RestRequest y se agrega token");
             var request = new RestRequest("/externalApi/external/api/" + resource, Method.GET);
             request.AddHeader("X-Api-Key", token);
 
             if (!string.IsNullOrWhiteSpace(patente))
                 request.AddParameter("patenteChasis", patente);
 
-
+            log.Info("Se ejecuta la consulta a la Api");
             var restResponse = client.Execute(request);
 
 
+            log.Info("Se evalua la respuesta de la Api");
             if (restResponse.StatusCode == HttpStatusCode.OK)
             {
+                log.Info("Respuesta ok 200 - Se crea lista para devolver la respuesta");
                 List<OrdenDeCargaDto> data = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content);
                 return data;
             }
             else
             {
                 return null;
+            }
+        }
+
+        private string DefinirDestinatario(OrdenDeCargaDto orden)
+        {
+            // Revisa si el campo Reventa está activado o no
+            if (!orden.Reventa)
+            {
+                // Si los campos CUITCliente y Pedido no están vacíos
+                if (!string.IsNullOrEmpty(orden.CUITCliente) && !string.IsNullOrEmpty(orden.Pedido))
+                {
+                    // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITCliente
+                    return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITCliente;
+                }
+                else
+                {
+                    // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITDestino
+                    return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITDestino;
+                }
+            }
+            else
+            {
+                // En caso de Reventa
+                // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITDestino
+                return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITDestino;
             }
         }
     }
