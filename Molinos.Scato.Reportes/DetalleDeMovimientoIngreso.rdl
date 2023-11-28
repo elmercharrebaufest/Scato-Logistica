@@ -13,6 +13,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -20,7 +23,12 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 					select COALESCE(IngresoxD, m.Descripcion) as IngresoxD,
 					SUM(COALESCE(CantidadxD, 0)) as CantidadxD,
@@ -119,6 +127,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -126,8 +137,12 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 
 					select mt.Descripcion as EgresoxD,
@@ -184,8 +199,7 @@
 					ocif.cliente_id, ocf.Cliente_Id)as Datos on Datos.EgresoxD = mt.Descripcion
 					where Ingreso = 0
 					group by mt.Descripcion, mt.Orden
-					order by mt.Orden
-				</CommandText>
+					order by mt.Orden</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -223,6 +237,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -230,8 +247,12 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 					SELECT CASE
 					WHEN m.CodigoSAP = '50866' THEN 'Cargas Harina HI-PRO'
@@ -295,8 +316,7 @@
 					), 0) as NoProductivo
 					FROM Material m
 					WHERE m.CodigoSAP in ('99704', '50866')
-					order by 1
-				</CommandText>
+					order by 1</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -330,6 +350,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -337,8 +360,12 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 
 					select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
@@ -347,8 +374,7 @@
 					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
 					where w.TipoDeWorkflow = 0  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
 					and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'  and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-					group by a.Descripcion , m.descripcion
-				</CommandText>
+					group by a.Descripcion , m.descripcion</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -378,6 +404,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -385,8 +414,12 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 
 					select a.Descripcion, m.descripcion as Material,count(r.Id) as Camiones , sum(r.PesoBruto-r.PesoTara) as Kilogramos, a.Descripcion as 'Celda/Tankes' FROM [Recorrido] as r WITH(NOLOCK)
@@ -395,8 +428,7 @@
 					join Workflow as w WITH(NOLOCK) on r.Workflow_Id = w.Id
 					where w.TipoDeWorkflow = 1  and r.Centro_Id = @CentroId  and terminado = 1 and Rechazado = 0
 					and r.FechaEgreso is not null and r.FechaEgreso &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00' and r.FechaEgreso &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-					group by a.Descripcion , m.descripcion
-				</CommandText>
+					group by a.Descripcion , m.descripcion</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -426,6 +458,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -433,15 +468,18 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-					DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
 
 					select count(*) as Total
 					FROM [Recorrido] as r WITH(NOLOCK)
 					where    r.FechaInicio &gt;= dateadd(day, datediff(day, 0, @fecha), 0) + '00:00'
 					and r.FechaInicio &lt;= dateadd(day, datediff(day, 0, @fecha), 0) + '23:59:59'
-					and terminado = 1 and Rechazado = 0  and r.Centro_Id = @CentroId
-				</CommandText>
+					and terminado = 1 and Rechazado = 0  and r.Centro_Id = @CentroId</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -495,6 +533,9 @@
       <Query>
         <DataSourceName>Scato_Reportes_Datasource</DataSourceName>
         <QueryParameters>
+          <QueryParameter Name="@EsSuscripcion">
+            <Value>=Parameters!EsSuscripcion.Value</Value>
+          </QueryParameter>
           <QueryParameter Name="@FechaHoy">
             <Value>=Parameters!FechaHoy.Value</Value>
           </QueryParameter>
@@ -502,7 +543,13 @@
             <Value>=Parameters!CentroId.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>DECLARE @fecha datetime = @FechaHoy;
+        <CommandText>DECLARE @fecha datetime;
+
+IF @EsSuscripcion = 1
+    SET @fecha = DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()) - 1, 0);
+ELSE
+    SET @fecha = @FechaHoy;
+
 select COALESCE(DescargaSoja, m.Descripcion) as DescargaSoja,  
 COALESCE(CantCamiones, 0) as CantCamiones,
 COALESCE(CantTrenes, 0) as CantTrenes,
@@ -5200,7 +5247,7 @@ order by orden</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=CDate(Parameters!FechaHoy.Value)</Value>
+                                  <Value>=IIF(Parameters!EsSuscripcion.Value = true, Format(DateAdd("d", -1, Now()),"dd/MM/yyyy"),CDate(Parameters!FechaHoy.Value))</Value>
                                   <Style>
                                     <Format>dd/MM/yyyy</Format>
                                     <Language>es-AR</Language>
@@ -5337,6 +5384,16 @@ order by orden</CommandText>
       <Prompt>Language</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="EsSuscripcion">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>false</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>EsSuscripcion</Prompt>
+      <Hidden>true</Hidden>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -5357,6 +5414,11 @@ order by orden</CommandText>
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>Language</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>EsSuscripcion</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
