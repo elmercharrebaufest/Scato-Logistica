@@ -86,17 +86,29 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private IQueryable<ImpresionDto> ObtenerImpresionCartaPorteElectronica(DbContext contexto)
         {
-            if (!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
+            if ((!string.IsNullOrEmpty(numerodoc) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion))
+                || (!string.IsNullOrEmpty(patente) && (tipodoc is null || TipoDocumentoIngreso.CartaPorte == tipodoc) && (tipoImpresion is null || TipoImpresion.CartaDePorteElectronica == tipoImpresion)))
             {
-                var nroCTG = long.Parse(numerodoc);
-                var impresionCPE = contexto.Set<CartaPorteElectronica>()
-                                    .Where(q => q.NroCTG == nroCTG && q.Pdf != null)
-                                    .Select(q => new ImpresionDto()
+                IQueryable<CartaPorteElectronica> consulta;
+
+                if (!string.IsNullOrEmpty(numerodoc))
+                {
+                    var nroCTG = long.Parse(numerodoc);
+                    consulta = contexto.Set<CartaPorteElectronica>()
+                        .Where(q => q.NroCTG == nroCTG && q.Pdf != null);
+                }
+                else // Si patente tiene valor, buscar por Dominio
+                {
+                    consulta = contexto.Set<CartaPorteElectronica>()
+                        .Where(q => (q.Dominio.StartsWith(patente + ",") || q.Dominio == patente) && q.Pdf != null);
+                }
+
+                var impresionCPE = consulta.Select(q => new ImpresionDto()
                 {
                     Id = 0,
                     FechaImpresion = q.FechaEmision ?? DateTime.Now,
                     TipoImpresion = TipoImpresion.CartaDePorteElectronica,
-                    Patente = q.Dominio,
+                    Patente = q.Dominio.Contains(",") ? q.Dominio.Substring(0, q.Dominio.IndexOf(",")) : q.Dominio,
                     Eliminada = false,
                     Ctg = q.NroCTG,
                     CtgDG = null,
