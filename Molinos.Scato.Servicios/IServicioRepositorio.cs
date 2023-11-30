@@ -2772,7 +2772,7 @@ namespace Molinos.Scato.Servicios
         int ObtenerOrdenCircular(string codigo);
 
         [OperationContract]
-        int ObtenerCantidadCamionesEnCallePreBalanza(int calleId);
+        int ObtenerCantidadCamionesLlamadosEnCallePreBalanza(int callePlayaInternaId);
 
         [OperationContract]
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
@@ -2847,7 +2847,7 @@ namespace Molinos.Scato.Servicios
         int ObtenerCalleInicial(Guid instanciaWorkflow);
 
         [OperationContract]
-        bool CalleEstaDisponible(int calleId);
+        bool EstaDisponibleCalle(int calleId);
 
         [OperationContract]
         IList<PuntoDeCargaDto> ListarPuntoDeCarga();
@@ -2905,9 +2905,6 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         bool ExisteCamionesEnCalle(int calleId);
-
-        [OperationContract]
-        CallePorRecorridoDto ObtenerCallePorRecorridoPorRecorridoIdYCalleId(int recorridoId, int calleId);
 
         [OperationContract]
         AutomatismoGranoDto ObtenerAutomatismoGranos(int id);
@@ -2989,6 +2986,27 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivos();
+        
+        [OperationContract]
+        bool ValidarEspacioDisponibleEnCallePreHidraulica(int callePlayaInternaId);
+
+        [OperationContract]
+        int ObtenerCantidadCamionesEnCallePreHidraulica(int callePlayaInternaId);
+
+        [OperationContract]
+        bool ExisteEspacioDisponibleParaLlamarEnCartel(string codigo);
+
+        [OperationContract]
+        bool ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(int callePHId, string codigoTipoLlamado);
+
+        [OperationContract]
+        IList<CallePreBalanzaPlayaInternaDto> ListarCallePreBalanzaLlamadasPorAutomatismo();
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerCallePorRecorrido(int calleId, int recorridoId);
+
+        [OperationContract]
+        CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePHId);
     }
 
 }

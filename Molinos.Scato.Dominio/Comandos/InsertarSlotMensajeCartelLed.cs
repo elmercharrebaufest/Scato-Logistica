@@ -8,7 +8,6 @@
         public bool EsCircular { get; set; }
         public bool EsLlamadoPorCamion { get; set; }
         public bool EsCamionEnEspera { get; set; }
-        public string Patente { get; set; }
         public int? RecorridoId { get; set; }
     }
 }

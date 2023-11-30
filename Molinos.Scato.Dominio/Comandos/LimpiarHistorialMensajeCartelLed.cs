@@ -6,7 +6,7 @@
 
         public int CalleId { get; set; }
         public bool LimpiarCamion { get; set; }
-        public int HistorialMensajeCartelLedId { get; set; }
+        public int? RecorridoId { get; set; }
         public bool UltimoCamion { get; set; }
     }
 }

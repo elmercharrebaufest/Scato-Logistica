@@ -1,7 +1,6 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios.Behavior;
 using Molinos.Scato.Servicios.Orquestador;
@@ -62,93 +61,147 @@ namespace Molinos.Scato.Servicios.Impl
                 return;
             log.Debug("Automatismo General: Activo");
 
-            var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo);
-            foreach (var configuracion in configuraciones)
-                ValidarTipoLlamadoAutomaticoGrano(configuracion);
+            if (!repositorio.ExisteEspacioDisponibleParaLlamarEnCartel(CodigoMensajeCartelLed.LlamadoCallePreBalanza))
+                return;
+
+            var callesPreHidraulica = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(x => !x.Deshabilitada);
+            foreach (var calle in callesPreHidraulica)
+                ValidarTipoLlamadoAutomaticoGrano(calle);
         }
 
-        private void ValidarTipoLlamadoAutomaticoGrano(AutomatismoGranoDto configuracion)
+        private void ValidarTipoLlamadoAutomaticoGrano(CalleDto callePH)
         {
+            if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto)
+                ValidarLlamadoPorPasoDirecto(callePH);
+            else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.UnoAUno)
+                ValidarLlamadoPor1A1(callePH);
+            else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PorFila)
+                ValidarLlamadoPorFila(callePH);
+        }
+
+        private void ValidarLlamadoPorPasoDirecto(CalleDto callePH)
+        {
+            if (repositorio.ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(callePH.Id, callePH.AutomatismoTipoLlamado.Codigo))
+                return;
+
+            if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
+                return;
+
+            var configuracion = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id).FirstOrDefault();
+            if (configuracion == null)
+                return;
+
             if (!repositorio.ExisteCamionesEnCalle(configuracion.CallePreBalanzaId))
                 return;
 
-            var callePrebalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
-            if (callePrebalanza.Bloqueada && callePrebalanza.FechaLLamada != null)
+            if (repositorio.EstaDisponibleCalle(configuracion.CallePreBalanzaId))
+                LlamarCallePreBalanza(configuracion);
+        }
+
+        private void ValidarLlamadoPorFila(CalleDto callePH)
+        {
+            var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
+            var configuracion = ObtenerAutomatismoGranoLlamadoPorFila(configuraciones);
+            if (configuracion == null)
                 return;
 
-            log.Debug("Llamando Automatismo Por Configuracion Id: " + configuracion.Id);
-            //if (configuracion.EsPasoDirecto)
-            //    ValidarLlamadoPorPasoDirecto(configuracion);
-            //else if (configuracion.Llamado1a1)
-            //    ValidarLlamadoPor1A1(configuracion);
-            //else
-            //    ValidarLlamadoPorFila(configuracion);
-        }
-
-        private void ValidarLlamadoPorPasoDirecto(AutomatismoGranoDto configuracion)
-        {
-            if (ValidarEspacioDisponible(configuracion))
+            var cantidadCamionesEnFilaPB = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId).Count();
+            var cantidadCamionesEnFilaPH = repositorio.ObtenerCantidadCamionesEnCallePreHidraulica(configuracion.CallePreHidraulicaId);
+            var tieneEspacioSuficiente = callePH.CantidadDeCamiones - cantidadCamionesEnFilaPH >= cantidadCamionesEnFilaPB;
+            if (tieneEspacioSuficiente)
                 LlamarCallePreBalanza(configuracion);
         }
 
-        private void ValidarLlamadoPorFila(AutomatismoGranoDto configuracion)
+        private AutomatismoGranoDto ObtenerAutomatismoGranoLlamadoPorFila(IEnumerable<AutomatismoGranoDto> configuraciones)
         {
-            var estaVacia = !repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreHidraulicaId).Any();
-            if (estaVacia)
-                LlamarCallePreBalanza(configuracion);
-        }
+            Dictionary<int, DateTime> fechaIngresoPrimerCamionPorFilaPB = new Dictionary<int, DateTime>();
 
-        private void ValidarLlamadoPor1A1(AutomatismoGranoDto configuracion)
-        {
-            if (ValidarEspacioDisponible(configuracion))
-                Llamar1A1(configuracion);
-        }
-
-        private bool ValidarEspacioDisponible(AutomatismoGranoDto configuracion)
-        {
-            return repositorio.ValidarEspacioDisponibleEnCalle(configuracion.CallePreHidraulicaId);
-        }
-
-        private void Llamar1A1(AutomatismoGranoDto configuracion)
-        {
-            var camionesEnPrebalanza = repositorio
-                                        .ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId)
-                                        .OrderBy(x => x.FechaIngeso);
-            var camionLlamado = camionesEnPrebalanza.FirstOrDefault();
-            if (camionLlamado != null)
-                LlamarCamionPreBalanza(camionLlamado, esCamionEnEspera: false);
-
-            var camionEnEspera = camionesEnPrebalanza.Skip(1).FirstOrDefault();
-            if (camionEnEspera != null)
-                LlamarCamionPreBalanza(camionEnEspera, esCamionEnEspera: true);
-        }
-
-        private void LlamarCamionPreBalanza(CallePorRecorridoDto camion, bool esCamionEnEspera)
-        {
-            var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
+            foreach (var configuracion in configuraciones)
             {
-                Codigo = esCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza,
-                CalleId = camion.CalleId,
-                EsLlamadoPorCamion = true,
-                Patente = camion.Patente,
-                EsCamionEnEspera = esCamionEnEspera,
-                RecorridoId = camion.RecorridoId,
-            }) as ResultadoMensajeCartelLed;
-            if (!resultadoInsertarCalleCartelLed.HayErrores && resultadoInsertarCalleCartelLed.ListaDeMensajes.Any())
-                EnviarMensajesAlCartel(resultadoInsertarCalleCartelLed.ListaDeMensajes);
+                var callePrebalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
+                if (callePrebalanza.Deshabilitada || callePrebalanza.Bloqueada || callePrebalanza.FechaLLamada != null)
+                    continue;
+
+                var camionesEnCallePB = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
+                if (camionesEnCallePB.Count() == callePrebalanza.CantidadDeCamiones)
+                {
+                    var fechaIngresoPrimerCamion = camionesEnCallePB.OrderBy(x => x.FechaIngeso).Select(x => x.FechaIngeso).FirstOrDefault();
+                    fechaIngresoPrimerCamionPorFilaPB.Add(callePrebalanza.Id, fechaIngresoPrimerCamion);
+                }
+            }
+
+            return fechaIngresoPrimerCamionPorFilaPB.Any()
+                ? configuraciones.Where(x => fechaIngresoPrimerCamionPorFilaPB.Any(q => q.Key == x.CallePreBalanzaId))
+                                .OrderBy(x => fechaIngresoPrimerCamionPorFilaPB[x.CallePreBalanzaId])
+                                .FirstOrDefault()
+                : null;
         }
 
         private void LlamarCallePreBalanza(AutomatismoGranoDto configuracion)
         {
-            var callePreBalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
-            var resultado = ActualizarCalleLlamada(callePreBalanza);
-            if (resultado.HayErrores)
+            var resultadoCrearCallePreBalanzaPlayaInterna = comandos.Ejecutar(new CrearCallePreBalanzaPlayaInterna
+            {
+                CallePlayaInternaId = configuracion.CallePreHidraulicaId,
+                CallePreBalanzaId = configuracion.CallePreBalanzaId,
+                CodigoAutomatismoTipoLlamado = configuracion.CodigoAutomatismoTipoLlamado,
+            });
+            if (resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
                 return;
 
             var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
                 Codigo = CodigoMensajeCartelLed.LlamadoCallePreBalanza,
                 CalleId = configuracion.CallePreBalanzaId,
+            }) as ResultadoMensajeCartelLed;
+            if (!resultadoInsertarCalleCartelLed.HayErrores && resultadoInsertarCalleCartelLed.ListaDeMensajes.Any())
+                EnviarMensajesAlCartel(resultadoInsertarCalleCartelLed.ListaDeMensajes);
+        }
+
+        private void ValidarLlamadoPor1A1(CalleDto callePH)
+        {
+            if (repositorio.ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(callePH.Id, callePH.AutomatismoTipoLlamado.Codigo))
+                return;
+
+            if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
+                return;
+
+            var camionesEnCallesPB = new List<CallePorRecorridoDto>();
+            var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
+            foreach (var configuracion in configuraciones)
+            {
+                var camiones = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
+                camionesEnCallesPB.AddRange(camiones);
+            }
+
+            var camionLlamado = camionesEnCallesPB.OrderBy(x => x.FechaIngeso).FirstOrDefault();
+            if (camionLlamado != null)
+                LlamarCamionPreBalanza(callePH.Id, camionLlamado, esCamionEnEspera: false);
+
+            var camionEnEspera = camionesEnCallesPB.OrderBy(x => x.FechaIngeso).Skip(1).FirstOrDefault();
+            if (camionEnEspera != null)
+                LlamarCamionPreBalanza(callePH.Id, camionEnEspera, esCamionEnEspera: true);
+        }
+
+        private void LlamarCamionPreBalanza(int callePHId, CallePorRecorridoDto camion, bool esCamionEnEspera)
+        {
+            var resultadoCrearCallePreBalanzaPlayaInterna = comandos.Ejecutar(new CrearCallePreBalanzaPlayaInterna
+            {
+                CallePlayaInternaId = callePHId,
+                CallePreBalanzaId = camion.CalleId,
+                CodigoAutomatismoTipoLlamado = Constantes.AutomatismoTipoLlamado.UnoAUno,
+                RecorridoId = camion.RecorridoId,
+                EsCamionEnEspera = esCamionEnEspera,
+            });
+            if (resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
+                return;
+
+            var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
+            {
+                Codigo = esCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza,
+                CalleId = callePHId,
+                EsLlamadoPorCamion = true,
+                EsCamionEnEspera = esCamionEnEspera,
+                RecorridoId = camion.RecorridoId,
             }) as ResultadoMensajeCartelLed;
             if (!resultadoInsertarCalleCartelLed.HayErrores && resultadoInsertarCalleCartelLed.ListaDeMensajes.Any())
                 EnviarMensajesAlCartel(resultadoInsertarCalleCartelLed.ListaDeMensajes);
@@ -170,126 +223,86 @@ namespace Molinos.Scato.Servicios.Impl
             }
         }
 
-        private Resultado ActualizarCalleLlamada(CalleDto calle)
-        {
-            calle.FechaLLamada = DateTime.Now;
-            calle.Bloqueada = true;
-            return comandos.Ejecutar(new ModificarCalleLlamada { Dto = calle });
-        }
-
         private void DetenerLlamadoAutomaticoGranos()
         {
-            var configuraciones = repositorio.ListarAutomatismoGrano();
-            foreach (var configuracion in configuraciones)
-                ValidarTipoLiberarAutomaticoGrano(configuracion);
+            var callesPreBalanzaPlayaInterna = repositorio.ListarCallePreBalanzaLlamadasPorAutomatismo();
+            foreach (var callePreBalanzaPlayaInterna in callesPreBalanzaPlayaInterna)
+                ValidarTipoLiberarAutomaticoGrano(callePreBalanzaPlayaInterna);
         }
 
-        private void ValidarTipoLiberarAutomaticoGrano(AutomatismoGranoDto configuracion)
+        private void ValidarTipoLiberarAutomaticoGrano(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            //if (configuracion.EsPasoDirecto)
-            //    ValidarLiberarPorPaseDirecto(configuracion);
-            //else if (configuracion.Llamado1a1)
-            //    ValidarLiberarPor1A1(configuracion);
-            //else
-            //    ValidarLiberarPorFila(configuracion);
+            if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PaseDirecto)
+                ValidarLiberarPorPaseDirecto(callePreBalanzaPlayaInterna);
+            else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno)
+                ValidarLiberarPor1A1(callePreBalanzaPlayaInterna);
+            else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila)
+                ValidarLiberarPorFila(callePreBalanzaPlayaInterna);
         }
 
-        private Resultado ActualizarCalleLiberada(CalleDto calle)
+        private void ValidarLiberarPorPaseDirecto(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            calle.FechaLLamada = null;
-            calle.Bloqueada = false;
-            return comandos.Ejecutar(new ModificarCalleLlamada { Dto = calle });
+            if (!repositorio.ValidarEspacioDisponibleEnCalle(callePreBalanzaPlayaInterna.CallePlayaInterna.Id))
+                LiberarCallePreBalanza(callePreBalanzaPlayaInterna);
         }
 
-        private void ValidarLiberarPor1A1(AutomatismoGranoDto configuracion)
+        private void ValidarLiberarPorFila(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            ValidarLiberarCamionPreBalanza(configuracion, esCamionEnEspera: false);
-            ValidarLiberarCamionPreBalanza(configuracion, esCamionEnEspera: true);
+            var camionesEnCalle = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePreBalanza.Id);
+            if (!camionesEnCalle.Any())
+                LiberarCallePreBalanza(callePreBalanzaPlayaInterna);
         }
 
-        private void ValidarLiberarCamionPreBalanza(AutomatismoGranoDto configuracion, bool esCamionEnEspera)
+        private void LiberarCallePreBalanza(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            var codigoMensajeCartel = esCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza;
-            var mensajeEnCartelLed = repositorio.ListarMensajesCartelLed(codigoMensajeCartel)
-                                                    .Where(x => x.HistorialMensajeCartelLed.RecorridoId.HasValue
-                                                            && x.HistorialMensajeCartelLed?.CalleId == configuracion.CallePreBalanzaId)
-                                                    .Select(x => x.HistorialMensajeCartelLed)
-                                                    .FirstOrDefault();
-
-            if (mensajeEnCartelLed == null)
-                return;
-
-            var camiones = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
-            if (!camiones.Any())
+            var resultadoEliminarCallePreBalanzaPlayaInterna = comandos.Ejecutar(new EliminarCallePreBalanzaPlayaInterna()
             {
-                LiberarCamionPreBalanza(mensajeEnCartelLed, codigoMensajeCartel, ultimoCamion: true);
-                return;
-            }
-            
-            if(esCamionEnEspera)
-            {
-                var segundoCamion = camiones.Skip(1).FirstOrDefault();
-                if (segundoCamion == null)
-                    LiberarCamionPreBalanza(mensajeEnCartelLed, codigoMensajeCartel, ultimoCamion: true);
-
-                if (segundoCamion != null && segundoCamion.RecorridoId != mensajeEnCartelLed.RecorridoId)
-                    LiberarCamionPreBalanza(mensajeEnCartelLed, codigoMensajeCartel);
-
-            } else
-            {
-                var camion = repositorio.ObtenerCallePorRecorridoPorRecorridoIdYCalleId(mensajeEnCartelLed.RecorridoId.Value, configuracion.CallePreBalanzaId);
-                if (camion.FechaEgreso.HasValue)
-                    LiberarCamionPreBalanza(mensajeEnCartelLed, codigoMensajeCartel);
-            }
-
-        }
-
-        private void LiberarCamionPreBalanza(HistorialMensajeCartelLedDto mensajeEnCartelLed, string codigoMensajeCartel, bool ultimoCamion = false)
-        {
-            var resultadoLimpiarCalleCartelLed = comandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
-            {
-                Codigo = codigoMensajeCartel,
-                HistorialMensajeCartelLedId = mensajeEnCartelLed.Id,
-                LimpiarCamion = true,
-                UltimoCamion = ultimoCamion,
-            }) as ResultadoMensajeCartelLedReordenado;
-            if (!resultadoLimpiarCalleCartelLed.HayErrores && resultadoLimpiarCalleCartelLed.ListaDeMensajes.Any())
-                EnviarMensajesAlCartel(resultadoLimpiarCalleCartelLed.ListaDeMensajes);
-        }
-
-        private void ValidarLiberarPorPaseDirecto(AutomatismoGranoDto configuracion)
-        {
-            var callePreBalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
-            if (!callePreBalanza.Bloqueada && callePreBalanza.FechaLLamada == null)
-                return;
-
-            if (!repositorio.ValidarEspacioDisponibleEnCalle(configuracion.CallePreHidraulicaId))
-                LiberarCallePreBalanza(callePreBalanza);
-        }
-
-        private void ValidarLiberarPorFila(AutomatismoGranoDto configuracion)
-        {
-            var callePreBalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
-            if (!callePreBalanza.Bloqueada && callePreBalanza.FechaLLamada == null)
-                return;
-
-            var camionesEnCalle = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
-            if (camionesEnCalle.Any())
-                return;
-
-            LiberarCallePreBalanza(callePreBalanza);
-        }
-
-        private void LiberarCallePreBalanza(CalleDto calle)
-        {
-            var resultado = ActualizarCalleLiberada(calle);
-            if (resultado.HayErrores)
+                CallePlayaInternaId = callePreBalanzaPlayaInterna.CallePlayaInterna.Id,
+                CallePreBalanzaId = callePreBalanzaPlayaInterna.CallePreBalanza.Id,
+                CodigoAutomatismoTipoLlamado = callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado
+            });
+            if (resultadoEliminarCallePreBalanzaPlayaInterna.HayErrores)
                 return;
 
             var resultadoLimpiarCalleCartelLed = comandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
             {
                 Codigo = CodigoMensajeCartelLed.LlamadoCallePreBalanza,
-                CalleId = calle.Id
+                CalleId = callePreBalanzaPlayaInterna.CallePreBalanza.Id
+            }) as ResultadoMensajeCartelLedReordenado;
+
+            if (!resultadoLimpiarCalleCartelLed.HayErrores && resultadoLimpiarCalleCartelLed.ListaDeMensajes.Any())
+                EnviarMensajesAlCartel(resultadoLimpiarCalleCartelLed.ListaDeMensajes);
+        }
+
+        private void ValidarLiberarPor1A1(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
+        {
+            var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
+            if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
+                return;
+
+            LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
+            var camionEnEspera = repositorio.ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(callePreBalanzaPlayaInterna.CallePlayaInterna.Id);
+            if (camionEnEspera != null)
+                LiberarCamionPreBalanza(camionEnEspera);
+        }
+
+        private void LiberarCamionPreBalanza(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
+        {
+            var resultadoEliminarCallePreBalanzaPlayaInterna = comandos.Ejecutar(new EliminarCallePreBalanzaPlayaInterna()
+            {
+                CallePlayaInternaId = callePreBalanzaPlayaInterna.CallePlayaInterna.Id,
+                CodigoAutomatismoTipoLlamado = callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado,
+                RecorridoId = callePreBalanzaPlayaInterna.RecorridoId,
+            });
+            if (resultadoEliminarCallePreBalanzaPlayaInterna.HayErrores)
+                return;
+
+            var resultadoLimpiarCalleCartelLed = comandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
+            {
+                Codigo = callePreBalanzaPlayaInterna.EsCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza,
+                CalleId = callePreBalanzaPlayaInterna.CallePlayaInterna.Id,
+                LimpiarCamion = true,
+                RecorridoId = callePreBalanzaPlayaInterna.RecorridoId,
             }) as ResultadoMensajeCartelLedReordenado;
             if (!resultadoLimpiarCalleCartelLed.HayErrores && resultadoLimpiarCalleCartelLed.ListaDeMensajes.Any())
                 EnviarMensajesAlCartel(resultadoLimpiarCalleCartelLed.ListaDeMensajes);
@@ -299,11 +312,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
 
-            if(cartelLed != null)
+            if (cartelLed != null)
             {
                 var recorrido = repositorio.ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
 
-                if (recorrido == null) 
+                if (recorrido == null)
                     return;
 
                 //validar que la patente de ese recorrido no este en el cartel?
@@ -312,19 +325,15 @@ namespace Molinos.Scato.Servicios.Impl
 
                 if (lugaresDisponibles > 0)
                 {
-
                     var callePorRecorridoNoGranos = repositorio.ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(recorrido.Id);
-
 
                     var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
                     {
                         Codigo = CodigoMensajeCartelLed.LlamadoCamionNoGrano,
                         CalleId = callePorRecorridoNoGranos.CalleId,
                         EsLlamadoPorCamion = true,
-                        Patente = recorrido.Patente,
                         RecorridoId = recorrido.Id,
                         EsCamionEnEspera = false
-
                     }) as ResultadoMensajeCartelLed;
 
                     if (!resultadoInsertarCalleCartelLed.HayErrores)
@@ -340,13 +349,9 @@ namespace Molinos.Scato.Servicios.Impl
                             NumeroVariable = resultadoInsertarCalleCartelLed.NumeroVariable,
                             SegundosDeEspera = resultadoInsertarCalleCartelLed.SegundosDeEspera,
                         });
-                    }                  
-
+                    }
                 }
-
             }
-
         }
-
     }
 }

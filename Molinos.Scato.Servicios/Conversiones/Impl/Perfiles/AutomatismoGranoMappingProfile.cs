@@ -27,7 +27,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.EstadoCallePreHidraulica, mat => mat.MapFrom(m => m.CallePreHidraulica.Deshabilitada))
                 .ForMember(x => x.TipoCallePrebalanza, mat => mat.MapFrom(m => m.CallePreHidraulica.TipoCalle))
                 .ForMember(x => x.TipoCallePreHidraulica, mat => mat.MapFrom(m => m.CallePreHidraulica.TipoCalle))
-                .ForMember(x => x.Hidraulicas, mat => mat.MapFrom(m => m.Hidraulicas.Select(s => s.Id)));
+                .ForMember(x => x.Hidraulicas, mat => mat.MapFrom(m => m.Hidraulicas.Select(s => s.Id)))
+                .ForMember(x => x.CodigoAutomatismoTipoLlamado, mat => mat.MapFrom(m => m.CallePreHidraulica.AutomatismoTipoLlamado.Codigo));
 
             Mapper.CreateMap<AutomatismoGranoDto, AutomatismoGrano>()
                 .ForMember(x => x.Hidraulicas, mat => mat.Ignore())

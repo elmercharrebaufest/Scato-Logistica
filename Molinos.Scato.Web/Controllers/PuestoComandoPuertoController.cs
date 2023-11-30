@@ -169,7 +169,7 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         public ActionResult Asignar(AsignacionDto model, DatosUsuario datosUsuario)
         {
-            bool calleDisponible = servicio.CalleEstaDisponible(model.CalleId);
+            bool calleDisponible = servicio.EstaDisponibleCalle(model.CalleId);
             ModelState.Remove("HidraulicasId");
             model.HidraulicasId = new int[0];
 

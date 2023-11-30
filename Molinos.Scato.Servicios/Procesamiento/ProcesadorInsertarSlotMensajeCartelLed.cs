@@ -43,26 +43,33 @@ namespace Molinos.Scato.Servicios.Procesamiento
             else
                 mensajeCartelLedEntity = ObtenerSlotCartelParaCalle(listaMensajes);
 
-            if (mensajeCartelLedEntity != null)
-            {
-                var calle = Repositorio.Obtener<Calle>(x => x.Id == comando.CalleId);
-                mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = calle;
-                mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = comando.EsLlamadoPorCamion ? comando.Patente : calle?.Nombre;
-                mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = DateTime.Now;
-                if (comando.EsLlamadoPorCamion)
-                    mensajeCartelLedEntity.HistorialMensajeCartelLed.Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.RecorridoId);
+            if (mensajeCartelLedEntity == null)
+                return resultado;
 
-                resultado.Mensaje = mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje;
-                resultado.NumeroPrograma = mensajeCartelLedEntity.Programa;
-                resultado.NumeroTrama = mensajeCartelLedEntity.Trama;
-                resultado.NumeroVariable = mensajeCartelLedEntity.Variable;
-                resultado.SegundosDeEspera = mensajeCartelLedEntity.SegundosDeEspera;
-                Repositorio.GuardarCambios();
+            var calle = Repositorio.Obtener<Calle>(x => x.Id == comando.CalleId);
+            mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = calle;
+            mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = DateTime.Now;
+            if (comando.EsLlamadoPorCamion)
+            {
+                var recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.RecorridoId);
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Recorrido = recorrido;
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = recorrido.Patente;
             }
+            else
+            {
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = calle?.Nombre;
+            }
+            Repositorio.GuardarCambios();
+
+            resultado.Mensaje = mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje;
+            resultado.NumeroPrograma = mensajeCartelLedEntity.Programa;
+            resultado.NumeroTrama = mensajeCartelLedEntity.Trama;
+            resultado.NumeroVariable = mensajeCartelLedEntity.Variable;
+            resultado.SegundosDeEspera = mensajeCartelLedEntity.SegundosDeEspera;
 
             if (codigosPreBalanza.Contains(comando.Codigo))
             {
-                var nuevosMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo);
+                var nuevosMensajes = Repositorio.Listar<MensajeCartelLed>();
                 resultado.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(nuevosMensajes).ToList();
             }
             return resultado;
@@ -75,8 +82,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private MensajeCartelLed ObtenerSlotCamionLlamado(InsertarSlotMensajeCartelLed comando, List<MensajeCartelLed> listaMensajes)
         {
-            var mensajeCartelLed = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed.Calle?.Id == comando.CalleId);
-            return mensajeCartelLed ?? listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.FechaUltimaModificacion == null);
+            return listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.FechaUltimaModificacion == null);
         }
 
         private MensajeCartelLed ObtenerSlotCamionEnEspera(InsertarSlotMensajeCartelLed comando, List<MensajeCartelLed> listaMensajes)

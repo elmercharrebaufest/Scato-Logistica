@@ -58,7 +58,7 @@ namespace Molinos.Scato.Actividades
         private bool ExisteSlotsDisponibles(IServicioRepositorio repositorio, CalleDto callePlayaInterna)
         {
             var camionesEnPlayaInterna = repositorio.ListarCallePorRecorridoPorCalleId(callePlayaInterna.Id).Count();
-            var camionesEnPreBalanza = repositorio.ObtenerCantidadCamionesEnCallePreBalanza(callePlayaInterna.Id);
+            var camionesEnPreBalanza = repositorio.ObtenerCantidadCamionesLlamadosEnCallePreBalanza(callePlayaInterna.Id);
 
             var slotsLibres = callePlayaInterna.CantidadDeCamiones - (camionesEnPlayaInterna + camionesEnPreBalanza);
             var slotNecesario = int.Parse(ConfigurationManager.AppSettings["SlotNecesariosLlamadaPreBalanza"]);

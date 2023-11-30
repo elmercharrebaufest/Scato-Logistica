@@ -131,7 +131,6 @@
     <Compile Include="Comandos\LimpiarHistorialMensajeCartelLed.cs" />
     <Compile Include="Comandos\CrearPesosExc.cs" />
     <Compile Include="Comandos\CrearClienteProvisorio.cs" />
-    <Compile Include="Comandos\ModificarCalleLlamada.cs" />
     <Compile Include="Comandos\ModificarEstadoAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarPuntoDeCarga.cs" />
     <Compile Include="Comandos\ModificarCallePreHidraulica.cs" />

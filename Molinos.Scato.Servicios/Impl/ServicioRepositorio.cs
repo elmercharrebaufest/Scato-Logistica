@@ -10241,9 +10241,9 @@ namespace Molinos.Scato.Servicios.Impl
             return lista.Last().Orden;
         }
 
-        public int ObtenerCantidadCamionesEnCallePreBalanza(int calleId)
+        public int ObtenerCantidadCamionesLlamadosEnCallePreBalanza(int callePlayaInternaId)
         {
-            var callePreBalanzaPlayaInternaList = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == calleId)
+            var callePreBalanzaPlayaInternaList = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == callePlayaInternaId)
                 .Select(q => q.CallePreBalanzaId).ToList();
 
             var cantidadCamiones = repositorio.Contar<CallePorRecorrido>(q => callePreBalanzaPlayaInternaList.Contains(q.Calle.Id) && q.FechaEgreso.Equals(null));
@@ -10491,7 +10491,7 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<Almacen, AlmacenDto>(al => al.Materiales.Any(ma => ma.EsGrano == false));
         }
 
-        public bool CalleEstaDisponible(int calleId)
+        public bool EstaDisponibleCalle(int calleId)
         {
             var calle = ObtenerCalle(calleId);
 
@@ -10767,11 +10767,6 @@ namespace Molinos.Scato.Servicios.Impl
             return repositorio.Existe<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == calleId);
         }
 
-        public CallePorRecorridoDto ObtenerCallePorRecorridoPorRecorridoIdYCalleId(int recorridoId, int calleId)
-        {
-            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.Calle.Id == calleId);
-        }
-
         public AutomatismoGranoDto ObtenerAutomatismoGranos(int id)
         {
             var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
@@ -10948,7 +10943,46 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Activo == true);
         }
 
+        public bool ValidarEspacioDisponibleEnCallePreHidraulica(int callePlayaInternaId)
+        {
+            var callePreHidraulica = repositorio.Obtener<Calle>(callePlayaInternaId);
+            return callePreHidraulica.CantidadDeCamiones > ObtenerCantidadCamionesEnCallePreHidraulica(callePlayaInternaId);
+        }
 
+        public int ObtenerCantidadCamionesEnCallePreHidraulica(int callePlayaInternaId)
+        {
+            var cantidadCamionesLlamadosUnoAUno = repositorio.Contar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == callePlayaInternaId && x.RecorridoId.HasValue && !x.EsCamionEnEspera);
+            var callesIds = repositorio.Listar<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInterna.Id == callePlayaInternaId && !x.RecorridoId.HasValue)
+                                                            .Select(q => q.CallePreBalanzaId)
+                                                            .ToList();
+            callesIds.Add(callePlayaInternaId);
+            return cantidadCamionesLlamadosUnoAUno + repositorio.Contar<CallePorRecorrido>(x => callesIds.Contains(x.Calle.Id) && x.FechaEgreso == null);
+        }
+
+        public bool ExisteEspacioDisponibleParaLlamarEnCartel(string codigo)
+        {
+            return repositorio.Existe<MensajeCartelLed>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed != null && x.HistorialMensajeCartelLed.Calle == null);
+        }
+
+        public bool ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(int callePHId, string codigoTipoLlamado)
+        {
+            return repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == callePHId && x.CodigoAutomatismoTipoLlamado == codigoTipoLlamado && !x.EsCamionEnEspera);
+        }
+
+        public IList<CallePreBalanzaPlayaInternaDto> ListarCallePreBalanzaLlamadasPorAutomatismo()
+        {
+            return Listar<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => !string.IsNullOrEmpty(x.CodigoAutomatismoTipoLlamado) && !x.EsCamionEnEspera);
+        }
+
+        public CallePorRecorridoDto ObtenerCallePorRecorrido(int calleId, int recorridoId)
+        {
+            return Obtener<CallePorRecorrido, CallePorRecorridoDto>(x => x.Recorrido.Id == recorridoId && x.Calle.Id == calleId);
+        }
+
+        public CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePHId)
+        {
+            return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePlayaInternaId == callePHId && x.RecorridoId.HasValue && x.EsCamionEnEspera && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno);
+        }
     }
 
 

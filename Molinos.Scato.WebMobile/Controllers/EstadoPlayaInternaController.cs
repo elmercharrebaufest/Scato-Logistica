@@ -389,7 +389,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         private bool ExisteSlotsDisponibles(CalleDto callePlayaInterna, int cantidadNuevosCamionesLlamadoEnPrebalanza)
         {
             var camionesEnPlayaInterna = servicio.ListarCallePorRecorridoPorCalleId(callePlayaInterna.Id).Count();
-            var camionesLlamadosEnPreBalanza = servicio.ObtenerCantidadCamionesEnCallePreBalanza(callePlayaInterna.Id);
+            var camionesLlamadosEnPreBalanza = servicio.ObtenerCantidadCamionesLlamadosEnCallePreBalanza(callePlayaInterna.Id);
             var slotsLibres = callePlayaInterna.CantidadDeCamiones - (camionesEnPlayaInterna + camionesLlamadosEnPreBalanza);
             return slotsLibres >= cantidadNuevosCamionesLlamadoEnPrebalanza;
         }

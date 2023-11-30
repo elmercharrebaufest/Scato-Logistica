@@ -104,5 +104,7 @@ namespace Molinos.Scato.Dominio.Dto
                 return EstadoCallePreBalanza ? "INACTIVO" : "ACTIVO";
             }
         }
+
+        public string CodigoAutomatismoTipoLlamado { get; set; }
     }
 }
