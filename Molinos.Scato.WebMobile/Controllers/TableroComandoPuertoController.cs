@@ -22,6 +22,9 @@ namespace Molinos.Scato.WebMobile.Controllers
         private readonly IServicioComandos servicioComandos;
         private readonly IServicioRepositorio servicio;
 
+        public IList<AutomatismoNoGranoDto> automatismoNoGranosActivos;
+
+
         public TableroComandoPuertoController(IServicioComandos servicioComandos, IServicioRepositorio servicio)
         {
             this.servicioComandos = servicioComandos;
@@ -92,6 +95,21 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             automatismo.PuntoDeCargaId = modelo.AutomatismoNoGrano.PuntoDeCargaId;
             automatismo.AlmacenId = modelo.AutomatismoNoGrano.AlmacenId;
+
+            automatismoNoGranosActivos = servicio.ObtenerAutomatismosNoGranoActivos().Where(x => x.Id != automatismo.Id).ToList();
+                        
+
+            if ((automatismo.Activo && this.ValidarMismoPuntoCargaAlmacen(automatismo)))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ya existe un automatismo con el mismo Punto de Carga y Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta);
+            }
+
+            if ((automatismo.Activo && this.ValidarConviveEnAlmacen(automatismo)))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No es posible asignar el Punto de Carga en esta Almacén por su configuración", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta);
+            }
 
             if (ModelState.IsValid)
             {
@@ -180,6 +198,8 @@ namespace Molinos.Scato.WebMobile.Controllers
             puntoDeCarga.ConviveEnAlmacen = model.ConviveEnAlmacen;
 
             var automatismos = servicio.ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(model.Id);
+
+            automatismoNoGranosActivos = servicio.ObtenerAutomatismosNoGranoActivos();
 
             if (ValidarConviveEnAlmacenPuntoDeCarga(automatismos))
             {
@@ -279,11 +299,19 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
 
+            automatismoNoGranosActivos = servicio.ObtenerAutomatismosNoGranoActivos();
+
+            if (nuevoEstado && ValidarMismaCallePlanta(automatismo))
+            {
+                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "Ya existe un automatismo activo con la misma calle planta", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
+                return result;
+            }            
+
             if (nuevoEstado && this.ValidarMismoPuntoCargaAlmacen(automatismo))
             {
                 result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "Ya existe un automatismo con el mismo Punto de Carga y Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
                 return result;
-            }
+            }            
 
             if(nuevoEstado && this.ValidarConviveEnAlmacen(automatismo))
             {
@@ -470,7 +498,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private bool ValidarMismoPuntoCargaAlmacen(AutomatismoNoGranoDto automatismoNoGrano)
         {
-            var result = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(automatismoNoGrano.AlmacenId, automatismoNoGrano.PuntoDeCargaId);
+            var result = automatismoNoGranosActivos.Where(a => a.Almacen.Id == automatismoNoGrano.AlmacenId && a.PuntoDeCarga.Id == automatismoNoGrano.PuntoDeCargaId);
 
             return result.Any();
 
@@ -478,7 +506,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private bool ValidarConviveEnAlmacen(AutomatismoNoGranoDto automatismoNoGrano)
         {
-            var automatismosActivos = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacen(automatismoNoGrano.AlmacenId);
+            var automatismosActivos = automatismoNoGranosActivos.Where(a => a.Almacen.Id == automatismoNoGrano.AlmacenId);
 
             if (!automatismoNoGrano.PuntoDeCarga.ConviveEnAlmacen)
             {
@@ -489,14 +517,22 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         }
 
+        private bool ValidarMismaCallePlanta(AutomatismoNoGranoDto automatismoNoGrano)
+        {
+            var automatismos = automatismoNoGranosActivos.Where(a => a.CallePlantaId == automatismoNoGrano.CallePlantaId);
+
+            return automatismos.Any();
+
+        }
+
         private bool ValidarConviveEnAlmacenPuntoDeCarga(IList<AutomatismoNoGranoDto> automatismosNoGrano)
         {
 
             foreach (var aut in automatismosNoGrano)
             {
-                var r = servicio.ObtenerAutomatismosNoGranoActivoPorAlmacen(aut.AlmacenId).Where(x => x.PuntoDeCargaId != aut.PuntoDeCargaId);
+                var automatismos = automatismoNoGranosActivos.Where(a => a.AlmacenId == aut.AlmacenId && a.PuntoDeCargaId != aut.PuntoDeCargaId);
 
-                if(r.Any())
+                if (automatismos.Any())
                     return true;
             }
 
@@ -508,7 +544,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         private AutomatismoNoGranoViewModel CargarModeloAutomatismo()
         {
             AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
-            var callesPlanta = servicio.ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle.PlantaNoGranos);
+            var callesPlanta = servicio.ListarCallesAutomatismoActivoPorTipoCalle(TipoCalle.PlantaNoGranos);
             var callesPlayaInterna = servicio.ListarCallesPlayaInternaAutomatismoDisponibles();
             model.CallesPlanta = callesPlanta
                  .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })

@@ -10806,12 +10806,9 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<PuntoDeCarga, PuntoDeCargaDto>(x => (bool)x.EstadoAutomatismo);
         }
 
-        public IList<CalleDto> ListarCallesActivasAutomatismoNoGranoPorTipo(TipoCalle tipo)
+        public IList<CalleDto> ListarCallesAutomatismoActivoPorTipoCalle(TipoCalle tipo)
         {
-            var callesAutomatismoActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == tipo && x.ActivoAutomatico);
-            var callesNoGranosUsadas = repositorio.Listar<AutomatismoNoGrano>().Select(q => q.CallePlanta.Id);
-            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesNoGranosUsadas.Contains(q.Id)).ToList();
-            return callesUtilizables;
+            return Listar<Calle, CalleDto>(x => x.TipoCalle == tipo && x.ActivoAutomatico);
         }
 
         public AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id)
@@ -10940,19 +10937,15 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Listar<AutomatismoTipoLlamado, AutomatismoTipoLlamadoDto>(f => f.Activo);
         }
-        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacenYPuntoDeCarga(int almacenId, int puntoDeCarga)
-        {
-            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.PuntoDeCarga.Id == puntoDeCarga && a.Activo == true);
-        }
-
-        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorAlmacen(int almacenId)
-        {
-            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Almacen.Id == almacenId && a.Activo == true);
-        }
 
         public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(int puntoDeCargaId)
         {
             return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.PuntoDeCarga.Id == puntoDeCargaId && a.Activo == true);
+        }
+
+        public IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivos()
+        {
+            return Listar<AutomatismoNoGrano, AutomatismoNoGranoDto>(a => a.Activo == true);
         }
 
 
