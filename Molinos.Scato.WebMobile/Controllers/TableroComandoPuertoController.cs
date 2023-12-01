@@ -572,7 +572,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         private List<CalleDto> ListarCallesPorTipo()
         {
-            var callesPlanta = servicio.ListarCallesPorTipo(TipoCalle.PlantaNoGranos);
+            var callesPlanta = servicio.ListarCallesPorTipo(TipoCalle.PlantaNoGranos).Where(x => !x.Deshabilitada);
 
             return callesPlanta.OrderBy(a => a.Nombre).ToList();
         }

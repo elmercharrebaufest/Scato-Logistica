@@ -1,8 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
-using ServicioComandos_Dev;
-using Molinos.Scato.Dominio.Entidades;
 using QaTools.Dao;
 //using ServicioComandos;
 
