@@ -21,18 +21,17 @@ namespace Molinos.Scato.Actividades.Internas
                 resultado.Error("", "La configuracion del Llamado Automático de Pre Balanza se encuentra apagado");
                 return resultado;
             }
-            var materialId = repositorio.ObtenerMaterialIdPorInstanceId(context.WorkflowInstanceId);
 
             var asignacionAutomatismo = repositorio.ObtenerAsignacionAutomatismoGranoEnRecorrido(context.WorkflowInstanceId);
             if(asignacionAutomatismo != null)
             {
-                if (!repositorio.ValidarEspacioDisponibleEnCalle(asignacionAutomatismo.CallePreBalanzaId))
-                    resultado.Error("", "En este momento la fila asignada por automatismo está llena");
+                if (!repositorio.ValidarDisponibilidadAsignacionEnCallePreBalanza(asignacionAutomatismo.CallePreBalanzaId, asignacionAutomatismo.CallePreHidraulicaId))
+                    resultado.Error("", "No es posible ingresar a la fila asignada por automatismo");
 
                 return resultado;
             }
 
-            var tieneFilaDisponible = repositorio.ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle.PreBalanzaGranos, materialId);
+            var tieneFilaDisponible = repositorio.ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle.PreBalanzaGranos, context.WorkflowInstanceId);
             if (!tieneFilaDisponible)
                 resultado.Error("", "En este momento no existen filas disponibles");
             return resultado;

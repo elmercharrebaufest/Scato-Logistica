@@ -10515,9 +10515,10 @@ namespace Molinos.Scato.Servicios.Impl
             return Listar<PuntoDeCarga, PuntoDeCargaDto>();
         }
 
-        public bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, int materialId)
+        public bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, Guid workflowInstance)
         {
-            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle && x.Material.Id == materialId && !x.Deshabilitada && !x.Bloqueada);
+            var recorrido = repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == workflowInstance);
+            var calles = repositorio.Listar<Calle>(x => x.TipoCalle == tipoCalle && x.Material.Id == recorrido.Material.Id && !x.Deshabilitada && !x.Bloqueada);
             foreach (var calle in calles)
             {
                 if (repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calle.Id && x.FechaEgreso == null) < calle.CantidadDeCamiones)
@@ -10816,10 +10817,22 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<AsignacionAutomatismoGranoEnRecorrido, AsignacionAutomatismoGranoEnRecorridoDto>(x => x.Recorrido.InstanciaWorkflow == workflowInstanceId);
         }
 
-        public bool ValidarEspacioDisponibleEnCalle(int calleId)
+        public bool ValidarDisponibilidadAsignacionEnCallePreBalanza(int callePBId, int callePHId)
         {
-            var calle = repositorio.Obtener<Calle>(x => x.Id == calleId);
-            return repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == calleId && x.FechaEgreso == null) < calle.CantidadDeCamiones;
+            var callePB = repositorio.Obtener<Calle>(x => x.Id == callePBId);
+            var callePH = repositorio.Obtener<Calle>(x => x.Id == callePHId);
+            if (callePB == null || callePH == null)
+                return false;
+
+            if (callePB.Deshabilitada)
+                return false;
+
+            if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PorFila
+                && callePB.Bloqueada
+                && callePB.FechaLLamada != null)
+                return false;
+
+            return repositorio.Contar<CallePorRecorrido>(x => x.Calle.Id == callePBId && x.FechaEgreso == null) < callePB.CantidadDeCamiones;
         }
 
         public CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG)

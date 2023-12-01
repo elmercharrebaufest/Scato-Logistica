@@ -2853,7 +2853,7 @@ namespace Molinos.Scato.Servicios
         IList<PuntoDeCargaDto> ListarPuntoDeCarga();
 
         [OperationContract]
-        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, int materialId);
+        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, Guid workflowInstance);
 
         [OperationContract]
         bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
@@ -2943,7 +2943,7 @@ namespace Molinos.Scato.Servicios
         AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);
 
         [OperationContract]
-        bool ValidarEspacioDisponibleEnCalle(int calleId);
+        bool ValidarDisponibilidadAsignacionEnCallePreBalanza(int callePBId, int callePHId);
 
         [OperationContract]
         CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG);
