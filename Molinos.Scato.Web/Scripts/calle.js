@@ -9,7 +9,11 @@
     mostrarBloque();
     if ($('#MaterialId').val()) {
         crearOpcionesCaracteristicasDeCalidad($('#MaterialId').val());
-    }    
+    } else {
+        $('#MaterialId').val(0);
+        $('#MaterialDesc').val('');
+    }
+
     $('#TipoCalle').change(reiniciarVistayValores);
     $('#TipoCalidad').change(mostrarBloque);
 

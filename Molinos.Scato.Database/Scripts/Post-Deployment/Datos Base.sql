@@ -1776,7 +1776,7 @@ BEGIN
 INSERT INTO AutomatismoTipoLlamado VALUES ('PFL','Por Fila',1)
 END
 
-IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = '1T1') 
+IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = '1A1') 
 BEGIN 
 INSERT INTO AutomatismoTipoLlamado VALUES ('1A1','1 a 1',1)
 END
