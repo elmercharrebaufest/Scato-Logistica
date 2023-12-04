@@ -7666,6 +7666,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Formato de Patente No Válido.
+        /// </summary>
+        public static string CargaDeCupo_Patente_ErrorFormato {
+            get {
+                return ResourceManager.GetString("CargaDeCupo_Patente_ErrorFormato", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ingrese el numero de Cupo.
         /// </summary>
         public static string CargaDeCupo_Titulo {
