@@ -20,7 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void Validar(CrearAsignacionNoGranoEnRecorrido comando, Resultado resultado)
         {
-            if (Repositorio.Existe<AsignacionAutomatismoGranoEnRecorrido>(x => x.RecorridoId == comando.Dto.RecorridoId))
+            if (Repositorio.Existe<AsignacionNoGranoEnRecorrido>(x => x.RecorridoId == comando.Dto.RecorridoId))
             {
                 resultado.Error(string.Empty, $"Ya existe el recorrido {comando.Dto.RecorridoId} en automatismo");
             }

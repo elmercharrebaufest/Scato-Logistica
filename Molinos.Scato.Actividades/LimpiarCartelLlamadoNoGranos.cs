@@ -1,9 +1,11 @@
 ﻿using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Servicios;
+using System;
 using System.Activities;
+using System.Linq;
 
 namespace Molinos.Scato.Actividades
 {
@@ -15,11 +17,11 @@ namespace Molinos.Scato.Actividades
             var repositorio = context.GetExtension<IServicioRepositorio>();
             var servicio = context.GetExtension<IServicioComandos>();
 
-
-            var recorridoId = repositorio.ObtenerRecorridoIdPorGuid(context.WorkflowInstanceId);
-
             try
             {
+
+                var recorridoId = repositorio.ObtenerRecorridoIdPorGuid(context.WorkflowInstanceId);
+
                 resultado = servicio.Ejecutar(new LimpiarRecorridoHistorialMensajeCartelLed()
                 {
                     Codigo = CodigoMensajeCartelLed.LlamadoCamionNoGrano,
@@ -44,6 +46,20 @@ namespace Molinos.Scato.Actividades
                     NumeroTrama = resultado.NumeroTrama,
                     NumeroPrograma = resultado.NumeroPrograma,
                     NumeroVariable = resultado.NumeroVariable,
+                });
+            }
+            else
+            {
+                servicio.Ejecutar(new CrearControlRecorrido
+                {
+                    Dto = new ControlRecorridoDto
+                    {
+                        Actividad = "LimpiarCartelLlamadoNoGranos",
+                        Fecha = DateTime.Now,
+                        Comentario = resultado.Errores.Values.First(),
+                        NombreUsuario = "",
+                        WorkflowInstanceId = context.WorkflowInstanceId,
+                    }
                 });
             }
 
