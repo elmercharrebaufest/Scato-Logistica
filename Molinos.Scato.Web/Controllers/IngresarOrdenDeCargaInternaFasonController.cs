@@ -411,19 +411,40 @@ namespace Molinos.Scato.Web.Controllers
                 request.AddParameter("patenteChasis", patente);
 
             log.Info("Se ejecuta la consulta a la Api");
-            var restResponse = client.Execute(request);
-
-
-            log.Info("Se evalua la respuesta de la Api");
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            try
             {
-                log.Info("Respuesta ok 200 - Se crea lista para devolver la respuesta");
-                List<OrdenDeCargaDto> data = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content);
-                return data;
+                var restResponse = client.Execute(request);
+                log.Info("Se evalua la respuesta de la Api");
+
+                if (restResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    log.Info("Respuesta ok 200 - Se crea lista para devolver la respuesta");
+
+                    JsonSerializerSettings settings = new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore, // Ignora los null
+                        MissingMemberHandling = MissingMemberHandling.Ignore // Ignora los miembros faltantes
+                    };
+
+                    List<OrdenDeCargaDto> data = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content, settings);
+
+                    return data;
+                }
+                else
+                {
+                    log.Warn($"Respuesta no OK desde la API: {restResponse.StatusCode}");
+                    return null;
+                }
             }
-            else
+            catch (JsonException ex)
             {
-                return null;
+                log.Error($"Ocurrio un error al deserializar la respuesta: {ex.Message}");
+                return new List<OrdenDeCargaDto>();
+            }
+            catch (Exception ex)
+            {
+                log.Error($"Ocurrio un error al consultar el servicio {recurso} con la patente {patente}: {ex.Message}");
+                return new List<OrdenDeCargaDto>();
             }
         }
 
