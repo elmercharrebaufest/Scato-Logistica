@@ -6,6 +6,6 @@
 @Html.Grilla(Model.ListaCallePlanta, grilla => grilla.Columns(
         grilla.ColumnaModificarModalEntidad(Html, "CallePlanta"),
         grilla.ColumnaSwitchIdentity("ActivoAutomatico", "Estado", "calleplanta"),
-        grilla.Columna("Nombre", "Calle Planta", null, null, false),
+        grilla.Columna("Nombre", "Calle No Granos", null, null, false),
         grilla.Columna("CantidadDeCamiones", "Camiones", null, null, false)
     ))

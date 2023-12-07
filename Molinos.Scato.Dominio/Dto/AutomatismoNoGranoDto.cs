@@ -7,17 +7,17 @@ namespace Molinos.Scato.Dominio.Dto
     {
         public int Id { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "CallePlanta")]
+        [Display(ResourceType = typeof(Textos), Name = "CallePlantaNoGranos")]
         public CalleDto CallePlanta { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "CallePlanta")]
+        [Display(ResourceType = typeof(Textos), Name = "CallePlantaNoGranos")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePlantaId { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "CallePlayaInterna")]
+        [Display(ResourceType = typeof(Textos), Name = "CallePlayaInternaPH")]
         public CalleDto CallePlayaInterna { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "CallePlayaInterna")]
+        [Display(ResourceType = typeof(Textos), Name = "CallePlayaInternaPH")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePlayaInternaId { get; set; }
 
