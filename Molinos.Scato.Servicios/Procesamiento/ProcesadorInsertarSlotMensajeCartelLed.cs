@@ -69,7 +69,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (codigosPreBalanza.Contains(comando.Codigo))
             {
-                var nuevosMensajes = Repositorio.Listar<MensajeCartelLed>();
+                var nuevosMensajes = Repositorio.Listar<MensajeCartelLed>(x=>codigosPreBalanza.Contains(x.Codigo));
                 resultado.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(nuevosMensajes).ToList();
             }
             return resultado;
