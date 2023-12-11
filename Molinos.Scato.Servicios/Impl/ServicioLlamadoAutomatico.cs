@@ -29,6 +29,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public void Llamar(LlamadoAutomatico tipoLlamadoAutomatico)
         {
+            log.Info("LIDIO-01-"+ tipoLlamadoAutomatico);
             switch (tipoLlamadoAutomatico)
             {
                 case LlamadoAutomatico.Granos:
@@ -53,6 +54,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarAutomaticoGranos()
         {
+            log.Info("LIDIO-02-");
             var configuracionGeneral = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
             if (configuracionGeneral == null
                 || string.IsNullOrEmpty(configuracionGeneral.Valor)
@@ -71,6 +73,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarTipoLlamadoAutomaticoGrano(CalleDto callePH)
         {
+            log.Info("LIDIO-03-" + callePH.AutomatismoTipoLlamado.Codigo);
             if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PaseDirecto)
                 ValidarLlamadoPorPasoDirecto(callePH);
             else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.UnoAUno)
@@ -100,6 +103,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLlamadoPorFila(CalleDto callePH)
         {
+            log.Info("LIDIO-04-" + callePH.Id);
             var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
             var configuracion = ObtenerAutomatismoGranoLlamadoPorFila(configuraciones);
             if (configuracion == null)
@@ -139,6 +143,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarCallePreBalanza(AutomatismoGranoDto configuracion)
         {
+            log.Info("LIDIO-05-");
             var resultadoCrearCallePreBalanzaPlayaInterna = comandos.Ejecutar(new CrearCallePreBalanzaPlayaInterna
             {
                 CallePlayaInternaId = configuracion.CallePreHidraulicaId,
@@ -147,6 +152,7 @@ namespace Molinos.Scato.Servicios.Impl
             });
             if (resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
                 return;
+            log.Info("LIDIO-06-");
 
             var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
@@ -209,9 +215,12 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void EnviarMensajesAlCartel(List<MensajeCartelLedDto> listaDeMensajes)
         {
+            log.Info("LIDIO-07-");
             var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
+            
             foreach (var mensajeCartelLed in listaDeMensajes)
             {
+                log.Info("LIDIO-08-"+ mensajeCartelLed.Id);
                 orquestador.Ejecutar(new EjecutarEnviarMensaje
                 {
                     Texto = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
