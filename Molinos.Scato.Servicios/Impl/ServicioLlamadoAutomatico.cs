@@ -137,7 +137,14 @@ namespace Molinos.Scato.Servicios.Impl
                     fechaIngresoPrimerCamionPorFilaPB.Add(callePrebalanza.Id, fechaIngresoPrimerCamion);
                 }
             }
-            log.Info("LIDIO-10-");
+            foreach (var conf in configuraciones)
+            {
+                log.Info("LIDIO-CONFIG-" + conf.CallePreBalanzaId);
+            }
+            foreach (var fecha in fechaIngresoPrimerCamionPorFilaPB)
+            {
+                log.Info("LIDIO-FECHA-" + fecha.Key);
+            }
             return fechaIngresoPrimerCamionPorFilaPB.Any()
                 ? configuraciones.Where(x => fechaIngresoPrimerCamionPorFilaPB.Any(q => q.Key == x.CallePreBalanzaId))
                                 .OrderBy(x => fechaIngresoPrimerCamionPorFilaPB[x.CallePreBalanzaId])
