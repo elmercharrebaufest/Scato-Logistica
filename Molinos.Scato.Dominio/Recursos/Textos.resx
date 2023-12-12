@@ -10513,4 +10513,7 @@
   <data name="CargaDeCupo_Patente_ErrorFormato" xml:space="preserve">
     <value>Patente No respeta el Formato ABC123 o AB123CD</value>
   </data>
+  <data name="Calle_PlantaNoGranos_Existente" xml:space="preserve">
+    <value>Ya existe una calle planta no granos con ese material</value>
+  </data>
 </root>

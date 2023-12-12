@@ -10860,7 +10860,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public int? ObtenerCallePlantaIdPorMaterialId(int materialId)
         {
-            var calle = repositorio.ObtenerPrimero<Calle>(x => x.Material.Id == materialId && x.Deshabilitada == false && x.TipoCalle == TipoCalle.PlantaNoGranos);
+            var calle = repositorio.Obtener<Calle>(x => x.Material.Id == materialId && x.Deshabilitada == false && x.TipoCalle == TipoCalle.PlantaNoGranos);
 
             if (calle == null)
                 return null;

@@ -6586,6 +6586,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ya existe una calle planta no granos con ese material.
+        /// </summary>
+        public static string Calle_PlantaNoGranos_Existente {
+            get {
+                return ResourceManager.GetString("Calle_PlantaNoGranos_Existente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calle de Pre-Hidráulica.
         /// </summary>
         public static string Calle_PreHidraulica {
