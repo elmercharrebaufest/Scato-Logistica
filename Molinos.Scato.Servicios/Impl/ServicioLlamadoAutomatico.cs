@@ -107,10 +107,10 @@ namespace Molinos.Scato.Servicios.Impl
             var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
             log.Info("LIDIO-05-CONFIG-1" + configuraciones.Count());
             var configuracion = ObtenerAutomatismoGranoLlamadoPorFila(configuraciones);
-            log.Info("LIDIO-06-CONFIG-2"+ configuracion.Id);
             if (configuracion == null)
                 return;
 
+            log.Info("LIDIO-06-CONFIG-2"+ configuracion.Id);
             var cantidadCamionesEnFilaPB = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId).Count();
             var cantidadCamionesEnFilaPH = repositorio.ObtenerCantidadCamionesEnCallePreHidraulica(configuracion.CallePreHidraulicaId);
             log.Info("LIDIO-07- Cantidadades" + cantidadCamionesEnFilaPB + " - " + cantidadCamionesEnFilaPH);
@@ -126,6 +126,7 @@ namespace Molinos.Scato.Servicios.Impl
             log.Info("LIDIO-09-");
             foreach (var configuracion in configuraciones)
             {
+                log.Info("LIDIO-CONFIG-" + configuracion.CallePreBalanzaId);
                 var callePrebalanza = repositorio.ObtenerCalle(configuracion.CallePreBalanzaId);
                 if (callePrebalanza.Deshabilitada || callePrebalanza.Bloqueada || callePrebalanza.FechaLLamada != null)
                     continue;
@@ -137,14 +138,7 @@ namespace Molinos.Scato.Servicios.Impl
                     fechaIngresoPrimerCamionPorFilaPB.Add(callePrebalanza.Id, fechaIngresoPrimerCamion);
                 }
             }
-            foreach (var conf in configuraciones)
-            {
-                log.Info("LIDIO-CONFIG-" + conf.CallePreBalanzaId);
-            }
-            foreach (var fecha in fechaIngresoPrimerCamionPorFilaPB)
-            {
-                log.Info("LIDIO-FECHA-" + fecha.Key);
-            }
+
             return fechaIngresoPrimerCamionPorFilaPB.Any()
                 ? configuraciones.Where(x => fechaIngresoPrimerCamionPorFilaPB.Any(q => q.Key == x.CallePreBalanzaId))
                                 .OrderBy(x => fechaIngresoPrimerCamionPorFilaPB[x.CallePreBalanzaId])
@@ -171,8 +165,10 @@ namespace Molinos.Scato.Servicios.Impl
                 CalleId = configuracion.CallePreBalanzaId,
             }) as ResultadoMensajeCartelLed;
             if (!resultadoInsertarCalleCartelLed.HayErrores && resultadoInsertarCalleCartelLed.ListaDeMensajes.Any())
+            {
                 log.Info("LIDIO-13-");
                 EnviarMensajesAlCartel(resultadoInsertarCalleCartelLed.ListaDeMensajes);
+            }
         }
 
         private void ValidarLlamadoPor1A1(CalleDto callePH)
