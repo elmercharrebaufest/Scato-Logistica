@@ -132,10 +132,27 @@ namespace Molinos.Scato.Servicios.Impl
                     continue;
 
                 var camionesEnCallePB = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
+                log.Info("LIDIO-CAMION-EN-CALLEPb: " + camionesEnCallePB.Count());
                 if (camionesEnCallePB.Count() == callePrebalanza.CantidadDeCamiones)
                 {
+                    log.Info("LIDIO-CAMIONES-IGUALES");
                     var fechaIngresoPrimerCamion = camionesEnCallePB.OrderBy(x => x.FechaIngeso).Select(x => x.FechaIngeso).FirstOrDefault();
+                    log.Info("LIDIOFECHA-INGRESO: " + fechaIngresoPrimerCamion);
                     fechaIngresoPrimerCamionPorFilaPB.Add(callePrebalanza.Id, fechaIngresoPrimerCamion);
+                }
+            }
+            foreach (var conf in configuraciones)
+            {
+                log.Info("LIDIO-CONFIG-" + conf.CallePreBalanzaId);
+            }
+            if (fechaIngresoPrimerCamionPorFilaPB == null)
+            {
+                log.Info("LIDIO-fechaIngresoPrimerCamionPorFilaPB-NULO");
+            } else
+            {
+                foreach (KeyValuePair<int, DateTime> entry in fechaIngresoPrimerCamionPorFilaPB)
+                {
+                    log.Info("LIDIO-CONFIG-" + entry.Key);
                 }
             }
 
