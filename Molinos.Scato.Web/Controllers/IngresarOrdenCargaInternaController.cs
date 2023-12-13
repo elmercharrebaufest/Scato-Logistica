@@ -110,54 +110,54 @@ namespace Molinos.Scato.Web.Controllers
                 return View(orden);
             }
 
-            if(orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
-            {
-                var domicilio = orden.TipoYOrdenDestino.Split('-');
-                orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
-                orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
-                var dominios = new List<string> { orden.PatenteCamion };
-                if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
-                {
-                    dominios.Add(orden.PatenteAcoplado);
-                }
-                ConfirmarCTGVencidos(datosUsuario.CentroId);
-                var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
-                {
-                    TipoVehiculo = orden.TipoVehiculo,
-                    CentroId = datosUsuario.CentroId,
-                    MaterialId = orden.MaterialId,
-                    DestinoId = orden.DestinoId,
-                    DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                    DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
-                    DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
-                    TransportistaId = orden.TransportistaId,
-                    Dominios = dominios.ToArray(),
-                    KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
-                    ChoferCuit = orden.Chofer.Cuil,
-                    PagadorFleteId = orden.PagadorFleteId ?? 0,
+            //if(orden.DerivadoGranarioHabilitado && !(orden.Demorado || orden.Rechazado))
+            //{
+            //    var domicilio = orden.TipoYOrdenDestino.Split('-');
+            //    orden.TipoDomicilioDestino = int.Parse(domicilio[0]);
+            //    orden.OrdenDomicilioDestino = int.Parse(domicilio[1]);
+            //    var dominios = new List<string> { orden.PatenteCamion };
+            //    if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
+            //    {
+            //        dominios.Add(orden.PatenteAcoplado);
+            //    }
+            //    ConfirmarCTGVencidos(datosUsuario.CentroId);
+            //    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+            //    {
+            //        TipoVehiculo = orden.TipoVehiculo,
+            //        CentroId = datosUsuario.CentroId,
+            //        MaterialId = orden.MaterialId,
+            //        DestinoId = orden.DestinoId,
+            //        DestinoPlanta = orden.PlantaDGDestino ?? 0,
+            //        DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
+            //        DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
+            //        TransportistaId = orden.TransportistaId,
+            //        Dominios = dominios.ToArray(),
+            //        KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
+            //        ChoferCuit = orden.Chofer.Cuil,
+            //        PagadorFleteId = orden.PagadorFleteId ?? 0,
 
-                }) as ResultadoCartaPorteElectronicaDummy;
-                if (resultadoAltaDummy.HayErrores)
-                {
-                    SetearVista(workflowObje, datosUsuario.CentroId);
-                    ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
-                    return View(orden);
-                }
+            //    }) as ResultadoCartaPorteElectronicaDummy;
+            //    if (resultadoAltaDummy.HayErrores)
+            //    {
+            //        SetearVista(workflowObje, datosUsuario.CentroId);
+            //        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+            //        return View(orden);
+            //    }
 
-                var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
-                {
-                    CentroId = datosUsuario.CentroId,
-                    NroOrden = (int)resultadoAltaDummy.NroOrden,
-                    Sucursal = resultadoAltaDummy.Sucursal,
-                    TipoCPE = (short)resultadoAltaDummy.TipoCPE,
-                });
-                if (resultadoAnulacionDummy.HayErrores)
-                {
-                    SetearVista(workflowObje, datosUsuario.CentroId);
-                    ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
-                    return View(orden);
-                }
-            }
+            //    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+            //    {
+            //        CentroId = datosUsuario.CentroId,
+            //        NroOrden = (int)resultadoAltaDummy.NroOrden,
+            //        Sucursal = resultadoAltaDummy.Sucursal,
+            //        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+            //    });
+            //    if (resultadoAnulacionDummy.HayErrores)
+            //    {
+            //        SetearVista(workflowObje, datosUsuario.CentroId);
+            //        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+            //        return View(orden);
+            //    }
+            //}
 
             var controlRecorrido = new ControlRecorridoDto
             {

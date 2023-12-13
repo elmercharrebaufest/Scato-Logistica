@@ -228,58 +228,58 @@ namespace Molinos.Scato.Web.Controllers
             }
             log.Debug($"({WorkflowId}) - {orden.PatenteCamion}: transportista {(resultadoChofer ? "" : "no")} seteado.");
 
-            if (orden.DerivadoGranarioHabilitado && !orden.Rechazado)
-            {
-                var dominios = new List<string> { orden.PatenteCamion };
-                if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
-                {
-                    dominios.Add(orden.PatenteAcoplado);
-                }
-                ConfirmarCTGVencidos(datosUsuario.CentroId);
-                var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
-                {
-                    TipoVehiculo = orden.TipoVehiculo,
-                    CentroId = datosUsuario.CentroId,
-                    MaterialId = orden.MaterialId,
-                    DestinoPlanta = orden.PlantaDGDestino ?? 0,
-                    DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
-                    DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
-                    TransportistaId = orden.TransportistaId,
-                    Dominios = dominios.ToArray(),
-                    KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
-                    ChoferCuit = orden.Chofer.Cuil,
-                    PagadorFleteId = orden.PagadorFleteId ?? 0,
-                    CorredorId = orden.CorredorId,
-                    RemitenteId = orden.RemitenteId,
-                    DestinoId = orden.ClienteId,
-                    ComisionistaId = orden.ComisionistaId,
+            //if (orden.DerivadoGranarioHabilitado && !orden.Rechazado)
+            //{
+            //    var dominios = new List<string> { orden.PatenteCamion };
+            //    if (!string.IsNullOrEmpty(orden.PatenteAcoplado))
+            //    {
+            //        dominios.Add(orden.PatenteAcoplado);
+            //    }
+            //    ConfirmarCTGVencidos(datosUsuario.CentroId);
+            //    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+            //    {
+            //        TipoVehiculo = orden.TipoVehiculo,
+            //        CentroId = datosUsuario.CentroId,
+            //        MaterialId = orden.MaterialId,
+            //        DestinoPlanta = orden.PlantaDGDestino ?? 0,
+            //        DestinoDomicilioTipo = orden.TipoDomicilioDestino ?? 0,
+            //        DestinoDomicilioOrden = orden.OrdenDomicilioDestino ?? 0,
+            //        TransportistaId = orden.TransportistaId,
+            //        Dominios = dominios.ToArray(),
+            //        KmRecorrer = !string.IsNullOrEmpty(orden.KmARecorrer) ? int.Parse(orden.KmARecorrer) : 0,
+            //        ChoferCuit = orden.Chofer.Cuil,
+            //        PagadorFleteId = orden.PagadorFleteId ?? 0,
+            //        CorredorId = orden.CorredorId,
+            //        RemitenteId = orden.RemitenteId,
+            //        DestinoId = orden.ClienteId,
+            //        ComisionistaId = orden.ComisionistaId,
 
-                    IntermediarioFleteId = orden.IntermediarioFleteId,
+            //        IntermediarioFleteId = orden.IntermediarioFleteId,
 
-                    DestinatarioId = orden.DestinatarioId,
-                    AplicaDestinatario = true,
-                }) as ResultadoCartaPorteElectronicaDummy;
-                if (resultadoAltaDummy.HayErrores)
-                {
-                    IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
-                    ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
-                    return View(orden);
-                }
+            //        DestinatarioId = orden.DestinatarioId,
+            //        AplicaDestinatario = true,
+            //    }) as ResultadoCartaPorteElectronicaDummy;
+            //    if (resultadoAltaDummy.HayErrores)
+            //    {
+            //        IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+            //        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+            //        return View(orden);
+            //    }
 
-                var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
-                {
-                    CentroId = datosUsuario.CentroId,
-                    NroOrden = (int)resultadoAltaDummy.NroOrden,
-                    Sucursal = resultadoAltaDummy.Sucursal,
-                    TipoCPE = (short)resultadoAltaDummy.TipoCPE,
-                });
-                if (resultadoAnulacionDummy.HayErrores)
-                {
-                    IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
-                    ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
-                    return View(orden);
-                }
-            }
+            //    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+            //    {
+            //        CentroId = datosUsuario.CentroId,
+            //        NroOrden = (int)resultadoAltaDummy.NroOrden,
+            //        Sucursal = resultadoAltaDummy.Sucursal,
+            //        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+            //    });
+            //    if (resultadoAnulacionDummy.HayErrores)
+            //    {
+            //        IngresarOrdenCargaFasController.SetearVista(workflowObjt, servicio, this);
+            //        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+            //        return View(orden);
+            //    }
+            //}
 
             var resultado = servicioComandos.Ejecutar(new ModificarOrdenCargaFas { Orden = orden, NombreUsuario = datosUsuario.NombreUsuario });
             log.Debug($"({WorkflowId}) - {orden.PatenteCamion}: modificacion orden fas {orden.NumeroOrden} {(resultado.HayErrores ? "con" : "sin")} error.");
@@ -340,50 +340,50 @@ namespace Molinos.Scato.Web.Controllers
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
             if (ModelState.IsValid)
             {
-                if (model.DerivadoGranarioHabilitado && !model.Rechazado)
-                {
-                    var dominios = new List<string> { model.PatenteCamion };
-                    if (!string.IsNullOrEmpty(model.PatenteAcoplado))
-                    {
-                        dominios.Add(model.PatenteAcoplado);
-                    }
-                    ConfirmarCTGVencidos(datosUsuario.CentroId);
-                    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
-                    {
-                        TipoVehiculo = model.TipoVehiculo,
-                        CentroId = datosUsuario.CentroId,
-                        MaterialId = model.MaterialId,
-                        DestinoId = model.DestinoId,
-                        DestinoPlanta = model.PlantaDGDestino ?? 0,
-                        DestinoDomicilioTipo = model.TipoDomicilioDestino ?? 0,
-                        DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
-                        TransportistaId = model.TransportistaId,
-                        Dominios = dominios.ToArray(),
-                        KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
-                        ChoferCuit = model.Chofer.Cuil,
-                        PagadorFleteId = model.PagadorFleteId ?? 0,
-                    }) as ResultadoCartaPorteElectronicaDummy;
-                    if (resultadoAltaDummy.HayErrores)
-                    {
-                        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
-                        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
-                        return View(model);
-                    }
+                //if (model.DerivadoGranarioHabilitado && !model.Rechazado)
+                //{
+                //    var dominios = new List<string> { model.PatenteCamion };
+                //    if (!string.IsNullOrEmpty(model.PatenteAcoplado))
+                //    {
+                //        dominios.Add(model.PatenteAcoplado);
+                //    }
+                //    ConfirmarCTGVencidos(datosUsuario.CentroId);
+                //    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+                //    {
+                //        TipoVehiculo = model.TipoVehiculo,
+                //        CentroId = datosUsuario.CentroId,
+                //        MaterialId = model.MaterialId,
+                //        DestinoId = model.DestinoId,
+                //        DestinoPlanta = model.PlantaDGDestino ?? 0,
+                //        DestinoDomicilioTipo = model.TipoDomicilioDestino ?? 0,
+                //        DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
+                //        TransportistaId = model.TransportistaId,
+                //        Dominios = dominios.ToArray(),
+                //        KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
+                //        ChoferCuit = model.Chofer.Cuil,
+                //        PagadorFleteId = model.PagadorFleteId ?? 0,
+                //    }) as ResultadoCartaPorteElectronicaDummy;
+                //    if (resultadoAltaDummy.HayErrores)
+                //    {
+                //        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                //        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+                //        return View(model);
+                //    }
 
-                    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
-                    {
-                        CentroId = datosUsuario.CentroId,
-                        NroOrden = (int)resultadoAltaDummy.NroOrden,
-                        Sucursal = resultadoAltaDummy.Sucursal,
-                        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
-                    });
-                    if (resultadoAnulacionDummy.HayErrores)
-                    {
-                        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
-                        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
-                        return View(model);
-                    }
-                }
+                //    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+                //    {
+                //        CentroId = datosUsuario.CentroId,
+                //        NroOrden = (int)resultadoAltaDummy.NroOrden,
+                //        Sucursal = resultadoAltaDummy.Sucursal,
+                //        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+                //    });
+                //    if (resultadoAnulacionDummy.HayErrores)
+                //    {
+                //        IngresarOrdenCargaInternaController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                //        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+                //        return View(model);
+                //    }
+                //}
 
                 var controlRecorrido = new ControlRecorridoDto
                 {
@@ -413,52 +413,52 @@ namespace Molinos.Scato.Web.Controllers
             var recorrido = servicio.ObtenerRecorrido(model.RecorridoId);
             if (ModelState.IsValid)
             {
-                if (model.DerivadoGranarioHabilitado && !model.Rechazado)
-                {
-                    var dominios = new List<string> { model.PatenteCamion };
-                    if (!string.IsNullOrEmpty(model.PatenteAcoplado))
-                    {
-                        dominios.Add(model.PatenteAcoplado);
-                    }
-                    ConfirmarCTGVencidos(datosUsuario.CentroId);
-                    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
-                    {
-                        TipoVehiculo = model.TipoVehiculo,
-                        CentroId = datosUsuario.CentroId,
-                        MaterialId = model.MaterialId,
-                        DestinoId = model.ClienteId,
-                        DestinatarioId = model.DestinatarioId,
-                        DestinoPlanta = model.PlantaDGDestino ?? 0,
-                        DestinoDomicilioTipo = model.TipoDomicilioDestino ?? 0,
-                        DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
-                        TransportistaId = model.TransportistaId,
-                        Dominios = dominios.ToArray(),
-                        KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
-                        ChoferCuit = model.Chofer.Cuil,
-                        PagadorFleteId = model.PagadorFleteId ?? 0,
-                        AplicaDestinatario = true,
-                    }) as ResultadoCartaPorteElectronicaDummy;
-                    if (resultadoAltaDummy.HayErrores)
-                    {
-                        IngresarOrdenCargaInternaFasonController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
-                        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
-                        return View(model);
-                    }
+                //if (model.DerivadoGranarioHabilitado && !model.Rechazado)
+                //{
+                //    var dominios = new List<string> { model.PatenteCamion };
+                //    if (!string.IsNullOrEmpty(model.PatenteAcoplado))
+                //    {
+                //        dominios.Add(model.PatenteAcoplado);
+                //    }
+                //    ConfirmarCTGVencidos(datosUsuario.CentroId);
+                //    var resultadoAltaDummy = servicioComandos.Ejecutar(new AutorizarCpeDGDummy
+                //    {
+                //        TipoVehiculo = model.TipoVehiculo,
+                //        CentroId = datosUsuario.CentroId,
+                //        MaterialId = model.MaterialId,
+                //        DestinoId = model.ClienteId,
+                //        DestinatarioId = model.DestinatarioId,
+                //        DestinoPlanta = model.PlantaDGDestino ?? 0,
+                //        DestinoDomicilioTipo = model.TipoDomicilioDestino ?? 0,
+                //        DestinoDomicilioOrden = model.OrdenDomicilioDestino ?? 0,
+                //        TransportistaId = model.TransportistaId,
+                //        Dominios = dominios.ToArray(),
+                //        KmRecorrer = !string.IsNullOrEmpty(model.KmARecorrer) ? int.Parse(model.KmARecorrer) : 0,
+                //        ChoferCuit = model.Chofer.Cuil,
+                //        PagadorFleteId = model.PagadorFleteId ?? 0,
+                //        AplicaDestinatario = true,
+                //    }) as ResultadoCartaPorteElectronicaDummy;
+                //    if (resultadoAltaDummy.HayErrores)
+                //    {
+                //        IngresarOrdenCargaInternaFasonController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                //        ViewBag.ErrorAfip = resultadoAltaDummy.Errores.Values.First();
+                //        return View(model);
+                //    }
 
-                    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
-                    {
-                        CentroId = datosUsuario.CentroId,
-                        NroOrden = (int)resultadoAltaDummy.NroOrden,
-                        Sucursal = resultadoAltaDummy.Sucursal,
-                        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
-                    });
-                    if (resultadoAnulacionDummy.HayErrores)
-                    {
-                        IngresarOrdenCargaInternaFasonController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
-                        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
-                        return View(model);
-                    }
-                }
+                //    var resultadoAnulacionDummy = servicioComandos.Ejecutar(new AnularCPEDGDummy
+                //    {
+                //        CentroId = datosUsuario.CentroId,
+                //        NroOrden = (int)resultadoAltaDummy.NroOrden,
+                //        Sucursal = resultadoAltaDummy.Sucursal,
+                //        TipoCPE = (short)resultadoAltaDummy.TipoCPE,
+                //    });
+                //    if (resultadoAnulacionDummy.HayErrores)
+                //    {
+                //        IngresarOrdenCargaInternaFasonController.SetearVista(recorrido.Workflow, datosUsuario.CentroId, servicio, this);
+                //        ViewBag.ErrorAfip = resultadoAnulacionDummy.Errores.Values.First();
+                //        return View(model);
+                //    }
+                //}
 
                 var controlRecorrido = new ControlRecorridoDto
                 {
