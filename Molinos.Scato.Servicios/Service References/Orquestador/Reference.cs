@@ -426,6 +426,54 @@ namespace Molinos.Scato.Servicios.Orquestador {
     [System.Runtime.Serialization.DataContractAttribute(Name="DetenerMensajeIntervalo", Namespace="http://schemas.datacontract.org/2004/07/Molinos.Orquest.Dominio.Comandos")]
     [System.SerializableAttribute()]
     public partial class DetenerMensajeIntervalo : Molinos.Scato.Servicios.Orquestador.ComandoEjecutar {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroProgramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroTramaField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NumeroVariableField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroPrograma {
+            get {
+                return this.NumeroProgramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroProgramaField, value) != true)) {
+                    this.NumeroProgramaField = value;
+                    this.RaisePropertyChanged("NumeroPrograma");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroTrama {
+            get {
+                return this.NumeroTramaField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroTramaField, value) != true)) {
+                    this.NumeroTramaField = value;
+                    this.RaisePropertyChanged("NumeroTrama");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string NumeroVariable {
+            get {
+                return this.NumeroVariableField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NumeroVariableField, value) != true)) {
+                    this.NumeroVariableField = value;
+                    this.RaisePropertyChanged("NumeroVariable");
+                }
+            }
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1543,6 +1591,9 @@ namespace Molinos.Scato.Servicios.Orquestador {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SectorField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool TieneConcentradorField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -1653,6 +1704,19 @@ namespace Molinos.Scato.Servicios.Orquestador {
                 if ((object.ReferenceEquals(this.SectorField, value) != true)) {
                     this.SectorField = value;
                     this.RaisePropertyChanged("Sector");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool TieneConcentrador {
+            get {
+                return this.TieneConcentradorField;
+            }
+            set {
+                if ((this.TieneConcentradorField.Equals(value) != true)) {
+                    this.TieneConcentradorField = value;
+                    this.RaisePropertyChanged("TieneConcentrador");
                 }
             }
         }
@@ -2130,6 +2194,12 @@ namespace Molinos.Scato.Servicios.Orquestador {
             "se")]
         System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarConcentradoresAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOffline", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOfflineResponse")]
+        Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarOffline();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOffline", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarOfflineResponse")]
+        System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarOfflineAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentra" +
             "dor", ReplyAction="http://orquestador.molinos.com.ar/IServicioOrquestador/ListarSensoresPorConcentra" +
             "dorResponse")]
@@ -2434,6 +2504,14 @@ namespace Molinos.Scato.Servicios.Orquestador {
         
         public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarConcentradoresAsync() {
             return base.Channel.ListarConcentradoresAsync();
+        }
+        
+        public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarOffline() {
+            return base.Channel.ListarOffline();
+        }
+        
+        public System.Threading.Tasks.Task<Molinos.Scato.Servicios.Orquestador.DispositivoDto[]> ListarOfflineAsync() {
+            return base.Channel.ListarOfflineAsync();
         }
         
         public Molinos.Scato.Servicios.Orquestador.DispositivoDto[] ListarSensoresPorConcentrador(string concentrador) {
