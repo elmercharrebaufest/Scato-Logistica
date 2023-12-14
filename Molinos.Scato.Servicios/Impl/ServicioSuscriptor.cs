@@ -252,14 +252,9 @@ namespace Molinos.Scato.Servicios.Impl
         {
             try
             {
-                var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
-                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
-                    {
-                        CodigoDispositivo = codigoCartel
-                    });
-
+                    var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = mensaje,
@@ -284,12 +279,15 @@ namespace Molinos.Scato.Servicios.Impl
         {
             try
             {
-                var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                 if (!string.IsNullOrEmpty(codigoCartel))
                 {
+                    var mensajeCartel = repositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
                     {
-                        CodigoDispositivo = codigoCartel
+                        CodigoDispositivo = codigoCartel,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = mensajeCartel.Trama,
+                        NumeroVariable = mensajeCartel.Variable
                     });
 
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
