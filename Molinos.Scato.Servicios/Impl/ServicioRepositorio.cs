@@ -10974,7 +10974,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public bool ExisteEspacioDisponibleParaLlamarEnCartel(string codigo)
         {
-            return repositorio.Existe<MensajeCartelLed>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed != null && x.HistorialMensajeCartelLed.Calle == null);
+            return repositorio.Existe<MensajeCartelLed>(x => x.Codigo == codigo && (x.HistorialMensajeCartelLed == null || x.HistorialMensajeCartelLed.Calle == null));
         }
 
         public bool ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(int callePHId, string codigoTipoLlamado)
