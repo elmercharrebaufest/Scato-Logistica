@@ -7675,7 +7675,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Formato de Patente No Válido.
+        ///   Looks up a localized string similar to Patente No respeta el Formato ABC123 o AB123CD.
         /// </summary>
         public static string CargaDeCupo_Patente_ErrorFormato {
             get {
@@ -29510,6 +29510,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string TipoLlamado {
             get {
                 return ResourceManager.GetString("TipoLlamado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No se puede editar ya que existe al menos una &quot;fila/Camión&quot; actualmente llamada para esta calle.
+        /// </summary>
+        public static string TipoLlamadoNoEditable {
+            get {
+                return ResourceManager.GetString("TipoLlamadoNoEditable", resourceCulture);
             }
         }
         

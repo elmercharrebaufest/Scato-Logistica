@@ -10516,4 +10516,7 @@
   <data name="Calle_PlantaNoGranos_Existente" xml:space="preserve">
     <value>Ya existe una calle planta no granos con ese material</value>
   </data>
+  <data name="TipoLlamadoNoEditable" xml:space="preserve">
+    <value>No se puede editar ya que existe al menos una "fila/Camión" actualmente llamada para esta calle</value>
+  </data>
 </root>

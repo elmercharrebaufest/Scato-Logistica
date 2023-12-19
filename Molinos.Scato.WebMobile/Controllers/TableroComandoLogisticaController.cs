@@ -269,7 +269,18 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
                 else
                 {
-                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al modificar la calle PH de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    if (resultadoCallePH.Errores.TryGetValue("AutomatismoTipoLlamado", out string mensajeError))
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto
+                        {
+                            Mensaje = mensajeError, 
+                            TipoDeMensaje = TipoDeMensajeDeRespuesta.Error
+                        });
+                    }
+                    else
+                    {
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al modificar la calle PH de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    }
                 }
             }
 
