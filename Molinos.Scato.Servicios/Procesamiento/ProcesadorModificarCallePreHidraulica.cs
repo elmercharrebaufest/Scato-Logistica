@@ -24,7 +24,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void Validar(ModificarCallePreHidraulica comando, Resultado resultado)
         {
             var calle = Repositorio.Obtener<Calle>(comando.Dto.Id);
-            bool existeCallePBPI = Repositorio.Existe<CallePreBalanzaPlayaInterna>(c => c.CallePreBalanzaId == calle.Id);
+            bool existeCallePBPI = Repositorio.Existe<CallePreBalanzaPlayaInterna>(c => c.CallePlayaInternaId == calle.Id);
             if (comando.Dto.AutomatismoTipoLlamadoId != calle.AutomatismoTipoLlamadoId && existeCallePBPI != false)
             {
                 resultado.Error("AutomatismoTipoLlamado", Dominio.Recursos.Textos.TipoLlamadoNoEditable);
