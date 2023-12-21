@@ -15,7 +15,7 @@
                                             </div>
                                             <div data-bind="ifnot: AutomatismoActivo">
                                                 <button onclick="LlamarFilaPrebalanza(this)" type="button" style="width: 100%;" class="btn btn-success btn-sm calle" data-bind="visible: !Bloqueada, enable: !Bloqueada && Camiones.length > 0, attr:{'data-id': CalleId, 'data-name': CalleDesc}"><strong>LLamar</strong>(<strong data-bind="text: $root.TiempoEnCola($data)"></strong>)</button>
-                                                <button onclick="LiberarFilePrebalanza(this)" type="button" style="width: 100%;" class="btn btn-danger btn-sm calle" data-bind="visible: Bloqueada && Camiones.length > 0, attr:{'data-id': CalleId, 'data-name': CalleDesc}"><strong>Liberar</strong>(<strong data-bind="text: $root.TiempoEnCola($data)"></strong>)</button>
+                                                <button onclick="LiberarFilePrebalanza(this)" type="button" style="width: 100%;" class="btn btn-danger btn-sm calle" data-bind="visible: Bloqueada, attr:{'data-id': CalleId, 'data-name': CalleDesc}"><strong>Liberar</strong>(<strong data-bind="text: $root.TiempoEnCola($data)"></strong>)</button>
                                             </div>
                                         </div>
                                         <div data-bind="ifnot: LlamadoManual">

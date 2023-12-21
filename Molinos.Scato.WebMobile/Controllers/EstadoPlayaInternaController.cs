@@ -229,7 +229,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             try
             {
                 var callePreBalanza = servicio.ObtenerCalle(callePrebalanzaId);
-                if (!callePreBalanza.FechaLLamada.HasValue)
+                if (!callePreBalanza.FechaLLamada.HasValue || !callePreBalanza.Bloqueada)
                 {
                     response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La {callePreBalanza.Nombre} no está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
@@ -342,48 +342,9 @@ namespace Molinos.Scato.WebMobile.Controllers
                     };
                     callePlanta.Camiones.Add(camionPlanta);
                 }
-                if (calle.TipoCalle == TipoCalle.PreBalanzaGranos && calle.Bloqueada && callePlanta.Camiones.Count == 0)
-                {
-                    DesbloquearCalle(calle.Id);
-                }
+
             }
             return tipoCallePlantaLista;
-        }
-
-        private CalleDto ObtenerTiposDeCallesPlantaPorId(int idCalle)
-        {
-            var centro = ClaimsPrincipal.Current.GetUserClaim("CentroId");
-            var centroId = int.Parse(centro.Value);
-            var calles = servicio.ObtenerCallesPorCentro(centroId).Where(x => listaCalles.Contains(x.TipoCalle) && !x.Deshabilitada).OrderBy(x => x.Posicion).ToList();
-
-            CalleDto callePorId = calles.Where(c => c.Id == idCalle).First();
-
-            return callePorId;
-        }
-
-        private void DesbloquearCalle(int calleId)
-        {
-            try
-            {
-                var calle = servicio.ObtenerCalle(calleId);
-                calle.Bloqueada = false;
-                calle.FechaLLamada = null;
-                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
-            }
-            catch (Exception e)
-            {
-                log.Error(e, "Error al desbloquear calle PreBalanzaGranos");
-            }
-        }
-
-        private bool ObtenerConfiguracionLlamadoAutomaticoPrebalanza()
-        {
-            var configuracionLlamadoAutomaticoPrebalanza = servicio.ObtenerConfiguracionGeneral(ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, ConfiguracionGeneral.PreBalanza.LlamadoAutomatico);
-            if (configuracionLlamadoAutomaticoPrebalanza == null || string.IsNullOrEmpty(configuracionLlamadoAutomaticoPrebalanza.Valor))
-                return false;
-
-            bool.TryParse(configuracionLlamadoAutomaticoPrebalanza.Valor, out bool llamadoAutomaticoPrebalanza);
-            return llamadoAutomaticoPrebalanza;
         }
 
         private bool ExisteSlotsDisponibles(CalleDto callePlayaInterna, int cantidadNuevosCamionesLlamadoEnPrebalanza)
