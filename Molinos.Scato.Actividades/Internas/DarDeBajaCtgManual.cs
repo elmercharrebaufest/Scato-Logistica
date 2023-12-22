@@ -25,7 +25,7 @@ namespace Molinos.Scato.Actividades.Internas
                 var baja = new BajaCTGDto
                 {
                     CartaPorteId = orden.Id,
-                    CodigoDeBaja = orden.Cpe ? orden.NroCartaPorte : codigoDeBaja,
+                    CodigoDeBaja = codigoDeBaja,
                     Fecha = DateTime.Now,
                     WorkflowId = workflowId
                 };
