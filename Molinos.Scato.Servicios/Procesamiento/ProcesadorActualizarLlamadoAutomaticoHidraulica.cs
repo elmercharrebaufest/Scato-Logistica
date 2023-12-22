@@ -114,10 +114,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 if (!string.IsNullOrEmpty(codigoCartel) && mensaje != null)
                 {
-                    servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
-                    {
-                        CodigoDispositivo = codigoCartel
-                    });
                     var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
@@ -145,11 +141,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 if (!string.IsNullOrEmpty(codigoCartel))
                 {
+                    var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioOrquestador.Ejecutar(new DetenerMensajeIntervalo
                     {
-                        CodigoDispositivo = codigoCartel
+                        CodigoDispositivo = codigoCartel,
+                        NumeroPrograma = mensajeCartel.Programa,
+                        NumeroTrama = mensajeCartel.Trama,
+                        NumeroVariable = mensajeCartel.Variable
                     });
-                    var mensajeCartel = servicioRepositorio.ObtenerMensajeCartelLedPorCodigo(CodigoMensajeCartelLed.LlamadoAutomaticoVolcadoras);
                     servicioComandos.Ejecutar(new EnviarMensajeCartelLed
                     {
                         Mensaje = "PARE AQUI",
