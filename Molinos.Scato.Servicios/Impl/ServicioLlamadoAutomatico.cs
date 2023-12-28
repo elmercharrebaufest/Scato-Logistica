@@ -185,6 +185,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarCamionPreBalanza(int callePHId, CallePorRecorridoDto camion, bool esCamionEnEspera)
         {
+            log.Info("LIDIO-LOG-0001 ID=" + camion.Id + " RECOID=" + camion.RecorridoId );
             var resultadoCrearCallePreBalanzaPlayaInterna = comandos.Ejecutar(new CrearCallePreBalanzaPlayaInterna
             {
                 CallePlayaInternaId = callePHId,
@@ -193,9 +194,10 @@ namespace Molinos.Scato.Servicios.Impl
                 RecorridoId = camion.RecorridoId,
                 EsCamionEnEspera = esCamionEnEspera,
             });
+            log.Info("LIDIO-LOG-0002");
             if (resultadoCrearCallePreBalanzaPlayaInterna.HayErrores)
                 return;
-
+            log.Info("LIDIO-LOG-0004");
             var resultadoInsertarCalleCartelLed = comandos.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
                 Codigo = esCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza,
@@ -204,14 +206,16 @@ namespace Molinos.Scato.Servicios.Impl
                 EsCamionEnEspera = esCamionEnEspera,
                 RecorridoId = camion.RecorridoId,
             }) as ResultadoMensajeCartelLed;
+            log.Info("LIDIO-LOG-0004");
             if (!resultadoInsertarCalleCartelLed.HayErrores && resultadoInsertarCalleCartelLed.ListaDeMensajes.Any())
                 EnviarMensajesAlCartel(resultadoInsertarCalleCartelLed.ListaDeMensajes);
         }
 
         private void EnviarMensajesAlCartel(List<MensajeCartelLedDto> listaDeMensajes)
         {
+            log.Info("LIDIO-LOG-0005");
             var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
-            
+            log.Info("LIDIO-LOG-0006");
             foreach (var mensajeCartelLed in listaDeMensajes)
             {
                 orquestador.Ejecutar(new EjecutarEnviarMensaje
@@ -223,21 +227,26 @@ namespace Molinos.Scato.Servicios.Impl
                     NumeroVariable = mensajeCartelLed.Variable,
                 });
             }
+            log.Info("LIDIO-LOG-0007");
         }
 
         private void DetenerLlamadoAutomaticoGranos()
         {
+            log.Info("LIDIO-LOG-DETENER-0001");
             var callesPreBalanzaPlayaInterna = repositorio.ListarCallePreBalanzaLlamadasPorAutomatismo();
+            log.Info("LIDIO-LOG-DETENER-0002");
             foreach (var callePreBalanzaPlayaInterna in callesPreBalanzaPlayaInterna)
                 ValidarTipoLiberarAutomaticoGrano(callePreBalanzaPlayaInterna);
         }
 
         private void ValidarTipoLiberarAutomaticoGrano(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
+            log.Info("LIDIO-LOG-DETENER-0003");
             if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PaseDirecto)
                 ValidarLiberarPorPaseDirecto(callePreBalanzaPlayaInterna);
             else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno)
                 ValidarLiberarPor1A1(callePreBalanzaPlayaInterna);
+            log.Info("LIDIO-LOG-DETENER-0004");
             else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila)
                 ValidarLiberarPorFila(callePreBalanzaPlayaInterna);
         }
@@ -278,27 +287,32 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLiberarPor1A1(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
+            log.Info("LIDIO-LOG-DETENER-0005");
             var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
                 return;
-
+            log.Info("LIDIO-LOG-DETENER-0006");
             LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
+            log.Info("LIDIO-LOG-DETENER-0007");
             var camionEnEspera = repositorio.ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(callePreBalanzaPlayaInterna.CallePlayaInterna.Id);
+            log.Info("LIDIO-LOG-DETENER-0008");
             if (camionEnEspera != null)
                 LiberarCamionPreBalanza(camionEnEspera);
         }
 
         private void LiberarCamionPreBalanza(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
+            log.Info("LIDIO-LOG-DETENER-0009");
             var resultadoEliminarCallePreBalanzaPlayaInterna = comandos.Ejecutar(new EliminarCallePreBalanzaPlayaInterna()
             {
                 CallePlayaInternaId = callePreBalanzaPlayaInterna.CallePlayaInterna.Id,
                 CodigoAutomatismoTipoLlamado = callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado,
                 RecorridoId = callePreBalanzaPlayaInterna.RecorridoId,
             });
+            log.Info("LIDIO-LOG-DETENER-0010");
             if (resultadoEliminarCallePreBalanzaPlayaInterna.HayErrores)
                 return;
-
+            log.Info("LIDIO-LOG-DETENER-0011");
             var resultadoLimpiarCalleCartelLed = comandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
             {
                 Codigo = callePreBalanzaPlayaInterna.EsCamionEnEspera ? CodigoMensajeCartelLed.LlamadoCamionPreBalanza : CodigoMensajeCartelLed.LlamadoCallePreBalanza,
@@ -306,6 +320,7 @@ namespace Molinos.Scato.Servicios.Impl
                 LimpiarCamion = true,
                 RecorridoId = callePreBalanzaPlayaInterna.RecorridoId,
             }) as ResultadoMensajeCartelLedReordenado;
+            log.Info("LIDIO-LOG-DETENER-0011");
             if (!resultadoLimpiarCalleCartelLed.HayErrores && resultadoLimpiarCalleCartelLed.ListaDeMensajes.Any())
                 EnviarMensajesAlCartel(resultadoLimpiarCalleCartelLed.ListaDeMensajes);
         }
