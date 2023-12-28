@@ -287,9 +287,9 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLiberarPor1A1(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            log.Info("LIDIO-LOG-DETENER-0005");
+            log.Info("LIDIO-LOG-DETENER-0005 CallePBId={0} RecorridoID={1}",callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
-            if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
+            if (camionLlamado == null || camionLlamado.FechaEgreso.HasValue)
                 return;
             log.Info("LIDIO-LOG-DETENER-0006");
             LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
