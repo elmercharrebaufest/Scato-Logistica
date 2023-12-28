@@ -246,9 +246,9 @@ namespace Molinos.Scato.Servicios.Impl
                 ValidarLiberarPorPaseDirecto(callePreBalanzaPlayaInterna);
             else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno)
                 ValidarLiberarPor1A1(callePreBalanzaPlayaInterna);
-            log.Info("LIDIO-LOG-DETENER-0004");
             else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila)
                 ValidarLiberarPorFila(callePreBalanzaPlayaInterna);
+            log.Info("LIDIO-LOG-DETENER-0004");
         }
 
         private void ValidarLiberarPorPaseDirecto(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
