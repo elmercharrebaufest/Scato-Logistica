@@ -110,7 +110,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
             if (!comando.Dto.Deshabilitada && comando.Dto.TipoCalle == TipoCalle.PlantaNoGranos)
             {
-                if (Repositorio.Existe<Calle>(x => x.Material.Id == comando.Dto.MaterialId && x.TipoCalle == TipoCalle.PlantaNoGranos && !x.Deshabilitada))
+                if (Repositorio.Existe<Calle>(x => x.Material.Id == comando.Dto.MaterialId && x.TipoCalle == TipoCalle.PlantaNoGranos && !x.Deshabilitada && comando.Dto.Id != x.Id))
                 {
                     resultado.Error("MaterialDesc", Textos.Calle_PlantaNoGranos_Existente);
                 }

@@ -44,21 +44,21 @@
 
             <div class="tab-content overflow-auto">
                 <div id="panel" class="tab-pane fade show active">
-                    <div class="container">
+                    <div class="container" style="max-width:1400px">
                         <div class="row mt-2">
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Calle No Granos</h4>
                                 <div id="gridCallePlanta" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarCallePlanta")
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Puntos de Carga</h4>
                                 <div id="gridPuntoDeCarga" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarPuntoDeCarga")
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-4 flex-fill">
                                 <h4 class="text-center">Almacén</h4>
                                 <div id="gridAlmacen" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
                                     @Html.Partial("_ListarAlmacen")
