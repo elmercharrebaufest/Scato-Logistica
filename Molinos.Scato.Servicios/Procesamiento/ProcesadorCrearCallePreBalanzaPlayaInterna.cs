@@ -60,6 +60,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (comando.EsCamionEnEspera && comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.EsCamionEnEspera && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno))
                 resultado.Error(string.Empty, "Ya existe un Camion En Espera por 1 a 1");
 
+            if (comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.RecorridoId == comando.RecorridoId && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno))
+                resultado.Error(string.Empty, "Ya existe un Camion con el mismo recorrido");
+
             if (comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.CallePreBalanzaId == comando.CallePreBalanzaId && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila))
                 resultado.Error(string.Empty, "La Calle PreBalanza ya ha sido llamada por Fila");
         }

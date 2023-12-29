@@ -295,7 +295,7 @@ namespace Molinos.Scato.Servicios.Impl
             log.Info("LIDIO-LOG-DETENER-0005 CallePBId={0} RecorridoID={1}",callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             log.Info("LIDIO-LOG-DETENER-0005+1 Fecha EGRESO:{0}", camionLlamado.FechaEgreso);
-            if (camionLlamado == null)
+            if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
                 return;
             log.Info("LIDIO-LOG-DETENER-0006 CallePBId={0} RecorridoID={1}", callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
