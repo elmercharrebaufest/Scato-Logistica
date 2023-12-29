@@ -53,6 +53,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarAutomaticoGranos()
         {
+            log.Info("LIDIO-LLA-0001");
             var configuracionGeneral = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
             if (configuracionGeneral == null
                 || string.IsNullOrEmpty(configuracionGeneral.Valor)
@@ -63,10 +64,11 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (!repositorio.ExisteEspacioDisponibleParaLlamarEnCartel(CodigoMensajeCartelLed.LlamadoCallePreBalanza))
                 return;
-
+            log.Info("LIDIO-LLA-0002");
             var callesPreHidraulica = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(x => !x.Deshabilitada);
             foreach (var calle in callesPreHidraulica)
                 ValidarTipoLlamadoAutomaticoGrano(calle);
+            log.Info("LIDIO-LLA-0003");
         }
 
         private void ValidarTipoLlamadoAutomaticoGrano(CalleDto callePH)
@@ -77,6 +79,7 @@ namespace Molinos.Scato.Servicios.Impl
                 ValidarLlamadoPor1A1(callePH);
             else if (callePH.AutomatismoTipoLlamado.Codigo == Constantes.AutomatismoTipoLlamado.PorFila)
                 ValidarLlamadoPorFila(callePH);
+            log.Info("LIDIO-LLA-0004");
         }
 
         private void ValidarLlamadoPorPasoDirecto(CalleDto callePH)
@@ -160,12 +163,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLlamadoPor1A1(CalleDto callePH)
         {
+            log.Info("LIDIO-LLA-0005");
             if (repositorio.ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(callePH.Id, callePH.AutomatismoTipoLlamado.Codigo))
                 return;
-
+            log.Info("LIDIO-LLA-0006");
             if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
                 return;
-
+            log.Info("LIDIO-LLA-0007");
             var camionesEnCallesPB = new List<CallePorRecorridoDto>();
             var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
             foreach (var configuracion in configuraciones)
@@ -173,14 +177,15 @@ namespace Molinos.Scato.Servicios.Impl
                 var camiones = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
                 camionesEnCallesPB.AddRange(camiones);
             }
-
+            log.Info("LIDIO-LLA-0008");
             var camionLlamado = camionesEnCallesPB.OrderBy(x => x.FechaIngeso).FirstOrDefault();
             if (camionLlamado != null)
                 LlamarCamionPreBalanza(callePH.Id, camionLlamado, esCamionEnEspera: false);
-
+            log.Info("LIDIO-LLA-0009");
             var camionEnEspera = camionesEnCallesPB.OrderBy(x => x.FechaIngeso).Skip(1).FirstOrDefault();
             if (camionEnEspera != null)
                 LlamarCamionPreBalanza(callePH.Id, camionEnEspera, esCamionEnEspera: true);
+            log.Info("LIDIO-LLA-0010");
         }
 
         private void LlamarCamionPreBalanza(int callePHId, CallePorRecorridoDto camion, bool esCamionEnEspera)
@@ -290,7 +295,7 @@ namespace Molinos.Scato.Servicios.Impl
             log.Info("LIDIO-LOG-DETENER-0005 CallePBId={0} RecorridoID={1}",callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             log.Info("LIDIO-LOG-DETENER-0005+1 Fecha EGRESO:{0}", camionLlamado.FechaEgreso);
-            if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
+            if (camionLlamado == null)
                 return;
             log.Info("LIDIO-LOG-DETENER-0006 CallePBId={0} RecorridoID={1}", callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
