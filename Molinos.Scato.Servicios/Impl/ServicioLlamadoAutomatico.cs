@@ -289,13 +289,14 @@ namespace Molinos.Scato.Servicios.Impl
         {
             log.Info("LIDIO-LOG-DETENER-0005 CallePBId={0} RecorridoID={1}",callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             var camionLlamado = repositorio.ObtenerCallePorRecorrido(callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
-            if (camionLlamado == null || camionLlamado.FechaEgreso.HasValue)
+            log.Info("LIDIO-LOG-DETENER-0005+1 Fecha EGRESO:{0}", camionLlamado.FechaEgreso);
+            if (camionLlamado == null || !camionLlamado.FechaEgreso.HasValue)
                 return;
-            log.Info("LIDIO-LOG-DETENER-0006");
+            log.Info("LIDIO-LOG-DETENER-0006 CallePBId={0} RecorridoID={1}", callePreBalanzaPlayaInterna.CallePreBalanza.Id, callePreBalanzaPlayaInterna.RecorridoId.Value);
             LiberarCamionPreBalanza(callePreBalanzaPlayaInterna);
-            log.Info("LIDIO-LOG-DETENER-0007");
+            log.Info("LIDIO-LOG-DETENER-0007 Liberada:{0}", callePreBalanzaPlayaInterna.CallePreBalanza.Id);
             var camionEnEspera = repositorio.ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(callePreBalanzaPlayaInterna.CallePlayaInterna.Id);
-            log.Info("LIDIO-LOG-DETENER-0008");
+            log.Info("LIDIO-LOG-DETENER-0008 a Liberar: {0}",camionEnEspera.CallePreBalanza.Id);
             if (camionEnEspera != null)
                 LiberarCamionPreBalanza(camionEnEspera);
         }
