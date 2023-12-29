@@ -164,12 +164,6 @@ namespace Molinos.Scato.Servicios.Impl
         private void ValidarLlamadoPor1A1(CalleDto callePH)
         {
             log.Info("LIDIO-LLA-0005");
-            if (repositorio.ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(callePH.Id, callePH.AutomatismoTipoLlamado.Codigo))
-                return;
-            log.Info("LIDIO-LLA-0006");
-            if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
-                return;
-            log.Info("LIDIO-LLA-0007");
             var camionesEnCallesPB = new List<CallePorRecorridoDto>();
             var configuraciones = repositorio.ListarAutomatismoGrano().Where(x => x.Activo && x.CallePreHidraulicaId == callePH.Id);
             foreach (var configuracion in configuraciones)
@@ -177,6 +171,13 @@ namespace Molinos.Scato.Servicios.Impl
                 var camiones = repositorio.ListarCallePorRecorridoPorCalleId(configuracion.CallePreBalanzaId);
                 camionesEnCallesPB.AddRange(camiones);
             }
+            log.Info("LIDIO-LLA-0006");
+            if (repositorio.ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(callePH.Id, callePH.AutomatismoTipoLlamado.Codigo) && !camionesEnCallesPB.Any())
+                return;
+
+            log.Info("LIDIO-LLA-0007");
+            if (!repositorio.ValidarEspacioDisponibleEnCallePreHidraulica(callePH.Id))
+                return;
             log.Info("LIDIO-LLA-0008");
             var camionLlamado = camionesEnCallesPB.OrderBy(x => x.FechaIngeso).FirstOrDefault();
             if (camionLlamado != null)
