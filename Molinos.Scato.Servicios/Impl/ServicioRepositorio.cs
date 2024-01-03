@@ -10900,6 +10900,27 @@ namespace Molinos.Scato.Servicios.Impl
             return Obtener<Recorrido, RecorridoDto>(x => x.Id == recorridoId);
         }
 
+        public IList<RecorridoDto> ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos()
+        {
+            var recorridosEnCartel = this.RecorridosEnCartel(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
+
+            var primerosCamionesPorCalle = Listar<CallePorRecorrido, CallePorRecorridoDto>(x => x.Calle.TipoCalle == TipoCalle.NoGranos
+                                                && x.FechaEgreso == null && x.Recorrido.Calle != null && !recorridosEnCartel.Any(id => id == x.Recorrido.Id))
+                 .GroupBy(c => c.CalleId)
+                    .Select(g => new
+                    {
+                        Calle_Id = g.Key,
+                        Recorrido_Id = g.OrderBy(c => c.FechaIngeso).FirstOrDefault().RecorridoId,
+                        FechaIngresoMasAntigua = g.Min(c => c.FechaIngeso)
+                    });
+
+            var idsRecorridos = primerosCamionesPorCalle?.OrderBy(x => x?.FechaIngresoMasAntigua)?.Select(x => x.Recorrido_Id);
+
+            var recorridos =  Listar<Recorrido, RecorridoDto>(x => idsRecorridos.Contains(x.Id));
+
+            return recorridos;
+        }
+
         private IEnumerable<int> RecorridosEnCartel(string codigo)
         {
             var res = Listar<MensajeCartelLed, MensajeCartelLedDto>(x => x.Codigo == codigo && x.HistorialMensajeCartelLed.Recorrido != null);
@@ -10916,9 +10937,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var cantidadDeCamionesAsignados = repositorio.Contar<AsignacionNoGranoEnRecorrido>(x => x.Recorrido.Calle.Id == callePlayaInternaId);
 
+            var cantidadDeCamionesLlamados = repositorio.Contar<HistorialMensajeCartelLed>(x => x.Recorrido.Calle.Id == callePlayaInternaId);
+
             var cantidadDeEspaciosPorCalle = repositorio.Obtener<Calle>(x => x.Id == callePlayaInternaId).CantidadDeCamiones;
 
-            return (cantidadDeEspaciosPorCalle - cantidadDeCamionesAsignados);
+            return (cantidadDeEspaciosPorCalle - cantidadDeCamionesAsignados - cantidadDeCamionesLlamados);
         }
 
         public CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId)

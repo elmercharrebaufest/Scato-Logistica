@@ -334,16 +334,16 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void LlamarAutomaticoNoGranos()
         {
-            var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
+            var recorridos = repositorio.ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
 
-            if (cartelLed != null)
+            foreach (var recorrido in recorridos)
             {
-                var recorrido = repositorio.ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
+                var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
 
-                if (recorrido == null)
-                    return;
-
-                //validar que la patente de ese recorrido no este en el cartel?
+                if (cartelLed == null)
+                {
+                    break;                    
+                }
 
                 var lugaresDisponibles = repositorio.ObtenerDisponibilidadEnPlayaInternaNoGranos(recorrido.CalleId.Value);
 

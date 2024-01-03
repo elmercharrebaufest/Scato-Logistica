@@ -2961,6 +2961,9 @@ namespace Molinos.Scato.Servicios
         RecorridoDto ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
 
         [OperationContract]
+        IList<RecorridoDto> ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
+
+        [OperationContract]
         int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
 
         [OperationContract]
