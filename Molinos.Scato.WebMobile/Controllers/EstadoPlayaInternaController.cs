@@ -228,6 +228,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var response = new RespuestaEstandarDto();
             try
             {
+                
                 var callePreBalanza = servicio.ObtenerCalle(callePrebalanzaId);
                 if (!callePreBalanza.FechaLLamada.HasValue || !callePreBalanza.Bloqueada)
                 {
@@ -235,18 +236,16 @@ namespace Molinos.Scato.WebMobile.Controllers
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
-                var camionesEnPrebalanza = servicio.ListarCallePorRecorridoPorCalleId(callePrebalanzaId);
-
-                var primerCamionEnPrebalanza = camionesEnPrebalanza?.OrderBy(x => x.FechaIngeso).FirstOrDefault();
-                if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza != null)
+                var callePlayaInterna = servicio.ObtenerCallePrebalanzaPlayaInterna(callePrebalanzaId);
+                if (callePlayaInterna == null)
                 {
-                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El camion {primerCamionEnPrebalanza.Patente} no tiene una calle de Playa Interna asignada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"La {callePreBalanza.Nombre} no está siendo llamada.", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
                 servicioComandos.Ejecutar(new EliminarCallePreBalanzaPlayaInterna()
                 {
-                    CallePlayaInternaId = primerCamionEnPrebalanza.CalleRecorridoId.Value,
+                    CallePlayaInternaId = callePlayaInterna.CallePlayaInterna.Id,
                     CallePreBalanzaId = callePrebalanzaId
                 });
 
