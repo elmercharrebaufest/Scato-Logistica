@@ -315,9 +315,14 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var recorridos = repositorio.ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
 
+            log.Info("fer-nogranos01-cantidadRecorridos" + recorridos.Count());
+
             foreach (var recorrido in recorridos)
             {
+                
                 var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
+
+                log.Info("fer-nogranos02-cartelDisponible:" + (cartelLed == null).ToString());
 
                 if (cartelLed == null)
                 {
@@ -326,6 +331,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                 var lugaresDisponibles = repositorio.ObtenerDisponibilidadEnPlayaInternaNoGranos(recorrido.CalleId.Value);
 
+                log.Info("fer-nogranos03-lugaresDisponibles:" + lugaresDisponibles);
                 if (lugaresDisponibles > 0)
                 {
                     var callePorRecorridoNoGranos = repositorio.ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(recorrido.Id);
@@ -353,6 +359,8 @@ namespace Molinos.Scato.Servicios.Impl
                             SegundosDeEspera = resultadoInsertarCalleCartelLed.SegundosDeEspera,
                         });
                     }
+
+                    log.Info("fer-nogranos04 llamo a camion:" + recorrido.Id);
                 }
             }
         }
