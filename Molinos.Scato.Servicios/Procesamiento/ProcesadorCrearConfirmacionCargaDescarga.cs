@@ -1,5 +1,4 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
-using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
@@ -21,21 +20,33 @@ namespace Molinos.Scato.Servicios.Procesamiento
         public override Resultado Ejecutar(CrearConfirmacionCargaDescarga comando)
         {
             var resultado = new Resultado();
-            Validar(resultado, comando.Dto.RecorridoId);
-            if(resultado.HayErrores)
-                return resultado;
-
+            
             try
             {
-                var confirmacion = new ConfirmacionCargaDescarga()
+                var confirmacionBase = Repositorio.Obtener<ConfirmacionCargaDescarga>(x => x.Recorrido.Id == comando.Dto.RecorridoId);
+
+               
+
+                if(confirmacionBase == null)
                 {
-                    FechaCreacion = DateTime.Now,
-                    Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.Dto.RecorridoId),
-                    Confirmado = comando.Dto.Confirmado,
-                    PendienteConfirmacion = comando.Dto.PendienteConfirmacion
-                };
-                Repositorio.Agregar(confirmacion);
+                    var confirmacion = new ConfirmacionCargaDescarga()
+                    {
+                        FechaCreacion = DateTime.Now,
+                        Recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.Dto.RecorridoId),
+                        Confirmado = comando.Dto.Confirmado,
+                        PendienteConfirmacion = comando.Dto.PendienteConfirmacion
+                    };
+                    Repositorio.Agregar(confirmacion);
+                }
+                else
+                {
+                    confirmacionBase.Confirmado = comando.Dto.Confirmado;
+                    confirmacionBase.PendienteConfirmacion = comando.Dto.PendienteConfirmacion;
+                }
+
+                
                 Repositorio.GuardarCambios();
+                
             }
             catch (Exception ex)
             {

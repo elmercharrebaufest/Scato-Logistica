@@ -34,7 +34,10 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public ActionResult Index()
         {
-            var centroId = int.Parse(ClaimsPrincipal.Current.GetUserClaim("CentroId").Value);           
+            var centroId = int.Parse(ClaimsPrincipal.Current.GetUserClaim("CentroId").Value);      
+            ViewBag.EstadoMateriales = servicio.ListarEstadoPlanta(centroId, true, true);
+            ViewBag.MostrarIngresos = true;
+
             return View(servicio.ListarEstadoCupos(centroId));
         }
     }

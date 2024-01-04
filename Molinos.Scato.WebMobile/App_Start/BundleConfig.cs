@@ -42,7 +42,15 @@ namespace Molinos.Scato.WebMobile.App_Start
                         "~/Content/themes/base/jquery.ui.theme.css",
                         "~/Content/themes/base/jquery.ui.autocomplete.css"));
 
-           
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                     "~/Scripts/jquery.validate.unobtrusive.js",
+                     "~/Scripts/scatocommon.validate.js"
+                     ));
+
+
+
+
+
         }
     }
 }

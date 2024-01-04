@@ -21,6 +21,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -182,6 +183,14 @@ namespace Molinos.Scato.Web.Controllers
                     return View(orden);
                 }
 
+                if (vehiculos.Any(vehiculo =>!patenteValida(vehiculo.Patente) || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado) && !patenteValida(vehiculo.PatenteAcoplado)) || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado2) && !patenteValida(vehiculo.PatenteAcoplado2))))
+                {
+                    log.Debug("No se puede crear la CP {0}. Alguna de las patentes no respeta el formato ABC123 o AB123CD");
+                    ModelState.AddModelError("", Textos.CargaDeCupo_Patente_ErrorFormato);
+                    SetearVista(workflowObj, datosUsuario.CentroId);
+                    return View(orden);
+                }
+
                 if (vehiculos.Count() != vehiculos.GroupBy(x => x.Patente).Count())
                 {
                     log.Debug("No se puede crear la CP {0}. Alguna de las patentes está duplicada");
@@ -328,6 +337,13 @@ namespace Molinos.Scato.Web.Controllers
 
             SetearVista(workflowObj, datosUsuario.CentroId);
             return View(orden);
+        }
+
+        private bool patenteValida(string patente)
+        {
+            if (string.IsNullOrEmpty(patente)) return false;
+            Regex patenteRegex = new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)");
+            return patenteRegex.IsMatch(patente.ToUpper());
         }
 
         public ActionResult MostrarCamion(CartaPorteDto model)

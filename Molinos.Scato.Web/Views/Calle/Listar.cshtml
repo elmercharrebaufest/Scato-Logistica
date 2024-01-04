@@ -10,7 +10,7 @@
 
     @Html.Grilla(items,
         grilla => grilla.Columns(
-        grilla.ColumnaEliminarModificar(Html, "Calle"),
+        grilla.ColumnaEliminarModificarCalles(Html, "Calle"),
         grilla.Columna("Codigo", Textos.Codigo),
         grilla.Columna("Nombre", Textos.Descripcion),
         grilla.Columna("TipoCalle", "Tipo Calle"),

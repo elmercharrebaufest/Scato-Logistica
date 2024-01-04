@@ -1,0 +1,141 @@
+﻿@model AutomatismoGranosViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad;
+
+@{
+    ViewBag.Title = Textos.TableroComandoLogistica_Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/scripts/tableroComandoLogistica.js")"></script>
+<script>
+    urlModificarEstadoCallePB = '@Url.Action("ModificarEstadoCallePB", "TableroComandoLogistica")';
+    urlModificarEstadoCallePH = '@Url.Action("ModificarEstadoCallePH", "TableroComandoLogistica")';
+    urlModificarEstadoHidraulica = '@Url.Action("ModificarEstadoHidraulica", "TableroComandoLogistica")';
+    urlModificarCallePB = '@Url.Action("ModificarConfiguracionCallePB", "TableroComandoLogistica")';
+    urlModificarCallePH = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlFileJavaScript = '@Url.Content("~/scripts/configuracionAutomatismo.js")';
+    urlListarCallesPreHidraulicas = '@Url.Action("ListarCallesPreHidraulicas", "TableroComandoLogistica")';
+    urlModificarEstadoEsEscalableHidraulica = '@Url.Action("ModificarEstadoEsEscalableHidraulica", "TableroComandoLogistica")';
+    urlEditarCallePH = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlCambiarEstadoCallePB = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlCambiarEstadoCallePH = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlCambiarEstadoHidraulica = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlCambiarEstadoCamionEscalable = '@Url.Action("ModificarConfiguracionCallePH", "TableroComandoLogistica")';
+    urlActualizarEstadoHidraulica = '@Url.Action("ActualizarEstadoHidraulica", "TableroComandoLogistica")';
+    urlListarAutomatismoGrano = '@Url.Action("ListarAutomatismoGrano", "TableroComandoLogistica")';
+    urlActualizarEsEscalableHidraulica = '@Url.Action("ActualizarEsEscalableHidraulicas", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoLogistica")';
+    urlActualizarEstadoAutomatismoLlamadoPreBalanza = '@Url.Action("ActualizarEstadoAutomatismoLlamadoPreBalanza", "TableroComandoLogistica")';
+</script>
+
+<div class="m-2">
+    <h1 class="text-center">@Textos.Tablero_ComandoLogistica</h1>
+</div>
+
+<div class="mx-0" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoLogistica", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoLogistica", null, new { @class = "nav-link active" })
+                </li>
+
+                <li class="nav-item ml-md-auto ml-3 mt-md-1">
+                    <div class="d-flex flex-column align-items-start flex-md-row">
+                        @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
+                        {
+                            <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                <label class="switch">
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    <input type="checkbox" id="llamadoAPreBalanza" @(Model.AutomatismoLLamadoPrebalanza ? "checked='checked'" : "")
+                                           @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso)) ? @Html.Raw("") : @Html.Raw("disabled"))>
+                                    <span class="slider round"></span>
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                </label>
+                                <span class="ml-2 mr-md-4 mt-1">Automatismo Llamado Pre Balanza</span>
+                            </div>
+                        }
+                        @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                        {
+                            <div class="d-flex justify-content-center justify-content-md-start mb-md-0">
+                                <label class="switch">
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("<div id='deshabilitado'>"))
+                                    <input type="checkbox" id="automatismoGeneral" @(Model.AutomatismoGeneral ? "checked='checked'" : "")
+                                           @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ? @Html.Raw("") : @Html.Raw("disabled"))>
+                                    <span class="slider round"></span>
+                                    @((PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica ))?@Html.Raw(""):@Html.Raw("</div>"))
+                                </label>
+                                <span class="ml-2 mr-md-2 mt-1">@Textos.AutomatismoLLamadoVolcable</span>
+                            </div>
+                        }
+                    </div>
+                </li>
+            </ul>
+
+            <div class="tab-content overflow-auto">
+                <div id="panel" class="tab-pane fade show active">
+                    <div class="container" style="max-width:1400px">
+                        <div class="row mt-2">
+                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.GaritaIngreso))
+                            {
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-balanza">
+
+                                    <h4 class="text-center">Calles Pre Balanza</h4>
+                                    <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                        @Html.Partial("_ListarCallePreBalanza")
+                                    </div>
+                                </div>
+                            }
+                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                            {
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-calle-pre-hidraulica">
+
+                                    <h4 class="text-center">Calles Pre Hidráulica</h4>
+                                    <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                        @Html.Partial("_ListarCallePreHidraulica")
+                                    </div>
+                                </div>
+                            }
+                            @if (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica))
+                            {
+                                <div class="col-sm-12 col-md-4 flex-fill" id="listado-hidraulicas">
+                                    <h4 class="text-center">Hidráulica</h4>
+                                    <div class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                        @Html.Partial("_ListarHidraulica")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DetalleAutomatismo"></div>
+
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+
+    .contenedor {
+        border: 1px solid;
+        margin-bottom: 20px;
+    }
+</style>

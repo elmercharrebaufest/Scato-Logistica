@@ -187,6 +187,8 @@
     <Content Include="bfdev258-Branch.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AdministradorDeCalles.svc" />
+    <Content Include="ServicioLlamadoAutomatico.svc" />
     <Content Include="ServicioEstadoPuesto.svc" />
     <Content Include="FirmaProvider.svc" />
     <Content Include="ServicioSuscriptor.svc" />

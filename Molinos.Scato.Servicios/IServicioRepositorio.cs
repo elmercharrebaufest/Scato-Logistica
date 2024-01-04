@@ -76,7 +76,7 @@ namespace Molinos.Scato.Servicios
         int? ObtenerTiempoMaximoCentro(int id);
 
         [OperationContract]
-        string ObtenerCentroCodigoSap(int id);
+        string ObteneCodigoSapPorCentroId(int id);
 
         [OperationContract]
         CaracteristicasAnalizadasDto ObtenerCaracteristicasAnalizadasPorRecorridoId(int recorridoId);
@@ -595,7 +595,7 @@ namespace Molinos.Scato.Servicios
         IList<CaladoPorCaracteristicaDto> ListarCaladoPorCaracteristicas(int caladoId);
 
         [OperationContract]
-        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA , bool esSojaIMPO);
+        IList<CalleDto> ObtenerCallesDeCallesPorRecorridoSegunMaterial(int materialId, int calleId, TipoCalidad calidadCamion, bool esSojaEPA, bool esSojaIMPO);
 
         [OperationContract]
         ListaPaginada<CaladoPorCaracteristicaDto> ListarPaginadoCaladoPorCaracteristica(int caladoId, Paginacion paginacion);
@@ -935,6 +935,12 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ListarAlmacenesPorMaterialFiltrado(int materialId);
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesPorMaterialSinFiltro(int materialId);
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesNoGranos();
 
         [OperationContract]
         TransmisionASapDto ObtenerTransmisionASap(int id);
@@ -2460,7 +2466,7 @@ namespace Molinos.Scato.Servicios
         bool ExistePagoRealizado(string patente);
 
         [OperationContract]
-        IList<MensajeCartelLedDto> ObtenerMensajesCartelLed(string codigo);
+        IList<MensajeCartelLedDto> ListarMensajesCartelLed(string codigo);
 
         [OperationContract]
         IList<SentidoManoDeEmbarqueDto> ListarSentidoManoDeEmbarques();
@@ -2766,7 +2772,7 @@ namespace Molinos.Scato.Servicios
         int ObtenerOrdenCircular(string codigo);
 
         [OperationContract]
-        int ObtenerCantidadCamionesEnCallePreBalanza(int calleId);
+        int ObtenerCantidadCamionesLlamadosEnCallePreBalanza(int callePlayaInternaId);
 
         [OperationContract]
         List<CalleDto> ListarCallesPreBalanzaPorCallePlayaInternaId(int callePlayaInternaId);
@@ -2841,17 +2847,14 @@ namespace Molinos.Scato.Servicios
         int ObtenerCalleInicial(Guid instanciaWorkflow);
 
         [OperationContract]
-        CalleDto ObtenerCallePrioritaria();
-
-        [OperationContract]
-        bool CalleEstaDisponible(int calleId);
+        bool EstaDisponibleCalle(int calleId);
 
         [OperationContract]
         IList<PuntoDeCargaDto> ListarPuntoDeCarga();
 
         [OperationContract]
-        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle,int materialId);
-        
+        bool ExisteCalleConEspacioParaAsignarSegunTipoCalleYMaterial(TipoCalle tipoCalle, Guid workflowInstance);
+
         [OperationContract]
         bool ExisteExcepcionAlControlProveedorParaCartaPorte(int materialId, int proveedorId, int centroId, DateTime fecha, int? centroDestinoId, int? proveedorDestinoId);
 
@@ -2860,8 +2863,8 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         int ObtenerMaterialIdPorInstanceId(Guid instanceId);
-        
-		[OperationContract]
+
+        [OperationContract]
         ListaPaginada<ComercialDto> ListarPaginadoComerciales(string filtro, Paginacion paginacion);
 
         [OperationContract]
@@ -2878,6 +2881,135 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         List<ComercialDto> ListarComerciales();
-    }
+
+        [OperationContract]
+        IList<TipoVariedadPorMaterialDto> ListarTipoVariedadPorMaterial(int materialId);
+
+        [OperationContract]
+        IList<TipoVariedadDto> ListarTipoVariedad();
+
+        [OperationContract]
+        List<int> ListarIdCallesNoEditables();
+
+        [OperationContract]
+        InfoCalleDto ObtenerInfoCalle(int idCalle);
+
+        [OperationContract]
+        TipoVariedadDto[] ObtenerVariedadPorTipoMaterial(int idMaterial);
+
+        [OperationContract]
+        int? ObtenerVariedadIdPorMaterial(int materialId, string titularCP = null, bool esEpa = false, bool esSustentable = false);
+
+        [OperationContract]
+        IList<AutomatismoGranoDto> ListarAutomatismoGrano();
+
+        [OperationContract]
+        bool ExisteCamionesEnCalle(int calleId);
+
+        [OperationContract]
+        AutomatismoGranoDto ObtenerAutomatismoGranos(int id);
+
+        [OperationContract]
+        AutomatismoGranoDto ObtenerAutomatismoGranoPorRecorridoGuid(Guid workflowInstanceId);
+        
+        [OperationContract]
+        List<AutomatismoNoGranoDto> ListarAutomatismoNoGrano();
+
+        [OperationContract]
+        IList<CalleDto> ListarCallesAutomatismoActivoPorTipoCalle(TipoCalle tipo);
+
+        [OperationContract]
+        IList<HistorialMensajeCartelLedDto> ListarCamionesLlamados();
+
+        [OperationContract]
+        IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, bool esNoGranos, int idCalleActual);
+
+        [OperationContract]
+        PuntoDeCargaDto ObtenerPuntoDeCarga(int id);
+
+        [OperationContract]
+        AutomatismoNoGranoDto ObtenerAutomatismoNoGrano(int id);
+
+        [OperationContract]
+        IList<PuntoDeCargaDto> ListarPuntosDeCargaActivosAutomatismoNoGrano();
+
+        [OperationContract]
+        IList<AlmacenDto> ListarAlmacenesActivosAutomatismoNoGrano();
+
+        [OperationContract]
+        IList<CalleDto> ListarCallesPlayaInternaAutomatismoDisponibles();
     
+		[OperationContract]    
+        AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);
+
+        [OperationContract]
+        bool ValidarDisponibilidadAsignacionEnCallePreBalanza(int callePBId, int callePHId);
+
+        [OperationContract]
+        CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG);
+
+        [OperationContract]
+        AutomatismoNoGranoDto ObtenerAutomatismoNoGranoActivoPorMaterialId(int materialId);
+
+        [OperationContract]
+        int? ObtenerCallePlantaIdPorMaterialId(int materialId);
+
+        [OperationContract]
+        MensajeCartelLedDto ObtenerCartelDisponible(string codigo);
+
+        [OperationContract]
+        RecorridoDto ObtenerPrimerRecorridoDisponibleParaLlamadoAutomaticoNoGranos();
+
+        [OperationContract]
+        IList<RecorridoDto> ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
+
+        [OperationContract]
+        int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId);
+
+        [OperationContract]
+        int ObtenerMaterialIdPorCalleId(int calleId);
+
+        [OperationContract]
+        bool ExisteAsigacionGranoEnRecorrido(int recorridoId);
+
+        [OperationContract]
+        PuestosDeCargaDescargaDto ObtenerPuestoDeCargaDescarga(int puestoId);
+
+        [OperationContract]
+        bool EstaDisponibleParaLlamadoAutomaticoHidraulica(int hidraulicaId);
+
+        [OperationContract]
+        IList<AutomatismoTipoLlamadoDto> ListarAutomatismoTipoLlamado();
+
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivoPorPuntoDeCarga(int puntoDeCargaId);
+
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoActivos();
+        
+        [OperationContract]
+        bool ValidarEspacioDisponibleEnCallePreHidraulica(int callePlayaInternaId);
+
+        [OperationContract]
+        int ObtenerCantidadCamionesEnCallePreHidraulica(int callePlayaInternaId);
+
+        [OperationContract]
+        bool ExisteEspacioDisponibleParaLlamarEnCartel(string codigo);
+
+        [OperationContract]
+        bool ExisteLlamadoCallePreBalanzaPorTipoDeLlamado(int callePHId, string codigoTipoLlamado);
+
+        [OperationContract]
+        IList<CallePreBalanzaPlayaInternaDto> ListarCallePreBalanzaLlamadasPorAutomatismo();
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerCallePorRecorrido(int calleId, int recorridoId);
+
+        [OperationContract]
+        CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePHId);
+    }
+
 }

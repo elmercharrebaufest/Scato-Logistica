@@ -8,6 +8,7 @@
 	[EsSojaSustentable]     BIT            NOT NULL default 0,
     [Centro_Id]        INT            NULL,
     [EPA]     BIT            NOT NULL default 0,
+    [EstadoAutomatismo] BIT NULL DEFAULT 0, 
     CONSTRAINT [PK_dbo.Almacen] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_dbo.Almacen_dbo.Centro_Centro_Id] FOREIGN KEY ([Centro_Id]) REFERENCES [dbo].[Centro] ([Id])
 );

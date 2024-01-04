@@ -1,0 +1,36 @@
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.Seguridad
+@using Molinos.Scato.Dominio.Seguridad;
+@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+@model AutomatismoGranosViewModel
+
+@Html.Grilla(Model.ListaAutomatismoGrano, grilla => grilla.Columns(
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica)) ?
+            grilla.ColumnaEliminarModificarModal(Html, "TableroComandoLogistica") :
+            (PermisosHelper.Is(PermisosScato.GaritaIngreso) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+                grilla.ColumnaModificarModalEntidad(Html, "TableroComandoLogistica"):
+                grilla.Column("", "", c => @Html.Raw("")),
+        grilla.Column("CallePBDescripcion", "Calle PB"),
+        grilla.Column("CallePHDescripcion", "Calle PH"),
+        grilla.Column("CallePHTipoLlamadoDescripcion", "Tipo de Llamado"),
+        PermisosHelper.Is(PermisosScato.SupervisorLogistica) ?
+            grilla.ColumnaSwitch("Activo", "Llamado a Volcable") :
+            (PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+                grilla.Columna("Activo", "Llamado a Volcable", c => FormattingHtmlHelper.Formatted(c.Activo)) :
+                grilla.Column("", "", c => @Html.Raw("")),
+        grilla.Column("MaterialDescripcion", "Material"),
+        grilla.Column("VariedadDescripcion", "Variedad"),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("HidraulicaDescripcion", "Hidraulica") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("AlmacenDescripcion", "Almacén") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta)) ?
+            grilla.Column("FiltraCalidad", "Filtra Calidad") :
+            grilla.Column("", "", c => @Html.Raw("")),
+        (PermisosHelper.Is(PermisosScato.SupervisorLogistica) || PermisosHelper.Is(PermisosScato.PlayeroPlanta) || PermisosHelper.Is(PermisosScato.PuestoComandoLogistica)) ?
+            grilla.Column("EsCamionEscalable", "Camión Escalable") :
+            grilla.Column("", "", c => @Html.Raw(""))
+    ))

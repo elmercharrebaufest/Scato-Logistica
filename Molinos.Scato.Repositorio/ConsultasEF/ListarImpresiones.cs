@@ -100,7 +100,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 else // Si patente tiene valor, buscar por Dominio
                 {
                     consulta = contexto.Set<CartaPorteElectronica>()
-                        .Where(q => q.Dominio.Contains(patente) && q.Pdf != null);
+                        .Where(q => (q.Dominio.StartsWith(patente + ",") || q.Dominio == patente) && q.Pdf != null);
                 }
 
                 var impresionCPE = consulta.Select(q => new ImpresionDto()

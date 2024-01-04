@@ -17,11 +17,13 @@
     [RangoCaracteristicaCalidadMinimo] DECIMAL (18, 2) NULL,
     [RangoCaracteristicaCalidadMaximo] DECIMAL (18, 2) NULL,
     [Posicion] INT NULL, 
-    [EsPasoDirecto] BIT NOT NULL DEFAULT ((0)), 
+    [ActivoAutomatico] bit NOT NULL DEFAULT 0,
+    [AutomatismoTipoLlamado_Id] INT NULL, 
     CONSTRAINT [PK_dbo.Calle] PRIMARY KEY CLUSTERED ([Id] ASC) WITH (STATISTICS_NORECOMPUTE = ON),
     CONSTRAINT [FK_dbo.Calle_dbo.Calle_CalleCalado_Id] FOREIGN KEY ([CalleCalado_Id]) REFERENCES [dbo].[Calle] ([Id]),
     CONSTRAINT [FK_dbo.Calle_dbo.Calle_CaracteristicaDeCalidad_Id] FOREIGN KEY ([CaracteristicaDeCalidad_Id]) REFERENCES [dbo].[CaracteristicaDeCalidad] ([Id]),
     CONSTRAINT [FK_dbo.Calle_dbo.Calle_Centro_Id] FOREIGN KEY ([CentroId]) REFERENCES [dbo].[Centro] ([Id]),
-    CONSTRAINT [FK_dbo.Calle_dbo.Calle_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id])
+    CONSTRAINT [FK_dbo.Calle_dbo.Calle_Material_Id] FOREIGN KEY ([Material_Id]) REFERENCES [dbo].[Material] ([Id]),
+    CONSTRAINT [FK_dbo.Calle_dbo.Calle_AutomatismoTipoLlamado_Id] FOREIGN KEY ([AutomatismoTipoLlamado_Id]) REFERENCES [dbo].[AutomatismoTipoLlamado] ([Id])
 );
 

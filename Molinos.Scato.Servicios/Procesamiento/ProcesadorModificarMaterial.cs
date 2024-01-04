@@ -53,9 +53,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             materialEditado.CodigoGranoPadre = comando.Dto.CodigoGranoPadre;
             materialEditado.TipoEmbalaje = Repositorio.Obtener<TipoEmbalaje>(comando.Dto.TipoEmbalajeId.GetValueOrDefault());
 
-            if (comando.Dto.VariedadId.HasValue)
+            if (comando.Dto.TipoVariedadId.HasValue)
             {
-                materialEditado.Variedad = Repositorio.Obtener<Variedad>(comando.Dto.VariedadId.Value);
+                materialEditado.Variedad = Repositorio.Obtener<Variedad>(comando.Dto.TipoVariedadId.Value);
             }
 
             if (comando.MaterialPorCentroDto.Id > 0)
@@ -116,7 +116,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Error("CodigoSAP", Textos.Material_CodigoSAPExistente);
                 }
             }
-            if (comando.Dto.EsUva && !comando.Dto.VariedadId.HasValue)
+            if (comando.Dto.EsUva && !comando.Dto.TipoVariedadId.HasValue)
             {
                 resultado.Error("VariedadId", Textos.Error_Requerido);
             }

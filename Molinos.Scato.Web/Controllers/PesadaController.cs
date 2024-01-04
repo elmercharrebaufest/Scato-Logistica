@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Web.Mvc;
-using BrockAllen.CookieTempData;
+﻿using BrockAllen.CookieTempData;
 using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
+using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Helpers;
 using Molinos.Scato.Dominio.Recursos;
@@ -21,6 +15,12 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Molinos.Scato.Web.Seguridad;
 using Ninject.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -62,7 +62,7 @@ namespace Molinos.Scato.Web.Controllers
             var centro = recorrido.Centro;
             SetearVista(recorrido, datosUsuario, automatizadoFull);
 
-            // Chequea si la balanza que se asignó en puesto comando es la balanza del puesto 
+            // Chequea si la balanza que se asignó en puesto comando es la balanza del puesto
 
             var almacen = new AlmacenDto();
             if (recorrido.Material != null && recorrido.Almacen == null)
@@ -166,8 +166,11 @@ namespace Molinos.Scato.Web.Controllers
                     var resultadoActividad = servicioWf.Pesada(pesada.WorkflowInstanceId, pesada.Peso.Value, pesada.AlmacenId, pesada.HidraulicaId, pesada.CalleId, pesada.BalanzaId, pesada.ProximaBalanzaId, pesada.ControlPesada, DateTime.Now, controlRecorrido);
                     if (!resultadoActividad.HayErrores) //Peso tomado correctamente
                     {
-                        comando.Ejecutar(new CrearBalanzaModificarModalidad { Dto = 
-                            new BalanzaModificacionModalidadDto {
+                        comando.Ejecutar(new CrearBalanzaModificarModalidad
+                        {
+                            Dto =
+                            new BalanzaModificacionModalidadDto
+                            {
                                 Modalidad = balanza.Modalidad,
                                 BalanzaId = balanza.Id,
                                 BalanzaNombre = balanza.Nombre,
@@ -196,14 +199,28 @@ namespace Molinos.Scato.Web.Controllers
         [DatosUsuario]
         private void SetearVista(RecorridoDto recorrido, DatosUsuario datosUsuario, bool automatizadoFull)
         {
-            if(PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
+            var automatismoAsignado = servicio.ExisteAsigacionGranoEnRecorrido(recorrido.Id);
+            ViewBag.EsAutomatismo = automatismoAsignado;
+
+            if (automatismoAsignado)
+            {
+                ViewBag.Automatismo_Almacen = new List<AlmacenDto> { recorrido.Almacen }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.DescripcionCorta);
+                ViewBag.Automatismo_Calle = new List<CalleDto> { servicio.ObtenerCalle(recorrido.CalleId ?? 0) }.ToSelectList(x => x.Id.ToString(CultureInfo.InvariantCulture), x => x.Nombre);
+                ViewBag.Automatismo_Hidraulicas = recorrido.HidraulicasId.Select(m => servicio.ObtenerPuestoDeCargaDescarga(m)).Select(x => new SelectListItem
+                {
+                    Text = x.Nombre,
+                    Value = x.Id.ToString()
+                });
+            }
+            if (PermisosHelper.Is(PermisosScato.VerBalanzasPesada))
             {
                 ViewBag.Balanzas = automatizadoFull ?
                     (new List<BalanzaDto>() { servicio.ObtenerBalanzaPorPuestoDeTrabajoAutomatico(datosUsuario.PuestoDeTrabajoId) }).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
                     PermisosHelper.Is(PermisosScato.BalanzaAutomatica) ?
                     servicio.ListarBalanzasActivas(datosUsuario.CentroId, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre) :
                 servicio.ListarBalanzasActivasPorNombrePc(datosUsuario.CentroId, datosUsuario.NombrePc, recorrido.TipoVehiculo).OrderBy(o => o.Nombre).ToSelectList(f => f.Id.ToString(CultureInfo.InvariantCulture), f => f.Nombre);
-            } else
+            }
+            else
             {
                 ViewBag.Balanzas = null;
             }
@@ -220,7 +237,7 @@ namespace Molinos.Scato.Web.Controllers
                                 ? servicio.ListarAlmacenesPorMaterialYCentro(recorrido.Centro.Id, recorrido.Material.Id, recorrido.EsSustentable)
                                 : servicio.ListarAlmacenesPorCentroYesSustentable(recorrido.Centro.Id, recorrido.EsSustentable);
 
-            almacenes = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA ? 
+            almacenes = recorrido.Establecimiento != null && recorrido.Establecimiento.EsSojaEPA ?
                                     servicio.ListarAlmacenesPorMaterialYCentroEPA(datosUsuario.CentroId, recorrido.Material.Id)
                                     : almacenes;
 
@@ -299,7 +316,6 @@ namespace Molinos.Scato.Web.Controllers
                         JsonRequestBehavior.AllowGet);
         }
 
-
         [DatosUsuario]
         public ActionResult TomarPeso(int balanzaid, DatosUsuario datosUsuario)
         {
@@ -346,7 +362,6 @@ namespace Molinos.Scato.Web.Controllers
                 log.Error(ex, "Error en tomar peso para la balanza con Id {0}", balanzaid);
                 return Json(Textos.Pesada_AutomaticaError, JsonRequestBehavior.AllowGet);
             }
-
         }
 
         private ResultadoEjecutar EjecutarPesaje(string codigoCabezal)
@@ -373,7 +388,6 @@ namespace Molinos.Scato.Web.Controllers
                     log.Error(ex, "Error en tomar peso para la balanza con cabezal {0}", codigoCabezal);
                     resultado = null;
                 }
-
             }
             return resultado;
         }
@@ -427,6 +441,21 @@ namespace Molinos.Scato.Web.Controllers
                     MensajeError = Textos.Pesada_AutomaticaError
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private bool ObtenerEstadoGeneralAutomatismoGrano()
+        {
+            var configuracionAutomatismo = servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+            var result = false;
+            if (configuracionAutomatismo != null)
+            {
+                bool valor = false;
+                if (bool.TryParse(configuracionAutomatismo.Valor, out valor))
+                {
+                    result = valor;
+                }
+            }
+            return result;
         }
     }
 }

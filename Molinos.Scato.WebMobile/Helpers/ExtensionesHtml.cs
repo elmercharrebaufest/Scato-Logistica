@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Recursos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -33,6 +34,13 @@ namespace Molinos.Scato.WebMobile.Helpers
             }
             html.Append("</a>");
             return MvcHtmlString.Create(html.ToString());
+        }
+
+        public static MvcHtmlString BotonAccionJS(this HtmlHelper helper, string textoBoton, string functionName, int id, string style = "", string iconoModificar = "fas fa-edit")
+        {
+            var linkModificar = $"<a class='{style} ajax-editar-link' href='javascript:;' title='{textoBoton}' onclick='{functionName}({id});'><i class='{iconoModificar}'></i></a>";
+            
+            return MvcHtmlString.Create($"<span>{linkModificar}</span>");
         }
 
         public static MvcHtmlString CheckBoxLink(this HtmlHelper helper, string textoBoton, bool chequeado, string action, string controller, Object parameters, string style = "")
@@ -210,6 +218,8 @@ namespace Molinos.Scato.WebMobile.Helpers
             }
             return displayText;
         }
+
+
 
     }
 }

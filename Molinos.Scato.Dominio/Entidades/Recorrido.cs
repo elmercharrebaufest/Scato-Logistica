@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Molinos.Scato.Dominio.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using Molinos.Scato.Dominio.Enums;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -11,6 +11,7 @@ namespace Molinos.Scato.Dominio.Entidades
     {
         [Key]
         public virtual int Id { get; set; }
+
         public virtual Workflow Workflow { get; set; }
         public virtual Guid InstanciaWorkflow { get; set; }
         public virtual Centro Centro { get; set; }
@@ -67,16 +68,22 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual decimal DescuentoEnKgOncca { get; set; }
         public virtual bool CorrespondeCaladoEnPlanta { get; set; }
         public virtual CaladoEnPlanta CaladoEnPlanta { get; set; }
+
         //EF no permite hacer inverse property en una relacion one to one
         [InverseProperty("Recorrido")]
         public virtual ICollection<CaracteristicasAnalizadas> CaracteristicasAnalizadasList { get; set; }
-        public CaracteristicasAnalizadas CaracteristicasAnalizadas { get
+
+        public CaracteristicasAnalizadas CaracteristicasAnalizadas
+        {
+            get
             {
                 return CaracteristicasAnalizadasList != null ? CaracteristicasAnalizadasList.FirstOrDefault() : null;
-            } 
+            }
         }
+
         [InverseProperty("Recorrido")]
         public virtual ICollection<CallePorRecorrido> CallePorRecorridos { get; set; }
+
         public virtual bool EnvioMuestraAuditoriaCamara { get; set; }
         public virtual bool VehiculoDemorado { get; set; }
         public virtual bool EstablecimientoDemorado { get; set; }
@@ -85,5 +92,9 @@ namespace Molinos.Scato.Dominio.Entidades
         public bool LlegoEnHorario { get; set; }
         public bool PasoPorContingenciaPesoExc { get; set; }
         public virtual PuntoDeCarga PuntoDeCarga { get; set; }
+
+        [Column("TipoVariedad_Id")]
+        public virtual int? TipoVariedadId { get; set; }
+        public TipoVariedad TipoVariedad { get; set; }
     }
 }

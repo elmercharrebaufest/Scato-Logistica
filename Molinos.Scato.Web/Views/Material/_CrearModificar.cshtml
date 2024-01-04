@@ -10,7 +10,10 @@
     // var almacenes = (IEnumerable<SelectListItem>) ViewBag.Almacenes;
     var almacenesList = Json.Encode((AlmacenDto[])ViewBag.AlmacenesList);
     var almacenesTodos = Json.Encode((AlmacenDto[])ViewBag.AlmacenesTodos);
+    var variedadesList = Json.Encode((TipoVariedadDto[])ViewBag.VariedadesList ?? new TipoVariedadDto[0]);
+    var variedadesTodos = Json.Encode((TipoVariedadDto[])ViewBag.TodasVariedades);
     var defaultAlmacen = Textos.Default_Almacen;
+    var defaultVariedad = Textos.Default_Variedad;
 
     var analisisInterno = (int?)ViewBag.AnalisisInterno;
     var muestraAuditoria = (decimal?)ViewBag.MuestraAuditoria;
@@ -29,6 +32,15 @@
     var embalaje = (IEnumerable<SelectListItem>)ViewBag.Embalajes;
 
 }
+
+<script>
+    urlValidarVariedad = '@Url.Action("EsVariedadEnAutomatismo", "Material")';
+    infoAlertaVariedadEnAutomatismo = '@Textos.Alerta_VariedadEnAutomatismo';
+    errorAlertaVariedadEnAutomatismo = '@Textos.Error_VariedadEnAutomatismo';
+</script>
+
+<link href="~/Content/bootstrap-duallistbox.css" rel="stylesheet">
+<script type="text/javascript" src="@Url.Content("~/scripts/jquery.bootstrap-duallistbox.js")"></script>
 
 @using (Ajax.BeginForm("Modificar", "Material", null, new AjaxOptions(), new { @class = "form-horizontal", data_dialogo_titulo = Textos.Material_Modificar, data_dialogo_extraclass = "dialog-grande", id = "formEditar" }))
 {
@@ -203,6 +215,15 @@
                     <input type="color" name="ColorTexto" value="@Model.ColorTexto" style="height:25px; width:50px;" />
                 </div>
             </div>
+
+            <div class="control-group">
+                @Html.Label(Textos.Variedad, new { @class = "control-label" })
+                <div>
+                    <button id="mostrarVariedad" class="btn btn-primary" type="button" value="@Textos.Agregar">@Textos.Agregar</button>
+                    <input type="hidden" name="variedadesEliminados" data-bind="value: ko.toJSON(variedadesEliminados)" />
+                    <input type="hidden" name="variedades" data-bind="value: ko.toJSON(variedades)" />
+                </div>
+            </div>
         </div>
         <div class="span6">
 
@@ -229,12 +250,12 @@
                 </div>
             </div>
             <div class="control-group esDerivadoGranario">
-                    @Html.LabelFor(model => model.TipoEmbalajeId, new { @class = "control-label" })
-                    <div class="controls">
-                        @Html.DropDownListFor(model => model.TipoEmbalajeId, embalaje, Textos.Default_Embalaje, new { @class = "dropDownTipoEmbalaje control input-medium", Id = "dropDownTipoEmbalaje", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_TipoEmbalaje) })
-                        @Html.ValidationMessageFor(model => model.TipoEmbalajeId)
-                    </div>
+                @Html.LabelFor(model => model.TipoEmbalajeId, new { @class = "control-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.TipoEmbalajeId, embalaje, Textos.Default_Embalaje, new { @class = "dropDownTipoEmbalaje control input-medium", Id = "dropDownTipoEmbalaje", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_TipoEmbalaje) })
+                    @Html.ValidationMessageFor(model => model.TipoEmbalajeId)
                 </div>
+            </div>
 
             <fieldset class="grupo-carta-porte">
                 @Textos.Material_DatosPorCentro
@@ -378,9 +399,9 @@
                 @Html.ValidationMessageFor(model => model.EsUva)
             </div>
             <div class="control-group uva">
-                @Html.LabelFor(model => model.VariedadId, new { @class = "control-label minilabel" })
-                @Html.DropDownListFor(model => model.VariedadId, variedades, Textos.Default_Variedad, new { @class = "dropDownVariedadId control input-medium", Id = "dropDownVariedadId", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_Variedad) })
-                @Html.ValidationMessageFor(model => model.VariedadId)
+                @Html.LabelFor(model => model.TipoVariedadId, new { @class = "control-label minilabel" })
+                @Html.DropDownListFor(model => model.TipoVariedadId, variedades, Textos.Default_Variedad, new { @class = "dropDownVariedadId control input-medium", Id = "dropDownVariedadId", data_error_requerido = String.Format(Textos.Error_Requerido, Textos.Material_Variedad) })
+                @Html.ValidationMessageFor(model => model.TipoVariedadId)
             </div>
         </div>
 
@@ -480,5 +501,92 @@
         <input type="hidden" id="almacenesList" name="almacenes" data-bind="value: ko.toJSON(almacenes)" />
         <input type="hidden" id="almacenesEliminados" name="almacenesEliminados" data-bind="value: ko.toJSON(almacenesEliminados)" />
         <button id="dialogo-almat-aceptar" class="btn btn-warning dialogo-almat-cancelar">@Textos.Aceptar</button>
+    </div>
+</div>
+
+<div class="modal fade hide" id="dialogo-variedad">
+    <div class="modal-header">
+        <button type="button" class="close dialogo-variedad-cancelar" aria-hidden="true">&times;</button>
+        <h4>Agregar Variedad de Material</h4>
+    </div>
+    <div class="modal-body" id="dialogo-variedad-body" style="width:400px" data-variedades="@variedadesList" data-variedades-sin-asignar="@variedadesTodos" data-default-variedad="@defaultVariedad">
+        <div class="row" style="padding-left:1%">
+            <div class="span2">
+
+                <label class="control-label" for="TipoVariedad">Tipo Variedad</label>
+            </div>
+
+            <div class="span3">
+                <div class="controls" style="width:200px">
+                    <select class="control input-medium" id="TipoVariedad" data-bind=" options: variedadesSinAsignar,
+                                optionsText: function (item) { return item.Descripcion + ' (' + item.Codigo + ')' },
+                                value: selectedItemVariedad,
+                                optionsCaption: defaultVariedad">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="padding-left:1%">
+            <div class="span2">
+                <label class="control-label" for="ColorFondo"> Color de Fondo</label>
+            </div>
+            <div class="span3">
+                <input type="color" data-bind="value: colorFondoVariedad" style="height:25px; width:50px;" />
+            </div>
+        </div>
+
+        <div class="row" style="padding-left:1%">
+            <div class="span2">
+                <label class="control-label" for="ColorTexto">
+                    Color de Texto
+                </label>
+            </div>
+
+            <div class="span3">
+                <input type="color" data-bind="value: colorTextoVariedad" style="height:25px; width:50px" />
+            </div>
+        </div>
+
+        <div class="container" style="width: 400px ; margin-left:5%; margin-right:5%">
+            <div class="control-group form-inline" style="float:right; margin-right:8%">
+                <button data-bind="click: $root.botonAgregarVariedad, enable: selectedItemVariedad != null" class="btn-small">Agregar Variedad</button>
+            </div>
+        </div>
+
+        <div class="control-group form-inline">
+        </div>
+        <div class="control-group form-horizontal">
+            <table class="tablaDatos span6" style="margin-left:auto">
+                <thead>
+                    <tr>
+                        <th>@Textos.Descripcion</th>
+                        <th>@Textos.Material_ColorFondo</th>
+                        <th>@Textos.Material_ColorTexto</th>
+                        <th>@Textos.Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: variedades">
+                    <tr>
+                        <td data-bind="text: Descripcion" />
+                        <td>
+                            <input type="text" data-bind="style: {'background': ColorFondo}" disabled style="border-color:black; height: 5px; width: 15px;" />
+                        </td>
+                        <td>
+                            <input type="text" data-bind="style: {'background': ColorTexto}" disabled style="border-color:black; height: 5px; width: 15px;" />
+                        </td>
+                        <td>
+                            <a href="#" data-bind="click: $root.removerVariedad, if:!EstaEnAutomatismo()"><i class="icon-trash"></i></a>
+                            <span class="label label-important" data-toggle="tooltip" data-bind="if:EstaEnAutomatismo()" title="@Textos.No_EditableLargo">@Textos.Error_NoModificable</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" id="variedadesList" name="variedades" data-bind="value: ko.toJSON(variedades)" />
+        <input type="hidden" id="variedadesEliminados" name="variedadesEliminados" data-bind="value: ko.toJSON(variedadesEliminados)" />
+        <button id="dialogo-variedad-aceptar" class="btn btn-warning dialogo-variedad-cancelar">@Textos.Aceptar</button>
     </div>
 </div>

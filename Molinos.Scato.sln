@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
+# Molinos.Scato.Web - Must be the 1st project listed, to be considered as de Startup Project
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Web", "Molinos.Scato.Web\Molinos.Scato.Web.csproj", "{FA51B713-73F4-40C3-ACA3-8F2210400E08}" 
+	ProjectSection(ProjectDependencies) = postProject
+		{943BA0EE-4E1D-4862-B7FD-2184EC4721D1} = {943BA0EE-4E1D-4862-B7FD-2184EC4721D1}
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C814E341-55E7-4D98-8A72-27692347AF96}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -26,11 +32,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Actividades", "Molinos.Scato.Actividades\Molinos.Scato.Actividades.csproj", "{98EC024C-6439-44B1-8B1E-29E457B2201F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Workflow", "Molinos.Scato.Workflow\Molinos.Scato.Workflow.csproj", "{943BA0EE-4E1D-4862-B7FD-2184EC4721D1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Web", "Molinos.Scato.Web\Molinos.Scato.Web.csproj", "{FA51B713-73F4-40C3-ACA3-8F2210400E08}"
-	ProjectSection(ProjectDependencies) = postProject
-		{943BA0EE-4E1D-4862-B7FD-2184EC4721D1} = {943BA0EE-4E1D-4862-B7FD-2184EC4721D1}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.ServiciosWeb", "Molinos.Scato.ServiciosWeb\Molinos.Scato.ServiciosWeb.csproj", "{B963F3BC-9A5B-4D74-BC64-5EF150469D12}"
 EndProject
@@ -75,6 +76,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Testing", "Unit Testin
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Molinos.Scato.Database", "Molinos.Scato.Database\Molinos.Scato.Database.sqlproj", "{2A13F03D-A296-4CE5-859F-A3A26B884E0D}"
 EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -452,6 +454,22 @@ Global
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D}.Release|x86.ActiveCfg = Release|Any CPU
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D}.Release|x86.Build.0 = Release|Any CPU
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D}.Release|x86.Deploy.0 = Release|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.DebugLocal|x86.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Jenkins|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Jenkins|Any CPU.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Jenkins|x86.ActiveCfg = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Jenkins|x86.Build.0 = Debug|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A5DA93F-AA32-48E6-B508-B6B5A920B9FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -478,7 +496,7 @@ Global
 		{2A13F03D-A296-4CE5-859F-A3A26B884E0D} = {58F35E93-C5AB-4C5B-9D31-C336376F6903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
 		RESX_NeutralResourcesLanguage = es-AR
+		SolutionGuid = {9DDEFB12-34EF-487C-AD39-BE59400A56B5}
 	EndGlobalSection
 EndGlobal

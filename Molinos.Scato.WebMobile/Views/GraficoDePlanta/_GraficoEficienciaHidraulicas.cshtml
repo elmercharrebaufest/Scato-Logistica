@@ -1,0 +1,11 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+@model Molinos.Scato.Dominio.Dto.GraficoEficienciaHidraulicasDto
+@{
+    ViewBag.Title = Textos.GraficoDePlanta_Titulo;
+}
+<script type="text/javascript">
+    var urlGenerarEficienciaHidraulicas = '@Url.Action("GenerarGraficoEficienciaHidraulicas", "GraficoDePlanta")'
+</script>
+<div class="col-12 borde-grafico">
+    <canvas id="myChartHidraulicas"></canvas>
+</div>

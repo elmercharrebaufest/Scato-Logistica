@@ -219,8 +219,10 @@ function EstadoDeCallesViewModel() {
     self.PatenteBuscada = ko.observable('');
     self.PatenteBuscada = ko.observable('');
     self.dummy = ko.observable();
+    self.CamionesLlamados = ko.observableArray([]);
 
     var calles = jQuery.parseJSON(callesJson);
+
     var mappedcalles = $.map(calles, function (item) {
         return new Calle(item, self);
     });
@@ -331,7 +333,20 @@ function EstadoDeCallesViewModel() {
     self.CantidadAceiteSoja = ko.computed(function () { return self.sumarCamiones(63734); });
     self.CantidadSojaEPA = ko.computed(function () { return self.sumarCamionesSojaEPA(true); });
     self.CantidadSojaIMPO = ko.computed(function () { return self.sumarCamionesSojaIMPO(true); });
-    
+
+    self.LlenarCamionesLlamados = function (listaLlamadosJsonString) {
+
+        const llamadosMapeados = listaLlamadosJsonString.map(llamado => {
+            return {
+                patente: llamado.Mensaje,
+                calle: llamado.CalleNombre,
+                colorFondo: llamado.CalleColorFondo,
+                colorTexto: llamado.CalleColorTexto
+            }
+        });
+
+        self.CamionesLlamados(llamadosMapeados);
+    }
 
     self.ListarCamiones = function () {
         $.ajax({
@@ -397,6 +412,7 @@ function EstadoDeCallesViewModel() {
                     }
                 });
                 self.Materiales(allData.materiales);
+                self.LlenarCamionesLlamados(allData.ultimasPatentesLlamadas);
             },
             error: function (data) {
                 setTimeout(recargar, 2000);

@@ -67,8 +67,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                     query = query.Where(q => q.NumeroDocumentoIngreso.Contains(filtro.NumeroDocumentoDeIngreso));
 
                 if (filtro.MaterialId.HasValue && filtro.MaterialId != 0)
+                {
                     query = query.Where(q => q.Material.Id == filtro.MaterialId);
-
+                    if(filtro.TipoVariedadId != 0 && filtro.TipoVariedadId != null)
+                    {
+                        query = query.Where(q => q.TipoVariedad.Id == filtro.TipoVariedadId);
+                    }
+                }
                 if (!string.IsNullOrWhiteSpace(filtro.Calidad))
                     query = query.Where(q => q.Calado.CalidadMaterial.Descripcion.ToLower() == filtro.Calidad.ToLower());
 
@@ -123,6 +128,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                      : query.OrderByDescending(selectorOrden);
                 }
             }
+
             var itemsTotales = query.Count();
             query = query.Skip((paginacion.Pagina - 1) * paginacion.ItemsPorPagina).Take(paginacion.ItemsPorPagina);
 

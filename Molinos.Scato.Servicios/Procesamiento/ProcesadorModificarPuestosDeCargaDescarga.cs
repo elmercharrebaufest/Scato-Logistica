@@ -30,6 +30,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             hidraulica.EsEspecial = comando.Dto.EsEspecial;
             hidraulica.EsSojaEPA = comando.Dto.EsSojaEPA;
             hidraulica.CodigoSensorBajada = comando.Dto.CodigoSensorBajada;
+            hidraulica.EsEscalable = comando.Dto.EsEscalable;
         }
 
         protected override void Validar(ModificarPuestosDeCargaDescarga comando, Resultado resultado)

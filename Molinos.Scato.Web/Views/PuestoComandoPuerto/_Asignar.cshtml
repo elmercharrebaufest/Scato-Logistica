@@ -9,7 +9,9 @@
     var calles = (IEnumerable<SelectListItem>)ViewBag.Calles;
     var balanzas = (IEnumerable<SelectListItem>)ViewBag.Balanzas;
     var almacenes = (IEnumerable<SelectListItem>)ViewBag.Almacenes;
-    var puntodecarga = (IEnumerable<SelectListItem>)ViewBag.PuntoDeCarga;
+    var puntodecarga = (IEnumerable<SelectListItem>)ViewBag.PuntoDeCarga!= null
+    ? (IEnumerable<SelectListItem>)ViewBag.PuntoDeCarga
+    : new List<SelectListItem>();;
 }
 @Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript" src="@Url.Script("~/scripts/asignarPuerto.js")"></script>

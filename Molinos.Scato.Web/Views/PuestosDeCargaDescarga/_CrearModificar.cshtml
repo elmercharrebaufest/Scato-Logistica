@@ -46,3 +46,10 @@
         @Html.ValidationMessageFor(m => m.EsSojaEPA)
     </div>
 </div>
+<div class="control-group">
+    @Html.LabelFor(m => m.EsEscalable, new { @class = "control-label" })
+    <div class="controls">
+        @Html.CheckBoxFor(m => m.EsEscalable, new { @class = "control" })
+        @Html.ValidationMessageFor(m => m.EsEscalable)
+    </div>
+</div>

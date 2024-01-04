@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Seguridad;
@@ -9,6 +7,9 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
 {
@@ -48,17 +49,21 @@ namespace Molinos.Scato.Web.Controllers
                 dirOrden,
                 pagina,
                 10);
-
-            ViewBag.Items = servicio.ListarPaginadoCalle(centroId, paginacion);
+            var idsCalleNoEditables = servicio.ListarIdCallesNoEditables();
+            var listaPaginada = servicio.ListarPaginadoCalle(centroId, paginacion);
+            foreach (var item in listaPaginada)
+            {
+                item.EsNoEditableGrilla = idsCalleNoEditables.Any(q => q == item.Id);
+            }
+            ViewBag.Items = listaPaginada;
         }
 
         [DatosUsuario]
-        public ActionResult Modificar(int id , DatosUsuario datosUsuario)
+        public ActionResult Modificar(int id, DatosUsuario datosUsuario)
         {
-         
             var tipo = servicio.ObtenerCalle(id);
             tipo.CaracteristicaDeCalidadDesc = tipo.CaracteristicaDeCalidadId.ToString();
-            ViewBag.CaracteristicasCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(tipo.MaterialId, datosUsuario.CentroId).Select(x=> new SelectListItem { Selected = x.Id == tipo.CaracteristicaDeCalidadId ,Text = x.DescripcionCorta, Value = x.Id.ToString()});
+            ViewBag.CaracteristicasCalidad = servicio.ListarCaracteristicasDeCalidadPorMaterial(tipo.MaterialId, datosUsuario.CentroId).Select(x => new SelectListItem { Selected = x.Id == tipo.CaracteristicaDeCalidadId, Text = x.DescripcionCorta, Value = x.Id.ToString() });
             return View(tipo);
         }
 
@@ -84,7 +89,7 @@ namespace Molinos.Scato.Web.Controllers
         [HttpPost]
         public ActionResult Eliminar(int id)
         {
-            var resultado = servicioComandos.Ejecutar(new EliminarCalle() {Id = id});
+            var resultado = servicioComandos.Ejecutar(new EliminarCalle() { Id = id });
             return Content(!resultado.HayErrores ? "true" : resultado.Errores.Values.First());
         }
 

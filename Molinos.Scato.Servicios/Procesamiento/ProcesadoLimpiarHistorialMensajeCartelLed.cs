@@ -20,26 +20,25 @@ namespace Molinos.Scato.Servicios.Procesamiento
         {
             var resultadoMensajeCartelLed = new ResultadoMensajeCartelLedReordenado();
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
-            LimpiarSlotCartel(listaMensajes, comando.CalleId);
+            if(comando.LimpiarCamion)
+                LimpiarCamionEnCartel(listaMensajes, comando);
+            else
+                LimpiarCalleEnCartel(listaMensajes, comando.CalleId);
             resultadoMensajeCartelLed.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
             return resultadoMensajeCartelLed;
         }
 
-        private void LimpiarSlotCartel(List<MensajeCartelLed> listaMensajes, int calleId)
+        private void LimpiarCalleEnCartel(List<MensajeCartelLed> listaMensajes, int calleId)
         {
             var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed?.Calle?.Id == calleId);
             var mensajeCalleCircular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.TipoCalle == Dominio.Enums.TipoCalle.Circular);
 
             if (mensajeCartelLedEntity != null && mensajeCartelLedEntity.HistorialMensajeCartelLed != null)
             {
-                var calle = mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
-                if (calle.TipoCalle == Dominio.Enums.TipoCalle.PreBalanzaGranos && !calle.EsPasoDirecto)
-                    ReordenarMensajesPreBalanza(listaMensajes);
-                else
-                    ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
+                ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
             }
         }
 
@@ -69,27 +68,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
             Repositorio.GuardarCambios();
         }
 
-        private void ReordenarMensajesPreBalanza(List<MensajeCartelLed> listaMensajes)
+        private void LimpiarCamionEnCartel(List<MensajeCartelLed> listaMensajes, LimpiarHistorialMensajeCartelLed comando)
         {
-            var historialCompleto = listaMensajes
-                .Where(x => x.HistorialMensajeCartelLed != null)
-                .OrderBy(x => x.Variable)
-                .Select(x => x.HistorialMensajeCartelLed);
-            var historialCallesPasoDirecto = historialCompleto.Where(x => x.Calle != null && x.Calle.EsPasoDirecto);
-            
-            var historialCompletoSinCallePasoDirecto = historialCompleto.Except(historialCallesPasoDirecto);
-            var historialUtilizadoSinCallePasoDirecto = historialCompletoSinCallePasoDirecto.Where(x => x.Calle != null).ToList();
-
-            var index = 0;
-            foreach (var historial in historialCompletoSinCallePasoDirecto)
+            var mensajeCartel = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed != null && x.HistorialMensajeCartelLed.Calle.Id == comando.CalleId && x.HistorialMensajeCartelLed.Recorrido.Id == comando.RecorridoId);
+            if(mensajeCartel != null)
             {
-                historial.Calle = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.Calle;
-                historial.Mensaje = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.Mensaje;
-                historial.FechaUltimaModificacion = historialUtilizadoSinCallePasoDirecto.ElementAtOrDefault(index)?.FechaUltimaModificacion;
-                index++;
+                mensajeCartel.HistorialMensajeCartelLed.Calle = null;
+                mensajeCartel.HistorialMensajeCartelLed.Mensaje = null;
+                mensajeCartel.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
+                mensajeCartel.HistorialMensajeCartelLed.Recorrido = null;
+                Repositorio.GuardarCambios();
             }
-
-            Repositorio.GuardarCambios();
         }
     }
 }
