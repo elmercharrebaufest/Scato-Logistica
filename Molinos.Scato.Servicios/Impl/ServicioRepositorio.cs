@@ -10996,6 +10996,11 @@ namespace Molinos.Scato.Servicios.Impl
         {
             return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePlayaInternaId == callePHId && x.RecorridoId.HasValue && x.EsCamionEnEspera && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno);
         }
+
+        public CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId)
+        {
+            return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePreBalanzaId == callePBId && x.CodigoAutomatismoTipoLlamado != Constantes.AutomatismoTipoLlamado.UnoAUno);
+        }
     }
 
 

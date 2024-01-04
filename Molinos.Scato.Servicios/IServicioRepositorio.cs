@@ -3007,6 +3007,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePHId);
+
+        [OperationContract]
+        CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId);
     }
 
 }
