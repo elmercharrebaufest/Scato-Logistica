@@ -1171,6 +1171,10 @@
     <Content Include="Scripts\conversionMaterial.js" />
     <Content Include="Scripts\usuario.CrearModificar.js" />
     <Content Include="Scripts\vagon.js" />
+    <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="VICSCATOQA.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
