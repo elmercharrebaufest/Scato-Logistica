@@ -401,6 +401,7 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp
 .sonarqube
+/.vscode
 Molinos.Scato.Servicios/Service References/Orquestador/*.svcinfo
 Molinos.Scato.Servicios/Service References/Orquestador/Reference.svcmap
 Molinos.Scato.Servicios/Service References/Orquestador/*.xsd

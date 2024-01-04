@@ -183,6 +183,9 @@
     <Content Include="Global.asax" />
     <Content Include="ListaDeWorkflows.svc" />
     <Content Include="parameters.xml" />
+    <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="VICSCATOQA.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
