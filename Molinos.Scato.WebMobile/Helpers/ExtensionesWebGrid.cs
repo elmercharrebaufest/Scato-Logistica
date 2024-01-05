@@ -6,9 +6,11 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using Molinos.Scato.Dominio.Consultas;
+using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.WebMobile.Seguridad;
+
 
 namespace Molinos.Scato.WebMobile.Helpers
 {
@@ -19,7 +21,7 @@ namespace Molinos.Scato.WebMobile.Helpers
             ListaPaginada<TEntidad> items,
             Func<WebGrid, WebGridColumn[]> columnas)
         {
-            var grid = new WebGrid(rowsPerPage: items.ItemsPorPagina,
+            var grid = new WebGrid(rowsPerPage: items.ItemsPorPagina > 0 ? items.ItemsPorPagina : 1,
                  sortDirectionFieldName: "dirOrden",
                  pageFieldName: "pagina",
                  sortFieldName: "ordenarPor");
@@ -47,12 +49,44 @@ namespace Molinos.Scato.WebMobile.Helpers
             return grid.Column("EliminarModificar", "", f => 
                 html.Raw(
                 "<span>" +
-                html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() + 
-                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "fas fa-edit", true).ToHtmlString() + 
+                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "fas fa-trash mx-3", true).ToHtmlString() +
                 "</span>"
                 )
                 , "editar-borrar-columna", false);
         }
+
+        public static WebGridColumn ColumnaEliminarModificarModal(this WebGrid grid, HtmlHelper html, string entidad="", string style = "")
+        {
+
+            return grid.Column("EliminarModificar", "", f =>
+                html.Raw(
+                "<span>" +
+                $"<a class='ajax-editar-link' href=\"javascript:;\" style='{style}' title='{Textos.Modificar}' onclick='funcionModalModificar{entidad}({f.id});'><i class='fas fa-edit'></i></a>"
+                +
+                $"<a class='ajax-borrar-link' href=\"javascript:;\" style='{style}' title='{Textos.Eliminar}' onclick='funcionModalEliminar{entidad}({f.id});'><i class='fas fa-trash'></i></a>"
+                + "</span>"
+                )
+                , "editar-borrar-columna", false);
+        }
+
+        public static WebGridColumn ColumnaModificarModal(this WebGrid grid, HtmlHelper html, string functionName, string style = "", string iconoModificar = "")
+        {                                                                    
+            return grid.Column("editar", "", f => html.Raw(html.BotonAccionJS(Textos.Modificar, functionName,(int)f.id,"", "fas fa-edit").ToHtmlString()),"editar-columna", false);
+        }
+        
+        public static WebGridColumn ColumnaModificarModalEntidad(this WebGrid grid, HtmlHelper html, string entidad = "", string style = "")
+        {
+
+            return grid.Column("EliminarModificar", "", f =>
+                html.Raw(
+                "<span>" +
+                $"<a class='ajax-editar-link' href=\"javascript:;\" style='{style}' title='{Textos.Modificar}' onclick='funcionModalModificar{entidad}({f.id});'><i class='fas fa-edit'></i></a>"
+                )
+                , "editar-borrar-columna", false);
+        }
+
+
 
         public static WebGridColumn ColumnaEliminarCopiarModificar(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
@@ -112,7 +146,7 @@ namespace Molinos.Scato.WebMobile.Helpers
     
         public static WebGridColumn ColumnaModificar(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
-            return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString()),
+            return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "fas fa-edit", true).ToHtmlString()),
                                                         "editar-borrar-columna", false);
         }
 
@@ -209,6 +243,14 @@ namespace Molinos.Scato.WebMobile.Helpers
             return grid.Column("Seleccionar", header, f => html.Raw(html.CheckBox(name, isChecked, new { value = f.Id, @class = "columna-checkbox" }).ToHtmlString()), null, false);
         }
 
+        public static WebGridColumn ColumnaCheckBoxBool(this WebGrid grid, HtmlHelper html, string header, string name)
+        {
+            return grid.Column(header, header, f => {
+                bool isChecked = (bool)f.Value.GetType().GetProperty(name).GetValue(f.Value, null);
+                return html.Raw(html.CheckBox(name, isChecked, new { value = f.Value.Id , @class = "columna-checkbox", data_id =  f.Value.Id  }).ToHtmlString());
+            },null,false);
+        }
+
         public static WebGridColumn ColumnaCheckBoxConMaterial(this WebGrid grid, HtmlHelper html, string header, string name, bool isChecked = false)
         {
             return grid.Column("Seleccionar", header, f => html.Raw(html.CheckBox(name, isChecked, new { f.Id, data_materialId = f.MaterialId, data_EsSustentable = f.EsSustentable, @class = "columna-checkbox " + (f.Rechazado ? "estado-rechazado " : "") + (f.FueAsignado ? "estado-asignado " : f.TieneDescuentos ? "estado-descuento " : "") + (f.EsSemillaSoja ? (f.EsGranosVerdes ? "estado-grano-verde " : "") + (f.EsCuerposExtranos ? "estado-cuerpo-extraño " : "") + (f.EsGranosDañados ? "estado-dañado " : "") + (f.EsHumedad ? "estado-humedo" : "") : "") }).ToHtmlString()), null, false);
@@ -228,6 +270,51 @@ namespace Molinos.Scato.WebMobile.Helpers
 
             header += grid.SortColumn == columnName ? grid.SortDirection == SortDirection.Ascending ? "  ▲" : "  ▼" : " ▲▼";
             return grid.Column(columnName, header, f => html.Raw(html.IconoColor((string)f.Color)), style, canSort);
+        }
+
+        public static WebGridColumn ColumnaSwitch(this WebGrid grid, string nombreCampo, string headerText, string nombreColumna = "")
+        {
+            return grid.Column(nombreCampo, headerText, f => {
+                if (f == null || f.Value.GetType().GetProperty(nombreCampo) == null)
+                {
+                    return null;
+                }
+                var campoBool = f.Value.GetType().GetProperty(nombreCampo).GetValue(f.Value, null);
+                var htmlChecked = campoBool ? "checked" : "";
+                return new MvcHtmlString(
+                  "<label class='switch'>" +
+                    "<input type='checkbox' data-id='"+ f.Id + "' data-field='"+ nombreCampo+nombreColumna + "' class='cambio-tipo' " + htmlChecked + ">" +
+                    "<span class='slider round'></span>" +
+                  "</label>"
+                 );
+            },null,false);
+
+        }
+
+        public static WebGridColumn ColumnaSwitchIdentity(this WebGrid grid, string campoEstado, string headerText,string identidad)
+        {
+            return grid.Column(campoEstado, headerText, item => {
+                if (item == null || item.Value.GetType().GetProperty(campoEstado) == null)
+                {
+                    return null;
+                }
+                var campoBool = item.Value.GetType().GetProperty(campoEstado).GetValue(item.Value, null);
+                var id = item.Value.GetType().GetProperty("Id").GetValue(item.Value).ToString();
+                var htmlChecked = campoBool == true ? "checked" : "";
+                return new MvcHtmlString(
+                  "<label class='switch'>" +
+                    "<input type='checkbox' data-id='" + item.Id + "' data-identity='" + identidad + "' class='cambia-estado' " + htmlChecked + ">" +
+                    "<span class='slider round'></span>" +
+                  "</label>"
+                 );
+            },null,false);
+
+        }
+
+        public static WebGridColumn ColumnaModificarMetodo(this WebGrid grid, HtmlHelper html, string controller, string metodo, string style = "")
+        {
+            return grid.Column("editar", "", f => html.Raw(html.BotonLink(Textos.Modificar, metodo, controller, new { f.id }, style + " ajax-editar-link", "fas fa-edit", true).ToHtmlString()),
+                                                        "editar-borrar-columna", false);
         }
     }
 }

@@ -131,7 +131,7 @@ namespace Molinos.Scato.Web.Controllers
                 }
                 if (!resultado.HayErrores)
                 {
-                    servicioComandos.Ejecutar(new ActualizarAsignacionDeCalle { CalleId = model.CalleId, HidraulicasId = model.HidraulicasId });
+                    servicioComandos.Ejecutar(new ActualizarAsignacionDeCalle { CalleId = model.CalleId, HidraulicasId = model.HidraulicasId }); // TODO: SCT310-3814 Código deprecado
                     AvanzarWorkflow(resultado, datosUsuario);
                     if (ModelState.IsValid)
                     {
@@ -257,6 +257,7 @@ namespace Molinos.Scato.Web.Controllers
                 ViewBag.Calles = servicio.ListarTodasLasCalles(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Nombre);
                 ViewBag.TiposComerciales = servicio.ListarTiposComercialesPorCentro(datosUsuario.CentroId).ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
                 ViewBag.Calidades = datosWorkflow.Calidades.OrderBy(c => c.Descripcion).ToSelectList(x => x.Descripcion, x => x.Descripcion);
+                ViewBag.Variedades = servicio.ListarTipoVariedad().ToSelectList(x => x.Id.ToString(), x => x.Descripcion);
             }
         }
 
@@ -280,7 +281,6 @@ namespace Molinos.Scato.Web.Controllers
                 hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto, true).ToList();
             else
                 hidraulicas = servicio.ListarHidraulicasPorCriterioSustentable(datosUsuario.CentroId, esSustentable, sustentableMixto).ToList();
-
 
             if (sojaEPA)
                 hidraulicas = hidraulicas.Where(q => q.EsSojaEPA).ToList();

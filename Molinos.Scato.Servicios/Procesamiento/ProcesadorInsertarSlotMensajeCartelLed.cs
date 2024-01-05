@@ -1,7 +1,7 @@
-﻿using Molinos.Scato.Dominio;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -13,79 +13,99 @@ namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorInsertarSlotMensajeCartelLed : ProcesadorComando<InsertarSlotMensajeCartelLed>
     {
+        private List<string> codigosPreBalanza;
+
         public ProcesadorInsertarSlotMensajeCartelLed(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
+            this.codigosPreBalanza = new List<string> {
+                CodigoMensajeCartelLed.LlamadoCamionPreBalanza,
+                CodigoMensajeCartelLed.LlamadoCallePreBalanza,
+            };
         }
 
         public override Resultado Ejecutar(InsertarSlotMensajeCartelLed comando)
         {
             var resultado = new ResultadoMensajeCartelLed();
-            if (!Validar(comando))
-            {
-                resultado.Error("CartelLedLlamado", "La calle ya fue llamada");
+            if (Validar(comando, resultado))
                 return resultado;
-            }
-            
+
             var listaMensajes = Repositorio.Listar<MensajeCartelLed>(x => x.Codigo == comando.Codigo).OrderBy(x => x.Orden).ToList();
             CrearHistorialMensajeCartelLedSiNoTiene(listaMensajes);
             var mensajeCartelLedEntity = new MensajeCartelLed();
 
-            if (!comando.EsCircular && comando.OrdenCircular != null) // PreCalado
-            {
-                mensajeCartelLedEntity = InsertarSlotCartel(listaMensajes, comando.OrdenCircular);
-            } else if (comando.EsCircular && comando.OrdenCircular != null) // Circular
-            {
-                mensajeCartelLedEntity = InsertarSlotCartelCircular(listaMensajes, comando.OrdenCircular.Value);
-            } else if (comando.EsPrioritarioPrebalanza)
-            {
-                mensajeCartelLedEntity = InsertarSlotCartelPrebalanzaPrioritario(listaMensajes);
-            }
-            else // PreBalanza, PostCalado
-            {
-                mensajeCartelLedEntity = InsertarSlotCartel(listaMensajes);
-            }
+            if (comando.EsLlamadoPorCamion)
+                mensajeCartelLedEntity = ObtenerSlotCartelParaCamion(comando, listaMensajes);
+            else if (!comando.EsCircular && comando.OrdenCircular != null)
+                mensajeCartelLedEntity = ObtenerSlotCartelParaCalle(listaMensajes, comando.OrdenCircular);
+            else if (comando.EsCircular && comando.OrdenCircular != null)
+                mensajeCartelLedEntity = ObtenerSlotCircularCartelParaCalle(listaMensajes, comando.OrdenCircular.Value);
+            else
+                mensajeCartelLedEntity = ObtenerSlotCartelParaCalle(listaMensajes);
 
-            if(mensajeCartelLedEntity != null)
+            if (mensajeCartelLedEntity == null)
+                return resultado;
+
+            var calle = Repositorio.Obtener<Calle>(x => x.Id == comando.CalleId);
+            mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = calle;
+            mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = DateTime.Now;
+            if (comando.EsLlamadoPorCamion)
             {
-                var calle = Repositorio.Obtener<Calle>(x => x.Id == comando.CalleId);
-                if(calle != null)
-                {
-                    mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = calle;
-                    mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = calle.Nombre;
-                    resultado.Mensaje = calle.Nombre;
-                }
-                mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = DateTime.Now;
-                resultado.NumeroPrograma = mensajeCartelLedEntity.Programa;
-                resultado.NumeroTrama = mensajeCartelLedEntity.Trama;
-                resultado.NumeroVariable = mensajeCartelLedEntity.Variable;
-                resultado.SegundosDeEspera = mensajeCartelLedEntity.SegundosDeEspera;
-                Repositorio.GuardarCambios();
+                var recorrido = Repositorio.Obtener<Recorrido>(x => x.Id == comando.RecorridoId);
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Recorrido = recorrido;
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = recorrido.Patente;
             }
+            else
+            {
+                mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = calle?.Nombre;
+            }
+            Repositorio.GuardarCambios();
 
-            if(comando.EsPrioritarioPrebalanza)
-                resultado.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
+            resultado.Mensaje = mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje;
+            resultado.NumeroPrograma = mensajeCartelLedEntity.Programa;
+            resultado.NumeroTrama = mensajeCartelLedEntity.Trama;
+            resultado.NumeroVariable = mensajeCartelLedEntity.Variable;
+            resultado.SegundosDeEspera = mensajeCartelLedEntity.SegundosDeEspera;
 
+            if (codigosPreBalanza.Contains(comando.Codigo))
+            {
+                var nuevosMensajes = Repositorio.Listar<MensajeCartelLed>(x=>codigosPreBalanza.Contains(x.Codigo));
+                resultado.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(nuevosMensajes).ToList();
+            }
             return resultado;
         }
 
-        private bool Validar(InsertarSlotMensajeCartelLed comando)
+        private MensajeCartelLed ObtenerSlotCartelParaCamion(InsertarSlotMensajeCartelLed comando, List<MensajeCartelLed> listaMensajes)
         {
-            bool valido = true;
+            return comando.EsCamionEnEspera ? ObtenerSlotCamionEnEspera(comando, listaMensajes) : ObtenerSlotCamionLlamado(comando, listaMensajes);
+        }
 
-            if(Repositorio.Existe<HistorialMensajeCartelLed>(x => x.Calle.Id == comando.CalleId))
-            {
-               valido = false;
-            }
+        private MensajeCartelLed ObtenerSlotCamionLlamado(InsertarSlotMensajeCartelLed comando, List<MensajeCartelLed> listaMensajes)
+        {
+            return listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.FechaUltimaModificacion == null);
+        }
 
-            return valido;
+        private MensajeCartelLed ObtenerSlotCamionEnEspera(InsertarSlotMensajeCartelLed comando, List<MensajeCartelLed> listaMensajes)
+        {
+            var mensajeSlotCamionLlamado = Repositorio.Obtener<MensajeCartelLed>(x => x.Codigo == CodigoMensajeCartelLed.LlamadoCallePreBalanza && x.HistorialMensajeCartelLed.Calle.Id == comando.CalleId);
+            return mensajeSlotCamionLlamado != null
+                    ? listaMensajes.FirstOrDefault(x => x.Orden == mensajeSlotCamionLlamado.Orden)
+                    : null;
+        }
+
+        private bool Validar(InsertarSlotMensajeCartelLed comando, ResultadoMensajeCartelLed resultado)
+        {
+            if (!comando.EsLlamadoPorCamion && Repositorio.Existe<HistorialMensajeCartelLed>(x => x.Calle.Id == comando.CalleId))
+                resultado.Error("CartelLedLlamado", "La calle ya fue llamada");
+
+            return resultado.HayErrores;
         }
 
         private void CrearHistorialMensajeCartelLedSiNoTiene(List<MensajeCartelLed> listaMensajes)
         {
             foreach (var mensajeCartelLed in listaMensajes)
             {
-                if(mensajeCartelLed.HistorialMensajeCartelLed == null)
+                if (mensajeCartelLed.HistorialMensajeCartelLed == null)
                 {
                     mensajeCartelLed.HistorialMensajeCartelLed = new HistorialMensajeCartelLed()
                     {
@@ -95,37 +115,15 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
         }
 
-        private MensajeCartelLed InsertarSlotCartel(List<MensajeCartelLed> listaMensajes, int? slotCircular = null)
+        private MensajeCartelLed ObtenerSlotCartelParaCalle(List<MensajeCartelLed> listaMensajes, int? slotCircular = null)
         {
             return listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed.FechaUltimaModificacion == null
             && (slotCircular == null || q.Orden != slotCircular));
         }
 
-        private MensajeCartelLed InsertarSlotCartelCircular(List<MensajeCartelLed> listaMensajes, int slotCircular)
+        private MensajeCartelLed ObtenerSlotCircularCartelParaCalle(List<MensajeCartelLed> listaMensajes, int slotCircular)
         {
-           return listaMensajes.FirstOrDefault(q => q.Orden == slotCircular);
-        }
-
-        private MensajeCartelLed InsertarSlotCartelPrebalanzaPrioritario(List<MensajeCartelLed> listaMensajes)
-        {
-            ReordenarFilasPrebalanza(listaMensajes);
-            return listaMensajes.FirstOrDefault(x => x.Variable == Constantes.ConfiguracionGeneral.PreBalanza.VariablePredeterminadaPasoPrioritaria);
-        }
-
-        private void ReordenarFilasPrebalanza(List<MensajeCartelLed> listaMensajes)
-        {
-            listaMensajes = listaMensajes.OrderBy(x => x.Variable).ToList();
-            int indexVariablePasoDirecto = listaMensajes.Select(x => x.Variable).ToList().IndexOf(Constantes.ConfiguracionGeneral.PreBalanza.VariablePredeterminadaPasoPrioritaria);
-            for (int i = listaMensajes.Count - 1; i > indexVariablePasoDirecto; i--)
-            {
-                listaMensajes[i].HistorialMensajeCartelLed.Calle = listaMensajes[i - 1].HistorialMensajeCartelLed.Calle;
-                listaMensajes[i].HistorialMensajeCartelLed.Mensaje = listaMensajes[i - 1].HistorialMensajeCartelLed.Mensaje;
-                listaMensajes[i].HistorialMensajeCartelLed.FechaUltimaModificacion = listaMensajes[i - 1].HistorialMensajeCartelLed.FechaUltimaModificacion;
-            }
-
-            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.Calle = null;
-            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.Mensaje = null;
-            listaMensajes[indexVariablePasoDirecto].HistorialMensajeCartelLed.FechaUltimaModificacion = null;
+            return listaMensajes.FirstOrDefault(q => q.Orden == slotCircular);
         }
     }
 }

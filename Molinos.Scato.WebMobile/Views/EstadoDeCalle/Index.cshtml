@@ -9,7 +9,7 @@
 @model IList<CalleDto>
 @{
     ViewBag.Title = Textos.GraficoDePlanta_Titulo;
-    Layout = "~/Views/Shared/_LayoutSinMenu.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var pestanias = new[] { TipoCalle.PreCalado, TipoCalle.PostCalado, TipoCalle.NoGranos };
 }
 <link rel="stylesheet" type="text/css" href="@Url.Css("~/Content/estadoDeCalle.css")">
@@ -30,6 +30,7 @@
     urlLEstadoDeCallesBloqueada = '@Url.Action("EstadoDeCallesBloqueada", "EstadoDeCalle")';
     urlCambioCalleCalado = '@Url.Action("CambioCalleCalado", "EstadoDeCalle")';
     cantFilasPorCalador = @Html.Raw(ViewBag.CantFilasPorCalador);
+    camionesLlamadosJson = @Html.Raw(ViewBag.Llamados);
 
 </script>
 <script type="text/javascript" src="@Url.Script("~/scripts/estadoDeCalle.js")"></script>

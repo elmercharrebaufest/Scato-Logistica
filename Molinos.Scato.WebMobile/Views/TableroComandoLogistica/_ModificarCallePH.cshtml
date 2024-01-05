@@ -1,0 +1,47 @@
+﻿@model AutomatismoGranoCallePHViewModel
+@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
+
+<div class="modal fade" id="modalModificarPreHidraulica" tabindex="-1" role="dialog" aria-labelledby="modalModificarPreHidraulicaLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        @using (Ajax.BeginForm("ModificarConfiguracionCallePH", null, new AjaxOptions { OnSuccess = "modificarCallePHSuccess" }, new { @class = "container" }))
+        {
+            <div class="modal-content">
+                @Html.HiddenFor(model => model.Id)
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalModificarPreHidraulicaLabel">Modificar Calle Pre-Hidráulica</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.Descripcion)
+                                @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Descripcion)
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.AutomatismoTipoLlamadoId)
+                                @Html.DropDownListFor(model => model.AutomatismoTipoLlamadoId, Model.ListaAutomatismoTipoLlamado, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.AutomatismoTipoLlamadoId)
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.Camiones)
+                                @Html.TextBoxFor(model => model.Camiones, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                                @Html.ValidationMessageFor(model => model.Camiones)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

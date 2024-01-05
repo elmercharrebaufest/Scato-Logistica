@@ -129,7 +129,7 @@ namespace Molinos.Scato.Test.Controllers
             var datosUsuario = new DatosUsuario { CentroId = 1 };
             var emptyJson = "[]";
 
-            var result = target.Crear(datosUsuario, materiales[0], 1, 1, 1, false, false, false, emptyJson, emptyJson, 1, true, "soja", 0,false,false,false) as ContentResult;
+            var result = target.Crear(datosUsuario, materiales[0], 1, 1, 1, false, false, false, emptyJson, emptyJson, 1, true, "soja", 0,false,false,false, emptyJson) as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
 
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
@@ -161,7 +161,7 @@ namespace Molinos.Scato.Test.Controllers
             resultado.Error("Error", "error");
             servComandosMock.Setup(s => s.Ejecutar(It.IsAny<CrearMaterial>())).Returns(resultado);
 
-            var result = target.Crear(datosUsuario, materiales[0], 1, 1, 1, false, false, false, emptyJson, emptyJson, 1, false ,"soja",0 ,false,false,false) as ViewResult;
+            var result = target.Crear(datosUsuario, materiales[0], 1, 1, 1, false, false, false, emptyJson, emptyJson, 1, false ,"soja",0 ,false,false,false, emptyJson) as ViewResult;
 
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
             Assert.NotNull(result.Model);
@@ -219,7 +219,7 @@ namespace Molinos.Scato.Test.Controllers
                 Descripcion = "MaterialDesc modificado",
             };
 
-            var result = target.Modificar(new DatosUsuario { CentroId = 1 }, materialDto, 1, 1, 1, false, false, false, "[]", "[]", 1, false, false, "soja", 1,false, 0,false) as ContentResult;
+            var result = target.Modificar(new DatosUsuario { CentroId = 1 }, materialDto, 1, 1, 1, false, false, false, "[]", "[]", 1, false, false, "soja", 1,false, 0,false,"[]") as ContentResult;
             var expectedResult = new ContentResult { Content = "ajax-edit-success" };
             servComandosMock.Verify(p => p.Ejecutar(It.IsAny<Comando>()), Times.Exactly(1));
             Assert.NotNull(result);
@@ -254,7 +254,7 @@ namespace Molinos.Scato.Test.Controllers
             };
 
             target.ModelState.AddModelError("", "Error");
-            var result = target.Modificar(new DatosUsuario { CentroId = 1 }, materialDto, 1, 1, 1, false, false, false, "", "", 1, false, false, "soja",1, false, 0,false) as ViewResult;
+            var result = target.Modificar(new DatosUsuario { CentroId = 1 }, materialDto, 1, 1, 1, false, false, false, "", "", 1, false, false, "soja",1, false, 0,false, "[]") as ViewResult;
 
             //IList<SelectListItem> almacenes = target.ViewBag.Almacenes;
             IList<SelectListItem> camaras = target.ViewBag.Camaras;

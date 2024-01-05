@@ -49,7 +49,7 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                   .ForMember(x => x.TipoDeGrano, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.TipoDeGrano))
                   .ForMember(x => x.UnidadDeMedidad, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.UnidadDeMedidad))
                   .ForMember(x => x.UsaBinPallet, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.UsaBinPallet))
-                  .ForMember(x => x.VariedadId, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.Variedad.Id))
+                  .ForMember(x => x.TipoVariedadId, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.Variedad.Id))
                   .ForMember(x => x.VigenciaDesde, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.VigenciaDesde))
                   .ForMember(x => x.VigenciaHasta, mat => mat.MapFrom(matPorCentro => matPorCentro.Material.VigenciaHasta))
                   .ForMember(x => x.CamaraDesc, mat => mat.MapFrom(matPorCentro => matPorCentro.Camara.Descripcion))

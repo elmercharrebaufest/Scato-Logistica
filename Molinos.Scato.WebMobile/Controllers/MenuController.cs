@@ -72,6 +72,10 @@ namespace Molinos.Scato.WebMobile.Controllers
             ViewBag.Centro = centro.Value;
 
             var materialesMenu = GetPanelInfo(true, true);
+
+            ViewBag.IsIndexPage = Request.RequestContext.RouteData.Values["action"].ToString().Equals("Index", StringComparison.OrdinalIgnoreCase)
+                && Request.RequestContext.RouteData.Values["controller"].ToString().Equals("Index", StringComparison.OrdinalIgnoreCase);
+
             return PartialView("_Menu",materialesMenu);
         }
 

@@ -67,7 +67,7 @@ namespace Molinos.Scato.Dominio.Dto
         public bool EsUva { get; set; }
 
         [Display(ResourceType = typeof(Textos), Name = "Material_Variedad")]
-        public int? VariedadId { get; set; }
+        public int? TipoVariedadId { get; set; }
 
         public string VariedadDesc { get; set; }
 

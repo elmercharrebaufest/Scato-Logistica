@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web;
@@ -44,13 +45,28 @@ namespace Molinos.Scato.Web.Helpers
 
         public static WebGridColumn ColumnaEliminarModificar(this WebGrid grid, HtmlHelper html, string controller, string style = "")
         {
+            return grid.Column("EliminarModificar", "", f =>
+                    html.Raw(
+                    "<span>" +
+                    html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
+                    html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                    "</span>"
+                    )
+                    , "editar-borrar-columna", false);
+            
+        }
+
+        public static WebGridColumn ColumnaEliminarModificarCalles(this WebGrid grid, HtmlHelper html, string controller, string style = "")
+        {
 
             return grid.Column("EliminarModificar", "", f =>
-                html.Raw(
-                "<span>" +
-                html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
-                html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
-                "</span>"
+
+                html.Raw((f.EsNoEditableGrilla) ?
+                    "<span class=\"label label-important\" data-toggle=\"tooltip\" title=\"" + Textos.No_EditableLargo + "\" >" + Textos.No_Editable + "</span>" :
+                    "<span>" +
+                    html.BotonLink(Textos.Modificar, "Modificar", controller, new { f.id }, style + " ajax-editar-link", "icon-edit", true).ToHtmlString() +
+                    html.BotonLink(Textos.Eliminar, "Eliminar", controller, new { f.id }, style + " ajax-borrar-link", "icon-trash", true).ToHtmlString() +
+                    "</span>"
                 )
                 , "editar-borrar-columna", false);
         }

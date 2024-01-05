@@ -1,0 +1,98 @@
+﻿@model AutomatismoGranosViewModel
+@using Molinos.Scato.WebMobile.ViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using System.Web.Optimization
+
+<div class="modal fade" id="modalModificarAutomatismo" tabindex="-1" role="dialog" aria-labelledby="modalModificarAutomatismoLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        @using (Ajax.BeginForm("Modificar", null, new AjaxOptions { OnSuccess = "modificarSuccess" }, new { @class = "container" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalModificarAutomatismoLabel">Modificar Automatismo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    @Html.HiddenFor(m => m.AutomatismoGrano.Id)
+                    @Html.HiddenFor(m => m.AutomatismoGrano.Activo)
+                    <div class="form-group row mt-4">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.AutomatismoGrano.MaterialId)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.MaterialId, Model.Materiales, new { @class = "form-control", disabled = true, id = "cboxMateriales", data_url = @Url.Action("ListarVariedades", "TableroComandoLogistica") })
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.MaterialId)
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.AutomatismoGrano.TipoVariedadId)
+                            @Html.DropDownListFor(m => m.AutomatismoGrano.TipoVariedadId, Model.Variedades, new { @class = "form-control", disabled = true, id = "cboxVariedades" })
+                            @Html.ValidationMessageFor(m => m.AutomatismoGrano.TipoVariedadId)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.AutomatismoGrano.CamionEscalable, new { @class = "esEscalableCheck" })
+                        @Html.LabelFor(m => m.AutomatismoGrano.CamionEscalable)
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CamionEscalable)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CallePreBalanzaId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreBalanzaId, Model.CallesPreBalanza, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreBalanzaId)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.CheckBoxFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                        @Html.LabelFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.AplicaFiltroCalidad)
+                    </div>
+
+                    <div id="divCalidad" style="display:none" class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CalidadId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CalidadId, Model.Calidades, new { @class = "form-control", data_val_required = "El campo 'Calidad' es requerido." })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CalidadId)
+
+                        <div class="form-group row mt-4">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.AutomatismoGrano.Minimo)
+                                <input type="Number" class="control input-medium form-control" data-val="true" data-val-number="The field Minimo must be a number." data-val-range="El campo 'Minimo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Minimo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:\,[0-9]*)?$" data-val-required="El campo 'Minimo' es requerido." id="AutomatismoGrano_Minimo" name="AutomatismoGrano.Minimo" value="@Model.AutomatismoGrano.Minimo.GetValueOrDefault().ToString("0")" novalidate="novalidate"><br />
+                                @Html.ValidationMessageFor(m => m.AutomatismoGrano.Minimo)
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.AutomatismoGrano.Maximo)
+                                <input type="Number" class="control input-medium form-control" data-val="true" data-val-number="The field Maximo must be a number." data-val-range="El campo 'Maximo' excede el largo máximo" data-val-range-max="1E+16" data-val-range-min="0" data-val-regex="El Campo 'Maximo' debe ser numérico" data-val-regex-pattern="^[0-9]*(?:\,[0-9]*)?$" data-val-required="El campo 'Maximo' es requerido." id="AutomatismoGrano_Maximo" name="AutomatismoGrano.Maximo" value="@Model.AutomatismoGrano.Maximo.GetValueOrDefault().ToString("0")" novalidate="novalidate"> <br />
+                                @Html.ValidationMessageFor(m => m.AutomatismoGrano.Maximo)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.CallePreHidraulicaId, Model.CallesHidraulica, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.CallePreHidraulicaId)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.Hidraulicas)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.Hidraulicas, Model.Hidraulicas, new { @class = "form-control multiselect", multiple = "multiple" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.Hidraulicas)
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.AutomatismoGrano.AlmacenId)
+                        @Html.DropDownListFor(m => m.AutomatismoGrano.AlmacenId, Model.Almacenes, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AutomatismoGrano.AlmacenId)
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@Textos.Cancelar</button>
+                    <button type="submit" class="btn btn-success">@Textos.Aceptar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")

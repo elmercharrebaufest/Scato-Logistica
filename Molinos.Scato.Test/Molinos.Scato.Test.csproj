@@ -169,7 +169,7 @@
     <Compile Include="ControllersMobile\CupoControllerTest.cs" />
     <Compile Include="ControllersMobile\EstadoDeCalleControllerTest.cs" />
     <Compile Include="ControllersMobile\EstadoDePlantaControllerTest.cs" />
-    <Compile Include="ControllersMobile\IndexControllerTest.cs" />
+    <Compile Include="ControllersMobile\GraficoDePlantaControllerTest.cs" />
     <Compile Include="ControllersMobile\TiempoEnTransitoControllerTest.cs" />
     <Compile Include="Controllers\AsignacionDeContingenciaControllerTest.cs" />
     <Compile Include="Controllers\CargaDeCupoTest.cs" />

@@ -1,9 +1,10 @@
 ﻿@using Molinos.Scato.Dominio.Enums
 @using Molinos.Scato.Dominio.Helpers;
+@using Molinos.Scato.Dominio.Recursos
 
 @{
     Layout = null;
-    var pestanias = new[] { TipoCalle.PreCalado, TipoCalle.PostCalado, TipoCalle.NoGranos };
+    var pestanias = new[] { TipoCalle.PreCalado, TipoCalle.PostCalado };
 }
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item ml-auto">
@@ -30,34 +31,35 @@
 
         @foreach (var tipo in Enum.GetValues(typeof(TipoCalle)).Cast<TipoCalle>().Where(x => pestanias.Contains(x)))
         {
-        <div class="row row-card-no-pd">
-            @{
-                TipoCalle calle2 = tipo;
-                TipoCalle calle3 = tipo;
-                if (tipo == TipoCalle.PreCalado)
-                {
-                    calle2 = TipoCalle.ReCalado;
-                    calle3 = TipoCalle.Circular;
+            <div class="row row-card-no-pd">
+                @{
+                    TipoCalle calle2 = tipo;
+                    TipoCalle calle3 = tipo;
+                    if (tipo == TipoCalle.PreCalado)
+                    {
+                        calle2 = TipoCalle.ReCalado;
+                        calle3 = TipoCalle.Circular;
+                    }
+                    if (tipo == TipoCalle.PostCalado)
+                    {
+                        calle2 = TipoCalle.RechazadosDemorados;
+                    }
                 }
-                if (tipo == TipoCalle.PostCalado)
-                {
-                    calle2 = TipoCalle.RechazadosDemorados;
-                }
-            }
-            <div class="col-md-6">
-                <div class="sinbordetb row">
-                    <div class="col sinbordetb">
-                        <div class="card-stats sinbordetb">
-                            <div class="card-body sinbordetb">
-                                <p class="fw-bold mb-0 cart-title sinbordetb">
-                                    <h4><strong>@tipo.DisplayEnum()</strong></h4>
-                                </p>
-                                <div class="row justify-content-md-center">
-                                    <div class="col-md-8" data-bind="foreach: UltimosCamiones('@((int)tipo)', '@((int)calle2)', '@((int)calle3)')">
-                                        <div class="text-white card-camion" data-bind="class: Color">
-                                            <div class="card-header text-center" style="padding: 0px; height: 18px;">
-                                                <i data-bind="attr: {'class': Icon}"></i>
-                                                <strong data-bind="text: Patente + ' -> ' + (Calle.TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Calle.Nombre"></strong>
+                <div class="col-md-6">
+                    <div class="sinbordetb row">
+                        <div class="col sinbordetb">
+                            <div class="card-stats sinbordetb">
+                                <div class="card-body sinbordetb">
+                                    <p class="fw-bold mb-0 cart-title sinbordetb">
+                                        <h4><strong>@tipo.DisplayEnum()</strong></h4>
+                                    </p>
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md-8" data-bind="foreach: UltimosCamiones('@((int)tipo)', '@((int)calle2)', '@((int)calle3)')">
+                                            <div class="text-white card-camion" data-bind="class: Color">
+                                                <div class="card-header text-center" style="padding: 0px; height: 18px;">
+                                                    <i data-bind="attr: {'class': Icon}"></i>
+                                                    <strong data-bind="text: Patente + ' -> ' + (Calle.TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Calle.Nombre"></strong>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -66,18 +68,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="sinbordetb row">
-                    <div class="col sinbordetb">
-                        <div class="card-stats sinbordetb">
-                            <div class="card-body sinbordetb">
-                                <p class="fw-bold mb-0 mt-sm-4 cart-title sinbordetb">
-                                    <strong>Filas llamadas</strong>
-                                </p>
-                                <div class="row card-filas justify-content-md-center">
-                                    <div class="col-md-8" data-bind="foreach: CallesLLamadas('@((int)tipo)', '@((int)calle2)', '@((int)calle3)')">
-                                        <div class="text-white card-camion" data-bind="css: { 'bg-soja': MaterialId() == 4,
+                <div class="col-md-6">
+                    <div class="sinbordetb row">
+                        <div class="col sinbordetb">
+                            <div class="card-stats sinbordetb">
+                                <div class="card-body sinbordetb">
+                                    <p class="fw-bold mb-0 mt-sm-4 cart-title sinbordetb">
+                                        <strong>Filas llamadas</strong>
+                                    </p>
+                                    <div class="row card-filas justify-content-md-center">
+                                        <div class="col-md-8" data-bind="foreach: CallesLLamadas('@((int)tipo)', '@((int)calle2)', '@((int)calle3)')">
+                                            <div class="text-white card-camion" data-bind="css: { 'bg-soja': MaterialId() == 4,
                                                                                                                             'bg-maiz': MaterialId() == 386,
                                                                                                                             'bg-naranja': MaterialId() == 13,
                                                                                                                             'bg-warning': MaterialId() == 5,
@@ -85,8 +86,9 @@
                                                                                                                             'bg-dark' : MaterialId() == 0
 
                                                                                                                              }">
-                                            <div class="card-header text-center" style="padding: 0px; height: 18px;">
-                                                <strong data-bind="text: (TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Nombre +' (' + CamionesEnCalle() + ')'"></strong>
+                                                <div class="card-header text-center" style="padding: 0px; height: 18px;">
+                                                    <strong data-bind="text: (TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Nombre +' (' + CamionesEnCalle() + ')'"></strong>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +98,59 @@
                     </div>
                 </div>
             </div>
-        </div>
+        }
+        @{
+
+            var tipoNg = TipoCalle.NoGranos;
+
+            <div class="row row-card-no-pd">
+                <div class="col-md-6">
+                    <div class="sinbordetb row">
+                        <div class="col sinbordetb">
+                            <div class="card-stats sinbordetb">
+                                <div class="card-body sinbordetb">
+                                    <p class="fw-bold mb-0 cart-title sinbordetb">
+                                        <h4><strong>@tipoNg.DisplayEnum()</strong></h4>
+                                    </p>
+                                    <div class="row justify-content-md-center">
+                                        <div class="col-md-8" data-bind="foreach: UltimosCamiones('@((int)tipoNg)','@((int)tipoNg)','@((int)tipoNg)')">
+                                            <div class="text-white card-camion" data-bind="class: Color">
+                                                <div class="card-header text-center" style="padding: 0px; height: 18px;">
+                                                    <i data-bind="attr: {'class': Icon}"></i>
+                                                    <strong data-bind="text: Patente + ' -> ' + (Calle.TipoCalle == @((int)TipoCalle.Circular) ? '&copy; ' : '') + Calle.Nombre"></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="sinbordetb row">
+                        <div class="col sinbordetb">
+                            <div class="card-stats sinbordetb">
+                                <div class="card-body sinbordetb">
+                                    <p class="fw-bold mb-0 mt-sm-4 cart-title sinbordetb">
+                                        <strong>@Textos.CamionLlamadoTitulo</strong>
+                                    </p>
+                                    <div class="row card-filas justify-content-md-center">
+                                        <div class="col-md-8" data-bind="foreach: CamionesLlamados">
+                                            <div class="card-camion" data-bind="style: { 'background-color': colorFondo, 'color': colorTexto }">
+                                                <div class="card-header text-center" style="padding: 0px; height: 18px;">
+                                                    <strong data-bind="text: patente  + ' -> ' + calle "></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
-</div>
+
+ </div>
