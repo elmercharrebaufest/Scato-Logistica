@@ -9,6 +9,6 @@
   <setParameter name="FederationMetadataLocation Config" value="https://pase.molinosagro.com.ar/FederationMetadata/2007-06/FederationMetadata.xml" />
   <setParameter name="Issuer Config" value="https://pase.molinosagro.com.ar/adfs/ls/" />
   <setParameter name="IssuerTrust Identity Configuration" value="http://pase.molinosagro.com.ar/adfs/services/trust" />
-  <setParameter name="RealmUrl Identity Configuration" value="http://scatoqa.molinosagro.com.ar/Scato.webmobile/" />
+  <setParameter name="RealmUrl Identity Configuration" value="http://scatomobiledrp.molinosagro.com.ar/" />
   <setParameter name="Thumbprint Identity Configuration" value="97E9185D47464277B783E73CA7AC59E2A98589AB"/>
 </parameters>
