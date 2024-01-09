@@ -1,8 +1,7 @@
-﻿using System.Data.Entity;
-using System.Data.SqlClient;
-using System.Linq;
-using Molinos.Scato.Dominio.Entidades;
+﻿using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Molinos.Scato.Repositorio.ConsultasEF
 {
@@ -12,12 +11,13 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private int materialId;
         private bool incluirBloqueadas;
 
-        public ObtenerCalle(TipoCalle tipoCalle, Material material, bool incluirBloqueadas = false)
+        public ObtenerCalle(TipoCalle tipoCalle, int? materialId, bool incluirBloqueadas = false)
         {
             this.tipoCalle = tipoCalle;
-            this.materialId = material != null ? material.Id : 0;
+            this.materialId = materialId.GetValueOrDefault();
             this.incluirBloqueadas = incluirBloqueadas;
         }
+
         public Calle Ejecutar(DbContext contexto)
         {
             var ultimoCamionAsignado = UltimoCamionAsignado(contexto);
@@ -47,7 +47,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private CallePorRecorrido UltimoCamionAsignado(DbContext contexto)
         {
-            return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == tipoCalle && 
+            return contexto.Set<CallePorRecorrido>().Where(x => x.Calle.TipoCalle == tipoCalle &&
             x.FechaEgreso == null && (x.CargaDeCupo.Material.Id == materialId || x.Recorrido.Material.Id == materialId))
                                               .OrderByDescending(x => x.Id)
                                               .FirstOrDefault();
@@ -63,7 +63,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 .OrderByDescending(x => x.Id)
                 .FirstOrDefault();
 
-            if(calle == null)
+            if (calle == null)
             {
                 calle = contexto.Set<Calle>()
                 .Where(x => x.TipoCalle == tipoCalle && !x.Deshabilitada &&
@@ -87,7 +87,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 .OrderByDescending(x => x.Id)
                 .FirstOrDefault();
 
-            if(calle == null)
+            if (calle == null)
             {
                 calle = contexto.Set<Calle>()
                 .Where(x => x.TipoCalle == tipoCalle && !x.Deshabilitada &&
@@ -111,6 +111,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                         contexto.Set<CallePorRecorrido>().Count(y => y.FechaEgreso == null && y.Calle.Id == x.Id) < x.CantidadDeCamiones)
                 .FirstOrDefault();
         }
+
         private Calle ObtenerSiguienteCalleVacia(DbContext contexto, CallePorRecorrido ultimoCamionAsignado)
         {
             IQueryable<Calle> calleDisponibleqry = contexto.Set<Calle>();
@@ -130,7 +131,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                     .OrderBy(x => x.Id)
                                     .FirstOrDefault();
 
-            if(calleDisponible == null)
+            if (calleDisponible == null)
             {
                 //para las calles que admiten cualquier material
                 calleDisponible = calleDisponibleqry

@@ -1,0 +1,99 @@
+﻿@model AutomatismoNoGranoViewModel
+@using Molinos.Scato.Dominio.Recursos
+@using Molinos.Scato.WebMobile.ViewModel
+
+@{
+    ViewBag.Title = Textos.TableroComandoPuerto_Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/dialogModal.css")">
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/scripts/automatismoNoGrano.js")"></script>
+
+<script>
+    urlCrearAutomatismo = '@Url.Action("Crear", "TableroComandoPuerto")';
+    urlModificarAutomatismo = '@Url.Action("Modificar", "TableroComandoPuerto")';
+    urlEliminarAutomatismo = '@Url.Action("Eliminar", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoNoGrano = '@Url.Action("ActualizarEstadoAutomatismoNoGrano", "TableroComandoPuerto")';
+    urlListarAutomatismoNoGrano = '@Url.Action("ListarAutomatismoNoGrano", "TableroComandoPuerto")';
+    urlObtenerPuntosDeCargaPorMaterialId = '@Url.Action("ObtenerPuntosDeCargaPorMaterialId", "TableroComandoPuerto")';
+    urlObtenerAlmacenesCalleMaterialId = '@Url.Action("ObteneAlamacenesCalleMaterialId", "TableroComandoPuerto")';
+</script>
+
+<div class="m-2">
+    <h1 class="text-center">@Textos.TableroComandoPuerto_Panel</h1>
+</div>
+
+<div class="mx-1" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link active" })
+                </li>
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item ml-auto">
+                    <label class="switch">
+                        <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="mr-2">Automatismo General</span>
+                </li>
+            </ul>
+
+            <div class="tab-content overflow-auto">
+                <div class="col-12">
+                    <button class="btn m-2 float-right rounded-bottom btn-success" onclick="ModalCrear()">Nuevo Automatismo</button>
+                </div>
+                <div id="gridContainer" class="tab-pane fade show active">
+                    @Html.Partial("_Listar")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="detalle" />
+
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>
+
+<dialog id="modalConfirmarBorrar" class="dialogModal">
+    <h4 class="dialogModal__titulo">@Textos.Confirmacion</h4>
+    <input type="hidden" id="automatismoIdABorrar" />
+    <div class="dialogModal__descripcion">
+        <p>¿Seguro que desea eliminar este automatismo?</p>
+    </div>
+    <div class="dialogModal__botones">
+        <button type="button" class="btn btn-secondary" onclick="modalConfirmarBorrar.close()" autofocus>Cancelar</button>
+        <button type="button" id="btnConfirmarBorrar" class="btn btn-success" onclick="EliminarAutomatismoNoGrano()">Aceptar</button>
+    </div>
+</dialog>
+
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+</style>

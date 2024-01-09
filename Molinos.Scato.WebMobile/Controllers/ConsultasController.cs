@@ -39,5 +39,13 @@ namespace Molinos.Scato.WebMobile.Controllers
             var datos = servicio.ObtenerMaterialIdYDescripcionPorCodigoSap(codigoSapSoja);
             return datos;
         }
+
+        public ActionResult BuscarCaracteristicaDeCalidadPorId(int id)
+        {
+            var caracteristicaDeCalidad = servicio.ObtenerCaracteristicaDeCalidad(id);
+            return caracteristicaDeCalidad != null
+                ? Json(new { id = caracteristicaDeCalidad.Id, nombre = caracteristicaDeCalidad.DescripcionCorta, caladoMaximo = caracteristicaDeCalidad.CaladoMaximo, caladoMinimo = caracteristicaDeCalidad.CaladoMinimo }, JsonRequestBehavior.AllowGet)
+                : Json("", JsonRequestBehavior.AllowGet);
+        }
     }
 }

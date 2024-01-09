@@ -48,5 +48,7 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool EsDerivadoGranario { get; set; }
         public virtual int? CodigoGranoPadre { get; set; }
         public virtual TipoEmbalaje TipoEmbalaje { get; set; }
+        [InverseProperty("Materiales")]
+        public virtual IList<PuntoDeCarga> PuntosDeCarga { get; set; }
     }
 }

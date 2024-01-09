@@ -25,7 +25,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 EsSojaSustentable = comando.Dto.EsSojaSustentable,
                 EsEspecial = comando.Dto.EsEspecial,
                 EsSojaEPA = comando.Dto.EsSojaEPA,
-                CodigoSensorBajada = comando.Dto.CodigoSensorBajada
+                CodigoSensorBajada = comando.Dto.CodigoSensorBajada,
+                EsEscalable = comando.Dto.EsEscalable,
             };
         }
 

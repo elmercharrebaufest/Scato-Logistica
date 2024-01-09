@@ -35,7 +35,8 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<IServicioSapAsincronico>("ServicioSapAsincronico");
             this.BindChannelFactory<IFirmaProvider>("FirmaProvider");
             this.BindChannelFactory<IServicioEstadoPuesto>("ServicioEstadoPuesto");
-            
+            this.BindChannelFactory<IServicioLlamadoAutomatico>("ServicioLlamadoAutomatico");
+
             Bind(typeof(IServicioActividadFactory<>)).To(typeof(ServicioActividadFactory<>)).InSingletonScope();
             Bind(typeof(IServicioComandosFactory)).To(typeof(ServicioComandosFactory)).InSingletonScope();
             Bind(typeof(IServicioRepositorioFactory)).To(typeof(ServicioRepositorioFactory)).InSingletonScope();

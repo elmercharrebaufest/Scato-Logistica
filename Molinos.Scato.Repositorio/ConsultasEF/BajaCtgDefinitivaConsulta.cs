@@ -51,7 +51,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                 EstadoCtgDefinitivo = (x.bajas.tra.CodigoDeBajaDefinitivo == null) ? (x.bajas.rec.Terminado ? EstadoTransmisionASap.Error : EstadoTransmisionASap.Pendiente) : EstadoTransmisionASap.Correcto,
                 Fecha = (DateTime)EntityFunctions.AddHours(x.bajas.tra.Fecha, -3),
                 InstanciaWorkflow = x.bajas.tra.WorkflowId,
-                MensajeError = (x.bajas.tra.CodigoDeBaja == null || x.bajas.tra.CodigoDeBajaDefinitivo == null) ? contexto.Set<ControlRecorrido>().Where(y => y.WorkflowInstanceId == x.bajas.tra.WorkflowId && (y.Actividad == "Baja CTG Definitivo")).OrderByDescending(y => y.Id).FirstOrDefault().Comentario : "",
+                MensajeError = (x.bajas.tra.CodigoDeBaja == null) ? contexto.Set<ControlRecorrido>().Where(y => y.WorkflowInstanceId == x.bajas.tra.WorkflowId && y.Actividad == "Baja de CTG" && !string.IsNullOrEmpty(y.Comentario)).OrderByDescending(y => y.Id).FirstOrDefault().Comentario : x.bajas.tra.CodigoDeBajaDefinitivo == null ? contexto.Set<ControlRecorrido>().Where(y => y.WorkflowInstanceId == x.bajas.tra.WorkflowId && y.Actividad == "Baja CTG Definitivo" && !string.IsNullOrEmpty(y.Comentario)).OrderByDescending(y => y.Id).FirstOrDefault().Comentario : string.Empty,
                 NumeroDocumento = x.bajas.rec.NumeroDocumentoIngreso,
                 Patente = x.bajas.rec.Patente,
                 TipoDocumentoIngreso = x.bajas.rec.TipoDocumentoIngreso,

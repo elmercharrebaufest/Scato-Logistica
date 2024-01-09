@@ -114,7 +114,7 @@ namespace Molinos.Scato.Web.Controllers
                 NumeroCTG = Convert.ToInt64(orden.NumeroCTG)
             });
 
-            var codigoSAP = servicio.ObtenerCentroCodigoSap(datosUsuario.CentroId);
+            var codigoSAP = servicio.ObteneCodigoSapPorCentroId(datosUsuario.CentroId);
             var camara = servicio.ListarVideoCamarasPuesto(datosUsuario.PuestoDeTrabajoId).FirstOrDefault();
             ResultadoConsultaCpeAutomotorDG consulta = (ResultadoConsultaCpeAutomotorDG)consultaCPEAutomotor;
 

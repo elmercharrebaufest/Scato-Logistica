@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 {
@@ -15,9 +10,16 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
         {
             get { return "HistorialMensajeCartelLedMappingProfile"; }
         }
+
         protected override void Configure()
         {
-            Mapper.CreateMap<HistorialMensajeCartelLed, HistorialMensajeCartelLedDto>().ReverseMap();
+            Mapper.CreateMap<HistorialMensajeCartelLed, HistorialMensajeCartelLedDto>()
+                  .ForMember(t => t.RecorridoId, f => f.MapFrom(r => r.Recorrido.Id))
+                  .ForMember(t => t.CalleNombre, f => f.MapFrom(r => r.Calle.Nombre))
+                  .ForMember(t => t.CalleId, f => f.MapFrom(r => r.Calle.Id))
+                  .ForMember(t => t.CalleColorFondo, f => f.MapFrom(r => r.Calle.Material.ColorFondo))
+                  .ForMember(t => t.CalleColorTexto, f => f.MapFrom(r => r.Calle.Material.ColorTexto));
+            Mapper.CreateMap<HistorialMensajeCartelLedDto, HistorialMensajeCartelLed>();
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using Molinos.Scato.Dominio.Comandos;
+﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
@@ -9,6 +6,9 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using System;
+using System.Globalization;
+using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -55,6 +55,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     var ramalFerroviario = Repositorio.Obtener<RamalFerroviario>(comando.Orden.CodigoRamalId);
                     var pagadorFlete = Repositorio.Obtener<Proveedor>(comando.Orden.PagadorFleteId ?? 0);
                     var representanteRecibidor = Repositorio.Obtener<Entregador>(comando.Orden.RepresentanteRecibidorId ?? 0);
+                    var tipoVariedad = Repositorio.Obtener<TipoVariedad>(comando.TipoVariedadId ?? 0);
+
                     Centro destino = null;
                     Proveedor destinatario = null;
                     Cliente destinatarioCliente = null;
@@ -93,69 +95,69 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         }
 
                         cartaPorte = new CartaPorte
-                            {
-                                TipoVehiculo = comando.Orden.TipoVehiculo,
-                                NroCartaPorte = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? (string.IsNullOrEmpty(comando?.Vehiculo?.NumCTG) ? comando.Orden.NroCartaPorte : comando?.Vehiculo?.NumCTG) : comando.Orden.NroCartaPorte,
-                                CTG = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? comando?.Vehiculo?.NumOrden ?? string.Empty : comando.Orden.CTG,
-                                FechaCP = comando.Orden.FechaCP,
-                                TipoComercial = tipoComercial,
-                                CEE = comando.Orden.CEE,
-                                FechaEmision = comando.Orden.FechaEmision,
-                                FechaVto = comando.Orden.FechaVto,
-                                TitularCartaPorte = titular,
-                                Destinatario = destinatario,
-                                Transportista = transportista,
-                                Chofer = chofer,
-                                Cosecha = comando.Orden.Cosecha,
-                                Procedencia = procedencia,
-                                OrigenVehiculo = comando.Orden.OrigenVehiculo,
-                                KmRecorrer = comando.Orden.KmRecorrer,
-                                TarifaTonelada = comando.Orden.TarifaTonelada,
-                                FleteAPagar = comando.Orden.FleteAPagar,
-                                CentroDestino = destino,
-                                Material = material,
-                                AgenteCompras = agente,
-                                Prestador = prestador,
-                                BocaDestino = bocaDestino,
-                                CodEstab = comando.Orden.CodEstab,
-                                DestinatarioCliente = destinatarioCliente,
-                                ClienteDestino = destinoCliente,
-                                Variedad = comando.Orden.Variedad,
-                                FletePagado = comando.Orden.FletePagado,
-                                AcuerdoMarco = comando.Orden.AcuerdoMarco,
-                                Caratula = comando.Orden.Caratula,
-                                Intermediario = intermediario,
-                                RtteComercial = rtteComercial,
-                                Entregador = entregador,
-                                Corredor = corredor,
-                                Desvio = comando.Orden.Desvio,
-                                TarifaReferencia = comando.Orden.TarifaReferencia,
-                                CodigoAnexo = comando.Orden.CodigoAnexo,
-                                Vehiculos = comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren && comando.Orden.Cpe ? vehiculos.Where(w => w.Patente == comando.Vehiculo.Patente).ToList() : vehiculos,
-                                Tecnologia = tecnologia,
-                                Cupo = comando.Orden.Cupo != null ? comando.Orden.Cupo.ToUpper() : comando.Orden.Cupo,
-                                CorredorVendedor = corredorVendedor,
-                                Categoria = categoria,
-                                IntermediarioFlete = intermediarioFlete,
-                                TrigoEspecial = comando.Orden.TrigoEspecial,
-                                NumeroAduana = comando.Orden.NumeroAduana,
-                                EsExtranjero = comando.Orden.EsExtranjero,
-                                FotoRutaDestino = comando.Orden.FotoRutaDestino,
-                                FotoRutaDestinoDetalle = comando.Orden.FotoRutaDestinoDetalle,
-                                Cpe = comando.Orden.Cpe,
-                                Sucursal = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? Convert.ToInt32(comando?.Vehiculo?.Sucural) : comando.Orden.Sucursal,
-                                RtteComercialVentaSecundaria = rtteComercialVentaSecundaria,
-                                RtteComercialProductor = rtteComercialProductor,
-                                CorredorVendedorSecundario = corredorVendedorSecundario,
-                                RtteComercialVentaSecundaria2 = rtteComercialVentaSecundaria2,
-                                Observacion = cartaPorteFerroviario is null ? comando?.Orden?.Observacion : cartaPorteFerroviario?.Observacion,
-                                NumeroOperativo = comando.Orden.NumeroOperativo,
-                                RamalFerroviario = ramalFerroviario,
-                                NumeroPrecinto = cartaPorteFerroviario is null ? comando?.Orden?.NumeroPrecinto : cartaPorteFerroviario?.NumeroPrecinto,
-                                TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null,
-                                PagadorFlete = pagadorFlete,
-                                RepresentanteRecibidor = representanteRecibidor,
-                                FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
+                        {
+                            TipoVehiculo = comando.Orden.TipoVehiculo,
+                            NroCartaPorte = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? (string.IsNullOrEmpty(comando?.Vehiculo?.NumCTG) ? comando.Orden.NroCartaPorte : comando?.Vehiculo?.NumCTG) : comando.Orden.NroCartaPorte,
+                            CTG = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? comando?.Vehiculo?.NumOrden ?? string.Empty : comando.Orden.CTG,
+                            FechaCP = comando.Orden.FechaCP,
+                            TipoComercial = tipoComercial,
+                            CEE = comando.Orden.CEE,
+                            FechaEmision = comando.Orden.FechaEmision,
+                            FechaVto = comando.Orden.FechaVto,
+                            TitularCartaPorte = titular,
+                            Destinatario = destinatario,
+                            Transportista = transportista,
+                            Chofer = chofer,
+                            Cosecha = comando.Orden.Cosecha,
+                            Procedencia = procedencia,
+                            OrigenVehiculo = comando.Orden.OrigenVehiculo,
+                            KmRecorrer = comando.Orden.KmRecorrer,
+                            TarifaTonelada = comando.Orden.TarifaTonelada,
+                            FleteAPagar = comando.Orden.FleteAPagar,
+                            CentroDestino = destino,
+                            Material = material,
+                            AgenteCompras = agente,
+                            Prestador = prestador,
+                            BocaDestino = bocaDestino,
+                            CodEstab = comando.Orden.CodEstab,
+                            DestinatarioCliente = destinatarioCliente,
+                            ClienteDestino = destinoCliente,
+                            Variedad = comando.Orden.Variedad,
+                            FletePagado = comando.Orden.FletePagado,
+                            AcuerdoMarco = comando.Orden.AcuerdoMarco,
+                            Caratula = comando.Orden.Caratula,
+                            Intermediario = intermediario,
+                            RtteComercial = rtteComercial,
+                            Entregador = entregador,
+                            Corredor = corredor,
+                            Desvio = comando.Orden.Desvio,
+                            TarifaReferencia = comando.Orden.TarifaReferencia,
+                            CodigoAnexo = comando.Orden.CodigoAnexo,
+                            Vehiculos = comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren && comando.Orden.Cpe ? vehiculos.Where(w => w.Patente == comando.Vehiculo.Patente).ToList() : vehiculos,
+                            Tecnologia = tecnologia,
+                            Cupo = comando.Orden.Cupo != null ? comando.Orden.Cupo.ToUpper() : comando.Orden.Cupo,
+                            CorredorVendedor = corredorVendedor,
+                            Categoria = categoria,
+                            IntermediarioFlete = intermediarioFlete,
+                            TrigoEspecial = comando.Orden.TrigoEspecial,
+                            NumeroAduana = comando.Orden.NumeroAduana,
+                            EsExtranjero = comando.Orden.EsExtranjero,
+                            FotoRutaDestino = comando.Orden.FotoRutaDestino,
+                            FotoRutaDestinoDetalle = comando.Orden.FotoRutaDestinoDetalle,
+                            Cpe = comando.Orden.Cpe,
+                            Sucursal = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? Convert.ToInt32(comando?.Vehiculo?.Sucural) : comando.Orden.Sucursal,
+                            RtteComercialVentaSecundaria = rtteComercialVentaSecundaria,
+                            RtteComercialProductor = rtteComercialProductor,
+                            CorredorVendedorSecundario = corredorVendedorSecundario,
+                            RtteComercialVentaSecundaria2 = rtteComercialVentaSecundaria2,
+                            Observacion = cartaPorteFerroviario is null ? comando?.Orden?.Observacion : cartaPorteFerroviario?.Observacion,
+                            NumeroOperativo = comando.Orden.NumeroOperativo,
+                            RamalFerroviario = ramalFerroviario,
+                            NumeroPrecinto = cartaPorteFerroviario is null ? comando?.Orden?.NumeroPrecinto : cartaPorteFerroviario?.NumeroPrecinto,
+                            TransportistaTramo2 = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? transportistaTramo2 : null,
+                            PagadorFlete = pagadorFlete,
+                            RepresentanteRecibidor = representanteRecibidor,
+                            FotoRutaSustentable = comando.Orden.FotoRutaSustentable,
                         };
                         cartaPorte.NroCartaPorte = cartaPorte.NroCartaPorte.Trim();
                         foreach (var vehiculo in vehiculos)
@@ -168,30 +170,32 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         cartaPorte = Repositorio.Obtener<CartaPorte>(comando.Orden.Id);
                     }
                     var recorrido = Repositorio.Obtener<Recorrido>(f => f.InstanciaWorkflow == comando.InstanciaWorkflowId);
+
                     if (recorrido == null)
                     {
                         recorrido = new Recorrido
-                            {
-                                InstanciaWorkflow = comando.InstanciaWorkflowId,
-                                Usuario = comando.Usuario,
-                                FechaInicio = DateTime.Now,
-                                Workflow = workflow,
-                                Chofer = chofer,
-                                Centro = centro,
-                                Patente = comando.Vehiculo.Patente,
-                                Transportista = transportista,
-                                TipoComercial = tipoComercial,
-                                TipoDocumentoIngreso = TipoDocumentoIngreso.CartaPorte,
-                                Material = material,
-                                PesoBrutoOrigen = comando.Vehiculo.PesoBrutoOrigen,
-                                PesoTaraOrigen = comando.Vehiculo.PesoTaraOrigen,
-                                NumeroDocumentoIngreso = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? (string.IsNullOrEmpty(comando?.Vehiculo?.NumCTG) ? comando.Orden.NroCartaPorte : comando?.Vehiculo?.NumCTG) : comando.Orden.NroCartaPorte.ToString(CultureInfo.InvariantCulture),
-                                Vehiculo = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente),
-                                WorkflowDefinicion = workflowDefinicion,
-                                TipoVehiculo = comando.Orden.TipoVehiculo,
-                                VehiculoDemorado = comando.Orden.VehiculoDemorado, 
-                                MotivoDemora = comando.Orden.MotivoDemora
-                            };
+                        {
+                            InstanciaWorkflow = comando.InstanciaWorkflowId,
+                            Usuario = comando.Usuario,
+                            FechaInicio = DateTime.Now,
+                            Workflow = workflow,
+                            Chofer = chofer,
+                            Centro = centro,
+                            Patente = comando.Vehiculo.Patente,
+                            Transportista = transportista,
+                            TipoComercial = tipoComercial,
+                            TipoDocumentoIngreso = TipoDocumentoIngreso.CartaPorte,
+                            Material = material,
+                            PesoBrutoOrigen = comando.Vehiculo.PesoBrutoOrigen,
+                            PesoTaraOrigen = comando.Vehiculo.PesoTaraOrigen,
+                            NumeroDocumentoIngreso = comando.Orden.Cpe && comando.Vehiculo.TipoVehiculo == TipoVehiculo.Tren ? (string.IsNullOrEmpty(comando?.Vehiculo?.NumCTG) ? comando.Orden.NroCartaPorte : comando?.Vehiculo?.NumCTG) : comando.Orden.NroCartaPorte.ToString(CultureInfo.InvariantCulture),
+                            Vehiculo = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente),
+                            WorkflowDefinicion = workflowDefinicion,
+                            TipoVehiculo = comando.Orden.TipoVehiculo,
+                            VehiculoDemorado = comando.Orden.VehiculoDemorado,
+                            MotivoDemora = comando.Orden.MotivoDemora,
+                            TipoVariedad = tipoVariedad,
+                        };
                         Repositorio.Agregar(recorrido);
                     }
                     else
@@ -213,12 +217,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         recorrido.WorkflowDefinicion = workflowDefinicion;
                         recorrido.VehiculoDemorado = comando.Orden.VehiculoDemorado;
                         recorrido.MotivoDemora = comando.Orden.MotivoDemora;
+                        recorrido.TipoVariedad = tipoVariedad;
                     }
 
                     var vehiculoEntity = cartaPorte.Vehiculos.FirstOrDefault(t => t.Patente == comando.Vehiculo.Patente);
                     var categoriaVehiculo = Repositorio.Obtener<CategoriaVehiculo>(
-                        f => f.Patente == vehiculoEntity.Patente 
-                        && (f.PatenteAcoplado == vehiculoEntity.PatenteAcoplado 
+                        f => f.Patente == vehiculoEntity.Patente
+                        && (f.PatenteAcoplado == vehiculoEntity.PatenteAcoplado
                         || comando.Vehiculo.PatenteAcoplado == null)
                         && (f.PatenteAcoplado2 == comando.Vehiculo.PatenteAcoplado2
                         || vehiculoEntity.PatenteAcoplado2 == null)
@@ -243,7 +248,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Repositorio.Agregar(cartaPorte);
                         Repositorio.GuardarCambios();
                         Log.Info("Se creó exitosamente la carta de porte para el workflow {0}", comando.NombreWorkflow);
-                        resultado.Id = (int) cartaPorte.GetType().GetProperty("Id").GetValue(cartaPorte, null);
+                        resultado.Id = (int)cartaPorte.GetType().GetProperty("Id").GetValue(cartaPorte, null);
                     }
                     else
                     {

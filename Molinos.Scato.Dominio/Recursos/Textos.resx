@@ -8671,7 +8671,7 @@
   <data name="Corredor" xml:space="preserve">
     <value>Corredor</value>
   </data>
-	<data name="Corredor_Acopio" xml:space="preserve">
+  <data name="Corredor_Acopio" xml:space="preserve">
     <value>Corredor/Acopio</value>
   </data>
   <data name="Fecha_Ingreso_Desde" xml:space="preserve">
@@ -9325,6 +9325,9 @@
   <data name="BalanzaAutomatica" xml:space="preserve">
     <value>Balanzas Automáticas</value>
   </data>
+  <data name="GestionDePlayaExterna_Titulo" xml:space="preserve">
+    <value>Gestión de Playa Externa</value>
+  </data>
   <data name="EstadoDeCalle" xml:space="preserve">
     <value>Estado De Calle</value>
   </data>
@@ -9426,6 +9429,9 @@
   </data>
   <data name="EstadoDeCallePlayaInterna" xml:space="preserve">
     <value>Estado De Calle - Playa Interna</value>
+  </data>
+  <data name="GestionDePlayaInterna_Titulo" xml:space="preserve">
+    <value>Gestión de Playa Interna</value>
   </data>
   <data name="ModificarCallesInternas" xml:space="preserve">
     <value>Modificar Calles Internas</value>
@@ -10165,9 +10171,6 @@
   <data name="Destinatario_Cuit" xml:space="preserve">
     <value>Cuit Destino</value>
   </data>
-  <data name="Calle_EsPasoDirecto" xml:space="preserve">
-    <value>Es paso directo</value>
-  </data>
   <data name="ClienteProvisorio" xml:space="preserve">
     <value>Cliente provisorio</value>
   </data>
@@ -10329,5 +10332,191 @@
   </data>
   <data name="AbmComercial" xml:space="preserve">
     <value>ABM Comercial</value>
+  </data>
+  <data name="Menu_ConfiguracionAutomatizacion" xml:space="preserve">
+    <value>Config. Automatización</value>
+  </data>
+  <data name="TableroLogisticaAutomatismo_Titulo" xml:space="preserve">
+    <value>Tablero Logística Automatismo</value>
+  </data>
+  <data name="TableroComandoLogistica_Titulo" xml:space="preserve">
+    <value>Tablero - Comando Logística</value>
+  </data>
+  <data name="Panel" xml:space="preserve">
+    <value>Panel</value>
+  </data>
+  <data name="Configuraciones" xml:space="preserve">
+    <value>Configuraciones</value>
+  </data>
+  <data name="CallePreBalanza" xml:space="preserve">
+    <value>Calle de Pre-Balanza</value>
+  </data>
+  <data name="AplicarFiltroCalidad" xml:space="preserve">
+    <value>Aplicar filtro de calidad</value>
+  </data>
+  <data name="Llamado1a1" xml:space="preserve">
+    <value>Llamado 1 a 1</value>
+  </data>
+  <data name="Tablero_ComandoLogistica" xml:space="preserve">
+    <value>Panel de Control - Comando logística</value>
+  </data>
+  <data name="CamionesEscalables" xml:space="preserve">
+    <value>Camiones Escalables</value>
+  </data>
+  <data name="PuestosDeCargaDescarga_EsEscalable" xml:space="preserve">
+    <value>Es apto escalable</value>
+  </data>
+  <data name="No_Editable" xml:space="preserve">
+    <value>No Editable</value>
+  </data>
+  <data name="No_EditableLargo" xml:space="preserve">
+    <value>No Editable por estar vinculado a un Automatismo Activo</value>
+  </data>
+  <data name="PuestoComandoLogistica" xml:space="preserve">
+    <value>Puesto Comando Logistica</value>
+  </data>
+  <data name="GaritaIngreso" xml:space="preserve">
+    <value>Garita de Ingreso</value>
+  </data>
+  <data name="SupervisorLogistica" xml:space="preserve">
+    <value>Supervisor de Logistica</value>
+  </data>
+  <data name="PlayeroPlanta" xml:space="preserve">
+    <value>Playero de Planta</value>
+  </data>
+  <data name="ConfirmarPaseDirecto" xml:space="preserve">
+    <value>Si se habilita Pase Directo se deshabilitará el Llamado 1 a 1. Desea continuar?</value>
+  </data>
+  <data name="EsIncluidoAutomatismo" xml:space="preserve">
+    <value>Incluída en automatismo</value>
+  </data>
+  <data name="Automatismo_Crear" xml:space="preserve">
+    <value>Nuevo Automatismo</value>
+  </data>
+  <data name="TableroComandoPuerto_Panel" xml:space="preserve">
+    <value>Panel de Control - Comando Puerto</value>
+  </data>
+  <data name="TableroPuertoAutomatismo_Titulo" xml:space="preserve">
+    <value>Tablero Puerto Automatismo</value>
+  </data>
+  <data name="TableroComandoPuerto_Titulo" xml:space="preserve">
+    <value>Tablero - Comando Puerto</value>
+  </data>
+  <data name="CallePlanta" xml:space="preserve">
+    <value>Calle Planta</value>
+  </data>
+  <data name="CallePlayaInterna" xml:space="preserve">
+    <value>Calle Playa Interna</value>
+  </data>
+  <data name="Automatismo_IdExistente" xml:space="preserve">
+    <value>Ya existe un automatismo con este id</value>
+  </data>
+  <data name="Calle_PreHidraulica" xml:space="preserve">
+    <value>Calle de Pre-Hidráulica</value>
+  </data>
+  <data name="Default_PreBalanza" xml:space="preserve">
+    <value>(pre-balanza)</value>
+  </data>
+  <data name="Default_Hidraulicas" xml:space="preserve">
+    <value>(hidraulica)</value>
+  </data>
+  <data name="Default_PreHidraulica" xml:space="preserve">
+    <value>(pre-hidráulica)</value>
+  </data>
+  <data name="CallePreHidraulica" xml:space="preserve">
+    <value>Calle Pre Hidráulica</value>
+  </data>
+  <data name="CamionLlamadoTitulo" xml:space="preserve">
+    <value>Camión Llamado</value>
+  </data>
+  <data name="Variedad_Estandar" xml:space="preserve">
+    <value>Estándar</value>
+  </data>
+  <data name="ActAsignacionAutomatismoGranos" xml:space="preserve">
+    <value>Asignación Automatismo Granos</value>
+  </data>
+  <data name="EstadoAutomatismo" xml:space="preserve">
+    <value>Estado del automatismo</value>
+  </data>
+  <data name="TableroComandoPuerto" xml:space="preserve">
+    <value>Tablero Comando Puerto</value>
+  </data>
+  <data name="Automatismo_CombinacionExistente" xml:space="preserve">
+    <value>La combinación de Calle Planta/Punto de Carga/Almacén ya se encuentra Configurada en otro Automatismo</value>
+  </data>
+  <data name="AccesosUtiles" xml:space="preserve">
+    <value>Accesos Útiles</value>
+  </data>
+  <data name="Automatismo_ConfiguracionExistente" xml:space="preserve">
+    <value>La combinación de Material/Variedad/Filtra calidad/Camión escalable/Calle PreHidraulica se encuentra configurada en otra automatización</value>
+  </data>
+  <data name="Automatismo_CallePrebalanzaExistente" xml:space="preserve">
+    <value>La calle prebalanza ya existe en un automatismo</value>
+  </data>
+  <data name="AutomatismoLLamadoPreBalanza" xml:space="preserve">
+    <value>Automatismo Llamado Pre Balanza</value>
+  </data>
+  <data name="AutomatismoLLamadoVolcable" xml:space="preserve">
+    <value>Automatismo Llamado a Volcable</value>
+  </data>
+  <data name="Alerta_VariedadEnAutomatismo" xml:space="preserve">
+    <value>La variedad no puede ser eliminada ya que está en automatismo.</value>
+  </data>
+  <data name="Error_VariedadEnAutomatismo" xml:space="preserve">
+    <value>Ocurrió un error al verificar el estado de automatismo de la variedad.</value>
+  </data>
+  <data name="ActAsignacionAutomatismoNoGranos" xml:space="preserve">
+    <value>Asignación Automatismo No Granos</value>
+  </data>
+  <data name="SeleccioneOpcion" xml:space="preserve">
+    <value>Seleccione Opción</value>
+  </data>
+  <data name="Automatismo_MaterialVariedad_NoExiste" xml:space="preserve">
+    <value>Error al guardar automatismo ya que el material y variedad seleccionado no existe o fue eliminado recientemente</value>
+  </data>
+  <data name="AutomatismoNoGranos_CantidadMaximaDeCamiones" xml:space="preserve">
+    <value>Cantidad Máxima de Camiones</value>
+  </data>
+  <data name="AutomatismoNoGranos_CantidadDeCamiones" xml:space="preserve">
+    <value>Cantidad de Camiones</value>
+  </data>
+  <data name="Automatismo_CalleUtilizadaEnAutomatismoActivo" xml:space="preserve">
+    <value>Calle utilizada en un automatismo activo</value>
+  </data>
+  <data name="Automatismo_CallesDesactivadas" xml:space="preserve">
+    <value>El automatismo tiene asociadas calles desactivadas</value>
+  </data>
+  <data name="Automatismo_EsEscalableIncoincidente" xml:space="preserve">
+    <value>Característica es escalable de las hidráulicas asociadas no coincide</value>
+  </data>
+  <data name="Automatismo_HidraulicaUtilizadaEnAutomatismoActivo" xml:space="preserve">
+    <value>La Hidráulica está siendo utilizada en un automatismo activo</value>
+  </data>
+  <data name="TituloVolcadoras" xml:space="preserve">
+    <value>Volcadoras</value>
+  </data>
+  <data name="CallePlantaNoGranos" xml:space="preserve">
+    <value>Calle No Granos</value>
+  </data>
+  <data name="CallePlayaInternaPH" xml:space="preserve">
+    <value>Calle PH</value>
+  </data>
+  <data name="TipoLlamado" xml:space="preserve">
+    <value>Tipo de Llamado</value>
+  </data>
+  <data name="Automatismo_MsgPaseDirectoConMasDeUnaFila" xml:space="preserve">
+    <value>No es posible utilizar Pase Directo con más de una fila. Para poder hacerlo elimine o desactive los automatismos sobrantes e inténtelo nuevamente</value>
+  </data>
+  <data name="ConviveEnAlmacen" xml:space="preserve">
+    <value>Convive en almacén</value>
+  </data>
+  <data name="CargaDeCupo_Patente_ErrorFormato" xml:space="preserve">
+    <value>Patente No respeta el Formato ABC123 o AB123CD</value>
+  </data>
+  <data name="Calle_PlantaNoGranos_Existente" xml:space="preserve">
+    <value>Ya existe una calle planta no granos con ese material</value>
+  </data>
+  <data name="TipoLlamadoNoEditable" xml:space="preserve">
+    <value>No se puede editar ya que existe al menos una "fila/Camión" actualmente llamada para esta calle</value>
   </data>
 </root>

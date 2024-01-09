@@ -133,33 +133,7 @@ namespace Molinos.Scato.Servicios.Impl
                 SensorIngresoActiva = !byteEstado.BitAt(1),
                 SensorTrompaActiva = !byteEstado.BitAt(0)
             };
-            //notificar.Notificar(new NotificacionDto
-            //{
-            //    Grupo = "Automaticas",
-            //    Mensaje = estadoBalanza.ToJson(),
-            //    TipoAlerta = TipoAlerta.CambioEstadoBalanzas
-            //});
             puesto.EstadoSensoresBalanzaDto = estadoBalanza;
-
-            //var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
-
-            //if (!estadoBalanza.SensorIngresoActiva)
-            //    mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaAvanzarCamion);
-            //else if (!estadoBalanza.SensorTrompaActiva)
-            //    mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaRetrocederCamion);
-
-            //mensajesCartel?.ToList().ForEach(x =>
-            //{
-            //    comandos.Ejecutar(new EnviarMensajeCarteLed()
-            //    {
-            //        Mensaje = x.Mensaje,
-            //        PuestoDeTrabajoId = puesto.PuestoId,
-            //        NumeroPrograma = x.Programa,
-            //        NumeroTrama = x.Trama,
-            //        NumeroVariable = x.Variable,
-            //        SegundosDeEspera = x.SegundosDeEspera
-            //    });
-            //});
         }
 
         public void NotificarCambioDeEstado(string sensor, bool mensaje)
@@ -252,7 +226,7 @@ namespace Molinos.Scato.Servicios.Impl
                 return valido;
             }
             log.Debug($"Se encontro puesto Id {puesto.PuestoId}");
-            var mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
+            var mensajesCartel = repositorio.ListarMensajesCartelLed(CodigoMensajeCartelLed.BalanzaLimpiarCartelLed);
             var estadoEntradaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaArriba }) as ResultadoEstadoSensor;
             var estadoEntradaAbajo = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraEntradaAbajo }) as ResultadoEstadoSensor;
             var estadoSalidaArriba = orquestador.Ejecutar(new EjecutarConsultaSensor { CodigoDispositivo = puesto.ConfigSensores.SensorBarreraSalidaArriba }) as ResultadoEstadoSensor;
@@ -269,12 +243,12 @@ namespace Molinos.Scato.Servicios.Impl
 
             if (!estadoSensorIngreso.EstadoActivo)
             {
-                mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaAvanzarCamion);
+                mensajesCartel = repositorio.ListarMensajesCartelLed(CodigoMensajeCartelLed.BalanzaAvanzarCamion);
                 valido = false;
             }
             else if (!estadoSensorTrompa.EstadoActivo)
             {
-                mensajesCartel = repositorio.ObtenerMensajesCartelLed(CodigoMensajeCartelLed.BalanzaRetrocederCamion);
+                mensajesCartel = repositorio.ListarMensajesCartelLed(CodigoMensajeCartelLed.BalanzaRetrocederCamion);
                 valido = false;
             }
 

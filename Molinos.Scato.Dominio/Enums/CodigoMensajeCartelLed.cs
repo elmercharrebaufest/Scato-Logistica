@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Molinos.Scato.Dominio.Enums
+﻿namespace Molinos.Scato.Dominio.Enums
 {
     public static class CodigoMensajeCartelLed
     {
@@ -8,9 +6,10 @@ namespace Molinos.Scato.Dominio.Enums
         public const string BalanzaAvanzarCamion = "BalanzaAvanzarCamion";
         public const string BalanzaRetrocederCamion = "BalanzaRetrocederCamion";
         public const string GaritaIngresoAsignarCalle = "GaritaIngresoAsignarCalle";
-        public const string LlamadoCallePrecaladoACalar = "LlamadoCallePrecaladoACalar";
         public const string LlamadoCallePostcalado = "LlamadoCallePostcalado";
         public const string LlamadoAutomaticoVolcadoras = "LlamadoAutomaticoVolcadoras";
-        public const string CartelPreBalanza = "CartelPreBalanza";
+        public const string LlamadoCallePreBalanza = "LlamadoCallePreBalanza";
+        public const string LlamadoCamionPreBalanza = "LlamadoCamionPreBalanza";
+        public const string LlamadoCamionNoGrano = "LlamadoCamionNoGrano";
     }
 }

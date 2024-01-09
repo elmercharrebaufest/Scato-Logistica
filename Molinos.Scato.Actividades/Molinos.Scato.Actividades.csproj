@@ -88,6 +88,10 @@
   <ItemGroup>
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
+    <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
+    <Compile Include="EliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="EliminarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="DeshabilitarConfirmacionCargaDescarga.cs" />
     <Compile Include="HabilitarConfirmacionCargaDescarga.cs" />
     <Compile Include="EnviarMensajeCircular.cs" />
@@ -99,6 +103,8 @@
     <Compile Include="Interfaces\IEnEsperaHB4Service.cs" />
     <Compile Include="Interfaces\IPuestoComandoPuertoService.cs" />
     <Compile Include="Internas\AsignarAutomaticamentePuestoComandoPuerto.cs" />
+    <Compile Include="Internas\AsignarAutomatismoNoGranoActivo.cs" />
+    <Compile Include="Internas\CrearAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Internas\DarDeAltaCtgDGAutomatica.cs" />
     <Compile Include="Internas\DarDeAltaCtgDGManual.cs" />
     <Compile Include="Internas\DarDeBajaCtgDGDefinitivoAutomatica.cs" />
@@ -108,6 +114,9 @@
     <Compile Include="ConfirmarCTGVencidos.cs" />
     <Compile Include="Internas\PuestoComandoPuerto.cs" />
     <Compile Include="Internas\PuestoComandoPuertoRechazo.cs" />
+    <Compile Include="Internas\AsignarAutomatismoGranoActivo.cs" />
+    <Compile Include="Internas\ValidarAutomatismoNoGranoActivo.cs" />
+    <Compile Include="Internas\ValidarAutomatismoGranoActivo.cs" />
     <Compile Include="Internas\VerificarPuestoComandoPuerto.cs" />
     <Compile Include="Internas\ActualizarCamionDemorado.cs" />
     <Compile Include="Internas\ValidarFilasPrebalanzaDisponibles.cs" />
@@ -1285,7 +1294,25 @@
     </XamlAppDef>
   </ItemGroup>
   <ItemGroup>
+    <XamlAppDef Include="AsignacionAutomatismoGranos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+   <ItemGroup>
     <XamlAppDef Include="VerificacionCamionRechazadoV2.xaml">
+
+
+
+
+
+
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="AsignacionAutomatismoNoGranos.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

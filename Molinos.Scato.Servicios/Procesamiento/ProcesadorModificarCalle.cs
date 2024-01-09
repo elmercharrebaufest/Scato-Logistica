@@ -2,39 +2,47 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using System;
-using System.Linq;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
     public class ProcesadorModificarCalle : ProcesadorModificar<ModificarCalle>
     {
-        private readonly IServicioComandos servicioComandos;
-
-        public ProcesadorModificarCalle(IRepositorio repositorio, IConversor conversor, ILogger log, IServicioComandos servicioComandos)
+        public ProcesadorModificarCalle(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
-            this.servicioComandos = servicioComandos;
         }
 
         protected override void ModificarEntidad(ModificarCalle comando)
         {
             var calle = Repositorio.Obtener<Calle>(comando.Dto.Id);
-
-            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto)
-                LlamarCallePrebalanzaPrioritario(comando);
-
-            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && !comando.Dto.EsPasoDirecto && calle.EsPasoDirecto)
-                LiberarCallePrebalanzaPrioritario(comando);
+            var automatismoTipoLlamadoId = calle.AutomatismoTipoLlamadoId;
 
             Conversor.Convertir(comando.Dto, calle);
             calle.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             calle.CaracteristicaDeCalidad = Repositorio.Obtener<CaracteristicaDeCalidad>(comando.Dto.CaracteristicaDeCalidadId);
             if (comando.Dto.CalleCaladoId > 0)
                 calle.CalleCalado = Repositorio.Obtener<Calle>(comando.Dto.CalleCaladoId);
+
+            if (comando.Dto.TipoCalle == TipoCalle.PlayaInterna)
+            {
+                if (automatismoTipoLlamadoId == null)
+                {
+                    var automatismoTipoLlamado = Repositorio.Obtener<AutomatismoTipoLlamado>(q => q.Codigo == Constantes.AutomatismoTipoLlamado.PorFila);
+                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamado.Id;
+                }
+                else
+                {
+                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamadoId;
+                }
+            }
+            else
+            {
+                calle.AutomatismoTipoLlamadoId = null;
+            }
 
             //cancelar llamado de calle
             if (!comando.Llamada)
@@ -90,65 +98,24 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 }
             }
 
-            if (comando.Dto.TipoCalle == TipoCalle.PreBalanzaGranos && comando.Dto.EsPasoDirecto)
+            var ConfiguracionGranoActivo = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos);
+            var ConfiguracionNoGranoActivo = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
+            if ((ConfiguracionGranoActivo.Valor.Equals("True")
+                && Repositorio.Existe<AutomatismoGrano>(a => a.Activo == true && (a.CallePreBalanzaId == comando.Dto.Id || a.CallePreHidraulicaId == comando.Dto.Id)))
+                || (ConfiguracionNoGranoActivo.Valor.Equals("True")
+                && Repositorio.Existe<AutomatismoNoGrano>(a => a.Activo == true && (a.CallePlanta.Id == comando.Dto.Id || a.CallePlayaInterna.Id == comando.Dto.Id))))
             {
-                if(Repositorio.Existe<Calle>(x => x.EsPasoDirecto && x.Id != comando.Dto.Id))
-                    resultado.Error("EsPasoDirecto", "Ya existe una fila Prebalanza de Paso Directo");
-
-                if(Repositorio.Existe<Calle>(x => x.Id == comando.Dto.Id && x.Bloqueada && x.FechaLLamada != null))
-                    resultado.Error("EsPasoDirecto", $"La {comando.Dto.Nombre} está siendo llamada actualmente. Por favor libérela para poder continuar");
+                resultado.Error("Codigo", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
             }
 
-        }
-
-        private void LlamarCallePrebalanzaPrioritario(ModificarCalle comando)
-        {
-            comando.Dto.FechaLLamada = DateTime.Now;
-            comando.Dto.Bloqueada = true;
-            var resultadoInsertarCallePrioritarioCartelLed = servicioComandos.Ejecutar(new InsertarSlotMensajeCartelLed()
+            if (!comando.Dto.Deshabilitada && comando.Dto.TipoCalle == TipoCalle.PlantaNoGranos)
             {
-                Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
-                CalleId = comando.Dto.Id,
-                EsPrioritarioPrebalanza = true,
-            }) as ResultadoMensajeCartelLed;
-            EnviarFilasReordenadasPreBalanzaCartelLed(resultadoInsertarCallePrioritarioCartelLed);
-        }
-
-        private void EnviarFilasReordenadasPreBalanzaCartelLed(ResultadoMensajeCartelLed resultadoInsertarCallePrioritarioCartelLed)
-        {
-            if (!resultadoInsertarCallePrioritarioCartelLed.HayErrores && resultadoInsertarCallePrioritarioCartelLed.ListaDeMensajes.Any())
-            {
-                var cartel = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna && x.Nombre == Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
-                foreach (var mensajeCartelLed in resultadoInsertarCallePrioritarioCartelLed.ListaDeMensajes)
+                if (Repositorio.Existe<Calle>(x => x.Material.Id == comando.Dto.MaterialId && x.TipoCalle == TipoCalle.PlantaNoGranos && !x.Deshabilitada && comando.Dto.Id != x.Id))
                 {
-                    servicioComandos.Ejecutar(new EnviarMensajeCartelLed
-                    {
-                        Mensaje = mensajeCartelLed.HistorialMensajeCartelLed?.Mensaje ?? "-",
-                        Codigo = cartel?.Valor,
-                        NumeroTrama = mensajeCartelLed.Trama,
-                        NumeroPrograma = mensajeCartelLed.Programa,
-                        NumeroVariable = mensajeCartelLed.Variable,
-                    });
+                    resultado.Error("MaterialDesc", Textos.Calle_PlantaNoGranos_Existente);
                 }
             }
-        }
 
-        private void LiberarCallePrebalanzaPrioritario(ModificarCalle comando)
-        {
-            comando.Dto.FechaLLamada = null;
-            comando.Dto.Bloqueada = false;
-            var resultadoLimpiarCallePrioritarioCartelLed = servicioComandos.Ejecutar(new LimpiarHistorialMensajeCartelLed()
-            {
-                Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
-                CalleId = comando.Dto.Id
-            }) as ResultadoMensajeCartelLedReordenado;
-
-            var resultadoMensajeCartelLed = new ResultadoMensajeCartelLed
-            {
-                ListaDeMensajes = resultadoLimpiarCallePrioritarioCartelLed.ListaDeMensajes,
-            };
-
-            EnviarFilasReordenadasPreBalanzaCartelLed(resultadoMensajeCartelLed);
         }
     }
 }

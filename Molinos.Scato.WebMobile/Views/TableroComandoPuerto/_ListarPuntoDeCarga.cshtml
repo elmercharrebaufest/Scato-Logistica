@@ -1,0 +1,12 @@
+﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+
+@model AutomatismoNoGranoConfiguracionViewModel
+
+@Html.Grilla(Model.ListaPuntoDeCarga, grilla => grilla.Columns(
+        grilla.ColumnaModificarModalEntidad(Html, "PuntoDeCarga"),
+        grilla.ColumnaSwitchIdentity("EstadoAutomatismo", "Estado", "puntodecarga"),
+        grilla.Columna("Descripcion", "Punto de Carga", null, "width:300px", false),
+        grilla.Columna("ConviveEnAlmacen", "Convive en Almacén", c => c.ConviveEnAlmacen == true ? "Si": "No", "width:300px", false),
+        grilla.Columna("CantidadMaximaDeCamiones", "Camiones", c => c.CantidadMaximaDeCamiones == null ? "0" : c.CantidadMaximaDeCamiones, null, false)
+    ))

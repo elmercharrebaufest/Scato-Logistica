@@ -6,7 +6,6 @@ using System;
 
 namespace Molinos.Scato.Servicios.Impl
 {
-    //TODO : Refactorizar para que no reciba Material y sólo el Id en cada caso
     public class AdministradorDeCalles : IAdministradorDeCalles
     {
         private readonly IRepositorio repositorio;
@@ -16,18 +15,13 @@ namespace Molinos.Scato.Servicios.Impl
             this.repositorio = repositorio;
         }
 
-        public Calle AsignarCalle(TipoCalle tipoCalle, Material material, TipoCalidad calidad, int centroId, bool llegoEnHorarioCircular = false, Guid? instanceId = null)
+        public Calle AsignarCalle(TipoCalle tipoCalle, int? materialId, TipoCalidad calidad, int centroId, bool llegoEnHorarioCircular = false, Guid? instanceId = null)
         {
             if (tipoCalle == TipoCalle.PostCalado)
-            {
-                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePostCalado(tipoCalle, material, calidad, instanceId.Value));
-            }
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePostCalado(tipoCalle, materialId, calidad, instanceId.Value));
 
             if (tipoCalle == TipoCalle.PlayaInterna)
-            {
                 return repositorio.ObtenerProyeccion<Recorrido, Calle>(x => x.InstanciaWorkflow == instanceId, x => x.Calle);
-                //logica de secuencia
-            }
 
             //circular
             if (tipoCalle == TipoCalle.PreCalado && llegoEnHorarioCircular)
@@ -35,32 +29,28 @@ namespace Molinos.Scato.Servicios.Impl
                 var centroInformaCircular = repositorio.ObtenerProyeccion<Centro, bool>(x => x.Id == centroId, x => x.InformaCircular);
 
                 if (centroInformaCircular)
-                    return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(TipoCalle.Circular, material, true));
+                    return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(TipoCalle.Circular, materialId, true));
             }
 
             if (tipoCalle == TipoCalle.NoGranos)
-            {
-                return repositorio.ObtenerConsultaEscalar(new ObtenerCalleNoGranos(TipoCalle.NoGranos, material));
-            }
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCalleNoGranos(TipoCalle.NoGranos, materialId));
 
-            if (tipoCalle == TipoCalle.PlantaNoGranos || tipoCalle == TipoCalle.EnTransito || tipoCalle == TipoCalle.SalidaNoGranos || tipoCalle == TipoCalle.EsperaAduanaNoGranos || tipoCalle == TipoCalle.EnTransitoGranos || tipoCalle == TipoCalle.SalidaGranos)
+            if (tipoCalle == TipoCalle.PlantaNoGranos)            
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePlantaAutomatismoNoGranos(instanceId));
+         
+            if (tipoCalle == TipoCalle.EnTransito
+                || tipoCalle == TipoCalle.SalidaNoGranos
+                || tipoCalle == TipoCalle.EsperaAduanaNoGranos
+                || tipoCalle == TipoCalle.EnTransitoGranos
+                || tipoCalle == TipoCalle.SalidaGranos)
             {
-                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipoYMaterial(tipoCalle, material));
+                return repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipoYMaterial(tipoCalle, materialId));
             }
 
             if (tipoCalle == TipoCalle.PreBalanzaGranos)
-            {
-                return EsPasoDirecto()
-                    ? repositorio.ObtenerConsultaEscalar(new ObtenerCallePorTipo(tipoCalle))
-                    : repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePorTipoYMaterial(tipoCalle, material));
-            }
+                return repositorio.ObtenerConsultaEscalar(new ObtenerUltimaCallePrebalanza(materialId, instanceId));
 
-            return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(tipoCalle, material));
-        }
-
-        public Calle ObtenerSiguienteCalle(int materialId)
-        {
-            return repositorio.ObtenerConsultaEscalar(new ObtenerSiguienteCalle(TipoCalle.PreCalado, materialId));
+            return repositorio.ObtenerConsultaEscalar(new ObtenerCalle(tipoCalle, materialId));
         }
 
         public int ObtenerEspacioDisponible(TipoCalle tipoCalle, int materialId, TipoCalidad calidad, int? calleId = null)
@@ -85,15 +75,6 @@ namespace Molinos.Scato.Servicios.Impl
             var camiones = repositorio.Contar<CallePorRecorrido>(x => x.FechaEgreso == null && x.Calle.Id == calleId);
             var disponibilidad = repositorio.ObtenerProyeccion<Calle, int>(x => x.Id == calleId, x => x.CantidadDeCamiones);
             return disponibilidad - camiones > 0;
-        }
-
-        private bool EsPasoDirecto() //TODO 2023.07 Revisar metodo por que el pase directo debe depender de la calle no de una configuracion
-        {
-            return false;
-
-            //string configuracion = repositorio.ObtenerProyeccion<ConfiguracionGeneral, string>(x => x.Pantalla.Equals("EstadoPlayaInterna") && x.Nombre.Equals("PaseDirecto"), x => x.Valor);
-
-            //return !configuracion.Equals("0");
         }
     }
 }
