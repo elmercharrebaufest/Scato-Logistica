@@ -41,6 +41,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
             var callesPrebalanza = servicio.ListarCallesAutomatismoGrano(TipoCalle.PreBalanzaGranos, false, dto.CallePreBalanzaId).Where(c => !c.Deshabilitada).ToList();
             var callesHidraulica = servicio.ListarCallesAutomatismoGrano(TipoCalle.PlayaInterna, false, dto.CallePreHidraulicaId).Where(c => c.CentroId == idCentro && !c.Deshabilitada).ToList();
             var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.Estado != EstadoHidraulica.Inhabilitado && c.CentroId == idCentro).ToList();
+            var hidraulicasConfiguracion = MapearHidraulicaConfiguracion(hidraulicas);
 
             Materiales = MapearMateriales(servicio.ListarMaterialGranoPorCentro(idCentro, true).Where(m => m.MostrarEnWebMobile).ToList(), dto.MaterialId);
             Variedades = MapearVariedades(servicio.ListarTipoVariedadPorMaterial(dto.MaterialId).Where(c => !c.Borrado).ToList(), dto.TipoVariedadId ?? 0);
@@ -51,9 +52,19 @@ namespace Molinos.Scato.WebMobile.ViewModel
             CallesHidraulica = MapearCallesPreHidraulicas(callesHidraulica.Where(c => c.ActivoAutomatico == true).ToList(), dto.CallePreHidraulicaId);
             ConfiguracionCallesPreBalanza = new ListaPaginada<CalleDto>(callesPrebalanzaTotales, 1, callesPrebalanza.Count, callesPrebalanza.Count);
             ConfiguracionCallesPreHidraulica = new ListaPaginada<CalleDto>(callesHidraulicaTotales, 1, callesHidraulica.Count, callesHidraulica.Count);
-            ConfiguracionHidraulicas = new ListaPaginada<LlamadoAutomaticoHidraulicaDto>(hidraulicas, 1, hidraulicas.Count, hidraulicas.Count);
+            ConfiguracionHidraulicas = new ListaPaginada<LlamadoAutomaticoHidraulicaDto>(hidraulicasConfiguracion, 1, hidraulicasConfiguracion.Count, hidraulicasConfiguracion.Count);
             AutomatismoGeneral = Convert.ToBoolean(servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.Granos).Valor);
             AutomatismoLLamadoPrebalanza = Convert.ToBoolean(servicio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.TableroComandoLogistica, Constantes.ConfiguracionGeneral.LlamadoAutomatico.PreBalanza).Valor);
+        }
+
+        private List<LlamadoAutomaticoHidraulicaDto> MapearHidraulicaConfiguracion(List<LlamadoAutomaticoHidraulicaDto> hidraulicas)
+        {
+            var hidraulicasconfiguracion = new List<LlamadoAutomaticoHidraulicaDto>();
+            foreach (var h in hidraulicas) {
+                h.Id = h.HidraulicaId;
+                hidraulicasconfiguracion.Add(h);
+            }
+            return hidraulicasconfiguracion;
         }
 
         private List<SelectListItem> MapearMateriales(IList<MaterialPorCentroDto> materiales, int idSeleccionado = 0)
