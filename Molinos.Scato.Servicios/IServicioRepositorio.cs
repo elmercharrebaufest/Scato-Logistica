@@ -2964,7 +2964,7 @@ namespace Molinos.Scato.Servicios
         IList<RecorridoDto> ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
 
         [OperationContract]
-        int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
+        int ObtenerDisponibilidadEnCallePlantaNoGranos(int callePlantaNoGranosId);
 
         [OperationContract]
         CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId);
@@ -3013,6 +3013,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId);
+
+        [OperationContract]
+        AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId);
     }
 
 }

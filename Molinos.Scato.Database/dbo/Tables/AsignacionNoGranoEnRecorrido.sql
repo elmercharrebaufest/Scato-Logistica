@@ -6,6 +6,8 @@
 
   [CallePlanta_Id] INT NULL,
 
+  [AplicaConteo] BIT NOT NULL DEFAULT 0,
+
   CONSTRAINT [PK_AsignacionNoGranoEnRecorrido] PRIMARY KEY ([Id] ASC),
   
   CONSTRAINT [FK_dbo.AsignacionNoGranoEnRecorrido_Recorrido_Id]
