@@ -243,7 +243,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLiberarPorPaseDirecto(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            if (repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePlayaInterna.Id).Count() >= callePreBalanzaPlayaInterna.CallePlayaInterna.CantidadDeCamiones)
+            int cantidadCamionesEnCallePreBalanza = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePreBalanza.Id).Count();
+            int cantidadCamionesEnCallePlayaInterna = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePlayaInterna.Id).Count();
+
+            bool callePreHidraulicaLlena = cantidadCamionesEnCallePlayaInterna >= callePreBalanzaPlayaInterna.CallePlayaInterna.CantidadDeCamiones;
+            bool callePreBalanzaVacia = cantidadCamionesEnCallePreBalanza == 0;
+
+            if (callePreHidraulicaLlena || callePreBalanzaVacia)
                 LiberarCallePreBalanza(callePreBalanzaPlayaInterna);
         }
 
