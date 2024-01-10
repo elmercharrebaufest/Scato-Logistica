@@ -256,6 +256,10 @@ function ModificarEstadoHidraulica(element) {
 function ModificarEsEscalableHidraulica(element) {
     let id = $(element).data('id');
     let valor = $(element).prop('checked');
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
     $.ajax({
         url: urlModificarEstadoEsEscalableHidraulica,
         type: 'POST',
@@ -272,6 +276,9 @@ function ModificarEsEscalableHidraulica(element) {
         },
         error: function () {
             MostrarAlertaError('Error al realizar la petición');
+        },
+        complete: function () {
+            $.unblockUI();
         }
     });
 }
