@@ -17,14 +17,16 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
         private readonly string numerodoc;
         private readonly string patente;
         private readonly TipoImpresion? tipoImpresion;
+        private readonly int centroId;
 
-        public ListarImpresiones(TipoDocumentoIngreso? tipodoc, string numerodoc, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion)
+        public ListarImpresiones(TipoDocumentoIngreso? tipodoc, string numerodoc, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion, int centroId)
         {
             this.paginacion = paginacion;
             this.numerodoc = numerodoc;
             this.tipodoc = tipodoc;
             this.patente = patente;
             this.tipoImpresion = tipoImpresion;
+            this.centroId = centroId;
         }
 
         public ListaPaginada<ImpresionDto> Ejecutar(DbContext contexto)
@@ -40,9 +42,10 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                             && (string.IsNullOrEmpty(patente) || rec.Patente == patente)
                             && (tipodoc == null || rec.TipoDocumentoIngreso == tipodoc)
                             && (tipoImpresion == null || impresion.TipoImpresion == tipoImpresion)
+                            && (centroId == null || rec.Centro.Id == centroId)
 
 
-                            select new ImpresionDto
+                                  select new ImpresionDto
                             {
                                 Id = impresion.Id,
                                 FechaImpresion = impresion.FechaImpresion,
