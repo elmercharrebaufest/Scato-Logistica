@@ -6,6 +6,10 @@ CREATE TABLE [dbo].[TipoVariedadPorMaterial] (
 
   [Material_Id] INT NOT NULL,
 
+  [ColorFondo] VARCHAR(10) NULL,
+
+  [ColorTexto] VARCHAR(10) NULL,
+
   [Borrado] BIT NULL DEFAULT 0,
 
   [CreadoPor] VARCHAR(50) NULL,
@@ -21,3 +25,8 @@ CREATE TABLE [dbo].[TipoVariedadPorMaterial] (
   CONSTRAINT [FK_TipoVariedadPorMaterial_Material] FOREIGN KEY (Material_Id) REFERENCES [dbo].[Material](Id)
 
 );
+
+GO
+
+CREATE UNIQUE INDEX IX_TipoVariedadPorMaterial_TipoVariedadId_MaterialId
+  ON [dbo].[TipoVariedadPorMaterial](TipoVariedad_Id, Material_Id);

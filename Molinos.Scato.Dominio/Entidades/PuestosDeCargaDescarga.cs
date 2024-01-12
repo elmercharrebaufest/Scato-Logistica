@@ -22,5 +22,8 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual bool? EsEspecial { get; set; }
         public virtual bool EsSojaEPA { get; set; }
         public virtual string CodigoSensorBajada { get; set; }
+        public virtual bool EsEscalable { get; set; }
+        public IList<AutomatismoGrano> AutomatismoGranos { get; set; }
+        public virtual bool ActivoAutomatico { get; set; }
     }
 }

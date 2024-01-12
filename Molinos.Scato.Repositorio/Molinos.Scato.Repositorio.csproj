@@ -71,6 +71,7 @@
     <Compile Include="ComandosEF\CrearArchivoDeMovimientos.cs" />
     <Compile Include="ComandosEF\CrearLoteAuditoria.cs" />
     <Compile Include="ConsultasEF\ConsultarEstadosWorkflows.cs" />
+    <Compile Include="ConsultasEF\ConsultarAutomatismoGranoActivoDisponible.cs" />
     <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInternaFason.cs" />
     <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaInterna.cs" />
     <Compile Include="ConsultasEF\ConsultarRequestAltaCTDGOrdenCargaFas.cs" />
@@ -96,8 +97,8 @@
     <Compile Include="ConsultasEF\ListarCpeAfipCacheadas.cs" />
     <Compile Include="ConsultasEF\ListarVagonesEnPesada.cs" />
     <Compile Include="ConsultasEF\MonitorCPEsCacheadasConsulta.cs" />
-    <Compile Include="ConsultasEF\ObtenerCallePorTipo.cs" />
-    <Compile Include="ConsultasEF\ObtenerUltimaCallePorTipoYMaterial.cs" />
+    <Compile Include="ConsultasEF\ObtenerCallePlantaAutomatismoNoGranos.cs" />
+    <Compile Include="ConsultasEF\ObtenerUltimaCallePrebalanza.cs" />
     <Compile Include="ConsultasEF\ObtenerCallePorTipoYMaterial.cs" />
     <Compile Include="ConsultasEF\ObtenerVehiculo.cs" />
     <Compile Include="ConsultasEF\ObtenerCalleNoGranos.cs" />

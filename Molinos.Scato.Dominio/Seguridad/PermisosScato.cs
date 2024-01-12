@@ -758,7 +758,16 @@ namespace Molinos.Scato.Dominio.Seguridad
         [Display(ResourceType = typeof(Textos), Name = "ActPuestoComandoPuerto")]
         ActividadPuestoComandoPuerto = 616,
 
-        
-
+        //Permisos Comando Logistica
+        [Display(ResourceType = typeof(Textos), Name = "GaritaIngreso")]
+        GaritaIngreso = 617,
+        [Display(ResourceType = typeof(Textos), Name = "SupervisorLogistica")]
+        SupervisorLogistica = 618,
+        [Display(ResourceType = typeof(Textos), Name = "PlayeroPlanta")]
+        PlayeroPlanta = 619,
+        [Display(ResourceType = typeof(Textos), Name = "PuestoComandoLogistica")]
+        PuestoComandoLogistica = 620,
+        [Display(ResourceType = typeof(Textos), Name = "TableroComandoPuerto")]
+        TableroComandoPuerto = 621,
     }
 }

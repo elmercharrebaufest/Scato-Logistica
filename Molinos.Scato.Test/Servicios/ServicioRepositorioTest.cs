@@ -3723,7 +3723,7 @@ namespace Molinos.Scato.Test.Servicios
         {
             repositorioMock.Setup(s => s.ObtenerProyeccion(It.IsAny<Expression<Func<Centro, bool>>>(), It.IsAny<Expression<Func<Centro, string>>>())).Returns("5566");
 
-            var resultado = target.ObtenerCentroCodigoSap(5);
+            var resultado = target.ObteneCodigoSapPorCentroId(5);
             Assert.AreEqual(resultado, "5566");
         }
 

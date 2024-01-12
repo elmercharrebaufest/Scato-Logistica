@@ -32,6 +32,12 @@ $(document).ready(function () {
     CentrarPosicionElemento();
     /*Centrar por redimensión de pantalla*/
     $(window).resize(function (e) { e.preventDefault(); CentrarPosicionElemento(); });
+
+    $(function () {
+        $("[data-hide]").on("click", function () {
+            $(this).closest("." + $(this).attr("data-hide")).hide();
+        });
+    });
 });
 
 function CentrarPosicionElemento() {
@@ -50,7 +56,7 @@ function MostrarAlertaError(data) {
     }
     $("#alertaError").show();
     $("#alertaError").delay(500).addClass("in");
-    $('#alertaError').removeClass('d-none')
+    $('#alertaError').removeClass('d-none');
 }
 
 function MostrarAlertaAdvertencia(data) {
@@ -84,7 +90,6 @@ function MostrarAlertaCancelada() {
     $("#alertaCancelada").show();
     $("#alertaCancelada").delay(500).addClass("in").fadeOut(2000);
 }
-
 
 function obtenerColoresParaGraficos(cantidad) {
     return makeColorGradient(2.4, 2.4, 2.4, 0, 2, 4, 128, 127, cantidad);

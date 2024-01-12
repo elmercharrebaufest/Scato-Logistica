@@ -291,6 +291,7 @@ function CopiarFiltros() {
     $("#filtroProximaAccion").val($("#ProximaAccion").val());
     $("#filtroTipoComercialId").val($("#TipoComercialId").val());
     $("#filtroMaterialId").val($("#MaterialId").val());
+    $("#filtroTipoVariedadId").val($("#TipoVariedadId").val());
 
     $("#filtroCalidad").val($("#Calidad").val());
     $("#filtroTipoDeSoja").val($("#TipoDeSoja").val());

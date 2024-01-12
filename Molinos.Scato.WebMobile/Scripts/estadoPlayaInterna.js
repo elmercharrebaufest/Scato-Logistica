@@ -283,12 +283,29 @@ function LiberarFilePrebalanza(e) {
     });
 }
 
-function OnSuccessGuardarPaseDirecto(data) {
-    if (data.TieneAdvertencias === true) {
-        MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje)
-    } else if (data.EsValido === true) {
-        MostrarAlertaExitosa("Se configuro correctamente.");
-    } else {
-        MostrarAlertaError(data.Mensajes[0].Mensaje)
-    }
-}
+$("#body").on("click",".abrirModal", function (e) {
+    self = e.currentTarget;
+    $.blockUI({
+        blockMsgClass: 'blocuiBox',
+        message: 'Cargando...'
+    });
+    $.ajax({
+        url: urlMostrarDetalleCalle,
+        data: {
+            calleId: self.dataset.id
+        },
+        type: "POST",
+        success: function (result) {
+            $(".modal-backdrop").remove()
+            $(".detalleCallenModal").remove()
+            $("#detalleCalle").html(result);
+            $("#detalleCalleModal").modal("show");
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        complete: function () {
+            $.unblockUI();
+        }
+    });
+});

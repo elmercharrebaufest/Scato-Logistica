@@ -1,0 +1,105 @@
+﻿@using Molinos.Scato.Dominio.Recursos
+
+@{
+    ViewBag.Title = Textos.TableroComandoPuerto_Titulo;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/switches.css")">
+
+<script type="text/javascript" src="@Url.Content("~/scripts/automatismoNoGrano.js")"></script>
+<script>
+    urlModificarCallePlanta = '@Url.Action("ModificarCallePlanta", "TableroComandoPuerto")';
+    urlModificarPuntoDeCarga = '@Url.Action("ModificarPuntoDeCarga", "TableroComandoPuerto")';
+    urlActualizarEstadoCallePlanta = '@Url.Action("ActualizarEstadoCallePlanta", "TableroComandoPuerto")';
+    urlActualizarEstadoAlmacen = '@Url.Action("ActualizarEstadoAlmacen", "TableroComandoPuerto")';
+    urlActualizarEstadoPuntoDeCarga = '@Url.Action("ActualizarEstadoPuntoDeCarga", "TableroComandoPuerto")';
+    urlListarAutomatismoNoGrano = '@Url.Action("ListarAutomatismoNoGrano", "TableroComandoPuerto")';
+    urlActualizarEstadoAutomatismoGeneral = '@Url.Action("ActualizarEstadoAutomatismoGeneral", "TableroComandoPuerto")';
+    urlListarCallePlanta = '@Url.Action("ListarCallePlanta", "TableroComandoPuerto")';
+    urlListarPuntoDeCarga = '@Url.Action("ListarPuntoDeCarga", "TableroComandoPuerto")';
+</script>
+
+<div class="m-2">
+    <h1 class="text-center">@Textos.TableroComandoPuerto_Panel</h1>
+</div>
+
+<div class="mx-1" style="border: 1px solid #ccc;">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item">
+                    @Html.ActionLink(Textos.Panel, "Index", "TableroComandoPuerto", null, new { @class = "nav-link" })
+                </li>
+                <li class="nav-item active">
+                    @Html.ActionLink(Textos.Configuraciones, "Configuraciones", "TableroComandoPuerto", null, new { @class = "nav-link active" })
+                </li>
+                <li class="nav-item ml-auto">
+                    <label class="switch">
+                        <input id="automatismoGeneral" type="checkbox" @(Model.EstadoGeneralAutomatismoNoGrano ? "checked='checked'" : "")>
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="mr-2">Automatismo General</span>
+                </li>
+            </ul>
+
+            <div class="tab-content overflow-auto">
+                <div id="panel" class="tab-pane fade show active">
+                    <div class="container" style="max-width:1400px">
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-4 flex-fill">
+                                <h4 class="text-center">Calle No Granos</h4>
+                                <div id="gridCallePlanta" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarCallePlanta")
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 flex-fill">
+                                <h4 class="text-center">Puntos de Carga</h4>
+                                <div id="gridPuntoDeCarga" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarPuntoDeCarga")
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 flex-fill">
+                                <h4 class="text-center">Almacén</h4>
+                                <div id="gridAlmacen" class="contenedor" style="overflow-y: scroll; height: calc(100vh - 150px);">
+                                    @Html.Partial("_ListarAlmacen")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-item a,
+    td a,
+    th a {
+        color: #244232 !important;
+    }
+
+    td, th {
+        text-align: center;
+    }
+
+    .contenedor {
+        border: 1px solid;
+        margin-bottom: 20px;
+    }
+</style>

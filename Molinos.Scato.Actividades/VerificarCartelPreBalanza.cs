@@ -35,7 +35,7 @@ namespace Molinos.Scato.Actividades
                             });
                             resultado = servicio.Ejecutar(new LimpiarHistorialMensajeCartelLed()
                             {
-                                Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
+                                Codigo = CodigoMensajeCartelLed.LlamadoCallePreBalanza,
                                 CalleId = callePreBalanza.Id
                             }) as ResultadoMensajeCartelLedReordenado;
                         }

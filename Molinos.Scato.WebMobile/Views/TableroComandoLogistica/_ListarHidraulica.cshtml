@@ -1,0 +1,9 @@
+﻿﻿@using Molinos.Scato.WebMobile.Helpers
+@using Molinos.Scato.WebMobile.ViewModel
+@model AutomatismoGranosViewModel
+
+@Html.Grilla(Model.ConfiguracionHidraulicas, grilla => grilla.Columns(
+                                           grilla.ColumnaSwitch("ActivoAutomatico", "Estado", "H"),
+                                           grilla.Columna("HidraulicaNombre", "Hidraulica", null, null, false),
+                                           grilla.ColumnaCheckBoxBool(Html, "Es Escalable", "EsEscalable")
+                                       ))

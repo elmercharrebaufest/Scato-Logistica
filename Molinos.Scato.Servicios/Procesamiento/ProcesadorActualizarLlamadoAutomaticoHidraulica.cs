@@ -125,7 +125,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         SegundosDeEspera = mensajeCartel.SegundosDeEspera,
                         EsMensajeConIntervalo = true,
                         MensajeSecundario = mensajeSecundario,
-                        IntervaloMilliseconds = intervaloMilliseconds
+                        IntervaloMilliseconds = intervaloMilliseconds,
                     });
                 }
             }
@@ -155,7 +155,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                         Codigo = codigoCartel,
                         NumeroPrograma = mensajeCartel.Programa,
                         NumeroTrama = CartelTramaPare.LlamadoAutomaticoVolcadoras,
-                        NumeroVariable = mensajeCartel.Variable
+                        NumeroVariable = mensajeCartel.Variable,
                     });
                 }
             }

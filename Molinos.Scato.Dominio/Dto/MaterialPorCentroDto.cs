@@ -61,5 +61,7 @@ namespace Molinos.Scato.Dominio.Dto
         public int? Orden { get; set; }
         [Display(ResourceType = typeof(Textos), Name = "IgnoraContingencia")]
         public bool IgnoraContingencia { get; set; }
+
+        public bool EsGrano { get; set; }
     }
 }

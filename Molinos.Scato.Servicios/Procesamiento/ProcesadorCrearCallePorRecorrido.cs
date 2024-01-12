@@ -35,7 +35,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
                     resultado.Id = entidad.Id;
                     Finally(comando, entidad.Id);
                 }
-                if(resultado.Errores.Count == 1 && resultado.Errores.ContainsKey("Recorrido"))
+                if (resultado.Errores.Count == 1 && resultado.Errores.ContainsKey("Recorrido"))
                 {
                     var entidad = ActualizarEntidad(comando, resultado);
                     Repositorio.GuardarCambios();
@@ -66,19 +66,13 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var material = entidadNueva.Recorrido != null ? entidadNueva.Recorrido.Material : entidadNueva.CargaDeCupo != null ? entidadNueva.CargaDeCupo.Material : null;
             var calidad = entidadNueva.Recorrido != null && entidadNueva.Recorrido.CaracteristicasAnalizadas != null ? entidadNueva.Recorrido.CaracteristicasAnalizadas.Calidad : Dominio.Enums.TipoCalidad.Desconocida;
 
-
-            entidadNueva.Calle = comando.FlagReasignacionCalle ? comando.CalleReasignacion : administradorDeCalles.AsignarCalle(comando.TipoCalle, material, calidad, comando.CentroId, comando.TurnoActivo, comando.InstanciaWorkflow);
+            entidadNueva.Calle = comando.FlagReasignacionCalle ? comando.CalleReasignacion : administradorDeCalles.AsignarCalle(comando.TipoCalle, material?.Id, calidad, comando.CentroId, comando.TurnoActivo, comando.InstanciaWorkflow);
             if (entidadNueva.Calle == null)
             {
                 var calidadstr = calidad == Dominio.Enums.TipoCalidad.Desconocida ? string.Empty : calidad.ToString();
                 throw new CrearException($"No hay calles disponibles para {comando.TipoCalle} - {material?.Descripcion} - {calidadstr}");
             }
-            if (entidadNueva.Calle.TipoCalle != TipoCalle.Circular)
-            {
-                entidadNueva.Calle.Bloqueada = false;
-                entidadNueva.Calle.FechaLLamada = null;
-            }
-            
+
             resultado.Disponibilidad = administradorDeCalles.ObtenerEspacioDisponible(comando.TipoCalle, material != null ? material.Id : 0, calidad) - 1; //porque aun no se guarda la asignacion actual
             resultado.DisponibilidadCalles = administradorDeCalles.ObtenerEspacioDisponibleEnCalle(entidadNueva.Calle.Id);
             resultado.CentroId = entidadNueva.Calle.CentroId;
@@ -93,7 +87,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected CallePorRecorrido ActualizarEntidad(CrearCallePorRecorrido comando, ResultadoCrearCalle resultado)
         {
             var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow);
-            var entidad = Repositorio.Obtener<CallePorRecorrido>(x=> x.CargaDeCupo.Patente == recorrido.Patente && x.FechaEgreso == null && x.Recorrido == null);
+            var entidad = Repositorio.Obtener<CallePorRecorrido>(x => x.CargaDeCupo.Patente == recorrido.Patente && x.FechaEgreso == null && x.Recorrido == null);
             entidad.Recorrido = recorrido;
             var material = recorrido.Material;
             var calidad = recorrido.CaracteristicasAnalizadas != null ? recorrido.CaracteristicasAnalizadas.Calidad : Dominio.Enums.TipoCalidad.Desconocida;
@@ -118,7 +112,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             });
         }
 
-
         protected void Validar(CrearCallePorRecorrido comando, Resultado resultado)
         {
             if (!Repositorio.Existe<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow)
@@ -128,9 +121,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             }
 
             var recorrido = Repositorio.Obtener<Recorrido>(x => x.InstanciaWorkflow == comando.InstanciaWorkflow);
-            if (recorrido != null && comando.TipoCalle == TipoCalle.NoGranos && 
-                Repositorio.Existe<CallePorRecorrido>(x=>x.FechaEgreso == null &&
-                (x.CargaDeCupo.Patente == recorrido.Patente || x.Recorrido.Patente == recorrido.Patente )))
+            if (recorrido != null && comando.TipoCalle == TipoCalle.NoGranos &&
+                Repositorio.Existe<CallePorRecorrido>(x => x.FechaEgreso == null &&
+                (x.CargaDeCupo.Patente == recorrido.Patente || x.Recorrido.Patente == recorrido.Patente)))
             {
                 resultado.Error("Recorrido", Textos.CallePorRecorrido_YaAsignado);
             }

@@ -40,11 +40,11 @@ namespace Molinos.Scato.Dependencias
             Bind<IServicioCircular, ServicioCircular>().To<ServicioCircular>().InScope(ctx => OperationContext.Current);
             Bind<HttpClient>().ToSelf().InSingletonScope();
             Bind<IAdministradorDeCalles, AdministradorDeCalles>().To<AdministradorDeCalles>().InScope(ctx => OperationContext.Current);
-            
-            this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             Bind<IServicioEstadoPuesto, ServicioEstadoPuesto>().To<ServicioEstadoPuesto>().InScope(ctx => OperationContext.Current);
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
+            Bind<IServicioLlamadoAutomatico, ServicioLlamadoAutomatico>().To<ServicioLlamadoAutomatico>().InScope(ctx => OperationContext.Current);
 
+            this.BindChannelFactory<IServicioNotificarUsuario>("ServicioNotificarUsuario");
             this.BindChannelFactory<LoginCMS>("LoginCms");
             this.BindChannelFactory<CTGServicePortType>("CTGServiceHttpSoap11Endpoint");
             this.BindChannelFactory<ZSDWS_SCATO>("ZSDWS_SCATO", "SapServiceUsername", "SapServicePassword");
@@ -52,7 +52,6 @@ namespace Molinos.Scato.Dependencias
             this.BindChannelFactory<calpesSoap>("calpesSoap");
             this.BindChannelFactory<IServicioOrquestador>("Orquestador");
             this.BindChannelFactory<IServicioImpresion>("ServicioImpresion");
-            
             this.BindChannelFactory<CpePortType>("CpeEndPoint");
 
 

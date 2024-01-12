@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -12,6 +13,8 @@ namespace Molinos.Scato.Dominio.Entidades
         [StringLength(100)]
         public virtual string Descripcion { get; set; }
 
+        public virtual bool? EstadoAutomatismo { get; set; }
+        public virtual int? CantidadMaximaDeCamiones { get; set; }
         public virtual bool Borrado { get; set; }
 
         public virtual DateTime FechaCreacion { get; set; }
@@ -23,5 +26,10 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [StringLength(50)]
         public virtual string ModificadoPor { get; set; }
+
+        [InverseProperty("PuntosDeCarga")]
+        public virtual IList<Material> Materiales { get; set; }
+
+        public bool ConviveEnAlmacen { get; set; }
     }
 }

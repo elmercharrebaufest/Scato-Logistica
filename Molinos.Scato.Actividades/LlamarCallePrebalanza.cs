@@ -58,7 +58,7 @@ namespace Molinos.Scato.Actividades
         private bool ExisteSlotsDisponibles(IServicioRepositorio repositorio, CalleDto callePlayaInterna)
         {
             var camionesEnPlayaInterna = repositorio.ListarCallePorRecorridoPorCalleId(callePlayaInterna.Id).Count();
-            var camionesEnPreBalanza = repositorio.ObtenerCantidadCamionesEnCallePreBalanza(callePlayaInterna.Id);
+            var camionesEnPreBalanza = repositorio.ObtenerCantidadCamionesLlamadosEnCallePreBalanza(callePlayaInterna.Id);
 
             var slotsLibres = callePlayaInterna.CantidadDeCamiones - (camionesEnPlayaInterna + camionesEnPreBalanza);
             var slotNecesario = int.Parse(ConfigurationManager.AppSettings["SlotNecesariosLlamadaPreBalanza"]);
@@ -71,7 +71,7 @@ namespace Molinos.Scato.Actividades
             var cartel = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.Pantalla.EstadoPlayaInterna, Constantes.ConfiguracionGeneral.PreBalanza.CartelLedPreBalanza);
             var resultadoInsertarCartelLed = servicio.Ejecutar(new InsertarSlotMensajeCartelLed()
             {
-                Codigo = CodigoMensajeCartelLed.CartelPreBalanza,
+                Codigo = CodigoMensajeCartelLed.LlamadoCallePreBalanza,
                 CalleId = callePreBalanzaId
             }) as ResultadoMensajeCartelLed;
             servicio.Ejecutar(new EnviarMensajeCartelLed

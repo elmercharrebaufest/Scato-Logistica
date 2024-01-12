@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Molinos.Scato.Dominio.Recursos;
+﻿using Molinos.Scato.Dominio.Recursos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Molinos.Scato.Dominio.Dto
 {
@@ -36,5 +36,10 @@ namespace Molinos.Scato.Dominio.Dto
 
         [Display(ResourceType = typeof(Textos), Name = "PuestoComando_EsSojaEPA")]
         public bool EsSojaEPA { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "PuestosDeCargaDescarga_EsEscalable")]
+        public bool EsEscalable { get; set; }
+
+        public bool ActivoAutomatico { get; set; }
     }
 }

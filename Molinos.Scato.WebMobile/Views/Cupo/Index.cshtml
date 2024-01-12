@@ -5,6 +5,8 @@
     ViewBag.Title = Textos.ListadoDeCupos_Titulo;
 
     var materialDesc = ViewBag.MaterialDescripcion;
+    List<EstadoMaterialDto> Materiales = ViewBag.EstadoMateriales;
+
 }
 
 <script src="~/scripts/Chart.js" type="text/javascript"></script>
@@ -23,9 +25,13 @@
     });
 </script>
 
+<div class="row-fluid" id="graficodeplantahead">
+    @Html.Partial("~/Views/GraficoDePlanta/_GraficoDePlantaHead.cshtml", Materiales)
+</div>
+
 <div class="row mx-1 mt-2 justify-content-center" id="graficodeplantahead">
     <div class="col-12 col-sm panel-heading panel-darkblue m-2" style="cursor:pointer" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@Textos.Cupeados">
-        <div class="text-center" >@Textos.Cupos_Del_Día</div>
+        <div class="text-center">@Textos.Cupos_Del_Día</div>
         <br />
         <div class="d-flex justify-content-between">
             <div> @Textos.Total</div>
@@ -79,16 +85,16 @@
     <div class="col-12 panel-heading panel-paleblue m-2" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-content="@Textos.Arribados">
         <div class="text-center">@Textos.CuposDelDía_En_SAP</div>
         <div class="row">
-            <div class="col offset-3" >
+            <div class="col offset-3">
                 @Textos.Cupos_DeHoy
             </div>
-            <div class="col" >
+            <div class="col">
                 @Textos.Cupos_Vencidos
             </div>
-            <div class="col" >
+            <div class="col">
                 @Textos.Cupos_Futuro
             </div>
-            <div class="col text-nowrap" >
+            <div class="col text-nowrap">
                 @Textos.SinCupo
             </div>
         </div>
@@ -149,10 +155,10 @@
     </div>
     <div class="col-sm-4 col-xs-12 panel-padding padding-large panel-margin panel-heading panel-miniblue" style="cursor:pointer" data-toggle="popover" data-html="true" data-placement="bottom" data-trigger="hover" data-content="@Textos.Pendientes">
         <div class="row d-flex justify-content-between ">
-            <div class="titulo-header" >
+            <div class="titulo-header">
                 @Textos.Cupos_PendientesValidacion
             </div>
-            <div class="titulo-header text-center" >@(Model.Sum(x => x.Pendiente)) </div>
+            <div class="titulo-header text-center">@(Model.Sum(x => x.Pendiente)) </div>
             <div class="col-sm-12 titulo-header text-center">@Textos.Cupo_SinRecorrido</div>
 
         </div>

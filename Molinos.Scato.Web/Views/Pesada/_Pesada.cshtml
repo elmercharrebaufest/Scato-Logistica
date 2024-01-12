@@ -20,6 +20,9 @@
     var pesoTara = (int?)ViewBag.PesoTara;
     var pesoNetoOrigen = pesoBrutoOrigen != null && pesoTaraOrigen != null ? pesoBrutoOrigen - pesoTaraOrigen : null;
     var modificaAlmacen = (bool)ViewBag.ModificaAlmacen;
+    var automatismo_almacen = (IEnumerable<SelectListItem>)ViewBag.Automatismo_Almacen;
+    var automatismo_calle = (IEnumerable<SelectListItem>)ViewBag.Automatismo_Calle;
+    var automatismo_hidraulicas = (IEnumerable<SelectListItem>)ViewBag.Automatismo_Hidraulicas;
 
 }
 <style>
@@ -246,28 +249,40 @@
 <div class="row-fluid row-fluid-ie7">
     <fieldset class="grupo-carta-porte">
         <div class="span6">
-
-            @if (Model != null && !string.IsNullOrEmpty(Model.AlmacenDesc) && !modificaAlmacen)
+            @if ((bool)ViewBag.EsAutomatismo)
             {
-                @Html.HiddenFor(m => m.AlmacenDesc)
-                @Html.HiddenFor(m => m.AlmacenId)
                 <div class="control-group">
                     @Html.Label(@Textos.Pesada_Almacen + ":", new { @class = "control-label" })
-                    <div class="controls control-text">
-                        @Model.AlmacenDesc
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.AlmacenId, automatismo_almacen, new { @class = "control input-medium", tabIndex = 2 })
+                        @Html.ValidationMessageFor(model => model.AlmacenId)
                     </div>
                 </div>
             }
             else
             {
-                @Html.HiddenFor(m => m.AlmacenDesc)
-                <div class="control-group">
-                    @Html.Label(@Textos.Pesada_Almacen + ":", new { @class = "control-label" })
-                    <div class="controls">
-                        @Html.DropDownListFor(model => model.AlmacenId, almacenes, Textos.Default_Almacen, new { @class = "control input-medium", tabIndex = 2 })
-                        @Html.ValidationMessageFor(model => model.AlmacenId)
+                if (Model != null && !string.IsNullOrEmpty(Model.AlmacenDesc) && !modificaAlmacen)
+                {
+                    @Html.HiddenFor(m => m.AlmacenDesc)
+                    @Html.HiddenFor(m => m.AlmacenId)
+                    <div class="control-group">
+                        @Html.Label(@Textos.Pesada_Almacen + ":", new { @class = "control-label" })
+                        <div class="controls control-text">
+                            @Model.AlmacenDesc
+                        </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.AlmacenDesc)
+                    <div class="control-group">
+                        @Html.Label(@Textos.Pesada_Almacen + ":", new { @class = "control-label" })
+                        <div class="controls">
+                            @Html.DropDownListFor(model => model.AlmacenId, almacenes, Textos.Default_Almacen, new { @class = "control input-medium", tabIndex = 2 })
+                            @Html.ValidationMessageFor(model => model.AlmacenId)
+                        </div>
+                    </div>
+                }
             }
             @if ((bool)ViewBag.CargarProximaBalanza)
             {
@@ -291,30 +306,46 @@
             <div class="control-group">
                 @Html.Label(@Textos.Hidraulica + ":", new { @class = "control-label" })
                 <div class="controls">
-                    @if (Model != null && !string.IsNullOrEmpty(Model.HidraulicaDesc))
+                    @if ((bool)ViewBag.EsAutomatismo)
                     {
-                        @Model.HidraulicaDesc
+                        @Html.DropDownListFor(model => model.HidraulicaId, automatismo_hidraulicas, new { @class = "control input-medium", tabIndex = -10 })
+                        @Html.ValidationMessageFor(model => model.HidraulicaId)
                     }
                     else
                     {
-                        @Html.DropDownListFor(model => model.HidraulicaId, hidraulicas, new { @class = "control input-medium", tabIndex = -10 })
-                        @Html.ValidationMessageFor(model => model.HidraulicaId)
+                        if (Model != null && !string.IsNullOrEmpty(Model.HidraulicaDesc))
+                        {
+                            @Model.HidraulicaDesc
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.HidraulicaId, hidraulicas, new { @class = "control input-medium", tabIndex = -10 })
+                            @Html.ValidationMessageFor(model => model.HidraulicaId)
+                        }
                     }
                 </div>
             </div>
             <div class="control-group">
                 @Html.Label(@Textos.Calle + ":", new { @class = "control-label" })
                 <div class="controls">
-                    @if (Model != null && !string.IsNullOrEmpty(Model.CalleDesc))
+                    @if ((bool)ViewBag.EsAutomatismo)
                     {
-                        <div class="control-text">
-                            @Model.CalleDesc
-                        </div>
+                                @Html.DropDownListFor(model => model.CalleId, automatismo_calle, new { @class = "control input-medium", tabIndex = -10 })
+                                @Html.ValidationMessageFor(model => model.CalleId)
                     }
                     else
                     {
-                        @Html.DropDownListFor(model => model.CalleId, calles, new { @class = "control input-medium", tabIndex = -10 })
-                        @Html.ValidationMessageFor(model => model.CalleId)
+                        if (Model != null && !string.IsNullOrEmpty(Model.CalleDesc))
+                        {
+                            <div class="control-text">
+                                @Model.CalleDesc
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.CalleId, calles, new { @class = "control input-medium", tabIndex = -10 })
+                            @Html.ValidationMessageFor(model => model.CalleId)
+                        }
                     }
                 </div>
             </div>

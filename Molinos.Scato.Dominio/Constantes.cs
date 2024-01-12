@@ -2,7 +2,6 @@
 {
     public static class Constantes
     {
-
         public struct ValoresPorDefecto
         {
             public const string CupoGenerico = "MOL1111/11111111";
@@ -75,6 +74,8 @@
                 public const string EstadoPlayaInterna = "EstadoPlayaInterna";
                 public const string EstadoVolcadoras = "EstadoVolcadoras";
                 public const string EstablecimientoPantalla = "Establecimiento";
+                public const string TableroComandoLogistica = "TableroComandoLogistica";
+                public const string TableroComandoPuerto = "TableroComandoPuerto";
             }
 
             public struct EficienciaCalado
@@ -117,6 +118,12 @@
                 public const string CartelLedIntervalo = "CartelLedIntervalo";
             }
 
+            public struct LlamadoAutomatico
+            {
+                public const string Granos = "LlamadoAutomaticoGeneralGranos";
+                public const string PreBalanza = "LlamadoAutomaticoPreBalanza";
+                public const string NoGranos = "LlamadoAutomaticoGeneralNoGranos";
+            }
         }
 
         public struct EtapaWorkflow
@@ -131,7 +138,7 @@
         {
             public const string LlamadoAutomaticoVolcadoras = "02";
         }
-        
+
         public struct Caladores
         {
             public const string CodigoCalador1 = "CAL1";
@@ -144,6 +151,7 @@
         {
             public const string CuitMolinos = "30-71511877-3";
         }
+
         public struct TipoCP
         {
             public const int CPCamion = 284;
@@ -157,6 +165,7 @@
                 public const string ActividadDG = "Request Alta de CPE DG";
                 public const string Actividad = "Request Alta de CPE";
             }
+
             public struct Mensajes
             {
                 public const string Mensaje = "Automatico";
@@ -164,7 +173,6 @@
                 public const string ResponseAltaDG = "Response Alta de CPEDG";
                 public const string RequestAnularCPE = "Request Anular CPE";
                 public const string ResponseAnularCPE = "Response Anular CPE";
-
             }
         }
 
@@ -173,7 +181,7 @@
             public const string TipoReventaComisionista = "C";
             public const string TipoReventaRemitente = "R";
         }
-    
+
         public struct MaterialPagoRealizado
         {
             public const string BiodiselAgranel = "99319";
@@ -199,5 +207,30 @@
             public const int ValorPorDefectoAlmacen = 0;
         }
 
+        public struct PuestoComando
+        {
+            public const string Value = "PuestoComando";
+        }
+
+        public struct TipoVariedadMaterial
+        {
+            public const string EPA = "EPA";
+            public const string Sustentable = "SUS";
+            public const string Importacion = "IMP";
+        }
+
+        public struct Job
+        {
+            public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
+            public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
+            public const string LlamarAutomatismoNoGrano = "JobDetenerLlamadoAutomaticoNoGranos";
+        }
+
+        public struct AutomatismoTipoLlamado
+        {
+            public const string PorFila = "PFL";
+            public const string UnoAUno = "1A1";
+            public const string PaseDirecto = "PDR";
+        }
     }
 }

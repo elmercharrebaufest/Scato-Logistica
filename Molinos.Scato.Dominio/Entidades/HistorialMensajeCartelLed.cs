@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Molinos.Scato.Dominio.Entidades
 {
@@ -22,5 +18,6 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [Required]
         public virtual MensajeCartelLed MensajeCartelLed { get; set; }
+        public virtual Recorrido Recorrido { get; set; }
     }
 }
