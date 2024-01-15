@@ -74,7 +74,7 @@ namespace Molinos.Scato.Test.Controllers
             servRepositorio.Setup(
                 s =>
                 s.ListarImpresiones(It.IsAny<TipoDocumentoIngreso?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TipoImpresion?>(),
-                                    It.IsAny<Paginacion>()))
+                                    It.IsAny<Paginacion>(), 1))
                            .Returns(
                                new ListaPaginada<ImpresionDto>(
                                    new List<ImpresionDto>
