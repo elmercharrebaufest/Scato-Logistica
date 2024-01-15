@@ -6,6 +6,8 @@ using Molinos.Scato.Web.App_Start;
 using Molinos.Scato.Web.Filtros;
 using Molinos.Scato.Web.Jobs;
 using Owin;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -21,15 +23,18 @@ namespace Molinos.Scato.Web.App_Start
             app.MapSignalR();
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
+            var serverName = Environment.MachineName;
+            var serversHangfire = new List<string>(){ "GSLOSCATOAPP00", "GSLOSCATOAPP01" };
+            if (!serversHangfire.Contains(serverName)) {
+                var dashboarOptions = new DashboardOptions
+                {
+                    Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
+                };
+                app.UseHangfireDashboard("/hangfire", dashboarOptions);
+                app.UseHangfireServer();
 
-            var dashboarOptions = new DashboardOptions
-            {
-                Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
-            };
-            app.UseHangfireDashboard("/hangfire", dashboarOptions);
-            app.UseHangfireServer();
-
-            new HangfireJobs().InicializarJobs();
+                new HangfireJobs().InicializarJobs();
+            }
         }
     }
 }
