@@ -1132,7 +1132,7 @@ namespace Molinos.Scato.Servicios
         IList<AjusteDeCalidadDto> ListarCaracteristicasParaAjustesDeCalidad(int caladoId);
 
         [OperationContract]
-        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion);
+        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion,int centroId);
 
         [OperationContract]
         VehiculoDto ObtenerVehiculoPorGuid(Guid instanceId);

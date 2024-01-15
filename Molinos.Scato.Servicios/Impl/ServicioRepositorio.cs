@@ -4213,13 +4213,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         public ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso,
                                                              string patente, TipoImpresion? tipoImpresion,
-                                                             Paginacion paginacion)
+                                                             Paginacion paginacion,int centroId)
         {
             try
             {
                 return
                 repositorio.ListarConsultaPaginada(new ListarImpresiones(tipo, numeroDocumentoIngreso, patente, tipoImpresion,
-                                                                         paginacion));
+                                                                         paginacion,centroId));
             }
             catch (Exception e)
             {
