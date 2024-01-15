@@ -342,7 +342,7 @@ namespace Molinos.Scato.Web.Controllers
         private bool patenteValida(string patente)
         {
             if (string.IsNullOrEmpty(patente)) return false;
-            Regex patenteRegex = new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)");
+            Regex patenteRegex = new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)|(^[0-9]{6}$)");
             return patenteRegex.IsMatch(patente.ToUpper());
         }
 
