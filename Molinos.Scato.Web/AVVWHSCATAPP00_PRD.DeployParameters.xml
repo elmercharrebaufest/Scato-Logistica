@@ -29,8 +29,8 @@
 	<setParameter name="MonsantoServiceUsername Config" value="ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="n41TwPC/D/iYU4ye1PAF7Q==" />
 	<setParameter name="AppPools Config" value="Scato.serviciosWeb;Scato.web;Scato.workflow" />
-	<setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GSLOFSPRD00\Scato\Ingresos\" />  <!-- TODO -->
-	<setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GSLOFSPRD00\Scato\Redespachos\" /> <!-- TODO -->
+	<setParameter name="ArchivoDeMovimientosIngresosPath Config" value="\\GVICFSPRD00\Scato\Ingresos\" /> 
+	<setParameter name="ArchivoDeMovimientosEgresosPath Config" value="\\GVICFSPRD00\Scato\Redespachos\" />
 	<setParameter name="Ambiente Config" value="Prod" />
 	<setParameter name="UrlExternaOperacionesPuerto Config" value="https://AVVWHSCATM00/PesadasHistorica" />
 	<setParameter name="FondoAmbiente Config" value="body-background-QA" />
@@ -38,6 +38,6 @@
 	<setParameter name="workflowRedespacho Config" value="1029-IngresoPorRedespachoDeGranosCaladaExterna" />
 	<setParameter name="ICWebServerUrl Config" value="https://localhost:8889/rtc" />
 	<setParameter name="ICWSServerUrl Config" value="wss://localhost:8889/rtc" />
-	<setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\FotosLogAlpr" /> <!-- TODO -->
+	<setParameter name="FotosPathLogALPR Config" value="\\GVICFSPRD00\Scato\ScatoFotos\SLO\FotosLogAlpr" />
 	<setParameter name="UrlBaseWebAPI Config" value="http://localhost.molinosagro.ad/Scato.WebApiCore/" />
 </parameters>
