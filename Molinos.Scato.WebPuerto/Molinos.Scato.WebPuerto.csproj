@@ -165,6 +165,10 @@
     <Content Include="e2e\protractor.conf.js" />
     <Content Include="karma.conf.js" />
     <Content Include="proxy.conf.js" />
+    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
