@@ -27,8 +27,8 @@
 	<setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
 
-	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
-	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
+	<setParameter name="FotosPath Config" value="\\GVICFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
+	<setParameter name="ArchivosPath Config" value="\\GVICFSPRD00\Scato\ScatoPuerto\Testing\" />
 
 	<setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
