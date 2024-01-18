@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <setParameter name="IIS Web Application Name" value="Scato/Scato.WebMobile" />
-	
   <setParameter name="ServicioRepositorio Service Endpoint Address" value="https://scatoqa.molinosagro.com.ar/Scato.serviciosWeb/ServicioRepositorio.svc?wsdl" />
   <setParameter name="ServicioComandos Service Endpoint Address" value="https://scatoqa.molinosagro.com.ar/Scato.serviciosWeb/ServicioComandos.svc?wsdl" />
   <setParameter name="ListaDeWorkflows Service Endpoint Address" value="https://scatoqa.molinosagro.com.ar/Scato.workflow/ListaDeWorkflows.svc?wsdl" />
   <setParameter name="FirmaProvider Service Endpoint Address" value="https://scatoqa.molinosagro.com.ar/Scato.serviciosWeb/FirmaProvider.svc?wsdl" />
-	
   <setParameter name="UrlBaseWorkflow Config" value="http://scatoqa.molinosagro.com.ar/Scato.workflow/xaml/" />
   <setParameter name="FederationMetadataLocation Config" value="https://pase.molinosagro.com.ar/FederationMetadata/2007-06/FederationMetadata.xml" />
   <setParameter name="Issuer Config" value="https://pase.molinosagro.com.ar/adfs/ls/" />
@@ -14,6 +12,5 @@
   <setParameter name="RealmUrl Identity Configuration" value="http://scatoqa.molinosagro.com.ar/Scato.webmobile/" />
   <setParameter name="Thumbprint Identity Configuration" value="97E9185D47464277B783E73CA7AC59E2A98589AB"/>
   <setParameter name="AudienceUrl Identity Configuration" value="http://scatoqa.molinosagro.com.ar/Scato.webmobile/" />
-
   <setParameter name="ServiciosScatoBinding Security Configuration" value="Transport"/>
 </parameters>
