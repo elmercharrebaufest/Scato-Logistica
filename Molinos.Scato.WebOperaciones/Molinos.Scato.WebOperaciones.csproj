@@ -374,6 +374,10 @@
     <Content Include="Scripts\_timePickerRangeValidator.js" />
     <Content Include="Scripts\_datePickerRangeValidator.js" />
     <Content Include="Scripts\DetalleCarga.js" />
+    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SLOSCATOPROD.DeployParameters.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

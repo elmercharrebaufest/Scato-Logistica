@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
 	<setParameter name="IIS Web Application Name" value="Scato/Scato.serviciosWeb" />
-	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=GVICSQLSCAT00.molinosagro.ad,1450;Initial Catalog=MOAScato;Integrated Security=True" />
+	<setParameter name="ScatoDb-Web.config Connection String" value="Data Source=SCTAOAGLSQA,1450;Initial Catalog=MOAScato;Integrated Security=True" />
 
 	<setParameter name="LoginCms Service Endpoint Address" value="https://wsaahomo.afip.gov.ar/ws/services/LoginCms" />
 	<setParameter name="Orquestador Service Endpoint Address" value="http://localhost:8080/ServicioOrquestador" />
@@ -27,8 +27,8 @@
 	<setParameter name="MonsantoServiceUsername Config" value="test_ws_molinos" />
 	<setParameter name="MonsantoServicePassword Config" value="/kcpPHeKQI8DKpibwlX00g==" />
 
-	<setParameter name="FotosPath Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
-	<setParameter name="ArchivosPath Config" value="\\GSLOFSPRD00\Scato\ScatoPuerto\Testing\" />
+	<setParameter name="FotosPath Config" value="\\GVICFSPRD00\Scato\ScatoFotos\SLO\Testing\" />
+	<setParameter name="ArchivosPath Config" value="\\GVICFSPRD00\Scato\ScatoPuerto\Testing\" />
 
 	<setParameter name="MailSettings Smtp From" value="scatoQAMOA@molinosagro.com.ar" />
 	<setParameter name="MailSettings Smtp Host" value="smtp.molinosagro.com.ar" />
