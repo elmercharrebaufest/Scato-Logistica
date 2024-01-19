@@ -9,6 +9,7 @@ using Owin;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 [assembly: OwinStartup(typeof(Startup))]
 
@@ -23,9 +24,9 @@ namespace Molinos.Scato.Web.App_Start
             app.MapSignalR();
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
-            var serverName = Environment.MachineName;
-            var serversHangfire = new List<string>(){ "GSLOSCATOAPP00", "GSLOSCATOAPP01" };
-            if (!serversHangfire.Contains(serverName)) {
+            string serverName = Environment.MachineName;
+            var serversNoHangFire = System.Configuration.ConfigurationManager.AppSettings["ServersNoHangFire"].Split(',');
+            if (!serversNoHangFire.Contains(serverName)) {
                 var dashboarOptions = new DashboardOptions
                 {
                     Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
