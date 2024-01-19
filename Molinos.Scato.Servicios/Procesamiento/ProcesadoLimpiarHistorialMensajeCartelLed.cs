@@ -40,12 +40,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
                 
-                if(codigo == CodigoMensajeCartelLed.LlamadoCallePreBalanza || codigo == CodigoMensajeCartelLed.LlamadoCamionPreBalanza)
-                {
-                    return;
-                }
+                if(codigo != CodigoMensajeCartelLed.LlamadoCallePreBalanza && codigo != CodigoMensajeCartelLed.LlamadoCamionPreBalanza)
+                    ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
 
-                ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
+                Repositorio.GuardarCambios();
             }
         }
 
@@ -71,8 +69,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaMensajes[i].HistorialMensajeCartelLed.Mensaje = (tieneDatos) ? historial[i].Mensaje : null;
                 listaMensajes[i].HistorialMensajeCartelLed.FechaUltimaModificacion = (tieneDatos) ? historial[i].FechaUltimaModificacion : null;
             }
-
-            Repositorio.GuardarCambios();
         }
 
         private void LimpiarCamionEnCartel(List<MensajeCartelLed> listaMensajes, LimpiarHistorialMensajeCartelLed comando)
