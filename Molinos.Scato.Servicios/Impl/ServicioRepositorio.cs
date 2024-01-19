@@ -11005,7 +11005,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<CallePreBalanzaPlayaInternaDto> ListarCallePreBalanzaLlamadasPorAutomatismo()
         {
-            return Listar<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => !string.IsNullOrEmpty(x.CodigoAutomatismoTipoLlamado) && !x.EsCamionEnEspera);
+            return Listar<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => !x.EsCamionEnEspera);
         }
 
         public CallePorRecorridoDto ObtenerCallePorRecorrido(int calleId, int recorridoId)
@@ -11020,7 +11020,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId)
         {
-            return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePreBalanzaId == callePBId && x.CodigoAutomatismoTipoLlamado != Constantes.AutomatismoTipoLlamado.UnoAUno);
+            return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePreBalanzaId == callePBId && (x.CodigoAutomatismoTipoLlamado != Constantes.AutomatismoTipoLlamado.UnoAUno || x.CodigoAutomatismoTipoLlamado.Equals(null)));
         }
 
         public AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId)

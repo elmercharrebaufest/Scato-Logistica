@@ -239,6 +239,8 @@ namespace Molinos.Scato.Servicios.Impl
                 ValidarLiberarPor1A1(callePreBalanzaPlayaInterna);
             else if (callePreBalanzaPlayaInterna.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PorFila)
                 ValidarLiberarPorFila(callePreBalanzaPlayaInterna);
+            else
+                ValidarLiberarPorFila(callePreBalanzaPlayaInterna);
         }
 
         private void ValidarLiberarPorPaseDirecto(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
