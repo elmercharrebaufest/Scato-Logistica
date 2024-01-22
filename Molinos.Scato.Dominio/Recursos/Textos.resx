@@ -10511,7 +10511,7 @@
     <value>Convive en almacén</value>
   </data>
   <data name="CargaDeCupo_Patente_ErrorFormato" xml:space="preserve">
-    <value>Patente No respeta el Formato ABC123 o AB123CD</value>
+    <value>Patente No respeta el Formato ABC123 o AB123CD o 6 a 7 números</value>
   </data>
   <data name="Calle_PlantaNoGranos_Existente" xml:space="preserve">
     <value>Ya existe una calle planta no granos con ese material</value>
