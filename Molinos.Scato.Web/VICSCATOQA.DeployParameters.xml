@@ -40,4 +40,5 @@
 	<setParameter name="ICWSServerUrl Config" value="wss://gsloscatoqa01.molinosagro.ad:8889/rtc" />
 	<setParameter name="FotosPathLogALPR Config" value="\\GSLOFSPRD00\Scato\ScatoFotos\SLO\Testing\FotosLogAlpr" />
 	<setParameter name="UrlBaseWebAPI Config" value="http://gsloscatoapq01.molinosagro.ad/Scato.WebApiCore/" />
+	<setParameter name="ActivarHangFire Config" value="true" />
 </parameters>

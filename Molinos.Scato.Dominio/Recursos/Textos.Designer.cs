@@ -7675,7 +7675,7 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Patente No respeta el Formato ABC123 o AB123CD.
+        ///   Looks up a localized string similar to Patente No respeta el Formato ABC123 o AB123CD o 6 a 7 números.
         /// </summary>
         public static string CargaDeCupo_Patente_ErrorFormato {
             get {
