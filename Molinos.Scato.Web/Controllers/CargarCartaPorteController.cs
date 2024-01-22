@@ -183,7 +183,9 @@ namespace Molinos.Scato.Web.Controllers
                     return View(orden);
                 }
 
-                if (vehiculos.Any(vehiculo =>!patenteValida(vehiculo.Patente) || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado) && !patenteValida(vehiculo.PatenteAcoplado)) || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado2) && !patenteValida(vehiculo.PatenteAcoplado2))))
+                if (vehiculos.Any(vehiculo =>!PatenteValida(vehiculo.Patente,vehiculo.TipoVehiculo) 
+                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado) && !PatenteValida(vehiculo.PatenteAcoplado,vehiculo.TipoVehiculo)) 
+                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado2) && !PatenteValida(vehiculo.PatenteAcoplado2, vehiculo.TipoVehiculo))))
                 {
                     log.Debug("No se puede crear la CP {0}. Alguna de las patentes no respeta el formato ABC123 o AB123CD");
                     ModelState.AddModelError("", Textos.CargaDeCupo_Patente_ErrorFormato);
@@ -337,14 +339,7 @@ namespace Molinos.Scato.Web.Controllers
 
             SetearVista(workflowObj, datosUsuario.CentroId);
             return View(orden);
-        }
-
-        private bool patenteValida(string patente)
-        {
-            if (string.IsNullOrEmpty(patente)) return false;
-            Regex patenteRegex = new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)|(^[0-9]{6}$)|(^[0-9]{7}$)");
-            return patenteRegex.IsMatch(patente.ToUpper());
-        }
+        }        
 
         public ActionResult MostrarCamion(CartaPorteDto model)
         {
@@ -860,6 +855,15 @@ namespace Molinos.Scato.Web.Controllers
                 return resultadoSustentable != null ? resultadoSustentable.Path : null;
             }
             return null;
+        }
+
+        private bool PatenteValida(string patente, TipoVehiculo tipo)
+        {
+            if (string.IsNullOrEmpty(patente)) return false;
+            Regex patenteRegex = tipo == TipoVehiculo.Tren ? 
+                new Regex(@"(^\d+$)") 
+                : new Regex(@"(^[A-Z]{3}[0-9]{3}$)|(^[A-Z]{2}[0-9]{3}[A-Z]{2}$)");
+            return patenteRegex.IsMatch(patente.ToUpper());
         }
     }
 }
