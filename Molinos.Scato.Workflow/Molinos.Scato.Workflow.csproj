@@ -14,10 +14,14 @@
     <AssemblyName>Molinos.Scato.Workflow</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort>44378</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <SccProjectName>SAK</SccProjectName>
@@ -166,6 +170,9 @@
     <Compile Include="VirtualPath\WorkflowVirtualFile.cs" />
     <Compile Include="VirtualPath\WorkflowVirtualPathProvider.cs" />
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="AVVWHSCATAPP00_PRD.DeployParameters.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="bfdev258.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
