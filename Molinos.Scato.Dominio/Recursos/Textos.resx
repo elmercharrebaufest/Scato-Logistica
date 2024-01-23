@@ -10500,6 +10500,7 @@
   </data>
   <data name="PatenteNoEncontradaApiOpera" xml:space="preserve">
     <value>No se encontró ninguna Orden asociada a esta patente</value>
+  </data>  
   <data name="CallePlantaNoGranos" xml:space="preserve">
     <value>Calle No Granos</value>
   </data>
