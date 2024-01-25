@@ -183,9 +183,9 @@ namespace Molinos.Scato.Web.Controllers
                     return View(orden);
                 }
 
-                if (vehiculos.Any(vehiculo =>!PatenteValida(vehiculo.Patente,vehiculo.TipoVehiculo) 
-                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado) && !PatenteValida(vehiculo.PatenteAcoplado,vehiculo.TipoVehiculo)) 
-                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado2) && !PatenteValida(vehiculo.PatenteAcoplado2, vehiculo.TipoVehiculo))))
+                if (vehiculos.Any(vehiculo =>!PatenteValida(vehiculo.Patente,orden.TipoVehiculo) 
+                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado) && !PatenteValida(vehiculo.PatenteAcoplado, orden.TipoVehiculo)) 
+                || (!string.IsNullOrEmpty(vehiculo.PatenteAcoplado2) && !PatenteValida(vehiculo.PatenteAcoplado2, orden.TipoVehiculo))))
                 {
                     log.Debug("No se puede crear la CP {0}. Alguna de las patentes no respeta el formato ABC123 o AB123CD");
                     ModelState.AddModelError("", Textos.CargaDeCupo_Patente_ErrorFormato);
