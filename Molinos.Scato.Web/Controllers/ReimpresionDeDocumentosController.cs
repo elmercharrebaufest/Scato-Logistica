@@ -52,12 +52,12 @@ namespace Molinos.Scato.Web.Controllers
         {
             var paginacion = new Paginacion(ordenarPor, dirOrden, pagina, 10);
             var documentos = new ListaPaginada<ImpresionDto>(new List<ImpresionDto>(), 1, 1, 0);
-            
+            var centroId = datosUsuario.CentroId;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    documentos = servicio.ListarImpresiones(model.TipoDocumentoIngreso, model.NumeroDocumentoIngreso, model.Patente, model.Tipo, paginacion);
+                    documentos = servicio.ListarImpresiones(model.TipoDocumentoIngreso, model.NumeroDocumentoIngreso, model.Patente, model.Tipo, paginacion,centroId);
                     if (!documentos.Any())
                     {
                         ModelState.AddModelError("NumeroDocumentoIngreso", Textos.Reimpresion_DocumentosNoEncontrados);

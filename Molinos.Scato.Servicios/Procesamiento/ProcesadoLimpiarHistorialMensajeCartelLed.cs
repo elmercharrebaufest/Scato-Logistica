@@ -1,6 +1,7 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
@@ -23,12 +24,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if(comando.LimpiarCamion)
                 LimpiarCamionEnCartel(listaMensajes, comando);
             else
-                LimpiarCalleEnCartel(listaMensajes, comando.CalleId);
+                LimpiarCalleEnCartel(listaMensajes, comando.CalleId, comando.Codigo);
             resultadoMensajeCartelLed.ListaDeMensajes = Conversor.ConvertirList<MensajeCartelLed, MensajeCartelLedDto>(listaMensajes).ToList();
             return resultadoMensajeCartelLed;
         }
 
-        private void LimpiarCalleEnCartel(List<MensajeCartelLed> listaMensajes, int calleId)
+        private void LimpiarCalleEnCartel(List<MensajeCartelLed> listaMensajes, int calleId, string codigo)
         {
             var mensajeCartelLedEntity = listaMensajes.FirstOrDefault(q => q.HistorialMensajeCartelLed?.Calle?.Id == calleId);
             var mensajeCalleCircular = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.TipoCalle == Dominio.Enums.TipoCalle.Circular);
@@ -38,7 +39,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Calle = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.Mensaje = null;
                 mensajeCartelLedEntity.HistorialMensajeCartelLed.FechaUltimaModificacion = null;
-                ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
+                
+                if(codigo != CodigoMensajeCartelLed.LlamadoCallePreBalanza && codigo != CodigoMensajeCartelLed.LlamadoCamionPreBalanza)
+                    ReordenarMensajes(listaMensajes, mensajeCalleCircular?.Orden);
+
+                Repositorio.GuardarCambios();
             }
         }
 
@@ -64,13 +69,12 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 listaMensajes[i].HistorialMensajeCartelLed.Mensaje = (tieneDatos) ? historial[i].Mensaje : null;
                 listaMensajes[i].HistorialMensajeCartelLed.FechaUltimaModificacion = (tieneDatos) ? historial[i].FechaUltimaModificacion : null;
             }
-
-            Repositorio.GuardarCambios();
         }
 
         private void LimpiarCamionEnCartel(List<MensajeCartelLed> listaMensajes, LimpiarHistorialMensajeCartelLed comando)
         {
-            var mensajeCartel = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed != null && x.HistorialMensajeCartelLed.Calle.Id == comando.CalleId && x.HistorialMensajeCartelLed.Recorrido.Id == comando.RecorridoId);
+            var mensajeCartel = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.Id == comando.CalleId 
+                                                                && x.HistorialMensajeCartelLed?.Recorrido?.Id == comando.RecorridoId);
             if(mensajeCartel != null)
             {
                 mensajeCartel.HistorialMensajeCartelLed.Calle = null;

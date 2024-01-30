@@ -8,7 +8,5 @@ namespace Molinos.Scato.Servicios
     {
         [OperationContract]
         void Llamar(LlamadoAutomatico tipoLlamadoAutomatico);
-        [OperationContract]
-        void Detener(LlamadoAutomatico tipoLlamadoAutomatico);
     }
 }

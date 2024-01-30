@@ -32,21 +32,12 @@ namespace Molinos.Scato.Servicios.Impl
             switch (tipoLlamadoAutomatico)
             {
                 case LlamadoAutomatico.Granos:
+                    DetenerLlamadoAutomaticoGranos();
                     LlamarAutomaticoGranos();
                     break;
 
                 case LlamadoAutomatico.NoGranos:
                     LlamarAutomaticoNoGranos();
-                    break;
-            }
-        }
-
-        public void Detener(LlamadoAutomatico tipoLlamadoAutomatico)
-        {
-            switch (tipoLlamadoAutomatico)
-            {
-                case LlamadoAutomatico.Granos:
-                    DetenerLlamadoAutomaticoGranos();
                     break;
             }
         }
@@ -245,7 +236,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         private void ValidarLiberarPorPaseDirecto(CallePreBalanzaPlayaInternaDto callePreBalanzaPlayaInterna)
         {
-            if (repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePlayaInterna.Id).Count() >= callePreBalanzaPlayaInterna.CallePlayaInterna.CantidadDeCamiones)
+            int cantidadCamionesEnCallePreBalanza = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePreBalanza.Id).Count();
+            int cantidadCamionesEnCallePlayaInterna = repositorio.ListarCallePorRecorridoPorCalleId(callePreBalanzaPlayaInterna.CallePlayaInterna.Id).Count();
+
+            bool callePreHidraulicaLlena = cantidadCamionesEnCallePlayaInterna >= callePreBalanzaPlayaInterna.CallePlayaInterna.CantidadDeCamiones;
+            bool callePreBalanzaVacia = cantidadCamionesEnCallePreBalanza == 0;
+
+            if (callePreHidraulicaLlena || callePreBalanzaVacia)
                 LiberarCallePreBalanza(callePreBalanzaPlayaInterna);
         }
 
@@ -317,23 +314,27 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var recorridos = repositorio.ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
 
-            log.Info("fer-nogranos01-cantidadRecorridos" + recorridos.Count());
 
             foreach (var recorrido in recorridos)
             {
                 
                 var cartelLed = repositorio.ObtenerCartelDisponible(CodigoMensajeCartelLed.LlamadoCamionNoGrano);
 
-                log.Info("fer-nogranos02-cartelDisponible:" + (cartelLed == null).ToString());
-
                 if (cartelLed == null)
                 {
                     break;                    
                 }
 
-                var lugaresDisponibles = repositorio.ObtenerDisponibilidadEnPlayaInternaNoGranos(recorrido.CalleId.Value);
+                var asignacionNoGranoEnRecorrido = repositorio.ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(recorrido.Id); 
 
-                log.Info("fer-nogranos03-lugaresDisponibles:" + lugaresDisponibles);
+                if(asignacionNoGranoEnRecorrido == null)
+                {
+                    this.log.Info(string.Format("no se encontro el recorrido {0} en la tabla asignacionNoGranoEnRecorrido, por lo que no se pudo obtener su calle planta", recorrido.Id));
+                    continue;
+                }
+
+                var lugaresDisponibles = repositorio.ObtenerDisponibilidadEnCallePlantaNoGranos((int)asignacionNoGranoEnRecorrido.CallePlantaId);
+
                 if (lugaresDisponibles > 0)
                 {
                     var callePorRecorridoNoGranos = repositorio.ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(recorrido.Id);
@@ -361,8 +362,6 @@ namespace Molinos.Scato.Servicios.Impl
                             SegundosDeEspera = resultadoInsertarCalleCartelLed.SegundosDeEspera,
                         });
                     }
-
-                    log.Info("fer-nogranos04 llamo a camion:" + recorrido.Id);
                 }
             }
         }

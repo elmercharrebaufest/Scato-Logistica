@@ -24,18 +24,10 @@ namespace Molinos.Scato.Web.App_Start
             app.MapSignalR();
 
             GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
-            //string serverName = Environment.MachineName;
             bool activarHangFire;
             bool.TryParse(ConfigurationManager.AppSettings["ActivarHangFire"],out activarHangFire);
             if (activarHangFire) {
-                var dashboarOptions = new DashboardOptions
-                {
-                    Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
-                };
-                app.UseHangfireDashboard("/hangfire", dashboarOptions);
-                app.UseHangfireServer();
-
-                new HangfireJobs().InicializarJobs();
+                new HangfireJobs().InicializarJobs(app);
             }
         }
     }

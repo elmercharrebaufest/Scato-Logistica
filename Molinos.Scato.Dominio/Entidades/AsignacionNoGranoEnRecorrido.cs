@@ -17,5 +17,7 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [Column("Recorrido_Id")]
         public virtual int RecorridoId { get; set; }
+
+        public bool AplicaConteo { get; set; }
     }
 }

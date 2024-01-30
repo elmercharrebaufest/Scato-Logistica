@@ -222,8 +222,7 @@
         public struct Job
         {
             public const string LlamarAutomatismoGrano = "JobLlamarLlamadoAutomaticoGranos";
-            public const string DetenerAutomatismoGrano = "JobDetenerLlamadoAutomaticoGranos";
-            public const string LlamarAutomatismoNoGrano = "JobDetenerLlamadoAutomaticoNoGranos";
+            public const string LlamarAutomatismoNoGrano = "JobLlamarLlamadoAutomaticoNoGranos";
         }
 
         public struct AutomatismoTipoLlamado

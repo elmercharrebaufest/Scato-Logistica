@@ -51,12 +51,13 @@
                     match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@realm" />
     <parameterEntry kind="XmlFile" scope="Web.config"
                     match="/configuration/system.identityModel.services/federationConfiguration/wsFederation/@reply" />
-   
   </parameter>
+
 	<parameter name="AudienceUrl Identity Configuration">
 		<parameterEntry kind="XmlFile" scope="Web.config"
 						match="/configuration/system.identityModel/identityConfiguration/audienceUris/add/@value" />
 	</parameter>
+	
   <parameter name="Thumbprint Identity Configuration">
     <parameterEntry kind="XmlFile" scope="Web.config"
                     match="/configuration/system.identityModel/identityConfiguration/issuerNameRegistry/authority/keys/add/@thumbprint" />

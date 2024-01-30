@@ -4213,13 +4213,13 @@ namespace Molinos.Scato.Servicios.Impl
 
         public ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso,
                                                              string patente, TipoImpresion? tipoImpresion,
-                                                             Paginacion paginacion)
+                                                             Paginacion paginacion,int centroId)
         {
             try
             {
                 return
                 repositorio.ListarConsultaPaginada(new ListarImpresiones(tipo, numeroDocumentoIngreso, patente, tipoImpresion,
-                                                                         paginacion));
+                                                                         paginacion,centroId));
             }
             catch (Exception e)
             {
@@ -10933,15 +10933,13 @@ namespace Molinos.Scato.Servicios.Impl
             return r;
         }
 
-        public int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId)
+        public int ObtenerDisponibilidadEnCallePlantaNoGranos(int callePlantaNoGranosId)
         {
-            var cantidadDeCamionesAsignados = repositorio.Contar<AsignacionNoGranoEnRecorrido>(x => x.Recorrido.Calle.Id == callePlayaInternaId);
+            var cantidadDeCamionesAsignados = repositorio.Contar<AsignacionNoGranoEnRecorrido>(x => x.CallePlantaId == callePlantaNoGranosId && x.AplicaConteo);
 
-            var cantidadDeCamionesLlamados = repositorio.Contar<HistorialMensajeCartelLed>(x => x.Recorrido.Calle.Id == callePlayaInternaId);
+            var cantidadDeEspaciosPorCalle = repositorio.Obtener<Calle>(x => x.Id == callePlantaNoGranosId).CantidadDeCamiones;
 
-            var cantidadDeEspaciosPorCalle = repositorio.Obtener<Calle>(x => x.Id == callePlayaInternaId).CantidadDeCamiones;
-
-            return (cantidadDeEspaciosPorCalle - cantidadDeCamionesAsignados - cantidadDeCamionesLlamados);
+            return (cantidadDeEspaciosPorCalle - cantidadDeCamionesAsignados);
         }
 
         public CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId)
@@ -11023,6 +11021,11 @@ namespace Molinos.Scato.Servicios.Impl
         public CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId)
         {
             return Obtener<CallePreBalanzaPlayaInterna, CallePreBalanzaPlayaInternaDto>(x => x.CallePreBalanzaId == callePBId && (x.CodigoAutomatismoTipoLlamado != Constantes.AutomatismoTipoLlamado.UnoAUno || x.CodigoAutomatismoTipoLlamado.Equals(null)));
+        }
+
+        public AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId)
+        {
+            return Obtener<AsignacionNoGranoEnRecorrido, AsignacionNoGranoEnRecorridoDto>(x => x.RecorridoId == recorridoId);
         }
     }
 

@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="ActualizarMuestraEnvioACamara.cs" />
     <Compile Include="ActualizarCupo.cs" />
+    <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
     <Compile Include="EliminarAsignacionNoGranoEnRecorrido.cs" />
@@ -1299,14 +1300,8 @@
       <SubType>Designer</SubType>
     </XamlAppDef>
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <XamlAppDef Include="VerificacionCamionRechazadoV2.xaml">
-
-
-
-
-
-
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

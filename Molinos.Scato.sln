@@ -58,8 +58,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.ModuloImpreso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.WebPuertoApi", "Molinos.Scato.WebPuertoApi\Molinos.Scato.WebPuertoApi.csproj", "{9753917F-2EE3-4072-BD7E-C4F677EFAABB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.WebPuerto", "Molinos.Scato.WebPuerto\Molinos.Scato.WebPuerto.csproj", "{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molinos.Scato.Migrations", "Molinos.Scato.Migrations\Molinos.Scato.Migrations.csproj", "{97A9A524-EE58-4985-B0CC-2564B91CC2CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Work Flow", "Work Flow", "{BB3AC6C1-ADF5-4782-A651-0F9D71C13A43}"
@@ -398,22 +396,6 @@ Global
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Release|x86.ActiveCfg = Release|Any CPU
 		{9753917F-2EE3-4072-BD7E-C4F677EFAABB}.Release|x86.Build.0 = Release|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Debug|x86.Build.0 = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.DebugLocal|x86.ActiveCfg = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.DebugLocal|x86.Build.0 = Debug|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Jenkins|Any CPU.ActiveCfg = Jenkins|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Jenkins|Any CPU.Build.0 = Jenkins|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Jenkins|x86.ActiveCfg = Jenkins|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Jenkins|x86.Build.0 = Jenkins|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Release|x86.ActiveCfg = Release|Any CPU
-		{A089B73C-69EC-4698-A2E2-DAF208AB5EAC}.Release|x86.Build.0 = Release|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97A9A524-EE58-4985-B0CC-2564B91CC2CA}.Debug|x86.ActiveCfg = Debug|Any CPU

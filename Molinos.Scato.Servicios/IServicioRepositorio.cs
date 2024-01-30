@@ -1132,7 +1132,7 @@ namespace Molinos.Scato.Servicios
         IList<AjusteDeCalidadDto> ListarCaracteristicasParaAjustesDeCalidad(int caladoId);
 
         [OperationContract]
-        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion);
+        ListaPaginada<ImpresionDto> ListarImpresiones(TipoDocumentoIngreso? tipo, string numeroDocumentoIngreso, string patente, TipoImpresion? tipoImpresion, Paginacion paginacion,int centroId);
 
         [OperationContract]
         VehiculoDto ObtenerVehiculoPorGuid(Guid instanceId);
@@ -2964,7 +2964,7 @@ namespace Molinos.Scato.Servicios
         IList<RecorridoDto> ObtenerPrimerosRecorridosDisponibleParaLlamadoAutomaticoNoGranos();
 
         [OperationContract]
-        int ObtenerDisponibilidadEnPlayaInternaNoGranos(int callePlayaInternaId);
+        int ObtenerDisponibilidadEnCallePlantaNoGranos(int callePlantaNoGranosId);
 
         [OperationContract]
         CallePorRecorridoDto ObtenerCallePorRecorridoPlayaExternaNoGranosPorRecorridoId(int recorridoId);
@@ -3013,6 +3013,9 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId);
+
+        [OperationContract]
+        AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId);
     }
 
 }
