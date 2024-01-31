@@ -51,12 +51,14 @@ namespace Molinos.Scato.Servicios.Impl
                 || !automatismoGranoGeneral)
                 return;
 
-            if (!repositorio.ExisteEspacioDisponibleParaLlamarEnCartel(CodigoMensajeCartelLed.LlamadoCallePreBalanza))
-                return;
-
             var callesPreHidraulica = repositorio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(x => !x.Deshabilitada);
             foreach (var calle in callesPreHidraulica)
+            {
+                if (!repositorio.ExisteEspacioDisponibleParaLlamarEnCartel(CodigoMensajeCartelLed.LlamadoCallePreBalanza))
+                    break;
+
                 ValidarTipoLlamadoAutomaticoGrano(calle);
+            }
         }
 
         private void ValidarTipoLlamadoAutomaticoGrano(CalleDto callePH)
