@@ -389,7 +389,7 @@ namespace Molinos.Scato.Web.Controllers
             return validador1 + "-" + documento + "-" + validador2;
         }
 
-        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null, string recurso = "ObtenerOrdenesDeCarga")
+        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null, bool fason = false, bool fas = true, string recurso = "ObtenerOrdenesDeCarga")
         {
             log.Info("Empieza el método ORDEN FASON");
             log.Info("Se crean variables de url, token y resource");
@@ -401,7 +401,7 @@ namespace Molinos.Scato.Web.Controllers
             //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             var client = new RestClient(url);
             client.Timeout = 30000;
-            client.UserAgent = "ScatoLogistica RestSharp v106";
+            client.UserAgent = "RestSharp v106";
 
             log.Info("Se inicializa RestRequest y se agrega token");
             var request = new RestRequest("/externalApi/external/api/" + resource, Method.GET);
@@ -409,6 +409,10 @@ namespace Molinos.Scato.Web.Controllers
 
             if (!string.IsNullOrWhiteSpace(patente))
                 request.AddParameter("patenteChasis", patente);
+            if (fason)
+                request.AddParameter("fason", fason);
+            if (fas)
+                request.AddParameter("fas", fas);
 
             log.Info("Se ejecuta la consulta a la Api");
             try
