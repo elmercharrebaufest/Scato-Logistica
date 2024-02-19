@@ -19,34 +19,17 @@ namespace Molinos.Scato.Servicios.Procesamiento
         protected override void ModificarEntidad(ModificarCalle comando)
         {
             var calle = Repositorio.Obtener<Calle>(comando.Dto.Id);
-            var automatismoTipoLlamadoId = calle.AutomatismoTipoLlamadoId;
-
-            Conversor.Convertir(comando.Dto, calle);
+            calle.Codigo = comando.Dto.Codigo;
+            calle.Nombre = comando.Dto.Nombre;
+            calle.TipoCalle = comando.Dto.TipoCalle;
+            calle.TipoCalidad = comando.Dto.TipoCalidad;
             calle.Material = Repositorio.Obtener<Material>(comando.Dto.MaterialId);
             calle.CaracteristicaDeCalidad = Repositorio.Obtener<CaracteristicaDeCalidad>(comando.Dto.CaracteristicaDeCalidadId);
-            if (comando.Dto.CalleCaladoId > 0)
-                calle.CalleCalado = Repositorio.Obtener<Calle>(comando.Dto.CalleCaladoId);
-
-            if (comando.Dto.TipoCalle == TipoCalle.PlayaInterna)
-            {
-                if (automatismoTipoLlamadoId == null)
-                {
-                    var automatismoTipoLlamado = Repositorio.Obtener<AutomatismoTipoLlamado>(q => q.Codigo == Constantes.AutomatismoTipoLlamado.PorFila);
-                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamado.Id;
-                }
-                else
-                {
-                    calle.AutomatismoTipoLlamadoId = automatismoTipoLlamadoId;
-                }
-            }
-            else
-            {
-                calle.AutomatismoTipoLlamadoId = null;
-            }
-
-            //cancelar llamado de calle
-            if (!comando.Llamada)
-                calle.CalleCalado = null;
+            calle.RangoCaracteristicaCalidadMinimo = comando.Dto.RangoCaracteristicaCalidadMinimo;
+            calle.RangoCaracteristicaCalidadMaximo = comando.Dto.RangoCaracteristicaCalidadMaximo;
+            calle.CantidadDeCamiones = comando.Dto.CantidadDeCamiones;
+            calle.Deshabilitada = comando.Dto.Deshabilitada;
+            calle.Automatica = comando.Dto.Automatica;
         }
 
         protected override void Validar(ModificarCalle comando, Resultado resultado)
