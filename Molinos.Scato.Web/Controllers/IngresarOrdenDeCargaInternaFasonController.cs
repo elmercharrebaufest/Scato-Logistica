@@ -27,13 +27,16 @@ namespace Molinos.Scato.Web.Controllers
     [Autorizacion(PermisosScato.ActividadIngresarOrdenCargaInternaFason)]
     public class IngresarOrdenCargaInternaFasonController : DocumentoIngresoController
     {
+        private readonly IServicioOperaciones servicioOperaciones;
         private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory;
         private readonly IListaDeWorkflows workflows;
         private readonly ICache cache;
+       
 
-        public IngresarOrdenCargaInternaFasonController(ILogger log, IServicioRepositorio servicio, IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, ICache cache)
+        public IngresarOrdenCargaInternaFasonController(ILogger log, IServicioRepositorio servicio,IServicioOperaciones servicioOperaciones, IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, ICache cache)
             : base(log, servicio, servicioComandos)
         {
+            this.servicioOperaciones = servicioOperaciones;
             this.factory = factory;
             this.workflows = workflows;
             this.cache = cache;
@@ -417,6 +420,7 @@ namespace Molinos.Scato.Web.Controllers
             log.Info("Se ejecuta la consulta a la Api");
             try
             {
+                IEnumerable<OrdenDeCargaDto>  data = servicioOperaciones.ObtenerOrdenesDeCarga(patente, fason, fas);
                 var restResponse = client.Execute(request);
                 log.Info("Se evalua la respuesta de la Api");
 
@@ -476,5 +480,10 @@ namespace Molinos.Scato.Web.Controllers
                 return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITDestino;
             }
         }
+    }
+
+    public interface IServicioOperaciones
+    {
+        IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente, bool fason, bool fas);
     }
 }
