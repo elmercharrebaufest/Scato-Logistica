@@ -1,5 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using Molinos.Scato.Actividades.Interfaces;
+﻿using Molinos.Scato.Actividades.Interfaces;
 using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -12,7 +11,6 @@ using Molinos.Scato.Servicios;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
-using Newtonsoft.Json;
 using Ninject.Extensions.Logging;
 using RestSharp;
 using System;
@@ -20,7 +18,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Net;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -429,6 +427,14 @@ namespace Molinos.Scato.Web.Controllers
 
     public interface IServicioOperaciones
     {
+        /// <summary>
+        /// ObtenerOrdenesDeCarga
+        /// </summary>
+        /// <param name="patente"></param>
+        /// <param name="fason"></param>
+        /// <param name="fas"></param>
+        /// <exception cref="FileNotFoundException">Why it's thrown.</exception>
+        /// <returns></returns>
         IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente, bool fason, bool fas);
 
         void InformarViajeOrdenesDeCargaFason();
@@ -442,6 +448,7 @@ namespace Molinos.Scato.Web.Controllers
         {
             this.log = log;
         }
+
 
         public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente, bool fason, bool fas)
         {
@@ -458,45 +465,8 @@ namespace Molinos.Scato.Web.Controllers
                 request.AddParameter("fas", fas);
 
             log.Trace("Se ejecuta la consulta a la Api");
-            try
-            {
-                var restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
-                return restResponse.Data;
-
-
-                var restResponse = client.Execute(request);
-                log.Trace("Se evalua la respuesta de la Api");
-
-                if (restResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    log.Trace("Respuesta ok 200 - Se crea lista para devolver la respuesta");
-
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore, // Ignora los null
-                        MissingMemberHandling = MissingMemberHandling.Ignore // Ignora los miembros faltantes
-                    };
-
-                    List<OrdenDeCargaDto> data = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content, settings);
-
-                    return data;
-                }
-                else
-                {
-                    log.Warn($"Respuesta no OK desde la API: {restResponse.StatusCode}");
-                    return null;
-                }
-            }
-            catch (JsonException ex)
-            {
-                log.Error($"Ocurrio un error al deserializar la respuesta: {ex.Message}");
-                return new List<OrdenDeCargaDto>();
-            }
-            catch (Exception ex)
-            {
-                log.Error($"Ocurrio un error al consultar el servicio {recurso} con la patente {patente}: {ex.Message}");
-                return new List<OrdenDeCargaDto>();
-            }
+            var restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
+            return restResponse.Data;
         }
 
         public void InformarViajeOrdenesDeCargaFason()
@@ -516,7 +486,7 @@ namespace Molinos.Scato.Web.Controllers
             var client = new RestClient(url);
             client.Timeout = 30000;
             client.UserAgent = "RestSharp v106";
-
+            
             return client;
         }
 
