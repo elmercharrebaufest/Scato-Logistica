@@ -4,7 +4,7 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
     const regex2 = /^[A-Z]{2}\d{3}[A-Z]{2}$/;  // Regex para formato AB123CD
 
-    var patente = $("#PatenteCamion").val();
+    var patente = $("#PatenteCamion").val().toUpperCase();
     $("#NumeroOrden").empty();
     limpiarCamposOrdenDeCargaOperaciones();
 
@@ -32,15 +32,18 @@ function obtenerOrdenDeCargaOperacionesPorPatente() {
 }
 
 function manejarRespuestaExitosa(data) {
-    if (!data || !data.Data || !Array.isArray(data.Data)) {
-        MostrarAlertaAdvertencia(patenteNoEncontrada);
-        ValidarDerivadoGranario()
-        limpiarCamposOrdenDeCargaOperaciones()
-        return; 
+    if (!data || (!data.Data && !Array.isArray(data.Mensajes)) || (!Array.isArray(data.Data) && data.Mensajes.length === 0)) {
+        mostrarInfoAlerta();
+        return;
     }
 
     if (data.TieneAdvertencias) {
         MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
+    }
+
+    if (data.Mensajes[0].Mensaje.includes('Código de estado: 0')) {
+        mostrarInfoAlerta();
+        return;
     }
 
     if (!data.EsValido) {
@@ -50,16 +53,27 @@ function manejarRespuestaExitosa(data) {
 
     cachedOrdenDeCargaOperaciones = data.Data;
     $("#NumeroOrden").append($("<option></option>").attr("value", "0").text("(Seleccionar)"));
-    data.Data.forEach(function (value) {
-        $("#NumeroOrden").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
-    });
 
-    if (data.Data.length === 1) {
-        $("#NumeroOrden").val(data.Data[0].Id);
-        seleccionarOrdenDeCargaOperaciones();
-    } else if (data.Data.length > 1) {
-        MostrarAlertaAdvertencia(textoVariasOrdenes);
+    if (Array.isArray(data.Data)) {
+        data.Data.forEach(function (value) {
+            $("#NumeroOrden").append($("<option></option>").attr("value", value.Id).text(value.Id.toString().padStart(8, '0')));
+        });
+
+        if (data.Data.length === 1) {
+            $("#NumeroOrden").val(data.Data[0].Id);
+            seleccionarOrdenDeCargaOperaciones();
+        } else if (data.Data.length > 1) {
+            MostrarAlertaAdvertencia(textoVariasOrdenes);
+        }
     }
+
+}
+
+
+function mostrarInfoAlerta() {
+    MostrarAlertaAdvertencia(patenteNoEncontrada);
+    ValidarDerivadoGranario()
+    limpiarCamposOrdenDeCargaOperaciones()
 }
 
 

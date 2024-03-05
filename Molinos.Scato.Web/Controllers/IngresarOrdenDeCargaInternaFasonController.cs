@@ -12,13 +12,11 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using RestSharp;
+using NPOI.POIFS.Properties;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Web.Http;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.Web.Controllers
@@ -305,9 +303,11 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception ex)
             {
+                throw;
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
                 log.Error(mensaje + " " + ex.Message);
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -361,7 +361,7 @@ namespace Molinos.Scato.Web.Controllers
 
         public JsonResult CachearOrdenesDeCargaOperaciones()
         {
-            List<OrdenDeCargaDto> restResponse = ObtenerRespuestaOrdenDeCargaOperaciones();
+            List<OrdenDeCargaDto> restResponse = ObtenerRespuestaOrdenDeCargaOperaciones(null);
             cache.Remover($"Operaciones:OrdenesDeCarga");
             cache.Agregar($"Operaciones:OrdenesDeCarga", restResponse);
 
@@ -391,10 +391,17 @@ namespace Molinos.Scato.Web.Controllers
             return validador1 + "-" + documento + "-" + validador2;
         }
 
-        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null, bool fason = false, bool fas = true, string recurso = "ObtenerOrdenesDeCarga")
+        private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente)
         {
-            IEnumerable<OrdenDeCargaDto> data = servicioOperaciones.ObtenerOrdenesDeCarga(patente, fason, fas);
-            return data.ToList();
+            try
+            {
+                IEnumerable<OrdenDeCargaDto> data = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
+                return data.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             
         }
@@ -425,79 +432,4 @@ namespace Molinos.Scato.Web.Controllers
         }
     }
 
-    public interface IServicioOperaciones
-    {
-        /// <summary>
-        /// ObtenerOrdenesDeCarga
-        /// </summary>
-        /// <param name="patente"></param>
-        /// <param name="fason"></param>
-        /// <param name="fas"></param>
-        /// <exception cref="FileNotFoundException">Why it's thrown.</exception>
-        /// <returns></returns>
-        IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente, bool fason, bool fas);
-
-        void InformarViajeOrdenesDeCargaFason();
-    }
-
-    public class ServicioOperaciones : IServicioOperaciones
-    {
-        private readonly ILogger log;
-
-        public ServicioOperaciones(ILogger log)
-        {
-            this.log = log;
-        }
-
-
-        public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente, bool fason, bool fas)
-        {
-            const string RECURSO = "ObtenerOrdenesDeCarga";
-
-            var client = CrearCliente();
-            var request = CrearRequest(RECURSO);
-            
-            if (!string.IsNullOrWhiteSpace(patente))
-                request.AddParameter("patenteChasis", patente);
-            if (fason)
-                request.AddParameter("fason", fason);
-            if (fas)
-                request.AddParameter("fas", fas);
-
-            log.Trace("Se ejecuta la consulta a la Api");
-            var restResponse = client.Get<IEnumerable<OrdenDeCargaDto>>(request);
-            return restResponse.Data;
-        }
-
-        public void InformarViajeOrdenesDeCargaFason()
-        {
-            throw new NotImplementedException();
-        }
-
-        private IRestClient CrearCliente()
-        {
-            log.Trace("Empieza el método ORDEN FASON");
-            log.Trace("Se crean variables de url, token y resource");
-            string url = ConfigurationManager.AppSettings["URLOperacionesAPI"]; // /externalApi/external/api/
-            
-
-            log.Trace("Se inicializa RestClien y parametros de configuracion");
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            var client = new RestClient(url);
-            client.Timeout = 30000;
-            client.UserAgent = "RestSharp v106";
-            
-            return client;
-        }
-
-        private IRestRequest CrearRequest(string recurso)
-        {
-            string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
-            log.Trace("Se inicializa RestRequest y se agrega token");
-            var request = new RestRequest(recurso);
-            request.AddHeader("X-Api-Key", token);
-
-            return request;
-        }
-    }
 }

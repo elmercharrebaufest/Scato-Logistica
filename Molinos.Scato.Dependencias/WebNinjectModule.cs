@@ -41,6 +41,8 @@ namespace Molinos.Scato.Dependencias
             Bind(typeof(IServicioActividadFactory<>)).To(typeof(ServicioActividadFactory<>)).InSingletonScope();
             Bind(typeof(IServicioComandosFactory)).To(typeof(ServicioComandosFactory)).InSingletonScope();
             Bind(typeof(IServicioRepositorioFactory)).To(typeof(ServicioRepositorioFactory)).InSingletonScope();
+            Bind<IServicioOperaciones, ServicioOperaciones>().To<ServicioOperaciones>();
+            Bind<IExternalServiceException, ExternalServiceException>().To<ExternalServiceException>();
             Bind<ICache, Cache>().To<Cache>().InSingletonScope();
             BindServiciosActividad();
 
