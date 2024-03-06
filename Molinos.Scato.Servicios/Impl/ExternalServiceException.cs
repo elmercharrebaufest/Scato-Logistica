@@ -25,17 +25,17 @@ namespace Molinos.Scato.Servicios.Impl
 
         public Exception ThrowException(string message, string statusCode, string responseContent = null, Exception exception = null)
         {
-            throw new ExternalServiceException(message + " Código de estado: " + statusCode + ". Causa: ServicioOperaciones Responde:" + (responseContent ?? string.Empty), responseContent);
+            return new ExternalServiceException(message + " Código de estado: " + statusCode + ". Causa: ServicioOperaciones Responde:" + (responseContent ?? string.Empty), responseContent);
         }
 
         public Exception ThrowException(string message, string statusCode, Exception exception)
         {
-            throw new ExternalServiceException(message + " Código de estado: " + statusCode + ". Causa: ServicioOperaciones Responde:" + (ResponseContent ?? string.Empty), ResponseContent, exception);
+            return new ExternalServiceException(message + " Código de estado: " + statusCode + ". Causa: ServicioOperaciones Responde:" + (ResponseContent ?? string.Empty), ResponseContent, exception);
         }
 
         public Exception ThrowException(string message)
         {
-            throw new ExternalServiceException(message);
+            return new ExternalServiceException(message);
         }
 
     }

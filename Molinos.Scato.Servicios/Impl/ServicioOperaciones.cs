@@ -23,7 +23,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente)
         {
-            const string RECURSO = "ObtenerOrdenesDeCarga1";
+            const string RECURSO = "ObtenerOrdenesDeCarga";
             const bool FASON = true;
             const bool FAS = false;
 
@@ -55,7 +55,6 @@ namespace Molinos.Scato.Servicios.Impl
 
             } else {
                 
-                string message = "Error al procesar la solicitud.";
                 string RestMessage = "";
                 
                 try
@@ -69,11 +68,10 @@ namespace Molinos.Scato.Servicios.Impl
                 }
                 catch (JsonException jsonEx)
                 {
-                    log.Trace("Error: " + restResponse.Content);
                     throw externalServiceException.ThrowException("Error al deserializar la respuesta del servicio externo.", jsonEx.Message, jsonEx);
                 }
 
-                log.Trace(message + " Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + RestMessage);
+                log.Trace(" Código de estado: " + (int)restResponse.StatusCode + ". Causa: " + RestMessage);
 
                 switch ((HttpStatusCode)restResponse.StatusCode)
                 {
@@ -91,11 +89,7 @@ namespace Molinos.Scato.Servicios.Impl
                         throw externalServiceException.ThrowException("El Servicio de MoaOperaciones ha excedido el tiempo de espera de 5 segundos.");
 
                     default:
-                        
-                        if (restResponse.StatusCode == 0)
-                            throw externalServiceException.ThrowException(message + " Código de estado: " + (int)restResponse.StatusCode + ". Causa: ServicioOperaciones Responde:" +  restResponse.ErrorException.Message);
-
-                        throw externalServiceException.ThrowException(message + " Código de estado: " + (int)restResponse.StatusCode + ". Causa: ServicioOperaciones Responde:" + RestMessage);
+                        throw restResponse.ErrorException;
                 }
             }
  

@@ -301,11 +301,12 @@ namespace Molinos.Scato.Web.Controllers
                 }
             }
             catch (Exception ex)
-            {
+            {       
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
-                log.Error(mensaje + " " + ex.Message);
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
-                return Json(response, JsonRequestBehavior.AllowGet);
+                log.Error(ex,mensaje);
+                throw;
+              //  response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
+              //  return Json(response, JsonRequestBehavior.AllowGet);
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
@@ -346,7 +347,7 @@ namespace Molinos.Scato.Web.Controllers
                     ClienteDescripcion = cliente?.Descripcion,
                     TransportistaId = transportista?.Id,
                     TransportistaDescripcion = transportista?.Descripcion,
-                    TipoDeVehiculo = (int)resultadoEscalables.Categoria,
+                    TipoDeVehiculo = (int)(resultadoEscalables.Categoria ?? TipoVehiculo.Camión),
                     MaterialId = material.Id,
                     EsDerivadoGranario = material.EsDerivadoGranario,
                     Orden = orden
