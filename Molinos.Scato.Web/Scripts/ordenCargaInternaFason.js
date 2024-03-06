@@ -41,11 +41,6 @@ function manejarRespuestaExitosa(data) {
         MostrarAlertaAdvertencia(data.Mensajes[0].Mensaje);
     }
 
-    if (data.Mensajes[0].Mensaje.includes('Código de estado: 0')) {
-        mostrarInfoAlerta();
-        return;
-    }
-
     if (!data.EsValido) {
         MostrarAlertaError(data.Mensajes[0].Mensaje);
         return;

@@ -12,7 +12,6 @@ using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
-using NPOI.POIFS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -303,7 +302,6 @@ namespace Molinos.Scato.Web.Controllers
             }
             catch (Exception ex)
             {
-                throw;
                 var mensaje = $"Ocurrio un error al consultar el servicio ObtenerOrdenesDeCarga con la patente {patente}";
                 log.Error(mensaje + " " + ex.Message);
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = mensaje + " " + ex.Message, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error }); 
