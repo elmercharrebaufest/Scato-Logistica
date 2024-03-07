@@ -2473,6 +2473,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revalidar Asignacion Automatismo Granos.
+        /// </summary>
+        public static string ActRevalidarAsignacionAutomatismoGranos {
+            get {
+                return ResourceManager.GetString("ActRevalidarAsignacionAutomatismoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Romaneo.
         /// </summary>
         public static string ActRomaneo {
@@ -4440,6 +4449,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string Arribados {
             get {
                 return ResourceManager.GetString("Arribados", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No existe el recorrido en AsignacionAutomatismoGranoEnRecorrido.
+        /// </summary>
+        public static string AsignacionAutomatismo_Inexistente {
+            get {
+                return ResourceManager.GetString("AsignacionAutomatismo_Inexistente", resourceCulture);
             }
         }
         
@@ -15325,6 +15343,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string EstadoPlanta {
             get {
                 return ResourceManager.GetString("EstadoPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado de Volcables.
+        /// </summary>
+        public static string EstadoVolcadoras {
+            get {
+                return ResourceManager.GetString("EstadoVolcadoras", resourceCulture);
             }
         }
         

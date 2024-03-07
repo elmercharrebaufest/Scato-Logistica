@@ -1,12 +1,15 @@
 ﻿using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Enums;
+using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.WebMobile.Atributos;
 using Ninject.Extensions.Logging;
 using System;
 using System.Web.Mvc;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
+    [Autorizacion(PermisosScato.EstadoVolcadoras)]
     public class EstadoVolcadorasController : Controller
     {
         private readonly ILogger log;

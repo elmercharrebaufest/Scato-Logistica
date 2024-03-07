@@ -93,6 +93,7 @@
     <Compile Include="Comandos\ActualizarAutomatismoNoGranosEstado.cs" />
     <Compile Include="Comandos\ActualizarConfirmacionCargaDescarga.cs" />
     <Compile Include="Comandos\ActualizarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Comandos\ActualizarAsignacionAutomatismoGranoEnRecorrido .cs" />
     <Compile Include="Comandos\CrearAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Comandos\ActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Comandos\CrearClienteProvisorio.cs" />
     <Compile Include="Comandos\LlamarCalle.cs" />
     <Compile Include="Comandos\ModificarEstadoAutomatismoNoGrano.cs" />
+    <Compile Include="Comandos\ModificarEstadoCallePlantaNoGrano.cs" />
     <Compile Include="Comandos\ModificarPuntoDeCarga.cs" />
     <Compile Include="Comandos\ModificarCallePreHidraulica.cs" />
     <Compile Include="Comandos\ModificarCallePrebalanza.cs" />

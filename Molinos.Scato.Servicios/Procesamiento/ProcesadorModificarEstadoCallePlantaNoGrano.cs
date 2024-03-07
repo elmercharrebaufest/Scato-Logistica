@@ -8,23 +8,23 @@ using Ninject.Extensions.Logging;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
-    public class ProcesadorModificarPuntoDeCarga : ProcesadorModificar<ModificarPuntoDeCarga>
+    public class ProcesadorModificarEstadoCallePlantaNoGrano : ProcesadorModificar<ModificarEstadoCallePlantaNoGrano>
     {
-        public ProcesadorModificarPuntoDeCarga(IRepositorio repositorio, IConversor conversor, ILogger log)
+        public ProcesadorModificarEstadoCallePlantaNoGrano(IRepositorio repositorio, IConversor conversor, ILogger log)
             : base(repositorio, conversor, log)
         {
         }
 
-        protected override void ModificarEntidad(ModificarPuntoDeCarga comando)
+        protected override void ModificarEntidad(ModificarEstadoCallePlantaNoGrano comando)
         {
-            var PuntoDeCargaEditado = Repositorio.Obtener<PuntoDeCarga>(comando.Dto.Id);
-            Conversor.Convertir(comando.Dto, PuntoDeCargaEditado);
+            var calle = Repositorio.Obtener<Calle>(comando.Id);
+            calle.ActivoAutomatico = comando.ActivoAutomatico;
         }
 
-        protected override void Validar(ModificarPuntoDeCarga comando, Resultado resultado)
+        protected override void Validar(ModificarEstadoCallePlantaNoGrano comando, Resultado resultado)
         {
             var configuracion = Repositorio.Obtener<ConfiguracionGeneral>(x => x.Pantalla == Constantes.ConfiguracionGeneral.Pantalla.TableroComandoPuerto && x.Nombre == Constantes.ConfiguracionGeneral.LlamadoAutomatico.NoGranos);
-            if (!comando.Dto.EstadoAutomatismo.Value && configuracion.Valor.Equals("True") && Repositorio.Existe<AutomatismoNoGrano>(a => a.PuntoDeCarga.Id == comando.Dto.Id && a.Activo))
+            if (!comando.ActivoAutomatico && configuracion.Valor.Equals("True") && Repositorio.Existe<AutomatismoNoGrano>(a => a.CallePlanta.Id == comando.Id && a.Activo))
             {
                 resultado.Error("PreBalanza", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
             }

@@ -424,6 +424,8 @@ namespace Molinos.Scato.Dominio.Seguridad
         ActividadBajaCTGDG = 704,
         [Display(ResourceType = typeof(Textos), Name = "AbmComercial")]
         AbmComercial = 705,
+        [Display(ResourceType = typeof(Textos), Name = "EstadoVolcadoras")]
+        EstadoVolcadoras = 706,
 
         //Permisos Generales
         [Display(ResourceType = typeof(Textos), Name = "IniciarWorkflow")]

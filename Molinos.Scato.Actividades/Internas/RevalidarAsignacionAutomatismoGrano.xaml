@@ -1,0 +1,480 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Molinos.Scato.Actividades.Internas.RevalidarAsignacionAutomatismoGrano"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:Molinos.Scato.Actividades.Internas"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdc="clr-namespace:Molinos.Scato.Dominio.Comandos;assembly=Molinos.Scato.Dominio"
+ xmlns:msdd="clr-namespace:Molinos.Scato.Dominio.Dto;assembly=Molinos.Scato.Dominio"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="tieneAutomatismoGrano" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="workflowId" Type="InArgument(s:Guid)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Molinos.Scato.Actividades.Internas.RevalidarAsignacionAutomatismoGrano_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Molinos.Scato.Dominio.Dto</x:String>
+      <x:String>Molinos.Scato.Dominio.Comandos</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
+      <AssemblyReference>Elmah</AssemblyReference>
+      <AssemblyReference>itextsharp</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>Ninject</AssemblyReference>
+      <AssemblyReference>Ninject.Extensions.Logging</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Activities.Presentation</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.DataAnnotations</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.Linq</AssemblyReference>
+      <AssemblyReference>System.Runtime.DurableInstancing</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Security</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Dominio</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Servicios</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Molinos.Scato.Actividades</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="RevalidarAsignacionGranos" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Flowchart sap2010:WorkflowViewState.IdRef="Flowchart_1">
+      <Flowchart.Variables>
+        <Variable x:TypeArguments="x:Boolean" Name="tieneAutomatismo" />
+        <Variable x:TypeArguments="msdd:AutomatismoGranoDto" Name="automatismoGrano" />
+        <Variable x:TypeArguments="msdc:Resultado" Name="resultado" />
+      </Flowchart.Variables>
+      <Flowchart.StartNode>
+        <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+          <local:VerificarAutomatismoGranos sap2010:WorkflowViewState.IdRef="VerificarAutomatismoGranos_1">
+            <local:VerificarAutomatismoGranos.TieneAutomatismo>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">tieneAutomatismo</mca:CSharpReference>
+              </OutArgument>
+            </local:VerificarAutomatismoGranos.TieneAutomatismo>
+          </local:VerificarAutomatismoGranos>
+          <FlowStep.Next>
+            <FlowDecision x:Name="__ReferenceID2" DisplayName="Tiene Automatismo?" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+              <FlowDecision.Condition>
+                <mca:CSharpValue x:TypeArguments="x:Boolean">tieneAutomatismo</mca:CSharpValue>
+              </FlowDecision.Condition>
+              <FlowDecision.True>
+                <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+                  <local:ValidarAutomatismoGranoActivo sap2010:WorkflowViewState.IdRef="ValidarAutomatismoGranoActivo_1">
+                    <local:ValidarAutomatismoGranoActivo.AutomatismoGrano>
+                      <OutArgument x:TypeArguments="msdd:AutomatismoGranoDto">
+                        <mca:CSharpReference x:TypeArguments="msdd:AutomatismoGranoDto">automatismoGrano</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ValidarAutomatismoGranoActivo.AutomatismoGrano>
+                    <local:ValidarAutomatismoGranoActivo.Result>
+                      <OutArgument x:TypeArguments="msdc:Resultado">
+                        <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ValidarAutomatismoGranoActivo.Result>
+                  </local:ValidarAutomatismoGranoActivo>
+                  <FlowStep.Next>
+                    <FlowDecision x:Name="__ReferenceID3" DisplayName="Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                      <FlowDecision.Condition>
+                        <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
+                      </FlowDecision.Condition>
+                      <FlowDecision.True>
+                        <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_4">
+                          <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_1">
+                            <local:ControlRecorrido.ControlRecorridoDto>
+                              <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRevalidarAsignacionAutomatismoGranos, Mensaje = "Error.", Comentario = resultado.Errores.Values.FirstOrDefault(), WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                              </InArgument>
+                            </local:ControlRecorrido.ControlRecorridoDto>
+                            <local:ControlRecorrido.Result>
+                              <OutArgument x:TypeArguments="msdc:Resultado">
+                                <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                              </OutArgument>
+                            </local:ControlRecorrido.Result>
+                          </local:ControlRecorrido>
+                        </FlowStep>
+                      </FlowDecision.True>
+                      <FlowDecision.False>
+                        <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+                          <local:AsignarAutomatismoGranoActivo sap2010:WorkflowViewState.IdRef="AsignarAutomatismoGranoActivo_1">
+                            <local:AsignarAutomatismoGranoActivo.AutomatismoGrano>
+                              <InArgument x:TypeArguments="msdd:AutomatismoGranoDto">
+                                <mca:CSharpValue x:TypeArguments="msdd:AutomatismoGranoDto">automatismoGrano</mca:CSharpValue>
+                              </InArgument>
+                            </local:AsignarAutomatismoGranoActivo.AutomatismoGrano>
+                            <local:AsignarAutomatismoGranoActivo.AutomatismoGranoAsignado>
+                              <OutArgument x:TypeArguments="x:Boolean">
+                                <mca:CSharpReference x:TypeArguments="x:Boolean">tieneAutomatismoGrano</mca:CSharpReference>
+                              </OutArgument>
+                            </local:AsignarAutomatismoGranoActivo.AutomatismoGranoAsignado>
+                            <local:AsignarAutomatismoGranoActivo.Result>
+                              <OutArgument x:TypeArguments="msdc:Resultado">
+                                <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                              </OutArgument>
+                            </local:AsignarAutomatismoGranoActivo.Result>
+                          </local:AsignarAutomatismoGranoActivo>
+                          <FlowStep.Next>
+                            <FlowDecision x:Name="__ReferenceID5" DisplayName="Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                              <FlowDecision.Condition>
+                                <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
+                              </FlowDecision.Condition>
+                              <FlowDecision.True>
+                                <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+                                  <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_2">
+                                    <local:ControlRecorrido.ControlRecorridoDto>
+                                      <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                        <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRevalidarAsignacionAutomatismoGranos, Mensaje = "Error.", Comentario = resultado.Errores.Values.FirstOrDefault(), WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                      </InArgument>
+                                    </local:ControlRecorrido.ControlRecorridoDto>
+                                  </local:ControlRecorrido>
+                                </FlowStep>
+                              </FlowDecision.True>
+                              <FlowDecision.False>
+                                <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_5">
+                                  <local:ActualizarAsignacionAutomatismoGranoEnRecorrido sap2010:WorkflowViewState.IdRef="ActualizarAsignacionAutomatismoGranoEnRecorrido_1">
+                                    <local:ActualizarAsignacionAutomatismoGranoEnRecorrido.AutomatismoGrano>
+                                      <InArgument x:TypeArguments="msdd:AutomatismoGranoDto">
+                                        <mca:CSharpValue x:TypeArguments="msdd:AutomatismoGranoDto">automatismoGrano</mca:CSharpValue>
+                                      </InArgument>
+                                    </local:ActualizarAsignacionAutomatismoGranoEnRecorrido.AutomatismoGrano>
+                                  </local:ActualizarAsignacionAutomatismoGranoEnRecorrido>
+                                  <FlowStep.Next>
+                                    <FlowDecision x:Name="__ReferenceID10" DisplayName="Hay errores?" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
+                                      <FlowDecision.Condition>
+                                        <mca:CSharpValue x:TypeArguments="x:Boolean">resultado.HayErrores</mca:CSharpValue>
+                                      </FlowDecision.Condition>
+                                      <FlowDecision.True>
+                                        <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_8">
+                                          <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_4">
+                                            <local:ControlRecorrido.ControlRecorridoDto>
+                                              <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRevalidarAsignacionAutomatismoGranos, Mensaje = "Error.", Comentario = resultado.Errores.Values.FirstOrDefault(), WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                              </InArgument>
+                                            </local:ControlRecorrido.ControlRecorridoDto>
+                                            <local:ControlRecorrido.Result>
+                                              <OutArgument x:TypeArguments="msdc:Resultado">
+                                                <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                              </OutArgument>
+                                            </local:ControlRecorrido.Result>
+                                          </local:ControlRecorrido>
+                                        </FlowStep>
+                                      </FlowDecision.True>
+                                      <FlowDecision.False>
+                                        <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                                          <local:ControlRecorrido NombreUsuario="{x:Null}" sap2010:WorkflowViewState.IdRef="ControlRecorrido_3">
+                                            <local:ControlRecorrido.ControlRecorridoDto>
+                                              <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                                                <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRevalidarAsignacionAutomatismoGranos, Mensaje = "Asignación Exitosa.", Comentario = $"Automatismo Grano {automatismoGrano.Id}, Calle PH: {automatismoGrano.CallePHDescripcion}, Hidraulica: {automatismoGrano.HidraulicaDescripcion}, Almacen: {automatismoGrano.AlmacenDescripcion}", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                                              </InArgument>
+                                            </local:ControlRecorrido.ControlRecorridoDto>
+                                            <local:ControlRecorrido.Result>
+                                              <OutArgument x:TypeArguments="msdc:Resultado">
+                                                <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                                              </OutArgument>
+                                            </local:ControlRecorrido.Result>
+                                          </local:ControlRecorrido>
+                                        </FlowStep>
+                                      </FlowDecision.False>
+                                    </FlowDecision>
+                                  </FlowStep.Next>
+                                </FlowStep>
+                              </FlowDecision.False>
+                            </FlowDecision>
+                          </FlowStep.Next>
+                        </FlowStep>
+                      </FlowDecision.False>
+                    </FlowDecision>
+                  </FlowStep.Next>
+                </FlowStep>
+              </FlowDecision.True>
+              <FlowDecision.False>
+                <FlowStep x:Name="__ReferenceID12">
+                  <local:ControlRecorrido NombreUsuario="{x:Null}">
+                    <local:ControlRecorrido.ControlRecorridoDto>
+                      <InArgument x:TypeArguments="msdd:ControlRecorridoDto">
+                        <mca:CSharpValue x:TypeArguments="msdd:ControlRecorridoDto">new ControlRecorridoDto { Actividad = Molinos.Scato.Dominio.Recursos.Textos.ActRevalidarAsignacionAutomatismoGranos, Mensaje = "No Asignable.", Comentario = "No se encontro un automatismo para la reasignación", WorkflowInstanceId = workflowId }</mca:CSharpValue>
+                      </InArgument>
+                    </local:ControlRecorrido.ControlRecorridoDto>
+                    <local:ControlRecorrido.Result>
+                      <OutArgument x:TypeArguments="msdc:Resultado">
+                        <mca:CSharpReference x:TypeArguments="msdc:Resultado">resultado</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ControlRecorrido.Result>
+                    <sap2010:WorkflowViewState.IdRef>ControlRecorrido_5</sap2010:WorkflowViewState.IdRef>
+                  </local:ControlRecorrido>
+                  <sap2010:WorkflowViewState.IdRef>FlowStep_9</sap2010:WorkflowViewState.IdRef>
+                </FlowStep>
+              </FlowDecision.False>
+            </FlowDecision>
+          </FlowStep.Next>
+        </FlowStep>
+      </Flowchart.StartNode>
+      <x:Reference>__ReferenceID0</x:Reference>
+      <x:Reference>__ReferenceID1</x:Reference>
+      <x:Reference>__ReferenceID2</x:Reference>
+      <x:Reference>__ReferenceID3</x:Reference>
+      <x:Reference>__ReferenceID4</x:Reference>
+      <x:Reference>__ReferenceID5</x:Reference>
+      <x:Reference>__ReferenceID6</x:Reference>
+      <x:Reference>__ReferenceID7</x:Reference>
+      <x:Reference>__ReferenceID8</x:Reference>
+      <x:Reference>__ReferenceID9</x:Reference>
+      <x:Reference>__ReferenceID10</x:Reference>
+      <x:Reference>__ReferenceID11</x:Reference>
+      <x:Reference>__ReferenceID12</x:Reference>
+    </Flowchart>
+    <sads:DebugSymbol.Symbol>d3lDOlxGZXJuYW5kb1xTY2F0b19naXRcU2NhdG9XZWJcU2NhdG9Mb2dpc3RpY2FcTW9saW5vcy5TY2F0by5BY3RpdmlkYWRlc1xJbnRlcm5hc1xSZXZhbGlkYXJBc2lnbmFjaW9uQXV0b21hdGlzbW9HcmFuby54YW1sH0ID/AEOAgEBQwX6ARECAQJLC1EuAgF9VRFVYAIBd9kBE+UBLAIBalkTZDkCAV1oGWhsAgFXfBuMAUECAUSQASGQAXQCAT6fASOlAVsCATepASmpAXwCATG9ASvIAUQCASStASu4AUQCAReUASOaATwCARBsG3c0AgEDThFOaAIBftwBGdwB2wICAXHhARnhAW4CAWtcGVx/AgFkYRlhbgIBXn8hf38CAVGJASGJAXYCAUuEASGEAX0CAUWiASmiAYcBAgE4wAExwAGGBAIBK8UBMcUBhgECASWwATGwAeECAgEetQExtQGGAQIBGJcBKZcB2QICARFvIW/RAgIBCnQhdHYCAQQ=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="VerificarAutomatismoGranos_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ValidarAutomatismoGranoActivo_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">0,449</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AsignarAutomatismoGranoActivo_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_2" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">40,569</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ActualizarAsignacionAutomatismoGranoEnRecorrido_1" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_4" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">310,719</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_3" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">650,719</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_4" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">545,606.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">545,650 410,650 410,719</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">615,650 750,650 750,719</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_5">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">490,559</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">590,581 580,581 580,606.666666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_3" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">335,476.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">335,520 140,520 140,569</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">405,520 590,520 590,559</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">270,389</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">370,411 370,476.666666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="70,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">185,306.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">70,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">185,350 100,350 100,449</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">255,350 370,350 370,389</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">120,229</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">220,251 220,306.666666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ControlRecorrido_5" sap:VirtualizedContainerService.HintSize="200,22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_9">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">380,239</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_2" sap:VirtualizedContainerService.HintSize="112.666666666667,86.6666666666667">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">243.666666666667,126.666666666667</av:Point>
+            <av:Size x:Key="ShapeSize">112.666666666667,86.6666666666667</av:Size>
+            <av:PointCollection x:Key="TrueConnector">243.666666666667,170 220,170 220,229</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">356.333333333334,170 480,170 480,239</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_3">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">200,89</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,111 300,126.666666666667</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="910,813.333333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,74.6666666666667</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.1666666666667 300,89</av:PointCollection>
+            <x:Double x:Key="Width">896.33333333333326</x:Double>
+            <x:Double x:Key="Height">777.33333333333371</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="932,937.333333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Molinos.Scato.Actividades.Internas.RevalidarAsignacionAutomatismoGrano_1" sap:VirtualizedContainerService.HintSize="972,1017.33333333333">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+            <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

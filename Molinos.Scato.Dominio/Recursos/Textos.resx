@@ -10519,4 +10519,13 @@
   <data name="TipoLlamadoNoEditable" xml:space="preserve">
     <value>No se puede editar ya que existe al menos una "fila/Camión" actualmente llamada para esta calle</value>
   </data>
+  <data name="ActRevalidarAsignacionAutomatismoGranos" xml:space="preserve">
+    <value>Revalidar Asignacion Automatismo Granos</value>
+  </data>
+  <data name="AsignacionAutomatismo_Inexistente" xml:space="preserve">
+    <value>No existe el recorrido en AsignacionAutomatismoGranoEnRecorrido</value>
+  </data>  
+  <data name="EstadoVolcadoras" xml:space="preserve">
+    <value>Estado de Volcables</value>
+  </data>
 </root>

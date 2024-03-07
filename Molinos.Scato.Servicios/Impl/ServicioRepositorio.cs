@@ -8982,7 +8982,7 @@ namespace Molinos.Scato.Servicios.Impl
                  TipoVehiculo = x.Recorrido != null ? x.Recorrido.TipoVehiculo : (TipoVehiculo?)null,
                  DescripcionAlmacen = x.Recorrido != null ? x.Recorrido.Almacen.Descripcion : string.Empty,
                  EsSojaEPA = x.Recorrido != null && x.Recorrido.Establecimiento != null && x.Recorrido.Establecimiento.EPA,
-                 EsSojaIMPO = x.CargaDeCupo != null && x.CargaDeCupo.TitularCartaPorteCodigoSap == Constantes.ValoresPorDefecto.CodigoSapTPR
+                 EsSojaIMPO = x.CargaDeCupo != null && (x.CargaDeCupo.TitularCartaPorteCodigoSap ?? string.Empty) == Constantes.ValoresPorDefecto.CodigoSapTPR
              });
 
             if (camion == null)
