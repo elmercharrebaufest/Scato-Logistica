@@ -153,6 +153,14 @@ function rellenarCampos(data, selectedElement) {
     $("#TipoYOrdenDestino").val(data.Data.Orden.TipoYOrdenDestino);
     $("#Corredor").val(data.Data.Orden.Corredor);
 
+    //rellenar campos ocultos
+    $("#Chofer_Cuil[type='hidden']").val(convertirCuil(selectedElement.CUILChofer));
+    $("#PatenteAcoplado[type='hidden']").val(selectedElement.PatenteAcoplado);
+    $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
+    $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
+    $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
+
+
     const select = document.getElementById('localidadDestinoDropdown');
     const option = document.createElement('option');
 

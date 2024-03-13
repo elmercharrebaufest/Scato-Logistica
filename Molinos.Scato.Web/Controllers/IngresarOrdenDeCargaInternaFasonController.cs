@@ -8,6 +8,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
@@ -27,15 +28,16 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory;
         private readonly IListaDeWorkflows workflows;
         private readonly ICache cache;
-       
+        private readonly ZSDWS_SCATO servicioSap;
 
-        public IngresarOrdenCargaInternaFasonController(ILogger log, IServicioRepositorio servicio,IServicioOperaciones servicioOperaciones, IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, ICache cache)
+        public IngresarOrdenCargaInternaFasonController(ILogger log, IServicioRepositorio servicio,IServicioOperaciones servicioOperaciones, IServicioActividadFactory<IIngresarOrdenCargaInternaFasonService> factory, IServicioComandos servicioComandos, IListaDeWorkflows workflows, ICache cache, ZSDWS_SCATO servicioSap)
             : base(log, servicio, servicioComandos)
         {
             this.servicioOperaciones = servicioOperaciones;
             this.factory = factory;
             this.workflows = workflows;
             this.cache = cache;
+            this.servicioSap = servicioSap;
         }
 
         [DatosUsuario]
@@ -227,7 +229,7 @@ namespace Molinos.Scato.Web.Controllers
             return entrada.Substring(0, 2) + "-" + entrada.Substring(2, 8) + "-" + entrada.Substring(10);
         }
 
-        protected virtual void Validar(OrdenCargaInternaFasonDto orden, DatosUsuario usuario)
+        protected virtual void Validar(OrdenCargaInternaFasonDto orden, DatosUsuario datosUsuario)
         {
             var otroRecorridoDelChofer = servicio.ObtenerOtroRecorridoDelChofer(orden.Chofer.Id);
             var material = servicio.ObtenerMaterial(orden.MaterialId);
@@ -275,7 +277,7 @@ namespace Molinos.Scato.Web.Controllers
         }
 
         [DatosUsuario]
-        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente)
+        public JsonResult ObtenerOrdenDeCargaOperacionesPorPatente(string patente, DatosUsuario datosUsuario)
         {
             var response = new RespuestaEstandarDto<List<OrdenDeCargaDto>>();
 
@@ -310,11 +312,24 @@ namespace Molinos.Scato.Web.Controllers
             }
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, DatosUsuario usuario)
+        
+        [DatosUsuario]
+        public JsonResult ObtenerOrdenDeCargaOperacionesSeleccionada(string clienteCUIT, string transportistaCUIT, string patente, string acoplado, string materialSAP, string ordenId, DatosUsuario datosUsuario)
         {
             clienteCUIT = ConvertirCuil(clienteCUIT);
             transportistaCUIT = ConvertirCuil(transportistaCUIT);
+
+            var consultaOrdenDeCarga = new ConsultaOrdenDeCarga
+            {
+                Centro = servicio.ObtenerCentro(datosUsuario.CentroId).CodigoSAP,
+                Patente = patente.ToUpper()
+            };
+
+            var datosRequest = new ConsultaOrdenDeCargaRequest
+            {
+                ConsultaOrdenDeCarga = consultaOrdenDeCarga
+            };
+
 
             var response = new RespuestaEstandarDto<OrdenDeCargaComplementariaDto>();
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
@@ -326,7 +341,7 @@ namespace Molinos.Scato.Web.Controllers
             var transportista = servicio.ObtenerProveedorPorCuit(transportistaCUIT, new TiposProveedor { PR = true });
             var material = servicio.ObtenerMaterialPorCodigoSap(materialSAP);
 
-            var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = usuario.NombreUsuario }) as ResultadoEscalables;
+            var resultadoEscalables = servicioComandos.Ejecutar(new ConsultarEscalables { Patente = patente, Acoplado = acoplado, Acoplado2 = string.Empty, Usuario = datosUsuario.NombreUsuario }) as ResultadoEscalables;
             if (cliente == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 

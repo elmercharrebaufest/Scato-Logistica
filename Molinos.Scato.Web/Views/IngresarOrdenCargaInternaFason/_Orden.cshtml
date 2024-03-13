@@ -55,6 +55,7 @@
 @Html.Hidden("LocalidadSeleccionada", Model.LocalidadDestinoId)
 @Html.Hidden("MaterialSeleccionado", Model.MaterialId)
 
+
 <input data-val="true" id="OrdenDomicilioDestino" name="OrdenDomicilioDestino" type="hidden" value="@Model.OrdenDomicilioDestino" />
 
 <input data-val="true" id="TipoDomicilioDestino" name="TipoDomicilioDestino" type="hidden" value="@Model.TipoDomicilioDestino" />
@@ -66,14 +67,16 @@
             <div class="control">
                 @Html.LabelFor(model => model.NumeroOrden, new { @class = "control-label small margin10" })
                 <div class="">
-                    @Html.DropDownListFor(model => model.NumeroOrden, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()"})
+                    @Html.DropDownListFor(model => model.NumeroOrden, emptySelectListItem, new { @class = "control ", autocomplete = "off", @onchange = "seleccionarOrdenDeCargaOperaciones()" })
                     @Html.ValidationMessageFor(model => model.NumeroOrden)
+                    @Html.HiddenFor(model => model.NumeroOrden)
                 </div>
             </div>
             <div class="control derivadoGranario @(Model.DerivadoGranarioHabilitado ? "" : "hidden")">
                 @Html.LabelFor(model => model.NumeroCTG, new { @class = "control-label small margin10" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCTG, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.NumeroCTG)
                 </div>
             </div>
         </div>
@@ -89,6 +92,7 @@
                 @Html.LabelFor(model => model.NumeroCPE, new { @class = "control-label small", style = "margin-left:15%" })
                 <div class="">
                     @Html.TextBoxFor(model => model.NumeroCPE, new { @class = "control", autocomplete = "off", @readonly = "readonly" })
+                    @Html.HiddenFor(model => model.NumeroCPE)
                 </div>
             </div>
         </div>
@@ -148,6 +152,7 @@
                 <div class="">
                     @Html.TextBoxFor(model => model.PatenteAcoplado, new { @class = "control  patente-internacional uppercase", data_toggle = "tooltip", title = @Textos.Atencion_PantenteInvalida, data_placement = "right", @disabled = "true" })
                     @Html.ValidationMessageFor(model => model.PatenteAcoplado)
+                    @Html.HiddenFor(model => model.PatenteAcoplado)
                 </div>
             </div>
             <div class="control">
@@ -179,6 +184,7 @@
                 <div class="">
                     @Html.DropDownListFor(model => model.MaterialId, materiales, Textos.Default_Material, new { @class = "control ", @disabled = "true" })
                     @Html.ValidationMessageFor(model => model.MaterialId)
+                    @Html.HiddenFor(model => model.MaterialId)
                 </div>
             </div>
             <div class="control">
@@ -236,7 +242,7 @@
                         <div class="">
                             @Html.TextBoxFor(model => model.Chofer.Cuil, new { @class = "control  cuilValido", @disabled = "true", data_error_cuil_invalido = string.Format(Textos.CuitInvalido), data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Cuil" }) })
                             @Html.TextBox("sinCuil", null, new { @disabled = "disabled", style = "display:none", @class = "control " })
-
+                            @Html.HiddenFor(model => model.Chofer.Cuil)
                             @Html.ValidationMessageFor(model => model.Chofer.Cuil)
                         </div>
                     </div>
@@ -272,6 +278,7 @@
                         <div class="">
                             @Html.TextBoxFor(model => model.Chofer.NumeroDeDocumento, new { @class = "control  autocompletado-obligatorio", data_url_buscar_choferes = Url.Action("BuscarChoferes", "Consultas", new { campo = "Documento" }) })
                             @Html.ValidationMessageFor(model => model.Chofer.NumeroDeDocumento)
+                            @Html.HiddenFor(model => model.Chofer.NumeroDeDocumento)
                         </div>
                     </div>
                     <div class="control">
