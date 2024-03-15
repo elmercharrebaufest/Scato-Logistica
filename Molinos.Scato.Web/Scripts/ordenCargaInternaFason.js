@@ -1,4 +1,6 @@
 ﻿var cachedOrdenDeCargaOperaciones;
+var domicilioConcat = "";
+var $selectOption ;
 
 function obtenerOrdenDeCargaOperacionesPorPatente() {
     const regex1 = /^[A-Z]{3}\d{3}$/;  // Regex para formato ABC123
@@ -132,6 +134,8 @@ function manejarRespuestaAjaxSeleccion(data, selectedElement) {
 }
 
 function rellenarCampos(data, selectedElement) {
+    domicilioConcat = `${selectedElement.DomicilioTipo}-${selectedElement.DomicilioOrden}`;
+
     $("#PatenteAcoplado").val(selectedElement.PatenteAcoplado);
     $("#ClienteId").val(data.Data.ClienteId);
     $("#Cliente").val(data.Data.ClienteDescripcion);
@@ -159,7 +163,7 @@ function rellenarCampos(data, selectedElement) {
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
     $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
-
+    $selectOption = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']"); 
 
     const select = document.getElementById('localidadDestinoDropdown');
     const option = document.createElement('option');
