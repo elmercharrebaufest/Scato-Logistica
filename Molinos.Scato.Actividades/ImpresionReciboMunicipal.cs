@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Molinos.Scato.Dominio;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
@@ -54,23 +55,18 @@ namespace Molinos.Scato.Actividades
 
             try
             {
-                var materialPagoRealizado = new List<string>
-                {
-                    Constantes.MaterialPagoRealizado.BiodiselAgranel,
-                    Constantes.MaterialPagoRealizado.AceiteGirasolCrudoSAP,
-                    Constantes.MaterialPagoRealizado.AceiteSojaCrudoGranelSAP,
-                    Constantes.MaterialPagoRealizado.SojaSAP
-                };
-
                 var documento = repositorio.ObtenerDocumentoDeImpresionPorCentroCodigoPuestoDeTrabajo(codigo, centroId, puestoDeTrabajoId);
                 if (documento == null) { throw new Exception(String.Format(Textos.Error_DocumentoDeImpresionNoEncontrado, codigo)); }
-                var recorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(workflowId);
+
 
                 var datosRecorrido = repositorio.ObtenerRecorridoPorGuid(workflowId);
-                var material = datosRecorrido.Material;
+                var configuracionMaterialPagoRealizado = repositorio.ObtenerConfiguracionGeneral(Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.Actividad, Constantes.ConfiguracionGeneral.ImpresionReciboMunicipal.MaterialesPagoRealizado);
+                var materialPagoRealizado = !string.IsNullOrEmpty(configuracionMaterialPagoRealizado?.Valor) ? configuracionMaterialPagoRealizado.Valor.Split(',').ToList() : new List<string>();
 
                 bool pagoRealizado = false;
                 var aplicaPago = true;
+                var material = datosRecorrido.Material;
+
                 if (materialPagoRealizado.Contains(material.CodigoSAP))
                 {
                     pagoRealizado = repositorio.ExistePagoRealizado(datosRecorrido.Patente);
@@ -85,6 +81,7 @@ namespace Molinos.Scato.Actividades
                 string numDeTicket = string.Empty;
                 var ticketNumber = "Tasa abonada dentro del día";
 
+                var recorrido = repositorio.ObtenerRecorridoImpresionReciboMunicipal(workflowId);
                 if (aplicaPago)
                 {
                     numPuestoDeTrabajo = repositorio.ObtenerNumGaritaEntrada(puestoDeTrabajoId).PadLeft(4, '0');
