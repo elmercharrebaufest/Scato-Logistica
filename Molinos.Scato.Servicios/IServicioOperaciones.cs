@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+﻿using Molinos.Scato.Dominio.Dto;
+using Molinos.Scato.Dominio.Dto.OperacionesAPI;
 using System.Collections.Generic;
 
 namespace Molinos.Scato.Servicios
@@ -16,7 +17,7 @@ namespace Molinos.Scato.Servicios
         /// <summary>
         /// InformarViaje
         /// </summary>
-        void InformarViajeOrdenesDeCargaFason();
+        void InformarViajeOrdenesDeCargaFason(IngresosEgresosFasonesDto ingresosEgresosFasonesDto);
     }
    
 }

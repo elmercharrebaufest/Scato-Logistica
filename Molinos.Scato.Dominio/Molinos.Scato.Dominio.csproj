@@ -780,6 +780,7 @@
     <Compile Include="Dto\DomicilioDto.cs" />
     <Compile Include="Dto\HistorialMensajeCartelLedDto.cs" />
     <Compile Include="Dto\InfoCalleDto.cs" />
+    <Compile Include="Dto\IngresosEgresosFasonesDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\ConfiguracionCalleHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\CamionHidraulicaDto.cs" />
     <Compile Include="Dto\LlamadoAutomaticoHidraulica\LlamadoAutomaticoHidraulicaDto.cs" />
