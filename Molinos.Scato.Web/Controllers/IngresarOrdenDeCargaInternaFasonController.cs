@@ -14,6 +14,8 @@ using Molinos.Scato.Web.Helpers;
 using Molinos.Scato.Web.Models;
 using Ninject.Extensions.Logging;
 using System;
+using System.Activities.Debugger;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -443,6 +445,16 @@ namespace Molinos.Scato.Web.Controllers
                 // Usa CUITDestinatario si no está vacío, de lo contrario usa CUITDestino
                 return !string.IsNullOrEmpty(orden.CUITDestinatario) ? orden.CUITDestinatario : orden.CUITDestino;
             }
+        }
+        
+        [HttpGet]
+        public JsonResult ConfirmarCompletado(IngresosEgresosFasonesDto ingresosEgresosFasonesDto)
+        {
+            JsonResult resp = new JsonResult();
+
+
+
+            return resp;
         }
     }
 

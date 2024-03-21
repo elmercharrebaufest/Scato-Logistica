@@ -15,8 +15,9 @@ namespace Molinos.Scato.Servicios
         IEnumerable<OrdenDeCargaDto> ObtenerOrdenesDeCarga(string patente);
 
         /// <summary>
-        /// InformarViaje
+        /// InformarViajeOrdenesDeCargaFason
         /// </summary>
+        /// <param name="ingresosEgresosFasonesDto"></param>
         void InformarViajeOrdenesDeCargaFason(IngresosEgresosFasonesDto ingresosEgresosFasonesDto);
     }
    

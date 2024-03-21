@@ -24,21 +24,22 @@ namespace Molinos.Scato.WfEditor.Views
             {
                 var usuario = Usuario.Text;
                 var password = Password.Password;
-            
-                if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(dominio))
-                {
-                    using (var context = new PrincipalContext(ContextType.Domain, dominio))
-                    {
-                        if (context.ValidateCredentials(usuario, password))
-                        {
-                            UsuarioEditor.UsuarioActual = usuario;
-                        }
-                        else
-                        {
-                            MessageBox.Show(Properties.Resources.LoginVerifiqueDatos, Properties.Resources.ErrorMensaje, MessageBoxButton.OK, MessageBoxImage.Warning);  
-                        }
-                    }
-                }
+                UsuarioEditor.UsuarioActual = usuario;
+
+                //if (!string.IsNullOrEmpty(usuario) && !string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(dominio))
+                //{
+                //    using (var context = new PrincipalContext(ContextType.Domain, dominio))
+                //    {
+                //        if (context.ValidateCredentials(usuario, password))
+                //        {
+                //            UsuarioEditor.UsuarioActual = usuario;
+                //        }
+                //        else
+                //        {
+                //            MessageBox.Show(Properties.Resources.LoginVerifiqueDatos, Properties.Resources.ErrorMensaje, MessageBoxButton.OK, MessageBoxImage.Warning);  
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {

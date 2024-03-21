@@ -154,7 +154,7 @@ function rellenarCampos(data, selectedElement) {
 
     //$("#PlantaDGDestino").val(data.Data.Orden.PlantaDGDestino);
     //$("#PlantaSeleccionada").val(data.Data.Orden.PlantaDGDestino);
-    $("#TipoYOrdenDestino").val(data.Data.Orden.TipoYOrdenDestino);
+    //$("#TipoYOrdenDestino").val(data.Data.Orden.TipoYOrdenDestino);
     $("#Corredor").val(data.Data.Orden.Corredor);
 
     //rellenar campos ocultos
@@ -163,7 +163,7 @@ function rellenarCampos(data, selectedElement) {
     $("#MaterialId[type='hidden']").val(data.Data.MaterialId);
     $("#Chofer_NumeroDeDocumento[type='hidden']").val(selectedElement.CUILChofer.slice(2, -1));
     $("#KmARecorrer[type='hidden']").val(selectedElement.KmARecorrer);
-    $selectOption = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']"); 
+   
 
     const select = document.getElementById('localidadDestinoDropdown');
     const option = document.createElement('option');
@@ -171,14 +171,20 @@ function rellenarCampos(data, selectedElement) {
     // Asignar valor y texto
     option.value = data.Data.Orden.LocalidadId;
     option.text = data.Data.Orden.LocalidadDescripcion;
-
     option.selected = true;
     select.appendChild(option);
-
-
+       
     let $element = $("#Chofer_Cuil");
     $element.trigger('focusout');
     ValidarDerivadoGranario();
+    setTimeout(function () {
+        var existeDomicilio = $("#TipoYOrdenDestino option[value='" + domicilioConcat + "']").end();
+        if (existeDomicilio.length > 0) {
+            $("#TipoYOrdenDestino").val(domicilioConcat);
+        } else {
+            MostrarAlertaAdvertencia('El domicilio recibido no coincide con los datos de Scato, verifique ó elija uno correcto.');
+        }
+    }, 1000);
 }
 
 

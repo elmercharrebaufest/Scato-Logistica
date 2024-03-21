@@ -66,12 +66,12 @@ namespace Molinos.Scato.WfEditor.ViewModel
             log.Info("Validando Usuario editor de Workflows...");
             try
             {
-                if (UsuarioEditor.UsuarioActual == null || !servicioWorkflows.TienePermisoEditordeWorkflow(UsuarioEditor.UsuarioActual))
-                {
-                    log.Info("El usuario {0} no tiene permisos para ejecutar el editor de workflows", UsuarioEditor.UsuarioActual);
-                    MessageBox.Show(Resources.ErrorPermiso, Resources.ItemvalidacionError, MessageBoxButton.OK, MessageBoxImage.Warning);
-                    Application.Current.Shutdown();
-                }
+                //if (UsuarioEditor.UsuarioActual == null || !servicioWorkflows.TienePermisoEditordeWorkflow(UsuarioEditor.UsuarioActual))
+                //{
+                //    log.Info("El usuario {0} no tiene permisos para ejecutar el editor de workflows", UsuarioEditor.UsuarioActual);
+                //    MessageBox.Show(Resources.ErrorPermiso, Resources.ItemvalidacionError, MessageBoxButton.OK, MessageBoxImage.Warning);
+                //    Application.Current.Shutdown();
+                //}
             }
             catch (Exception e)
             {
