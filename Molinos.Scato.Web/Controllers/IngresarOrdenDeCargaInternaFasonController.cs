@@ -447,15 +447,6 @@ namespace Molinos.Scato.Web.Controllers
             }
         }
         
-        [HttpGet]
-        public JsonResult ConfirmarCompletado(IngresosEgresosFasonesDto ingresosEgresosFasonesDto)
-        {
-            JsonResult resp = new JsonResult();
-
-
-
-            return resp;
-        }
     }
 
 }
