@@ -10,9 +10,11 @@
 
 @Html.Grilla(Model.ListaAutomatismoNoGrano, grilla => grilla.Columns(
         grilla.ColumnaEliminarModificarModal(Html, "AutomatismoNoGrano"),
-        grilla.ColumnaSwitchIdentity("Activo", "Automatismo", "automatismo"),
+        grilla.ColumnaSwitchIdentity("Activo", "Asignación", "automatismo"),
+        grilla.ColumnaSwitchIdentity("ActivoLlamado", "Llamado", "automatismoLlamado"),
         grilla.Columna("CallePlanta.Nombre", Textos.CallePlantaNoGranos, null, null, false),
+        grilla.Columna("CantidadCamiones", "Max Camiones", null, null, false),
         grilla.Columna("CallePlayaInterna.Nombre", Textos.CallePlayaInternaPH, null, null, false),
         grilla.Columna("PuntoDeCarga.Descripcion", "Punto de Carga", null, null, false),
-        grilla.Columna("Almacen.Descripcion", "Almacen", null, null, false)
+        grilla.Columna("Almacen.Descripcion", "Almacén", null, null, false)
     ))

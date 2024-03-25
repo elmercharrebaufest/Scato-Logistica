@@ -10524,8 +10524,17 @@
   </data>
   <data name="AsignacionAutomatismo_Inexistente" xml:space="preserve">
     <value>No existe el recorrido en AsignacionAutomatismoGranoEnRecorrido</value>
-  </data>  
+  </data>
   <data name="EstadoVolcadoras" xml:space="preserve">
     <value>Estado de Volcables</value>
+  </data>
+  <data name="AutomatismoNoGrano_AlmacenDesactivado" xml:space="preserve">
+    <value>El automatismo tiene asociada un almacén desactivado</value>
+  </data>
+  <data name="AutomatismoNoGrano_CalleDesactivada" xml:space="preserve">
+    <value>El automatismo tiene asociada una calle de planta desactivado</value>
+  </data>
+  <data name="AutomatismoNoGrano_PuntoDeCargaDesactivado" xml:space="preserve">
+    <value>El automatismo tiene asociada un punto de carga desactivado</value>
   </data>
 </root>

@@ -4,10 +4,6 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
-using System.Collections.Generic;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -29,10 +25,14 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (comando.Estado)
             {
                 var automatismo = Repositorio.Obtener<AutomatismoNoGrano>(comando.Id);
-                if (!automatismo.CallePlanta.ActivoAutomatico || !(bool)automatismo.PuntoDeCarga.EstadoAutomatismo || !(bool)automatismo.Almacen.EstadoAutomatismo)
-                {
-                    resultado.Error("Automatismo_CallesDesactivadas", Textos.Automatismo_CallesDesactivadas);
-                }
+                if (!automatismo.CallePlanta.ActivoAutomatico)
+                    resultado.Error(string.Empty, Textos.AutomatismoNoGrano_CalleDesactivada);
+
+                if (!automatismo.PuntoDeCarga.EstadoAutomatismo.GetValueOrDefault())
+                    resultado.Error(string.Empty, Textos.AutomatismoNoGrano_PuntoDeCargaDesactivado);
+
+                if (!automatismo.Almacen.EstadoAutomatismo.GetValueOrDefault())
+                    resultado.Error(string.Empty, Textos.AutomatismoNoGrano_AlmacenDesactivado);
             }
         }
     }

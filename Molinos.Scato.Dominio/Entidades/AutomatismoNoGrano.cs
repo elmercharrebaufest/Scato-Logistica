@@ -16,5 +16,6 @@ namespace Molinos.Scato.Dominio.Entidades
         public virtual Almacen Almacen { get; set; }
 
         public virtual PuntoDeCarga PuntoDeCarga { get; set; }
+        public virtual bool ActivoLlamado { get; set; }
     }
 }

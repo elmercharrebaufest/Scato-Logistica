@@ -62,6 +62,9 @@ function bindearEventos() {
             case 'automatismo':
                 cambiarEstadoSwitch(urlActualizarEstadoAutomatismoNoGrano, element);
                 break;
+            case 'automatismoLlamado':
+                cambiarEstadoSwitch(urlActualizarEstadoLlamadoAutomatismoNoGrano, element);
+                break;
         }
     });
 }

@@ -7,6 +7,7 @@
     [PuntoDeCarga_Id] INT NOT NULL,
 
     [Activo] BIT NOT NULL DEFAULT 0, 
+    [ActivoLlamado] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [FK_dbo.AutomatismoNoGrano_CallePlanta_Id]
     FOREIGN KEY (CallePlanta_Id) REFERENCES [dbo].[Calle](Id),
     CONSTRAINT [FK_dbo.AutomatismoNoGrano_CallePlayaInterna_Id]

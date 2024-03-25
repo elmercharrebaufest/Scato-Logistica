@@ -134,6 +134,7 @@
     <Compile Include="Comandos\CrearPesosExc.cs" />
     <Compile Include="Comandos\CrearClienteProvisorio.cs" />
     <Compile Include="Comandos\LlamarCalle.cs" />
+    <Compile Include="Comandos\ModificarEstadoLlamadoAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarEstadoAutomatismoNoGrano.cs" />
     <Compile Include="Comandos\ModificarEstadoCallePlantaNoGrano.cs" />
     <Compile Include="Comandos\ModificarPuntoDeCarga.cs" />

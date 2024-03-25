@@ -4840,6 +4840,33 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada un almacén desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_AlmacenDesactivado {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_AlmacenDesactivado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada una calle de planta desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_CalleDesactivada {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_CalleDesactivada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada un punto de carga desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_PuntoDeCargaDesactivado {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_PuntoDeCargaDesactivado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cantidad de Camiones.
         /// </summary>
         public static string AutomatismoNoGranos_CantidadDeCamiones {

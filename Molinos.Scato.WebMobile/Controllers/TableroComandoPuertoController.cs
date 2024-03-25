@@ -325,6 +325,38 @@ namespace Molinos.Scato.WebMobile.Controllers
             return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ActualizarEstadoLlamadoAutomatismoNoGrano(bool nuevoEstado, int id)
+        {
+            var respuesta = new RespuestaEstandarDto();
+
+            if (!ObtenerEstadoGeneralAutomatismoNoGrano())
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
+            var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
+
+            if (nuevoEstado && ValidarMismaCallePlantaParaLlamados(automatismo))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ya existe un automatismo activo con la misma calle planta", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
+            var resultado = servicioComandos.Ejecutar(new ModificarEstadoLlamadoAutomatismoNoGrano
+            {
+                Id = id,
+                Estado = nuevoEstado
+            });
+
+            if (resultado.HayErrores)
+            {
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult ActualizarEstadoAlmacen(bool nuevoEstado, int id)
         {
             var respuesta = new RespuestaEstandarDto();
@@ -460,6 +492,13 @@ namespace Molinos.Scato.WebMobile.Controllers
         private bool ValidarMismaCallePlanta(AutomatismoNoGranoDto automatismoNoGrano)
         {
             var automatismos = automatismoNoGranosActivos.Where(a => a.CallePlantaId == automatismoNoGrano.CallePlantaId);
+
+            return automatismos.Any();
+        }
+
+        private bool ValidarMismaCallePlantaParaLlamados(AutomatismoNoGranoDto automatismoNoGrano)
+        {
+            var automatismos = servicio.ObtenerAutomatismosNoGranoLlamadosActivos().Where(a => a.CallePlantaId == automatismoNoGrano.CallePlantaId);
 
             return automatismos.Any();
         }
