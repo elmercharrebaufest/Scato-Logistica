@@ -12,9 +12,6 @@ namespace Molinos.Scato.Dominio.Entidades
         [Column("Material_Id")]
         public int MaterialId { get; set; }
 
-        [Column("TipoVariedad_Id")]
-        public int? TipoVariedadId { get; set; }
-
         [Column("CallePreBalanza_Id")]
         public int CallePreBalanzaId { get; set; }
 
@@ -41,8 +38,6 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [InverseProperty("AutomatismoGranos")]
         public IList<PuestosDeCargaDescarga> Hidraulicas { get; set; }
-
-        public TipoVariedad TipoVariedad { get; set; }
 
         public Calle CallePreBalanza { get; set; }
 

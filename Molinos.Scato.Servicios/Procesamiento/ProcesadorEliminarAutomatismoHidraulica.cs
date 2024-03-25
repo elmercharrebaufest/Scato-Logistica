@@ -23,7 +23,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 Log.Info("Se está ejecutando ProcesadorEliminarAutomatismoHidraulica con AutomatismoId = {0}", comando.IdAutomatismo);
 
-                var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+                var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
                 var automatismoGranos = Repositorio.Obtener<AutomatismoGrano>(includes, c => c.Id == comando.IdAutomatismo);
 
                 automatismoGranos.Hidraulicas.Clear();

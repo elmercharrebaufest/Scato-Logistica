@@ -4,6 +4,7 @@ using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios.Conversiones;
 using Ninject.Extensions.Logging;
+using NPOI.HSSF.Record.Chart;
 
 namespace Molinos.Scato.Servicios.Procesamiento
 {
@@ -34,12 +35,10 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 MaterialId = comando.Dto.MaterialId,
                 Maximo = comando.Dto.Maximo,
                 Minimo = comando.Dto.Minimo,
-                TipoVariedadId = comando.Dto.TipoVariedadId,
                 Almacen = Repositorio.Obtener<Almacen>(c => c.Id == comando.Dto.AlmacenId),
                 Calidad = Repositorio.Obtener<CaracteristicaDeCalidad>(c => c.Id == 1),
                 CallePreBalanza = callePrebalanza,
                 CallePreHidraulica = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreHidraulicaId),
-                TipoVariedad = Repositorio.Obtener<TipoVariedad>(c => c.Id == comando.Dto.TipoVariedadId)
             };
 
             return automatismo;
@@ -50,11 +49,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
-            }
-
-            if (comando.Dto.TipoVariedadId != null && !Repositorio.Existe<TipoVariedadPorMaterial>(a => a.MaterialId == comando.Dto.MaterialId && a.TipoVariedadId == comando.Dto.TipoVariedadId))
-            {
-                resultado.Error("Material Variedad No Existe", Textos.Automatismo_MaterialVariedad_NoExiste);
             }
         }
     }

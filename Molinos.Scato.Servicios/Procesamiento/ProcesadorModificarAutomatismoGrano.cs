@@ -25,10 +25,9 @@ namespace Molinos.Scato.Servicios.Procesamiento
             var hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(p => comando.Dto.Hidraulicas.Contains(p.Id));
 
             var automatismo = Conversor.Convertir(comando.Dto, automatismoEditado);
-            if (comando.Dto.MaterialId == 0 && comando.Dto.TipoVariedadId == null)
+            if (comando.Dto.MaterialId == 0)
             {
                 automatismo.MaterialId = automatismoEditado.Material.Id;
-                automatismo.TipoVariedadId = comando.Dto.TipoVariedadId;
             }
 
             automatismo.Hidraulicas = hidraulicas;

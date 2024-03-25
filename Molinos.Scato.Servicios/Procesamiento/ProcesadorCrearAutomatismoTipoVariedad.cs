@@ -27,6 +27,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
                 foreach (var variedad in comando.TipoVariedades)
                 {
+                    if(variedad == 0)
+                    {
+                        continue;
+                    }
+
                     var relacionAutomatismoVariedad = Repositorio.Obtener<TipoVariedad>(c => c.Id == variedad);
 
                     if (!automatismo.TipoVariedades.Contains(relacionAutomatismoVariedad))

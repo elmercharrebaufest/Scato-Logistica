@@ -20,9 +20,6 @@ namespace Molinos.Scato.Dominio.Dto
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int MaterialId { get; set; }
 
-        [Display(ResourceType = typeof(Textos), Name = "Variedad")]
-        public int? TipoVariedadId { get; set; }
-
         [Display(ResourceType = typeof(Textos), Name = "CallePreBalanza")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int CallePreBalanzaId { get; set; }

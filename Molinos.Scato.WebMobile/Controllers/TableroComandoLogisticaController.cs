@@ -128,7 +128,14 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                     var resultadoHidraulicas = servicioComandos.Ejecutar(new CrearAutomatismoHidraulicas { Hidraulicas = model.AutomatismoGrano.Hidraulicas, IdAutomatismo = idCreacion });
 
-                    var resultadoTipoVariedades = servicioComandos.Ejecutar(new CrearAutomatismoTipoVariedad { TipoVariedades = model.AutomatismoGrano.TipoVariedades, IdAutomatismo = idCreacion });
+                    var resultadoTipoVariedades = new Resultado();
+
+                    if (!(model.AutomatismoGrano.TipoVariedades.Count == 1 && model.AutomatismoGrano.TipoVariedades[0] == 0))
+                    {
+                        // Ejecuta la línea solo si no se cumple la condición
+                         servicioComandos.Ejecutar(new CrearAutomatismoTipoVariedad { TipoVariedades = model.AutomatismoGrano.TipoVariedades, IdAutomatismo = idCreacion });
+                    
+                    }                    
 
 
                     if (!resultadoHidraulicas.HayErrores && !resultadoTipoVariedades.HayErrores)

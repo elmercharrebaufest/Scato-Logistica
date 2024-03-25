@@ -96,7 +96,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
 
         private List<AutomatismoGrano> ListarAutomatismosActivosConMismasCaracteristicas(DbContext contexto)
         {
-            Func<AutomatismoGrano, bool> FiltrarAutomatismoActivoConMismoMaterialYVariedad = x => x.Activo && x.MaterialId == this.materialId && x.TipoVariedadId == this.tipoVariedadId;
+            Func<AutomatismoGrano, bool> FiltrarAutomatismoActivoConMismoMaterialYVariedad = x => x.Activo && x.MaterialId == this.materialId && x.TipoVariedades.Any(y => y.Id == this.tipoVariedadId);
 
             var automatismosGranos = contexto.Set<AutomatismoGrano>()
                                             .Include(x => x.Hidraulicas)

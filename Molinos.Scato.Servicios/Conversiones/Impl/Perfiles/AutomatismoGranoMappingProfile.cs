@@ -37,7 +37,6 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.Almacen, mat => mat.Ignore())
                 .ForMember(x => x.Calidad, mat => mat.Ignore())
                 .ForMember(x => x.Material, mat => mat.Ignore())
-                .ForMember(x => x.TipoVariedad, mat => mat.Ignore())
                 .ForMember(x => x.CallePreBalanza, mat => mat.Ignore())
                 .ForMember(x => x.CallePreHidraulica, mat => mat.Ignore())
                 .ForMember(x => x.TipoVariedades, mat => mat.Ignore());

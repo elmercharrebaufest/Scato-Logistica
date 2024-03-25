@@ -10646,7 +10646,7 @@ namespace Molinos.Scato.Servicios.Impl
             var infoCalle = new InfoCalleDto(calle);
             if (calle.TipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+                var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
                 var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, c => c.CallePreBalanzaId == idCalle);
 
                 if (automatismo != null)
@@ -10699,7 +10699,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             var tipoVariedades = Listar<TipoVariedad, TipoVariedadDto>();
             var variedadesPorMaterial = Listar<TipoVariedadPorMaterial, TipoVariedadPorMaterialDto>(x => x.MaterialId == idMaterial);
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
             var automatismos = repositorio.Listar<AutomatismoGrano>(includes, x => x.MaterialId == idMaterial);
 
             var variedadesActivas =
@@ -10707,7 +10707,7 @@ namespace Molinos.Scato.Servicios.Impl
                    variedades => variedades.Id,
                    variedadMaterial => variedadMaterial.TipoVariedadId,
                    (variedades, variedadMaterial) =>
-                       new TipoVariedadDto { Descripcion = variedades.Descripcion, Id = variedades.Id, Codigo = variedades.Codigo, ColorTexto = variedadMaterial.ColorTexto, ColorFondo = variedadMaterial.ColorFondo, EstaEnAutomatismo = automatismos.Any(c => c.MaterialId == variedadMaterial.MaterialId && c.TipoVariedadId == variedadMaterial.TipoVariedadId) })
+                       new TipoVariedadDto { Descripcion = variedades.Descripcion, Id = variedades.Id, Codigo = variedades.Codigo, ColorTexto = variedadMaterial.ColorTexto, ColorFondo = variedadMaterial.ColorFondo, EstaEnAutomatismo = automatismos.Any(c => c.MaterialId == variedadMaterial.MaterialId && c.TipoVariedades.Any(tv => tv.Id == variedadMaterial.TipoVariedadId)) })
 
                    .ToList();
 
@@ -10716,7 +10716,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<AutomatismoGranoDto> ListarAutomatismoGrano()
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
             var lista = repositorio.Listar<AutomatismoGrano>(includes);
             var automatismos = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista);
 
@@ -10729,7 +10729,7 @@ namespace Molinos.Scato.Servicios.Impl
         {
             List<int> listaId = new List<int>();
 
-            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
             var includesNoGrano = new List<Expression<Func<AutomatismoNoGrano, object>>> { x => x.Almacen, x => x.CallePlayaInterna, x => x.PuntoDeCarga, x => x.CallePlanta };
 
             if (tipoCalle == TipoCalle.PreBalanzaGranos)
@@ -10770,7 +10770,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public AutomatismoGranoDto ObtenerAutomatismoGranos(int id)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
             var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == id);
 
             return conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
