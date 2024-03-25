@@ -560,7 +560,9 @@
     <Compile Include="Procesamiento\ProcesadorAnularCPEDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorAutorizarCpeDGDummy.cs" />
     <Compile Include="Procesamiento\ProcesadorConfirmarCTGVencidas.cs" />
+    <Compile Include="Procesamiento\ProcesadorCrearAutomatismoTipoVariedad.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoTipoVariedades.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarAutomatismoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarAutomatismoGranos.cs" />

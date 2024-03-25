@@ -1,4 +1,5 @@
-﻿using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Entidades;
+using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,7 @@ namespace Molinos.Scato.Dominio.Dto
         public AutomatismoGranoDto()
         {
             Hidraulicas = new List<int>();
+            TipoVariedades = new List<int>();
         }
 
         public int Id { get; set; }
@@ -56,6 +58,10 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Hidraulica")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public List<int> Hidraulicas { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "Variedad")]
+        [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
+        public List<int> TipoVariedades { get; set; }
 
         public string MaterialDescripcion { get; set; }
         public string VariedadDescripcion { get; set; }

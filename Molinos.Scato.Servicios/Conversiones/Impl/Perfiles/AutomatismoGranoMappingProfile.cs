@@ -17,7 +17,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
         {
             Mapper.CreateMap<AutomatismoGrano, AutomatismoGranoDto>()
                 .ForMember(x => x.MaterialDescripcion, mat => mat.MapFrom(m => m.Material.Descripcion))
-                .ForMember(x => x.VariedadDescripcion, mat => mat.MapFrom(m => m.TipoVariedad.Descripcion))
+                //.ForMember(x => x.VariedadDescripcion, mat => mat.MapFrom(m => m.TipoVariedad.Descripcion))
+                .ForMember(x => x.VariedadDescripcion, mat => mat.MapFrom(m => m.TipoVariedades == null ? string.Empty : string.Join(",", m.TipoVariedades.Select(s => s.Descripcion))))
                 .ForMember(x => x.CallePBDescripcion, mat => mat.MapFrom(m => m.CallePreBalanza.Nombre))
                 .ForMember(x => x.CallePHDescripcion, mat => mat.MapFrom(m => m.CallePreHidraulica.Nombre))
                 .ForMember(x => x.CallePHTipoLlamadoDescripcion, mat => mat.MapFrom(m => m.CallePreHidraulica.AutomatismoTipoLlamado == null ? string.Empty : m.CallePreHidraulica.AutomatismoTipoLlamado.Descripcion))
@@ -28,7 +29,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.TipoCallePrebalanza, mat => mat.MapFrom(m => m.CallePreHidraulica.TipoCalle))
                 .ForMember(x => x.TipoCallePreHidraulica, mat => mat.MapFrom(m => m.CallePreHidraulica.TipoCalle))
                 .ForMember(x => x.Hidraulicas, mat => mat.MapFrom(m => m.Hidraulicas.Select(s => s.Id)))
-                .ForMember(x => x.CodigoAutomatismoTipoLlamado, mat => mat.MapFrom(m => m.CallePreHidraulica.AutomatismoTipoLlamado.Codigo));
+                .ForMember(x => x.CodigoAutomatismoTipoLlamado, mat => mat.MapFrom(m => m.CallePreHidraulica.AutomatismoTipoLlamado.Codigo))
+                .ForMember(x => x.TipoVariedades, mat => mat.MapFrom(m => m.TipoVariedades.Select(s => s.Id)));
 
             Mapper.CreateMap<AutomatismoGranoDto, AutomatismoGrano>()
                 .ForMember(x => x.Hidraulicas, mat => mat.Ignore())
@@ -37,7 +39,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
                 .ForMember(x => x.Material, mat => mat.Ignore())
                 .ForMember(x => x.TipoVariedad, mat => mat.Ignore())
                 .ForMember(x => x.CallePreBalanza, mat => mat.Ignore())
-                .ForMember(x => x.CallePreHidraulica, mat => mat.Ignore());
+                .ForMember(x => x.CallePreHidraulica, mat => mat.Ignore())
+                .ForMember(x => x.TipoVariedades, mat => mat.Ignore());
         }
     }
 }

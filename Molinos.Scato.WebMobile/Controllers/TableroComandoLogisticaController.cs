@@ -10,6 +10,7 @@ using Molinos.Scato.WebMobile.Atributos;
 using Molinos.Scato.WebMobile.Helpers;
 using Molinos.Scato.WebMobile.ViewModel;
 using Ninject.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -60,33 +61,47 @@ namespace Molinos.Scato.WebMobile.Controllers
         public ActionResult Eliminar(int id)
         {
             var respuesta = new RespuestaEstandarDto();
+
             if (ModelState.IsValid)
             {
-                var resultadoHidraulicas = servicioComandos.Ejecutar(new EliminarAutomatismoHidraulicas { IdAutomatismo = id });
-
-                if (!resultadoHidraulicas.HayErrores)
+                try
                 {
+
+                    var resultadoHidraulicas = servicioComandos.Ejecutar(new EliminarAutomatismoHidraulicas { IdAutomatismo = id });
+                    var resultadoTipoVariedades = servicioComandos.Ejecutar(new EliminarAutomatismoTipoVariedades { IdAutomatismo = id });
                     var resultadoAutomatismo = servicioComandos.Ejecutar(new EliminarAutomatismoGranos { IdAutomatismo = id });
 
-                    ModelState.AgregarErrores(resultadoAutomatismo);
-
-                    if (!resultadoAutomatismo.HayErrores && !resultadoHidraulicas.HayErrores)
+                    if (!resultadoHidraulicas.HayErrores && !resultadoTipoVariedades.HayErrores && !resultadoAutomatismo.HayErrores)
                     {
-                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Eliminacion de automatismo de Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Eliminación de automatismo de Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
                     }
                     else
                     {
-                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al eliminar la relacion automatismo-hidraulica de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al eliminar el automatismo de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+                        // Agregar mensajes de error específicos si fallan las operaciones de hidráulicas y tiposVariedades
+                        if (resultadoHidraulicas.HayErrores)
+                        {
+                            respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la operación de hidráulicas", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        }
+                        if (resultadoTipoVariedades.HayErrores)
+                        {
+                            respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error en la operación de tiposVariedades", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        }
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al eliminar el automatismo de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    // Manejar la excepción según sea necesario, por ejemplo, registrarla o notificarla
+                    respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Se produjo un error al eliminar el automatismo de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
                 }
             }
 
+          
+
             return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpGet]
         [AjaxOnly]
@@ -113,13 +128,25 @@ namespace Molinos.Scato.WebMobile.Controllers
 
                     var resultadoHidraulicas = servicioComandos.Ejecutar(new CrearAutomatismoHidraulicas { Hidraulicas = model.AutomatismoGrano.Hidraulicas, IdAutomatismo = idCreacion });
 
-                    if (!resultadoHidraulicas.HayErrores)
+                    var resultadoTipoVariedades = servicioComandos.Ejecutar(new CrearAutomatismoTipoVariedad { TipoVariedades = model.AutomatismoGrano.TipoVariedades, IdAutomatismo = idCreacion });
+
+
+                    if (!resultadoHidraulicas.HayErrores && !resultadoTipoVariedades.HayErrores)
                     {
                         respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Creacion de automatismo de Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success });
                     }
                     else
                     {
-                        respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al crear la relacion automatismo-hidraulica de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        if (resultadoHidraulicas.HayErrores)
+                        {
+                            respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al crear la relación automatismo-hidráulica de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        }
+
+                        if (resultadoTipoVariedades.HayErrores)
+                        {
+                            respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Error al crear la relación automatismo-tipoVariedad de Granos", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                        }
+
                     }
                 }
                 else
@@ -142,6 +169,7 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             model.CargarDatos(servicio, ObtenerIdCentro(), dto);
             model.AutomatismoGrano.Hidraulicas = null;
+            model.AutomatismoGrano.TipoVariedades = null;
             return PartialView("_ModificarAutomatismo", model);
         }
 

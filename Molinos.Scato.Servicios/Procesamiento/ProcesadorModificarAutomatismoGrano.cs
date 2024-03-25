@@ -19,7 +19,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         protected override void ModificarEntidad(ModificarAutomatismoGranos comando)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.Almacen, x => x.Hidraulicas };
             var automatismoEditado = Repositorio.Obtener<AutomatismoGrano>(includes, c => c.Id == comando.Dto.Id);
 
             var hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(p => comando.Dto.Hidraulicas.Contains(p.Id));

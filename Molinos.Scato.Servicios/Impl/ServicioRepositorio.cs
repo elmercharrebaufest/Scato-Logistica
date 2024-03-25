@@ -10716,7 +10716,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<AutomatismoGranoDto> ListarAutomatismoGrano()
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
             var lista = repositorio.Listar<AutomatismoGrano>(includes);
             var automatismos = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista);
 
@@ -10770,7 +10770,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public AutomatismoGranoDto ObtenerAutomatismoGranos(int id)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
             var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == id);
 
             return conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
