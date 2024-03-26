@@ -24,9 +24,6 @@
 
   CONSTRAINT [PK_AutomatismoGrano] PRIMARY KEY ([Id] ASC),
 
-  CONSTRAINT [FK_dbo.AutomatismoGrano_VariedadPorMaterial] 
-    FOREIGN KEY ([TipoVariedad_Id], Material_Id) REFERENCES [dbo].[TipoVariedadPorMaterial](TipoVariedad_Id, Material_Id),
-
   CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
     FOREIGN KEY ([CallePreBalanza_Id]) REFERENCES [dbo].[Calle](Id),
 
