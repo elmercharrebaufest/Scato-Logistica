@@ -29,7 +29,7 @@ namespace Molinos.Scato.Web.Jobs
 
         private void JobLlamadoAutomaticoGranos()
         {
-            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LlamarAutomatismoGrano, x => x.Llamar(LlamadoAutomatico.Granos), Cron.MinuteInterval(1));
+            RecurringJob.AddOrUpdate<IServicioLlamadoAutomatico>(Constantes.Job.LlamarAutomatismoGrano, x => x.Llamar(LlamadoAutomatico.Granos), "*/30 * * * * *");
         }
 
         private void JobLlamadoAutomaticoNoGranos()
