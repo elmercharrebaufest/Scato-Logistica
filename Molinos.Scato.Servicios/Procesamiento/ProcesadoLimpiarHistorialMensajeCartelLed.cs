@@ -73,7 +73,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
 
         private void LimpiarCamionEnCartel(List<MensajeCartelLed> listaMensajes, LimpiarHistorialMensajeCartelLed comando)
         {
-            var mensajeCartel = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed != null && x.HistorialMensajeCartelLed.Calle.Id == comando.CalleId && x.HistorialMensajeCartelLed.Recorrido.Id == comando.RecorridoId);
+            var mensajeCartel = listaMensajes.FirstOrDefault(x => x.HistorialMensajeCartelLed?.Calle?.Id == comando.CalleId 
+                                                                && x.HistorialMensajeCartelLed?.Recorrido?.Id == comando.RecorridoId);
             if(mensajeCartel != null)
             {
                 mensajeCartel.HistorialMensajeCartelLed.Calle = null;

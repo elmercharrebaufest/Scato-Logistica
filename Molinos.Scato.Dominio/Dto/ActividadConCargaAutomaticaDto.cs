@@ -5,6 +5,7 @@ namespace Molinos.Scato.Dominio.Dto
 {
     public sealed class ActividadConCargaAutomaticaDto
     {
+
         public int Id { get; set; }
 
         public int CentroId { get; set; }

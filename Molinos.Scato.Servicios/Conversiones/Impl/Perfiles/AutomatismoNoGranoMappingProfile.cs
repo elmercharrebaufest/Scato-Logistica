@@ -13,7 +13,8 @@ namespace Molinos.Scato.Servicios.Conversiones.Impl.Perfiles
 
         protected override void Configure()
         {
-            Mapper.CreateMap<AutomatismoNoGrano, AutomatismoNoGranoDto>();
+            Mapper.CreateMap<AutomatismoNoGrano, AutomatismoNoGranoDto>()
+                 .ForMember(x => x.CantidadCamiones, y => y.MapFrom(x => x.CallePlanta.CantidadDeCamiones));
             Mapper.CreateMap<AutomatismoNoGranoDto, AutomatismoNoGrano>();
         }
     }

@@ -557,6 +557,7 @@
     <Compile Include="Procesamiento\ProcesadorActualizarAutomatismoNoGranosEstado.cs" />
     <Compile Include="Procesamiento\ProcesadoLimpiarRecorridoHistorialMensajeCartelLed.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoNoGranoEnRecorrido.cs" />
+    <Compile Include="Procesamiento\ProcesadorActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorCrearAsignacionAutomatismoNoGranoEnRecorrido.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuerto.cs" />
     <Compile Include="Procesamiento\ProcesadorActualizarPuestoComandoPuertoCaladoEnPlanta.cs" />
@@ -572,7 +573,10 @@
     <Compile Include="Procesamiento\ProcesadorCrearEstablecimientoProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarEstablecimientoProveedor.cs" />
     <Compile Include="Procesamiento\ProcesadorEliminarComercial.cs" />
+    <Compile Include="Procesamiento\ProcesadorLlamarCalle.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEstadoLlamadoAutomatismoNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarEstadoAutomatismoNoGrano.cs" />
+    <Compile Include="Procesamiento\ProcesadorModificarEstadoCallePlantaNoGrano.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarPuntoDeCarga.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCallePreHidraulica.cs" />
     <Compile Include="Procesamiento\ProcesadorModificarCallePreBalanza.cs" />

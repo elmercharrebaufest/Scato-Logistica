@@ -2473,6 +2473,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revalidar Asignacion Automatismo Granos.
+        /// </summary>
+        public static string ActRevalidarAsignacionAutomatismoGranos {
+            get {
+                return ResourceManager.GetString("ActRevalidarAsignacionAutomatismoGranos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Romaneo.
         /// </summary>
         public static string ActRomaneo {
@@ -4444,6 +4453,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No existe el recorrido en AsignacionAutomatismoGranoEnRecorrido.
+        /// </summary>
+        public static string AsignacionAutomatismo_Inexistente {
+            get {
+                return ResourceManager.GetString("AsignacionAutomatismo_Inexistente", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Asignacion de Contingencia.
         /// </summary>
         public static string AsignacionDeContingencia_Titulo {
@@ -4818,6 +4836,33 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string AutomatismoLLamadoVolcable {
             get {
                 return ResourceManager.GetString("AutomatismoLLamadoVolcable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada un almacén desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_AlmacenDesactivado {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_AlmacenDesactivado", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada una calle de planta desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_CalleDesactivada {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_CalleDesactivada", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to El automatismo tiene asociada un punto de carga desactivado.
+        /// </summary>
+        public static string AutomatismoNoGrano_PuntoDeCargaDesactivado {
+            get {
+                return ResourceManager.GetString("AutomatismoNoGrano_PuntoDeCargaDesactivado", resourceCulture);
             }
         }
         
@@ -15325,6 +15370,15 @@ namespace Molinos.Scato.Dominio.Recursos {
         public static string EstadoPlanta {
             get {
                 return ResourceManager.GetString("EstadoPlanta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Estado de Volcables.
+        /// </summary>
+        public static string EstadoVolcadoras {
+            get {
+                return ResourceManager.GetString("EstadoVolcadoras", resourceCulture);
             }
         }
         

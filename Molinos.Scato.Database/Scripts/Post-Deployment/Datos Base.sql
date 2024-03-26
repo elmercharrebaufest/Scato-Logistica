@@ -425,7 +425,7 @@ IF NOT EXISTS (select 1 from Permiso where Codigo = 620) BEGIN INSERT INTO [Perm
 IF NOT EXISTS (select 1 from Permiso where Codigo = 621) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Tablero Comando Puerto', 0, 621, null); END
 
 IF NOT EXISTS (select 1 from Permiso where Codigo = 705) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('ABM Comercial', 0, 705, NULL); END
---IF NOT EXISTS (select 1 from Permiso where Codigo = 607) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('VisualizarVideoCamarasExportacion',0,607, NULL); END
+IF NOT EXISTS (select 1 from Permiso where Codigo = 706) BEGIN INSERT INTO [Permiso]([Descripcion],[TipoPermiso],[Codigo],[ActividadWorkflow]) VALUES ('Estado de Volcables', 1, 706, NULL); END
 
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Extraviada') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Extraviada', 'Extrav.'); END
 IF NOT EXISTS (select 1 from MotivoReasignacionDeTarjeta where Descripcion = 'Tarjeta Rota') BEGIN insert into MotivoReasignacionDeTarjeta(Descripcion, DescripcionCorta) values ('Tarjeta Rota', 'Rota'); END
@@ -468,7 +468,6 @@ IF NOT EXISTS (select 1 from TipoVehiculo where Id = 3) BEGIN insert into TipoVe
 IF NOT EXISTS (select 1 from TipoVehiculo where Id = 4) BEGIN insert into TipoVehiculo(Id, Descripcion) values (4, 'Camión D(52,5)'); END
 IF NOT EXISTS (select 1 from TipoVehiculo where Id = 5) BEGIN insert into TipoVehiculo(Id, Descripcion) values (5, 'Camión E(49,5)'); END
 
-
 --Tipo Pesada
 IF NOT EXISTS (select 1 from TipoPesada where Descripcion = 'Manual') BEGIN insert into TipoPesada(Id, Descripcion) values (0, 'Manual'); END
 IF NOT EXISTS (select 1 from TipoPesada where Descripcion = 'Automática') BEGIN insert into TipoPesada(Id, Descripcion) values (1, 'Automática'); END
@@ -482,7 +481,6 @@ IF NOT EXISTS (select 1 from FuncionSap where Descripcion = 'Z_SDMF_RFC_EGRESOS_
 IF NOT EXISTS (select 1 from FuncionSap where Descripcion = 'Z_SDMF_FASON') BEGIN insert into FuncionSap(Id, Descripcion) values (5, 'Z_SDMF_FASON'); END
 IF NOT EXISTS (select 1 from FuncionSap where Descripcion = 'Z_SDMF_RFC_PESANETO') BEGIN insert into FuncionSap(Id, Descripcion) values (6, 'Z_SDMF_RFC_PESANETO'); END
 IF NOT EXISTS (select 1 from FuncionSap where Descripcion = 'Z_SDMF_MOV291') BEGIN insert into FuncionSap(Id, Descripcion) values (7, 'Z_SDMF_MOV291'); END
-
 IF NOT EXISTS (select 1 from FuncionSap where Descripcion = 'Z_SDMF_Z4030') BEGIN insert into FuncionSap(Id, Descripcion) values (8, 'Z_SDMF_Z4030'); END
 
 --TipoDeWorkflow
@@ -1776,18 +1774,15 @@ END
 --AutomatismoTipoLlamado
 IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = 'PFL') 
 BEGIN 
-INSERT INTO AutomatismoTipoLlamado VALUES ('PFL','Por Fila',1)
+	INSERT INTO AutomatismoTipoLlamado VALUES ('PFL','Por Fila',1)
 END
 
 IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = '1A1') 
 BEGIN 
-INSERT INTO AutomatismoTipoLlamado VALUES ('1A1','1 a 1',1)
+	INSERT INTO AutomatismoTipoLlamado VALUES ('1A1','1 a 1',1)
 END
 
 IF NOT EXISTS (SELECT 1 FROM AutomatismoTipoLlamado WHERE Codigo = 'PDR') 
 BEGIN 
-INSERT INTO AutomatismoTipoLlamado VALUES ('PDR','Pase Directo',1)
+	INSERT INTO AutomatismoTipoLlamado VALUES ('PDR','Pase Directo',1)
 END
-
-
-UPDATE Calle SET AutomatismoTipoLlamado_id = (SELECT Id from AutomatismoTipoLlamado WHERE Codigo = 'PFL') WHERE  TipoCalle = 0  AND  AutomatismoTipoLlamado_id IS NULL 

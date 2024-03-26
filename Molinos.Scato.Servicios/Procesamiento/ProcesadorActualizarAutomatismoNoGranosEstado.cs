@@ -20,6 +20,7 @@ namespace Molinos.Scato.Servicios.Procesamiento
             foreach (var automatismo in automatismos)
             {
                 automatismo.Activo = comando.Estado;
+                automatismo.ActivoLlamado = comando.Estado;
             }
 
             Repositorio.GuardarCambios();

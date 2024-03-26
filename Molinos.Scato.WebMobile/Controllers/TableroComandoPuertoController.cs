@@ -2,7 +2,6 @@
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Consultas;
 using Molinos.Scato.Dominio.Dto;
-using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
@@ -12,7 +11,6 @@ using Molinos.Scato.WebMobile.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using WebGrease.Css.Extensions;
 
 namespace Molinos.Scato.WebMobile.Controllers
 {
@@ -23,7 +21,6 @@ namespace Molinos.Scato.WebMobile.Controllers
         private readonly IServicioRepositorio servicio;
 
         public IList<AutomatismoNoGranoDto> automatismoNoGranosActivos;
-
 
         public TableroComandoPuertoController(IServicioComandos servicioComandos, IServicioRepositorio servicio)
         {
@@ -97,7 +94,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             automatismo.AlmacenId = modelo.AutomatismoNoGrano.AlmacenId;
 
             automatismoNoGranosActivos = servicio.ObtenerAutomatismosNoGranoActivos().Where(x => x.Id != automatismo.Id).ToList();
-                        
 
             if ((automatismo.Activo && this.ValidarMismoPuntoCargaAlmacen(automatismo)))
             {
@@ -219,8 +215,6 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-            
-
             return Json(respuesta);
         }
 
@@ -261,23 +255,22 @@ namespace Molinos.Scato.WebMobile.Controllers
                 }
             }
 
-
             return result;
         }
 
         private AutomatismoNoGranoConfiguracionViewModel CargarListasDeConfiguracion()
         {
             AutomatismoNoGranoConfiguracionViewModel model = new AutomatismoNoGranoConfiguracionViewModel();
-           
+
             var listaCallePlanta = ListarCallesPorTipo();
             var listaPaginadaCallePlanta = new ListaPaginada<CalleDto>(listaCallePlanta, 1, listaCallePlanta.Count, listaCallePlanta.Count);
-           
+
             var listaPuntoDeCarga = ListarPuntosDeCarga();
             var listaPaginadaPuntoDeCarga = new ListaPaginada<PuntoDeCargaDto>(listaPuntoDeCarga, 1, listaPuntoDeCarga.Count, listaPuntoDeCarga.Count);
-            
+
             var listaAlmacen = ListarAlmacenesMaterialNoGrano();
             var listaPaginadaAlmacen = new ListaPaginada<AlmacenDto>(listaAlmacen, 1, listaAlmacen.Count, listaAlmacen.Count);
-            
+
             model.ListaCallePlanta = listaPaginadaCallePlanta;
             model.ListaPuntoDeCarga = listaPaginadaPuntoDeCarga;
             model.ListaAlmacen = listaPaginadaAlmacen;
@@ -288,13 +281,12 @@ namespace Molinos.Scato.WebMobile.Controllers
 
         public ActionResult ActualizarEstadoAutomatismoNoGrano(bool nuevoEstado, int id)
         {
-
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var respuesta = new RespuestaEstandarDto();
 
             if (!ObtenerEstadoGeneralAutomatismoNoGrano())
             {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-                return result;
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
             }
 
             var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
@@ -303,22 +295,21 @@ namespace Molinos.Scato.WebMobile.Controllers
 
             if (nuevoEstado && ValidarMismaCallePlanta(automatismo))
             {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "Ya existe un automatismo activo con la misma calle planta", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-                return result;
-            }            
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ya existe un automatismo activo con la misma calle planta", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
 
             if (nuevoEstado && this.ValidarMismoPuntoCargaAlmacen(automatismo))
             {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "Ya existe un automatismo con el mismo Punto de Carga y Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-                return result;
-            }            
-
-            if(nuevoEstado && this.ValidarConviveEnAlmacen(automatismo))
-            {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = "No es posible asignar el Punto de Carga en esta Almacén por su configuración", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-                return result;
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ya existe un automatismo con el mismo Punto de Carga y Almacén", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
             }
 
+            if (nuevoEstado && this.ValidarConviveEnAlmacen(automatismo))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No es posible asignar el Punto de Carga en esta Almacén por su configuración", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
 
             var resultado = servicioComandos.Ejecutar(new ModificarEstadoAutomatismoNoGrano
             {
@@ -326,125 +317,108 @@ namespace Molinos.Scato.WebMobile.Controllers
                 Estado = nuevoEstado
             });
 
-            if (!resultado.HayErrores)
+            if (resultado.HayErrores)
             {
-                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Llamado Automatico de No Granos Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
-            else
-            {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            }
-            return result;
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ActualizarEstadoAlmacen(bool nuevoEstado, string id)
+        public ActionResult ActualizarEstadoLlamadoAutomatismoNoGrano(bool nuevoEstado, int id)
         {
-            var resultado = new Resultado();
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            var almacen = servicio.ObtenerAlmacen(int.Parse(id));
+            var respuesta = new RespuestaEstandarDto();
+
+            if (!ObtenerEstadoGeneralAutomatismoNoGrano())
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No se Puede Procesar. - Debe habilitar primero el Automatismo General", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
+            var automatismo = servicio.ObtenerAutomatismoNoGrano(id);
+
+            if (nuevoEstado && ValidarMismaCallePlantaParaLlamados(automatismo))
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "Ya existe un automatismo activo con la misma calle planta", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
+            var resultado = servicioComandos.Ejecutar(new ModificarEstadoLlamadoAutomatismoNoGrano
+            {
+                Id = id,
+                Estado = nuevoEstado
+            });
+
+            if (resultado.HayErrores)
+            {
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+            }
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ActualizarEstadoAlmacen(bool nuevoEstado, int id)
+        {
+            var respuesta = new RespuestaEstandarDto();
+            var almacen = servicio.ObtenerAlmacen(id);
+
+            if (almacen == null)
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No existe el Punto de Carga", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
             almacen.EstadoAutomatismo = nuevoEstado;
+            var resultado = servicioComandos.Ejecutar(new ModificarAlmacen { Dto = almacen });
 
-            var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
-            var automatismoGranoActivo = ObtenerEstadoGeneralAutomatismoGrano();
-
-            if (!nuevoEstado)
+            if (resultado.HayErrores)
             {
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.Almacen.Id == almacen.Id && x.Activo && automatismoNoGranoActivo);
-                var incluidoEnAutomatismoGrano = servicio.ListarAutomatismoGrano().Any(x => x.AlmacenId == almacen.Id && x.Activo && automatismoGranoActivo);
-                if (!incluidoEnAutomatismoGrano && !incluidoEnAutomatismoNoGrano)
-                {
-                    resultado = servicioComandos.Ejecutar(new ModificarAlmacen { Dto = almacen });
-                }
-                else
-                {
-                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
-                }
-            }
-            else
-            {
-                resultado = servicioComandos.Ejecutar(new ModificarAlmacen { Dto = almacen });
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
-            if (!resultado.HayErrores)
-            {
-                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Almacen Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            }
-            else
-            {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            }
-            return result;
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ActualizarEstadoPuntoDeCarga(bool nuevoEstado, string id)
+        public ActionResult ActualizarEstadoPuntoDeCarga(bool nuevoEstado, int id)
         {
-            var resultado = new Resultado();
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            var punto = servicio.ObtenerPuntoDeCarga(int.Parse(id));
+            var respuesta = new RespuestaEstandarDto();
+            var punto = servicio.ObtenerPuntoDeCarga(id);
+
+            if (punto == null)
+            {
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = "No existe el Punto de Carga", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                return Json(respuesta, JsonRequestBehavior.AllowGet);
+            }
+
             punto.EstadoAutomatismo = nuevoEstado;
-            if (!nuevoEstado)
-            {
-                var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.PuntoDeCarga.Id == punto.Id && x.Activo && automatismoNoGranoActivo);
+            var resultado = servicioComandos.Ejecutar(new ModificarPuntoDeCarga { Dto = punto });
 
-                if (!incluidoEnAutomatismoNoGrano)
-                {
-                    resultado = servicioComandos.Ejecutar(new ModificarPuntoDeCarga { Dto = punto });
-                }
-                else
-                {
-                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
-                }
-            }
-            else
+            if (resultado.HayErrores)
             {
-                resultado = servicioComandos.Ejecutar(new ModificarPuntoDeCarga { Dto = punto });
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
-            if (!resultado.HayErrores)
-            {
-                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de PuntoD De Carga Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            }
-            else
-            {
-                result.Data = new MensajeEstandarDto { Key = "Error", Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            }
-            return result;
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ActualizarEstadoCallePlanta(bool nuevoEstado, string id)
+        public ActionResult ActualizarEstadoCallePlanta(bool nuevoEstado, int id)
         {
-            var resultado = new Resultado();
-            var result = new JsonResult { Data = null, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-            var calle = servicio.ObtenerCalle(int.Parse(id));
-            calle.ActivoAutomatico = nuevoEstado;
-            if (!nuevoEstado)
+            var respuesta = new RespuestaEstandarDto();
+            var resultado = servicioComandos.Ejecutar(new ModificarEstadoCallePlantaNoGrano
             {
-                var automatismoNoGranoActivo = ObtenerEstadoGeneralAutomatismoNoGrano();
-                var incluidoEnAutomatismoNoGrano = servicio.ListarAutomatismoNoGrano().Any(x => x.CallePlantaId == calle.Id && x.Activo && automatismoNoGranoActivo);
-                if (!incluidoEnAutomatismoNoGrano)
-                {
-                    resultado = servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
-                }
-                else
-                {
-                    resultado.Error("Error", Textos.Automatismo_CalleUtilizadaEnAutomatismoActivo);
-                }
-            }
-            else
+                Id = id,
+                ActivoAutomatico = nuevoEstado,
+            });
+
+            if (resultado.HayErrores)
             {
-                resultado = servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                string error = string.Join(", ", resultado.Errores.Values);
+                respuesta.Mensajes.Add(new MensajeEstandarDto { Mensaje = error, TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
             }
 
-            if (!resultado.HayErrores)
-            {
-                result.Data = new MensajeEstandarDto { Key = "Exito", Mensaje = "Actualizacion de Calle Exitosa", TipoDeMensaje = TipoDeMensajeDeRespuesta.Success };
-            }
-            else
-            {
-                result.Data = new MensajeEstandarDto { Mensaje = string.Join(" - ", resultado.Errores.Select(kvp => kvp.Value.ToString())), TipoDeMensaje = TipoDeMensajeDeRespuesta.Error };
-            }
-            return result;
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -501,7 +475,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             var result = automatismoNoGranosActivos.Where(a => a.Almacen.Id == automatismoNoGrano.AlmacenId && a.PuntoDeCarga.Id == automatismoNoGrano.PuntoDeCargaId);
 
             return result.Any();
-
         }
 
         private bool ValidarConviveEnAlmacen(AutomatismoNoGranoDto automatismoNoGrano)
@@ -514,7 +487,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
 
             return automatismosActivos.Any(x => !x.PuntoDeCarga.ConviveEnAlmacen);
-
         }
 
         private bool ValidarMismaCallePlanta(AutomatismoNoGranoDto automatismoNoGrano)
@@ -522,12 +494,17 @@ namespace Molinos.Scato.WebMobile.Controllers
             var automatismos = automatismoNoGranosActivos.Where(a => a.CallePlantaId == automatismoNoGrano.CallePlantaId);
 
             return automatismos.Any();
+        }
 
+        private bool ValidarMismaCallePlantaParaLlamados(AutomatismoNoGranoDto automatismoNoGrano)
+        {
+            var automatismos = servicio.ObtenerAutomatismosNoGranoLlamadosActivos().Where(a => a.CallePlantaId == automatismoNoGrano.CallePlantaId);
+
+            return automatismos.Any();
         }
 
         private bool ValidarConviveEnAlmacenPuntoDeCarga(IList<AutomatismoNoGranoDto> automatismosNoGrano)
         {
-
             foreach (var aut in automatismosNoGrano)
             {
                 var automatismos = automatismoNoGranosActivos.Where(a => a.AlmacenId == aut.AlmacenId && a.PuntoDeCargaId != aut.PuntoDeCargaId);
@@ -537,8 +514,6 @@ namespace Molinos.Scato.WebMobile.Controllers
             }
 
             return false;
-           
-
         }
 
         private AutomatismoNoGranoViewModel CargarModeloAutomatismo()
@@ -554,7 +529,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                  .ToList();
             var almacenes = servicio.ListarAlmacenesActivosAutomatismoNoGrano();
             var puntos = servicio.ListarPuntosDeCargaActivosAutomatismoNoGrano();
-            model.PuntosDeCarga = 
+            model.PuntosDeCarga =
                 puntos
                  .Select(x => new SelectListItem { Text = x.Descripcion, Value = x.Id.ToString() })
                  .ToList();

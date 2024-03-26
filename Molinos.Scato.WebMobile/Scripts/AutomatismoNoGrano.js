@@ -62,6 +62,9 @@ function bindearEventos() {
             case 'automatismo':
                 cambiarEstadoSwitch(urlActualizarEstadoAutomatismoNoGrano, element);
                 break;
+            case 'automatismoLlamado':
+                cambiarEstadoSwitch(urlActualizarEstadoLlamadoAutomatismoNoGrano, element);
+                break;
         }
     });
 }
@@ -215,10 +218,10 @@ function cambiarEstadoSwitch(url, elemento) {
         url: url,
         data: { nuevoEstado: !valor, id: id },
         success: function (response) {
-            if (response.TipoDeMensaje == TipoMensaje.Success) {
+            if (response.EsValido) {
                 elemento.checked = !valor;
             } else {
-                MostrarAlertaError(response.Mensaje);
+                MostrarAlertaError(response.Mensajes[0].Mensaje);
             }
         },
         error: function () {

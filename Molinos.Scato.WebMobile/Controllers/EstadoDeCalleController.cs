@@ -138,7 +138,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                     {
                         calle.CalleCaladoId = calleCaladoId.Value;
                     }
-                    servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = true });
+                    servicioComandos.Ejecutar(new LlamarCalle { Dto = calle, Llamada = true });
                     EnviarMensajeLlamadoACartel(calle);
                 }
             }
@@ -157,7 +157,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             {
                 calle.Bloqueada = true;
                 calle.FechaLLamada = DateTime.Now;
-                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                servicioComandos.Ejecutar(new LlamarCalle { Dto = calle });
             }
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
@@ -181,7 +181,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var calle = servicio.ObtenerCalle(calleId);
             calle.Bloqueada = false;
             calle.FechaLLamada = null;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = false });
+            servicioComandos.Ejecutar(new LlamarCalle { Dto = calle, Llamada = false });
             if (calle.TipoCalle != TipoCalle.Circular)
             {
                 servicioComandos.Ejecutar(new MarcarUltimaCallePorRecorrido { CalleId = calleId });
@@ -259,7 +259,7 @@ namespace Molinos.Scato.WebMobile.Controllers
                 calle.Bloqueada = true;
                 calle.FechaLLamada = DateTime.Now;
 
-                servicioComandos.Ejecutar(new ModificarCalle { Dto = calle });
+                servicioComandos.Ejecutar(new LlamarCalle { Dto = calle });
                 EnviarMensajeLlamadoACartelPostCalado(calle);
             }
             catch (Exception e)
@@ -504,7 +504,7 @@ namespace Molinos.Scato.WebMobile.Controllers
             var calle = servicio.ObtenerCalle(calleId);
             calle.Bloqueada = false;
             calle.FechaLLamada = null;
-            servicioComandos.Ejecutar(new ModificarCalle { Dto = calle, Llamada = false });
+            servicioComandos.Ejecutar(new LlamarCalle { Dto = calle, Llamada = false });
           
             CancelarLlamadoPorTipo(calle);
         }

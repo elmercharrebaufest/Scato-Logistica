@@ -208,6 +208,9 @@
     <Content Include="Global.asax" />
     <Content Include="ServicioSapAsincronico.svc" />
     <Content Include="ServicioSapAsincronicoPoison.svc" />
+    <Content Include="ASVWUSCATO00.DeployParameters.xml">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
     <Content Include="AVVWHSCATAPP00.DeployParameters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -241,6 +244,7 @@
     <Content Include="ApplicationInsights.QA.config" />
     <Content Include="ApplicationInsights.PRD.config" />
     <Content Include="CertificadosProd\alias2022.p12" />
+    <Content Include="ApplicationInsights.UAT.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

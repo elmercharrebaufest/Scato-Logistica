@@ -10525,4 +10525,22 @@
   <data name="TipoLlamadoNoEditable" xml:space="preserve">
     <value>No se puede editar ya que existe al menos una "fila/Camión" actualmente llamada para esta calle</value>
   </data>
+  <data name="ActRevalidarAsignacionAutomatismoGranos" xml:space="preserve">
+    <value>Revalidar Asignacion Automatismo Granos</value>
+  </data>
+  <data name="AsignacionAutomatismo_Inexistente" xml:space="preserve">
+    <value>No existe el recorrido en AsignacionAutomatismoGranoEnRecorrido</value>
+  </data>
+  <data name="EstadoVolcadoras" xml:space="preserve">
+    <value>Estado de Volcables</value>
+  </data>
+  <data name="AutomatismoNoGrano_AlmacenDesactivado" xml:space="preserve">
+    <value>El automatismo tiene asociada un almacén desactivado</value>
+  </data>
+  <data name="AutomatismoNoGrano_CalleDesactivada" xml:space="preserve">
+    <value>El automatismo tiene asociada una calle de planta desactivado</value>
+  </data>
+  <data name="AutomatismoNoGrano_PuntoDeCargaDesactivado" xml:space="preserve">
+    <value>El automatismo tiene asociada un punto de carga desactivado</value>
+  </data>
 </root>

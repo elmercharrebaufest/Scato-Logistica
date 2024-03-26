@@ -187,6 +187,12 @@ namespace Molinos.Scato.WebMobile.Controllers
                     return Json(response, JsonRequestBehavior.AllowGet);
                 }
 
+                if (!servicio.ExisteEspacioDisponibleParaLlamarEnCartel(CodigoMensajeCartelLed.LlamadoCallePreBalanza))
+                {
+                    response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No hay espacio en el cartel", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                    return Json(response, JsonRequestBehavior.AllowGet);
+                }
+
                 var primerCamionEnPrebalanza = camionesEnPrebalanza.OrderBy(x => x.FechaIngeso).FirstOrDefault();
                 if (primerCamionEnPrebalanza?.CalleRecorridoId == null && primerCamionEnPrebalanza != null)
                 {

@@ -11,7 +11,7 @@ namespace Molinos.Scato.WebMobile.ViewModel
         public string Descripcion { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
-        [Range(1, int.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int Camiones { get; set; }
     }
 }

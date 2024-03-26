@@ -12,6 +12,8 @@
      data-url-buscar-caracteristicasDeCalidad="@Url.Action("BuscarCaracteristicasDeCalidadPorMaterial","Consultas")"
      data-url-buscar-caracteristicaDeCalidadPorId="@Url.Action("BuscarCaracteristicaDeCalidadPorId","Consultas") "></div>
 
+@Html.HiddenFor(model => model.Automatica)
+
 <div class="control-group">
     @Html.LabelFor(model => model.Codigo, new { @class = "control-label" })
     <div class="controls">
@@ -32,7 +34,6 @@
         @Html.EnumDropDownListFor(model => model.TipoCalle, new { @class = "input-large" })
         @Html.ValidationMessageFor(model => model.TipoCalle)
         @Html.HiddenFor(model => model.TipoCalle)
-    
     </div>
 </div>
 

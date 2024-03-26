@@ -3009,13 +3009,22 @@ namespace Molinos.Scato.Servicios
         CallePorRecorridoDto ObtenerCallePorRecorrido(int calleId, int recorridoId);
 
         [OperationContract]
-        CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePHId);
+        CallePreBalanzaPlayaInternaDto ObtenerCallePreBalanzaPlayaInternaDeCamionEnEspera(int callePB);
 
         [OperationContract]
         CallePreBalanzaPlayaInternaDto ObtenerCallePrebalanzaPlayaInterna(int callePBId);
 
         [OperationContract]
         AsignacionNoGranoEnRecorridoDto ObtenerAsignacionNoGranoEnRecorridoPorRecorridoId(int recorridoId);
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerPrimerRecorridosDisponibleParaLlamadoAutomaticoGranos(List<int> callesPBIds);
+
+        [OperationContract]
+        CallePorRecorridoDto ObtenerCamionEnEsperaLlamadoGranos(int callePreBalanzaId);
+        
+        [OperationContract]
+        IList<AutomatismoNoGranoDto> ObtenerAutomatismosNoGranoLlamadosActivos();
     }
 
 }

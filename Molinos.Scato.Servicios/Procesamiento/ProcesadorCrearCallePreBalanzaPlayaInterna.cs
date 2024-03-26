@@ -54,12 +54,6 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PaseDirecto && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.PaseDirecto))
                 resultado.Error(string.Empty, "Ya existe una Calle PreBalanza llamada por Pase Directo");
 
-            if (!comando.EsCamionEnEspera && comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && !x.EsCamionEnEspera && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno))
-                resultado.Error(string.Empty, "Ya existe un Camion Llamado por 1 a 1");
-
-            if (comando.EsCamionEnEspera && comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.EsCamionEnEspera && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno))
-                resultado.Error(string.Empty, "Ya existe un Camion En Espera por 1 a 1");
-
             if (comando.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno && Repositorio.Existe<CallePreBalanzaPlayaInterna>(x => x.CallePlayaInternaId == comando.CallePlayaInternaId && x.RecorridoId == comando.RecorridoId && x.CodigoAutomatismoTipoLlamado == Constantes.AutomatismoTipoLlamado.UnoAUno))
                 resultado.Error(string.Empty, "Ya existe un Camion con el mismo recorrido");
 

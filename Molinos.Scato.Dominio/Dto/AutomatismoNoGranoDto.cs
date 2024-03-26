@@ -36,5 +36,9 @@ namespace Molinos.Scato.Dominio.Dto
         [Display(ResourceType = typeof(Textos), Name = "Almacen")]
         [Required(ErrorMessageResourceType = typeof(Textos), ErrorMessageResourceName = "Error_Requerido")]
         public int AlmacenId { get; set; }
+        public bool ActivoLlamado { get; set; }
+
+        [Display(ResourceType = typeof(Textos), Name = "AutomatismoNoGranos_CantidadDeCamiones")]
+        public int CantidadCamiones { get; set; }
     }
 }

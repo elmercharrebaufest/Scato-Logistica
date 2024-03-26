@@ -90,6 +90,8 @@
     <Compile Include="ActualizarCupo.cs" />
     <Compile Include="ActualizarAsignacionNoGranoEnRecorrido.cs" />
     <Compile Include="CrearAsignacionNoGranoEnRecorrido.cs" />
+    <Compile Include="Internas\ActualizarAsignacionAutomatismoGranoEnRecorrido.cs" />
+    <Compile Include="Internas\VerificarAutomatismoGranos.cs" />
     <Compile Include="InformarOrdenFasonOperaciones.cs" />
     <Compile Include="LimpiarCartelLlamadoNoGranos.cs" />
     <Compile Include="EliminarAsignacionNoGranoEnRecorrido.cs" />
@@ -1309,6 +1311,18 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="AsignacionAutomatismoNoGranos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="Internas\RevalidarAsignacionAutomatismoGrano.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="EnTransitoV3.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
