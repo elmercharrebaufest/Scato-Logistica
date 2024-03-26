@@ -41,11 +41,12 @@ namespace Molinos.Scato.Web.Controllers
         private readonly IConfiguracionProvider configuracion;
         private readonly IFirmaProvider firma;
         private readonly IServicioActividadFactory<ICargarCartaPorteService> factory;
+        private readonly IServicioOperaciones servicioOperaciones;
 
         public CargaDeCupoController(ILogger log, IServicioRepositorio servicio, IServicioComandos servicioComandos,
             IListaDeWorkflows workflows, ZSDWS_SCATO servicioSap, IServicioOrquestador servicioOrquestador,
             IConfiguracionProvider configuracion, IFirmaProvider firma,
-            IServicioActividadFactory<ICargarCartaPorteService> factory)
+            IServicioActividadFactory<ICargarCartaPorteService> factory, IServicioOperaciones servicioOperaciones)
             : base(servicio)
         {
             this.servicioComandos = servicioComandos;
@@ -56,6 +57,7 @@ namespace Molinos.Scato.Web.Controllers
             this.firma = firma;
             this.factory = factory;
             this.configuracion = configuracion;
+            this.servicioOperaciones = servicioOperaciones;
         }
 
         [DatosUsuario]
@@ -282,42 +284,25 @@ namespace Molinos.Scato.Web.Controllers
             return View("Form", model);
         }
 
-         private bool? nombreDeWorkflowDesdeOperaciones(string patente)
+        private bool? nombreDeWorkflowDesdeOperaciones(string patente)
         {
-            string url = ConfigurationManager.AppSettings["URLOperacionesAPI"];
-            string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
-            string resource = "ObtenerOrdenesDeCarga";
-
-            // ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            var client = new RestClient(url);
-            client.Timeout = 30000;
-            client.UserAgent = "ScatoLogistica RestSharp v106";
-            var request = new RestRequest("/externalApi/external/api/" + resource, Method.GET);
-            request.AddHeader("X-Api-Key", token);
-
-            if (!string.IsNullOrWhiteSpace(patente))
-                request.AddParameter("patenteChasis", patente);
-
-            var restResponse = client.Execute(request);
-
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            try
             {
-                List<OrdenDeCargaDto> ordenesDeCarga = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content);
+                var ordenesDeCarga = servicioOperaciones.ObtenerOrdenesDeCarga(patente).ToList();
 
-                if (ordenesDeCarga.Count > 0)
+                if (ordenesDeCarga.Any())
                 {
-                    return ordenesDeCarga[0].FleteMOA; 
+                    return ordenesDeCarga[0].FleteMOA;
                 }
                 else
                 {
                     return null;
                 }
             }
-            else
+            catch (Exception ex)
             {
                 return null;
             }
-
         }
 
         private void AsignarCalle(int cargaDeCupoId, bool turnoActivo, string cartaPorte, int centroId, string nombrePc, string patente, string titular , bool circuitoNoGranos = false)
@@ -1532,32 +1517,14 @@ namespace Molinos.Scato.Web.Controllers
 
         private List<OrdenDeCargaDto> ObtenerRespuestaOrdenDeCargaOperaciones(string patente = null)
         {
-            string url = ConfigurationManager.AppSettings["URLOperacionesAPI"];
-            string token = ConfigurationManager.AppSettings["APITokenOperacionesAPI"];
-            string resource = "ObtenerOrdenesDeCarga";
-
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-            var client = new RestClient(url);
-            client.Timeout = 30000;
-            client.UserAgent = "ScatoLogistica RestSharp v106";
-            var request = new RestRequest("/externalApi/external/api/" + resource, Method.GET);
-            request.AddHeader("X-Api-Key", token);
-
-            if (!string.IsNullOrWhiteSpace(patente))
-                request.AddParameter("patenteChasis", patente);
-
-
-            var restResponse = client.Execute(request);
-
-
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            try
             {
-                List<OrdenDeCargaDto> data = JsonConvert.DeserializeObject<List<OrdenDeCargaDto>>(restResponse.Content);
-                return data;
+                IEnumerable<OrdenDeCargaDto> data = servicioOperaciones.ObtenerOrdenesDeCarga(patente);
+                return data.ToList();
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                throw;
             }
         }
     }

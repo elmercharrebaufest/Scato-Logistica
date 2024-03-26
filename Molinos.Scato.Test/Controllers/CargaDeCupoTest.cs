@@ -35,6 +35,7 @@ namespace Molinos.Scato.Test.Controllers
         private Mock<IServicioNotificarUsuario> notificador;
         private Mock<IFirmaProvider> firma;
         private Mock<IServicioActividadFactory<ICargarCartaPorteService>> factory;
+        private Mock<IServicioOperaciones> operacionesMock;
 
         [SetUp]
         public void SetUp()
@@ -57,7 +58,7 @@ namespace Molinos.Scato.Test.Controllers
 
             target = new CargaDeCupoController(log, servRepositorioMock.Object, servComandoMock.Object,
                 listaMock.Object, servicioSap.Object, servOrquestador.Object, configuracion.Object,
-                firma.Object, factory.Object);
+                firma.Object, factory.Object, operacionesMock.Object);
 
             cargaDeCupo = new CargaDeCupoDto
             {
