@@ -3,11 +3,13 @@ using Molinos.Scato.Actividades.Servicios;
 using Molinos.Scato.Dominio.Comandos;
 using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Dto.OperacionesAPI;
+using Molinos.Scato.Dominio.Entidades;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Dominio.Seguridad;
 using Molinos.Scato.Repositorio;
 using Molinos.Scato.Servicios;
+using Molinos.Scato.Servicios.Orquestador;
 using Molinos.Scato.Servicios.ServiciosSap;
 using Molinos.Scato.Web.Atributos;
 using Molinos.Scato.Web.Helpers;
@@ -337,6 +339,8 @@ namespace Molinos.Scato.Web.Controllers
             var cliente = servicio.ObtenerClientePorCuit(clienteCUIT);
             var resp = ObtenerRespuestaOrdenDeCargaOperaciones(patente);
             var orden = resp.FirstOrDefault(x => x.Id == Convert.ToInt32(ordenId));
+            var choferCuil = ConvertirCuil(orden.CUILChofer);
+            var chofer = servicio.ObtenerChoferPorCuit(choferCuil);
             var destinatarioCuit = ConvertirCuil(DefinirDestinatario(orden));
             var destinatarioDescrip = servicio.ObtenerClientePorCuit(destinatarioCuit);
 
@@ -348,7 +352,10 @@ namespace Molinos.Scato.Web.Controllers
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Cliente para el cuit {clienteCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (transportista == null)
-                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No se encontró un Transportista para el cuit {transportistaCUIT}, Debe generarse en >Administración/Datos Generales/Transportistas", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
+
+            if (chofer == null)
+                response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"El chofer con cuil {choferCuil} no existe. Debe generarse en >Administración/Datos Generales/Choferes", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
 
             if (material == null)
                 response.Mensajes.Add(new MensajeEstandarDto { Mensaje = $"No existe material con el codigo de SAP {materialSAP}", TipoDeMensaje = TipoDeMensajeDeRespuesta.Error });
