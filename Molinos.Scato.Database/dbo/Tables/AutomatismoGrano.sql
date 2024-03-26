@@ -4,8 +4,6 @@
 
   [Material_Id] INT NOT NULL,
 
-  [TipoVariedad_Id] INT NULL,
-
   [CamionEscalable] BIT NOT NULL DEFAULT 0,
 
   [CallePreBalanza_Id] INT NOT NULL,
