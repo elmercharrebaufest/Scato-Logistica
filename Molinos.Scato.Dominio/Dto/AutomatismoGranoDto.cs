@@ -76,6 +76,8 @@ namespace Molinos.Scato.Dominio.Dto
 
         public TipoCalle TipoCallePreHidraulica { get; set; }
 
+        public bool EsEstandar { get; set; }
+
         public string FiltraCalidad
         {
             get

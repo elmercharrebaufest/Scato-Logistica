@@ -24,7 +24,8 @@
 
   CONSTRAINT [PK_AutomatismoGrano] PRIMARY KEY ([Id] ASC),
 
-  CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
+  [EsEstandar] BIT NOT NULL DEFAULT 0, 
+    CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
     FOREIGN KEY ([CallePreBalanza_Id]) REFERENCES [dbo].[Calle](Id),
 
   CONSTRAINT [FK_dbo.AutomatismoGrano_Calidad_Id] 

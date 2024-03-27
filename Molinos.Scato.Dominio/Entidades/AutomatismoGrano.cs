@@ -53,5 +53,7 @@ namespace Molinos.Scato.Dominio.Entidades
 
         [InverseProperty("AutomatismoGranos")]
         public IList<TipoVariedad> TipoVariedades { get; set; }
+
+        public bool EsEstandar { get; set; }
     }
 }
