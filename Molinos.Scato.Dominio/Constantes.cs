@@ -217,6 +217,7 @@
             public const string EPA = "EPA";
             public const string Sustentable = "SUS";
             public const string Importacion = "IMP";
+            public const string Estandar = "EST";
         }
 
         public struct Job

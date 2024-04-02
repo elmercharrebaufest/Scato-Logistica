@@ -39,6 +39,8 @@ namespace Molinos.Scato.Servicios.Procesamiento
                 Calidad = Repositorio.Obtener<CaracteristicaDeCalidad>(c => c.Id == 1),
                 CallePreBalanza = callePrebalanza,
                 CallePreHidraulica = Repositorio.Obtener<Calle>(c => c.Id == comando.Dto.CallePreHidraulicaId),
+                TipoVariedades = Repositorio.Listar<TipoVariedad>(c => comando.Dto.TipoVariedades.Contains(c.Id)),
+                Hidraulicas = Repositorio.Listar<PuestosDeCargaDescarga>(c => comando.Dto.Hidraulicas.Contains(c.Id)),
             };
 
             return automatismo;
@@ -49,6 +51,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             if (Repositorio.Existe<AutomatismoGrano>(a => a.CallePreBalanzaId == comando.Dto.CallePreBalanzaId))
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
+            }
+
+            if(comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
+            {
+                resultado.Error("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
             }
         }
     }

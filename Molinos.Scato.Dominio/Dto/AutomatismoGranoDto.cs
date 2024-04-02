@@ -1,5 +1,4 @@
-﻿using Molinos.Scato.Dominio.Entidades;
-using Molinos.Scato.Dominio.Enums;
+﻿using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -61,7 +60,7 @@ namespace Molinos.Scato.Dominio.Dto
         public List<int> TipoVariedades { get; set; }
 
         public string MaterialDescripcion { get; set; }
-        public string VariedadDescripcion { get; set; }
+        public string TipoVariedadDescripcion { get; set; }
         public string CallePBDescripcion { get; set; }
         public string CallePHDescripcion { get; set; }
         public string CallePHTipoLlamadoDescripcion { get; set; }
@@ -75,8 +74,6 @@ namespace Molinos.Scato.Dominio.Dto
         public TipoCalle TipoCallePrebalanza { get; set; }
 
         public TipoCalle TipoCallePreHidraulica { get; set; }
-
-        public bool EsEstandar { get; set; }
 
         public string FiltraCalidad
         {

@@ -54,6 +54,11 @@ namespace Molinos.Scato.Servicios.Procesamiento
             {
                 resultado.Error("Calle Prebalanza", Textos.Automatismo_CallePrebalanzaExistente);
             }
+
+            if (comando.Dto.AplicaFiltroCalidad && !comando.Dto.CalidadId.HasValue)
+            {
+                resultado.Error("AutomatismoGrano.CalidadId", "El campo 'Calidad' es requerido");
+            }
         }
     }
 }

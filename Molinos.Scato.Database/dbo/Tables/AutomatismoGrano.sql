@@ -24,8 +24,7 @@
 
   CONSTRAINT [PK_AutomatismoGrano] PRIMARY KEY ([Id] ASC),
 
-  [EsEstandar] BIT NOT NULL DEFAULT 0, 
-    CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
+  CONSTRAINT [FK_dbo.AutomatismoGrano_CallePreBalanza_Id]
     FOREIGN KEY ([CallePreBalanza_Id]) REFERENCES [dbo].[Calle](Id),
 
   CONSTRAINT [FK_dbo.AutomatismoGrano_Calidad_Id] 
@@ -35,5 +34,8 @@
     FOREIGN KEY (CallePreHidraulica_Id) REFERENCES [dbo].[Calle](Id),
 
   CONSTRAINT [FK_dbo.AutomatismoGrano_Almacen_Id]
-    FOREIGN KEY (Almacen_Id) REFERENCES [dbo].[Almacen](Id)
+    FOREIGN KEY (Almacen_Id) REFERENCES [dbo].[Almacen](Id),
+
+  CONSTRAINT [FK_dbo.AutomatismoGrano_Material_Id]
+    FOREIGN KEY (Material_Id) REFERENCES [dbo].[Material](Id)
 );

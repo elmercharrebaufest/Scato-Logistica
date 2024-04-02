@@ -1608,6 +1608,11 @@ BEGIN
   values ('Impo', 'IMP', 0, GETDATE(), 'SCATO');
 END
 
+IF NOT EXISTS (select 1 from TipoVariedad where Codigo = 'EST') 
+BEGIN
+  insert into TipoVariedad (Descripcion, Codigo, Borrado, FechaCreacion, CreadoPor)
+  values ('Estandar', 'EST', 0, GETDATE(), 'SCATO');
+END
 
 --Precarga de Comerciales Moa
 IF NOT EXISTS (SELECT 1 FROM Comercial WHERE CodigoSap = '3')

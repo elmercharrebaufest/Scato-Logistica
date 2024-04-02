@@ -103,6 +103,7 @@ namespace Molinos.Scato.Repositorio.ConsultasEF
                                             .Include(x => x.CallePreBalanza)
                                             .Include(x => x.CallePreHidraulica)
                                             .Include(x => x.Almacen)
+                                            .Include(x => x.TipoVariedades)
                                             .Where(FiltrarAutomatismoActivoConMismoMaterialYVariedad)
                                             .ToList();
 

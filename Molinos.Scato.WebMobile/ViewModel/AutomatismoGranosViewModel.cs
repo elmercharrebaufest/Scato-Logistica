@@ -4,7 +4,6 @@ using Molinos.Scato.Dominio.Dto;
 using Molinos.Scato.Dominio.Enums;
 using Molinos.Scato.Dominio.Recursos;
 using Molinos.Scato.Servicios;
-using Ninject.Selection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +60,8 @@ namespace Molinos.Scato.WebMobile.ViewModel
         private List<LlamadoAutomaticoHidraulicaDto> MapearHidraulicaConfiguracion(List<LlamadoAutomaticoHidraulicaDto> hidraulicas)
         {
             var hidraulicasconfiguracion = new List<LlamadoAutomaticoHidraulicaDto>();
-            foreach (var h in hidraulicas) {
+            foreach (var h in hidraulicas)
+            {
                 h.Id = h.HidraulicaId;
                 hidraulicasconfiguracion.Add(h);
             }
@@ -83,14 +83,12 @@ namespace Molinos.Scato.WebMobile.ViewModel
 
         private List<SelectListItem> MapearVariedades(IList<TipoVariedadPorMaterialDto> variedadPorMaterial, List<int> idSeleccionados)
         {
-
             var listaVariedad = variedadPorMaterial.Select(m => new SelectListItem
             {
                 Value = m.TipoVariedadId.ToString(),
                 Text = m.TipoVariedadDescripcion,
                 Selected = idSeleccionados.Contains(m.TipoVariedadId)
             }).ToList();
-            listaVariedad.Insert(0, new SelectListItem { Value = "", Text = Textos.Variedad_Estandar });
 
             return listaVariedad;
         }

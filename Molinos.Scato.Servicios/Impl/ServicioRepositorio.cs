@@ -10656,7 +10656,7 @@ namespace Molinos.Scato.Servicios.Impl
 
                     infoCalle.EsIncluidoAutomatismo = "Si";
                     infoCalle.Hidraulica = automatismoConvertido.HidraulicaDescripcion;
-                    infoCalle.Variedad = string.IsNullOrEmpty(automatismoConvertido.VariedadDescripcion) ? Textos.Variedad_Estandar : automatismoConvertido.VariedadDescripcion;
+                    infoCalle.Variedad = string.IsNullOrEmpty(automatismoConvertido.TipoVariedadDescripcion) ? Textos.Variedad_Estandar : automatismoConvertido.TipoVariedadDescripcion;
                     infoCalle.Almacen = string.Empty;
                     infoCalle.PuntoDeCarga = string.Empty;
                     infoCalle.EstadoAutomatismo = automatismoConvertido.Activo && bool.TryParse(configuracionGeneralGrano?.Valor, out bool automatismoGeneralGrano) && automatismoGeneralGrano ? "Activo" : "Inactivo";
@@ -10692,7 +10692,7 @@ namespace Molinos.Scato.Servicios.Impl
             if (esSustentable)
                 return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Sustentable)).Select(x => x.Id).FirstOrDefault();
 
-            return null;
+            return variedadesPorMaterial.Where(c => c.Codigo.Equals(Constantes.TipoVariedadMaterial.Estandar)).Select(x => x.Id).FirstOrDefault();
         }
 
         private List<TipoVariedadDto> ObtenerRelacionVariedadPorMaterial(int idMaterial)
@@ -10716,12 +10716,9 @@ namespace Molinos.Scato.Servicios.Impl
 
         public IList<AutomatismoGranoDto> ListarAutomatismoGrano()
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
             var lista = repositorio.Listar<AutomatismoGrano>(includes);
             var automatismos = conversor.ConvertirList<AutomatismoGrano, AutomatismoGranoDto>(lista);
-
-            automatismos.Where(atomatismo => String.IsNullOrEmpty(atomatismo.VariedadDescripcion)).ToList().ForEach(atomatismoVariedad => atomatismoVariedad.VariedadDescripcion = Textos.Variedad_Estandar);
-
             return automatismos;
         }
 
@@ -10770,7 +10767,7 @@ namespace Molinos.Scato.Servicios.Impl
 
         public AutomatismoGranoDto ObtenerAutomatismoGranos(int id)
         {
-            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas, x => x.TipoVariedades };
+            var includes = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
             var automatismo = repositorio.Obtener<AutomatismoGrano>(includes, a => a.Id == id);
 
             return conversor.Convertir<AutomatismoGrano, AutomatismoGranoDto>(automatismo);
