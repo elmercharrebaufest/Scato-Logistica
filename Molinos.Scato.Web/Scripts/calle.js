@@ -27,6 +27,7 @@
         $("#CaracteristicaDeCalidadId").val(seleccionado.val())
         setearRangosCaracteristicasDeCalidad();
     });
+
 });
 
 function manejarSeleccionDeMaterial() {

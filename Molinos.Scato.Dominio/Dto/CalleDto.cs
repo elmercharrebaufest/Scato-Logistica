@@ -34,7 +34,7 @@ namespace Molinos.Scato.Dominio.Dto
 
         public bool Deshabilitada { get; set; }
 
-        public bool Automatica { get; set; }
+        public bool Automatica { get; set; } = false;
         public int MaterialId { get; set; }
 
         [Display(Name = "Material")]

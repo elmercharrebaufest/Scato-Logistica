@@ -520,7 +520,7 @@ namespace Molinos.Scato.WebMobile.Controllers
         {
             AutomatismoNoGranoViewModel model = new AutomatismoNoGranoViewModel();
             var callesPlanta = servicio.ListarCallesAutomatismoActivoPorTipoCalle(TipoCalle.PlantaNoGranos);
-            var callesPlayaInterna = servicio.ListarCallesPlayaInternaAutomatismoDisponibles();
+            var callesPlayaInterna = servicio.ListarCallesAutomatismoActivoPorTipoCalle(TipoCalle.PlayaInterna);
             model.CallesPlanta = callesPlanta
                  .Select(x => new SelectListItem { Text = x.Nombre, Value = x.Id.ToString() })
                  .ToList();

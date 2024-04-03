@@ -95,7 +95,8 @@ namespace Molinos.Scato.Web.Controllers
 
         public ActionResult Crear()
         {
-            return View();
+            var model = new CalleDto();
+            return View(model);
         }
 
         [HttpPost]

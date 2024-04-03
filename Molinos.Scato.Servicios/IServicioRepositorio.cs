@@ -2922,7 +2922,7 @@ namespace Molinos.Scato.Servicios
         IList<HistorialMensajeCartelLedDto> ListarCamionesLlamados();
 
         [OperationContract]
-        IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, bool esNoGranos, int idCalleActual);
+        IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, int idCalleActual);
 
         [OperationContract]
         PuntoDeCargaDto ObtenerPuntoDeCarga(int id);
@@ -2935,9 +2935,6 @@ namespace Molinos.Scato.Servicios
 
         [OperationContract]
         IList<AlmacenDto> ListarAlmacenesActivosAutomatismoNoGrano();
-
-        [OperationContract]
-        IList<CalleDto> ListarCallesPlayaInternaAutomatismoDisponibles();
     
 		[OperationContract]    
         AsignacionAutomatismoGranoEnRecorridoDto ObtenerAsignacionAutomatismoGranoEnRecorrido(Guid workflowInstanceId);

@@ -38,8 +38,8 @@ namespace Molinos.Scato.WebMobile.ViewModel
         {
             var callesPrebalanzaTotales = servicio.ListarCallesPorTipo(TipoCalle.PreBalanzaGranos).Where(c => !c.Deshabilitada).ToList();
             var callesHidraulicaTotales = servicio.ListarCallesPorTipo(TipoCalle.PlayaInterna).Where(c => c.CentroId == idCentro && !c.Deshabilitada).ToList();
-            var callesPrebalanza = servicio.ListarCallesAutomatismoGrano(TipoCalle.PreBalanzaGranos, false, dto.CallePreBalanzaId).Where(c => !c.Deshabilitada).ToList();
-            var callesHidraulica = servicio.ListarCallesAutomatismoGrano(TipoCalle.PlayaInterna, false, dto.CallePreHidraulicaId).Where(c => c.CentroId == idCentro && !c.Deshabilitada).ToList();
+            var callesPrebalanza = servicio.ListarCallesAutomatismoGrano(TipoCalle.PreBalanzaGranos, dto.CallePreBalanzaId).Where(c => !c.Deshabilitada).ToList();
+            var callesHidraulica = servicio.ListarCallesAutomatismoGrano(TipoCalle.PlayaInterna, dto.CallePreHidraulicaId).Where(c => c.CentroId == idCentro && !c.Deshabilitada).ToList();
             var hidraulicas = servicio.ListarHidraulicasAutomatizadas().Where(c => c.Estado != EstadoHidraulica.Inhabilitado && c.CentroId == idCentro).ToList();
             var hidraulicasConfiguracion = MapearHidraulicaConfiguracion(hidraulicas);
 
