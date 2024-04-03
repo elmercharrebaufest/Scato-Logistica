@@ -10722,31 +10722,17 @@ namespace Molinos.Scato.Servicios.Impl
             return automatismos;
         }
 
-        public IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, bool esNoGranos, int idCalleActual)
+        public IList<CalleDto> ListarCallesAutomatismoGrano(TipoCalle tipoCalle, int idCalleActual)
         {
-            List<int> listaId = new List<int>();
+            var listaCalles = repositorio.Listar<Calle>(c => c.TipoCalle == tipoCalle);
 
-            var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedades, x => x.Almacen, x => x.Hidraulicas };
-            var includesNoGrano = new List<Expression<Func<AutomatismoNoGrano, object>>> { x => x.Almacen, x => x.CallePlayaInterna, x => x.PuntoDeCarga, x => x.CallePlanta };
+            List<int> listaId = new List<int>();
 
             if (tipoCalle == TipoCalle.PreBalanzaGranos)
             {
-                var lista = repositorio.Listar<AutomatismoGrano>(includesGrano);
-                listaId.AddRange(lista.Select(s => s.CallePreBalanzaId).ToList());
+                var includesGrano = new List<Expression<Func<AutomatismoGrano, object>>> { x => x.Material, x => x.CallePreBalanza, x => x.CallePreHidraulica, x => x.TipoVariedad, x => x.Almacen, x => x.Hidraulicas };
+                listaId.AddRange(repositorio.Listar(includesGrano).Select(s => s.CallePreBalanzaId).ToList());
             }
-            if (tipoCalle == TipoCalle.PlayaInterna)
-            {
-                var lista = repositorio.Listar<AutomatismoNoGrano>(includesNoGrano);
-                listaId.AddRange(lista.Select(s => s.CallePlayaInterna.Id).ToList());
-                if (esNoGranos)
-                {
-                    var listaGranos = repositorio.Listar<AutomatismoGrano>(includesGrano);
-                    listaId.AddRange(listaGranos.Select(s => s.CallePreHidraulicaId).ToList());
-                }
-                listaId = listaId.Distinct().ToList();
-            }
-
-            var listaCalles = repositorio.Listar<Calle>(c => c.TipoCalle == tipoCalle).ToList();
 
             var calleDisponibles = listaCalles.Where(c => !listaId.Contains(c.Id)).ToList();
 
@@ -10835,14 +10821,6 @@ namespace Molinos.Scato.Servicios.Impl
         public CargaDeCupoDto ObtenerCargaDeCupoPorCTG(string nroCTG)
         {
             return ObtenerUltimo<CargaDeCupo, CargaDeCupoDto>(x => x.CTG == nroCTG, y => y.Id);
-        }
-
-        public IList<CalleDto> ListarCallesPlayaInternaAutomatismoDisponibles()
-        {
-            var callesAutomatismoActivas = Listar<Calle, CalleDto>(x => x.TipoCalle == TipoCalle.PlayaInterna && x.ActivoAutomatico);
-            var callesGranosUsadas = repositorio.Listar<AutomatismoGrano>().Select(q => q.CallePreHidraulicaId);
-            var callesUtilizables = callesAutomatismoActivas.Where(q => !callesGranosUsadas.Contains(q.Id)).ToList();
-            return callesUtilizables;
         }
 
         public IList<HistorialMensajeCartelLedDto> ListarCamionesLlamados()
